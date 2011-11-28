@@ -4,7 +4,14 @@
 library TestLib;
 
 helper context EMFTVM!NamedElement def : test() : Boolean =
-	(not self.name.oclIsUndefined()).debug('TestLib::NamedElement.test()');
+	(not self.name.oclIsUndefined()).debug('   TestLib::NamedElement.test()   '.encode());
 
 helper context EMFTVM!Operation def : test() : Boolean =
 	super.test().debug('TestLib::Operation.test()');
+
+helper context OclAny def : encode() : String =
+	'';
+
+helper context String def : encode() : String =
+	self.replaceAll('\\s+', ' ')
+		.replaceAll('"', '');
