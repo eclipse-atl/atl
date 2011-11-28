@@ -3,7 +3,7 @@
 -- @path ATL=/emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: ATLtoEMFTVM.atl,v 1.4 2011/09/22 14:20:21 dwagelaar Exp $
+-- $Id: ATLtoEMFTVM.atl,v 1.5 2011/11/28 15:36:35 dwagelaar Exp $
 module ATLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -268,6 +268,19 @@ helper context ATL!Rule def : applyLoc : String =
 		self.outPattern.location
 	endif;
 
+-- Support for multiple rule inheritance, including rules outside same module
+helper context String def : isExtendsAnn : Boolean =
+	self.substring(2).trim().startsWith('@extends');
+
+helper context String def : extendsAnnValues : Sequence(String) =
+	if self.isExtendsAnn then
+		self.split('@extends')
+			->at(2).trim().split(',')
+			->collect(s | s.trim())
+	else
+		Sequence{}
+	endif;
+	
 -- ======================================================================
 -- helpers end
 -- ======================================================================
@@ -729,7 +742,12 @@ rule MatchedRule {
 	to t : EMFTVM!Rule (
 		name <- s.name,
 		"abstract" <- s.isAbstract,
-		superRules <- if s.superRule.oclIsUndefined() then Sequence{} else Sequence{s.superRule.name} endif,
+		superRules <- 
+			if s.superRule.oclIsUndefined() then
+				s.commentsBefore->collect(c | c.extendsAnnValues)->flatten()
+			else
+				Sequence{s.superRule.name}
+			endif,
 		outputElements <- s.outPatternElements,
 		mode <- 
 			if s.oclIsKindOf(ATL!LazyMatchedRule) then

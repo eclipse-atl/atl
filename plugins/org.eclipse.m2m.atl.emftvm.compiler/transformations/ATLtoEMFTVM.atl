@@ -3,7 +3,7 @@
 -- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: ATLtoEMFTVM.atl,v 1.7 2011/11/09 10:23:17 dwagelaar Exp $
+-- $Id: ATLtoEMFTVM.atl,v 1.8 2011/11/28 15:36:35 dwagelaar Exp $
 module ATLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -115,6 +115,19 @@ helper context ATL!Rule def : applyLoc : String =
 		self.outPattern.location
 	endif;
 
+-- Support for multiple rule inheritance, including rules outside same module
+helper context String def : isExtendsAnn : Boolean =
+	self.substring(3).trim().startsWith('@extends');
+
+helper context String def : extendsAnnValues : Sequence(String) =
+	if self.isExtendsAnn then
+		self.split('@extends')
+			->at(2).trim().split(',')
+			->collect(s | s.trim())
+	else
+		Sequence{}
+	endif;
+	
 -- ======================================================================
 -- helpers end
 -- ======================================================================
@@ -463,7 +476,12 @@ rule MatchedRule {
 	to t : EMFTVM!Rule (
 		name <- s.name,
 		"abstract" <- s.isAbstract,
-		superRules <- if s.superRule.oclIsUndefined() then Sequence{} else Sequence{s.superRule.name} endif,
+		superRules <- 
+			if s.superRule.oclIsUndefined() then
+				s.commentsBefore->collect(c | c.extendsAnnValues)->flatten()
+			else
+				Sequence{s.superRule.name}
+			endif,
 		outputElements <- s.outPatternElements,
 		mode <- 
 			if s.oclIsKindOf(ATL!LazyMatchedRule) then
@@ -524,8 +542,7 @@ rule MatchedRuleWithFilter extends MatchedRule {
 	   invokeCb : EMFTVM!InvokeCb  (codeBlock <- s.inPattern.filter)
 }
 
--- TODO This rule could have been simplified with multiple inheritance
-rule MatchedRuleWithFilterAndAction extends MatchedRuleWithFilter {
+rule MatchedRuleWithAction extends MatchedRule {
 	from s : ATL!MatchedRule in IN (
 		not s.actionBlock.oclIsUndefined())
 	using {
@@ -553,33 +570,10 @@ rule MatchedRuleWithFilterAndAction extends MatchedRuleWithFilter {
 	   p_invokeAllCbs : EMFTVM!InvokeAllCbs					-- [value] * nestedCbSize
 }
 
-rule MatchedRuleWithoutFilterWithAction extends MatchedRule {
-	from s : ATL!MatchedRule in IN (
-		s.inPattern.filter.oclIsUndefined() and
-		not s.actionBlock.oclIsUndefined())
-	using {
-		postLoc : String = s.actionBlock.location;
-	}
-	to t : EMFTVM!Rule (
-		postApply <- p),
-	   p : EMFTVM!CodeBlock (
-	   	localVariables <- Sequence{p_trace}
-			->union(s.inPattern.elements->collect(e|thisModule.resolveTemp(e, 'pv')))
-			->union(s.outPatternElements->collect(e|thisModule.resolveTemp(e, 'pv'))),
-	   	lineNumbers <- Sequence{pln},
-	   	nested <- s.actionBlock.statements,
-		code <- Sequence{p_invokeAllCbs}),
-	   p_trace : EMFTVM!LocalVariable (
-	   	name <- '__trace__',
-	   	type <- 'TraceLink',
-		typeModel <- 'TRACE'),
-	   pln : EMFTVM!LineNumber (
-	   	startLine <- postLoc.startLine,
-		startColumn <- postLoc.startColumn,
-		endLine <- postLoc.endLine,
-		endColumn <- postLoc.endColumn,
-		instructions <- Sequence{p_invokeAllCbs}),
-	   p_invokeAllCbs : EMFTVM!InvokeAllCbs					-- [value] * nestedCbSize
+-- @extends MatchedRuleWithFilter, MatchedRuleWithAction
+rule MatchedRuleWithFilterAndAction {
+	from s : ATL!MatchedRule in IN
+	to t : EMFTVM!Rule
 }
 
 rule Binding {
