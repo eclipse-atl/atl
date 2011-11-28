@@ -1240,6 +1240,16 @@ public final class OCLOperations {
 					}
 		});
 		createOperation(false, "substring", STRING_TYPE, STRING_TYPE,
+				new String[][][]{{{"lower"}, INTEGER_TYPE}}, 
+				new NativeCodeBlock() {
+					@Override
+					public StackFrame execute(final StackFrame frame) {
+						frame.push(((String)frame.getLocal(0, 0)).substring(
+								(Integer)frame.getLocal(0, 1) - 1));
+						return frame;
+					}
+		});
+		createOperation(false, "substring", STRING_TYPE, STRING_TYPE,
 				new String[][][]{{{"lower"}, INTEGER_TYPE}, {{"upper"}, INTEGER_TYPE}}, 
 				new NativeCodeBlock() {
 					@Override
