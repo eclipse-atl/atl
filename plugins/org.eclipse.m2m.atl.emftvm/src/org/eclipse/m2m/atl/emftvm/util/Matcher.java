@@ -92,8 +92,8 @@ public final class Matcher {
 		if (matcher.matchOne(valuesMap)) {
 			final TraceLink trace = matcher.createTrace(valuesMap);
 			final Map<Rule, Object[]> ruleApplyArgs = new HashMap<Rule, Object[]>();
-			final StackFrame applyResult = matcher.applyFor(trace, rule, ruleApplyArgs);
-			final StackFrame postResult = matcher.postApplyFor(trace, rule, ruleApplyArgs);
+			final StackFrame applyResult = matcher.applyFor(trace, rule, ruleApplyArgs, new HashSet<Rule>());
+			final StackFrame postResult = matcher.postApplyFor(trace, rule, ruleApplyArgs, new HashSet<Rule>());
 			final StackFrame result = (postResult == null || postResult.stackEmpty()) ? applyResult : postResult;
 			return (result == null || result.stackEmpty()) ? null : result.pop();
 		} else {
@@ -231,8 +231,8 @@ public final class Matcher {
 				matcher.getMatches().getRules().clear();
 				matcher.getMatches().getDefaultSourceElements().clear();
 				final Map<Rule, Object[]> ruleApplyArgs = new HashMap<Rule, Object[]>();
-				matcher.applyFor(trace, rule, ruleApplyArgs);
-				matcher.postApplyFor(trace, rule, ruleApplyArgs);
+				matcher.applyFor(trace, rule, ruleApplyArgs, new HashSet<Rule>());
+				matcher.postApplyFor(trace, rule, ruleApplyArgs, new HashSet<Rule>());
 				env.deleteQueue();
 				break;
 			}
@@ -1235,7 +1235,7 @@ public final class Matcher {
 		final Map<Rule, Object[]> ruleApplyArgs = new HashMap<Rule, Object[]>();
 		for (TraceLink trace : tr.getLinks()) {
 			assert !trace.isOverridden();
-			applyFor(trace, rule, ruleApplyArgs);
+			applyFor(trace, rule, ruleApplyArgs, new HashSet<Rule>());
 		}
 	}
 
@@ -1244,17 +1244,22 @@ public final class Matcher {
 	 * @param trace
 	 * @param rule
 	 * @param ruleApplyArgs the argument arrays for the rule applier code blocks
+	 * @param appliedRules the set of already applied rules (rules are applied at most once)
 	 * @return the application result
 	 */
 	private StackFrame applyFor(final TraceLink trace, final Rule rule, 
-			final Map<Rule, Object[]> ruleApplyArgs) {
-		for (Rule superRule : rule.getESuperRules()) {
-			applyFor(trace, superRule, ruleApplyArgs);
-		}
-		final CodeBlock cb = rule.getApplier();
-		if (cb == null) {
+			final Map<Rule, Object[]> ruleApplyArgs, final Set<Rule> appliedRules) {
+		if (appliedRules.contains(rule)) {
 			return null;
 		} else {
+			appliedRules.add(rule);
+		}
+		StackFrame result = null;
+		for (Rule superRule : rule.getESuperRules()) {
+			result = applyFor(trace, superRule, ruleApplyArgs, appliedRules);
+		}
+		final CodeBlock cb = rule.getApplier();
+		if (cb != null) {
 			final Object[] args;
 			if (ruleApplyArgs.containsKey(rule)) {
 				args = ruleApplyArgs.get(rule);
@@ -1264,8 +1269,9 @@ public final class Matcher {
 				                  rule.getOutputElements().size()];
 			}
 			createArgs(rule, trace, args);
-			return cb.execute(frame.getSubFrame(cb, args));
+			result = cb.execute(frame.getSubFrame(cb, args));
 		}
+		return result;
 	}
 
 	/**
@@ -1281,7 +1287,7 @@ public final class Matcher {
 		}
 		final Map<Rule, Object[]> ruleApplyArgs = new HashMap<Rule, Object[]>();
 		for (TraceLink trace : tr.getLinks()) {
-			postApplyFor(trace, rule, ruleApplyArgs);
+			postApplyFor(trace, rule, ruleApplyArgs, new HashSet<Rule>());
 		}
 	}
 
@@ -1290,17 +1296,22 @@ public final class Matcher {
 	 * @param trace
 	 * @param rule
 	 * @param ruleApplyArgs the argument arrays for the rule applier code blocks
+	 * @param appliedRules the set of already applied rules (rules are applied at most once)
 	 * @return the application result
 	 */
 	private StackFrame postApplyFor(final TraceLink trace, final Rule rule, 
-			final Map<Rule, Object[]> ruleApplyArgs) {
-		for (Rule superRule : rule.getESuperRules()) {
-			postApplyFor(trace, superRule, ruleApplyArgs);
-		}
-		final CodeBlock cb = rule.getPostApply();
-		if (cb == null) {
+			final Map<Rule, Object[]> ruleApplyArgs, final Set<Rule> appliedRules) {
+		if (appliedRules.contains(rule)) {
 			return null;
 		} else {
+			appliedRules.add(rule);
+		}
+		StackFrame result = null;
+		for (Rule superRule : rule.getESuperRules()) {
+			result = postApplyFor(trace, superRule, ruleApplyArgs, appliedRules);
+		}
+		final CodeBlock cb = rule.getPostApply();
+		if (cb != null) {
 			final Object[] args;
 			if (ruleApplyArgs.containsKey(rule)) {
 				args = ruleApplyArgs.get(rule);
@@ -1310,8 +1321,9 @@ public final class Matcher {
 				                  rule.getOutputElements().size()];
 			}
 			createArgs(rule, trace, args);
-			return cb.execute(frame.getSubFrame(cb, args));
+			result = cb.execute(frame.getSubFrame(cb, args));
 		}
+		return result;
 	}
 
 	/**
