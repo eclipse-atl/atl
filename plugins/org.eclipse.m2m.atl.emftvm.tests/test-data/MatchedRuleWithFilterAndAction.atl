@@ -1,0 +1,21 @@
+-- @atlcompiler emftvm
+-- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
+-- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
+-- @path Problem=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore
+-- Tests the MatchedRuleWithFilterAndAction compiler rule
+-- $Id: MatchedRuleWithFilterAndAction.atl,v 1.1 2011/11/29 12:35:52 dwagelaar Exp $
+module MatchedRuleWithFilterAndAction;
+create OUT : EMFTVM, PBS : Problem from IN : ATL;
+
+lazy rule InvokeIncluding {
+ from
+  s : ATL!OclExpression (true)
+ to
+  invoke : EMFTVM!Invoke (
+   opname <- 'including',
+   argcount <- 1
+  )
+ do {
+  invoke;
+ }
+}
