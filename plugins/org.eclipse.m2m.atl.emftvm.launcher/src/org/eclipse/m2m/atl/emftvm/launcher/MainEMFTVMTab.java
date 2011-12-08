@@ -1093,6 +1093,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		metamodelLocations.clear();
 		inputModelLocations.clear();
 		inoutModelLocations.clear();
+		inoutModelOutLocations.clear();
 		outputModelLocations.clear();
 
 		metamodelOptions.clear();
