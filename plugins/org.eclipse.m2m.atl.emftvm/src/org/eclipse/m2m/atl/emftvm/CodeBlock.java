@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.emftvm;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.emftvm.util.Matcher;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 
 /**
@@ -51,7 +52,8 @@ public interface CodeBlock extends EObject {
 	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * The amount of local variables slots required.
+	 * Represents the amount of local variables slots required.
+	 * This value is derived automatically from the list of instructions.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Max Locals</em>' attribute.
@@ -65,6 +67,10 @@ public interface CodeBlock extends EObject {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getMaxLocals <em>Max Locals</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * Represents the amount of local variables slots required.
+	 * This value is derived automatically from the list of instructions.
+	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Max Locals</em>' attribute.
 	 * @see #getMaxLocals()
@@ -77,7 +83,8 @@ public interface CodeBlock extends EObject {
 	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * The amount of stack slots required.
+	 * Represents the amount of stack slots required.
+	 * This value is derived automatically from the list of instructions.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Max Stack</em>' attribute.
@@ -91,6 +98,10 @@ public interface CodeBlock extends EObject {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getMaxStack <em>Max Stack</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * Represents the amount of stack slots required.
+	 * This value is derived automatically from the list of instructions.
+	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Max Stack</em>' attribute.
 	 * @see #getMaxStack()
@@ -104,8 +115,7 @@ public interface CodeBlock extends EObject {
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.Instruction#getOwningBlock <em>Owning Block</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Code</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
+	 * Represents the list of instructions to execute.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Code</em>' containment reference list.
@@ -122,8 +132,7 @@ public interface CodeBlock extends EObject {
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.LineNumber#getOwningBlock <em>Owning Block</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Line Numbers</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
+	 * Represents the line number information elements for this code block's instructions.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Line Numbers</em>' containment reference list.
@@ -140,8 +149,10 @@ public interface CodeBlock extends EObject {
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.LocalVariable#getOwningBlock <em>Owning Block</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Local Variables</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
+	 * Represents the local variable information elements for this code block.
+	 * This information is used to calculate '{@link #getMaxLocals() <em>Max Locals</em>}' and local variable slot
+	 * assignment for the instructions of this code block.
+	 * The actual local variables are stored in {@link StackFrame}s.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Local Variables</em>' containment reference list.
@@ -157,8 +168,8 @@ public interface CodeBlock extends EObject {
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.Rule#getMatcher <em>Matcher</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Matcher For</em>' container reference isn't clear,
-	 * there really should be more of a description here...
+	 * This reference is set if this code block serves as a 
+	 * '{@link Rule#getMatcher() <em>Matcher</em>}' code block for a {@link Rule}.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Matcher For</em>' container reference.
@@ -173,6 +184,8 @@ public interface CodeBlock extends EObject {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getMatcherFor <em>Matcher For</em>}' container reference.
 	 * <!-- begin-user-doc -->
+	 * This reference is set if this code block serves as a 
+	 * '{@link Rule#getMatcher() <em>Matcher</em>}' code block for a {@link Rule}.
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Matcher For</em>' container reference.
 	 * @see #getMatcherFor()
@@ -185,8 +198,8 @@ public interface CodeBlock extends EObject {
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.Rule#getApplier <em>Applier</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Applier For</em>' container reference isn't clear,
-	 * there really should be more of a description here...
+	 * This reference is set if this code block serves as an 
+	 * '{@link Rule#getApplier() <em>Applier</em>}' code block for a {@link Rule}.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Applier For</em>' container reference.
@@ -201,6 +214,10 @@ public interface CodeBlock extends EObject {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getApplierFor <em>Applier For</em>}' container reference.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * This reference is set if this code block serves as an 
+	 * '{@link Rule#getApplier() <em>Applier</em>}' code block for a {@link Rule}.
+	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Applier For</em>' container reference.
 	 * @see #getApplierFor()
@@ -213,8 +230,8 @@ public interface CodeBlock extends EObject {
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.Rule#getPostApply <em>Post Apply</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Post Apply For</em>' container reference isn't clear,
-	 * there really should be more of a description here...
+	 * This reference is set if this code block serves as a 
+	 * '{@link Rule#getPostApply() <em>Post Apply</em>}' code block for a {@link Rule}.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Apply For</em>' container reference.
@@ -229,6 +246,10 @@ public interface CodeBlock extends EObject {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getPostApplyFor <em>Post Apply For</em>}' container reference.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * This reference is set if this code block serves as a 
+	 * '{@link Rule#getPostApply() <em>Post Apply</em>}' code block for a {@link Rule}.
+	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Post Apply For</em>' container reference.
 	 * @see #getPostApplyFor()
@@ -241,8 +262,8 @@ public interface CodeBlock extends EObject {
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.Operation#getBody <em>Body</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Body For</em>' container reference isn't clear,
-	 * there really should be more of a description here...
+	 * This reference is set if this code block serves as a 
+	 * '{@link Operation#getBody() <em>Body</em>}' code block for an {@link Operation}.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Body For</em>' container reference.
@@ -257,6 +278,10 @@ public interface CodeBlock extends EObject {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getBodyFor <em>Body For</em>}' container reference.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * This reference is set if this code block serves as a 
+	 * '{@link Operation#getBody() <em>Body</em>}' code block for an {@link Operation}.
+	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Body For</em>' container reference.
 	 * @see #getBodyFor()
@@ -269,8 +294,8 @@ public interface CodeBlock extends EObject {
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.Field#getInitialiser <em>Initialiser</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Initialiser For</em>' container reference isn't clear,
-	 * there really should be more of a description here...
+	 * This reference is set if this code block serves as an 
+	 * '{@link Field#getInitialiser() <em>Initialiser</em>}' code block for a {@link Field}.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Initialiser For</em>' container reference.
@@ -285,6 +310,10 @@ public interface CodeBlock extends EObject {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getInitialiserFor <em>Initialiser For</em>}' container reference.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * This reference is set if this code block serves as an 
+	 * '{@link Field#getInitialiser() <em>Initialiser</em>}' code block for a {@link Field}.
+	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Initialiser For</em>' container reference.
 	 * @see #getInitialiserFor()
@@ -298,8 +327,7 @@ public interface CodeBlock extends EObject {
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getNestedFor <em>Nested For</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Nested</em>' reference list isn't clear,
-	 * there really should be more of a description here...
+	 * Represents the list of nested code blocks (i.e. <em>closures</em>).
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Nested</em>' containment reference list.
@@ -315,8 +343,8 @@ public interface CodeBlock extends EObject {
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getNested <em>Nested</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Nested For</em>' reference isn't clear,
-	 * there really should be more of a description here...
+	 * This reference is set if this code block serves as a 
+	 * '{@link #getNested() <em>Nested</em>}' code block (i.e. <em>closure</em>) for a parent {@link CodeBlock}.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Nested For</em>' container reference.
@@ -331,6 +359,10 @@ public interface CodeBlock extends EObject {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getNestedFor <em>Nested For</em>}' container reference.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * This reference is set if this code block serves as a 
+	 * '{@link #getNested() <em>Nested</em>}' code block (i.e. <em>closure</em>) for a parent {@link CodeBlock}.
+	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Nested For</em>' container reference.
 	 * @see #getNestedFor()
@@ -342,8 +374,10 @@ public interface CodeBlock extends EObject {
 	 * Returns the value of the '<em><b>Parent Frame</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Parent Frame</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * Represents a placeholder for the {@link StackFrame} of the invoking native Java method,
+	 * and allows re-entry into the EMFTVM (with access to lexically scoped local variables, etc.).
+	 * </p><p>
+	 * <b>TODO</b> Storing the stack frame with the code block prohibits concurrent execution of code blocks!
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parent Frame</em>' attribute.
@@ -357,6 +391,12 @@ public interface CodeBlock extends EObject {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getParentFrame <em>Parent Frame</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * Represents a placeholder for the {@link StackFrame} of the invoking native Java method,
+	 * and allows re-entry into the EMFTVM (with access to lexically scoped local variables, etc.).
+	 * </p><p>
+	 * <b>TODO</b> Storing the stack frame with the code block prohibits concurrent execution of code blocks!
+	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Parent Frame</em>' attribute.
 	 * @see #getParentFrame()
@@ -369,8 +409,9 @@ public interface CodeBlock extends EObject {
 	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.InputRuleElement#getBinding <em>Binding</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Binding For</em>' container reference isn't clear,
-	 * there really should be more of a description here...
+	 * This reference is set if this code block serves as a 
+	 * '{@link InputRuleElement#getBinding() <em>Binding</em>}' code block for a rule's {@link InputRuleElement}.
+	 * Bindings allow for the EMFTVM {@link Matcher} to implement a <em>search plan</em> strategy.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Binding For</em>' container reference.
@@ -385,6 +426,11 @@ public interface CodeBlock extends EObject {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getBindingFor <em>Binding For</em>}' container reference.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * This reference is set if this code block serves as a 
+	 * '{@link InputRuleElement#getBinding() <em>Binding</em>}' code block for a rule's {@link InputRuleElement}.
+	 * Bindings allow for the EMFTVM {@link Matcher} to implement a <em>search plan</em> strategy.
+	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Binding For</em>' container reference.
 	 * @see #getBindingFor()

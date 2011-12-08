@@ -36,8 +36,7 @@ public interface BranchInstruction extends Instruction {
 	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Offset</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * Represents the instruction offset to jump to.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Offset</em>' attribute.
@@ -51,6 +50,7 @@ public interface BranchInstruction extends Instruction {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#getOffset <em>Offset</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * Represents the instruction offset to jump to.
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Offset</em>' attribute.
 	 * @see #getOffset()
@@ -62,7 +62,7 @@ public interface BranchInstruction extends Instruction {
 	 * Returns the value of the '<em><b>Target</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * The '<em>Target</em>' instruction to jump <em>over</em>, i.e. the
+	 * Represents the '<em>Target</em>' instruction to jump <em>over</em>, i.e. the
 	 * '<em>Offset</em>' corresponds to the instruction following '<em>Target</em>'.
 	 * </p>
 	 * <!-- end-user-doc -->
@@ -77,6 +77,10 @@ public interface BranchInstruction extends Instruction {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#getTarget <em>Target</em>}' reference.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * Represents the '<em>Target</em>' instruction to jump <em>over</em>, i.e. the
+	 * '<em>Offset</em>' corresponds to the instruction following '<em>Target</em>'.
+	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Target</em>' reference.
 	 * @see #getTarget()

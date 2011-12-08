@@ -35,8 +35,7 @@ public interface CodeBlockInstruction extends Instruction {
 	 * Returns the value of the '<em><b>Code Block</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Code Block</em>' reference isn't clear,
-	 * there really should be more of a description here...
+	 * Represents the '{@link CodeBlock#getNested() <em>Nested</em>}' {@link CodeBlock} to which this instruction refers.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Code Block</em>' reference.
@@ -50,6 +49,9 @@ public interface CodeBlockInstruction extends Instruction {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCodeBlock <em>Code Block</em>}' reference.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * Represents the '{@link CodeBlock#getNested() <em>Nested</em>}' {@link CodeBlock} to which this instruction refers.
+	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Code Block</em>' reference.
 	 * @see #getCodeBlock()
@@ -62,8 +64,8 @@ public interface CodeBlockInstruction extends Instruction {
 	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Cb Index</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * Represents the index of the '{@link CodeBlock#getNested() <em>Nested</em>}' {@link CodeBlock}
+	 * in the parent code block's list of nested code blocks.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cb Index</em>' attribute.
@@ -77,6 +79,10 @@ public interface CodeBlockInstruction extends Instruction {
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCbIndex <em>Cb Index</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * <p>
+	 * Represents the index of the '{@link CodeBlock#getNested() <em>Nested</em>}' {@link CodeBlock}
+	 * in the parent code block's list of nested code blocks.
+	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Cb Index</em>' attribute.
 	 * @see #getCbIndex()
