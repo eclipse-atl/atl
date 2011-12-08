@@ -1,0 +1,5 @@
+-- @atlcompiler emftvm
+library NativeTest;
+
+helper def : random() : Real =
+	"#native"!"java::util::Random".newInstance().nextDouble();

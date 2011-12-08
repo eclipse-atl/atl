@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.eclipse.m2m.atl.emftvm.tests/anttest" default="all">
+
+	<target name="all" depends="saveModels, TestQuery, TestStacktrace"/>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir=".">
+	    		<exclude name="**/build.xml"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="loadModels">
+		<emftvm.loadModel name="ATLCopy" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLCopy.atl"/>
+		<emftvm.loadModel name="EMFTVMCopy" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/EMFTVMCopy.atl"/>
+		<emftvm.loadMetamodel name="ATL" uri="http://www.eclipse.org/gmt/2005/ATL"/>
+		<emftvm.loadModel name="InlineCodeblocks" wspath="org.eclipse.m2m.atl.emftvm.tests/test-data/InlineCodeblocks.emftvm"/>
+	</target>
+
+	<target name="run" depends="loadModels">
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="ATLCopy">
+			<metamodel name="ATL"/>
+			<inputmodel name="ATLCopy" as="IN"/>
+			<outputmodel name="ATLCopy-OUT" as="OUT" wspath="org.eclipse.m2m.atl.emftvm.tests/anttest/ATLCopy.xmi"/>
+			<outputmodel name="ATLCopy-match" as="match" wspath="org.eclipse.m2m.atl.emftvm.tests/anttest/ATLCopy-match.trace"/>
+			<outputmodel name="ATLCopy-trace" as="trace" wspath="org.eclipse.m2m.atl.emftvm.tests/anttest/ATLCopy.trace"/>
+		</emftvm.run>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="ATLCopy">
+			<metamodel name="ATL"/>
+			<inputmodel name="EMFTVMCopy" as="IN"/>
+			<outputmodel name="EMFTVMCopy-OUT" as="OUT" wspath="org.eclipse.m2m.atl.emftvm.tests/anttest/EMFTVMCopy.xmi"/>
+			<outputmodel name="EMFTVMCopy-match" as="match" wspath="org.eclipse.m2m.atl.emftvm.tests/anttest/EMFTVMCopy-match.trace"/>
+			<outputmodel name="EMFTVMCopy-trace" as="trace" wspath="org.eclipse.m2m.atl.emftvm.tests/anttest/EMFTVMCopy.trace"/>
+		</emftvm.run>
+	</target>
+
+	<target name="saveModels" depends="run">
+		<emftvm.saveModel name="ATLCopy-OUT" derived="true"/>
+		<emftvm.saveModel name="ATLCopy-match" derived="true"/>
+		<emftvm.saveModel name="ATLCopy-trace" derived="true"/>
+		<emftvm.saveModel name="EMFTVMCopy-OUT" derived="true"/>
+		<emftvm.saveModel name="EMFTVMCopy-match" derived="true"/>
+		<emftvm.saveModel name="EMFTVMCopy-trace" derived="true"/>
+	</target>
+
+	<target name="TestQuery">
+		<emftvm.loadModel name="TestQuery" wspath="org.eclipse.m2m.atl.emftvm.tests/test-data/TestQuery.emftvm"/>
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/" module="TestQuery">
+			<inputmodel name="TestQuery"/>
+		</emftvm.run>
+	</target>
+	
+	<target name="TestStacktrace" depends="loadModels">
+		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="InlineCodeblocks">
+			<inputmodel name="InlineCodeblocks" as="IN"/>
+			<outputmodel name="InlineCodeblocks-OUT" as="OUT" wspath="org.eclipse.m2m.atl.emftvm.tests/anttest/InlineCodeblocks.emftvm"/>
+		</emftvm.run>
+	</target>
+
+</project>
