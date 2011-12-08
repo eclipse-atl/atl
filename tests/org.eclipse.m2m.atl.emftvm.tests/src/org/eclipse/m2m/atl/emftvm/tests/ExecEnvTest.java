@@ -16,15 +16,27 @@ import junit.textui.TestRunner;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
+import org.eclipse.m2m.atl.emftvm.Field;
 import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.Module;
+import org.eclipse.m2m.atl.emftvm.Operation;
+import org.eclipse.m2m.atl.emftvm.Rule;
+import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
+import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
+import org.eclipse.m2m.atl.emftvm.util.ModuleNotFoundException;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
+import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
+import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 import org.osgi.framework.Bundle;
 
 
@@ -136,6 +148,26 @@ public class ExecEnvTest extends TestCase {
 	}
 
 	/**
+	 * Creates an empty dummy module with a 'main' operation.
+	 * @return an empty dummy module with a 'main' operation.
+	 */
+	protected Module createDummyModule() {
+		final Operation main = EmftvmFactory.eINSTANCE.createOperation();
+		main.setName(EMFTVMUtil.MAIN_OP_NAME);
+		main.setStatic(true);
+		main.setContextModel("EMFTVM");
+		main.setContext("ExecEnv");
+		main.setTypeModel(EMFTVMUtil.NATIVE);
+		main.setType("java::lang::Object");
+		main.setBody(EmftvmFactory.eINSTANCE.createCodeBlock());
+
+		final Module dummyModule = EmftvmFactory.eINSTANCE.createModule();
+		dummyModule.setName("dummy");
+		dummyModule.getFeatures().add(main);
+		return dummyModule;
+	}
+
+	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMonitor() <em>Get Monitor</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -143,9 +175,40 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetMonitor() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+
+		final VMMonitor mon = new VMMonitor() {
+			private boolean terminated;
+			public void terminated() {
+				assertEquals(this, env.getMonitor());
+				terminated = true;
+			}
+			public void step(StackFrame frame) {
+			}
+			public void leave(StackFrame frame) {
+			}
+			public boolean isTerminated() {
+				return terminated;
+			}
+			public void error(StackFrame frame, String msg, Exception e) {
+			}
+			public void enter(StackFrame frame) {
+			}
+		};
+
+		// Create dummy module
+		final Module dummyModule = createDummyModule();
+		// Load module
+		final ModuleResolver mr = new ModuleResolver() {
+			public Module resolveModule(String name) throws ModuleNotFoundException {
+				return dummyModule;
+			}
+		};
+		env.loadModule(mr, "dummy");
+		// Run
+		assertNull(env.getMonitor());
+		env.run(null, mon);
+		assertNull(env.getMonitor());
 	}
 
 	/**
@@ -156,9 +219,19 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testLoadModule__ModuleResolver_String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		assertEquals(1, env.getModules().size());
+		assertTrue(env.getModules().containsKey("OCL"));
+
+		// Load module
+		final ModuleResolver mr = new DefaultModuleResolver(PLUGIN_URI + "/test-data/", rs);
+		final Module testLib = env.loadModule(mr, "TestLib");
+
+		assertEquals(2, env.getModules().size());
+		assertTrue(env.getModules().containsKey("TestLib"));
+		assertEquals(testLib, env.getModules().get("TestLib"));
 	}
 
 	/**
@@ -169,9 +242,20 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testRegisterFeature__Feature() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+
+		final Field f = EmftvmFactory.eINSTANCE.createField();
+		f.setName("field");
+		f.setContextModel("EMFTVM");
+		f.setContext("ExecEnv");
+		f.setTypeModel(EMFTVMUtil.NATIVE);
+		f.setType("Sequence");
+
+		assertNull(env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "field"));
+
+		env.registerFeature(f);
+
+		assertEquals(f, env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "field"));
 	}
 
 	/**
@@ -182,9 +266,17 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testRegisterRule__Rule() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+
+		//TODO test for rule redefinition checks
+		final Rule r = EmftvmFactory.eINSTANCE.createRule();
+		r.setName("rule");
+
+		assertNull(env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "rule"));
+
+		env.registerRule(r);
+
+		assertEquals(r, env.findRule("rule"));
 	}
 
 	/**
@@ -195,9 +287,13 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testFindOperation__Object_String_Object() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = getFixture();
+
+		// Find OclAny::oclAsType(ECORE!EClassifier)
+		final Operation op = env.findOperation(
+				Object.class, "oclAsType", new Object[]{EcorePackage.eINSTANCE.getEClass()});
+		assertNotNull(op);
+		assertEquals(Object.class, op.getEType().getInstanceClass());
 	}
 
 	/**
@@ -208,9 +304,13 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testFindStaticOperation__Object_String_Object() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = getFixture();
+
+		// Find static EMFTVM!ExecEnv::resolveTemp(OclAny, String) : OclAny
+		final Operation op = env.findStaticOperation(
+				EmftvmPackage.eINSTANCE.getExecEnv(), "resolveTemp", new Object[]{Object.class, String.class});
+		assertNotNull(op);
+		assertEquals(Object.class, op.getEType().getInstanceClass());
 	}
 
 	/**
@@ -221,9 +321,20 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testFindField__Object_String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+
+		final Field f = EmftvmFactory.eINSTANCE.createField();
+		f.setName("field");
+		f.setContextModel("EMFTVM");
+		f.setContext("ExecEnv");
+		f.setTypeModel(EMFTVMUtil.NATIVE);
+		f.setType("Sequence");
+
+		assertNull(env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "field"));
+
+		env.registerFeature(f);
+
+		assertEquals(f, env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "field"));
 	}
 
 	/**
@@ -234,9 +345,12 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testFindStaticField__Object_String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = getFixture();
+
+		// Find static EMFTVM!ExecEnv::traces : TRACE!TraceLinkSet
+		final Field f = env.findStaticField(EmftvmPackage.eINSTANCE.getExecEnv(), "traces");
+		assertNotNull(f);
+		assertEquals(TracePackage.eINSTANCE.getTraceLinkSet(), f.getEType());
 	}
 
 	/**
@@ -247,9 +361,16 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testFindRule__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+
+		final Rule r = EmftvmFactory.eINSTANCE.createRule();
+		r.setName("rule");
+
+		assertNull(env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "rule"));
+
+		env.registerRule(r);
+
+		assertEquals(r, env.findRule("rule"));
 	}
 
 	/**
@@ -260,9 +381,16 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testFindType__String_String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = getFixture();
+
+		// Find EMFTVM!ExecEnv
+		try {
+			final Object type = env.findType("EMFTVM", "ExecEnv");
+			assertEquals(EmftvmPackage.eINSTANCE.getExecEnv(), type);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
 	}
 
 	/**
@@ -273,7 +401,7 @@ public class ExecEnvTest extends TestCase {
 	 * @generated NOT
 	 */
 	public void testRun__TimingData_VMMonitor() {
-		final ExecEnv env = getFixture();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ResourceSet rs = new ResourceSetImpl();
 
 		// Load models
@@ -305,9 +433,17 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetRules() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+
+		final Rule r = EmftvmFactory.eINSTANCE.createRule();
+		r.setName("rule");
+
+		assertTrue(env.getRules().isEmpty());
+
+		env.registerRule(r);
+
+		assertFalse(env.getRules().isEmpty());
+		assertEquals(r, env.getRules().get(0));
 	}
 
 	/**
@@ -318,9 +454,28 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetModelOf__EObject() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.getInputModels().put("IN", inModel);
+
+		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
+		outModel.setResource(outRes);
+		env.getOutputModels().put("OUT", outModel);
+		
+		// Get an object, and retrieve its model
+		final EObject object = inRes.getContents().get(0);
+		final Model model = env.getModelOf(object);
+
+		assertNotNull(model);
+		assertEquals(inModel, model);
+		
+		assertNull(env.getModelOf(env));
 	}
 
 	/**
@@ -331,9 +486,24 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetModelID__Model() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.getInputModels().put("IN", inModel);
+
+		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
+		outModel.setResource(outRes);
+		env.getOutputModels().put("OUT", outModel);
+		
+		final String modelID = env.getModelID(inModel);
+
+		assertNotNull(modelID);
+		assertEquals("IN", modelID);
 	}
 
 	/**
@@ -344,9 +514,33 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testQueueForDelete__EObject_StackFrame() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.getInputModels().put("IN", inModel);
+
+		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
+		outModel.setResource(outRes);
+		env.getOutputModels().put("OUT", outModel);
+		
+		// Create output element
+		final EObject element = outModel.newElement(EmftvmPackage.eINSTANCE.getModule());
+		
+		assertFalse(outRes.getContents().isEmpty());
+		assertEquals(element, outRes.getContents().get(0));
+		
+		env.queueForDelete(element, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		
+		assertFalse(outRes.getContents().isEmpty());
+		
+		env.deleteQueue();
+		
+		assertTrue(outRes.getContents().isEmpty());
 	}
 
 	/**
@@ -357,9 +551,7 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testDeleteQueue() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		// already tested in testQueueForDelete__EObject_StackFrame
 	}
 
 	/**
@@ -370,9 +562,28 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetInputModelOf__EObject() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.getInputModels().put("IN", inModel);
+
+		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
+		outModel.setResource(outRes);
+		env.getOutputModels().put("OUT", outModel);
+		
+		// Get an object, and retrieve its model
+		final EObject object = inRes.getContents().get(0);
+		final Model model = env.getInputModelOf(object);
+
+		assertNotNull(model);
+		assertEquals(inModel, model);
+		
+		assertNull(env.getInputModelOf(env));
 	}
 
 	/**
@@ -383,9 +594,28 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetInoutModelOf__EObject() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.getInoutModels().put("IN", inModel);
+
+		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
+		outModel.setResource(outRes);
+		env.getOutputModels().put("OUT", outModel);
+		
+		// Get an object, and retrieve its model
+		final EObject object = inRes.getContents().get(0);
+		final Model model = env.getInoutModelOf(object);
+
+		assertNotNull(model);
+		assertEquals(inModel, model);
+		
+		assertNull(env.getInoutModelOf(env));
 	}
 
 	/**
@@ -396,9 +626,28 @@ public class ExecEnvTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetOutputModelOf__EObject() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.getInputModels().put("IN", inModel);
+
+		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
+		outModel.setResource(outRes);
+		env.getOutputModels().put("OUT", outModel);
+		
+		// Create output element, and retrieve its model
+		final EObject element = outModel.newElement(EmftvmPackage.eINSTANCE.getModule());
+		final Model model = env.getOutputModelOf(element);
+
+		assertNotNull(model);
+		assertEquals(outModel, model);
+		
+		assertNull(env.getOutputModelOf(env));
 	}
 
 } //ExecEnvTest
