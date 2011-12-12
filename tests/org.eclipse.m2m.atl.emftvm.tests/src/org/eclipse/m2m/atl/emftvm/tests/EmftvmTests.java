@@ -100,6 +100,7 @@ public class EmftvmTests extends TestSuite {
 		suite.addTestSuite(AddTest.class);
 		suite.addTestSuite(RemoveTest.class);
 		suite.addTestSuite(InsertTest.class);
+		suite.addTestSuite(GetSuperTest.class);
 		return suite;
 	}
 

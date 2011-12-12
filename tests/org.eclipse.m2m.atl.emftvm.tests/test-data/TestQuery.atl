@@ -1,7 +1,7 @@
 -- @atlcompiler emftvm
 -- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
 -- Tests ATL compilation strategy
-query TestQuery = EMFTVM!Operation.allInstances()->select(r|r.test()).debug('TestQuery');
+query TestQuery = EMFTVM!Operation.allInstances()->select(r|r.test() or r.testProp).debug('TestQuery');
 
 uses TestLib;
 uses NativeTest;

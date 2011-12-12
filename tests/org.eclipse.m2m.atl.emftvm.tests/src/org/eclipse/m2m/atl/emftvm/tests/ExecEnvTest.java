@@ -172,7 +172,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getMonitor()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetMonitor() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -216,7 +216,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#loadModule(org.eclipse.m2m.atl.emftvm.util.ModuleResolver, java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testLoadModule__ModuleResolver_String() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -239,7 +239,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#registerFeature(org.eclipse.m2m.atl.emftvm.Feature)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testRegisterFeature__Feature() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -263,7 +263,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#registerRule(org.eclipse.m2m.atl.emftvm.Rule)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testRegisterRule__Rule() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -284,7 +284,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#findOperation(java.lang.Object, java.lang.String, java.lang.Object[])
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFindOperation__Object_String_Object() {
 		final ExecEnv env = getFixture();
@@ -301,7 +301,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#findStaticOperation(java.lang.Object, java.lang.String, java.lang.Object[])
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFindStaticOperation__Object_String_Object() {
 		final ExecEnv env = getFixture();
@@ -318,7 +318,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#findField(java.lang.Object, java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFindField__Object_String() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -342,7 +342,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#findStaticField(java.lang.Object, java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFindStaticField__Object_String() {
 		final ExecEnv env = getFixture();
@@ -358,7 +358,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#findRule(java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFindRule__String() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -378,7 +378,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#findType(java.lang.String, java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFindType__String_String() {
 		final ExecEnv env = getFixture();
@@ -430,7 +430,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getRules()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetRules() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -451,7 +451,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getModelOf(org.eclipse.emf.ecore.EObject)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetModelOf__EObject() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -483,7 +483,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getModelID(org.eclipse.m2m.atl.emftvm.Model)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetModelID__Model() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -511,7 +511,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueForDelete(org.eclipse.emf.ecore.EObject, org.eclipse.m2m.atl.emftvm.util.StackFrame)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testQueueForDelete__EObject_StackFrame() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -548,7 +548,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#deleteQueue()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testDeleteQueue() {
 		// already tested in testQueueForDelete__EObject_StackFrame
@@ -559,7 +559,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getInputModelOf(org.eclipse.emf.ecore.EObject)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetInputModelOf__EObject() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -591,7 +591,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getInoutModelOf(org.eclipse.emf.ecore.EObject)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetInoutModelOf__EObject() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
@@ -623,7 +623,7 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getOutputModelOf(org.eclipse.emf.ecore.EObject)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetOutputModelOf__EObject() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();

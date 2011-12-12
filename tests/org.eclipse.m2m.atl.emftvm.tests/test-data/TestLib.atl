@@ -15,3 +15,9 @@ helper context OclAny def : encode() : String =
 helper context String def : encode() : String =
 	self.replaceAll('\\s+', ' ')
 		.replaceAll('"', '');
+
+helper context EMFTVM!NamedElement def : testProp : Boolean =
+	(not self.name.oclIsUndefined()).debug('TestLib::NamedElement.testProp');
+
+helper context EMFTVM!Operation def : testProp : Boolean =
+	super.testProp.debug('TestLib::Operation.testProp');

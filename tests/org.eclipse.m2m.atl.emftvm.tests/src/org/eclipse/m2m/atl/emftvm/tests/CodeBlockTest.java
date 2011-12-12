@@ -36,6 +36,7 @@ import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getStackLevel() <em>Get Stack Level</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getModule() <em>Get Module</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getOperation() <em>Get Operation</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getField() <em>Get Field</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getPredecessors(org.eclipse.m2m.atl.emftvm.Instruction) <em>Get Predecessors</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getAllPredecessors(org.eclipse.m2m.atl.emftvm.Instruction) <em>Get All Predecessors</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getNonLoopingPredecessors(org.eclipse.m2m.atl.emftvm.Instruction) <em>Get Non Looping Predecessors</em>}</li>
@@ -213,6 +214,19 @@ public class CodeBlockTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetOperation() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getField() <em>Get Field</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.CodeBlock#getField()
+	 * @generated
+	 */
+	public void testGetField() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
