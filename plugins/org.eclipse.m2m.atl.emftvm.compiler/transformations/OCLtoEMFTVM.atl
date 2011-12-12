@@ -3,7 +3,7 @@
 -- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: OCLtoEMFTVM.atl,v 1.2 2011/11/09 10:23:17 dwagelaar Exp $
+-- $Id: OCLtoEMFTVM.atl,v 1.3 2011/12/12 11:11:17 dwagelaar Exp $
 module OCLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -314,6 +314,7 @@ abstract rule OclExpression {
 
 rule NavigationOrAttributeCallExp extends OclExpression {
 	from s : ATL!NavigationOrAttributeCallExp in IN (
+		not s.source.oclIsKindOf(ATL!SuperExp) and
 		not s.isStatic)
 	to cb : EMFTVM!CodeBlock (
 		nested <- Sequence{s.source},
@@ -334,6 +335,18 @@ rule StaticNavigationOrAttributeCallExp extends OclExpression {
 	   	instructions <- Sequence{invokeCb, getStatic}),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [result]
 	   getStatic : EMFTVM!GetStatic (fieldname <- s.name)					-- [value]
+}
+
+rule SuperNavigationOrAttributeCallExp extends OclExpression {
+	from s : ATL!NavigationOrAttributeCallExp in IN (
+		s.source.oclIsKindOf(ATL!SuperExp))
+	to cb : EMFTVM!CodeBlock (
+		nested <- Sequence{s.source},
+		code <- Sequence{invokeCb, getSuper}),
+	   ln : EMFTVM!LineNumber (
+	   	instructions <- Sequence{invokeCb, getSuper}),
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [result]
+	   getSuper : EMFTVM!GetSuper (fieldname <- s.name)						-- [value]
 }
 
 rule OperationCallExp extends OclExpression {
