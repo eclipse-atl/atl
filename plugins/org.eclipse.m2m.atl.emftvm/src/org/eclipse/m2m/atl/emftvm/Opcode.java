@@ -468,7 +468,15 @@ public enum Opcode implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	INSERT(47, "INSERT", "INSERT");
+	INSERT(47, "INSERT", "INSERT"), /**
+	 * The '<em><b>GET SUPER</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #GET_SUPER_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	GET_SUPER(48, "GET_SUPER", "GET_SUPER");
 
 	/**
 	 * The '<em><b>PUSH</b></em>' literal value.
@@ -1191,6 +1199,21 @@ public enum Opcode implements Enumerator {
 	public static final int INSERT_VALUE = 47;
 
 	/**
+	 * The '<em><b>GET SUPER</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>GET SUPER</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #GET_SUPER
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int GET_SUPER_VALUE = 48;
+
+	/**
 	 * An array of all the '<em><b>Opcode</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1246,6 +1269,7 @@ public enum Opcode implements Enumerator {
 			ADD,
 			REMOVE,
 			INSERT,
+			GET_SUPER,
 		};
 
 	/**
@@ -1350,6 +1374,7 @@ public enum Opcode implements Enumerator {
 			case ADD_VALUE: return ADD;
 			case REMOVE_VALUE: return REMOVE;
 			case INSERT_VALUE: return INSERT;
+			case GET_SUPER_VALUE: return GET_SUPER;
 		}
 		return null;
 	}

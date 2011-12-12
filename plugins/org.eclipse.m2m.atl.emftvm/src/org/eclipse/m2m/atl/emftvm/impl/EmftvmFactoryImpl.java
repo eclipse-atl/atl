@@ -39,6 +39,7 @@ import org.eclipse.m2m.atl.emftvm.Findtype;
 import org.eclipse.m2m.atl.emftvm.FindtypeS;
 import org.eclipse.m2m.atl.emftvm.Get;
 import org.eclipse.m2m.atl.emftvm.GetStatic;
+import org.eclipse.m2m.atl.emftvm.GetSuper;
 import org.eclipse.m2m.atl.emftvm.GetTrans;
 import org.eclipse.m2m.atl.emftvm.Getcb;
 import org.eclipse.m2m.atl.emftvm.Getenvtype;
@@ -209,6 +210,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 			case EmftvmPackage.ADD: return createAdd();
 			case EmftvmPackage.REMOVE: return createRemove();
 			case EmftvmPackage.INSERT: return createInsert();
+			case EmftvmPackage.GET_SUPER: return createGetSuper();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -817,6 +819,16 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public GetSuper createGetSuper() {
+		GetSuperImpl getSuper = new GetSuperImpl();
+		return getSuper;
+	}
+
+	/**
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
@@ -1413,6 +1425,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 		case ADD: return createAdd();
 		case REMOVE: return createRemove();
 		case INSERT: return createInsert();
+		case GET_SUPER: return createGetSuper();
 		default:
 			throw new IllegalArgumentException("The opcode '" + opcode.getName() + "' does not have a valid classifier");
 		}

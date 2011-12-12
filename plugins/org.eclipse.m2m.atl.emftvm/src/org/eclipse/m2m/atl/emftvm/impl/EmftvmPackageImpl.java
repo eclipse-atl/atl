@@ -46,6 +46,7 @@ import org.eclipse.m2m.atl.emftvm.Findtype;
 import org.eclipse.m2m.atl.emftvm.FindtypeS;
 import org.eclipse.m2m.atl.emftvm.Get;
 import org.eclipse.m2m.atl.emftvm.GetStatic;
+import org.eclipse.m2m.atl.emftvm.GetSuper;
 import org.eclipse.m2m.atl.emftvm.GetTrans;
 import org.eclipse.m2m.atl.emftvm.Getcb;
 import org.eclipse.m2m.atl.emftvm.Getenvtype;
@@ -514,6 +515,13 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * @generated
 	 */
 	private EClass insertEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass getSuperEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -2215,6 +2223,15 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getGetSuper() {
+		return getSuperEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getReturn() {
 		return returnEClass;
 	}
@@ -3007,6 +3024,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		insertEClass = createEClass(INSERT);
 
+		getSuperEClass = createEClass(GET_SUPER);
+
 		// Create enums
 		modelDeclarationTagEEnum = createEEnum(MODEL_DECLARATION_TAG);
 		featureTagEEnum = createEEnum(FEATURE_TAG);
@@ -3133,6 +3152,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		addEClass.getESuperTypes().add(this.getFieldInstruction());
 		removeEClass.getESuperTypes().add(this.getFieldInstruction());
 		insertEClass.getESuperTypes().add(this.getFieldInstruction());
+		getSuperEClass.getESuperTypes().add(this.getFieldInstruction());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(execEnvEClass, ExecEnv.class, "ExecEnv", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3409,6 +3429,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		addEOperation(codeBlockEClass, this.getOperation(), "getOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		addEOperation(codeBlockEClass, this.getField(), "getField", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		op = addEOperation(codeBlockEClass, this.getInstruction(), "getPredecessors", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getInstruction(), "i", 0, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -3555,6 +3577,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		initEClass(insertEClass, Insert.class, "Insert", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEClass(getSuperEClass, GetSuper.class, "GetSuper", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
 		// Initialize enums and add enum literals
 		initEEnum(modelDeclarationTagEEnum, ModelDeclarationTag.class, "ModelDeclarationTag");
 		addEEnumLiteral(modelDeclarationTagEEnum, ModelDeclarationTag.INPUT);
@@ -3618,6 +3642,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		addEEnumLiteral(opcodeEEnum, Opcode.ADD);
 		addEEnumLiteral(opcodeEEnum, Opcode.REMOVE);
 		addEEnumLiteral(opcodeEEnum, Opcode.INSERT);
+		addEEnumLiteral(opcodeEEnum, Opcode.GET_SUPER);
 
 		initEEnum(ruleModeEEnum, RuleMode.class, "RuleMode");
 		addEEnumLiteral(ruleModeEEnum, RuleMode.MANUAL);

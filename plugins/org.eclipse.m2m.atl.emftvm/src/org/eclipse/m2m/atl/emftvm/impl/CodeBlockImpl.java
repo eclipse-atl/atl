@@ -51,6 +51,7 @@ import org.eclipse.m2m.atl.emftvm.Field;
 import org.eclipse.m2m.atl.emftvm.Findtype;
 import org.eclipse.m2m.atl.emftvm.Get;
 import org.eclipse.m2m.atl.emftvm.GetStatic;
+import org.eclipse.m2m.atl.emftvm.GetSuper;
 import org.eclipse.m2m.atl.emftvm.GetTrans;
 import org.eclipse.m2m.atl.emftvm.Getcb;
 import org.eclipse.m2m.atl.emftvm.Goto;
@@ -943,6 +944,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					add(frame.pop(), frame.pop(), ((Insert)instr).getFieldname(), 
 							frame.getEnv(), (Integer)frame.pop());
 					break;
+				case GET_SUPER:
+					frame.setPc(pc);
+					frame.push(getSuper(getField(), ((GetSuper)instr).getFieldname(), frame));
+					break;
 				default:
 					throw new VMException(frame, String.format("Unsupported opcode: %s", instr.getOpcode()));
 				} // switch
@@ -1016,6 +1021,27 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				return (Operation)container;
 			case EmftvmPackage.CODE_BLOCK:
 				return ((CodeBlock)container).getOperation();
+			default:
+				break;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Field getField() {
+		final EObject container = eContainer();
+		if (container != null) {
+			switch (container.eClass().getClassifierID()) {
+			case EmftvmPackage.FIELD:
+				return (Field)container;
+			case EmftvmPackage.CODE_BLOCK:
+				return ((CodeBlock)container).getField();
 			default:
 				break;
 			}
@@ -1895,6 +1921,126 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			newResult = getTrans(value, field, newResult);
 		}
 		return newResult;
+	}
+
+	/**
+	 * Implements the GET_SUPER instruction.
+	 * @param fieldCtx the current {@link Field} context
+	 * @param propname
+	 * @param env
+	 * @param frame
+	 * @return the property value
+	 * @throws NoSuchFieldException 
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
+	 */
+	@SuppressWarnings("unchecked")
+	private Object getSuper(final Field fieldCtx, final String propname, final StackFrame frame) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		if (fieldCtx == null) {
+			throw new IllegalArgumentException("GET_SUPER can only be used in fields");
+		}
+		final EClassifier context = fieldCtx.getEContext();
+		if (context == null) {
+			throw new IllegalArgumentException(String.format("Field misses context type: %s", fieldCtx));
+		}
+
+		final ExecEnv env = frame.getEnv();
+		Object o = frame.pop();
+
+		final List<?> superTypes;
+		if (context instanceof EClass) {
+			superTypes = ((EClass)context).getESuperTypes();
+		} else {
+			final Class<?> ic = context.getInstanceClass();
+			if (ic == null) {
+				throw new IllegalArgumentException(String.format("Primitive EMF type without instance class %s", context));
+			}
+			superTypes = Collections.singletonList(ic.getSuperclass());
+		}
+
+		final java.util.Set<Object> superFs = new LinkedHashSet<Object>();
+		if (o instanceof EObject) {
+			// o may have EStructuralFeatures
+			for (Object superType : superTypes) {
+				Object superF = env.findField(superType, propname);
+				if (superF != null) {
+					superFs.add(superF);
+				} else if (superType instanceof EClass) {
+					superF = ((EClass)superType).getEStructuralFeature(propname);
+					if (superF != null) {
+						superFs.add(superF);
+					} else if (((EClass)superType).getInstanceClass() != null) {
+						try {
+							superF = ((EClass)superType).getInstanceClass().getField(propname);
+							assert superF != null;
+							superFs.add(superF);
+						} catch (NoSuchFieldException e) {
+							// not found - skip
+						}
+					}
+				} else if (superType instanceof Class<?>) {
+					try {
+						superF = ((Class<?>)superType).getField(propname);
+						assert superF != null;
+						superFs.add(superF);
+					} catch (NoSuchFieldException e) {
+						// not found - skip
+					}
+				}
+			}
+		} else {
+			// o is a regular Java object - may be null
+			for (Object superType : superTypes) {
+				Object superF = env.findField(superType, propname);
+				if (superF != null) {
+					superFs.add(superF);
+				} else if (superType instanceof EClass && ((EClass)superType).getInstanceClass() != null) {
+					try {
+						superF = ((EClass)superType).getInstanceClass().getField(propname);
+						assert superF != null;
+						superFs.add(superF);
+					} catch (NoSuchFieldException e) {
+						// not found - skip
+					}
+				} else if (superType instanceof Class<?>) {
+					try {
+						superF = ((Class<?>)superType).getField(propname);
+						assert superF != null;
+						superFs.add(superF);
+					} catch (NoSuchFieldException e) {
+						// not found - skip
+					}
+				}
+			}
+		}
+
+		if (superFs.size() > 1) {
+			throw new DuplicateEntryException(String.format(
+					"More than one super-field found for context %s: %s",
+					context, superFs));
+		}
+		if (!superFs.isEmpty()) {
+			final Object superF = superFs.iterator().next();
+			if (superF instanceof Field) {
+				return ((Field)superF).getValue(o, frame);
+			} else if (superF instanceof EStructuralFeature) {
+				return EMFTVMUtil.get(env, (EObject)o, (EStructuralFeature)superF);
+			} else {
+				final Object result = ((java.lang.reflect.Field)superF).get(o);
+				if (result instanceof List<?>) {
+					return new LazyListOnList<Object>((List<Object>)result);
+				} else if (result instanceof java.util.Set<?>) {
+					return new LazySetOnSet<Object>((java.util.Set<Object>)result);
+				} else if (result instanceof Collection<?>) {
+					return new LazyBagOnCollection<Object>((Collection<Object>)result);
+				} else {
+					return result;
+				}
+			}
+		}
+
+		throw new NoSuchFieldException(String.format("Super-field of %s::%s not found", 
+				EMFTVMUtil.toPrettyString(context, env), propname));
 	}
 
 	/**

@@ -446,6 +446,15 @@ public interface EmftvmFactory extends EFactory {
 	Insert createInsert();
 
 	/**
+	 * Returns a new object of class '<em>Get Super</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Get Super</em>'.
+	 * @generated
+	 */
+	GetSuper createGetSuper();
+
+	/**
 	 * Returns a new object of class '<em>Return</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

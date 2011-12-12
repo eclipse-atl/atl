@@ -35,6 +35,7 @@ import org.eclipse.m2m.atl.emftvm.Findtype;
 import org.eclipse.m2m.atl.emftvm.FindtypeS;
 import org.eclipse.m2m.atl.emftvm.Get;
 import org.eclipse.m2m.atl.emftvm.GetStatic;
+import org.eclipse.m2m.atl.emftvm.GetSuper;
 import org.eclipse.m2m.atl.emftvm.GetTrans;
 import org.eclipse.m2m.atl.emftvm.Getcb;
 import org.eclipse.m2m.atl.emftvm.Getenvtype;
@@ -407,6 +408,10 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseInsert(Insert object) {
 				return createInsertAdapter();
+			}
+			@Override
+			public Adapter caseGetSuper(GetSuper object) {
+				return createGetSuperAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -1241,6 +1246,20 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createInsertAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.GetSuper <em>Get Super</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.m2m.atl.emftvm.GetSuper
+	 * @generated
+	 */
+	public Adapter createGetSuperAdapter() {
 		return null;
 	}
 

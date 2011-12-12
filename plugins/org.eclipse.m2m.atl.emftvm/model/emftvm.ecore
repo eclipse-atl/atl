@@ -88,6 +88,7 @@
     <eLiterals name="ADD" value="45"/>
     <eLiterals name="REMOVE" value="46"/>
     <eLiterals name="INSERT" value="47"/>
+    <eLiterals name="GET_SUPER" value="48" literal="GET_SUPER"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RuleMode">
     <eLiterals name="manual"/>
@@ -441,6 +442,7 @@
     <eOperations name="getStackLevel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
     <eOperations name="getModule" eType="#//Module"/>
     <eOperations name="getOperation" eType="#//Operation"/>
+    <eOperations name="getField" eType="#//Field"/>
     <eOperations name="getPredecessors" upperBound="-1" eType="#//Instruction">
       <eParameters name="i" eType="#//Instruction"/>
     </eOperations>
@@ -606,4 +608,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="Add" eSuperTypes="#//FieldInstruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Remove" eSuperTypes="#//FieldInstruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Insert" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GetSuper" eSuperTypes="#//FieldInstruction"/>
 </ecore:EPackage>

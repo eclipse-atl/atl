@@ -481,6 +481,16 @@ public interface CodeBlock extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the {@link Field} that (indirectly) contains this {@link CodeBlock}, if any.
+	 * @return the {@link Field} that (indirectly) contains this {@link CodeBlock}, or <code>null</code>
+	 * <!-- end-user-doc -->
+	 * @model kind="operation"
+	 * @generated
+	 */
+	Field getField();
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * Collects the direct predecessor instructions for <code>i</code>.
 	 * @param i the instruction to collect the predecessors for.
 	 * @return the direct predecessor instructions for <code>i</code>.

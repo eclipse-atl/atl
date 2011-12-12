@@ -260,6 +260,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	protected Map<Model, String> modelId = new HashMap<Model, String>();
 
 	/**
+	 * Model cache initialised?
+	 */
+	protected boolean modelCacheInit;
+
+	/**
 	 * The {@link VMMonitor} for the currently running VM instance.
 	 */
 	protected VMMonitor monitor;
@@ -1033,7 +1038,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		Object result = null;
 		try {
 			assert deletionQueue.isEmpty();
-			cacheModels();
+			clearModelCaches(); // clear model cache to make sure model maps are up to date
 			final Iterator<Operation> mains = mainChain.iterator();
 			if (!mains.hasNext()) {
 				throw new UnsupportedOperationException(String.format("Operation %s not found", EMFTVMUtil.MAIN_OP_NAME));
@@ -1066,16 +1071,24 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	/**
 	 * Caches run-time models in various lookup tables.
 	 */
-	private void cacheModels() {
+	protected synchronized void cacheModels() {
+		cacheModels(getInputModels(), inputModelOf);
+		cacheModels(getOutputModels(), outputModelOf);
+		cacheModels(getInoutModels(), inoutModelOf);
+		cacheModels(getMetaModels(), null);
+		modelCacheInit = true;
+	}
+
+	/**
+	 * Clears the model caches.
+	 */
+	protected synchronized void clearModelCaches() {
 		modelOf.clear();
 		inputModelOf.clear();
 		inoutModelOf.clear();
 		outputModelOf.clear();
 		modelId.clear();
-		cacheModels(getInputModels(), inputModelOf);
-		cacheModels(getOutputModels(), outputModelOf);
-		cacheModels(getInoutModels(), inoutModelOf);
-		cacheModels(getMetaModels(), null);
+		modelCacheInit = false;
 	}
 
 	/**
@@ -1112,6 +1125,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public Model getModelOf(EObject object) {
+		if (!modelCacheInit) {
+			cacheModels();
+		}
 		final Resource r = object.eResource();
 		return (r == null) ? null : modelOf.get(r);
 	}
@@ -1123,6 +1139,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public String getModelID(Model model) {
+		if (!modelCacheInit) {
+			cacheModels();
+		}
 		return (model == null) ? null : modelId.get(model);
 	}
 
@@ -1155,6 +1174,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public Model getInputModelOf(EObject object) {
+		if (!modelCacheInit) {
+			cacheModels();
+		}
 		final Resource r = object.eResource();
 		return (r == null) ? null : inputModelOf.get(r);
 	}
@@ -1166,6 +1188,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public Model getInoutModelOf(EObject object) {
+		if (!modelCacheInit) {
+			cacheModels();
+		}
 		final Resource r = object.eResource();
 		return (r == null) ? null : inoutModelOf.get(r);
 	}
@@ -1177,6 +1202,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public Model getOutputModelOf(EObject object) {
+		if (!modelCacheInit) {
+			cacheModels();
+		}
 		final Resource r = object.eResource();
 		return (r == null) ? null : outputModelOf.get(r);
 	}

@@ -36,6 +36,7 @@ import org.eclipse.m2m.atl.emftvm.Findtype;
 import org.eclipse.m2m.atl.emftvm.FindtypeS;
 import org.eclipse.m2m.atl.emftvm.Get;
 import org.eclipse.m2m.atl.emftvm.GetStatic;
+import org.eclipse.m2m.atl.emftvm.GetSuper;
 import org.eclipse.m2m.atl.emftvm.GetTrans;
 import org.eclipse.m2m.atl.emftvm.Getcb;
 import org.eclipse.m2m.atl.emftvm.Getenvtype;
@@ -698,6 +699,14 @@ public class EmftvmSwitch<T> extends Switch<T> {
 				T result = caseInsert(insert);
 				if (result == null) result = caseFieldInstruction(insert);
 				if (result == null) result = caseInstruction(insert);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case EmftvmPackage.GET_SUPER: {
+				GetSuper getSuper = (GetSuper)theEObject;
+				T result = caseGetSuper(getSuper);
+				if (result == null) result = caseFieldInstruction(getSuper);
+				if (result == null) result = caseInstruction(getSuper);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -1542,6 +1551,21 @@ public class EmftvmSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseInsert(Insert object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Get Super</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Get Super</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGetSuper(GetSuper object) {
 		return null;
 	}
 
