@@ -461,6 +461,18 @@ public final class OCLOperations {
 								object));
 					}
 		});
+		createOperation(false, "refInvokeOperation", OCL_ANY_TYPE, OCL_ANY_TYPE,
+				new String[][][]{{{"opname"}, STRING_TYPE}, {{"arguments"}, SEQUENCE_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public StackFrame execute(final StackFrame frame) {
+						final Object object = frame.getLocal(0, 0);
+						final String opname = (String)frame.getLocal(0, 1);
+						final List<?> args = (List<?>)frame.getLocal(0, 2);
+						frame.push(EMFTVMUtil.invokeNative(frame, object, opname, args.toArray()));
+						return frame;
+					}
+		});
 		createOperation(false, "resolve", OCL_ANY_TYPE, OCL_ANY_TYPE,
 				new String[][][]{}, 
 				new NativeCodeBlock() {
@@ -736,6 +748,82 @@ public final class OCLOperations {
 							frame.push(c2.isAssignableFrom(ic));
 						} else {
 							frame.push(c2 == Object.class); // everything is an Object
+						}
+						return frame;
+					}
+		});
+		createOperation(false, "newInstance", CLASS_TYPE, OCL_ANY_TYPE,
+				new String[][][]{},
+				new NativeCodeBlock() {
+					@Override
+					public StackFrame execute(final StackFrame frame) {
+						final EClass type = (EClass)frame.getLocal(0, 0);
+						frame.push(type.getEPackage().getEFactoryInstance().create(type));
+						return frame;
+					}
+		});
+		createOperation(false, "newInstanceIn", CLASS_TYPE, OCL_ANY_TYPE,
+				new String[][][]{{{"modelname"}, STRING_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public StackFrame execute(final StackFrame frame) {
+						final EClass type = (EClass)frame.getLocal(0, 0);
+						final String modelname = (String)frame.getLocal(0, 1);
+						final ExecEnv env = frame.getEnv();
+						Model model = env.getOutputModels().get(modelname);
+						if (model == null) {
+							model = env.getInoutModels().get(modelname);
+						}
+						if (model == null) {
+							throw new IllegalArgumentException(String.format("Inout/output model %s not found", modelname));
+						}
+						frame.push(model.newElement(type));
+						return frame;
+					}
+		});
+		createOperation(false, "getInstanceById", CLASS_TYPE, OCL_ANY_TYPE,
+				new String[][][]{{{"id"}, STRING_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public StackFrame execute(final StackFrame frame) {
+						final EClass type = (EClass)frame.getLocal(0, 0);
+						final String id = (String)frame.getLocal(0, 1);
+						final ExecEnv env = frame.getEnv();
+						final List<Model> models = new LazyListOnCollection<Model>(
+								env.getInputModels().values()).union(new LazyListOnCollection<Model>(
+										env.getInoutModels().values()));
+						for (Model model : models) {
+							final EObject instance = model.getResource().getEObject(id);
+							if (type.isInstance(instance)) {
+								frame.push(instance);
+								return frame;
+							}
+						}
+						frame.push(null);
+						return frame;
+					}
+		});
+		createOperation(false, "getInstanceById", CLASS_TYPE, OCL_ANY_TYPE,
+				new String[][][]{{{"modelname"}, STRING_TYPE}, {{"id"}, STRING_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public StackFrame execute(final StackFrame frame) {
+						final EClass type = (EClass)frame.getLocal(0, 0);
+						final String modelname = (String)frame.getLocal(0, 1);
+						final String id = (String)frame.getLocal(0, 2);
+						final ExecEnv env = frame.getEnv();
+						Model model = env.getInputModels().get(modelname);
+						if (model == null) {
+							model = env.getInoutModels().get(modelname);
+						}
+						if (model == null) {
+							throw new IllegalArgumentException(String.format("Input/inout model %s not found", modelname));
+						}
+						final EObject instance = model.getResource().getEObject(id);
+						if (type.isInstance(instance)) {
+							frame.push(instance);
+						} else {
+							frame.push(null);
 						}
 						return frame;
 					}
