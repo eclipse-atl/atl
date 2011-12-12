@@ -75,7 +75,9 @@ public final class Matcher {
 	public static void matchAll(final StackFrame frame, final TimingData timingData) {
 		matchAllSingle(frame, timingData);
 		matchAllRecursive(frame);
-		timingData.finishRecursive();
+		if (timingData != null) {
+			timingData.finishRecursive();
+		}
 	}
 
 	/**
@@ -149,7 +151,9 @@ public final class Matcher {
 				matcher.createTraces();
 			}
 		}
-		timingData.finishMatch();
+		if (timingData != null) {
+			timingData.finishMatch();
+		}
 		// Apply rules
 		for (Rule rule : matchedRules) {
 			if (!rule.isAbstract()) {
@@ -157,7 +161,9 @@ public final class Matcher {
 				matcher.apply();
 			}
 		}
-		timingData.finishApply();
+		if (timingData != null) {
+			timingData.finishApply();
+		}
 		// Run post-apply
 		for (Rule rule : matchedRules) {
 			if (!rule.isAbstract()) {
@@ -166,7 +172,9 @@ public final class Matcher {
 			}
 		}
 		env.deleteQueue();
-		timingData.finishPostApply();
+		if (timingData != null) {
+			timingData.finishPostApply();
+		}
 	}
 
 	/**
