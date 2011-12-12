@@ -1138,6 +1138,29 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.GetSuper} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected GetSuperItemProvider getSuperItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.GetSuper}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createGetSuperAdapter() {
+		if (getSuperItemProvider == null) {
+			getSuperItemProvider = new GetSuperItemProvider(this);
+		}
+
+		return getSuperItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Return} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1666,6 +1689,7 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 		if (addItemProvider != null) addItemProvider.dispose();
 		if (removeItemProvider != null) removeItemProvider.dispose();
 		if (insertItemProvider != null) insertItemProvider.dispose();
+		if (getSuperItemProvider != null) getSuperItemProvider.dispose();
 	}
 
 }

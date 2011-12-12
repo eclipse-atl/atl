@@ -640,6 +640,11 @@ public class CodeBlockItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
+				(EmftvmPackage.Literals.CODE_BLOCK__CODE,
+				 EmftvmFactory.eINSTANCE.createGetSuper()));
+
+		newChildDescriptors.add
+			(createChildParameter
 				(EmftvmPackage.Literals.CODE_BLOCK__LINE_NUMBERS,
 				 EmftvmFactory.eINSTANCE.createLineNumber()));
 
