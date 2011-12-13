@@ -1,7 +1,7 @@
 -- @atlcompiler emftvm
 -- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.common/bin/org/eclipse/m2m/atl/common/resources/Problem.ecore
--- $Id: ATLWFR.atl,v 1.6 2011/12/13 15:38:36 dwagelaar Exp $
+-- $Id: ATLWFR.atl,v 1.7 2011/12/13 15:46:52 dwagelaar Exp $
 module ATLWFR;
 create OUT : Problem from IN : ATL;
 
@@ -674,39 +674,6 @@ nodefault rule NoResolveTempInSourcePattern {
 				'rule \'' + s.getRootComposite()."rule".name
 				+ '\': use of \'thisModule.resolveTemp()\' function '
 				+ 'is prohibited in source patterns'
-		)
-}
-
--- Rule 'NoResolveTempInModuleAttribute'
--- This rule generates an 'error' Problem for each call of the
--- 'thisModule.resolveTemp()' operation within a model attribute.
-nodefault rule NoResolveTempInModuleAttribute {
-	from
-		s : ATL!OperationCallExp (
-			s.operationName = 'resolveTemp' and
-			(
-				if s.source.oclIsTypeOf(ATL!VariableExp)
-				then
-					if s.source.referredVariable.oclIsUndefined()
-					then
-						false
-					else
-						s.source.referredVariable.varName = 'thisModule'
-					endif
-				else
-					false
-				endif
-			) and
-			s.getRootComposite().oclIsTypeOf(ATL!Attribute)
-		)
-	to
-		t : Problem!Problem (
-			severity <- #error,
-			location <- s.location,
-			description <-
-				'attribute \'' + s.getRootComposite().name
-				+ '\': use of \'thisModule.resolveTemp()\' function '
-				+ 'is prohibited in attributes'
 		)
 }
 
