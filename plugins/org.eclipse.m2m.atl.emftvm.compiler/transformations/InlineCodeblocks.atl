@@ -1,7 +1,7 @@
 -- @atlcompiler emftvm
 -- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
 -- Inlines nested code blocks
--- $Id: InlineCodeblocks.atl,v 1.4 2011/09/22 14:20:21 dwagelaar Exp $
+-- $Id: InlineCodeblocks.atl,v 1.5 2011/12/13 15:48:19 dwagelaar Exp $
 module InlineCodeblocks;
 create OUT : EMFTVM from IN : EMFTVM;
 
@@ -94,15 +94,9 @@ helper context EMFTVM!Getcb def : endReTarget : EMFTVM!Instruction =
 	self;
 
 helper context EMFTVM!CodeBlockInstruction def : endReTarget : EMFTVM!Instruction =
-	self.endReTarget(); -- allow thisModule.resolveTemp()
-
-helper context EMFTVM!CodeBlockInstruction def : endReTarget() : EMFTVM!Instruction =
 	thisModule.resolveTemp(self, 'push');
 
 helper context EMFTVM!Ifte def : endReTarget : EMFTVM!Instruction =
-	self.endReTarget(); -- allow thisModule.resolveTemp()
-
-helper context EMFTVM!Ifte def : endReTarget() : EMFTVM!Instruction =
 	if self.elseCb.isInlineEmpty then
 		if self.thenCb.isInlineEmpty then
 			thisModule.resolveTemp(self, 'goto')
