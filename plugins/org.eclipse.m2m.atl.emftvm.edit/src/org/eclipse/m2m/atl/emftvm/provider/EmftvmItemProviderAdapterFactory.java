@@ -1161,6 +1161,29 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Getenv} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected GetenvItemProvider getenvItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.eclipse.m2m.atl.emftvm.Getenv}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createGetenvAdapter() {
+		if (getenvItemProvider == null) {
+			getenvItemProvider = new GetenvItemProvider(this);
+		}
+
+		return getenvItemProvider;
+	}
+
+	/**
 	 * This keeps track of the one adapter used for all {@link org.eclipse.m2m.atl.emftvm.Return} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1690,6 +1713,7 @@ public class EmftvmItemProviderAdapterFactory extends EmftvmAdapterFactory imple
 		if (removeItemProvider != null) removeItemProvider.dispose();
 		if (insertItemProvider != null) insertItemProvider.dispose();
 		if (getSuperItemProvider != null) getSuperItemProvider.dispose();
+		if (getenvItemProvider != null) getenvItemProvider.dispose();
 	}
 
 }
