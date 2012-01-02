@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -168,7 +168,7 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 						int end = lv.getEndInstructionIndex();
 						assert startIndex < 0 || start > -1;
 						assert endIndex < 0 || end > -1;
-						if (startIndex < 0 || endIndex < 0 || start <= endIndex || startIndex <= end) {
+						if (startIndex < 0 || endIndex < 0 || (start <= endIndex && end >= startIndex)) {
 							int slot = lv.getSlot();
 							if (slot < 0) {
 								throw new RuntimeException(String.format(
