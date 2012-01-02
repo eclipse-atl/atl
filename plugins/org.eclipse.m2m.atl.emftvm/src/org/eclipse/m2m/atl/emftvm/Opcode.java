@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -476,7 +476,15 @@ public enum Opcode implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	GET_SUPER(48, "GET_SUPER", "GET_SUPER");
+	GET_SUPER(48, "GET_SUPER", "GET_SUPER"), /**
+	 * The '<em><b>GETENV</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #GETENV_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	GETENV(49, "GETENV", "GETENV");
 
 	/**
 	 * The '<em><b>PUSH</b></em>' literal value.
@@ -1214,6 +1222,21 @@ public enum Opcode implements Enumerator {
 	public static final int GET_SUPER_VALUE = 48;
 
 	/**
+	 * The '<em><b>GETENV</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>GETENV</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #GETENV
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int GETENV_VALUE = 49;
+
+	/**
 	 * An array of all the '<em><b>Opcode</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1270,6 +1293,7 @@ public enum Opcode implements Enumerator {
 			REMOVE,
 			INSERT,
 			GET_SUPER,
+			GETENV,
 		};
 
 	/**
@@ -1375,6 +1399,7 @@ public enum Opcode implements Enumerator {
 			case REMOVE_VALUE: return REMOVE;
 			case INSERT_VALUE: return INSERT;
 			case GET_SUPER_VALUE: return GET_SUPER;
+			case GETENV_VALUE: return GETENV;
 		}
 		return null;
 	}

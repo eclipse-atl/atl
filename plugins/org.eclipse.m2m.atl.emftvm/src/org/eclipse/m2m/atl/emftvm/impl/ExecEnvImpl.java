@@ -435,6 +435,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	public synchronized Module loadModule(final ModuleResolver resolver, final String name) {
 		try {
 			final Map<String, Module> modules = getModules();
+			//TODO detect cyclic imports w.r.t. redefinition
 			if (modules.containsKey(name)) {
 				return modules.get(name);
 			}

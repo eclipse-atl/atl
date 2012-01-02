@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -6415,6 +6415,79 @@ public interface EmftvmPackage extends EPackage {
 	int GET_SUPER_FEATURE_COUNT = FIELD_INSTRUCTION_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.GetenvImpl <em>Getenv</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.impl.GetenvImpl
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getGetenv()
+	 * @generated
+	 */
+	int GETENV = 74;
+
+	/**
+	 * The feature id for the '<em><b>Owning Block</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GETENV__OWNING_BLOCK = INSTRUCTION__OWNING_BLOCK;
+
+	/**
+	 * The feature id for the '<em><b>Opcode</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GETENV__OPCODE = INSTRUCTION__OPCODE;
+
+	/**
+	 * The feature id for the '<em><b>Stack Production</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GETENV__STACK_PRODUCTION = INSTRUCTION__STACK_PRODUCTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Consumption</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GETENV__STACK_CONSUMPTION = INSTRUCTION__STACK_CONSUMPTION;
+
+	/**
+	 * The feature id for the '<em><b>Stack Level</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GETENV__STACK_LEVEL = INSTRUCTION__STACK_LEVEL;
+
+	/**
+	 * The feature id for the '<em><b>Line Number</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GETENV__LINE_NUMBER = INSTRUCTION__LINE_NUMBER;
+
+	/**
+	 * The number of structural features of the '<em>Getenv</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GETENV_FEATURE_COUNT = INSTRUCTION_FEATURE_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.ModelDeclarationTag <em>Model Declaration Tag</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6422,7 +6495,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getModelDeclarationTag()
 	 * @generated
 	 */
-	int MODEL_DECLARATION_TAG = 74;
+	int MODEL_DECLARATION_TAG = 75;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.FeatureTag <em>Feature Tag</em>}' enum.
@@ -6432,7 +6505,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getFeatureTag()
 	 * @generated
 	 */
-	int FEATURE_TAG = 75;
+	int FEATURE_TAG = 76;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.Opcode <em>Opcode</em>}' enum.
@@ -6442,7 +6515,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getOpcode()
 	 * @generated
 	 */
-	int OPCODE = 76;
+	int OPCODE = 77;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.RuleMode <em>Rule Mode</em>}' enum.
@@ -6452,7 +6525,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getRuleMode()
 	 * @generated
 	 */
-	int RULE_MODE = 77;
+	int RULE_MODE = 78;
 
 
 	/**
@@ -6463,7 +6536,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getConstantTag()
 	 * @generated
 	 */
-	int CONSTANT_TAG = 78;
+	int CONSTANT_TAG = 79;
 
 
 	/**
@@ -6474,7 +6547,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getStackFrame()
 	 * @generated
 	 */
-	int STACK_FRAME = 81;
+	int STACK_FRAME = 82;
 
 
 	/**
@@ -6485,7 +6558,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getMethod()
 	 * @generated
 	 */
-	int METHOD = 82;
+	int METHOD = 83;
 
 	/**
 	 * The meta object id for the '<em>Timing Data</em>' data type.
@@ -6495,7 +6568,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getTimingData()
 	 * @generated
 	 */
-	int TIMING_DATA = 83;
+	int TIMING_DATA = 84;
 
 	/**
 	 * The meta object id for the '<em>VM Monitor</em>' data type.
@@ -6505,7 +6578,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getVMMonitor()
 	 * @generated
 	 */
-	int VM_MONITOR = 84;
+	int VM_MONITOR = 85;
 
 	/**
 	 * The meta object id for the '<em>Lazy Collection</em>' data type.
@@ -6515,7 +6588,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getLazyCollection()
 	 * @generated
 	 */
-	int LAZY_COLLECTION = 85;
+	int LAZY_COLLECTION = 86;
 
 	/**
 	 * The meta object id for the '<em>Lazy Bag</em>' data type.
@@ -6525,7 +6598,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getLazyBag()
 	 * @generated
 	 */
-	int LAZY_BAG = 86;
+	int LAZY_BAG = 87;
 
 	/**
 	 * The meta object id for the '<em>Lazy List</em>' data type.
@@ -6535,7 +6608,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getLazyList()
 	 * @generated
 	 */
-	int LAZY_LIST = 87;
+	int LAZY_LIST = 88;
 
 	/**
 	 * The meta object id for the '<em>Lazy Ordered Set</em>' data type.
@@ -6545,7 +6618,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getLazyOrderedSet()
 	 * @generated
 	 */
-	int LAZY_ORDERED_SET = 88;
+	int LAZY_ORDERED_SET = 89;
 
 	/**
 	 * The meta object id for the '<em>Lazy Set</em>' data type.
@@ -6555,7 +6628,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getLazySet()
 	 * @generated
 	 */
-	int LAZY_SET = 89;
+	int LAZY_SET = 90;
 
 	/**
 	 * The meta object id for the '<em>EJava Object Array</em>' data type.
@@ -6564,7 +6637,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getEJavaObjectArray()
 	 * @generated
 	 */
-	int EJAVA_OBJECT_ARRAY = 90;
+	int EJAVA_OBJECT_ARRAY = 91;
 
 	/**
 	 * The meta object id for the '<em>Class Not Found Exception</em>' data type.
@@ -6574,7 +6647,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getClassNotFoundException()
 	 * @generated
 	 */
-	int CLASS_NOT_FOUND_EXCEPTION = 91;
+	int CLASS_NOT_FOUND_EXCEPTION = 92;
 
 	/**
 	 * The meta object id for the '<em>Module Resolver</em>' data type.
@@ -6584,7 +6657,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getModuleResolver()
 	 * @generated
 	 */
-	int MODULE_RESOLVER = 79;
+	int MODULE_RESOLVER = 80;
 
 
 	/**
@@ -6595,7 +6668,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getEnumLiteral()
 	 * @generated
 	 */
-	int ENUM_LITERAL = 80;
+	int ENUM_LITERAL = 81;
 
 
 	/**
@@ -8247,6 +8320,16 @@ public interface EmftvmPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getGetSuper();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Getenv <em>Getenv</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Getenv</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.Getenv
+	 * @generated
+	 */
+	EClass getGetenv();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Return <em>Return</em>}'.
@@ -10210,6 +10293,16 @@ public interface EmftvmPackage extends EPackage {
 		 * @generated
 		 */
 		EClass GET_SUPER = eINSTANCE.getGetSuper();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.GetenvImpl <em>Getenv</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.m2m.atl.emftvm.impl.GetenvImpl
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getGetenv()
+		 * @generated
+		 */
+		EClass GETENV = eINSTANCE.getGetenv();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.InvokeAllCbsImpl <em>Invoke All Cbs</em>}' class.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -453,6 +453,15 @@ public interface EmftvmFactory extends EFactory {
 	 * @generated
 	 */
 	GetSuper createGetSuper();
+
+	/**
+	 * Returns a new object of class '<em>Getenv</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Getenv</em>'.
+	 * @generated
+	 */
+	Getenv createGetenv();
 
 	/**
 	 * Returns a new object of class '<em>Return</em>'.

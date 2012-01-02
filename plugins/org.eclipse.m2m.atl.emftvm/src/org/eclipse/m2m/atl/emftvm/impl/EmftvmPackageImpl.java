@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,6 +49,7 @@ import org.eclipse.m2m.atl.emftvm.GetStatic;
 import org.eclipse.m2m.atl.emftvm.GetSuper;
 import org.eclipse.m2m.atl.emftvm.GetTrans;
 import org.eclipse.m2m.atl.emftvm.Getcb;
+import org.eclipse.m2m.atl.emftvm.Getenv;
 import org.eclipse.m2m.atl.emftvm.Getenvtype;
 import org.eclipse.m2m.atl.emftvm.Goto;
 import org.eclipse.m2m.atl.emftvm.If;
@@ -522,6 +523,13 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * @generated
 	 */
 	private EClass getSuperEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass getenvEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -2232,6 +2240,15 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getGetenv() {
+		return getenvEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getReturn() {
 		return returnEClass;
 	}
@@ -3026,6 +3043,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		getSuperEClass = createEClass(GET_SUPER);
 
+		getenvEClass = createEClass(GETENV);
+
 		// Create enums
 		modelDeclarationTagEEnum = createEEnum(MODEL_DECLARATION_TAG);
 		featureTagEEnum = createEEnum(FEATURE_TAG);
@@ -3153,6 +3172,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		removeEClass.getESuperTypes().add(this.getFieldInstruction());
 		insertEClass.getESuperTypes().add(this.getFieldInstruction());
 		getSuperEClass.getESuperTypes().add(this.getFieldInstruction());
+		getenvEClass.getESuperTypes().add(this.getInstruction());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(execEnvEClass, ExecEnv.class, "ExecEnv", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3579,6 +3599,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		initEClass(getSuperEClass, GetSuper.class, "GetSuper", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+		initEClass(getenvEClass, Getenv.class, "Getenv", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
 		// Initialize enums and add enum literals
 		initEEnum(modelDeclarationTagEEnum, ModelDeclarationTag.class, "ModelDeclarationTag");
 		addEEnumLiteral(modelDeclarationTagEEnum, ModelDeclarationTag.INPUT);
@@ -3643,6 +3665,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		addEEnumLiteral(opcodeEEnum, Opcode.REMOVE);
 		addEEnumLiteral(opcodeEEnum, Opcode.INSERT);
 		addEEnumLiteral(opcodeEEnum, Opcode.GET_SUPER);
+		addEEnumLiteral(opcodeEEnum, Opcode.GETENV);
 
 		initEEnum(ruleModeEEnum, RuleMode.class, "RuleMode");
 		addEEnumLiteral(ruleModeEEnum, RuleMode.MANUAL);

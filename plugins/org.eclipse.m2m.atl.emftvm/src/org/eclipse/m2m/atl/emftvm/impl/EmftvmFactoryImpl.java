@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,7 @@ import org.eclipse.m2m.atl.emftvm.GetStatic;
 import org.eclipse.m2m.atl.emftvm.GetSuper;
 import org.eclipse.m2m.atl.emftvm.GetTrans;
 import org.eclipse.m2m.atl.emftvm.Getcb;
+import org.eclipse.m2m.atl.emftvm.Getenv;
 import org.eclipse.m2m.atl.emftvm.Getenvtype;
 import org.eclipse.m2m.atl.emftvm.Goto;
 import org.eclipse.m2m.atl.emftvm.If;
@@ -211,6 +212,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 			case EmftvmPackage.REMOVE: return createRemove();
 			case EmftvmPackage.INSERT: return createInsert();
 			case EmftvmPackage.GET_SUPER: return createGetSuper();
+			case EmftvmPackage.GETENV: return createGetenv();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -829,6 +831,16 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Getenv createGetenv() {
+		GetenvImpl getenv = new GetenvImpl();
+		return getenv;
+	}
+
+	/**
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
@@ -1426,6 +1438,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 		case REMOVE: return createRemove();
 		case INSERT: return createInsert();
 		case GET_SUPER: return createGetSuper();
+		case GETENV: return createGetenv();
 		default:
 			throw new IllegalArgumentException("The opcode '" + opcode.getName() + "' does not have a valid classifier");
 		}

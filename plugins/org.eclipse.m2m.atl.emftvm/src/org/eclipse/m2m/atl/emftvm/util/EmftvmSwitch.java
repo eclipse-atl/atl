@@ -39,6 +39,7 @@ import org.eclipse.m2m.atl.emftvm.GetStatic;
 import org.eclipse.m2m.atl.emftvm.GetSuper;
 import org.eclipse.m2m.atl.emftvm.GetTrans;
 import org.eclipse.m2m.atl.emftvm.Getcb;
+import org.eclipse.m2m.atl.emftvm.Getenv;
 import org.eclipse.m2m.atl.emftvm.Getenvtype;
 import org.eclipse.m2m.atl.emftvm.Goto;
 import org.eclipse.m2m.atl.emftvm.If;
@@ -707,6 +708,13 @@ public class EmftvmSwitch<T> extends Switch<T> {
 				T result = caseGetSuper(getSuper);
 				if (result == null) result = caseFieldInstruction(getSuper);
 				if (result == null) result = caseInstruction(getSuper);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case EmftvmPackage.GETENV: {
+				Getenv getenv = (Getenv)theEObject;
+				T result = caseGetenv(getenv);
+				if (result == null) result = caseInstruction(getenv);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -1566,6 +1574,21 @@ public class EmftvmSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseGetSuper(GetSuper object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Getenv</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Getenv</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGetenv(Getenv object) {
 		return null;
 	}
 

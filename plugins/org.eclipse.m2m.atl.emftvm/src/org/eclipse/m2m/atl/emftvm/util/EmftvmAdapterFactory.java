@@ -38,6 +38,7 @@ import org.eclipse.m2m.atl.emftvm.GetStatic;
 import org.eclipse.m2m.atl.emftvm.GetSuper;
 import org.eclipse.m2m.atl.emftvm.GetTrans;
 import org.eclipse.m2m.atl.emftvm.Getcb;
+import org.eclipse.m2m.atl.emftvm.Getenv;
 import org.eclipse.m2m.atl.emftvm.Getenvtype;
 import org.eclipse.m2m.atl.emftvm.Goto;
 import org.eclipse.m2m.atl.emftvm.If;
@@ -412,6 +413,10 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseGetSuper(GetSuper object) {
 				return createGetSuperAdapter();
+			}
+			@Override
+			public Adapter caseGetenv(Getenv object) {
+				return createGetenvAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -1260,6 +1265,20 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createGetSuperAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.m2m.atl.emftvm.Getenv <em>Getenv</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.m2m.atl.emftvm.Getenv
+	 * @generated
+	 */
+	public Adapter createGetenvAdapter() {
 		return null;
 	}
 

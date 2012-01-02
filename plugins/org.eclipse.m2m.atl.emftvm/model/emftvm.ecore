@@ -89,6 +89,7 @@
     <eLiterals name="REMOVE" value="46"/>
     <eLiterals name="INSERT" value="47"/>
     <eLiterals name="GET_SUPER" value="48" literal="GET_SUPER"/>
+    <eLiterals name="GETENV" value="49" literal="GETENV"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="RuleMode">
     <eLiterals name="manual"/>
@@ -609,4 +610,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="Remove" eSuperTypes="#//FieldInstruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="Insert" eSuperTypes="#//FieldInstruction"/>
   <eClassifiers xsi:type="ecore:EClass" name="GetSuper" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Getenv" eSuperTypes="#//Instruction"/>
 </ecore:EPackage>

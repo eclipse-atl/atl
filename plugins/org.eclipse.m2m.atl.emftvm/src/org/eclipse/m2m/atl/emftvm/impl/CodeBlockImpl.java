@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -948,6 +948,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					frame.setPc(pc);
 					frame.push(getSuper(getField(), ((GetSuper)instr).getFieldname(), frame));
 					break;
+				case GETENV:
+					frame.push(frame.getEnv());
+					break;
 				default:
 					throw new VMException(frame, String.format("Unsupported opcode: %s", instr.getOpcode()));
 				} // switch
@@ -1035,18 +1038,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	public Field getField() {
-		final EObject container = eContainer();
-		if (container != null) {
-			switch (container.eClass().getClassifierID()) {
-			case EmftvmPackage.FIELD:
-				return (Field)container;
-			case EmftvmPackage.CODE_BLOCK:
-				return ((CodeBlock)container).getField();
-			default:
-				break;
-			}
-		}
-		return null;
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**

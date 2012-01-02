@@ -4,7 +4,7 @@
 <!--
  (C) 2011, Vrije Universiteit Brussel
 
- $Id: plugin.xml,v 1.2 2011/09/22 14:17:18 dwagelaar Exp $
+ $Id: plugin.xml,v 1.3 2012/01/02 11:49:41 dwagelaar Exp $
 -->
 
 <plugin>
@@ -19,7 +19,7 @@
          point="org.eclipse.emf.ecore.content_parser">
       <parser
             class="org.eclipse.m2m.atl.emftvm.impl.resource.EMFTVMResourceFactoryImpl"
-            contentTypeIdentifier="be.ac.vub.emftvm">
+            contentTypeIdentifier="org.eclipse.m2m.atl.emftvm">
       </parser>
    </extension>
    <extension
