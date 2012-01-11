@@ -4,6 +4,7 @@
 <booleanAttribute key="Display Timing Data" value="true"/>
 <mapAttribute key="Inout Model Options"/>
 <mapAttribute key="Inout Models"/>
+<mapAttribute key="Inout Models Output Locations"/>
 <mapAttribute key="Input Model Options"/>
 <mapAttribute key="Input Models">
 <mapEntry key="IN" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/InlineCodeblocks.emftvm"/>
