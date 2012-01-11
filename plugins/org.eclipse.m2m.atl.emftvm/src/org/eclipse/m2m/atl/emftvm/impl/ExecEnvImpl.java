@@ -457,7 +457,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			for (Rule r : module.getRules()) {
 				registerRule(r);
 			}
-			for (Rule r : module.getRules()) {
+			// Re-resolve all super-rules, because they may have been redefined
+			for (Rule r : getRules()) {
 				resolveSuperRules(r);
 			}
 			return module;
@@ -723,32 +724,14 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		eSuperRules.clear();
 		for (String superRuleName : rule.getSuperRules()) {
 			Rule superRule = findRule(superRuleName);
-			if (!moduleIsImported(superRule.getModule(), rule.getModule())) {
+			if (superRule == null) {
 				throw new IllegalArgumentException(String.format(
-						"Super-rule %s of %s is not contained in any module imported by %s",
+						"Super-rule %s of %s is not found in any module loaded before %s",
 						superRuleName, rule.getName(), rule.getModule()));
 			}
 			//TODO check consistency of rule element declarations
 			eSuperRules.add(superRule);
 		}
-	}
-
-	/**
-	 * Checks whether <pre>imported</pre> is imported by <pre>module</pre>. 
-	 * @param imported the module to check
-	 * @param module the importing module
-	 * @return <code>true</code> iff <pre>imported</pre> is imported by <pre>module</pre>
-	 */
-	private boolean moduleIsImported(final Module imported, final Module module) {
-		if (module == imported) {
-			return true;
-		}
-		for (Module eImport : module.getEImports()) {
-			if (moduleIsImported(imported, eImport)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
