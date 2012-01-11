@@ -3,7 +3,7 @@
 -- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: ATLtoEMFTVM.atl,v 1.8 2011/11/28 15:36:35 dwagelaar Exp $
+-- $Id: ATLtoEMFTVM.atl,v 1.9 2012/01/11 19:07:38 dwagelaar Exp $
 module ATLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -148,7 +148,7 @@ abstract rule Unit {
 		static <- true,
 		"context" <- 'ExecEnv',
 		contextModel <- 'EMFTVM',
-		type <- 'java.lang.Object',
+		type <- 'Object',
 		typeModel <- '#native')
 }
 
@@ -156,7 +156,9 @@ rule Library extends Unit {
 	from s : ATL!Library in IN
 	to t : EMFTVM!Module (
 		features <- s.helpers->collect(h|h.definition)->append(main)),
-	   main : EMFTVM!Operation
+	   main : EMFTVM!Operation (
+	   	body <- body),
+	   body : EMFTVM!CodeBlock
 }
 
 rule Query extends Unit {
