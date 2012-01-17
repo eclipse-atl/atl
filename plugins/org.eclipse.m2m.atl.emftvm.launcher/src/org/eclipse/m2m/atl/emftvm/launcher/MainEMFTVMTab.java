@@ -379,6 +379,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(EMFTVMLaunchConstants.MODULE_NAME, moduleNameText.getText());
 		configuration.setAttribute(EMFTVMLaunchConstants.MODULE_PATH, modulePathText.getText());
+		configuration.removeAttribute(EMFTVMLaunchConstants.MODULE_FILE_NAME); // legacy
 
 		if (module != null && module.eResource().getURI().isPlatformResource()) {
 			// backwards compatibility with ATL debugger
@@ -703,6 +704,8 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		final SelectionAdapter removeAdapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
+				metamodelLocations.remove(metamodelName);
+				metamodelOptions.remove(metamodelName);
 				metamodelsGroupWidgets.remove(metamodelName);
 				metamodelLabel.dispose();
 				location.dispose();
@@ -944,15 +947,18 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 					inputModelsGroupWidgets.remove(modelName);
 					inputModelLocations.remove(modelName);
 					removableInputModels.remove(modelName);
+					inputModelOptions.remove(modelName);
 				} else if (inoutModelsGroupWidgets.get(modelName) != null) {
 					inoutModelsGroupWidgets.remove(modelName);
 					inoutModelLocations.remove(modelName);
 					inoutModelOutLocations.remove(modelName);
 					removableInoutModels.remove(modelName);
+					inoutModelOptions.remove(modelName);
 				} else if (outputModelsGroupWidgets.get(modelName) != null) {
 					outputModelsGroupWidgets.remove(modelName);
 					outputModelLocations.remove(modelName);
 					removableOutputModels.remove(modelName);
+					outputModelOptions.remove(modelName);
 				}
 				for (Widget widget : disposableWidgets) {
 					widget.dispose();
