@@ -1,0 +1,15 @@
+-- @atlcompiler emftvm
+query MapTupleTest = thisModule.map.debug('map').toString() + thisModule.tuple.debug('tuple').toString();
+
+helper def : map : Map(OclAny, OclAny) =
+	Map{
+		(1, 'one'),
+		(2, 'two'),
+		(3, 'three')
+	};
+
+helper def : tuple : TupleType(a : String, b : String) =
+	Tuple{
+		a = 'one',
+		b = 'two'
+	};
