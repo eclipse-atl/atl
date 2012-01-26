@@ -3,7 +3,7 @@
 -- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: OCLtoEMFTVM.atl,v 1.3 2011/12/12 11:11:17 dwagelaar Exp $
+-- $Id: OCLtoEMFTVM.atl,v 1.4 2012/01/26 20:54:27 dwagelaar Exp $
 module OCLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -22,6 +22,9 @@ helper def : SetType : String		= 'Set';
 helper def : BagType : String		= 'Bag';
 helper def : SequenceType : String	= 'Sequence';
 helper def : OrderedSetType : String= 'OrderedSet';
+helper def : MapType : String		= 'Map';
+helper def : TupleType_ : String	= 'Tuple';
+helper def : MapImplType : String	= 'java.util.HashMap';
 
 helper context ATL!"OclType" def : typeName : String =
 	'Object'; -- OclType is a direct OclType, which is either a Class or an EClass
@@ -693,6 +696,47 @@ rule OrderedSetExp extends CollectionExp {
 	   findtype : EMFTVM!Findtype (modelname <- '#native', typename <- thisModule.OrderedSetType)
 }
 
+rule MapExp extends OclExpression {
+	from s : ATL!MapExp in IN
+	using {
+		revElements : Sequence(ATL!MapElement) = s.elements->reverse();
+		puts : Sequence(EMFTVM!Instruction) = 
+			revElements->collect(e|thisModule.MapElement(e))->flatten();
+	}
+	to cb : EMFTVM!CodeBlock (
+		nested <- revElements->collect(e | Sequence{e.value, e.key})->flatten(),
+		code <- Sequence{findtype, new}->union(puts)),
+	   ln : EMFTVM!LineNumber (
+	   	instructions <- Sequence{findtype, new}->union(puts)),
+	   findtype : EMFTVM!Findtype (										-- [MapImplType]
+		modelname <- '#native',
+		typename <- thisModule.MapImplType),
+	   new : EMFTVM!New													-- [map]
+}
+
+rule TupleExp extends OclExpression {
+	from s : ATL!TupleExp in IN
+	using {
+		revElements : Sequence(ATL!TuplePart) = s.tuplePart->reverse();
+		puts : Sequence(EMFTVM!Instruction) = 
+			revElements->collect(e|thisModule.TuplePart(e))->flatten();
+	}
+	to cb : EMFTVM!CodeBlock (
+		nested <- revElements->collect(e | e.initExpression),
+		code <- Sequence{findtype, new}->union(puts)->append(findtype2)->append(invokeFromMap)),
+	   ln : EMFTVM!LineNumber (
+	   	instructions <- Sequence{findtype, new}->union(puts)->append(findtype2)->append(invokeFromMap)),
+	   findtype : EMFTVM!Findtype (										-- [MapImplType]
+		modelname <- '#native',
+		typename <- thisModule.MapImplType),
+	   new : EMFTVM!New,												-- [map]
+	   findtype2 : EMFTVM!Findtype (									-- [TupleType, map]
+		modelname <- '#native',
+		typename <- thisModule.TupleType_),
+	   invokeFromMap : EMFTVM!InvokeStatic (							-- [tuple]
+	   	opname <- 'fromMap', argcount <- 1)
+}
+
 rule OclTypeExp extends OclExpression { -- Only used as an expression, not as a type declaration
 	from s : ATL!"OclType" in IN (
 		s.attribute.oclIsUndefined() and			-- not used as an attribute type
@@ -755,6 +799,32 @@ lazy rule InvokeIncluding {
 	to invoke : EMFTVM!Invoke (opname <- 'including', argcount <- 1)
 	do {
 		invoke;
+	}
+}
+
+lazy rule MapElement {
+	from s : ATL!MapElement
+	to dup : EMFTVM!Dup,															-- [map, map]
+	   invokeValue : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),			-- [value, map, map]
+	   invokeKey : EMFTVM!InvokeCb (codeBlock <- s.key, argcount <- 0),				-- [key, value, map, map]
+	   swap : EMFTVM!SwapX1,														-- [map, key, value, map]
+	   invoke : EMFTVM!Invoke (opname <- 'put', argcount <- 2),						-- [value, map]
+	   pop : EMFTVM!Pop																-- [map]
+	do {
+		Sequence{dup, invokeValue, invokeKey, swap, invoke, pop};
+	}
+}
+
+lazy rule TuplePart {
+	from s : ATL!TuplePart
+	to dup : EMFTVM!Dup,															-- [map, map]
+	   invokeValue : EMFTVM!InvokeCb (codeBlock <- s.initExpression, argcount <- 0),-- [value, map, map]
+	   pushKey : EMFTVM!Push (value <- s.varName),									-- [key, value, map, map]
+	   swap : EMFTVM!SwapX1,														-- [map, key, value, map]
+	   invoke : EMFTVM!Invoke (opname <- 'put', argcount <- 2),						-- [value, map]
+	   pop : EMFTVM!Pop																-- [map]
+	do {
+		Sequence{dup, invokeValue, pushKey, swap, invoke, pop};
 	}
 }
 
