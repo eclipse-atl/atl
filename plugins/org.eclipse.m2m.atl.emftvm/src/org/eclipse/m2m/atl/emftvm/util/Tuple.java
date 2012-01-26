@@ -20,6 +20,15 @@ import java.util.Map;
  */
 public final class Tuple {
 
+	/**
+	 * Creates a new {@link Tuple} from <code>map</code>.
+	 * @param map the {@link Map} with tuple data
+	 * @return a new {@link Tuple} from <code>map</code>
+	 */
+	public static Tuple fromMap(final Map<String, Object> map) {
+		return new Tuple(map);
+	}
+
 	private final Map<String, Object> values;
 
 	/**
