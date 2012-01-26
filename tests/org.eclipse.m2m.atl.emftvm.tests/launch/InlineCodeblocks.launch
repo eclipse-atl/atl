@@ -13,7 +13,6 @@
 <mapAttribute key="Metamodels">
 <mapEntry key="EMFTVM" value="http://www.eclipse.org/m2m/atl/2011/EMFTVM"/>
 </mapAttribute>
-<stringAttribute key="Module File Name" value="/org.eclipse.m2m.atl.emftvm.compiler/transformations/InlineCodeblocks.emftvm"/>
 <stringAttribute key="Module Name" value="InlineCodeblocks"/>
 <stringAttribute key="Module Path" value="/org.eclipse.m2m.atl.emftvm.compiler/transformations/"/>
 <mapAttribute key="Output Model Options">
