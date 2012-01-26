@@ -959,11 +959,11 @@ public final class EMFTVMUtil {
 			final String opname, final Object[] args) {
 		final ExecEnv env = frame.getEnv();
 		final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
-		final Method method = EMFTVMUtil.findNativeMethod(type, opname, argClasses, false);
+		final Method method = EMFTVMUtil.findNativeMethod(type, opname, argClasses, true);
 		if (method != null) {
 			final StackFrame subFrame = frame.getSubFrame(method, args);
 			try {
-				return emf2vm(env, null, method.invoke(args));
+				return emf2vm(env, null, method.invoke(type, args));
 			} catch (InvocationTargetException e) {
 				final Throwable target = e.getTargetException();
 				if (target instanceof VMException) {
@@ -1077,7 +1077,7 @@ public final class EMFTVMUtil {
 			}
 		}
 	
-		if ((ret == null) && (context.getSuperclass() != null)) {
+		if ((ret == null) && !isStatic && (context.getSuperclass() != null)) {
 			ret = findNativeMethod(context.getSuperclass(), opname, argTypes, isStatic);
 		}
 	
