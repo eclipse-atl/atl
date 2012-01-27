@@ -1035,12 +1035,21 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public Field getField() {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		final EObject container = eContainer();
+		if (container != null) {
+			switch (container.eClass().getClassifierID()) {
+			case EmftvmPackage.FIELD:
+				return (Field)container;
+			case EmftvmPackage.CODE_BLOCK:
+				return ((CodeBlock)container).getField();
+			default:
+				break;
+			}
+		}
+		return null;
 	}
 
 	/**
