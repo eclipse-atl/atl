@@ -1573,21 +1573,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	@Override
 	public String toString() {
 		try {
-			int index = 0;
-			final StringBuffer buf = new StringBuffer();
-			buf.append('[');
-			for (E e : this) {
-				if (index > CUT_OFF) {
-					buf.append(", ...");
-					break;
-				}
-				if (index++ > 0) {
-					buf.append(", ");
-				}
-				buf.append(EMFTVMUtil.toPrettyString(e, null));
-			}
-			buf.append(']');
-			return buf.toString();
+			return asString();
 		} catch (VMException e) {
 			final StringBuffer stackTrace = new StringBuffer();
 			stackTrace.append(e.getClass().getName());
@@ -1603,6 +1589,29 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			}
 			return stackTrace.toString();
 		}
+	}
+
+	/**
+	 * Evaluates the collection as a String.
+	 * Throws a {@link RuntimeException} if this {@link LazyCollection} cannot be evaluated.
+	 * @return the String representation of this {@link LazyCollection}.
+	 */
+	public String asString() {
+		int index = 0;
+		final StringBuffer buf = new StringBuffer();
+		buf.append('[');
+		for (E e : this) {
+			if (index > CUT_OFF) {
+				buf.append(", ...");
+				break;
+			}
+			if (index++ > 0) {
+				buf.append(", ");
+			}
+			buf.append(EMFTVMUtil.toPrettyString(e, null));
+		}
+		buf.append(']');
+		return buf.toString();
 	}
 
 	/**

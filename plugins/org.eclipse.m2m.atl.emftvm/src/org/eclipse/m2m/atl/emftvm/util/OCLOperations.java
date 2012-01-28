@@ -217,6 +217,8 @@ public final class OCLOperations {
 							buf.append('\'');
 							buf.append((String)object);
 							buf.append('\'');
+						} else if (object instanceof LazyCollection<?>) {
+							buf.append(((LazyCollection<?>)object).asString());
 						} else {
 							buf.append(object);
 						}
@@ -413,7 +415,7 @@ public final class OCLOperations {
 								object));
 					}
 		});
-		createOperation(false, "refGet", OCL_ANY_TYPE, OCL_ANY_TYPE,
+		createOperation(false, "refGetValue", OCL_ANY_TYPE, OCL_ANY_TYPE,
 				new String[][][]{{{"propname"}, STRING_TYPE}}, 
 				new NativeCodeBlock() {
 					@Override
@@ -436,7 +438,7 @@ public final class OCLOperations {
 								object));
 					}
 		});
-		createOperation(false, "refSet", OCL_ANY_TYPE, OCL_ANY_TYPE,
+		createOperation(false, "refSetValue", OCL_ANY_TYPE, OCL_ANY_TYPE,
 				new String[][][]{{{"propname"}, STRING_TYPE}, {{"value"}, OCL_ANY_TYPE}}, 
 				new NativeCodeBlock() {
 					@Override
@@ -453,6 +455,30 @@ public final class OCLOperations {
 										"Cannot find property %s::%s", ecls.getName(), propname));
 							}
 							((EObject)object).eSet(sf, value);
+							frame.push(null);
+							return frame;
+						}
+						throw new VMException(frame, String.format(
+								"Cannot set properties for regular objects: %s",
+								object));
+					}
+		});
+		createOperation(false, "refUnsetValue", OCL_ANY_TYPE, OCL_ANY_TYPE,
+				new String[][][]{{{"propname"}, STRING_TYPE}}, 
+				new NativeCodeBlock() {
+					@Override
+					public StackFrame execute(final StackFrame frame) {
+						final Object object = frame.getLocal(0, 0);
+						if (object instanceof EObject) {
+							final String propname = (String)frame.getLocal(0, 1);
+							final EObject eo = (EObject)object;
+							final EClass ecls = eo.eClass();
+							final EStructuralFeature sf = ecls.getEStructuralFeature(propname);
+							if (sf == null) {
+								throw new VMException(frame, String.format(
+										"Cannot find property %s::%s", ecls.getName(), propname));
+							}
+							((EObject)object).eUnset(sf);
 							frame.push(null);
 							return frame;
 						}
@@ -536,6 +562,20 @@ public final class OCLOperations {
 							}
 						}
 						frame.push(target);
+						return frame;
+					}
+		});
+		/////////////////////////////////////////////////////////////////////
+		// Collection
+		/////////////////////////////////////////////////////////////////////
+		createOperation(false, "toString", COLLECTION_TYPE, STRING_TYPE,
+				new String[][][]{}, 
+				new NativeCodeBlock() {
+					@SuppressWarnings("unchecked")
+					@Override
+					public StackFrame execute(final StackFrame frame) {
+						final LazyCollection<Object> coll = (LazyCollection<Object>)frame.getLocal(0, 0);
+						frame.push(coll.asString());
 						return frame;
 					}
 		});
