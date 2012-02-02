@@ -49,6 +49,11 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	protected Map<String, EClassifier> types;
 
 	/**
+	 * Set of ambiguous type names (more than one occurrence).
+	 */
+	protected Set<String> ambiguousTypes = new HashSet<String>();
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * Creates a new {@link MetamodelImpl}.
 	 * <!-- end-user-doc -->
@@ -75,26 +80,30 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
-	public EClassifier findType(String typeName) {
+	public synchronized EClassifier findType(String typeName) {
 		if (types == null) {
-			types = createTypeTable();
+			types = createTypeTable(ambiguousTypes);
 		}
 		final EClassifier type = types.get(typeName);
 		if (type == null) {
 			throw new IllegalArgumentException(String.format("Type %s not found in metamodel %s", typeName, this));
+		}
+		if (ambiguousTypes.contains(typeName)) {
+			ATLLogger.warning(String.format("Metamodel contains more than one type with name %s", typeName));
 		}
 		return type;
 	}
 
 	/**
 	 * Returns a new type lookup table.
+	 * @param ambiguousTypes the set of ambiguous type names (more than one occurrence)
 	 * @return A new type lookup table.
 	 */
-	private Map<String, EClassifier> createTypeTable() {
+	private Map<String, EClassifier> createTypeTable(final Set<String> ambiguousTypes) {
 		final Map<String, EClassifier> types = new HashMap<String, EClassifier>();
 		final Resource res = getResource();
 		assert res != null;
-		registerTypeChain(types, res, null, new HashSet<Object>());
+		registerTypeChain(types, res, null, new HashSet<Object>(), ambiguousTypes);
 		return types;
 	}
 
@@ -104,15 +113,17 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	 * @param res the resource to search for type information (meta-model)
 	 * @param ns the namespace
 	 * @param ignore the set of objects to ignore
+	 * @param ambiguousTypes the set of ambiguous type names (more than one occurrence)
 	 */
 	private static void registerTypeChain(
 			final Map<String, EClassifier> types, 
 			final Resource res,
 			final String ns, 
-			final Set<Object> ignore) {
+			final Set<Object> ignore,
+			final Set<String> ambiguousTypes) {
 		if (res != null && !ignore.contains(res)) {
 			ignore.add(res);
-			registerTypeChain(types, res.getContents(), null, ignore);
+			registerTypeChain(types, res.getContents(), null, ignore, ambiguousTypes);
 		}
 	}
 
@@ -122,12 +133,14 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	 * @param objects the objects to search for type information (meta-model contents)
 	 * @param ns the namespace
 	 * @param ignore the set of objects to ignore
+	 * @param ambiguousTypes the set of ambiguous type names (more than one occurrence)
 	 */
 	private static void registerTypeChain(
 			final Map<String, EClassifier> types, 
 			final EList<EObject> objects,
 			final String ns, 
-			final Set<Object> ignore) {
+			final Set<Object> ignore,
+			final Set<String> ambiguousTypes) {
 		for (EObject o : objects) {
 			switch (o.eClass().getClassifierID()) {
 			case EcorePackage.EPACKAGE:
@@ -135,18 +148,18 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 				if (ns != null) {
 					pname = ns + EMFTVMUtil.NS_DELIM + pname;
 				}
-				registerTypeChain(types, o.eContents(), pname, ignore);
+				registerTypeChain(types, o.eContents(), pname, ignore, ambiguousTypes);
 				break;
 			case EcorePackage.ECLASSIFIER: //TODO Report EMF BUG: only EClass instances are returned!
 			case EcorePackage.ECLASS:
-				registerTypeChain(types, (EClassifier)o, ns, ignore);
+				registerTypeChain(types, (EClassifier)o, ns, ignore, ambiguousTypes);
 				break;
 			default:
 				// No meta-package or meta-class => just keep digging.
 				// N.B. This situation occurs in UML2 profiles, where
 				// EPackages containing EClasses are buried somewhere
 				// underneath other elements.
-				registerTypeChain(types, o.eContents(), ns, ignore);
+				registerTypeChain(types, o.eContents(), ns, ignore, ambiguousTypes);
 			}
 		}
 	}
@@ -157,40 +170,42 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	 * @param type the type to register, and search for other type references
 	 * @param ns the namespace
 	 * @param ignore the set of objects to ignore
+	 * @param ambiguousTypes the set of ambiguous type names (more than one occurrence)
 	 */
 	private static void registerTypeChain(
 			final Map<String, EClassifier> types, 
 			final EClassifier type,
 			final String ns, 
-			final Set<Object> ignore) {
+			final Set<Object> ignore,
+			final Set<String> ambiguousTypes) {
 		if (ignore.contains(type)) {
 			return;
 		}
 		ignore.add(type);
-		registerSingleType(types, ns + EMFTVMUtil.NS_DELIM + type.getName(), type);
-		registerSingleType(types, type.getName(), type);
+		registerSingleType(types, ns + EMFTVMUtil.NS_DELIM + type.getName(), type, ambiguousTypes);
+		registerSingleType(types, type.getName(), type, ambiguousTypes);
 		if (type instanceof EClass) {
 			final EClass cls = (EClass)type;
 			for (EStructuralFeature sf : cls.getEStructuralFeatures()) {
 				EClassifier eType = sf.getEType();
 				if (eType != null) {
-					registerTypeChain(types, eType.eResource(), null, ignore);
+					registerTypeChain(types, eType.eResource(), null, ignore, ambiguousTypes);
 				}
 			}
 			for (EOperation op : cls.getEOperations()) {
 				EClassifier eType = op.getEType();
 				if (eType != null) {
-					registerTypeChain(types, eType.eResource(), null, ignore);
+					registerTypeChain(types, eType.eResource(), null, ignore, ambiguousTypes);
 				}
 				for (EParameter p : op.getEParameters()) {
 					eType = p.getEType();
 					if (eType != null) {
-						registerTypeChain(types, eType.eResource(), null, ignore);
+						registerTypeChain(types, eType.eResource(), null, ignore, ambiguousTypes);
 					}
 				}
 			}
 			for (EClass superCls : cls.getESuperTypes()) {
-				registerTypeChain(types, superCls.eResource(), null, ignore);
+				registerTypeChain(types, superCls.eResource(), null, ignore, ambiguousTypes);
 			}
 		}
 	}
@@ -200,11 +215,15 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	 * @param types the lookup table to register types in
 	 * @param typeName the type name to use for lookup
 	 * @param type the type to register
+	 * @param ambiguousTypes the set of ambiguous type names (more than one occurrence)
 	 */
-	private static void registerSingleType(final Map<String, EClassifier> types, final String typeName,
-			final EClassifier type) {
+	private static void registerSingleType(
+			final Map<String, EClassifier> types, 
+			final String typeName,
+			final EClassifier type,
+			final Set<String> ambiguousTypes) {
 		if (types.containsKey(typeName)) {
-			ATLLogger.warning(String.format("Metamodel contains more than one type with name %s", typeName));
+			ambiguousTypes.add(typeName); //postpone ambiguous type warning until type usage
 		}
 		types.put(typeName, type);
 	}
