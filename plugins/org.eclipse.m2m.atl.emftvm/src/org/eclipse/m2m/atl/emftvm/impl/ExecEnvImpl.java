@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.validation.model.EvaluationMode;
 import org.eclipse.emf.validation.service.IValidator;
 import org.eclipse.emf.validation.service.ModelValidationService;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
@@ -200,6 +201,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @ordered
 	 */
 	protected Map<String, Module> modules;
+
+	/**
+	 * Set of modules that have effectively been loaded.
+	 * Intended for keeping track of cyclic imports.
+	 */
+	protected Set<String> loadedModules = new HashSet<String>();
 	
 	/**
 	 * The chain of '<code>main()</code>' operations to be executed after the automatic rules.
@@ -435,8 +442,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	public synchronized Module loadModule(final ModuleResolver resolver, final String name) {
 		try {
 			final Map<String, Module> modules = getModules();
-			//TODO detect cyclic imports w.r.t. redefinition
+			//detect cyclic imports w.r.t. redefinition
 			if (modules.containsKey(name)) {
+				if (!loadedModules.contains(name)) {
+					ATLLogger.warning(String.format(
+							"Cyclic import of module %s detected; element redefinition will not work",
+							name));
+				}
 				return modules.get(name);
 			}
 			final Module module = resolver.resolveModule(name);
@@ -461,6 +473,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			for (Rule r : getRules()) {
 				resolveSuperRules(r);
 			}
+			loadedModules.add(name);
 			return module;
 		} catch (Exception e) {
 			throw new VMException(null, String.format(
@@ -477,10 +490,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	private void resolveImports(final Module module, final ModuleResolver resolver) {
 		final EList<Module> eImports = module.getEImports();
 		for (String imp : module.getImports()) {
-			Module impModule = getModules().get(imp);
-			if (impModule == null) {
-				impModule = loadModule(resolver, imp);
-			}
+			Module impModule = loadModule(resolver, imp);
 			eImports.add(impModule);
 		}
 	}
@@ -675,7 +685,16 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	public synchronized void registerRule(final Rule r) {
 		//TODO check rule redefinition consistency? (types, mapsTo, ...)
-		rules.put(r.getName(), r);
+		final String rName = r.getName();
+		if (rules.containsKey(rName)) {
+			final Rule oldRule = rules.get(rName);
+			if (r.getMode() != oldRule.getMode()) {
+				throw new IllegalArgumentException(String.format(
+						"Rule %s with mode %s cannot redefine existing rule with mode %s", 
+						rName, r.getMode(), oldRule.getMode()));
+			}
+		}
+		rules.put(rName, r);
 
 		final Map<String, Model> inModels = new LinkedHashMap<String, Model>(getInputModels());
 		inModels.putAll(getInoutModels());
@@ -729,7 +748,29 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 						"Super-rule %s of %s is not found in any module loaded before %s",
 						superRuleName, rule.getName(), rule.getModule()));
 			}
-			//TODO check consistency of rule element declarations
+			//check rule type consistency
+			if (superRule.getMode() != rule.getMode()) {
+				throw new IllegalArgumentException(String.format(
+						"Rule %s with mode %s cannot inherit from super-rule %s with mode %s", 
+						rule.getName(), rule.getMode(), superRule.getName(), superRule.getMode()));
+			}
+			//check type consistency of rule element declarations
+			for (OutputRuleElement sre : superRule.getOutputElements()) {
+				for (OutputRuleElement re : rule.getOutputElements()) {
+					if (sre.getName().equals(re.getName())) {
+						if (!((EClass)sre.getEType()).isSuperTypeOf((EClass)re.getEType())) {
+							throw new IllegalArgumentException(String.format(
+									"Output element %s of type %s in rule %s is not compatible with element %s of type %s in super-rule %s",
+									re.getName(),
+									EMFTVMUtil.toPrettyString(re.getEType(), this), 
+									rule.getName(),
+									sre.getName(),
+									EMFTVMUtil.toPrettyString(sre.getEType(), this), 
+									superRule.getName()));
+						}
+					}
+				}
+			}
 			eSuperRules.add(superRule);
 		}
 	}
