@@ -17,12 +17,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -389,22 +391,28 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 			Iterator<Module> it = module.getEImports().iterator();
 			List<Iterator<Module>> its = new ArrayList<Iterator<Module>>();
 			List<String> superimpose = new ArrayList<String>();
+			Set<Module> processed = new HashSet<Module>();
+			processed.add(module);
+			Module m = null;
 			do {
 				if (it.hasNext()) {
-					module = it.next();
-					its.add(it);
-					it = module.getEImports().iterator();
-					URI uri = module.eResource().getURI();
-					if (uri.isPlatformResource()) {
-						String mPath = uri.toPlatformString(true);
-						superimpose.add(mPath.replaceFirst("\\.emftvm$", ".asm"));
+					m = it.next();
+					if (!processed.contains(m)) {
+						its.add(it);
+						it = m.getEImports().iterator();
+						URI uri = m.eResource().getURI();
+						if (uri.isPlatformResource()) {
+							String mPath = uri.toPlatformString(true);
+							superimpose.add(mPath.replaceFirst("\\.emftvm$", ".asm"));
+						}
+						processed.add(m);
 					}
 				} else if (!its.isEmpty()) {
 					it = its.remove(its.size() - 1);
 				} else {
-					module = null;
+					m = null;
 				}
-			} while (module != null);
+			} while (m != null);
 			configuration.setAttribute(ATLLaunchConstants.SUPERIMPOSE, superimpose);
 		}
 
@@ -1006,7 +1014,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 				moduleCache.put(sig, module);
 			}
 			if (module != null) {
-				getModelsFromEMFTVMModule(module);
+				getModelsFromEMFTVMModule(module, new HashSet<Module>());
 			}
 		} else {
 			module = null;
@@ -1016,10 +1024,14 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * Initialises models from EMFTVM module.
 	 * @param module the module to initialise the models from
+	 * @param processed the set of already processed modules
 	 */
-	private void getModelsFromEMFTVMModule(final Module module) {
+	private void getModelsFromEMFTVMModule(final Module module, final Set<Module> processed) {
+		processed.add(module);
 		for (Module imported : module.getEImports()) {
-			getModelsFromEMFTVMModule(imported);
+			if (!processed.contains(imported)) {
+				getModelsFromEMFTVMModule(imported, processed);
+			}
 		}
 		addModelsFromModelDeclarations(module.getInputModels(), inputModelLocations);
 		addModelsFromModelDeclarations(module.getInoutModels(), inoutModelLocations);
@@ -1057,7 +1069,9 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		final ModuleResolver resolver = EMFTVMLaunchConfigurationDelegate.createModuleResolver(path);
 		try {
 			final Module module = resolver.resolveModule(name);
-			resolveImports(module, resolver, new HashMap<String, Module>());
+			final Map<String, Module> modules = new HashMap<String, Module>();
+			modules.put(name, module);
+			resolveImports(module, resolver, modules);
 			return module;
 		} catch (IllegalArgumentException e) {
 			//ignore
