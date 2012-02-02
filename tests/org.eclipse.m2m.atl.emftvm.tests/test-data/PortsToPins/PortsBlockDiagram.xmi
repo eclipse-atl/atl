@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Ports:BlockDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:Ports="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/PortsToPins/Ports.ecore" name="diagram">
+  <blocks name="MainBlock">
+    <types name="Accelerometer"/>
+    <types name="GPS"/>
+    <ports name="AccPort"/>
+    <ports name="GPSOutPort"/>
+    <ports name="GPSControlPort"/>
+  </blocks>
+</Ports:BlockDiagram>

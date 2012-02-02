@@ -1,0 +1,16 @@
+-- @atlcompiler emftvm
+-- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
+module InheritanceTypeTest;
+
+create OUT : EMFTVM from IN : EMFTVM;
+
+rule Super {
+	from s : EMFTVM!Rule
+	to t : EMFTVM!Rule (
+		name <- s.name)
+}
+
+rule Sub extends Super {
+	from s : EMFTVM!Operation
+	to t : EMFTVM!Operation
+}

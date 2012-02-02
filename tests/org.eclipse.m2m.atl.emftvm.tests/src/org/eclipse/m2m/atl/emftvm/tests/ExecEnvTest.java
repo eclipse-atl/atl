@@ -29,6 +29,7 @@ import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.Operation;
 import org.eclipse.m2m.atl.emftvm.Rule;
+import org.eclipse.m2m.atl.emftvm.RuleMode;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
@@ -268,15 +269,27 @@ public class ExecEnvTest extends TestCase {
 	public void testRegisterRule__Rule() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 
-		//TODO test for rule redefinition checks
 		final Rule r = EmftvmFactory.eINSTANCE.createRule();
 		r.setName("rule");
-
-		assertNull(env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "rule"));
-
+		assertNull(env.findRule("rule"));
 		env.registerRule(r);
-
 		assertEquals(r, env.findRule("rule"));
+
+		final Rule rr = EmftvmFactory.eINSTANCE.createRule();
+		rr.setName("rule");
+		env.registerRule(rr);
+		assertEquals(rr, env.findRule("rule"));
+
+		final Rule rrr = EmftvmFactory.eINSTANCE.createRule();
+		rrr.setName("rule");
+		rrr.setMode(RuleMode.AUTOMATIC_SINGLE);
+		try {
+			env.registerRule(rrr);
+			fail("Rule redefinition should not work across different rule modes");
+		} catch (IllegalArgumentException e) {
+			//expected
+		}
+		assertEquals(rr, env.findRule("rule"));
 	}
 
 	/**

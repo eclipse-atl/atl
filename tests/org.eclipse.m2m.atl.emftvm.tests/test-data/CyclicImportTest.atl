@@ -1,0 +1,5 @@
+-- @atlcompiler emftvm
+query CyclicImportTest = OclUndefined;
+
+uses CyclicImportTest;
+uses DoubleCyclicImportTest;

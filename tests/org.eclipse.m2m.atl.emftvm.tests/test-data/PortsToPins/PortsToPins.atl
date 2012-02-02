@@ -1,0 +1,55 @@
+-- @atlcompiler emftvm
+-- @path Ports=/org.eclipse.m2m.atl.emftvm.tests/test-data/PortsToPins/Ports.ecore
+-- @path Pins=/org.eclipse.m2m.atl.emftvm.tests/test-data/PortsToPins/Pins.ecore
+module PortsToPins;
+
+create OUT : Pins from IN : Ports;
+
+helper context Ports!Port def : pins : Sequence(Pins!Pin) =
+	thisModule.traces.getDefaultSourceElement(self).sourceOf.targetElements
+		->select(te | te.name.startsWith('pin'))
+		->collect(te | te.object);
+
+abstract rule NamedElement {
+	from s : Ports!NamedElement
+	to t : Pins!NamedElement (
+		name <- s.name)
+}
+
+rule AccPort {
+	from port : Ports!Port (
+		port.name = 'AccPort' and
+		port.block.types->exists(t | t.name = 'Accelerometer'))
+	to pin1 : Pins!Pin (name <- 'AccPin1'),
+	   pin2 : Pins!Pin (name <- 'AccPin2')
+}
+
+rule GPSPorts {
+	from port1 : Ports!Port,
+		port2 : Ports!Port (
+			port1.name = 'GPSOutPort' and
+			port2.name = 'GPSControlPort' and
+			port1.block = port2.block and
+			port1.block.types->exists(t | t.name = 'GPS'))
+	to pin1 : Pins!Pin mapsTo port1 (name <- 'GPSOutPin1'), -- create default trace for first port
+	   pin2 : Pins!Pin (name <- 'GPSOutPin2'),
+	   pin3 : Pins!Pin (name <- 'GPSOutPin3'),
+	   pin4 : Pins!Pin (name <- 'GPSOutPin4'),
+	   pin5 : Pins!Pin mapsTo port2 (name <- 'GPSControlPin1'), -- create default trace for second port
+	   pin6 : Pins!Pin (name <- 'GPSControlPin2')
+}
+
+rule Block extends NamedElement {
+	from s : Ports!Block
+	to t : Pins!Block (
+		pins <- s.ports
+			->collect(port | port.pins.debug('pins for ' + port.name))
+			->flatten()
+			->asSet().debug('all pins for ' + s.name))
+}
+
+rule BlockDiagram extends NamedElement {
+	from s : Ports!BlockDiagram
+	to t : Pins!BlockDiagram (
+		blocks <- s.blocks)
+}

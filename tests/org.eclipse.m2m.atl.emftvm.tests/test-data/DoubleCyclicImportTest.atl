@@ -1,0 +1,4 @@
+-- @atlcompiler emftvm
+library DoubleCyclicImportTest;
+
+uses CyclicImportTest;

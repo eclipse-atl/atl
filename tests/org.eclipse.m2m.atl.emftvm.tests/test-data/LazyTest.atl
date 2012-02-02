@@ -1,0 +1,12 @@
+-- @atlcompiler emftvm
+query LazyTest = (100).run()->collect(x | x.expensive())->last();
+
+helper context Integer def : run() : Sequence(Integer) =
+	if self <= 0 then
+		Sequence{0}
+	else
+		(self - 1).run()->append(self)
+	endif;
+
+helper context Integer def : expensive() : Integer =
+	(self * self).debug('expensive');
