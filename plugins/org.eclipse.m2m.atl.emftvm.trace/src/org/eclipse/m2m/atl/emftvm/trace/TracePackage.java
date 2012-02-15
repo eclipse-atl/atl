@@ -149,13 +149,31 @@ public interface TracePackage extends EPackage {
 	int TRACED_RULE__LINK_SET = 2;
 
 	/**
+	 * The feature id for the '<em><b>Unique Source Elements</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TRACED_RULE__UNIQUE_SOURCE_ELEMENTS = 3;
+
+	/**
+	 * The feature id for the '<em><b>Unique Source Element Lists</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS = 4;
+
+	/**
 	 * The number of structural features of the '<em>Traced Rule</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TRACED_RULE_FEATURE_COUNT = 3;
+	int TRACED_RULE_FEATURE_COUNT = 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.trace.impl.TraceLinkImpl <em>Link</em>}' class.
@@ -305,13 +323,22 @@ public interface TracePackage extends EPackage {
 	int SOURCE_ELEMENT__DEFAULT_FOR = TRACE_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Unique For</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SOURCE_ELEMENT__UNIQUE_FOR = TRACE_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Source Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SOURCE_ELEMENT_FEATURE_COUNT = TRACE_ELEMENT_FEATURE_COUNT + 3;
+	int SOURCE_ELEMENT_FEATURE_COUNT = TRACE_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.trace.impl.TargetElementImpl <em>Target Element</em>}' class.
@@ -398,13 +425,22 @@ public interface TracePackage extends EPackage {
 	int SOURCE_ELEMENT_LIST__DEFAULT_FOR = 1;
 
 	/**
+	 * The feature id for the '<em><b>Unique For</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SOURCE_ELEMENT_LIST__UNIQUE_FOR = 2;
+
+	/**
 	 * The number of structural features of the '<em>Source Element List</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SOURCE_ELEMENT_LIST_FEATURE_COUNT = 2;
+	int SOURCE_ELEMENT_LIST_FEATURE_COUNT = 3;
 
 
 	/**
@@ -503,6 +539,28 @@ public interface TracePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getTracedRule_LinkSet();
+
+	/**
+	 * Returns the meta object for the reference list '{@link org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElements <em>Unique Source Elements</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Unique Source Elements</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElements()
+	 * @see #getTracedRule()
+	 * @generated
+	 */
+	EReference getTracedRule_UniqueSourceElements();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElementLists <em>Unique Source Element Lists</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Unique Source Element Lists</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElementLists()
+	 * @see #getTracedRule()
+	 * @generated
+	 */
+	EReference getTracedRule_UniqueSourceElementLists();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.trace.TraceLink <em>Link</em>}'.
@@ -634,6 +692,17 @@ public interface TracePackage extends EPackage {
 	EReference getSourceElement_DefaultFor();
 
 	/**
+	 * Returns the meta object for the reference '{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#getUniqueFor <em>Unique For</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Unique For</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.trace.SourceElement#getUniqueFor()
+	 * @see #getSourceElement()
+	 * @generated
+	 */
+	EReference getSourceElement_UniqueFor();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.trace.TargetElement <em>Target Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -696,6 +765,17 @@ public interface TracePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getSourceElementList_DefaultFor();
+
+	/**
+	 * Returns the meta object for the container reference '{@link org.eclipse.m2m.atl.emftvm.trace.SourceElementList#getUniqueFor <em>Unique For</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the container reference '<em>Unique For</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.trace.SourceElementList#getUniqueFor()
+	 * @see #getSourceElementList()
+	 * @generated
+	 */
+	EReference getSourceElementList_UniqueFor();
 
 	/**
 	 * Returns the meta object for data type '{@link java.util.List <em>Java List</em>}'.
@@ -797,6 +877,22 @@ public interface TracePackage extends EPackage {
 		 * @generated
 		 */
 		EReference TRACED_RULE__LINK_SET = eINSTANCE.getTracedRule_LinkSet();
+
+		/**
+		 * The meta object literal for the '<em><b>Unique Source Elements</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TRACED_RULE__UNIQUE_SOURCE_ELEMENTS = eINSTANCE.getTracedRule_UniqueSourceElements();
+
+		/**
+		 * The meta object literal for the '<em><b>Unique Source Element Lists</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS = eINSTANCE.getTracedRule_UniqueSourceElementLists();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.trace.impl.TraceLinkImpl <em>Link</em>}' class.
@@ -901,6 +997,14 @@ public interface TracePackage extends EPackage {
 		EReference SOURCE_ELEMENT__DEFAULT_FOR = eINSTANCE.getSourceElement_DefaultFor();
 
 		/**
+		 * The meta object literal for the '<em><b>Unique For</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SOURCE_ELEMENT__UNIQUE_FOR = eINSTANCE.getSourceElement_UniqueFor();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.trace.impl.TargetElementImpl <em>Target Element</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -951,6 +1055,14 @@ public interface TracePackage extends EPackage {
 		 * @generated
 		 */
 		EReference SOURCE_ELEMENT_LIST__DEFAULT_FOR = eINSTANCE.getSourceElementList_DefaultFor();
+
+		/**
+		 * The meta object literal for the '<em><b>Unique For</b></em>' container reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SOURCE_ELEMENT_LIST__UNIQUE_FOR = eINSTANCE.getSourceElementList_UniqueFor();
 
 		/**
 		 * The meta object literal for the '<em>Java List</em>' data type.

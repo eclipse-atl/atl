@@ -29,6 +29,7 @@ import org.eclipse.m2m.atl.emftvm.trace.SourceElement;
 import org.eclipse.m2m.atl.emftvm.trace.SourceElementList;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
+import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
 
 /**
  * <!-- begin-user-doc -->
@@ -40,6 +41,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementListImpl#getSourceElements <em>Source Elements</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementListImpl#getDefaultFor <em>Default For</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementListImpl#getUniqueFor <em>Unique For</em>}</li>
  * </ul>
  * </p>
  *
@@ -136,6 +138,47 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TracedRule getUniqueFor() {
+		if (eContainerFeatureID() != TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR) return null;
+		return (TracedRule)eContainer();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetUniqueFor(TracedRule newUniqueFor, NotificationChain msgs) {
+		msgs = eBasicSetContainer((InternalEObject)newUniqueFor, TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setUniqueFor(TracedRule newUniqueFor) {
+		if (newUniqueFor != eInternalContainer() || (eContainerFeatureID() != TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR && newUniqueFor != null)) {
+			if (EcoreUtil.isAncestor(this, newUniqueFor))
+				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
+			NotificationChain msgs = null;
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			if (newUniqueFor != null)
+				msgs = ((InternalEObject)newUniqueFor).eInverseAdd(this, TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS, TracedRule.class, msgs);
+			msgs = basicSetUniqueFor(newUniqueFor, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR, newUniqueFor, newUniqueFor));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public EList<EObject> getSourceObjects() {
@@ -154,6 +197,10 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
 				return basicSetDefaultFor((TraceLinkSet)otherEnd, msgs);
+			case TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetUniqueFor((TracedRule)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -168,6 +215,8 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 		switch (featureID) {
 			case TracePackage.SOURCE_ELEMENT_LIST__DEFAULT_FOR:
 				return basicSetDefaultFor(null, msgs);
+			case TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR:
+				return basicSetUniqueFor(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -182,6 +231,8 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 		switch (eContainerFeatureID()) {
 			case TracePackage.SOURCE_ELEMENT_LIST__DEFAULT_FOR:
 				return eInternalContainer().eInverseRemove(this, TracePackage.TRACE_LINK_SET__DEFAULT_SOURCE_ELEMENT_LISTS, TraceLinkSet.class, msgs);
+			case TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR:
+				return eInternalContainer().eInverseRemove(this, TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS, TracedRule.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -198,6 +249,8 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 				return getSourceElements();
 			case TracePackage.SOURCE_ELEMENT_LIST__DEFAULT_FOR:
 				return getDefaultFor();
+			case TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR:
+				return getUniqueFor();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -218,6 +271,9 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 			case TracePackage.SOURCE_ELEMENT_LIST__DEFAULT_FOR:
 				setDefaultFor((TraceLinkSet)newValue);
 				return;
+			case TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR:
+				setUniqueFor((TracedRule)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -236,6 +292,9 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 			case TracePackage.SOURCE_ELEMENT_LIST__DEFAULT_FOR:
 				setDefaultFor((TraceLinkSet)null);
 				return;
+			case TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR:
+				setUniqueFor((TracedRule)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -252,6 +311,8 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 				return sourceElements != null && !sourceElements.isEmpty();
 			case TracePackage.SOURCE_ELEMENT_LIST__DEFAULT_FOR:
 				return getDefaultFor() != null;
+			case TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR:
+				return getUniqueFor() != null;
 		}
 		return super.eIsSet(featureID);
 	}

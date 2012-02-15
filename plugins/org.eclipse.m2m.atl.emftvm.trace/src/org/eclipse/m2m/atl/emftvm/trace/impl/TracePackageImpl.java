@@ -233,6 +233,24 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getTracedRule_UniqueSourceElements() {
+		return (EReference)tracedRuleEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTracedRule_UniqueSourceElementLists() {
+		return (EReference)tracedRuleEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getTraceLink() {
 		return traceLinkEClass;
 	}
@@ -341,6 +359,15 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getSourceElement_UniqueFor() {
+		return (EReference)sourceElementEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getTargetElement() {
 		return targetElementEClass;
 	}
@@ -395,6 +422,15 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getSourceElementList_UniqueFor() {
+		return (EReference)sourceElementListEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getJavaList() {
 		return javaListEDataType;
 	}
@@ -436,6 +472,8 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 		createEAttribute(tracedRuleEClass, TRACED_RULE__RULE);
 		createEReference(tracedRuleEClass, TRACED_RULE__LINKS);
 		createEReference(tracedRuleEClass, TRACED_RULE__LINK_SET);
+		createEReference(tracedRuleEClass, TRACED_RULE__UNIQUE_SOURCE_ELEMENTS);
+		createEReference(tracedRuleEClass, TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS);
 
 		traceLinkEClass = createEClass(TRACE_LINK);
 		createEReference(traceLinkEClass, TRACE_LINK__SOURCE_ELEMENTS);
@@ -451,6 +489,7 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 		createEReference(sourceElementEClass, SOURCE_ELEMENT__SOURCE_OF);
 		createEReference(sourceElementEClass, SOURCE_ELEMENT__MAPS_TO);
 		createEReference(sourceElementEClass, SOURCE_ELEMENT__DEFAULT_FOR);
+		createEReference(sourceElementEClass, SOURCE_ELEMENT__UNIQUE_FOR);
 
 		targetElementEClass = createEClass(TARGET_ELEMENT);
 		createEReference(targetElementEClass, TARGET_ELEMENT__TARGET_OF);
@@ -459,6 +498,7 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 		sourceElementListEClass = createEClass(SOURCE_ELEMENT_LIST);
 		createEReference(sourceElementListEClass, SOURCE_ELEMENT_LIST__SOURCE_ELEMENTS);
 		createEReference(sourceElementListEClass, SOURCE_ELEMENT_LIST__DEFAULT_FOR);
+		createEReference(sourceElementListEClass, SOURCE_ELEMENT_LIST__UNIQUE_FOR);
 
 		// Create data types
 		javaListEDataType = createEDataType(JAVA_LIST);
@@ -521,6 +561,17 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 		initEAttribute(getTracedRule_Rule(), ecorePackage.getEString(), "rule", null, 1, 1, TracedRule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTracedRule_Links(), this.getTraceLink(), this.getTraceLink_Rule(), "links", null, 0, -1, TracedRule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTracedRule_LinkSet(), this.getTraceLinkSet(), this.getTraceLinkSet_Rules(), "linkSet", null, 0, 1, TracedRule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTracedRule_UniqueSourceElements(), this.getSourceElement(), this.getSourceElement_UniqueFor(), "uniqueSourceElements", null, 0, -1, TracedRule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTracedRule_UniqueSourceElementLists(), this.getSourceElementList(), this.getSourceElementList_UniqueFor(), "uniqueSourceElementLists", null, 0, -1, TracedRule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		op = addEOperation(tracedRuleEClass, this.getSourceElement(), "getUniqueSourceElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEObject(), "sourceElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(tracedRuleEClass, this.getSourceElementList(), "getUniqueSourceElements", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(this.getJavaList());
+		g2 = createEGenericType();
+		g1.getETypeArguments().add(g2);
+		addEParameter(op, g1, "sourceElements", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(traceLinkEClass, TraceLink.class, "TraceLink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTraceLink_SourceElements(), this.getSourceElement(), this.getSourceElement_SourceOf(), "sourceElements", null, 0, -1, TraceLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -543,6 +594,7 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 		initEReference(getSourceElement_SourceOf(), this.getTraceLink(), this.getTraceLink_SourceElements(), "sourceOf", null, 0, 1, SourceElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getSourceElement_MapsTo(), this.getTargetElement(), this.getTargetElement_MapsTo(), "mapsTo", null, 0, -1, SourceElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getSourceElement_DefaultFor(), this.getTraceLinkSet(), this.getTraceLinkSet_DefaultSourceElements(), "defaultFor", null, 0, 1, SourceElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSourceElement_UniqueFor(), this.getTracedRule(), this.getTracedRule_UniqueSourceElements(), "uniqueFor", null, 0, 1, SourceElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(targetElementEClass, TargetElement.class, "TargetElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTargetElement_TargetOf(), this.getTraceLink(), this.getTraceLink_TargetElements(), "targetOf", null, 0, 1, TargetElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -551,6 +603,7 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 		initEClass(sourceElementListEClass, SourceElementList.class, "SourceElementList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSourceElementList_SourceElements(), this.getSourceElement(), null, "sourceElements", null, 2, -1, SourceElementList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getSourceElementList_DefaultFor(), this.getTraceLinkSet(), this.getTraceLinkSet_DefaultSourceElementLists(), "defaultFor", null, 0, 1, SourceElementList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSourceElementList_UniqueFor(), this.getTracedRule(), this.getTracedRule_UniqueSourceElementLists(), "uniqueFor", null, 0, 1, SourceElementList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(sourceElementListEClass, ecorePackage.getEObject(), "getSourceObjects", 2, -1, IS_UNIQUE, IS_ORDERED);
 

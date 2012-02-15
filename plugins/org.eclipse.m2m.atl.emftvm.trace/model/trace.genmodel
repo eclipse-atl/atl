@@ -35,6 +35,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute trace.ecore#//TracedRule/rule"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference trace.ecore#//TracedRule/links"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference trace.ecore#//TracedRule/linkSet"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//TracedRule/uniqueSourceElements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference trace.ecore#//TracedRule/uniqueSourceElementLists"/>
+      <genOperations ecoreOperation="trace.ecore#//TracedRule/getUniqueSourceElement">
+        <genParameters ecoreParameter="trace.ecore#//TracedRule/getUniqueSourceElement/sourceElement"/>
+      </genOperations>
+      <genOperations ecoreOperation="trace.ecore#//TracedRule/getUniqueSourceElements">
+        <genParameters ecoreParameter="trace.ecore#//TracedRule/getUniqueSourceElements/sourceElements"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="trace.ecore#//TraceLink">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference trace.ecore#//TraceLink/sourceElements"/>
@@ -57,6 +65,7 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference trace.ecore#//SourceElement/sourceOf"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//SourceElement/mapsTo"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//SourceElement/defaultFor"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//SourceElement/uniqueFor"/>
     </genClasses>
     <genClasses ecoreClass="trace.ecore#//TargetElement">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference trace.ecore#//TargetElement/targetOf"/>
@@ -65,6 +74,7 @@
     <genClasses ecoreClass="trace.ecore#//SourceElementList">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//SourceElementList/sourceElements"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference trace.ecore#//SourceElementList/defaultFor"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference trace.ecore#//SourceElementList/uniqueFor"/>
       <genOperations ecoreOperation="trace.ecore#//SourceElementList/getSourceObjects"/>
     </genClasses>
   </genPackages>

@@ -13,17 +13,24 @@ package org.eclipse.m2m.atl.emftvm.trace.impl;
 
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
+import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.m2m.atl.emftvm.trace.SourceElement;
+import org.eclipse.m2m.atl.emftvm.trace.SourceElementList;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
@@ -40,6 +47,8 @@ import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.TracedRuleImpl#getRule <em>Rule</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.TracedRuleImpl#getLinks <em>Links</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.TracedRuleImpl#getLinkSet <em>Link Set</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.TracedRuleImpl#getUniqueSourceElements <em>Unique Source Elements</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.TracedRuleImpl#getUniqueSourceElementLists <em>Unique Source Element Lists</em>}</li>
  * </ul>
  * </p>
  *
@@ -75,6 +84,36 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	 * @ordered
 	 */
 	protected EList<TraceLink> links;
+
+	/**
+	 * The cached value of the '{@link #getUniqueSourceElements() <em>Unique Source Elements</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUniqueSourceElements()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<SourceElement> uniqueSourceElements;
+
+	/**
+	 * The cached value of the '{@link #getUniqueSourceElementLists() <em>Unique Source Element Lists</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUniqueSourceElementLists()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<SourceElementList> uniqueSourceElementLists;
+
+	/**
+	 * Lookup table of referred objects to {@link SourceElement}s.
+	 */
+	protected final Map<EObject, SourceElement> uniqueSourceObjects = new HashMap<EObject, SourceElement>();
+
+	/**
+	 * Lookup table of referred objects to {@link SourceElementList}s.
+	 */
+	protected final Map<List<EObject>, SourceElementList> uniqueSourceObjectLists = new HashMap<List<EObject>, SourceElementList>();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -174,6 +213,48 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<SourceElement> getUniqueSourceElements() {
+		if (uniqueSourceElements == null) {
+			uniqueSourceElements = new EObjectWithInverseResolvingEList<SourceElement>(SourceElement.class, this, TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENTS, TracePackage.SOURCE_ELEMENT__UNIQUE_FOR);
+		}
+		return uniqueSourceElements;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<SourceElementList> getUniqueSourceElementLists() {
+		if (uniqueSourceElementLists == null) {
+			uniqueSourceElementLists = new EObjectContainmentWithInverseEList<SourceElementList>(SourceElementList.class, this, TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS, TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR);
+		}
+		return uniqueSourceElementLists;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public SourceElement getUniqueSourceElement(EObject sourceElement) {
+		return uniqueSourceObjects.get(sourceElement);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public SourceElementList getUniqueSourceElements(List<?> sourceElements) {
+		return uniqueSourceObjectLists.get(sourceElements);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -184,6 +265,10 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
 				return basicSetLinkSet((TraceLinkSet)otherEnd, msgs);
+			case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENTS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getUniqueSourceElements()).basicAdd(otherEnd, msgs);
+			case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getUniqueSourceElementLists()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -200,6 +285,10 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 				return ((InternalEList<?>)getLinks()).basicRemove(otherEnd, msgs);
 			case TracePackage.TRACED_RULE__LINK_SET:
 				return basicSetLinkSet(null, msgs);
+			case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENTS:
+				return ((InternalEList<?>)getUniqueSourceElements()).basicRemove(otherEnd, msgs);
+			case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS:
+				return ((InternalEList<?>)getUniqueSourceElementLists()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -232,6 +321,10 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 				return getLinks();
 			case TracePackage.TRACED_RULE__LINK_SET:
 				return getLinkSet();
+			case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENTS:
+				return getUniqueSourceElements();
+			case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS:
+				return getUniqueSourceElementLists();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -255,6 +348,14 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 			case TracePackage.TRACED_RULE__LINK_SET:
 				setLinkSet((TraceLinkSet)newValue);
 				return;
+			case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENTS:
+				getUniqueSourceElements().clear();
+				getUniqueSourceElements().addAll((Collection<? extends SourceElement>)newValue);
+				return;
+			case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS:
+				getUniqueSourceElementLists().clear();
+				getUniqueSourceElementLists().addAll((Collection<? extends SourceElementList>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -276,6 +377,12 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 			case TracePackage.TRACED_RULE__LINK_SET:
 				setLinkSet((TraceLinkSet)null);
 				return;
+			case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENTS:
+				getUniqueSourceElements().clear();
+				return;
+			case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS:
+				getUniqueSourceElementLists().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -294,6 +401,10 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 				return links != null && !links.isEmpty();
 			case TracePackage.TRACED_RULE__LINK_SET:
 				return getLinkSet() != null;
+			case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENTS:
+				return uniqueSourceElements != null && !uniqueSourceElements.isEmpty();
+			case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS:
+				return uniqueSourceElementLists != null && !uniqueSourceElementLists.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -308,6 +419,116 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 		if (eIsProxy()) return super.toString();
 
 		return (rule == null) ? super.toString() : rule;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean eNotificationRequired() {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void eNotify(Notification notification) {
+		super.eNotify(notification);
+		switch (notification.getFeatureID(null)) {
+		case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENTS:	
+			switch (notification.getEventType()) {
+			case Notification.ADD:
+				uniqueSourceElementAdded((SourceElement) notification.getNewValue());
+				break;
+			case Notification.ADD_MANY:
+				for (SourceElement se : ((Collection<? extends SourceElement>) notification.getNewValue())) {
+					uniqueSourceElementAdded(se);
+				}
+				break;
+			case Notification.REMOVE:
+				uniqueSourceElementRemoved((SourceElement) notification.getOldValue());
+				break;
+			case Notification.REMOVE_MANY:
+				for (SourceElement se : ((Collection<? extends SourceElement>) notification.getOldValue())) {
+					uniqueSourceElementRemoved(se);
+				}
+				break;
+			}
+			break;
+		case TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENT_LISTS:	
+			switch (notification.getEventType()) {
+			case Notification.ADD:
+				uniqueSourceElementListAdded((SourceElementList) notification.getNewValue());
+				break;
+			case Notification.ADD_MANY:
+				for (SourceElementList sel : ((Collection<? extends SourceElementList>) notification.getNewValue())) {
+					uniqueSourceElementListAdded(sel);
+				}
+				break;
+			case Notification.REMOVE:
+				uniqueSourceElementListRemoved((SourceElementList) notification.getOldValue());
+				break;
+			case Notification.REMOVE_MANY:
+				for (SourceElementList sel : ((Collection<? extends SourceElementList>) notification.getOldValue())) {
+					uniqueSourceElementListRemoved(sel);
+				}
+				break;
+			}
+			break;
+		}
+	}
+
+	/**
+	 * Updates {@link #uniqueSourceObjects} for <code>se</code>.
+	 * @param se
+	 */
+	private void uniqueSourceElementAdded(final SourceElement se) {
+		final EObject object = se.getObject();
+		if (uniqueSourceObjects.containsKey(object)) {
+			final SourceElement eSe = uniqueSourceObjects.get(object);
+			throw new IllegalArgumentException(String.format(
+					"Unique trace already exists for source element %s::%s: %s::%s", 
+					se.getSourceOf().getRule(), se, 
+					eSe.getSourceOf().getRule(), eSe));
+		}
+		uniqueSourceObjects.put(object, se);
+	}
+
+	/**
+	 * Updates {@link #uniqueSourceObjects} for <code>sel</code>.
+	 * @param se
+	 */
+	private void uniqueSourceElementRemoved(final SourceElement se) {
+		uniqueSourceObjects.remove(se.getObject());
+	}
+
+	/**
+	 * Updates {@link #uniqueSourceObjectLists} for <code>sel</code>.
+	 * @param sel
+	 */
+	private void uniqueSourceElementListAdded(final SourceElementList sel) {
+		final List<EObject> objects = sel.getSourceObjects();
+		if (uniqueSourceObjectLists.containsKey(objects)) {
+			assert !sel.getSourceElements().isEmpty();
+			final TracedRule selRule = sel.getSourceElements().get(0).getSourceOf().getRule();
+			final SourceElementList eSel = uniqueSourceObjectLists.get(objects);
+			assert !eSel.getSourceElements().isEmpty();
+			final TracedRule eSelRule = eSel.getSourceElements().get(0).getSourceOf().getRule();
+			throw new IllegalArgumentException(String.format(
+					"Unique trace already exists for source element list %s::%s: %s::%s", 
+					selRule, sel, eSelRule, eSel));
+		}
+		uniqueSourceObjectLists.put(objects, sel);
+	}
+
+	/**
+	 * Updates {@link #uniqueSourceObjectLists} for <code>sel</code>.
+	 * @param sel
+	 */
+	private void uniqueSourceElementListRemoved(final SourceElementList sel) {
+		uniqueSourceObjectLists.remove(sel.getSourceObjects());
 	}
 
 } //TracedRuleImpl

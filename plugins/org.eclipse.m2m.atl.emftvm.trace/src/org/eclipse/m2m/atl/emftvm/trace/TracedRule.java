@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.trace;
 
+import java.util.List;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
@@ -26,6 +28,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.TracedRule#getRule <em>Rule</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.TracedRule#getLinks <em>Links</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.TracedRule#getLinkSet <em>Link Set</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElements <em>Unique Source Elements</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElementLists <em>Unique Source Element Lists</em>}</li>
  * </ul>
  * </p>
  *
@@ -105,5 +109,57 @@ public interface TracedRule extends EObject {
 	 * @generated
 	 */
 	void setLinkSet(TraceLinkSet value);
+
+	/**
+	 * Returns the value of the '<em><b>Unique Source Elements</b></em>' reference list.
+	 * The list contents are of type {@link org.eclipse.m2m.atl.emftvm.trace.SourceElement}.
+	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#getUniqueFor <em>Unique For</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Unique Source Elements</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Unique Source Elements</em>' reference list.
+	 * @see org.eclipse.m2m.atl.emftvm.trace.TracePackage#getTracedRule_UniqueSourceElements()
+	 * @see org.eclipse.m2m.atl.emftvm.trace.SourceElement#getUniqueFor
+	 * @model opposite="uniqueFor"
+	 * @generated
+	 */
+	EList<SourceElement> getUniqueSourceElements();
+
+	/**
+	 * Returns the value of the '<em><b>Unique Source Element Lists</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.m2m.atl.emftvm.trace.SourceElementList}.
+	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.trace.SourceElementList#getUniqueFor <em>Unique For</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Unique Source Element Lists</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Unique Source Element Lists</em>' containment reference list.
+	 * @see org.eclipse.m2m.atl.emftvm.trace.TracePackage#getTracedRule_UniqueSourceElementLists()
+	 * @see org.eclipse.m2m.atl.emftvm.trace.SourceElementList#getUniqueFor
+	 * @model opposite="uniqueFor" containment="true"
+	 * @generated
+	 */
+	EList<SourceElementList> getUniqueSourceElementLists();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	SourceElement getUniqueSourceElement(EObject sourceElement);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model sourceElementsDataType="org.eclipse.m2m.atl.emftvm.trace.JavaList<?>" sourceElementsMany="false"
+	 * @generated
+	 */
+	SourceElementList getUniqueSourceElements(List<?> sourceElements);
 
 } // TracedRule

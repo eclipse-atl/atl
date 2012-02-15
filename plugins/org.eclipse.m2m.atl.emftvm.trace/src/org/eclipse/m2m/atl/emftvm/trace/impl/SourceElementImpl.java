@@ -27,6 +27,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TargetElement;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
+import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
 
 
 /**
@@ -40,6 +41,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementImpl#getSourceOf <em>Source Of</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementImpl#getMapsTo <em>Maps To</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementImpl#getDefaultFor <em>Default For</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementImpl#getUniqueFor <em>Unique For</em>}</li>
  * </ul>
  * </p>
  *
@@ -66,6 +68,16 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 	 * @ordered
 	 */
 	protected TraceLinkSet defaultFor;
+
+	/**
+	 * The cached value of the '{@link #getUniqueFor() <em>Unique For</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUniqueFor()
+	 * @generated
+	 * @ordered
+	 */
+	protected TracedRule uniqueFor;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -204,6 +216,66 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public TracedRule getUniqueFor() {
+		if (uniqueFor != null && uniqueFor.eIsProxy()) {
+			InternalEObject oldUniqueFor = (InternalEObject)uniqueFor;
+			uniqueFor = (TracedRule)eResolveProxy(oldUniqueFor);
+			if (uniqueFor != oldUniqueFor) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, TracePackage.SOURCE_ELEMENT__UNIQUE_FOR, oldUniqueFor, uniqueFor));
+			}
+		}
+		return uniqueFor;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TracedRule basicGetUniqueFor() {
+		return uniqueFor;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetUniqueFor(TracedRule newUniqueFor, NotificationChain msgs) {
+		TracedRule oldUniqueFor = uniqueFor;
+		uniqueFor = newUniqueFor;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, TracePackage.SOURCE_ELEMENT__UNIQUE_FOR, oldUniqueFor, newUniqueFor);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setUniqueFor(TracedRule newUniqueFor) {
+		if (newUniqueFor != uniqueFor) {
+			NotificationChain msgs = null;
+			if (uniqueFor != null)
+				msgs = ((InternalEObject)uniqueFor).eInverseRemove(this, TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENTS, TracedRule.class, msgs);
+			if (newUniqueFor != null)
+				msgs = ((InternalEObject)newUniqueFor).eInverseAdd(this, TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENTS, TracedRule.class, msgs);
+			msgs = basicSetUniqueFor(newUniqueFor, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TracePackage.SOURCE_ELEMENT__UNIQUE_FOR, newUniqueFor, newUniqueFor));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -218,6 +290,10 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 				if (defaultFor != null)
 					msgs = ((InternalEObject)defaultFor).eInverseRemove(this, TracePackage.TRACE_LINK_SET__DEFAULT_SOURCE_ELEMENTS, TraceLinkSet.class, msgs);
 				return basicSetDefaultFor((TraceLinkSet)otherEnd, msgs);
+			case TracePackage.SOURCE_ELEMENT__UNIQUE_FOR:
+				if (uniqueFor != null)
+					msgs = ((InternalEObject)uniqueFor).eInverseRemove(this, TracePackage.TRACED_RULE__UNIQUE_SOURCE_ELEMENTS, TracedRule.class, msgs);
+				return basicSetUniqueFor((TracedRule)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -236,6 +312,8 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 				return ((InternalEList<?>)getMapsTo()).basicRemove(otherEnd, msgs);
 			case TracePackage.SOURCE_ELEMENT__DEFAULT_FOR:
 				return basicSetDefaultFor(null, msgs);
+			case TracePackage.SOURCE_ELEMENT__UNIQUE_FOR:
+				return basicSetUniqueFor(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -269,6 +347,9 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 			case TracePackage.SOURCE_ELEMENT__DEFAULT_FOR:
 				if (resolve) return getDefaultFor();
 				return basicGetDefaultFor();
+			case TracePackage.SOURCE_ELEMENT__UNIQUE_FOR:
+				if (resolve) return getUniqueFor();
+				return basicGetUniqueFor();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -292,6 +373,9 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 			case TracePackage.SOURCE_ELEMENT__DEFAULT_FOR:
 				setDefaultFor((TraceLinkSet)newValue);
 				return;
+			case TracePackage.SOURCE_ELEMENT__UNIQUE_FOR:
+				setUniqueFor((TracedRule)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -313,6 +397,9 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 			case TracePackage.SOURCE_ELEMENT__DEFAULT_FOR:
 				setDefaultFor((TraceLinkSet)null);
 				return;
+			case TracePackage.SOURCE_ELEMENT__UNIQUE_FOR:
+				setUniqueFor((TracedRule)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -331,6 +418,8 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 				return mapsTo != null && !mapsTo.isEmpty();
 			case TracePackage.SOURCE_ELEMENT__DEFAULT_FOR:
 				return defaultFor != null;
+			case TracePackage.SOURCE_ELEMENT__UNIQUE_FOR:
+				return uniqueFor != null;
 		}
 		return super.eIsSet(featureID);
 	}

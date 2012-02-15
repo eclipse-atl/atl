@@ -27,11 +27,25 @@
         upperBound="-1" eType="#//SourceElementList" containment="true" eOpposite="#//SourceElementList/defaultFor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TracedRule">
+    <eOperations name="getUniqueSourceElement" eType="#//SourceElement">
+      <eParameters name="sourceElement" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
+    <eOperations name="getUniqueSourceElements" eType="#//SourceElementList">
+      <eParameters name="sourceElements">
+        <eGenericType eClassifier="#//JavaList">
+          <eTypeArguments/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="rule" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="links" upperBound="-1"
         eType="#//TraceLink" containment="true" eOpposite="#//TraceLink/rule"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="linkSet" eType="#//TraceLinkSet"
         eOpposite="#//TraceLinkSet/rules"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueSourceElements" upperBound="-1"
+        eType="#//SourceElement" eOpposite="#//SourceElement/uniqueFor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueSourceElementLists"
+        upperBound="-1" eType="#//SourceElementList" containment="true" eOpposite="#//SourceElementList/uniqueFor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TraceLink">
     <eOperations name="getSourceElement" eType="#//SourceElement">
@@ -61,6 +75,8 @@
         eType="#//TargetElement" eOpposite="#//TargetElement/mapsTo"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="defaultFor" eType="#//TraceLinkSet"
         eOpposite="#//TraceLinkSet/defaultSourceElements"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueFor" eType="#//TracedRule"
+        eOpposite="#//TracedRule/uniqueSourceElements"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TargetElement" eSuperTypes="#//TraceElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetOf" eType="#//TraceLink"
@@ -74,6 +90,8 @@
         upperBound="-1" eType="#//SourceElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="defaultFor" eType="#//TraceLinkSet"
         eOpposite="#//TraceLinkSet/defaultSourceElementLists"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueFor" eType="#//TracedRule"
+        eOpposite="#//TracedRule/uniqueSourceElementLists"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="JavaList" instanceClassName="java.util.List">
     <eTypeParameters name="E"/>

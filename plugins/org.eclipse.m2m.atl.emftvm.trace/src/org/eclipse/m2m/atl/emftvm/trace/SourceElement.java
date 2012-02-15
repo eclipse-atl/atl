@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#getSourceOf <em>Source Of</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#getMapsTo <em>Maps To</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#getDefaultFor <em>Default For</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#getUniqueFor <em>Unique For</em>}</li>
  * </ul>
  * </p>
  *
@@ -106,5 +107,33 @@ public interface SourceElement extends TraceElement {
 	 * @generated
 	 */
 	void setDefaultFor(TraceLinkSet value);
+
+	/**
+	 * Returns the value of the '<em><b>Unique For</b></em>' reference.
+	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElements <em>Unique Source Elements</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Unique For</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Unique For</em>' reference.
+	 * @see #setUniqueFor(TracedRule)
+	 * @see org.eclipse.m2m.atl.emftvm.trace.TracePackage#getSourceElement_UniqueFor()
+	 * @see org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElements
+	 * @model opposite="uniqueSourceElements"
+	 * @generated
+	 */
+	TracedRule getUniqueFor();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#getUniqueFor <em>Unique For</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Unique For</em>' reference.
+	 * @see #getUniqueFor()
+	 * @generated
+	 */
+	void setUniqueFor(TracedRule value);
 
 } // SourceElement

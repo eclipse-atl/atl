@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.SourceElementList#getSourceElements <em>Source Elements</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.SourceElementList#getDefaultFor <em>Default For</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.SourceElementList#getUniqueFor <em>Unique For</em>}</li>
  * </ul>
  * </p>
  *
@@ -76,6 +77,34 @@ public interface SourceElementList extends EObject {
 	 * @generated
 	 */
 	void setDefaultFor(TraceLinkSet value);
+
+	/**
+	 * Returns the value of the '<em><b>Unique For</b></em>' container reference.
+	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElementLists <em>Unique Source Element Lists</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Unique For</em>' container reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Unique For</em>' container reference.
+	 * @see #setUniqueFor(TracedRule)
+	 * @see org.eclipse.m2m.atl.emftvm.trace.TracePackage#getSourceElementList_UniqueFor()
+	 * @see org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElementLists
+	 * @model opposite="uniqueSourceElementLists" transient="false"
+	 * @generated
+	 */
+	TracedRule getUniqueFor();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.trace.SourceElementList#getUniqueFor <em>Unique For</em>}' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Unique For</em>' container reference.
+	 * @see #getUniqueFor()
+	 * @generated
+	 */
+	void setUniqueFor(TracedRule value);
 
 	/**
 	 * <!-- begin-user-doc -->
