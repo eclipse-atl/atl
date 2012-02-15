@@ -14,6 +14,8 @@ package org.eclipse.m2m.atl.emftvm;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
+import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
@@ -34,6 +36,9 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInoutModels <em>Inout Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getOutputModels <em>Output Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getModules <em>Modules</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMatches <em>Matches</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getTraces <em>Traces</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getUniqueResults <em>Unique Results</em>}</li>
  * </ul>
  * </p>
  *
@@ -57,6 +62,51 @@ public interface ExecEnv extends EObject {
 	 * @generated
 	 */
 	Map<String, Module> getModules();
+
+	/**
+	 * Returns the value of the '<em><b>Matches</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Matches</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Matches</em>' reference.
+	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv_Matches()
+	 * @model required="true" transient="true" changeable="false" derived="true"
+	 * @generated
+	 */
+	TraceLinkSet getMatches();
+
+	/**
+	 * Returns the value of the '<em><b>Traces</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Traces</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Traces</em>' reference.
+	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv_Traces()
+	 * @model required="true" transient="true" changeable="false" derived="true"
+	 * @generated
+	 */
+	TraceLinkSet getTraces();
+
+	/**
+	 * Returns the value of the '<em><b>Unique Results</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Unique Results</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Unique Results</em>' attribute.
+	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv_UniqueResults()
+	 * @model required="true" transient="true" changeable="false" derived="true"
+	 * @generated
+	 */
+	Map<TraceLink, Object> getUniqueResults();
 
 	/**
 	 * <!-- begin-user-doc -->

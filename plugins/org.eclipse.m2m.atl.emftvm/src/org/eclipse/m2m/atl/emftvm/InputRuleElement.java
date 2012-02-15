@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm;
 
+import org.eclipse.emf.ecore.EObject;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -86,5 +88,16 @@ public interface InputRuleElement extends RuleElement {
 	 * @generated
 	 */
 	void setInputFor(Rule value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Creates a new {@link Iterable} of possible match values for this rule element.
+	 * @param env the execution environment context
+	 * @return a new {@link Iterable} of possible match values for this rule element.
+	 * <!-- end-user-doc -->
+	 * @model dataType="org.eclipse.m2m.atl.emftvm.EJavaIterable<org.eclipse.emf.ecore.EObject>"
+	 * @generated
+	 */
+	Iterable<EObject> createIterable(ExecEnv env);
 
 } // InputRuleElement

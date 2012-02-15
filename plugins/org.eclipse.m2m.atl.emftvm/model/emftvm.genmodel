@@ -9,7 +9,7 @@
     testsDirectory="/org.eclipse.m2m.atl.emftvm.tests/src" testSuiteClass="org.eclipse.m2m.atl.emftvm.tests.EmftvmAllTests"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
     editPluginID="org.eclipse.m2m.atl.emftvm.edit" editorPluginID="org.eclipse.m2m.atl.emftvm.editor"
-    language="" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
+    language="" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.genmodel#//trace">
   <foreignModel>emftvm.ecore</foreignModel>
   <genPackages prefix="Emftvm" basePackage="org.eclipse.m2m.atl" disposableProviderFactory="true"
       ecorePackage="emftvm.ecore#/">
@@ -75,6 +75,8 @@
       <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/ADD"/>
       <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/REMOVE"/>
       <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/INSERT"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/GET_SUPER"/>
+      <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//Opcode/GETENV"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="emftvm.ecore#//RuleMode">
       <genEnumLiterals ecoreEnumLiteral="emftvm.ecore#//RuleMode/manual"/>
@@ -98,6 +100,7 @@
     <genDataTypes ecoreDataType="emftvm.ecore#//StackFrame"/>
     <genDataTypes ecoreDataType="emftvm.ecore#//Method"/>
     <genDataTypes ecoreDataType="emftvm.ecore#//TimingData"/>
+    <genDataTypes ecoreDataType="emftvm.ecore#//VMMonitor"/>
     <genDataTypes ecoreDataType="emftvm.ecore#//LazyCollection">
       <genTypeParameters ecoreTypeParameter="emftvm.ecore#//LazyCollection/E"/>
     </genDataTypes>
@@ -113,13 +116,25 @@
     <genDataTypes ecoreDataType="emftvm.ecore#//LazySet">
       <genTypeParameters ecoreTypeParameter="emftvm.ecore#//LazySet/E"/>
     </genDataTypes>
+    <genDataTypes ecoreDataType="emftvm.ecore#//EJavaObjectArray"/>
+    <genDataTypes ecoreDataType="emftvm.ecore#//EObjectArray"/>
+    <genDataTypes ecoreDataType="emftvm.ecore#//EBooleanArray"/>
+    <genDataTypes ecoreDataType="emftvm.ecore#//EJavaSet">
+      <genTypeParameters ecoreTypeParameter="emftvm.ecore#//EJavaSet/E"/>
+    </genDataTypes>
+    <genDataTypes ecoreDataType="emftvm.ecore#//EJavaIterable">
+      <genTypeParameters ecoreTypeParameter="emftvm.ecore#//EJavaIterable/E"/>
+    </genDataTypes>
+    <genDataTypes ecoreDataType="emftvm.ecore#//ClassNotFoundException"/>
     <genClasses ecoreClass="emftvm.ecore#//ExecEnv">
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/metaModels"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/inputModels"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/inoutModels"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/outputModels"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/modules"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//ExecEnv/deletionQueue"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//ExecEnv/matches"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//ExecEnv/traces"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/uniqueResults"/>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/loadModule">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule/resolver"/>
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule/name"/>
@@ -157,6 +172,7 @@
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/run">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/run/timingData"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/run/monitor"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getRules"/>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getModelOf">
@@ -164,6 +180,10 @@
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getModelID">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/getModelID/model"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/queueForDelete">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForDelete/element"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForDelete/frame"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/deleteQueue"/>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getInputModelOf">
@@ -175,6 +195,7 @@
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getOutputModelOf">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/getOutputModelOf/object"/>
       </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getMonitor"/>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//Model">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Model/resource"/>
@@ -260,8 +281,8 @@
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Instruction/opcode"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Instruction/stackProduction"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Instruction/stackConsumption"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Instruction/stackLevel"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//Instruction/lineNumber"/>
-      <genOperations ecoreOperation="emftvm.ecore#//Instruction/getStackLevel"/>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//LineNumber">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//LineNumber/startLine"/>
@@ -290,12 +311,15 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/eSubRules"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/matcher"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/applier"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/postApply"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/superRules"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/postApply.1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/superRules"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/abstract"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/fields"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/default"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/distinctElements"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/unique"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/leaf"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/withLeaves"/>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/findField">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/findField/context"/>
         <genParameters ecoreParameter="emftvm.ecore#//Rule/findField/name"/>
@@ -307,6 +331,49 @@
       <genOperations ecoreOperation="emftvm.ecore#//Rule/registerField">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/registerField/field"/>
       </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/matchSingle">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/matchSingle/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/matchRecursive">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/matchRecursive/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/matchManual">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/matchManual/frame"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/matchManual/values"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/matchOne">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/matchOne/frame"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/matchOne/valuesMap"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/createTraces">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/createTraces/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/completeTraceFor">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/completeTraceFor/frame"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/completeTraceFor/trace"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/apply">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/apply/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/postApply">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/postApply/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/applyFirst">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFirst/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/applyFor">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFor/frame"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFor/trace"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFor/ruleApplyArgs"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFor/appliedRules"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/postApplyFor">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/postApplyFor/frame"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/postApplyFor/trace"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/postApplyFor/ruleApplyArgs"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/postApplyFor/appliedRules"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/compileState"/>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//RuleElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//RuleElement/models"/>
@@ -315,6 +382,9 @@
     <genClasses ecoreClass="emftvm.ecore#//InputRuleElement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//InputRuleElement/binding"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//InputRuleElement/inputFor"/>
+      <genOperations ecoreOperation="emftvm.ecore#//InputRuleElement/createIterable">
+        <genParameters ecoreParameter="emftvm.ecore#//InputRuleElement/createIterable/env"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//OutputRuleElement">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference emftvm.ecore#//OutputRuleElement/mapsTo"/>
@@ -340,6 +410,17 @@
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//CodeBlock/getStackLevel"/>
       <genOperations ecoreOperation="emftvm.ecore#//CodeBlock/getModule"/>
+      <genOperations ecoreOperation="emftvm.ecore#//CodeBlock/getOperation"/>
+      <genOperations ecoreOperation="emftvm.ecore#//CodeBlock/getField"/>
+      <genOperations ecoreOperation="emftvm.ecore#//CodeBlock/getPredecessors">
+        <genParameters ecoreParameter="emftvm.ecore#//CodeBlock/getPredecessors/i"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//CodeBlock/getAllPredecessors">
+        <genParameters ecoreParameter="emftvm.ecore#//CodeBlock/getAllPredecessors/i"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//CodeBlock/getNonLoopingPredecessors">
+        <genParameters ecoreParameter="emftvm.ecore#//CodeBlock/getNonLoopingPredecessors/i"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//Push" labelFeature="#//emftvm/Push/value">
       <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Push/value"/>
@@ -435,5 +516,7 @@
     <genClasses ecoreClass="emftvm.ecore#//Add"/>
     <genClasses ecoreClass="emftvm.ecore#//Remove"/>
     <genClasses ecoreClass="emftvm.ecore#//Insert"/>
+    <genClasses ecoreClass="emftvm.ecore#//GetSuper"/>
+    <genClasses ecoreClass="emftvm.ecore#//Getenv"/>
   </genPackages>
 </genmodel:GenModel>

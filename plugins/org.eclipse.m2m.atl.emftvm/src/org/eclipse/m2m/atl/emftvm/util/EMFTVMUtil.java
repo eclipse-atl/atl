@@ -44,11 +44,16 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
+import org.eclipse.m2m.atl.emftvm.Field;
+import org.eclipse.m2m.atl.emftvm.LocalVariable;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.Operation;
+import org.eclipse.m2m.atl.emftvm.Parameter;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 
 /**
@@ -1222,4 +1227,74 @@ public final class EMFTVMUtil {
 		}
 		return new File(newPath);
 	}
+	
+	/**
+	 * Creates a new {@link Operation}.
+	 * @param isStatic whether the created operation is static
+	 * @param name operation name
+	 * @param context operation context [type model, type name]
+	 * @param returnType operation return [type model, type name]
+	 * @param parameters operations parameters: [[[name], [type model, type name]], ...]
+	 * @param body operation body
+	 * @return a new {@link Operation}.
+	 * @see Types
+	 */
+	public static Operation createOperation(final boolean isStatic, final String name, final String[] context, 
+			final String[] returnType, final String[][][] parameters, final CodeBlock body) {
+		final EmftvmFactory factory = EmftvmFactory.eINSTANCE;
+		final Operation op = factory.createOperation();
+		op.setStatic(isStatic);
+		op.setName(name);
+		op.setContextModel(context[0]);
+		op.setContext(context[1]);
+		op.setTypeModel(returnType[0]);
+		op.setType(returnType[1]);
+		final EList<Parameter> pars = op.getParameters();
+		final EList<LocalVariable> locals = body.getLocalVariables();
+		if (!isStatic) {
+			LocalVariable self = factory.createLocalVariable();
+			self.setName("self");
+			self.setTypeModel(context[0]);
+			self.setType(context[1]);
+			locals.add(self);
+		}
+		for (String[][] par : parameters) {
+			Parameter p = factory.createParameter();
+			p.setName(par[0][0]);
+			p.setTypeModel(par[1][0]);
+			p.setType(par[1][1]);
+			pars.add(p);
+			LocalVariable lv = factory.createLocalVariable();
+			lv.setName(par[0][0]);
+			lv.setTypeModel(par[1][0]);
+			lv.setType(par[1][1]);
+			locals.add(lv);
+		}
+		op.setBody(body);
+		return op;
+	}
+
+	/**
+	 * Creates a new {@link Field}.
+	 * @param name field name
+	 * @param isStatic whether the field is static
+	 * @param context field context [type model, type name]
+	 * @param type field [type model, type name]
+	 * @param initialiser field initialiser codeblock
+	 * @return a new {@link Field}.
+	 * @see Types
+	 */
+	public static Field createField(final String name, final boolean isStatic, 
+			final String[] context, final String[] type, final CodeBlock initialiser) {
+		final Field f = EmftvmFactory.eINSTANCE.createField();
+		f.setName(name);
+		f.setContextModel(context[0]);
+		f.setContext(context[1]);
+		f.setTypeModel(type[0]);
+		f.setType(type[1]);
+		f.setInitialiser(initialiser);
+		f.setStatic(isStatic);
+		return f;
+	}
+
 }

@@ -82,6 +82,7 @@ import org.eclipse.m2m.atl.emftvm.Or;
 import org.eclipse.m2m.atl.emftvm.Push;
 import org.eclipse.m2m.atl.emftvm.Remove;
 import org.eclipse.m2m.atl.emftvm.Rule;
+import org.eclipse.m2m.atl.emftvm.RuleMode;
 import org.eclipse.m2m.atl.emftvm.Set;
 import org.eclipse.m2m.atl.emftvm.SetStatic;
 import org.eclipse.m2m.atl.emftvm.Store;
@@ -93,7 +94,6 @@ import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.LazyListOnCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyListOnList;
 import org.eclipse.m2m.atl.emftvm.util.LazySetOnSet;
-import org.eclipse.m2m.atl.emftvm.util.Matcher;
 import org.eclipse.m2m.atl.emftvm.util.NativeTypes;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
@@ -2228,7 +2228,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 		if (type == env.eClass()) { // Lazy and called rule invocations are indistinguishable from static operations in ATL
 			final Rule rule = env.findRule(opname);
-			if (rule != null) {
+			if (rule != null && rule.getMode() == RuleMode.MANUAL) {
 				return matchOne(frame, rule, argcount);
 			}
 		}
@@ -2364,7 +2364,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		for (int i = 0; i < argcount; i++) {
 			elements[i] = (EObject)frame.pop();
 		}
-		return Matcher.matchOne(frame, rule, elements);
+		return rule.matchManual(frame, elements);
 	}
 
 	/**

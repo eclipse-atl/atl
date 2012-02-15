@@ -613,13 +613,40 @@ public interface EmftvmPackage extends EPackage {
 	int EXEC_ENV__MODULES = 4;
 
 	/**
+	 * The feature id for the '<em><b>Matches</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXEC_ENV__MATCHES = 5;
+
+	/**
+	 * The feature id for the '<em><b>Traces</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXEC_ENV__TRACES = 6;
+
+	/**
+	 * The feature id for the '<em><b>Unique Results</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXEC_ENV__UNIQUE_RESULTS = 7;
+
+	/**
 	 * The number of structural features of the '<em>Exec Env</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXEC_ENV_FEATURE_COUNT = 5;
+	int EXEC_ENV_FEATURE_COUNT = 8;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.ModelImpl <em>Model</em>}' class.
@@ -1669,13 +1696,40 @@ public interface EmftvmPackage extends EPackage {
 	int RULE__DISTINCT_ELEMENTS = NAMED_ELEMENT_FEATURE_COUNT + 13;
 
 	/**
+	 * The feature id for the '<em><b>Unique</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RULE__UNIQUE = NAMED_ELEMENT_FEATURE_COUNT + 14;
+
+	/**
+	 * The feature id for the '<em><b>Leaf</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RULE__LEAF = NAMED_ELEMENT_FEATURE_COUNT + 15;
+
+	/**
+	 * The feature id for the '<em><b>With Leaves</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RULE__WITH_LEAVES = NAMED_ELEMENT_FEATURE_COUNT + 16;
+
+	/**
 	 * The number of structural features of the '<em>Rule</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RULE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 14;
+	int RULE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 17;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -6640,6 +6694,44 @@ public interface EmftvmPackage extends EPackage {
 	int EJAVA_OBJECT_ARRAY = 91;
 
 	/**
+	 * The meta object id for the '<em>EObject Array</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getEObjectArray()
+	 * @generated
+	 */
+	int EOBJECT_ARRAY = 92;
+
+	/**
+	 * The meta object id for the '<em>EBoolean Array</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getEBooleanArray()
+	 * @generated
+	 */
+	int EBOOLEAN_ARRAY = 93;
+
+	/**
+	 * The meta object id for the '<em>EJava Set</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see java.util.Set
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getEJavaSet()
+	 * @generated
+	 */
+	int EJAVA_SET = 94;
+
+	/**
+	 * The meta object id for the '<em>EJava Iterable</em>' data type.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see java.lang.Iterable
+	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getEJavaIterable()
+	 * @generated
+	 */
+	int EJAVA_ITERABLE = 95;
+
+	/**
 	 * The meta object id for the '<em>Class Not Found Exception</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6647,7 +6739,7 @@ public interface EmftvmPackage extends EPackage {
 	 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getClassNotFoundException()
 	 * @generated
 	 */
-	int CLASS_NOT_FOUND_EXCEPTION = 92;
+	int CLASS_NOT_FOUND_EXCEPTION = 96;
 
 	/**
 	 * The meta object id for the '<em>Module Resolver</em>' data type.
@@ -7483,6 +7575,39 @@ public interface EmftvmPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getRule_DistinctElements();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.m2m.atl.emftvm.Rule#isUnique <em>Unique</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Unique</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#isUnique()
+	 * @see #getRule()
+	 * @generated
+	 */
+	EAttribute getRule_Unique();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.m2m.atl.emftvm.Rule#isLeaf <em>Leaf</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Leaf</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#isLeaf()
+	 * @see #getRule()
+	 * @generated
+	 */
+	EAttribute getRule_Leaf();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.m2m.atl.emftvm.Rule#isWithLeaves <em>With Leaves</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>With Leaves</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#isWithLeaves()
+	 * @see #getRule()
+	 * @generated
+	 */
+	EAttribute getRule_WithLeaves();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.RuleElement <em>Rule Element</em>}'.
@@ -8579,6 +8704,39 @@ public interface EmftvmPackage extends EPackage {
 	EAttribute getExecEnv_Modules();
 
 	/**
+	 * Returns the meta object for the reference '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMatches <em>Matches</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Matches</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getMatches()
+	 * @see #getExecEnv()
+	 * @generated
+	 */
+	EReference getExecEnv_Matches();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getTraces <em>Traces</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Traces</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getTraces()
+	 * @see #getExecEnv()
+	 * @generated
+	 */
+	EReference getExecEnv_Traces();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getUniqueResults <em>Unique Results</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Unique Results</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getUniqueResults()
+	 * @see #getExecEnv()
+	 * @generated
+	 */
+	EAttribute getExecEnv_UniqueResults();
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModels <em>Meta Models</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -8888,6 +9046,48 @@ public interface EmftvmPackage extends EPackage {
 	 * @generated
 	 */
 	EDataType getEJavaObjectArray();
+
+	/**
+	 * Returns the meta object for data type '<em>EObject Array</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EObject Array</em>'.
+	 * @model instanceClass="org.eclipse.emf.ecore.EObject[]"
+	 * @generated
+	 */
+	EDataType getEObjectArray();
+
+	/**
+	 * Returns the meta object for data type '<em>EBoolean Array</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EBoolean Array</em>'.
+	 * @model instanceClass="boolean[]"
+	 * @generated
+	 */
+	EDataType getEBooleanArray();
+
+	/**
+	 * Returns the meta object for data type '{@link java.util.Set <em>EJava Set</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EJava Set</em>'.
+	 * @see java.util.Set
+	 * @model instanceClass="java.util.Set" typeParameters="E"
+	 * @generated
+	 */
+	EDataType getEJavaSet();
+
+	/**
+	 * Returns the meta object for data type '{@link java.lang.Iterable <em>EJava Iterable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for data type '<em>EJava Iterable</em>'.
+	 * @see java.lang.Iterable
+	 * @model instanceClass="java.lang.Iterable" typeParameters="E"
+	 * @generated
+	 */
+	EDataType getEJavaIterable();
 
 	/**
 	 * Returns the meta object for data type '{@link java.lang.ClassNotFoundException <em>Class Not Found Exception</em>}'.
@@ -9567,6 +9767,30 @@ public interface EmftvmPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute RULE__DISTINCT_ELEMENTS = eINSTANCE.getRule_DistinctElements();
+
+		/**
+		 * The meta object literal for the '<em><b>Unique</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute RULE__UNIQUE = eINSTANCE.getRule_Unique();
+
+		/**
+		 * The meta object literal for the '<em><b>Leaf</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute RULE__LEAF = eINSTANCE.getRule_Leaf();
+
+		/**
+		 * The meta object literal for the '<em><b>With Leaves</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute RULE__WITH_LEAVES = eINSTANCE.getRule_WithLeaves();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.RuleElementImpl <em>Rule Element</em>}' class.
@@ -10531,6 +10755,30 @@ public interface EmftvmPackage extends EPackage {
 		EAttribute EXEC_ENV__MODULES = eINSTANCE.getExecEnv_Modules();
 
 		/**
+		 * The meta object literal for the '<em><b>Matches</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EXEC_ENV__MATCHES = eINSTANCE.getExecEnv_Matches();
+
+		/**
+		 * The meta object literal for the '<em><b>Traces</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EXEC_ENV__TRACES = eINSTANCE.getExecEnv_Traces();
+
+		/**
+		 * The meta object literal for the '<em><b>Unique Results</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute EXEC_ENV__UNIQUE_RESULTS = eINSTANCE.getExecEnv_UniqueResults();
+
+		/**
 		 * The meta object literal for the '<em><b>Meta Models</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -10794,6 +11042,44 @@ public interface EmftvmPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType EJAVA_OBJECT_ARRAY = eINSTANCE.getEJavaObjectArray();
+
+		/**
+		 * The meta object literal for the '<em>EObject Array</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getEObjectArray()
+		 * @generated
+		 */
+		EDataType EOBJECT_ARRAY = eINSTANCE.getEObjectArray();
+
+		/**
+		 * The meta object literal for the '<em>EBoolean Array</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getEBooleanArray()
+		 * @generated
+		 */
+		EDataType EBOOLEAN_ARRAY = eINSTANCE.getEBooleanArray();
+
+		/**
+		 * The meta object literal for the '<em>EJava Set</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see java.util.Set
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getEJavaSet()
+		 * @generated
+		 */
+		EDataType EJAVA_SET = eINSTANCE.getEJavaSet();
+
+		/**
+		 * The meta object literal for the '<em>EJava Iterable</em>' data type.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see java.lang.Iterable
+		 * @see org.eclipse.m2m.atl.emftvm.impl.EmftvmPackageImpl#getEJavaIterable()
+		 * @generated
+		 */
+		EDataType EJAVA_ITERABLE = eINSTANCE.getEJavaIterable();
 
 		/**
 		 * The meta object literal for the '<em>Class Not Found Exception</em>' data type.

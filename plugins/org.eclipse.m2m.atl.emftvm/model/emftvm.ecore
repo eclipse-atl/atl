@@ -26,6 +26,14 @@
     <eTypeParameters name="E"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="EJavaObjectArray" instanceClassName="java.lang.Object[]"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="EObjectArray" instanceClassName="org.eclipse.emf.ecore.EObject[]"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="EBooleanArray" instanceClassName="boolean[]"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="EJavaSet" instanceClassName="java.util.Set">
+    <eTypeParameters name="E"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="EJavaIterable" instanceClassName="java.lang.Iterable">
+    <eTypeParameters name="E"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="ModelDeclarationTag">
     <eLiterals name="input"/>
     <eLiterals name="inout" value="1"/>
@@ -211,6 +219,19 @@
         <eTypeArguments eClassifier="#//Module"/>
       </eGenericType>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="matches" lowerBound="1"
+        eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLinkSet"
+        changeable="false" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="traces" lowerBound="1"
+        eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLinkSet"
+        changeable="false" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uniqueResults" lowerBound="1"
+        changeable="false" transient="true" derived="true">
+      <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
+        <eTypeArguments eClassifier="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink"/>
+        <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eGenericType>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Model">
     <eOperations name="allInstancesOf">
@@ -390,6 +411,72 @@
     <eOperations name="registerField">
       <eParameters name="field" eType="#//Field"/>
     </eOperations>
+    <eOperations name="matchSingle" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="matchRecursive" eType="#//EBooleanArray">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="matchManual" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="values" eType="#//EObjectArray"/>
+    </eOperations>
+    <eOperations name="matchOne" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="valuesMap">
+        <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
+          <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+          <eTypeArguments eClassifier="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="createTraces">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="completeTraceFor" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="trace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink"/>
+    </eOperations>
+    <eOperations name="apply">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="postApply">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="applyFirst" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="applyFor" eType="#//StackFrame">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="trace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink"/>
+      <eParameters name="ruleApplyArgs">
+        <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
+          <eTypeArguments eClassifier="#//Rule"/>
+          <eTypeArguments eClassifier="#//EJavaObjectArray"/>
+        </eGenericType>
+      </eParameters>
+      <eParameters name="appliedRules">
+        <eGenericType eClassifier="#//EJavaSet">
+          <eTypeArguments eClassifier="#//Rule"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="postApplyFor" eType="#//StackFrame">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="trace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink"/>
+      <eParameters name="ruleApplyArgs">
+        <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
+          <eTypeArguments eClassifier="#//Rule"/>
+          <eTypeArguments eClassifier="#//EJavaObjectArray"/>
+        </eGenericType>
+      </eParameters>
+      <eParameters name="appliedRules">
+        <eGenericType eClassifier="#//EJavaSet">
+          <eTypeArguments eClassifier="#//Rule"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="compileState"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//Module"
         eOpposite="#//Module/rules"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mode" lowerBound="1" eType="#//RuleMode"/>
@@ -417,6 +504,13 @@
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="distinctElements" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="leaf" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
+        changeable="false" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="withLeaves" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
+        changeable="false" transient="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RuleElement" abstract="true" eSuperTypes="#//TypedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="models" upperBound="-1"
@@ -425,6 +519,12 @@
         eType="#//Model" transient="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="InputRuleElement" eSuperTypes="#//RuleElement">
+    <eOperations name="createIterable">
+      <eGenericType eClassifier="#//EJavaIterable">
+        <eTypeArguments eClassifier="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      </eGenericType>
+      <eParameters name="env" eType="#//ExecEnv"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//CodeBlock"
         containment="true" eOpposite="#//CodeBlock/bindingFor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="inputFor" eType="#//Rule"
@@ -470,7 +570,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="applierFor" eType="#//Rule"
         eOpposite="#//Rule/applier"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="postApplyFor" eType="#//Rule"
-        eOpposite="#//Rule/postApply"/>
+        eOpposite="#//Rule/postApply.1"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="bodyFor" eType="#//Operation"
         eOpposite="#//Operation/body"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="initialiserFor" eType="#//Field"

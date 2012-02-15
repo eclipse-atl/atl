@@ -11,9 +11,10 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm;
 
+import java.util.regex.Matcher;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.atl.emftvm.util.Matcher;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 
 /**

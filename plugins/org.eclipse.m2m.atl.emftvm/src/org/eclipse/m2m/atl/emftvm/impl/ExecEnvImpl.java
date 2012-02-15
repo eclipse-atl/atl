@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
@@ -26,6 +27,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -34,6 +36,8 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.validation.model.EvaluationMode;
@@ -54,13 +58,15 @@ import org.eclipse.m2m.atl.emftvm.OutputRuleElement;
 import org.eclipse.m2m.atl.emftvm.Parameter;
 import org.eclipse.m2m.atl.emftvm.Rule;
 import org.eclipse.m2m.atl.emftvm.RuleElement;
+import org.eclipse.m2m.atl.emftvm.RuleMode;
 import org.eclipse.m2m.atl.emftvm.trace.TraceFactory;
+import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
+import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 import org.eclipse.m2m.atl.emftvm.util.DuplicateEntryException;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.FieldContainer;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
-import org.eclipse.m2m.atl.emftvm.util.Matcher;
 import org.eclipse.m2m.atl.emftvm.util.ModuleNotFoundException;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.NativeCodeBlock;
@@ -70,6 +76,7 @@ import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 import org.eclipse.m2m.atl.emftvm.util.TypeHashMap;
 import org.eclipse.m2m.atl.emftvm.util.TypeMap;
+import org.eclipse.m2m.atl.emftvm.util.Types;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 
@@ -87,6 +94,9 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getInoutModels <em>Inout Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getOutputModels <em>Output Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getModules <em>Modules</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getMatches <em>Matches</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getTraces <em>Traces</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getUniqueResults <em>Unique Results</em>}</li>
  * </ul>
  * </p>
  *
@@ -143,16 +153,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * The 'EMFTVM!ExecEnv' type.
-	 */
-	public static final String[] EXEC_ENV_TYPE 		= new String[]{"EMFTVM", "ExecEnv"};
-
-	/**
-	 * The 'TRACE!TraceLinkSet' type.
-	 */
-	public static final String[] TRACE_LINK_SET_TYPE = new String[]{"TRACE", "TraceLinkSet"};
-
-	/**
 	 * The cached value of the '{@link #getMetaModels() <em>Meta Models</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -201,6 +201,36 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @ordered
 	 */
 	protected Map<String, Module> modules;
+
+	/**
+	 * The cached value of the '{@link #getMatches() <em>Matches</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMatches()
+	 * @generated
+	 * @ordered
+	 */
+	protected TraceLinkSet matches;
+
+	/**
+	 * The cached value of the '{@link #getTraces() <em>Traces</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTraces()
+	 * @generated
+	 * @ordered
+	 */
+	protected TraceLinkSet traces;
+
+	/**
+	 * The cached value of the '{@link #getUniqueResults() <em>Unique Results</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUniqueResults()
+	 * @generated
+	 * @ordered
+	 */
+	protected Map<TraceLink, Object> uniqueResults;
 
 	/**
 	 * Set of modules that have effectively been loaded.
@@ -293,27 +323,17 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		mms.put(EcorePackage.eNAME.toUpperCase(), EMFTVMUtil.getEcoreMetamodel());
 		mms.put(EmftvmPackage.eNAME.toUpperCase(), EMFTVMUtil.getEmfTvmMetamodel());
 		mms.put(TracePackage.eNAME.toUpperCase(), EMFTVMUtil.getTraceMetamodel());
-		createField("matches", true, EXEC_ENV_TYPE, TRACE_LINK_SET_TYPE, new NativeCodeBlock() {
+		createField("matches", true, Types.EXEC_ENV_TYPE, Types.TRACE_LINK_SET_TYPE, new NativeCodeBlock() {
 			@Override
 			public StackFrame execute(final StackFrame frame) {
-				final Map<String, Model> oms = frame.getEnv().getOutputModels();
-				if (oms.containsKey("match")) {
-					frame.push(oms.get("match").newElement(TracePackage.eINSTANCE.getTraceLinkSet()));
-				} else {
-					frame.push(TraceFactory.eINSTANCE.createTraceLinkSet());
-				}
+				frame.push(getMatches());
 				return frame;
 			}
 		});
-		createField("traces", true, EXEC_ENV_TYPE, TRACE_LINK_SET_TYPE, new NativeCodeBlock() {
+		createField("traces", true, Types.EXEC_ENV_TYPE, Types.TRACE_LINK_SET_TYPE, new NativeCodeBlock() {
 			@Override
 			public StackFrame execute(final StackFrame frame) {
-				final Map<String, Model> oms = frame.getEnv().getOutputModels();
-				if (oms.containsKey("trace")) {
-					frame.push(oms.get("trace").newElement(TracePackage.eINSTANCE.getTraceLinkSet()));
-				} else {
-					frame.push(TraceFactory.eINSTANCE.createTraceLinkSet());
-				}
+				frame.push(getTraces());
 				return frame;
 			}
 		});
@@ -335,14 +355,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	private void createField(final String name, final boolean isStatic, 
 			final String[] context, final String[] type, final CodeBlock initialiser) {
-		final Field f = EmftvmFactory.eINSTANCE.createField();
-		f.setName(name);
-		f.setContextModel(context[0]);
-		f.setContext(context[1]);
-		f.setTypeModel(type[0]);
-		f.setType(type[1]);
-		f.setInitialiser(initialiser);
-		f.setStatic(isStatic);
+		final Field f = EMFTVMUtil.createField(name, isStatic, context, type, initialiser);
 		registerFeature(f);
 	}
 
@@ -369,6 +382,101 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			modules = Collections.synchronizedMap(new LinkedHashMap<String, Module>());
 		}
 		return modules;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public TraceLinkSet getMatches() {
+		if (matches == null) {
+			return basicGetMatches();
+		}
+		if (matches != null && matches.eIsProxy()) {
+			InternalEObject oldMatches = (InternalEObject)matches;
+			matches = (TraceLinkSet)eResolveProxy(oldMatches);
+			if (matches != oldMatches) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EmftvmPackage.EXEC_ENV__MATCHES, oldMatches, matches));
+			}
+		}
+		return matches;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * Returns the value of the 'Matches' reference.
+	 * @return the value of the 'Matches' reference.
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public TraceLinkSet basicGetMatches() {
+		if (matches == null) {
+			final Map<String, Model> oms = getOutputModels();
+			if (oms.containsKey("match")) {
+				matches = (TraceLinkSet)oms.get("match").newElement(TracePackage.eINSTANCE.getTraceLinkSet());
+			} else {
+				matches = TraceFactory.eINSTANCE.createTraceLinkSet();
+			}
+			assert matches != null;
+		}
+		return matches;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public TraceLinkSet getTraces() {
+		if (traces == null) {
+			return basicGetTraces();
+		}
+		if (traces != null && traces.eIsProxy()) {
+			InternalEObject oldTraces = (InternalEObject)traces;
+			traces = (TraceLinkSet)eResolveProxy(oldTraces);
+			if (traces != oldTraces) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EmftvmPackage.EXEC_ENV__TRACES, oldTraces, traces));
+			}
+		}
+		return traces;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * Returns the value of the 'Traces' reference.
+	 * @return the value of the 'Traces' reference.
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public TraceLinkSet basicGetTraces() {
+		if (traces == null) {
+			final Map<String, Model> oms = getOutputModels();
+			if (oms.containsKey("trace")) {
+				traces = (TraceLinkSet)oms.get("trace").newElement(TracePackage.eINSTANCE.getTraceLinkSet());
+			} else {
+				traces = TraceFactory.eINSTANCE.createTraceLinkSet();
+			}
+			assert traces != null;
+		}
+		return traces;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Map<TraceLink, Object> getUniqueResults() {
+		if (uniqueResults == null) {
+			uniqueResults = new HashMap<TraceLink, Object>();
+		}
+		return uniqueResults;
 	}
 
 	/**
@@ -1064,12 +1172,17 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		try {
 			assert deletionQueue.isEmpty();
 			clearModelCaches(); // clear model cache to make sure model maps are up to date
+			for (Rule rule : getRules()) {
+				rule.compileState(); // compile internal state for all registered rules
+			}
 			final Iterator<Operation> mains = mainChain.iterator();
 			if (!mains.hasNext()) {
 				throw new UnsupportedOperationException(String.format("Operation %s not found", EMFTVMUtil.MAIN_OP_NAME));
 			}
 			final StackFrame rootFrame = new StackFrame(this, mainChain.get(mainChain.size() - 1).getBody());
-			Matcher.matchAll(rootFrame, timingData); // run all automatic rules before main
+			// run all automatic rules before main
+			matchAllSingle(rootFrame, timingData); 
+			matchAllRecursive(rootFrame, timingData); 
 			while (mains.hasNext()) {
 				CodeBlock cb = mains.next().getBody();
 				StackFrame rFrame = cb.execute(new StackFrame(this, cb));
@@ -1130,6 +1243,95 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				thisModelOf.put(model.getResource(), model);
 			}
 			modelId.put(model, id);
+		}
+	}
+
+	/**
+	 * Matches all {@link RuleMode#AUTOMATIC_SINGLE} rules.
+	 * @param frame the stack frame context
+	 * @param timingData the timing data object to update
+	 */
+	private void matchAllSingle(final StackFrame frame, final TimingData timingData) {
+		final List<Rule> rules = getRules();
+		// Match automatic single rules
+		final Set<Rule> matchedRules = new LinkedHashSet<Rule>();
+		boolean match;
+		do {
+			match = false;
+			for (Rule rule : rules) {
+				// Only match rules for which all super-rules have already been matched
+				if (!matchedRules.contains(rule) && matchedRules.containsAll(rule.getESuperRules())) {
+					if (rule.matchSingle(frame)) {
+						match = true;
+						matchedRules.add(rule); // only add rules that match
+					}
+				}
+			}
+		} while (match);
+		// Create traces for automatic single rules
+		for (Rule rule : matchedRules) {
+			rule.createTraces(frame);
+		}
+		if (timingData != null) timingData.finishMatch();
+		// Apply rules
+		for (Rule rule : matchedRules) {
+			rule.apply(frame);
+		}
+		if (timingData != null) timingData.finishApply();
+		// Run post-apply
+		for (Rule rule : matchedRules) {
+			rule.postApply(frame);
+		}
+		deleteQueue();
+		if (timingData != null) timingData.finishPostApply();
+	}
+
+	/**
+	 * Matches all {@link RuleMode#AUTOMATIC_RECURSIVE} rules.
+	 * @param frame the stack frame context
+	 * @param timingData the timing data object to update
+	 */
+	private void matchAllRecursive(final StackFrame frame, final TimingData timingData) {
+		final List<Rule> rules = getRules();
+		final Set<Rule> matchedRules = new LinkedHashSet<Rule>();
+		
+		boolean outerMatch;
+		do {
+			outerMatch = false;
+			
+			// Match automatic recursive rules
+			matchedRules.clear();
+			boolean match;
+			MATCHER:
+			do {
+				match = false;
+				for (Rule rule : rules) {
+					// Only match rules for which all super-rules have already been matched
+					if (!matchedRules.contains(rule) && matchedRules.containsAll(rule.getESuperRules())) {
+						boolean[] matchResult = rule.matchRecursive(frame);
+						if (matchResult[1]) { // Guaranteed final match
+							outerMatch = true;
+							matchedRules.add(rule);
+							break MATCHER;
+						} else if (matchResult[0]) {
+							match = true;
+							matchedRules.add(rule);
+							outerMatch |= !rule.isAbstract();
+						}
+					}
+				}
+			} while (match);
+
+			for (Rule rule : matchedRules) {
+				if (rule.applyFirst(frame)) {
+					break;
+				}
+			}
+			
+		} while (outerMatch);		
+
+		if (timingData != null) {
+			timingData.finishRecursive();
 		}
 	}
 
@@ -1253,6 +1455,14 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				return getOutputModels();
 			case EmftvmPackage.EXEC_ENV__MODULES:
 				return getModules();
+			case EmftvmPackage.EXEC_ENV__MATCHES:
+				if (resolve) return getMatches();
+				return basicGetMatches();
+			case EmftvmPackage.EXEC_ENV__TRACES:
+				if (resolve) return getTraces();
+				return basicGetTraces();
+			case EmftvmPackage.EXEC_ENV__UNIQUE_RESULTS:
+				return getUniqueResults();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1276,6 +1486,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				return outputModels != null;
 			case EmftvmPackage.EXEC_ENV__MODULES:
 				return modules != null;
+			case EmftvmPackage.EXEC_ENV__MATCHES:
+				return matches != null;
+			case EmftvmPackage.EXEC_ENV__TRACES:
+				return traces != null;
+			case EmftvmPackage.EXEC_ENV__UNIQUE_RESULTS:
+				return uniqueResults != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1301,6 +1517,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		result.append(outputModels);
 		result.append(", modules: ");
 		result.append(modules);
+		result.append(", uniqueResults: ");
+		result.append(uniqueResults);
 		result.append(')');
 		return result.toString();
 	}

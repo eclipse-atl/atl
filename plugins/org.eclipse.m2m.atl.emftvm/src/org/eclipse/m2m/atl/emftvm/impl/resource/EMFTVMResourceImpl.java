@@ -57,6 +57,14 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 	  */
 	public static final int MAGIC = 0x4554564D;
 
+	/** Default trace mode value. */
+	public static final int TRACE_MODE_DEFAULT = 1;
+	/** Unique trace mode value. */
+	public static final int TRACE_MODE_UNIQUE  = 2;
+
+	/**
+	 * EMFTVM bytecode model element factory.
+	 */
 	protected static final EmftvmFactory FACTORY = EmftvmFactory.eINSTANCE;
 
 	/**
@@ -302,8 +310,10 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			rules.add(rule);
 			readNamedElement(in, constants, rule);
 			rule.setMode(RuleMode.get(in.readInt()));
-			rule.setAbstract(in.readInt() == 1); 
-			rule.setDefault(in.readInt() == 1); 
+			rule.setAbstract(in.readInt() == 1);
+			final int traceMode = in.readInt();
+			rule.setDefault((traceMode & TRACE_MODE_DEFAULT) == TRACE_MODE_DEFAULT); 
+			rule.setUnique((traceMode & TRACE_MODE_UNIQUE) == TRACE_MODE_UNIQUE); 
 			rule.setDistinctElements(in.readInt() == 1); 
 			readInputRuleElements(in, constants, rule.getInputElements());
 			readOutputRuleElements(in, constants, rule);
@@ -595,7 +605,10 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 			writeNamedElement(out, constants, r);
 			out.writeInt(r.getMode().getValue());
 			out.writeInt(r.isAbstract() ? 1 : 0);
-			out.writeInt(r.isDefault() ? 1 : 0);
+			int traceMode = 0;
+			if (r.isDefault()) traceMode += TRACE_MODE_DEFAULT;
+			if (r.isUnique()) traceMode += TRACE_MODE_UNIQUE;
+			out.writeInt(traceMode);
 			out.writeInt(r.isDistinctElements() ? 1 : 0);
 			writeInputRuleElements(out, constants, r.getInputElements());
 			writeOutputRuleElements(out, constants, r);

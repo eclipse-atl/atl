@@ -11,7 +11,14 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm;
 
+import java.util.Map;
+import java.util.Set;
+
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
+import org.eclipse.m2m.atl.emftvm.util.StackFrame;
+import org.eclipse.m2m.atl.emftvm.util.VMException;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,6 +43,9 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#getFields <em>Fields</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#isDefault <em>Default</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#isDistinctElements <em>Distinct Elements</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#isUnique <em>Unique</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#isLeaf <em>Leaf</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#isWithLeaves <em>With Leaves</em>}</li>
  * </ul>
  * </p>
  *
@@ -370,6 +380,64 @@ public interface Rule extends NamedElement {
 	void setDistinctElements(boolean value);
 
 	/**
+	 * Returns the value of the '<em><b>Unique</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * A unique rule matches at most once against a unique (list of)
+	 * source value(s). Traces created by a unique rule can also be efficiently
+	 * lookup up, because each (list of) source value(s) maps to at most one
+	 * (list of) target value(s).
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Unique</em>' attribute.
+	 * @see #setUnique(boolean)
+	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getRule_Unique()
+	 * @model required="true"
+	 * @generated
+	 */
+	boolean isUnique();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.Rule#isUnique <em>Unique</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Unique</em>' attribute.
+	 * @see #isUnique()
+	 * @generated
+	 */
+	void setUnique(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Leaf</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * A rule is a leaf rule when it is not abstract, and it has no leaf sub-rules.
+	 * Call {@link #compileState()} before calling this method.
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Leaf</em>' attribute.
+	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getRule_Leaf()
+	 * @model required="true" transient="true" changeable="false" derived="true"
+	 * @generated
+	 */
+	boolean isLeaf();
+
+	/**
+	 * Returns the value of the '<em><b>With Leaves</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * A rule is with leaves if it has leaf sub-rules.
+	 * Call {@link #compileState()} before calling this method.
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>With Leaves</em>' attribute.
+	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getRule_WithLeaves()
+	 * @model required="true" transient="true" changeable="false" derived="true"
+	 * @generated
+	 */
+	boolean isWithLeaves();
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * Finds a {@link Field} registered within this {@link Rule}.
 	 * @param context the context type of the field
@@ -402,5 +470,160 @@ public interface Rule extends NamedElement {
 	 * @generated
 	 */
 	void registerField(Field field);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Matches this rule for the automatic single stage, if applicable.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame in which to execute the matcher
+	 * @return <code>true</code> iff the rule has any matches
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	boolean matchSingle(StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Matches this rule for the automatic recursive stage, if applicable.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame in which to execute the matcher
+	 * @return [<code>true</code> iff the rule has any matches, <code>true</code> iff there was a guaranteed final match]
+	 * <!-- end-user-doc -->
+	 * @model dataType="org.eclipse.m2m.atl.emftvm.EBooleanArray" frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	boolean[] matchRecursive(StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Matches this rule manually, if applicable.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame in which to execute the matcher
+	 * @param values the values to match against
+	 * @return the rule application result, or <code>null</code> if the rule did not match
+	 * @throws VMException if this is not a {@link RuleMode#MANUAL} rule
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame" valuesDataType="org.eclipse.m2m.atl.emftvm.EObjectArray"
+	 * @generated
+	 */
+	Object matchManual(StackFrame frame, EObject[] values);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Matches rule for <code>valuesMap</code>.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame in which to execute the matcher
+	 * @param valuesMap the values to match against
+	 * @return <code>true</code> iff the rule matches
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	boolean matchOne(StackFrame frame, Map<String, EObject> valuesMap);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Creates trace elements for the recorded matches for this rule.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame context
+	 * @throws VMException if no matches are recorded for this rule
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void createTraces(StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Completes <code>trace</code> for this rule by creating the output elements.
+	 * Will create default/unique trace iff mapsTo information exists.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame context
+	 * @param trace the trace to complete
+	 * @return <code>true</code> iff default/unique mappings were defined
+	 * 	for the complete list of source elements
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	boolean completeTraceFor(StackFrame frame, TraceLink trace);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Applies this rule for the created traces.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame in which to execute the applier
+	 * @throws VMException if no traces exist for this rule
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void apply(StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Runs post-applier for this rule for the created traces.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame in which to execute the post-applier
+	 * @throws VMException if no traces exist for this rule
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void postApply(StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Applies and post-applies this rule for the first recorded match.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame in which to execute the applier and post-applier
+	 * @return <code>true</code> iff this rule was applied
+	 * @throws VMException if no matches are recorded for this rule
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	boolean applyFirst(StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Applies this rule for the given <code>trace</code>.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame context
+	 * @param trace the trace link to apply the rule for
+	 * @param ruleApplyArgs the argument arrays for the rule applier code blocks
+	 * @param appliedRules the set of already applied rules (rules are applied at most once for each trace)
+	 * @return the stack frame with the application result
+	 * <!-- end-user-doc -->
+	 * @model dataType="org.eclipse.m2m.atl.emftvm.StackFrame" frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame" appliedRulesDataType="org.eclipse.m2m.atl.emftvm.EJavaSet<org.eclipse.m2m.atl.emftvm.Rule>"
+	 * @generated
+	 */
+	StackFrame applyFor(StackFrame frame, TraceLink trace, Map<Rule, Object[]> ruleApplyArgs, Set<Rule> appliedRules);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Post-applies this rule for the given <code>trace</code>.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame context
+	 * @param trace the trace link to post-apply the rule for
+	 * @param ruleApplyArgs the argument arrays for the rule post-applier code blocks
+	 * @param appliedRules the set of already post-applied rules (rules are post-applied at most once for each trace)
+	 * @return the stack frame with the post-application result
+	 * <!-- end-user-doc -->
+	 * @model dataType="org.eclipse.m2m.atl.emftvm.StackFrame" frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame" appliedRulesDataType="org.eclipse.m2m.atl.emftvm.EJavaSet<org.eclipse.m2m.atl.emftvm.Rule>"
+	 * @generated
+	 */
+	StackFrame postApplyFor(StackFrame frame, TraceLink trace, Map<Rule, Object[]> ruleApplyArgs, Set<Rule> appliedRules);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Compiles the internal state of this rule for optimised matching.
+	 * Call this method whenever any properties of this rule or any sub-rules have changed.
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void compileState();
 
 } // Rule

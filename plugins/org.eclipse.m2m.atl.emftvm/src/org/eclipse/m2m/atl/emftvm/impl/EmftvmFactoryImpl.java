@@ -259,6 +259,14 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 				return createLazySetFromString(eDataType, initialValue);
 			case EmftvmPackage.EJAVA_OBJECT_ARRAY:
 				return createEJavaObjectArrayFromString(eDataType, initialValue);
+			case EmftvmPackage.EOBJECT_ARRAY:
+				return createEObjectArrayFromString(eDataType, initialValue);
+			case EmftvmPackage.EBOOLEAN_ARRAY:
+				return createEBooleanArrayFromString(eDataType, initialValue);
+			case EmftvmPackage.EJAVA_SET:
+				return createEJavaSetFromString(eDataType, initialValue);
+			case EmftvmPackage.EJAVA_ITERABLE:
+				return createEJavaIterableFromString(eDataType, initialValue);
 			case EmftvmPackage.CLASS_NOT_FOUND_EXCEPTION:
 				return createClassNotFoundExceptionFromString(eDataType, initialValue);
 			default:
@@ -307,6 +315,14 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 				return convertLazySetToString(eDataType, instanceValue);
 			case EmftvmPackage.EJAVA_OBJECT_ARRAY:
 				return convertEJavaObjectArrayToString(eDataType, instanceValue);
+			case EmftvmPackage.EOBJECT_ARRAY:
+				return convertEObjectArrayToString(eDataType, instanceValue);
+			case EmftvmPackage.EBOOLEAN_ARRAY:
+				return convertEBooleanArrayToString(eDataType, instanceValue);
+			case EmftvmPackage.EJAVA_SET:
+				return convertEJavaSetToString(eDataType, instanceValue);
+			case EmftvmPackage.EJAVA_ITERABLE:
+				return convertEJavaIterableToString(eDataType, instanceValue);
 			case EmftvmPackage.CLASS_NOT_FOUND_EXCEPTION:
 				return convertClassNotFoundExceptionToString(eDataType, instanceValue);
 			default:
@@ -1301,6 +1317,78 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public String convertEJavaObjectArrayToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EObject[] createEObjectArrayFromString(EDataType eDataType, String initialValue) {
+		return (EObject[])super.createFromString(initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertEObjectArrayToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean[] createEBooleanArrayFromString(EDataType eDataType, String initialValue) {
+		return (boolean[])super.createFromString(initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertEBooleanArrayToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public java.util.Set<?> createEJavaSetFromString(EDataType eDataType, String initialValue) {
+		return (java.util.Set<?>)super.createFromString(initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertEJavaSetToString(EDataType eDataType, Object instanceValue) {
+		return super.convertToString(instanceValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Iterable<?> createEJavaIterableFromString(EDataType eDataType, String initialValue) {
+		return (Iterable<?>)super.createFromString(initialValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertEJavaIterableToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 

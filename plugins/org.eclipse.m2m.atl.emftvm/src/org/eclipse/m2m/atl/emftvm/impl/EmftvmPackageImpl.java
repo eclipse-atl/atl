@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -105,6 +106,7 @@ import org.eclipse.m2m.atl.emftvm.Swap;
 import org.eclipse.m2m.atl.emftvm.SwapX1;
 import org.eclipse.m2m.atl.emftvm.TypedElement;
 import org.eclipse.m2m.atl.emftvm.Xor;
+import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
 import org.eclipse.m2m.atl.emftvm.util.LazyBag;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
@@ -760,6 +762,34 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EDataType eObjectArrayEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eBooleanArrayEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eJavaSetEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EDataType eJavaIterableEDataType = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EDataType classNotFoundExceptionEDataType = null;
 
 	/**
@@ -824,6 +854,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		// Initialize simple dependencies
 		EcorePackage.eINSTANCE.eClass();
+		TracePackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theEmftvmPackage.createPackageContents();
@@ -1513,6 +1544,33 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 */
 	public EAttribute getRule_DistinctElements() {
 		return (EAttribute)ruleEClass.getEStructuralFeatures().get(13);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRule_Unique() {
+		return (EAttribute)ruleEClass.getEStructuralFeatures().get(14);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRule_Leaf() {
+		return (EAttribute)ruleEClass.getEStructuralFeatures().get(15);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getRule_WithLeaves() {
+		return (EAttribute)ruleEClass.getEStructuralFeatures().get(16);
 	}
 
 	/**
@@ -2465,6 +2523,33 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getExecEnv_Matches() {
+		return (EReference)execEnvEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getExecEnv_Traces() {
+		return (EReference)execEnvEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getExecEnv_UniqueResults() {
+		return (EAttribute)execEnvEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getExecEnv_MetaModels() {
 		return (EAttribute)execEnvEClass.getEStructuralFeatures().get(0);
 	}
@@ -2726,6 +2811,42 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EDataType getEObjectArray() {
+		return eObjectArrayEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getEBooleanArray() {
+		return eBooleanArrayEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getEJavaSet() {
+		return eJavaSetEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EDataType getEJavaIterable() {
+		return eJavaIterableEDataType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EDataType getClassNotFoundException() {
 		return classNotFoundExceptionEDataType;
 	}
@@ -2782,6 +2903,9 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		createEAttribute(execEnvEClass, EXEC_ENV__INOUT_MODELS);
 		createEAttribute(execEnvEClass, EXEC_ENV__OUTPUT_MODELS);
 		createEAttribute(execEnvEClass, EXEC_ENV__MODULES);
+		createEReference(execEnvEClass, EXEC_ENV__MATCHES);
+		createEReference(execEnvEClass, EXEC_ENV__TRACES);
+		createEAttribute(execEnvEClass, EXEC_ENV__UNIQUE_RESULTS);
 
 		modelEClass = createEClass(MODEL);
 		createEAttribute(modelEClass, MODEL__RESOURCE);
@@ -2875,6 +2999,9 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		createEReference(ruleEClass, RULE__FIELDS);
 		createEAttribute(ruleEClass, RULE__DEFAULT);
 		createEAttribute(ruleEClass, RULE__DISTINCT_ELEMENTS);
+		createEAttribute(ruleEClass, RULE__UNIQUE);
+		createEAttribute(ruleEClass, RULE__LEAF);
+		createEAttribute(ruleEClass, RULE__WITH_LEAVES);
 
 		ruleElementEClass = createEClass(RULE_ELEMENT);
 		createEAttribute(ruleElementEClass, RULE_ELEMENT__MODELS);
@@ -3065,6 +3192,10 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		lazyOrderedSetEDataType = createEDataType(LAZY_ORDERED_SET);
 		lazySetEDataType = createEDataType(LAZY_SET);
 		eJavaObjectArrayEDataType = createEDataType(EJAVA_OBJECT_ARRAY);
+		eObjectArrayEDataType = createEDataType(EOBJECT_ARRAY);
+		eBooleanArrayEDataType = createEDataType(EBOOLEAN_ARRAY);
+		eJavaSetEDataType = createEDataType(EJAVA_SET);
+		eJavaIterableEDataType = createEDataType(EJAVA_ITERABLE);
 		classNotFoundExceptionEDataType = createEDataType(CLASS_NOT_FOUND_EXCEPTION);
 	}
 
@@ -3093,6 +3224,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		// Obtain other dependent packages
 		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
+		TracePackage theTracePackage = (TracePackage)EPackage.Registry.INSTANCE.getEPackage(TracePackage.eNS_URI);
 
 		// Create type parameters
 		addETypeParameter(lazyCollectionEDataType, "E");
@@ -3100,6 +3232,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		addETypeParameter(lazyListEDataType, "E");
 		addETypeParameter(lazyOrderedSetEDataType, "E");
 		addETypeParameter(lazySetEDataType, "E");
+		addETypeParameter(eJavaSetEDataType, "E");
+		addETypeParameter(eJavaIterableEDataType, "E");
 
 		// Set bounds for type parameters
 
@@ -3206,6 +3340,14 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		g2 = createEGenericType(this.getModule());
 		g1.getETypeArguments().add(g2);
 		initEAttribute(getExecEnv_Modules(), g1, "modules", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getExecEnv_Matches(), theTracePackage.getTraceLinkSet(), null, "matches", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getExecEnv_Traces(), theTracePackage.getTraceLinkSet(), null, "traces", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		g1 = createEGenericType(theEcorePackage.getEMap());
+		g2 = createEGenericType(theTracePackage.getTraceLink());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(ecorePackage.getEJavaObject());
+		g1.getETypeArguments().add(g2);
+		initEAttribute(getExecEnv_UniqueResults(), g1, "uniqueResults", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
 		EOperation op = addEOperation(execEnvEClass, this.getModule(), "loadModule", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getModuleResolver(), "resolver", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3400,6 +3542,9 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEReference(getRule_Fields(), this.getField(), this.getField_Rule(), "fields", null, 0, -1, Rule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRule_Default(), theEcorePackage.getEBoolean(), "default", null, 1, 1, Rule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRule_DistinctElements(), theEcorePackage.getEBoolean(), "distinctElements", null, 1, 1, Rule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRule_Unique(), theEcorePackage.getEBoolean(), "unique", null, 1, 1, Rule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRule_Leaf(), theEcorePackage.getEBoolean(), "leaf", null, 1, 1, Rule.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getRule_WithLeaves(), theEcorePackage.getEBoolean(), "withLeaves", null, 1, 1, Rule.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(ruleEClass, this.getField(), "findField", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3412,6 +3557,71 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		op = addEOperation(ruleEClass, null, "registerField", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getField(), "field", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		op = addEOperation(ruleEClass, theEcorePackage.getEBoolean(), "matchSingle", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, this.getEBooleanArray(), "matchRecursive", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, ecorePackage.getEJavaObject(), "matchManual", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getEObjectArray(), "values", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, theEcorePackage.getEBoolean(), "matchOne", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(theEcorePackage.getEMap());
+		g2 = createEGenericType(theEcorePackage.getEString());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(theEcorePackage.getEObject());
+		g1.getETypeArguments().add(g2);
+		addEParameter(op, g1, "valuesMap", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, null, "createTraces", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, theEcorePackage.getEBoolean(), "completeTraceFor", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theTracePackage.getTraceLink(), "trace", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, null, "apply", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, null, "postApply", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, theEcorePackage.getEBoolean(), "applyFirst", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, this.getStackFrame(), "applyFor", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theTracePackage.getTraceLink(), "trace", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(theEcorePackage.getEMap());
+		g2 = createEGenericType(this.getRule());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(this.getEJavaObjectArray());
+		g1.getETypeArguments().add(g2);
+		addEParameter(op, g1, "ruleApplyArgs", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(this.getEJavaSet());
+		g2 = createEGenericType(this.getRule());
+		g1.getETypeArguments().add(g2);
+		addEParameter(op, g1, "appliedRules", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, this.getStackFrame(), "postApplyFor", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theTracePackage.getTraceLink(), "trace", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(theEcorePackage.getEMap());
+		g2 = createEGenericType(this.getRule());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(this.getEJavaObjectArray());
+		g1.getETypeArguments().add(g2);
+		addEParameter(op, g1, "ruleApplyArgs", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(this.getEJavaSet());
+		g2 = createEGenericType(this.getRule());
+		g1.getETypeArguments().add(g2);
+		addEParameter(op, g1, "appliedRules", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(ruleEClass, null, "compileState", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(ruleElementEClass, RuleElement.class, "RuleElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRuleElement_Models(), theEcorePackage.getEString(), "models", null, 0, -1, RuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRuleElement_EModels(), this.getModel(), null, "eModels", null, 0, -1, RuleElement.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -3419,6 +3629,13 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEClass(inputRuleElementEClass, InputRuleElement.class, "InputRuleElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getInputRuleElement_Binding(), this.getCodeBlock(), this.getCodeBlock_BindingFor(), "binding", null, 0, 1, InputRuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getInputRuleElement_InputFor(), this.getRule(), this.getRule_InputElements(), "inputFor", null, 0, 1, InputRuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		op = addEOperation(inputRuleElementEClass, null, "createIterable", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getExecEnv(), "env", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(this.getEJavaIterable());
+		g2 = createEGenericType(theEcorePackage.getEObject());
+		g1.getETypeArguments().add(g2);
+		initEOperation(op, g1);
 
 		initEClass(outputRuleElementEClass, OutputRuleElement.class, "OutputRuleElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getOutputRuleElement_MapsTo(), this.getInputRuleElement(), null, "mapsTo", null, 0, -1, OutputRuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3697,6 +3914,10 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEDataType(lazyOrderedSetEDataType, LazyOrderedSet.class, "LazyOrderedSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(lazySetEDataType, LazySet.class, "LazySet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(eJavaObjectArrayEDataType, Object[].class, "EJavaObjectArray", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(eObjectArrayEDataType, EObject[].class, "EObjectArray", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(eBooleanArrayEDataType, boolean[].class, "EBooleanArray", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(eJavaSetEDataType, java.util.Set.class, "EJavaSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(eJavaIterableEDataType, Iterable.class, "EJavaIterable", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(classNotFoundExceptionEDataType, ClassNotFoundException.class, "ClassNotFoundException", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource

@@ -15,13 +15,18 @@ package org.eclipse.m2m.atl.emftvm.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
+import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.InputRuleElement;
+import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.Rule;
+import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
+import org.eclipse.m2m.atl.emftvm.util.LazyList;
 
 /**
  * <!-- begin-user-doc -->
@@ -159,6 +164,24 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.INPUT_RULE_ELEMENT__INPUT_FOR, newInputFor, newInputFor));
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Iterable<EObject> createIterable(ExecEnv env) {
+		if (getEModels().isEmpty()) {
+			return EMFTVMUtil.findAllInstances(env, (EClass)getEType());
+		} else {
+			LazyList<EObject> allInstances = new LazyList<EObject>();
+			for (Model m : getEModels()) {
+				allInstances = allInstances.union(m.allInstancesOf((EClass)getEType()));
+			}
+			return allInstances;
+		}
 	}
 
 	/**
