@@ -26,6 +26,8 @@ import org.eclipse.m2m.atl.emftvm.Rule;
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#getESuperRules() <em>ESuper Rules</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#getESubRules() <em>ESub Rules</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#isLeaf() <em>Leaf</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#isWithLeaves() <em>With Leaves</em>}</li>
  * </ul>
  * </p>
  * <p>
@@ -34,6 +36,18 @@ import org.eclipse.m2m.atl.emftvm.Rule;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#findField(java.lang.Object, java.lang.String) <em>Find Field</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#findStaticField(java.lang.Object, java.lang.String) <em>Find Static Field</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#registerField(org.eclipse.m2m.atl.emftvm.Field) <em>Register Field</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#matchSingle(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Match Single</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#matchRecursive(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Match Recursive</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#matchManual(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.emf.ecore.EObject[]) <em>Match Manual</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#matchOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map) <em>Match One</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#createTraces(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Create Traces</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#completeTraceFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink) <em>Complete Trace For</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#apply(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Apply</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#postApply(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Post Apply</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#applyFirst(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Apply First</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#applyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink, java.util.Map, java.util.Set) <em>Apply For</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#postApplyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink, java.util.Map, java.util.Set) <em>Post Apply For</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#compileState() <em>Compile State</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -119,6 +133,32 @@ public class RuleTest extends NamedElementTest {
 	}
 
 	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#isLeaf() <em>Leaf</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#isLeaf()
+	 * @generated
+	 */
+	public void testIsLeaf() {
+		// TODO: implement this feature getter test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#isWithLeaves() <em>With Leaves</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#isWithLeaves()
+	 * @generated
+	 */
+	public void testIsWithLeaves() {
+		// TODO: implement this feature getter test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#findField(java.lang.Object, java.lang.String) <em>Find Field</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -152,6 +192,162 @@ public class RuleTest extends NamedElementTest {
 	 * @generated
 	 */
 	public void testRegisterField__Field() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#matchSingle(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Match Single</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#matchSingle(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated
+	 */
+	public void testMatchSingle__StackFrame() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#matchRecursive(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Match Recursive</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#matchRecursive(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated
+	 */
+	public void testMatchRecursive__StackFrame() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#matchManual(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.emf.ecore.EObject[]) <em>Match Manual</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#matchManual(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.emf.ecore.EObject[])
+	 * @generated
+	 */
+	public void testMatchManual__StackFrame_EObject() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#matchOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map) <em>Match One</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#matchOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map)
+	 * @generated
+	 */
+	public void testMatchOne__StackFrame_Map() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#createTraces(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Create Traces</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#createTraces(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated
+	 */
+	public void testCreateTraces__StackFrame() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#completeTraceFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink) <em>Complete Trace For</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#completeTraceFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink)
+	 * @generated
+	 */
+	public void testCompleteTraceFor__StackFrame_TraceLink() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#apply(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Apply</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#apply(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated
+	 */
+	public void testApply__StackFrame() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#postApply(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Post Apply</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#postApply(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated
+	 */
+	public void testPostApply__StackFrame() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#applyFirst(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Apply First</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#applyFirst(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated
+	 */
+	public void testApplyFirst__StackFrame() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#applyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink, java.util.Map, java.util.Set) <em>Apply For</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#applyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink, java.util.Map, java.util.Set)
+	 * @generated
+	 */
+	public void testApplyFor__StackFrame_TraceLink_Map_Set() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#postApplyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink, java.util.Map, java.util.Set) <em>Post Apply For</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#postApplyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink, java.util.Map, java.util.Set)
+	 * @generated
+	 */
+	public void testPostApplyFor__StackFrame_TraceLink_Map_Set() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#compileState() <em>Compile State</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#compileState()
+	 * @generated
+	 */
+	public void testCompileState() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();

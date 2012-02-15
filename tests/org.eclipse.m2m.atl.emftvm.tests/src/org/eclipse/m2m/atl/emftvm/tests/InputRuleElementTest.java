@@ -21,6 +21,12 @@ import org.eclipse.m2m.atl.emftvm.InputRuleElement;
  * A test case for the model object '<em><b>Input Rule Element</b></em>'.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
+ * <p>
+ * The following operations are tested:
+ * <ul>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.InputRuleElement#createIterable(org.eclipse.m2m.atl.emftvm.ExecEnv) <em>Create Iterable</em>}</li>
+ * </ul>
+ * </p>
  * @generated
  */
 public class InputRuleElementTest extends RuleElementTest {
@@ -75,6 +81,19 @@ public class InputRuleElementTest extends RuleElementTest {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.InputRuleElement#createIterable(org.eclipse.m2m.atl.emftvm.ExecEnv) <em>Create Iterable</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.InputRuleElement#createIterable(org.eclipse.m2m.atl.emftvm.ExecEnv)
+	 * @generated
+	 */
+	public void testCreateIterable__ExecEnv() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 } //InputRuleElementTest

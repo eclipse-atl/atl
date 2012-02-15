@@ -47,6 +47,14 @@ import org.osgi.framework.Bundle;
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * <p>
+ * The following features are tested:
+ * <ul>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMatches() <em>Matches</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getTraces() <em>Traces</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getUniqueResults() <em>Unique Results</em>}</li>
+ * </ul>
+ * </p>
+ * <p>
  * The following operations are tested:
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#loadModule(org.eclipse.m2m.atl.emftvm.util.ModuleResolver, java.lang.String) <em>Load Module</em>}</li>
@@ -146,6 +154,45 @@ public class ExecEnvTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMatches() <em>Matches</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getMatches()
+	 * @generated
+	 */
+	public void testGetMatches() {
+		// TODO: implement this feature getter test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getTraces() <em>Traces</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getTraces()
+	 * @generated
+	 */
+	public void testGetTraces() {
+		// TODO: implement this feature getter test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getUniqueResults() <em>Unique Results</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getUniqueResults()
+	 * @generated
+	 */
+	public void testGetUniqueResults() {
+		// TODO: implement this feature getter test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 	/**
