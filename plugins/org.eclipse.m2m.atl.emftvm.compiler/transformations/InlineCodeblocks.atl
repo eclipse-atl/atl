@@ -1,7 +1,7 @@
 -- @atlcompiler emftvm
 -- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
 -- Inlines nested code blocks
--- $Id: InlineCodeblocks.atl,v 1.5 2011/12/13 15:48:19 dwagelaar Exp $
+-- $Id: InlineCodeblocks.atl,v 1.6 2012/02/15 17:01:22 uid8825 Exp $
 module InlineCodeblocks;
 create OUT : EMFTVM from IN : EMFTVM;
 
@@ -229,6 +229,7 @@ rule Rule {
         superRules <- s.superRules,
         "abstract" <- s."abstract",
 		default <- s.default,
+		"unique" <- s."unique",
 		distinctElements <- s.distinctElements,
         inputElements <- s.inputElements,
         outputElements <- s.outputElements,
