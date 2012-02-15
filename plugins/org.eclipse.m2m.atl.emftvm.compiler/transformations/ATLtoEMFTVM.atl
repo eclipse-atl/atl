@@ -3,7 +3,7 @@
 -- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: ATLtoEMFTVM.atl,v 1.10 2012/01/26 20:53:22 dwagelaar Exp $
+-- $Id: ATLtoEMFTVM.atl,v 1.11 2012/02/15 17:01:22 dwagelaar Exp $
 module ATLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -499,12 +499,8 @@ rule MatchedRule {
 			else
 				#automaticSingle -- TODO support refining rules
 			endif,
-		default <-
-			if s.oclIsKindOf(ATL!LazyMatchedRule) then
-				s.isUnique
-			else
-				not s.isNoDefault
-			endif,
+		default <- not (s.oclIsKindOf(ATL!LazyMatchedRule) or s.isNoDefault),
+		"unique" <- (s.oclIsKindOf(ATL!LazyMatchedRule) and	s.isUnique) or s.isNoDefault,
 		distinctElements <- false,
 		inputElements <- s.inPattern.elements,
 		fields <- s.variables,
@@ -591,23 +587,34 @@ rule Binding {
 	to cb : EMFTVM!CodeBlock (
 		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.value},
-		code <- Sequence{invokeCb, invoke, load, set}),
+		code <- Sequence{invokeCb, load, set}),
 	   ln : EMFTVM!LineNumber (
 	   	startLine <- s.location.startLine,
 		startColumn <- s.location.startColumn,
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
-		instructions <- Sequence{invokeCb, invoke, load, set}),
+		instructions <- Sequence{invokeCb, load, set}),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),	-- [value]
-	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [rvalue]
 	   load : EMFTVM!Load (
-	   	localVariable <-													-- [lv, rvalue]
+	   	localVariable <-													-- [lv, value]
 			if s.parentRule.oclIsKindOf(ATL!MatchedRule) then
 				thisModule.resolveTemp(s.outPatternElement, 'ov')
 			else
 				thisModule.resolveTemp(s.outPatternElement, 'lv')
 			endif),
 	   set : EMFTVM!"Set" (fieldname <- s.propertyName)						-- []
+}
+
+rule ResolvingBinding extends Binding {
+	from s : ATL!Binding in IN (not s.isAssignment)
+	to cb : EMFTVM!CodeBlock (
+		code <- Sequence{invokeCb, invoke, load, set}),
+	   ln : EMFTVM!LineNumber (
+		instructions <- Sequence{invokeCb, invoke, load, set}),
+	   invokeCb : EMFTVM!InvokeCb,											-- [value]
+	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [rvalue]
+	   load : EMFTVM!Load,													-- [lv, rvalue]
+	   set : EMFTVM!"Set"													-- []
 }
 
 -------------- Statements -----------------
