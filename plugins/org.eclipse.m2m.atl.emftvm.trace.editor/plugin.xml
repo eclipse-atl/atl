@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ (C) 2011 Dennis Wagelaar, Vrije Universiteit Brussel
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.eclipse.m2m.atl.emftvm.trace.presentation.TraceModelWizardID"
+            name="%_UI_TraceModelWizard_label"
+            class="org.eclipse.m2m.atl.emftvm.trace.presentation.TraceModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/TraceModelFile.gif">
+         <description>%_UI_TraceModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.eclipse.m2m.atl.emftvm.trace.presentation.TraceEditorID"
+            name="%_UI_TraceEditor_label"
+            icon="icons/full/obj16/TraceModelFile.gif"
+            extensions="trace"
+            class="org.eclipse.m2m.atl.emftvm.trace.presentation.TraceEditor"
+            contributorClass="org.eclipse.m2m.atl.emftvm.trace.presentation.TraceActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
