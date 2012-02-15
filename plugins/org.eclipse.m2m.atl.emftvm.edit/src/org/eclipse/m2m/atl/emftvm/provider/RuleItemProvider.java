@@ -75,6 +75,9 @@ public class RuleItemProvider
 			addAbstractPropertyDescriptor(object);
 			addDefaultPropertyDescriptor(object);
 			addDistinctElementsPropertyDescriptor(object);
+			addUniquePropertyDescriptor(object);
+			addLeafPropertyDescriptor(object);
+			addWithLeavesPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -205,7 +208,7 @@ public class RuleItemProvider
 				 EmftvmPackage.Literals.RULE__SUPER_RULES,
 				 true,
 				 false,
-				 true,
+				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
 				 null));
@@ -270,6 +273,72 @@ public class RuleItemProvider
 				 getString("_UI_PropertyDescriptor_description", "_UI_Rule_distinctElements_feature", "_UI_Rule_type"),
 				 EmftvmPackage.Literals.RULE__DISTINCT_ELEMENTS,
 				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Unique feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addUniquePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Rule_unique_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Rule_unique_feature", "_UI_Rule_type"),
+				 EmftvmPackage.Literals.RULE__UNIQUE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Leaf feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addLeafPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Rule_leaf_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Rule_leaf_feature", "_UI_Rule_type"),
+				 EmftvmPackage.Literals.RULE__LEAF,
+				 false,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the With Leaves feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addWithLeavesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Rule_withLeaves_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Rule_withLeaves_feature", "_UI_Rule_type"),
+				 EmftvmPackage.Literals.RULE__WITH_LEAVES,
+				 false,
 				 false,
 				 false,
 				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
@@ -350,9 +419,13 @@ public class RuleItemProvider
 
 		switch (notification.getFeatureID(Rule.class)) {
 			case EmftvmPackage.RULE__MODE:
+			case EmftvmPackage.RULE__SUPER_RULES:
 			case EmftvmPackage.RULE__ABSTRACT:
 			case EmftvmPackage.RULE__DEFAULT:
 			case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
+			case EmftvmPackage.RULE__UNIQUE:
+			case EmftvmPackage.RULE__LEAF:
+			case EmftvmPackage.RULE__WITH_LEAVES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case EmftvmPackage.RULE__INPUT_ELEMENTS:

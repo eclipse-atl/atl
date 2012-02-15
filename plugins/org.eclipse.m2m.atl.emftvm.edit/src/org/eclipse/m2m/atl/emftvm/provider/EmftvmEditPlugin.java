@@ -14,6 +14,7 @@ package org.eclipse.m2m.atl.emftvm.provider;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
+import org.eclipse.m2m.atl.emftvm.trace.provider.TraceEditPlugin;
 
 /**
  * This is the central singleton for the Emftvm edit plugin.
@@ -48,6 +49,7 @@ public final class EmftvmEditPlugin extends EMFPlugin {
 		super
 		  (new ResourceLocator [] {
 		     EcoreEditPlugin.INSTANCE,
+		     TraceEditPlugin.INSTANCE,
 		   });
 	}
 

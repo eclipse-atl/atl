@@ -73,6 +73,9 @@ public class ExecEnvItemProvider
 			addInoutModelsPropertyDescriptor(object);
 			addOutputModelsPropertyDescriptor(object);
 			addModulesPropertyDescriptor(object);
+			addMatchesPropertyDescriptor(object);
+			addTracesPropertyDescriptor(object);
+			addUniqueResultsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -91,6 +94,72 @@ public class ExecEnvItemProvider
 				 getString("_UI_ExecEnv_modules_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_ExecEnv_modules_feature", "_UI_ExecEnv_type"),
 				 EmftvmPackage.Literals.EXEC_ENV__MODULES,
+				 false,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Matches feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addMatchesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_ExecEnv_matches_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ExecEnv_matches_feature", "_UI_ExecEnv_type"),
+				 EmftvmPackage.Literals.EXEC_ENV__MATCHES,
+				 false,
+				 false,
+				 false,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Traces feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addTracesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_ExecEnv_traces_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ExecEnv_traces_feature", "_UI_ExecEnv_type"),
+				 EmftvmPackage.Literals.EXEC_ENV__TRACES,
+				 false,
+				 false,
+				 false,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Unique Results feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addUniqueResultsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_ExecEnv_uniqueResults_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ExecEnv_uniqueResults_feature", "_UI_ExecEnv_type"),
+				 EmftvmPackage.Literals.EXEC_ENV__UNIQUE_RESULTS,
 				 false,
 				 false,
 				 false,
@@ -229,6 +298,7 @@ public class ExecEnvItemProvider
 			case EmftvmPackage.EXEC_ENV__INPUT_MODELS:
 			case EmftvmPackage.EXEC_ENV__INOUT_MODELS:
 			case EmftvmPackage.EXEC_ENV__OUTPUT_MODELS:
+			case EmftvmPackage.EXEC_ENV__UNIQUE_RESULTS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}
