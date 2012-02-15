@@ -41,6 +41,7 @@ public class TraceTests extends TestSuite {
 	public static Test suite() {
 		TestSuite suite = new TraceTests("trace Tests");
 		suite.addTestSuite(TraceLinkSetTest.class);
+		suite.addTestSuite(TracedRuleTest.class);
 		suite.addTestSuite(TraceLinkTest.class);
 		suite.addTestSuite(SourceElementListTest.class);
 		return suite;
