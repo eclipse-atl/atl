@@ -364,16 +364,19 @@
       <genOperations ecoreOperation="emftvm.ecore#//Rule/applyFor">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFor/frame"/>
         <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFor/trace"/>
-        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFor/ruleApplyArgs"/>
-        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFor/appliedRules"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/postApplyFor">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/postApplyFor/frame"/>
         <genParameters ecoreParameter="emftvm.ecore#//Rule/postApplyFor/trace"/>
-        <genParameters ecoreParameter="emftvm.ecore#//Rule/postApplyFor/ruleApplyArgs"/>
-        <genParameters ecoreParameter="emftvm.ecore#//Rule/postApplyFor/appliedRules"/>
       </genOperations>
-      <genOperations ecoreOperation="emftvm.ecore#//Rule/compileState"/>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/getAllESuperRules"/>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/createUniqueMapping">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/createUniqueMapping/trace"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/compileState">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/compileState/env"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/resetState"/>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//RuleElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//RuleElement/models"/>

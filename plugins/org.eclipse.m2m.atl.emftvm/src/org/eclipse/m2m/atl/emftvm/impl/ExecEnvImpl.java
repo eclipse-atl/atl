@@ -1173,7 +1173,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			assert deletionQueue.isEmpty();
 			clearModelCaches(); // clear model cache to make sure model maps are up to date
 			for (Rule rule : getRules()) {
-				rule.compileState(); // compile internal state for all registered rules
+				rule.compileState(this); // compile internal state for all registered rules
 			}
 			final Iterator<Operation> mains = mainChain.iterator();
 			if (!mains.hasNext()) {
@@ -1202,6 +1202,14 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			throw e;
 		} finally {
 			this.monitor = null;
+			this.matches = null;
+			this.traces = null;
+			this.uniqueResults = null;
+			findStaticField(eClass(), "matches").clear();
+			findStaticField(eClass(), "traces").clear();
+			for (Rule rule : getRules()) {
+				rule.resetState(); // reset internal state for all registered rules
+			}
 		}
 		return result;
 	}

@@ -172,7 +172,7 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Iterable<EObject> createIterable(ExecEnv env) {
+	public Iterable<EObject> createIterable(final ExecEnv env) {
 		if (getEModels().isEmpty()) {
 			return EMFTVMUtil.findAllInstances(env, (EClass)getEType());
 		} else {

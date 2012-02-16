@@ -449,34 +449,23 @@
     <eOperations name="applyFor" eType="#//StackFrame">
       <eParameters name="frame" eType="#//StackFrame"/>
       <eParameters name="trace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink"/>
-      <eParameters name="ruleApplyArgs">
-        <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
-          <eTypeArguments eClassifier="#//Rule"/>
-          <eTypeArguments eClassifier="#//EJavaObjectArray"/>
-        </eGenericType>
-      </eParameters>
-      <eParameters name="appliedRules">
-        <eGenericType eClassifier="#//EJavaSet">
-          <eTypeArguments eClassifier="#//Rule"/>
-        </eGenericType>
-      </eParameters>
     </eOperations>
     <eOperations name="postApplyFor" eType="#//StackFrame">
       <eParameters name="frame" eType="#//StackFrame"/>
       <eParameters name="trace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink"/>
-      <eParameters name="ruleApplyArgs">
-        <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
-          <eTypeArguments eClassifier="#//Rule"/>
-          <eTypeArguments eClassifier="#//EJavaObjectArray"/>
-        </eGenericType>
-      </eParameters>
-      <eParameters name="appliedRules">
-        <eGenericType eClassifier="#//EJavaSet">
-          <eTypeArguments eClassifier="#//Rule"/>
-        </eGenericType>
-      </eParameters>
     </eOperations>
-    <eOperations name="compileState"/>
+    <eOperations name="getAllESuperRules">
+      <eGenericType eClassifier="#//LazySet">
+        <eTypeArguments eClassifier="#//Rule"/>
+      </eGenericType>
+    </eOperations>
+    <eOperations name="createUniqueMapping">
+      <eParameters name="trace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink"/>
+    </eOperations>
+    <eOperations name="compileState">
+      <eParameters name="env" eType="#//ExecEnv"/>
+    </eOperations>
+    <eOperations name="resetState"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//Module"
         eOpposite="#//Module/rules"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mode" lowerBound="1" eType="#//RuleMode"/>

@@ -12,11 +12,11 @@
 package org.eclipse.m2m.atl.emftvm;
 
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
+import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 
@@ -592,14 +592,12 @@ public interface Rule extends NamedElement {
 	 * Call {@link #compileState()} before calling this method.
 	 * @param frame the stack frame context
 	 * @param trace the trace link to apply the rule for
-	 * @param ruleApplyArgs the argument arrays for the rule applier code blocks
-	 * @param appliedRules the set of already applied rules (rules are applied at most once for each trace)
 	 * @return the stack frame with the application result
 	 * <!-- end-user-doc -->
-	 * @model dataType="org.eclipse.m2m.atl.emftvm.StackFrame" frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame" appliedRulesDataType="org.eclipse.m2m.atl.emftvm.EJavaSet<org.eclipse.m2m.atl.emftvm.Rule>"
+	 * @model dataType="org.eclipse.m2m.atl.emftvm.StackFrame" frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
 	 */
-	StackFrame applyFor(StackFrame frame, TraceLink trace, Map<Rule, Object[]> ruleApplyArgs, Set<Rule> appliedRules);
+	StackFrame applyFor(StackFrame frame, TraceLink trace);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -607,23 +605,55 @@ public interface Rule extends NamedElement {
 	 * Call {@link #compileState()} before calling this method.
 	 * @param frame the stack frame context
 	 * @param trace the trace link to post-apply the rule for
-	 * @param ruleApplyArgs the argument arrays for the rule post-applier code blocks
-	 * @param appliedRules the set of already post-applied rules (rules are post-applied at most once for each trace)
 	 * @return the stack frame with the post-application result
 	 * <!-- end-user-doc -->
-	 * @model dataType="org.eclipse.m2m.atl.emftvm.StackFrame" frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame" appliedRulesDataType="org.eclipse.m2m.atl.emftvm.EJavaSet<org.eclipse.m2m.atl.emftvm.Rule>"
+	 * @model dataType="org.eclipse.m2m.atl.emftvm.StackFrame" frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
 	 */
-	StackFrame postApplyFor(StackFrame frame, TraceLink trace, Map<Rule, Object[]> ruleApplyArgs, Set<Rule> appliedRules);
+	StackFrame postApplyFor(StackFrame frame, TraceLink trace);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns the transitive closure of super-rules, root rule first
+	 * ({@link LazySet}'s have a fixed iteration order).
+	 * Call {@link #compileState()} before calling this method.
+	 * @return the transitive closure of super-rules.
+	 * <!-- end-user-doc -->
+	 * @model kind="operation" dataType="org.eclipse.m2m.atl.emftvm.LazySet<org.eclipse.m2m.atl.emftvm.Rule>"
+	 * @generated
+	 */
+	LazySet<Rule> getAllESuperRules();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Creates a unique trace mapping entry for the source values in <code>trace</code>,
+	 * if applicable.
+	 * @param trace the trace element with source values
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void createUniqueMapping(TraceLink trace);
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * Compiles the internal state of this rule for optimised matching.
 	 * Call this method whenever any properties of this rule or any sub-rules have changed.
+	 * @param env the execution environment context
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
-	void compileState();
+	void compileState(ExecEnv env);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Resets the internal state of this rule.
+	 * Call this method before calling {@link #compileState(ExecEnv)} on all rules.
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void resetState();
 
 } // Rule

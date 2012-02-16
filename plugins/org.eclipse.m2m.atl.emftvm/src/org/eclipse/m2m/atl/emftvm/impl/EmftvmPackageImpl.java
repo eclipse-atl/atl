@@ -3595,32 +3595,24 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		op = addEOperation(ruleEClass, this.getStackFrame(), "applyFor", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theTracePackage.getTraceLink(), "trace", 0, 1, IS_UNIQUE, IS_ORDERED);
-		g1 = createEGenericType(theEcorePackage.getEMap());
-		g2 = createEGenericType(this.getRule());
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(this.getEJavaObjectArray());
-		g1.getETypeArguments().add(g2);
-		addEParameter(op, g1, "ruleApplyArgs", 0, 1, IS_UNIQUE, IS_ORDERED);
-		g1 = createEGenericType(this.getEJavaSet());
-		g2 = createEGenericType(this.getRule());
-		g1.getETypeArguments().add(g2);
-		addEParameter(op, g1, "appliedRules", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(ruleEClass, this.getStackFrame(), "postApplyFor", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theTracePackage.getTraceLink(), "trace", 0, 1, IS_UNIQUE, IS_ORDERED);
-		g1 = createEGenericType(theEcorePackage.getEMap());
-		g2 = createEGenericType(this.getRule());
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(this.getEJavaObjectArray());
-		g1.getETypeArguments().add(g2);
-		addEParameter(op, g1, "ruleApplyArgs", 0, 1, IS_UNIQUE, IS_ORDERED);
-		g1 = createEGenericType(this.getEJavaSet());
-		g2 = createEGenericType(this.getRule());
-		g1.getETypeArguments().add(g2);
-		addEParameter(op, g1, "appliedRules", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		addEOperation(ruleEClass, null, "compileState", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = addEOperation(ruleEClass, null, "getAllESuperRules", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(this.getLazySet());
+		g2 = createEGenericType(this.getRule());
+		g1.getETypeArguments().add(g2);
+		initEOperation(op, g1);
+
+		op = addEOperation(ruleEClass, null, "createUniqueMapping", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theTracePackage.getTraceLink(), "trace", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, null, "compileState", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getExecEnv(), "env", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(ruleEClass, null, "resetState", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(ruleElementEClass, RuleElement.class, "RuleElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRuleElement_Models(), theEcorePackage.getEString(), "models", null, 0, -1, RuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
