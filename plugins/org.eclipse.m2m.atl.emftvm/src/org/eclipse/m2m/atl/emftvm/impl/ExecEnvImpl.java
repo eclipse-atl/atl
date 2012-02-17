@@ -1210,6 +1210,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			for (Rule rule : getRules()) {
 				rule.resetState(); // reset internal state for all registered rules
 			}
+			assert findStaticField(eClass(), "matches").getStaticValue() == null;
+			assert findStaticField(eClass(), "traces").getStaticValue() == null;
 		}
 		return result;
 	}

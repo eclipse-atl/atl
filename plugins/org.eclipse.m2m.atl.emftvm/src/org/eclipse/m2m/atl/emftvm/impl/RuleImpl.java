@@ -807,7 +807,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 				rule.postApplyFor(frame, trace);
 			}
 			applierCbState.applyFor(frame, trace);
-			postApplyCbState.postApplyFor(frame, trace);
+			applierCbState.postApplyFor(frame, trace);
 			env.deleteQueue();
 			return true;
 		}
@@ -998,7 +998,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 				for (Rule rule : getAllESuperRules()) {
 					rule.postApplyFor(frame, trace);
 				}
-				postApplyCbState.postApplyFor(frame, trace);
+				applierCbState.postApplyFor(frame, trace);
 			}
 		}
 	}
@@ -1098,7 +1098,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * Base class for code that depends on whether the rule has a {@link Rule#getApplier()} code block.
+	 * Base class for code that depends on whether the rule has a 
+	 * {@link Rule#getApplier()} code block and/or a {@link Rule#getPostApply()} code block.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	protected abstract class ApplierCbState {
@@ -1110,13 +1111,22 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * @return the stack frame with the application result
 		 */
 		public abstract StackFrame applyFor(StackFrame frame, TraceLink trace);
+
+		/**
+		 * Post-applies this rule for the given <code>trace</code>.
+		 * @param frame the stack frame context
+		 * @param trace the trace link to postApply the rule for
+		 * @return the stack frame with the application result
+		 */
+		public abstract StackFrame postApplyFor(StackFrame frame, TraceLink trace);
 	}
 
 	/**
-	 * {@link ApplierCbState} class for rules that have a {@link Rule#getApplier()} code block.
+	 * {@link ApplierCbState} class for rules that have a {@link Rule#getApplier()} code block
+	 * as well as a {@link Rule#getPostApply()} code block.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	protected class WithApplierCbState extends ApplierCbState {
+	protected class WithApplierWithPostApplyCbState extends ApplierCbState {
 
 		/**
 		 * {@inheritDoc}
@@ -1129,44 +1139,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			applyArgs.put(trace, args);
 			return cb.execute(frame.getSubFrame(cb, args));
 		}
-	}
-
-	/**
-	 * {@link ApplierCbState} class for rules that do not have a {@link Rule#getApplier()} code block.
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	protected class WithoutApplierCbState extends ApplierCbState {
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public StackFrame applyFor(final StackFrame frame, final TraceLink trace) {
-			assert getApplier() == null;
-			return null; // do nothing
-		}
-	}
-
-	/**
-	 * Base class for code that depends on whether the rule has a {@link Rule#getPostApply()} code block.
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	protected abstract class PostApplyCbState {
-
-		/**
-		 * Applies this rule for the given <code>trace</code>.
-		 * @param frame the stack frame context
-		 * @param trace the trace link to postApply the rule for
-		 * @return the stack frame with the application result
-		 */
-		public abstract StackFrame postApplyFor(StackFrame frame, TraceLink trace);
-	}
-
-	/**
-	 * {@link PostApplyCbState} class for rules that have a {@link Rule#getPostApply()} code block.
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	protected class WithPostApplyCbState extends PostApplyCbState {
 
 		/**
 		 * {@inheritDoc}
@@ -1183,10 +1155,20 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * {@link PostApplyCbState} class for rules that do not have a {@link Rule#getPostApply()} code block.
+	 * {@link ApplierCbState} class for rules that do not have a {@link Rule#getApplier()}
+	 * code block or a {@link Rule#getPostApply()} code block.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	protected class WithoutPostApplyCbState extends PostApplyCbState {
+	protected class WithoutApplierWithoutPostApplyCbState extends ApplierCbState {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public StackFrame applyFor(final StackFrame frame, final TraceLink trace) {
+			assert getApplier() == null;
+			return null; // do nothing
+		}
 
 		/**
 		 * {@inheritDoc}
@@ -1195,6 +1177,61 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		public StackFrame postApplyFor(final StackFrame frame, final TraceLink trace) {
 			assert getPostApply() == null;
 			return null; // do nothing
+		}
+	}
+
+	/**
+	 * {@link ApplierCbState} class for rules that have a {@link Rule#getApplier()} code block
+	 * and no {@link Rule#getPostApply()} code block.
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	protected class WithApplierWithoutPostApplyCbState extends ApplierCbState {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public StackFrame applyFor(final StackFrame frame, final TraceLink trace) {
+			final CodeBlock cb = getApplier();
+			assert cb != null;
+			return cb.execute(frame.getSubFrame(cb, createArgs(trace)));
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public StackFrame postApplyFor(final StackFrame frame, final TraceLink trace) {
+			assert getPostApply() == null;
+			return null; // do nothing
+		}
+	}
+
+	/**
+	 * {@link ApplierCbState} class for rules that do not have a {@link Rule#getApplier()}
+	 * code block and do have a {@link Rule#getPostApply()} code block.
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	protected class WithoutApplierWithPostApplyCbState extends ApplierCbState {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public StackFrame applyFor(final StackFrame frame, final TraceLink trace) {
+			assert getApplier() == null;
+			return null; // do nothing
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public StackFrame postApplyFor(final StackFrame frame, final TraceLink trace) {
+			final CodeBlock cb = getPostApply();
+			assert cb != null;
+			final StackFrame result = cb.execute(frame.getSubFrame(cb, createArgs(trace)));
+			return result;
 		}
 	}
 
@@ -1493,10 +1530,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * The rule's {@link #getApplier()} state object.
 	 */
 	protected ApplierCbState applierCbState;
-	/**
-	 * The rule's {@link #getPostApply()} state object.
-	 */
-	protected PostApplyCbState postApplyCbState;
 	/**
 	 * The rule's {@link #isDistinctElements()} state object.
 	 */
@@ -2177,7 +2210,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated NOT
 	 */
 	public StackFrame postApplyFor(final StackFrame frame, final TraceLink trace) {
-		return postApplyCbState.postApplyFor(frame, trace);
+		return applierCbState.postApplyFor(frame, trace);
 	}
 
 	/**
@@ -2224,7 +2257,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		updateAbstractState();
 		updateMatcherCbState();
 		updateApplierCbState();
-		updatePostApplyCbState();
 		updateDistinctState();
 		superRulesState.compileIterables(env);
 	}
@@ -2239,6 +2271,9 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		withLeavesSet = false;
 		leafSet = false;
 		allESuperRules = null;
+		iterableList = null;
+		iterableMap = null;
+		assert applyArgs.isEmpty(); // applyArgs should have been emptied after post-applying each applied rule
 	}
 
 	/**
@@ -2684,27 +2719,24 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	protected void updateApplierCbState() {
 		if (getApplier() != null) {
-			if (!(applierCbState instanceof WithApplierCbState)) {
-				applierCbState = new WithApplierCbState();
+			if (getPostApply() != null) {
+				if (!(applierCbState instanceof WithApplierWithPostApplyCbState)) {
+					applierCbState = new WithApplierWithPostApplyCbState();
+				}
+			} else {
+				if (!(applierCbState instanceof WithApplierWithoutPostApplyCbState)) {
+					applierCbState = new WithApplierWithoutPostApplyCbState();
+				}
 			}
 		} else {
-			if (!(applierCbState instanceof WithoutApplierCbState)) {
-				applierCbState = new WithoutApplierCbState();
-			}
-		}
-	}
-
-	/**
-	 * Updates {@link #postApplyCbState}.
-	 */
-	protected void updatePostApplyCbState() {
-		if (getPostApply() != null) {
-			if (!(postApplyCbState instanceof WithPostApplyCbState)) {
-				postApplyCbState = new WithPostApplyCbState();
-			}
-		} else {
-			if (!(postApplyCbState instanceof WithoutPostApplyCbState)) {
-				postApplyCbState = new WithoutPostApplyCbState();
+			if (getPostApply() != null) {
+				if (!(applierCbState instanceof WithoutApplierWithPostApplyCbState)) {
+					applierCbState = new WithoutApplierWithPostApplyCbState();
+				}
+			} else {
+				if (!(applierCbState instanceof WithoutApplierWithoutPostApplyCbState)) {
+					applierCbState = new WithoutApplierWithoutPostApplyCbState();
+				}
 			}
 		}
 	}
@@ -3369,7 +3401,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		}
 		StackFrame applyResult = applierCbState.applyFor(frame, trace);
 		if (applyResult != null) result = applyResult;
-		StackFrame postResult = postApplyCbState.postApplyFor(frame, trace);
+		StackFrame postResult = applierCbState.postApplyFor(frame, trace);
 		if (postResult != null) result = postResult;
 		return (result == null || result.stackEmpty()) ? null : result.pop();
 	}
