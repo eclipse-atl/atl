@@ -1728,7 +1728,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	@SuppressWarnings("unchecked")
 	private Object get(final String propname, final StackFrame frame) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		final ExecEnv env = frame.getEnv();
-		Object o = frame.pop();
+		final Object o = frame.pop();
 
 		if (o instanceof EObject) {
 			final EObject eo = (EObject)o;
@@ -2192,13 +2192,13 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	private static Object invoke(final String opname, final int argcount, 
 			final StackFrame frame) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		final ExecEnv env = frame.getEnv();
 		final Object o = frame.pop();
 
-		final Object type = EMFTVMUtil.getArgumentType(o);
 		final Object[] args = getArguments(argcount, frame);
-		final Object[] argTypes = EMFTVMUtil.getArgumentTypes(args);
-		final Operation op = env.findOperation(type, opname, argTypes);
+		final Operation op = frame.getEnv().findOperation(
+				EMFTVMUtil.getArgumentType(o), 
+				opname, 
+				EMFTVMUtil.getArgumentTypes(args));
 		if (op != null) {
 			final CodeBlock body = op.getBody();
 			final StackFrame rFrame = body.execute(frame.getSubFrame(body, o, args));
@@ -2234,8 +2234,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 
 		final Object[] args = getArguments(argcount, frame);
-		final Object[] argTypes = EMFTVMUtil.getArgumentTypes(args);
-		final Operation op = env.findStaticOperation(type, opname, argTypes);
+		final Operation op = env.findStaticOperation(
+				type, 
+				opname, 
+				EMFTVMUtil.getArgumentTypes(args));
 		if (op != null) {
 			final CodeBlock body = op.getBody();
 			final StackFrame rFrame = body.execute(frame.getSubFrame(body, args));
@@ -2245,7 +2247,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname, args);
 		}
 		throw new UnsupportedOperationException(String.format("static %s::%s(%s)", 
-				EMFTVMUtil.getTypeName(env, type), opname, EMFTVMUtil.getTypeNames(env, argTypes)));
+				EMFTVMUtil.getTypeName(env, type), 
+				opname, 
+				EMFTVMUtil.getTypeNames(env, EMFTVMUtil.getArgumentTypes(args))));
 	}
 
 	/**
@@ -2285,10 +2289,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 
 		final Object[] args = getArguments(argcount, frame);
-		final Object[] argTypes = EMFTVMUtil.getArgumentTypes(args);
 		Operation superOp = null;
 		for (Object superType : superTypes) {
-			superOp = env.findOperation(superType, opname, argTypes);
+			superOp = env.findOperation(superType, opname, EMFTVMUtil.getArgumentTypes(args));
 			if (superOp != null) {
 				ops.add(superOp);
 			}
@@ -2314,7 +2317,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 
 		throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
-				EMFTVMUtil.getTypeName(env, context), opname, EMFTVMUtil.getTypeNames(env, argTypes)));
+				EMFTVMUtil.getTypeName(env, context), 
+				opname, 
+				EMFTVMUtil.getTypeNames(env, EMFTVMUtil.getArgumentTypes(args))));
 	}
 
 	/**
@@ -2326,7 +2331,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	private static Object[] getArguments(final int argcount, final StackFrame frame) {
 		final Object[] args = new Object[argcount];
 		for (int i = 0; i < argcount; i++) {
-			// Do not unwrap lazy values
 			args[i] = frame.pop();
 		}
 		return args;

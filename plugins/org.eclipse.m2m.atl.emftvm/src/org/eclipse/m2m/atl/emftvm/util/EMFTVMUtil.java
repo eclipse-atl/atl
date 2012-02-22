@@ -926,30 +926,35 @@ public final class EMFTVMUtil {
 	 */
 	public static Object invokeNative(final StackFrame frame, final Object self, 
 			final String opname, final Object[] args) {
-		final ExecEnv env = frame.getEnv();
-		final Class<?> type = self.getClass();
-		final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
-		final Method method = EMFTVMUtil.findNativeMethod(type, opname, argClasses, false);
+		final Method method = EMFTVMUtil.findNativeMethod(
+				self.getClass(), 
+				opname, 
+				EMFTVMUtil.getArgumentClasses(args), 
+				false);
 		if (method != null) {
-			final StackFrame subFrame = frame.getSubFrame(method, args);
+			final StackFrame subFrame = frame.prepareNativeArgs(method, self, args);
 			try {
-				final EObject eo = self instanceof EObject ? (EObject)self : null;
-				return emf2vm(env, eo, method.invoke(self, args));
+				return emf2vm(
+						frame.getEnv(), 
+						self instanceof EObject ? (EObject)self : null, 
+						method.invoke(self, args));
 			} catch (InvocationTargetException e) {
 				final Throwable target = e.getTargetException();
 				if (target instanceof VMException) {
 					throw (VMException)target;
 				} else {
-					throw new VMException(subFrame, target);
+					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
 				}
 			} catch (VMException e) {
 				throw e;
 			} catch (Exception e) {
-				throw new VMException(subFrame, e);
+				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
 			}
 		}
 		throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
-				EMFTVMUtil.getTypeName(env, type), opname, EMFTVMUtil.getTypeNames(env, getArgumentTypes(args))));
+				EMFTVMUtil.getTypeName(frame.getEnv(), self.getClass()), 
+				opname, 
+				EMFTVMUtil.getTypeNames(frame.getEnv(), getArgumentTypes(args))));
 	}
 
 	/**
@@ -962,28 +967,32 @@ public final class EMFTVMUtil {
 	 */
 	public static Object invokeNativeStatic(final StackFrame frame, final Class<?> type, 
 			final String opname, final Object[] args) {
-		final ExecEnv env = frame.getEnv();
-		final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
-		final Method method = EMFTVMUtil.findNativeMethod(type, opname, argClasses, true);
+		final Method method = EMFTVMUtil.findNativeMethod(
+				type, 
+				opname, 
+				EMFTVMUtil.getArgumentClasses(args), 
+				true);
 		if (method != null) {
-			final StackFrame subFrame = frame.getSubFrame(method, args);
+			final StackFrame subFrame = frame.prepareNativeArgs(method, args);
 			try {
-				return emf2vm(env, null, method.invoke(type, args));
+				return emf2vm(frame.getEnv(), null, method.invoke(type, args));
 			} catch (InvocationTargetException e) {
 				final Throwable target = e.getTargetException();
 				if (target instanceof VMException) {
 					throw (VMException)target;
 				} else {
-					throw new VMException(subFrame, target);
+					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
 				}
 			} catch (VMException e) {
 				throw e;
 			} catch (Exception e) {
-				throw new VMException(subFrame, e);
+				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
 			}
 		}
 		throw new UnsupportedOperationException(String.format("static %s::%s(%s)", 
-				EMFTVMUtil.getTypeName(env, type), opname, EMFTVMUtil.getTypeNames(env, getArgumentTypes(args))));
+				EMFTVMUtil.getTypeName(frame.getEnv(), type), 
+				opname, 
+				EMFTVMUtil.getTypeNames(frame.getEnv(), getArgumentTypes(args))));
 	}
 
 	/**
@@ -997,31 +1006,36 @@ public final class EMFTVMUtil {
 	 */
 	public static Object invokeNativeSuper(final StackFrame frame, final Class<?> context, 
 			final Object self, final String opname, final Object[] args) {
-		final ExecEnv env = frame.getEnv();
-		final Class<?> type = self.getClass();
-		assert context.isAssignableFrom(type);
-		final Class<?>[] argClasses = EMFTVMUtil.getArgumentClasses(args);
-		final Method method = EMFTVMUtil.findNativeMethod(context.getSuperclass(), opname, argClasses, false);
+		assert context.isAssignableFrom(self.getClass());
+		final Method method = EMFTVMUtil.findNativeMethod(
+				context.getSuperclass(), 
+				opname, 
+				EMFTVMUtil.getArgumentClasses(args), 
+				false);
 		if (method != null) {
-			final StackFrame subFrame = frame.getSubFrame(method, args);
+			final StackFrame subFrame = frame.prepareNativeArgs(method, self, args);
 			try {
-				final EObject eo = self instanceof EObject ? (EObject)self : null;
-				return emf2vm(env, eo, method.invoke(self, args));
+				return emf2vm(
+						frame.getEnv(), 
+						self instanceof EObject ? (EObject)self : null, 
+						method.invoke(self, args));
 			} catch (InvocationTargetException e) {
 				final Throwable target = e.getTargetException();
 				if (target instanceof VMException) {
 					throw (VMException)target;
 				} else {
-					throw new VMException(subFrame, target);
+					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
 				}
 			} catch (VMException e) {
 				throw e;
 			} catch (Exception e) {
-				throw new VMException(subFrame, e);
+				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
 			}
 		}
 		throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
-				EMFTVMUtil.getTypeName(env, type), opname, EMFTVMUtil.getTypeNames(env, getArgumentTypes(args))));
+				EMFTVMUtil.getTypeName(frame.getEnv(), self.getClass()), 
+				opname, 
+				EMFTVMUtil.getTypeNames(frame.getEnv(), getArgumentTypes(args))));
 	}
 
 	/**

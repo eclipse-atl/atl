@@ -427,60 +427,60 @@ public final class StackFrame {
 	}
 
 	/**
-	 * Retrieves a new stack frame that is a sub-frame of <code>this</code>.
-	 * @param method the native method of the sub-frame
-	 * @param args the arguments to pass into the sub-frame
-	 * @return a new stack frame
+	 * Prepares <code>args</code> instances of {@link CodeBlock} by setting their parent frame
+	 * (for VM re-entry), and instances of {@link EnumLiteral} for conversion to the method's
+	 * corresponding parameter type.
+	 * Creates a sub-frame only when necessary for VM re-entry.
+	 * @param method the native method to be invoked
+	 * @param args the method arguments
+	 * @return the sub-frame, if necessary
 	 */
-	public StackFrame getSubFrame(final Method method, final Object[] args) {
-		final StackFrame frame = new StackFrame(this, method);
-		if (args != null) {
-			prepareNativeArgs(method, args, frame);
-		}
-		return frame;
-	}
-
-	/**
-	 * Retrieves a new stack frame that is a sub-frame of <code>this</code>.
-	 * @param method the native method of the sub-frame
-	 * @param context the <code>self</code> argument to pass into the sub-frame
-	 * @param args the other arguments to pass into the sub-frame
-	 * @return a new stack frame
-	 */
-	public StackFrame getSubFrame(final Method method, final Object context, final Object[] args) {
-		final StackFrame frame = new StackFrame(this, method);
-		prepareCodeBlockArg(context, frame);
-		if (args != null) {
-			prepareNativeArgs(method, args, frame);
-		}
-		return frame;
-	}
-
-	/**
-	 * Prepares arg instances of {@link CodeBlock} by setting their parent frame (for native re-entry).
-	 * @param arg
-	 * @param subFrame
-	 */
-	private static void prepareCodeBlockArg(final Object arg, final StackFrame subFrame) {
-		if (arg instanceof CodeBlock) {
-			((CodeBlock)arg).setParentFrame(subFrame);
-		}
-	}
-
-	/**
-	 * Prepares args instances of {@link CodeBlock} by setting their parent frame (for native re-entry).
-	 * @param method
-	 * @param args
-	 * @param subFrame
-	 */
-	private static void prepareNativeArgs(final Method method, final Object[] args, final StackFrame subFrame) {
+	public StackFrame prepareNativeArgs(final Method method, final Object[] args) {
+		StackFrame subFrame = null;
 		for (int i = 0; i < args.length; i++) {
 			Object arg = args[i];
-			prepareCodeBlockArg(arg, subFrame);
-			if (arg instanceof EnumLiteral) {
+			if (arg instanceof CodeBlock) {
+				if (subFrame == null) {
+					subFrame = new StackFrame(this, method);
+				}
+				((CodeBlock)arg).setParentFrame(subFrame);
+			} else if (arg instanceof EnumLiteral) {
 				args[i] = convertEnumLiteral((EnumLiteral)arg, method.getParameterTypes()[i]);
 			}
 		}
+		return subFrame;
+	}
+
+	/**
+	 * Prepares <code>context</code> and <code>args</code> instances of {@link CodeBlock}
+	 * by setting their parent frame (for VM re-entry), and instances of {@link EnumLiteral}
+	 * for conversion to the method's corresponding parameter type.
+	 * Creates a sub-frame only when necessary for VM re-entry.
+	 * @param method the native method to be invoked
+	 * @param context the method context (i.e. self)
+	 * @param args the method arguments
+	 * @return the sub-frame, if necessary
+	 */
+	public StackFrame prepareNativeArgs(final Method method, final Object context, final Object[] args) {
+		StackFrame subFrame = null;
+		if (context instanceof CodeBlock) {
+			if (subFrame == null) {
+				subFrame = new StackFrame(this, method);
+			}
+			((CodeBlock)context).setParentFrame(subFrame);
+		} // context can never be an enumeration literal
+		for (int i = 0; i < args.length; i++) {
+			Object arg = args[i];
+			if (arg instanceof CodeBlock) {
+				if (subFrame == null) {
+					subFrame = new StackFrame(this, method);
+				}
+				((CodeBlock)arg).setParentFrame(subFrame);
+			} else if (arg instanceof EnumLiteral) {
+				args[i] = convertEnumLiteral((EnumLiteral)arg, method.getParameterTypes()[i]);
+			}
+		}
+		return subFrame;
 	}
 
 	/**
