@@ -17,6 +17,8 @@ unique lazy rule Object {
 rule Liste {
 	from
 		in_liste: UniqueLazyRule!Liste
-	to
-		
+	to 
+			contents <- UniqueLazyRule!Object.allInstancesFrom('IN') ->
+					collect(e|thisModule.Object(e)) 
+	)
 }

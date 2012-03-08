@@ -1,5 +1,4 @@
 -- @atlcompiler atl2006
--- $Id: UML2Copy.atl,v 1.2 2010/03/09 09:55:37 wpiers Exp $
 -- Copies UML2 models
 module UML2Copy;
 
