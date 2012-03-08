@@ -201,10 +201,11 @@ public class AtlCodeFormatter {
 		correctIndentationLevel(parent);
 		// For each child of the current object, we call the format method, and
 		// replace the result of the formatting into the parent.
-		for (EObject child : parent.getEObject().eContents()) {
+		EObject eObject = parent.getEObject();
+		for (EObject child : eObject.eContents()) {
 			String childText = modelAnalyser.getText(child);
-			FormattedObject formattedChild = new FormattedObject(child, childText, parent
-					.getIndentationLevel() + 1);
+			FormattedObject formattedChild = new FormattedObject(child, childText,
+					parent.getIndentationLevel() + 1);
 			treatStrings(formattedChild);
 			CodeFragment fragment = initializeCodeFragment(parent.getText(), childText);
 			parent.addChildren(formattedChild);
@@ -228,6 +229,16 @@ public class AtlCodeFormatter {
 				// It means that the code fragment can't be found anymore in the parent text,
 				// and may be caused by a desynchronization with the model (due to an error).
 			}
+		}
+
+		// NOTE: The formatter strategy assumes that all text elements match a CST object. Sometimes the
+		// parser fails to build a CST from text with grammar errors. So unless we base the strategy on more
+		// stable informations, we have to treat specific cases where the CST is incorrect
+		if (eObject.eContents().isEmpty()
+				&& ("OutPattern".equals(eObject.eClass().getName()) || "InPattern".equals(eObject.eClass()
+						.getName()))) {
+			// the CST is incorrect and formatting may lead to code losses. We chose no to format the element.
+			return;
 		}
 
 		// According to the type of the current object, we call the appropriate method
