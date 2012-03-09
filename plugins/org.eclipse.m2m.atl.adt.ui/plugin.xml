@@ -9,29 +9,6 @@
             class="org.eclipse.m2m.atl.adt.ui.startup.Startup">
       </startup>
    </extension>
- <extension
-       point="org.eclipse.ui.actionSets">
-    <actionSet
-          id="org.eclipse.m2m.atl.adt.ui.compatibility"
-          label="ATL Compatibility Actions"
-          visible="false">
-       <menu
-             id="ATLCompatibility"
-             label="Compatibility">
-          <separator
-                name="compatibilityGroup">
-          </separator>
-       </menu>
-       <action
-             class="org.eclipse.m2m.atl.adt.ui.compatibility.UpdateCompatibility"
-             icon="icons/atl_logo.gif"
-             id="org.eclipse.m2m.atl.adt.ui.compatibility.UpdateCompatibility"
-             label="&amp;Update compatibility"
-             menubarPath="ATLCompatibility/compatibilityGroup"
-             tooltip="Updates the ATL builder and configuration to versions up to 2.0.0RC2">
-       </action>
-    </actionSet>
- </extension>
 	<extension point="org.eclipse.ui.perspectives">
 		<perspective
         	icon="icons/atl_logo.gif"
@@ -40,15 +17,6 @@
 	        id="org.eclipse.m2m.atl.adt.ui.atlPerspective">
    		</perspective>
 	</extension>
- <extension
-       point="org.eclipse.ui.perspectiveExtensions">
-    <perspectiveExtension
-          targetID="org.eclipse.m2m.atl.adt.ui.atlPerspective">
-       <actionSet
-             id="org.eclipse.m2m.atl.adt.ui.compatibility">
-       </actionSet>
-    </perspectiveExtension>
- </extension>
      <extension
          point="org.eclipse.ui.newWizards">
       <category

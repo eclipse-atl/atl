@@ -7,7 +7,6 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.adt.ui,
  org.eclipse.m2m.atl.adt.ui.common,
- org.eclipse.m2m.atl.adt.ui.compatibility,
  org.eclipse.m2m.atl.adt.ui.handlers,
  org.eclipse.m2m.atl.adt.ui.perspective,
  org.eclipse.m2m.atl.adt.ui.startup,
@@ -20,7 +19,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.ui,
  org.eclipse.m2m.atl.adt,
  org.eclipse.ui.console,
- org.eclipse.update.core,
  org.eclipse.emf.ecore.editor,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.m2m.atl.engine
