@@ -367,8 +367,7 @@ public class EMFModelAdapter implements IModelAdapter {
 					public Object exec(AbstractStackFrame frame) {
 						Object[] localVars = frame.getLocalVars();
 						// verify the parameters
-				if (localVars[0] instanceof EObject
-						&& localVars[1] instanceof String
+						if (localVars[0] instanceof EObject && localVars[1] instanceof String
 								&& localVars[2] instanceof ArrayList<?>) {
 							EObject eo = (EObject)localVars[0];
 							String name = (String)localVars[1];
@@ -382,8 +381,8 @@ public class EMFModelAdapter implements IModelAdapter {
 								}
 							}
 							if (method == null) {
-						throw new VMException(frame, Messages
-								.getString("EMFModelAdapter.OPERATIONNOTFOUND", name, eo.eClass().getName())); //$NON-NLS-1$ 
+								throw new VMException(frame, Messages.getString(
+										"EMFModelAdapter.OPERATIONNOTFOUND", name, eo.eClass().getName())); //$NON-NLS-1$ 
 
 							} else {
 								return invoke(method, eo, parameters.toArray());
@@ -526,7 +525,8 @@ public class EMFModelAdapter implements IModelAdapter {
 				ret = val;
 			}
 		} else {
-			throw new VMException(frame, Messages.getString("EMFModelAdapter.GET_ON_OBJECT", modelElement.getClass().getName())); //$NON-NLS-1$		
+			throw new VMException(frame, Messages.getString(
+					"EMFModelAdapter.GET_ON_OBJECT", modelElement.getClass().getName())); //$NON-NLS-1$		
 		}
 		return ret;
 	}
@@ -567,10 +567,6 @@ public class EMFModelAdapter implements IModelAdapter {
 		if (feature == null) {
 			throw new VMException(frame, Messages.getString(
 					"EMFModelAdapter.FEATURE_NOT_EXISTS", name, eo.eClass().getName())); //$NON-NLS-1$
-		}
-
-		if (!feature.isChangeable()) {
-			throw new VMException(frame, Messages.getString("EMFModelAdapter.FEATURE_NOT_CHANGEABLE", name)); //$NON-NLS-1$
 		}
 
 		if (settableValue instanceof Integer) {
@@ -660,21 +656,20 @@ public class EMFModelAdapter implements IModelAdapter {
 					if (settableValue != null) {
 						EEnumLiteral literal = getEENumLiteral(eenum, settableValue.toString());
 						if (literal != null) {
-							eo.eSet(feature, literal.getInstance());
+							internalSet(frame, literal.getInstance(), eo, feature);
 						} else {
 							throw new VMException(
 									frame,
-									Messages
-											.getString(
+									Messages.getString(
 											"EMFModelAdapter.LITERALERROR", new Object[] {settableValue, eenum.getName()})); //$NON-NLS-1$
 						}
 					}
 				} else if (!(settableValue instanceof EObject)) {
-					eo.eSet(feature, settableValue);
+					internalSet(frame, settableValue, eo, feature);
 				} else if (execEnv.getModelOf(eo) == execEnv.getModelOf(settableValue)) {
-					eo.eSet(feature, settableValue);
+					internalSet(frame, settableValue, eo, feature);
 				} else if (allowInterModelReferences) {
-					eo.eSet(feature, settableValue);
+					internalSet(frame, settableValue, eo, feature);
 				} else {
 					ATLLogger.warning(Messages.getString(
 							"EMFModelAdapter.NON_ALLOWED_REFERENCE", new Object[] {settableValue, name})); //$NON-NLS-1$
@@ -684,6 +679,44 @@ public class EMFModelAdapter implements IModelAdapter {
 			throw new VMException(frame, e.getMessage(), e);
 		}
 
+	}
+
+	/**
+	 * Checks whether the feature is changeable or not, in case of lookup for a setter and invoke it.
+	 * 
+	 * @param frame
+	 *            the current frame
+	 * @param settableValue
+	 *            the value to set
+	 * @param eo
+	 *            the object
+	 * @param feature
+	 *            the feature to set
+	 */
+	private void internalSet(AbstractStackFrame frame, Object settableValue, final EObject eo,
+			final EStructuralFeature feature) {
+		if (!feature.isChangeable()) {
+
+			String setMethodName = "set" + Character.toUpperCase(feature.getName().charAt(0))
+					+ feature.getName().substring(1);
+
+			Method method = null;
+			// find the operation if it exists
+			for (Method candidate : eo.getClass().getMethods()) {
+				if (candidate.getName().equals(setMethodName)) {
+					method = candidate;
+					break;
+				}
+			}
+			if (method == null) {
+				throw new VMException(frame, Messages.getString(
+						"EMFModelAdapter.FEATURE_NOT_CHANGEABLE", feature.getName())); //$NON-NLS-1$
+			}
+			frame.getExecEnv().getModelAdapter().invoke(method, eo, new Object[] {settableValue,});
+
+		} else {
+			eo.eSet(feature, settableValue);
+		}
 	}
 
 	/**
