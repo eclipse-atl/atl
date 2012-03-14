@@ -112,7 +112,7 @@ version=${unqualifiedVersion}"/>
 								<id>sign</id>
 								<configuration>
 									<inputFile>${project.build.directory}/${project.artifactId}.zip</inputFile>
-									<signerInputDirectory>/home/data/httpd/download-staging.priv/emf/compare</signerInputDirectory>
+									<signerInputDirectory>/home/data/httpd/download-staging.priv/m2m/atl</signerInputDirectory>
 								</configuration>
 								<phase>package</phase>
 								<goals>
