@@ -21,14 +21,8 @@
 	          <exclude>**/*.java</exclude>
 	        </excludes>
 	      </resource>
-	      <resource>
-	        <directory>src-gen</directory>
-	        <excludes>
-	          <exclude>**/*.java</exclude>
-	        </excludes>
-	      </resource>
 	</resources>
-    <plugins>
+<!--    <plugins>
   	<plugin>
 		<groupId>org.eclipse.tycho</groupId>
 		<artifactId>tycho-surefire-plugin</artifactId>
@@ -43,6 +37,6 @@
 			<argLine>-XX:MaxPermSize=256m</argLine>			
 		</configuration>
 	</plugin>
-    </plugins>
+    </plugins> -->
   </build>
 </project>
