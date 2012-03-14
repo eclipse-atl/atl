@@ -47,9 +47,9 @@ public class AllTests extends TestCase implements IApplication {
 	 */
 	public static Test suite() {
 		final TestSuite suite = new TestSuite("ATL test suite"); //$NON-NLS-1$	
-//		suite.addTestSuite(TestNonRegressionEMFVM.class);
-//		suite.addTestSuite(TestNonRegressionVM.class);
-//		suite.addTestSuite(TestNonRegressionCompiler.class);
+		suite.addTestSuite(TestNonRegressionEMFVM.class);
+		suite.addTestSuite(TestNonRegressionVM.class);
+		suite.addTestSuite(TestNonRegressionCompiler.class);
 		return suite;
 	}
 
