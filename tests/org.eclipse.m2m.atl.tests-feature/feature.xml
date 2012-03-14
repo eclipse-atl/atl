@@ -9,18 +9,18 @@
       %description
    </description>
 
-   <copyright>
+   <copyright url="%copyrightURL">
       %copyright
    </copyright>
 
    <license url="%licenseURL">
       %license
    </license>
-   
-<url>
-	<update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
-	<discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
-</url>
+
+   <url>
+      <update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
+      <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
+   </url>
 
    <requires>
       <import plugin="org.eclipse.core.resources"/>
@@ -43,18 +43,5 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ant.optional.junit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
-         id="org.eclipse.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
 </feature>
