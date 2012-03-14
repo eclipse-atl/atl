@@ -14,11 +14,26 @@
   <packaging>eclipse-test-plugin</packaging>
   
   <build>
-   <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-source-plugin</artifactId>
-      </plugin>
-    </plugins> 
+    <plugins>
+  	<plugin>
+		<groupId>org.eclipse.tycho</groupId>
+		<artifactId>tycho-surefire-plugin</artifactId>
+		<version>${tycho-version}</version>
+		<configuration>
+			<includes>
+				<include>org/eclipse/m2m/atl/tests/suite/AllTests.class</include>
+			</includes>	
+			<excludes>
+            	<exclude>org/eclipse/m2m/atl/tests/unit/*.java</exclude>
+            	<exclude>launch</exclude>
+            	<exclude>data/inputs</exclude>
+          </excludes>
+			<useUIHarness>false</useUIHarness>
+			<useUIThread>false</useUIThread>
+			<argLine>-Xmx1024m</argLine>
+			<argLine>-XX:MaxPermSize=256m</argLine>			
+		</configuration>
+	</plugin>
+    </plugins>
   </build>
 </project>
