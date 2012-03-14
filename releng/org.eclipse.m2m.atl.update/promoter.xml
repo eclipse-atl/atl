@@ -1,168 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Promoter-Publisher" default="publish.build">
+<!--
+  Copyright (c) 2011 Obeo.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/legal/epl-v10.html
+  
+  Contributors:
+      Obeo - initial API and implementation
+
+ $Id: promoter.xml,v 1.2 2012/03/14 16:00:37 wpiers Exp $
+-->
+<project name="Promoter" default="main">
+	<!--
+	This promotion script helps to automatically promote the last sucessful build of tycho based ATL build to correct location.
+	
+	Be sure to use at least ant 1.8.2 to launch this script.
+	
+	Ant 1.8.2 is located here : /shared/common/apache-ant-1.8.2/
+	on build.eclipse.org, do a 
+	$> export ANT_HOME=/shared/common/apache-ant-1.8.2/ 
+	-->
+
+	<property name="downloads.area" value="/home/data/httpd/download.eclipse.org/modeling/m2m/atl" />
+	<property name="build.root" value="/shared/jobs/m2m-atl-master/lastSuccessful/archive/org.eclipse.emf/org.eclipse.m2m.atl/releng/org.eclipse.m2m.atl.update/target/" />
+
 	<property name="promoter.properties.file.name" value="promote.properties" />
-	<property name="publisher.properties.file.name" value="publisher.properties" />
+	<property name="property.file.location" value="${build.root}/promotion/${promoter.properties.file.name}" />
+	<property name="group.owner" value="modeling.m2m.atl" />
 
-	<target name="-setup.promoter">
-		<property name="promoter.setup.directory" location="${sp:output}" />
-		<property name="promoter.properties.file" location="${promoter.setup.directory}/${promoter.properties.file.name}" />
+	<!--# To permit automatic downloads of non-EPL compatible code, override this to property to "Y" -->
+	<property name="thirdPartyDownloadLicenseAcceptance" value="Y" />
+	<property name="thirdPartyJarsDir" value="/shared/modeling/m2m/atl/3rdPartyJars" />
 
-		<mkdir dir="${promoter.setup.directory}" />
+	<!--
+	most of the code comes from Athena CBI.
+	see http://wiki.eclipse.org/Common_Build_Infrastructure
+	-->
+	<target name="check.ant-contrib" if="antContribJarUnavailable">
+		<condition property="thirdPartyDownloadLicenseAcceptanceOK">
+			<and>
+				<isset property="thirdPartyDownloadLicenseAcceptance" />
+				<or>
+					<equals arg1="${thirdPartyDownloadLicenseAcceptance}" arg2="Y" />
+					<equals arg1="${thirdPartyDownloadLicenseAcceptance}" arg2="I accept" />
+					<equals arg1="${thirdPartyDownloadLicenseAcceptance}" arg2="&quot;I accept&quot;" />
+				</or>
+			</and>
+		</condition>
+		<antcall target="get.ant-contrib" />
+		<available file="${thirdPartyJarsDir}/ant-contrib.jar" property="antContribJarAvailable" />
+		<fail unless="antContribJarAvailable">Error! 
 
-		<!-- supply defaults -->
-		<property name="build.id" value="" />
-		<property name="hudson.build.id" value="" />
+Ant-Contrib is required. Download it from http://sourceforge.net/projects/ant-contrib/files/ant-contrib/1.0b3/ant-contrib-1.0b3-bin.zip/download,
+then place it in the following location. You can also redefine the path in the promote.properties file:
 
-		<propertyfile file="${promoter.properties.file}" comment="Promoter script properties">
-			<entry key="java.home" value="${java.home}" />
-			<entry key="eclipse.home" value="${eclipse.home}" />
-			<entry key="build.id" value="${build.id}" />
-			<entry key="hudson.build.id" value="${hudson.build.id}" />
-			<entry key="build.root" value="/shared/jobs/m2m-atl-master/lastSuccessful/archive/org.eclipse.m2m.atl/releng/org.eclipse.m2m.atl.update/target/" />
-			<entry key="packages.base" value="ATL.downloads" />
-			<entry key="downloads.area" value="/home/data/httpd/download.eclipse.org/modeling/m2m/atl" />
-		</propertyfile>
+$${thirdPartyJarsDir}/ant-contrib.jar          = ${thirdPartyJarsDir}/ant-contrib.jar
+	or
 
-		<!-- diagnostics
-		<property environment="env." />
-		<echoproperties destfile="${promoter.setup.directory}/all.properties" />
+	Or, to download this automatically, see $${relengCommonBuilderDir}/build.properties#thirdPartyDownloadLicenseAcceptance.
+</fail>
+	</target>
+
+	<target name="get.ant-contrib" if="thirdPartyDownloadLicenseAcceptanceOK">
+		<get src="http://sourceforge.net/projects/ant-contrib/files/ant-contrib/1.0b3/ant-contrib-1.0b3-bin.zip/download" dest="${java.io.tmpdir}/ant-contrib-1.0b3-bin.zip" usetimestamp="true" />
+		<mkdir dir="${java.io.tmpdir}/ant-contrib-1.0b3-bin.zip_" />
+		<unzip src="${java.io.tmpdir}/ant-contrib-1.0b3-bin.zip" dest="${java.io.tmpdir}/ant-contrib-1.0b3-bin.zip_" overwrite="true" />
+		<mkdir dir="${thirdPartyJarsDir}" />
+		<copy file="${java.io.tmpdir}/ant-contrib-1.0b3-bin.zip_/ant-contrib/ant-contrib-1.0b3.jar" tofile="${thirdPartyJarsDir}/ant-contrib.jar" failonerror="true" />
+		<delete dir="${java.io.tmpdir}/ant-contrib-1.0b3-bin.zip_" includeemptydirs="true" quiet="true" />
+		<delete file="${java.io.tmpdir}/ant-contrib-1.0b3-bin.zip" quiet="true" />
+	</target>
+
+	<target name="init">
+		<condition property="antContribJarUnavailable">
+			<not>
+				<available file="${thirdPartyJarsDir}/ant-contrib.jar" type="file" />
+			</not>
+		</condition>
+		<antcall target="check.ant-contrib" />
+		<!-- This will fail if ant-contrib.jar cannot be found. You can install Ant-Contrib via RPM, or download it here:
+				http://sourceforge.net/projects/ant-contrib/files/ant-contrib/1.0b3/ant-contrib-1.0b3-bin.zip/download
 		-->
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+			<classpath>
+				<pathelement location="${thirdPartyJarsDir}/ant-contrib.jar" />
+			</classpath>
+		</taskdef>
 	</target>
 
-	<target name="-locate.launcher.jar" unless="launcher.jar">
-		<pathconvert property="launcher.jar">
-			<first count="1">
-				<sort>
-					<fileset dir="${saved.eclipse.home}/plugins" includes="**/org.eclipse.equinox.launcher_*.jar" />
-					<reverse xmlns="antlib:org.apache.tools.ant.types.resources.comparators">
-						<date />
-					</reverse>
-				</sort>
-			</first>
-		</pathconvert>
-	</target>
-
-	<target name="setup.publisher">
-		<property environment="env." />
-
-		<fail message="WORKSPACE not present in the environment, can't continue" unless="env.WORKSPACE" />
-
-		<!-- default publisher root -->
-		<property name="publisher.root" location="${env.WORKSPACE}/publishroot" />
-
-		<delete dir="${publisher.root}" />
-		<mkdir dir="${publisher.root}" />
-				
-		<!-- Copy addDownloadStats.xsl -->
-		<copy file="addDownloadStats.xsl" todir="${publisher.root}"/>
-		
-		<copy tofile="${publisher.root}/publisher.ant" file="${ant.file}" />
-
-		<property name="promoter.properties.file" value="${env.WORKSPACE}/${promoter.properties.file.name}" />
-
-		<!-- load the promoter properties using the PROMOTED_URL supplied by Hudson -->
-		<property prefix="saved." file="${promoter.properties.file}" />
-
-		<fail message="hudson.build.id not defined in ${promoter.properties.file}, can't continue">
-			<condition>
-				<not>
-					<and>
-						<isset property="saved.hudson.build.id" />
-						<length string="${saved.hudson.build.id}" trim="true" when="greater" length="0" />
-					</and>
-				</not>
-			</condition>
-		</fail>
-
-		<property name="build.root" location="/opt/public/jobs/${env.JOB_NAME}/builds/${saved.hudson.build.id}" />
-
-		<echoproperties destfile="${publisher.root}/${publisher.properties.file.name}">
-			<propertyset>
-				<propertyref builtin="commandline" />
-				<propertyref prefix="saved." />
-				<propertyref name="build.root" />
-			</propertyset>
-		</echoproperties>
-	</target>
-
-	<target name="publish.build">
-		<property file="${publisher.properties.file.name}" />
-		<fail message="build.root property must be defined" unless="build.root" />
-
-		<property name="property.file.location" location="${build.root}/promotion/${promoter.properties.file.name}" />
-		<property name="property.load.prefix" value="saved." />
-
-		<antcall target="publish.build.stage.2" inheritall="true" />
-	</target>
-
-	<target name="-setup.property.file.location" unless="property.file.location">
-		<dirname property="script.directory" file="${ant.file}" />
-		<property name="property.file.location" location="${script.directory}/${publisher.properties.file.name}" />
-	</target>
-
-	<target name="-load.properties.as.is" unless="property.load.prefix">
+	<target name="load.properties">
 		<property file="${property.file.location}" />
 	</target>
 
-	<target name="-load.properties.with.prefix" if="property.load.prefix">
-		<property prefix="${property.load.prefix}" file="${property.file.location}" />
-	</target>
-
-	<target name="-load.properties" depends="-load.properties.as.is,-load.properties.with.prefix" />
-
-	<target name="publish.build.stage.2" depends="-setup.property.file.location,-load.properties,-locate.launcher.jar">
-		<condition property="java.executable" value="${saved.java.home}/bin/java" else="java">
-			<isset property="saved.java.home" />
-		</condition>
-		<tempfile property="publisher.workspace" prefix="workspace." destdir="${java.io.tmpdir}" />
-
-		<java jvm="${java.executable}" jar="${launcher.jar}" fork="true" failonerror="true">
-			<syspropertyset>
-				<propertyref builtin="commandline" />
-				<propertyref name="property.file.location" />
-				<propertyref name="property.load.prefix" />
-			</syspropertyset>
-			<arg value="-data" />
-			<arg value="${publisher.workspace}" />
-			<arg value="-application" />
-			<arg value="org.eclipse.ant.core.antRunner" />
-			<arg value="-buildfile" />
-			<arg value="${ant.file}" />
-			<arg value="publish.build.from.framework" />
-		</java>
-
-		<!--
-			somewhat more complicated than simple <delete dir="${publisher.workspace}" />
-			but this way it does not produce the "Deleting directory" message
-		-->
-		<delete includeemptydirs="true" quiet="true">
-			<fileset dir="${publisher.workspace}" includes="**/*"/>
-		</delete>
-	</target>
-
-	<target name="-check.property.file.location">
+	<target name="check.property.file.location">
 		<fail message="property.file.location property must be defined" unless="property.file.location" />
 	</target>
 
-	<target name="publish.build.from.framework" depends="-check.property.file.location,-load.properties">
-		<fail message="saved.build.id property must be defined">
+	<target name="init.properties">
+		<fail message="build.qualifier property must be defined">
 			<condition>
 				<not>
 					<and>
-						<isset property="saved.build.id" />
-						<length string="${saved.build.id}" trim="true" when="greater" length="0" />
+						<isset property="build.qualifier" />
+						<length string="${build.qualifier}" trim="true" when="greater" length="0" />
 					</and>
 				</not>
 			</condition>
 		</fail>
-		<fail message="saved.build.root property must be defined" unless="saved.build.root" />
-		<fail message="saved.packages.base property must be defined" unless="saved.packages.base" />
-		<fail message="saved.downloads.area property must be defined" unless="saved.downloads.area" />
+		<fail message="version property must be defined">
+			<condition>
+				<not>
+					<and>
+						<isset property="version" />
+						<length string="${version}" trim="true" when="greater" length="0" />
+					</and>
+				</not>
+			</condition>
+		</fail>
+		<if>
+			<and>
+				<isset property="build.alias" />
+				<length string="${build.alias}" trim="true" when="greater" length="0" />
+			</and>
+			<then>
+				<property name="final.version.qualifier" value="${build.alias}" />
+			</then>
+			<else>
+				<property name="final.version.qualifier" value="${build.qualifier}" />
+			</else>
+		</if>
+		<fail message="build.root property must be defined" unless="build.root" />
+		<fail message="downloads.area property must be defined" unless="downloads.area" />
+	</target>
 
-		<!-- defaults -->
-		<property name="version" value="3.3.0" />
+	<target name="main" depends="init,check.property.file.location,load.properties,init.properties">
 
-		<property name="build.drop.directory" location="${saved.downloads.area}/downloads/drops/${version}/${saved.build.id}" />
+		<property name="build.drop.directory" location="${downloads.area}/downloads/drops/${version}/${build.qualifier}" />
 
 		<delete dir="${build.drop.directory}" />
 		<mkdir dir="${build.drop.directory}" />
@@ -173,12 +147,17 @@
 				<filename name="*.zip" />
 			</fileset>
 		</copy>
+
+		<!-- rename UpdateSite zip package -->
+		<move tofile="${build.drop.directory}/m2m-atl-Update-${final.version.qualifier}.zip" file="${build.drop.directory}/org.eclipse.m2m.atl.update.zip" />
+
 		<!-- genereate md5 checksums -->
 		<checksum algorithm="MD5" fileext=".md5" format="MD5SUM">
 			<fileset dir="${build.drop.directory}" />
 		</checksum>
-		<!-- copy buildlog -->
-		<copy tofile="${build.drop.directory}/buildlog.txt" file="${build.root}/log" />
+		<!-- copy buildlog 
+		<copy tofile="${build.drop.directory}/buildlog.txt" file="${saved.build.root}/log" />
+		-->
 
 		<fileset id="drop.resources" dir="${build.drop.directory}">
 			<or>
@@ -188,80 +167,89 @@
 		</fileset>
 
 		<!-- chgrp -->
-		<antcall target="-change.group.owner" inheritall="true">
-			<reference refid="drop.resources" torefid="change.group.owner.resources" />
-		</antcall>
+		<chgrp group="${group.owner}" type="both" verbose="true">
+			<fileset refid="drop.resources" />
+		</chgrp>
 
-		<!-- strip the micro version and anything following it -->
-		<buckminster.substitute value="${version}" pattern="^(\d+\.\d+)\.\d+.*$" replacement="$$1" property="base.version" />
+		<!-- determine the base version -->
+		<propertyregex property="base.version" input="${version}" regexp="^(\d+\.\d+)\.\d+.*$" select="\1" casesensitive="false" />
 
-		<!-- setup composite.repository.base appropriate to the build type -->
+		<!-- setup composite.repository.base and composite.type according to the build type -->
 		<condition property="composite.repository.base" value="interim/${base.version}">
-			<matches pattern="^I" string="${saved.build.id}" />
+			<matches pattern="^I" string="${build.qualifier}" />
 		</condition>
 		<condition property="composite.repository.base" value="milestones/${base.version}">
-			<matches pattern="^[MS]" string="${saved.build.id}" />
+			<matches pattern="^[MS]" string="${build.qualifier}" />
 		</condition>
 		<condition property="composite.repository.base" value="releases/${base.version}">
-			<matches pattern="^R" string="${saved.build.id}" />
+			<matches pattern="^R" string="${build.qualifier}" />
 		</condition>
 		<condition property="composite.repository.base" value="nightly/${base.version}">
-			<matches pattern="^N" string="${saved.build.id}" />
+			<matches pattern="^N" string="${build.qualifier}" />
+		</condition>
+		<condition property="composite.type" value="Interim">
+			<matches pattern="^I" string="${build.qualifier}" />
+		</condition>
+		<condition property="composite.type" value="Milestones">
+			<matches pattern="^[MS]" string="${build.qualifier}" />
+		</condition>
+		<condition property="composite.type" value="Releases">
+			<matches pattern="^R" string="${build.qualifier}" />
+		</condition>
+		<condition property="composite.type" value="Nightly">
+			<matches pattern="^N" string="${build.qualifier}" />
 		</condition>
 		<antcall target="-publish.build.repository" inheritall="true" />
 	</target>
 
 	<target name="-publish.build.repository" if="composite.repository.base">
-		<property name="composite.repository.directory" location="${saved.downloads.area}/updates/${composite.repository.base}" />
+		<property name="composite.repository.directory" location="${downloads.area}/updates/${composite.repository.base}" />
 		<property name="composite.repository.url" value="file:/${composite.repository.directory}" />
-		<property name="build.repository.directory" location="${composite.repository.directory}/${saved.build.id}" />
+		<property name="build.repository.directory" location="${composite.repository.directory}/${build.qualifier}" />
 
 		<delete dir="${build.repository.directory}" />
 		<mkdir dir="${build.repository.directory}" />
 
 		<unzip dest="${build.repository.directory}">
 			<fileset dir="${build.root}">
-				<filename name="m2m-atl-Update*.zip" />
+				<filename name="*.zip" />
 			</fileset>
 		</unzip>
 
 		<!-- Adding download stats to the repository -->
 		<unzip dest="${build.repository.directory}">
-			<fileset file="${build.repository.directory}/artifacts.jar"/>
+			<fileset file="${build.repository.directory}/artifacts.jar" />
 		</unzip>
-		
-		<move file="${build.repository.directory}/artifacts.xml" tofile="${build.repository.directory}/artifacts.original.xml"/>
-		
-		<xslt style="addDownloadStats.xsl" in="${build.repository.directory}/artifacts.original.xml" out="${build.repository.directory}/artifacts.xml"/>
-		
-		<zip destfile="${build.repository.directory}/artifacts.jar" basedir="${build.repository.directory}" includes="artifacts.xml"/>
-		
+
+		<move file="${build.repository.directory}/artifacts.xml" tofile="${build.repository.directory}/artifacts.original.xml" />
+
+		<xslt style="addDownloadStats.xsl" in="${build.repository.directory}/artifacts.original.xml" out="${build.repository.directory}/artifacts.xml" />
+
+		<zip destfile="${build.repository.directory}/artifacts.jar" basedir="${build.repository.directory}" includes="artifacts.xml" />
+
 		<delete file="${build.repository.directory}/artifacts.xml" />
 		<delete file="${build.repository.directory}/artifacts.original.xml" />
 		<!-- END download stats -->
-		
-		<p2.composite.repository destination="${composite.repository.url}">
-			<add>
-				<repository location="${saved.build.id}" />
-			</add>
-		</p2.composite.repository>
+
+		<!-- Add to composite repo -->
+		<ant antfile="/shared/modeling/tools/promotion/manage-composite.xml" target="add" dir="${composite.repository.directory}">
+			<property name="user.dir" value="${composite.repository.directory}" />
+			<property name="child.repository" value="${build.qualifier}" />
+			<property name="composite.name" value="ATL ${base.version} ${composite.type} Update Site" />
+		</ant>
 
 		<fileset id="repository.resources" dir="${composite.repository.directory}">
 			<or>
 				<filename name="compositeContent.*" />
 				<filename name="compositeArtifacts.*" />
-				<filename name="${saved.build.id}/**" />
+				<filename name="${build.qualifier}/**" />
 			</or>
 		</fileset>
 
-		<antcall target="-change.group.owner" inheritall="true">
-			<reference refid="repository.resources" torefid="change.group.owner.resources" />
-		</antcall>
-	</target>
-
-	<target name="-change.group.owner" if="group.owner">
+		<!-- chgrp -->
 		<chgrp group="${group.owner}" type="both" verbose="true">
-			<fileset refid="change.group.owner.resources" />
+			<fileset refid="repository.resources" />
 		</chgrp>
 	</target>
+
 </project>
