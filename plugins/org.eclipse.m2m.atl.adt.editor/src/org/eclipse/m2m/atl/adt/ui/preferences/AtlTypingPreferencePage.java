@@ -14,7 +14,7 @@ import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class AtlTypingPreferencePage extends AbstractPreferencePage {
+public class AtlTypingPreferencePage extends AbstractPropertyAndPreferencePage {
 
 	public AtlTypingPreferencePage() {
 		super(AtlPreferencesMessages.getString("TypingPreferencePage.description")); //$NON-NLS-1$

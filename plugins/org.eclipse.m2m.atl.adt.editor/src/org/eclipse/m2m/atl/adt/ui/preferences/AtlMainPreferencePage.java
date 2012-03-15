@@ -13,7 +13,7 @@ package org.eclipse.m2m.atl.adt.ui.preferences;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class AtlMainPreferencePage extends AbstractPreferencePage {
+public class AtlMainPreferencePage extends AbstractPropertyAndPreferencePage {
 
 	public AtlMainPreferencePage() {
 		super(AtlPreferencesMessages.getString("MainPreferencePage.description")); //$NON-NLS-1$

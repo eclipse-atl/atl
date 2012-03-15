@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Group;
 /**
  * This is the page for setting the highlight syntaxing coloration options.
  */
-public class AtlSyntaxPreferencePage extends AbstractPreferencePage {
+public class AtlSyntaxPreferencePage extends AbstractPropertyAndPreferencePage {
 
 	private Button backgroundColorButton;
 

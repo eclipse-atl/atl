@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Control;
 /**
  * This is the page for setting the editor options.
  */
-public class AtlEditorPreferencePage extends AbstractPreferencePage {
+public class AtlEditorPreferencePage extends AbstractPropertyAndPreferencePage {
 
 	/**
 	 * Creates a new ATL editor preference page telling to the super class the title using the resource

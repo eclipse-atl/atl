@@ -14,7 +14,7 @@ import org.eclipse.m2m.atl.adt.ui.AtlPreferenceConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class AtlCodeAssistPreferencePage extends AbstractPreferencePage {
+public class AtlCodeAssistPreferencePage extends AbstractPropertyAndPreferencePage {
 
 	public AtlCodeAssistPreferencePage() {
 		super(AtlPreferencesMessages.getString("CodeAssistPreferencePage.description")); //$NON-NLS-1$

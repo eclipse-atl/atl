@@ -45,7 +45,7 @@ import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PropertyPage;
 
 /**
- * This abstract class permits other properties pages to use some classical method such creating fields ofenly
+ * This abstract class permits other properties pages to use some classical method such creating fields openly
  * used.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
