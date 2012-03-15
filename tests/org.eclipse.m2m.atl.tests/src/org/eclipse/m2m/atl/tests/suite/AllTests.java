@@ -20,8 +20,6 @@ import junit.textui.TestRunner;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.m2m.atl.tests.unit.TestNonRegressionCompiler;
-import org.eclipse.m2m.atl.tests.unit.TestNonRegressionFormatter;
-import org.eclipse.m2m.atl.tests.unit.TestNonRegressionParser;
 import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionEMFVM;
 import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionVM;
 
