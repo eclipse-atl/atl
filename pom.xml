@@ -249,10 +249,14 @@
 		<url>http://download.eclipse.org/eclipse/updates/3.8milestones</url>
         </repository>
 
-        <repository><id>orbit</id><layout>p2</layout>
+        <repository><id>antlr</id><layout>p2</layout>
           <url>http://archive.eclipse.org/tools/orbit/downloads/drops/R20100519200754/repository</url>
         </repository>
                  
+        <repository><id>orbit</id><layout>p2</layout>
+          <url>http://download.eclipse.org/tools/orbit/downloads/drops/updateSite</url>
+        </repository> 
+        
 		<repository><id>validation-transaction</id><layout>p2</layout>
           <url>http://download.eclipse.org/modeling/emf/updates/milestones/</url>
         </repository>
