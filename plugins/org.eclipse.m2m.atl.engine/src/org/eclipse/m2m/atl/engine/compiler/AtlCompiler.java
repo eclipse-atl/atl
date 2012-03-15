@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.Messages;
 import org.eclipse.m2m.atl.engine.compiler.atl2006.Atl2006Compiler;
+import org.eclipse.m2m.atl.engine.compiler.atl2010.Atl2010InPlace;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
 
 /**
@@ -62,7 +63,10 @@ public final class AtlCompiler {
 	public static AtlStandaloneCompiler getCompiler(String compilerName) {
 		AtlStandaloneCompiler ret = (AtlStandaloneCompiler)compilers.get(compilerName);
 		if (ret == null) {
-			if ("atl2006".equals(compilerName)) { //$NON-NLS-1$
+			if ("atl2010".equals(compilerName)) { //$NON-NLS-1$
+				ret = new Atl2010InPlace();
+				compilers.put(compilerName, ret);
+			} else if ("atl2006".equals(compilerName)) { //$NON-NLS-1$
 				ret = new Atl2006Compiler();
 				compilers.put(compilerName, ret);
 			} else if ("atl2004".equals(compilerName)) { //$NON-NLS-1$
