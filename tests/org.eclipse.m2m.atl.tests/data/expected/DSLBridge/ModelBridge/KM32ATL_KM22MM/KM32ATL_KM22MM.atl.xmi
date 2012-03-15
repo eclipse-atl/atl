@@ -420,7 +420,7 @@
         </bindings>
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="125:3-129:4" varName="oc" variableExp="//@elements.6/@outPattern/@elements.1/@bindings.1/@value">
-        <commentsBefore>-- Filter&#x9;</commentsBefore>
+        <commentsBefore>-- Filter	</commentsBefore>
         <type xsi:type="ocl:OclModelElement" location="125:8-125:27" name="OperatorCallExp">
           <model href="new-model#/0"/>
         </type>

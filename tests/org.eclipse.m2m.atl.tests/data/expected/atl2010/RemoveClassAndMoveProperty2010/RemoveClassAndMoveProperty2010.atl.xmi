@@ -9,14 +9,14 @@
   </outModels>
   <elements xsi:type="atl:MatchedRule" location="6:1-11:2" name="RemoveClass">
     <commentsAfter>--rule RemoveClass {</commentsAfter>
-    <commentsAfter>--&#x9;from</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;s: SampleUML!Class (s.name = 'C1')</commentsAfter>
-    <commentsAfter>--&#x9;to</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;drop</commentsAfter>
+    <commentsAfter>--	from</commentsAfter>
+    <commentsAfter>--		s: SampleUML!Class (s.name = 'C1')</commentsAfter>
+    <commentsAfter>--	to</commentsAfter>
+    <commentsAfter>--		drop</commentsAfter>
     <commentsAfter>--}</commentsAfter>
     <commentsAfter>--rule RemoveClass {</commentsAfter>
-    <commentsAfter>--&#x9;drop</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;s: SampleUML!Class (s.name = 'C1')</commentsAfter>
+    <commentsAfter>--	drop</commentsAfter>
+    <commentsAfter>--		s: SampleUML!Class (s.name = 'C1')</commentsAfter>
     <commentsAfter>--}</commentsAfter>
     <outPattern location="9:2-10:7">
       <dropPattern location="10:3-10:7"/>
@@ -37,14 +37,14 @@
   </elements>
   <elements xsi:type="atl:MatchedRule" location="23:1-30:2" name="MoveProperty">
     <commentsBefore>--rule RemoveClass {</commentsBefore>
-    <commentsBefore>--&#x9;from</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;s: SampleUML!Class (s.name = 'C1')</commentsBefore>
-    <commentsBefore>--&#x9;to</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;drop</commentsBefore>
+    <commentsBefore>--	from</commentsBefore>
+    <commentsBefore>--		s: SampleUML!Class (s.name = 'C1')</commentsBefore>
+    <commentsBefore>--	to</commentsBefore>
+    <commentsBefore>--		drop</commentsBefore>
     <commentsBefore>--}</commentsBefore>
     <commentsBefore>--rule RemoveClass {</commentsBefore>
-    <commentsBefore>--&#x9;drop</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;s: SampleUML!Class (s.name = 'C1')</commentsBefore>
+    <commentsBefore>--	drop</commentsBefore>
+    <commentsBefore>--		s: SampleUML!Class (s.name = 'C1')</commentsBefore>
     <commentsBefore>--}</commentsBefore>
     <outPattern location="26:2-29:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="27:3-29:4" varName="t">

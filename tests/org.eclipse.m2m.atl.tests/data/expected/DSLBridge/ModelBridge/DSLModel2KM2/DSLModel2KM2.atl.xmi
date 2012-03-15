@@ -627,7 +627,7 @@
           <value xsi:type="ocl:SequenceExp" location="133:5-136:6">
             <elements xsi:type="ocl:CollectionOperationCallExp" location="134:6-134:34" operationName="asSequence">
               <commentsAfter>--,</commentsAfter>
-              <commentsAfter>--&#x9;&#x9;&#x9;&#x9;&#x9;mel.links.debug('roles')</commentsAfter>
+              <commentsAfter>--					mel.links.debug('roles')</commentsAfter>
               <source xsi:type="ocl:NavigationOrAttributeCallExp" location="134:6-134:20" name="properties">
                 <source xsi:type="ocl:VariableExp" location="134:6-134:9" referredVariable="//@elements.9/@inPattern/@elements.0"/>
               </source>

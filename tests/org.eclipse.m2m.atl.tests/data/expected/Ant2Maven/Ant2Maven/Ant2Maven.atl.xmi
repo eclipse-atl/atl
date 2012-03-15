@@ -15,7 +15,7 @@
   <elements xsi:type="atl:MatchedRule" location="11:1-42:2" name="AntProject2Maven">
     <commentsBefore>-- central element : Project</commentsBefore>
     <commentsBefore>-- two files to create : MavenMaven (representing maven.xml)</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;&#x9; &#x9;and MavenProject (representing project.xml)</commentsBefore>
+    <commentsBefore>--				 	and MavenProject (representing project.xml)</commentsBefore>
     <outPattern location="19:3-41:5">
       <commentsBefore>-- for MavenProject</commentsBefore>
       <elements xsi:type="atl:SimpleOutPatternElement" location="19:6-24:6" varName="mp">
@@ -135,13 +135,13 @@
     <commentsAfter>-- rules only for Maven.xml (meta model : MavenMaven)</commentsAfter>
     <commentsAfter>-- goals</commentsAfter>
     <commentsAfter>-- rule AntTarget2MavenMavenGoal2{</commentsAfter>
-    <commentsAfter>--&#x9;from a : Ant!Target(</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;a.depends.oclIsUndefined() or a.depends->size()=0</commentsAfter>
-    <commentsAfter>--&#x9;)</commentsAfter>
-    <commentsAfter>--&#x9;to mg : MavenMaven!Goal(</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;name &lt;- a.name,</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;contentsGoal &lt;- a.tasks</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;)</commentsAfter>
+    <commentsAfter>--	from a : Ant!Target(</commentsAfter>
+    <commentsAfter>--		a.depends.oclIsUndefined() or a.depends->size()=0</commentsAfter>
+    <commentsAfter>--	)</commentsAfter>
+    <commentsAfter>--	to mg : MavenMaven!Goal(</commentsAfter>
+    <commentsAfter>--		name &lt;- a.name,</commentsAfter>
+    <commentsAfter>--		contentsGoal &lt;- a.tasks</commentsAfter>
+    <commentsAfter>--		)</commentsAfter>
     <commentsAfter>-- }</commentsAfter>
     <outPattern location="52:3-74:5">
       <commentsBefore>-- for MavenProject</commentsBefore>
@@ -210,10 +210,10 @@
         </bindings>
         <bindings location="68:5-68:23" propertyName="goals">
           <commentsAfter>--,</commentsAfter>
-          <commentsAfter>--&#x9;prePostGoals &lt;- a.targets -> select(e|not e.depends.oclIsUndefined() and e.depends->size()>0)</commentsAfter>
+          <commentsAfter>--	prePostGoals &lt;- a.targets -> select(e|not e.depends.oclIsUndefined() and e.depends->size()>0)</commentsAfter>
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="68:14-68:23" name="targets">
             <commentsAfter>--,</commentsAfter>
-            <commentsAfter>--&#x9;prePostGoals &lt;- a.targets -> select(e|not e.depends.oclIsUndefined() and e.depends->size()>0)</commentsAfter>
+            <commentsAfter>--	prePostGoals &lt;- a.targets -> select(e|not e.depends.oclIsUndefined() and e.depends->size()>0)</commentsAfter>
             <source xsi:type="ocl:VariableExp" location="68:14-68:15" referredVariable="//@elements.1/@inPattern/@elements.0"/>
           </value>
         </bindings>
@@ -259,13 +259,13 @@
     <commentsBefore>-- rules only for Maven.xml (meta model : MavenMaven)</commentsBefore>
     <commentsBefore>-- goals</commentsBefore>
     <commentsBefore>-- rule AntTarget2MavenMavenGoal2{</commentsBefore>
-    <commentsBefore>--&#x9;from a : Ant!Target(</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;a.depends.oclIsUndefined() or a.depends->size()=0</commentsBefore>
-    <commentsBefore>--&#x9;)</commentsBefore>
-    <commentsBefore>--&#x9;to mg : MavenMaven!Goal(</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;name &lt;- a.name,</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;contentsGoal &lt;- a.tasks</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;)</commentsBefore>
+    <commentsBefore>--	from a : Ant!Target(</commentsBefore>
+    <commentsBefore>--		a.depends.oclIsUndefined() or a.depends->size()=0</commentsBefore>
+    <commentsBefore>--	)</commentsBefore>
+    <commentsBefore>--	to mg : MavenMaven!Goal(</commentsBefore>
+    <commentsBefore>--		name &lt;- a.name,</commentsBefore>
+    <commentsBefore>--		contentsGoal &lt;- a.tasks</commentsBefore>
+    <commentsBefore>--		)</commentsBefore>
     <commentsBefore>-- }</commentsBefore>
     <commentsAfter>------------------------------------------------------------------------------------</commentsAfter>
     <commentsAfter>------------------------------------------------------------------------------------</commentsAfter>

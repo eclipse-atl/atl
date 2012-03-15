@@ -9,13 +9,13 @@
   </outModels>
   <elements xsi:type="atl:MatchedRule" location="6:1-11:2" name="RemoveClass">
     <commentsAfter>--rule MoveProperty {</commentsAfter>
-    <commentsAfter>--&#x9;from </commentsAfter>
-    <commentsAfter>--&#x9;&#x9;s: SampleUML!Property (s.refImmediateComposite().name = 'C1')</commentsAfter>
-    <commentsAfter>--&#x9;to</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;t1: SampleUML!Property,</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;t2: SampleUML!Property -> (SampleUML!Class.allInstances()->select(e | e.name = 'C2')->first().attributes)(</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;name &lt;- 'newProperty'&#x9;&#x9;</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;)</commentsAfter>
+    <commentsAfter>--	from </commentsAfter>
+    <commentsAfter>--		s: SampleUML!Property (s.refImmediateComposite().name = 'C1')</commentsAfter>
+    <commentsAfter>--	to</commentsAfter>
+    <commentsAfter>--		t1: SampleUML!Property,</commentsAfter>
+    <commentsAfter>--		t2: SampleUML!Property -> (SampleUML!Class.allInstances()->select(e | e.name = 'C2')->first().attributes)(</commentsAfter>
+    <commentsAfter>--			name &lt;- 'newProperty'		</commentsAfter>
+    <commentsAfter>--		)</commentsAfter>
     <commentsAfter>--}</commentsAfter>
     <outPattern location="9:2-10:7">
       <dropPattern location="10:3-10:7"/>
@@ -36,13 +36,13 @@
   </elements>
   <elements xsi:type="atl:MatchedRule" location="23:1-28:2" name="MoveProperty">
     <commentsBefore>--rule MoveProperty {</commentsBefore>
-    <commentsBefore>--&#x9;from </commentsBefore>
-    <commentsBefore>--&#x9;&#x9;s: SampleUML!Property (s.refImmediateComposite().name = 'C1')</commentsBefore>
-    <commentsBefore>--&#x9;to</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;t1: SampleUML!Property,</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;t2: SampleUML!Property -> (SampleUML!Class.allInstances()->select(e | e.name = 'C2')->first().attributes)(</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;name &lt;- 'newProperty'&#x9;&#x9;</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;)</commentsBefore>
+    <commentsBefore>--	from </commentsBefore>
+    <commentsBefore>--		s: SampleUML!Property (s.refImmediateComposite().name = 'C1')</commentsBefore>
+    <commentsBefore>--	to</commentsBefore>
+    <commentsBefore>--		t1: SampleUML!Property,</commentsBefore>
+    <commentsBefore>--		t2: SampleUML!Property -> (SampleUML!Class.allInstances()->select(e | e.name = 'C2')->first().attributes)(</commentsBefore>
+    <commentsBefore>--			name &lt;- 'newProperty'		</commentsBefore>
+    <commentsBefore>--		)</commentsBefore>
     <commentsBefore>--}</commentsBefore>
     <outPattern location="26:2-27:108">
       <elements xsi:type="atl:SimpleOutPatternElement" location="27:3-27:108" varName="t1">

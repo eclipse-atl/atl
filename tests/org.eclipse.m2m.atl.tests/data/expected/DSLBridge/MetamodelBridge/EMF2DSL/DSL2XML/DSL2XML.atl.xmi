@@ -521,17 +521,17 @@
     <commentsAfter>-- Rule 'DMD'.</commentsAfter>
     <commentsAfter>-- This rule generates the .dsldm file structure :</commentsAfter>
     <commentsAfter>-- DMD</commentsAfter>
-    <commentsAfter>-- &#x9;- Model</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;-&#x9;MdfMetaData</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;-&#x9;Extended</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;-&#x9;Enumerations</commentsAfter>
-    <commentsAfter>-- &#x9;&#x9;-&#x9;Relationships</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;-&#x9;Concepts</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;-&#x9;Trees</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;&#x9;-&#x9;treeNavigator Intrinsic</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;&#x9;-&#x9;treeNavigator CompleteDiagram</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;&#x9;-&#x9;treeNavigator Serialization</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;&#x9;-&#x9;treeNavigator Delete</commentsAfter>
+    <commentsAfter>-- 	- Model</commentsAfter>
+    <commentsAfter>--		-	MdfMetaData</commentsAfter>
+    <commentsAfter>--		-	Extended</commentsAfter>
+    <commentsAfter>--		-	Enumerations</commentsAfter>
+    <commentsAfter>-- 		-	Relationships</commentsAfter>
+    <commentsAfter>--		-	Concepts</commentsAfter>
+    <commentsAfter>--		-	Trees</commentsAfter>
+    <commentsAfter>--				-	treeNavigator Intrinsic</commentsAfter>
+    <commentsAfter>--				-	treeNavigator CompleteDiagram</commentsAfter>
+    <commentsAfter>--				-	treeNavigator Serialization</commentsAfter>
+    <commentsAfter>--				-	treeNavigator Delete</commentsAfter>
     <definition location="104:8-110:7">
       <feature xsi:type="ocl:Operation" location="104:32-110:7" name="definitionlevel">
         <returnType xsi:type="ocl:StringType" location="104:50-104:56"/>
@@ -591,17 +591,17 @@
     <commentsBefore>-- Rule 'DMD'.</commentsBefore>
     <commentsBefore>-- This rule generates the .dsldm file structure :</commentsBefore>
     <commentsBefore>-- DMD</commentsBefore>
-    <commentsBefore>-- &#x9;- Model</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;-&#x9;MdfMetaData</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;-&#x9;Extended</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;-&#x9;Enumerations</commentsBefore>
-    <commentsBefore>-- &#x9;&#x9;-&#x9;Relationships</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;-&#x9;Concepts</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;-&#x9;Trees</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;&#x9;-&#x9;treeNavigator Intrinsic</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;&#x9;-&#x9;treeNavigator CompleteDiagram</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;&#x9;-&#x9;treeNavigator Serialization</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;&#x9;-&#x9;treeNavigator Delete</commentsBefore>
+    <commentsBefore>-- 	- Model</commentsBefore>
+    <commentsBefore>--		-	MdfMetaData</commentsBefore>
+    <commentsBefore>--		-	Extended</commentsBefore>
+    <commentsBefore>--		-	Enumerations</commentsBefore>
+    <commentsBefore>-- 		-	Relationships</commentsBefore>
+    <commentsBefore>--		-	Concepts</commentsBefore>
+    <commentsBefore>--		-	Trees</commentsBefore>
+    <commentsBefore>--				-	treeNavigator Intrinsic</commentsBefore>
+    <commentsBefore>--				-	treeNavigator CompleteDiagram</commentsBefore>
+    <commentsBefore>--				-	treeNavigator Serialization</commentsBefore>
+    <commentsBefore>--				-	treeNavigator Delete</commentsBefore>
     <commentsAfter>-- Rule 'Concept'.</commentsAfter>
     <commentsAfter>-- This rule generates the Concepts which are :</commentsAfter>
     <commentsAfter>-- * not subtypes of any class</commentsAfter>
@@ -1156,7 +1156,7 @@
         </bindings>
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="235:3-239:4" varName="concepts" variableExp="//@elements.10/@outPattern/@elements.4/@bindings.2/@value/@elements.10">
-        <commentsBefore>--------------&#x9;</commentsBefore>
+        <commentsBefore>--------------	</commentsBefore>
         <commentsBefore>-- Concepts --</commentsBefore>
         <commentsBefore>--------------</commentsBefore>
         <type xsi:type="ocl:OclModelElement" location="235:14-235:25" name="Element">
@@ -3389,7 +3389,7 @@
         </bindings>
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="708:3-708:85" varName="treeHCDDef" variableExp="//@elements.14/@outPattern/@elements.28/@bindings.3/@value/@elements.4">
-        <commentsBefore>---------------------------------------------------------------------------------------------------------------&#x9;</commentsBefore>
+        <commentsBefore>---------------------------------------------------------------------------------------------------------------	</commentsBefore>
         <type xsi:type="ocl:OclModelElement" location="708:16-708:29" name="Attribute">
           <model href="new-model#/0"/>
         </type>
@@ -4048,7 +4048,7 @@
         </bindings>
       </elements>
       <elements xsi:type="atl:SimpleOutPatternElement" location="838:3-842:4" varName="valueProperties" variableExp="//@elements.16/@outPattern/@elements.0/@bindings.2/@value/@elements.8">
-        <commentsBefore>----------------&#x9;&#x9;&#x9;</commentsBefore>
+        <commentsBefore>----------------			</commentsBefore>
         <commentsBefore>-- Properties --</commentsBefore>
         <commentsBefore>----------------</commentsBefore>
         <type xsi:type="ocl:OclModelElement" location="838:20-838:31" name="Element">

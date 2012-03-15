@@ -298,7 +298,7 @@
           </value>
         </bindings>
         <bindings location="81:1-81:56" propertyName="isPrimaryKey">
-          <commentsBefore>--&#x9;&#x9;&#x9;isPrimaryKey &lt;- p.getValue(p.getAppliedStereotypes().first(),'isPrimaryKey')</commentsBefore>
+          <commentsBefore>--			isPrimaryKey &lt;- p.getValue(p.getAppliedStereotypes().first(),'isPrimaryKey')</commentsBefore>
           <value xsi:type="ocl:OperationCallExp" location="81:17-81:56" operationName="getValue">
             <source xsi:type="ocl:VariableExp" location="81:17-81:18" referredVariable="//@elements.5/@inPattern/@elements.0"/>
             <arguments xsi:type="ocl:OclUndefinedExp" location="81:28-81:40"/>

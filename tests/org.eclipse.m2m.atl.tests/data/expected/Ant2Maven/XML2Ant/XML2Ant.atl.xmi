@@ -315,7 +315,7 @@
     <commentsBefore>-- return '' if the element does not exist</commentsBefore>
     <commentsAfter>--------------------------------------------------------------------------------------</commentsAfter>
     <commentsAfter>--------------------------------------------------------------------------------------</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;RULES&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;--</commentsAfter>
+    <commentsAfter>--									RULES											--</commentsAfter>
     <commentsAfter>-- central rule</commentsAfter>
     <definition location="64:8-72:7">
       <feature xsi:type="ocl:Operation" location="64:33-72:7" name="getText">
@@ -382,7 +382,7 @@
   <elements xsi:type="atl:MatchedRule" location="81:1-101:2" name="Root2Project">
     <commentsBefore>--------------------------------------------------------------------------------------</commentsBefore>
     <commentsBefore>--------------------------------------------------------------------------------------</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;RULES&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;--</commentsBefore>
+    <commentsBefore>--									RULES											--</commentsBefore>
     <commentsBefore>-- central rule</commentsBefore>
     <commentsAfter>---------------------------------------------------------------------</commentsAfter>
     <commentsAfter>-- properties</commentsAfter>

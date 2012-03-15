@@ -1244,16 +1244,16 @@
     <commentsAfter>-- subtypes, roles and properties</commentsAfter>
     <outPattern location="238:2-250:4">
       <commentsAfter>--,</commentsAfter>
-      <commentsAfter>--&#x9;&#x9;nm : DSL!ValueProperty (</commentsAfter>
-      <commentsAfter>--&#x9;&#x9;&#x9;name&lt;-'Name',</commentsAfter>
-      <commentsAfter>--&#x9;&#x9;&#x9;type&lt;-thisModule.findType('String')</commentsAfter>
-      <commentsAfter>--&#x9;&#x9;)</commentsAfter>
+      <commentsAfter>--		nm : DSL!ValueProperty (</commentsAfter>
+      <commentsAfter>--			name&lt;-'Name',</commentsAfter>
+      <commentsAfter>--			type&lt;-thisModule.findType('String')</commentsAfter>
+      <commentsAfter>--		)</commentsAfter>
       <elements xsi:type="atl:SimpleOutPatternElement" location="239:3-250:4" varName="c">
         <commentsAfter>--,</commentsAfter>
-        <commentsAfter>--&#x9;&#x9;nm : DSL!ValueProperty (</commentsAfter>
-        <commentsAfter>--&#x9;&#x9;&#x9;name&lt;-'Name',</commentsAfter>
-        <commentsAfter>--&#x9;&#x9;&#x9;type&lt;-thisModule.findType('String')</commentsAfter>
-        <commentsAfter>--&#x9;&#x9;)</commentsAfter>
+        <commentsAfter>--		nm : DSL!ValueProperty (</commentsAfter>
+        <commentsAfter>--			name&lt;-'Name',</commentsAfter>
+        <commentsAfter>--			type&lt;-thisModule.findType('String')</commentsAfter>
+        <commentsAfter>--		)</commentsAfter>
         <type xsi:type="ocl:OclModelElement" location="239:7-239:16" name="Class">
           <model href="new-model#/0"/>
         </type>
@@ -1287,7 +1287,7 @@
           </value>
         </bindings>
         <bindings location="246:4-246:66" propertyName="properties">
-          <commentsBefore>--&#x9;&#x9;&#x9;properties &lt;- Sequence{e.getSeq('valueProperties','property').append(nm)},</commentsBefore>
+          <commentsBefore>--			properties &lt;- Sequence{e.getSeq('valueProperties','property').append(nm)},</commentsBefore>
           <value xsi:type="ocl:SequenceExp" location="246:18-246:66">
             <elements xsi:type="ocl:OperationCallExp" location="246:27-246:65" operationName="getSeq">
               <source xsi:type="ocl:VariableExp" location="246:27-246:28" referredVariable="//@elements.15/@inPattern/@elements.0"/>

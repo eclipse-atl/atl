@@ -130,12 +130,12 @@
         </bindings>
         <bindings location="47:4-47:18" propertyName="type">
           <commentsAfter>-- explicit use of implicit tracking links (first expected syntax, then present actual syntax)</commentsAfter>
-          <commentsAfter>--&#x9;&#x9;&#x9;owner &lt;- [Class2Type.key]a.owner</commentsAfter>
-          <commentsAfter>--&#x9;&#x9;&#x9;owner &lt;- thisModule.resolveTemp(a.owner, 'key')</commentsAfter>
+          <commentsAfter>--			owner &lt;- [Class2Type.key]a.owner</commentsAfter>
+          <commentsAfter>--			owner &lt;- thisModule.resolveTemp(a.owner, 'key')</commentsAfter>
           <value xsi:type="ocl:NavigationOrAttributeCallExp" location="47:12-47:18" name="type">
             <commentsAfter>-- explicit use of implicit tracking links (first expected syntax, then present actual syntax)</commentsAfter>
-            <commentsAfter>--&#x9;&#x9;&#x9;owner &lt;- [Class2Type.key]a.owner</commentsAfter>
-            <commentsAfter>--&#x9;&#x9;&#x9;owner &lt;- thisModule.resolveTemp(a.owner, 'key')</commentsAfter>
+            <commentsAfter>--			owner &lt;- [Class2Type.key]a.owner</commentsAfter>
+            <commentsAfter>--			owner &lt;- thisModule.resolveTemp(a.owner, 'key')</commentsAfter>
             <source xsi:type="ocl:VariableExp" location="47:12-47:13" referredVariable="//@elements.3/@inPattern/@elements.0"/>
           </value>
         </bindings>

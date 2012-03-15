@@ -495,7 +495,7 @@
   </elements>
   <elements xsi:type="atl:MatchedRule" location="146:1-159:2" name="umlCommentAssociation">
     <commentsBefore>-- Process for type Association of Comment</commentsBefore>
-    <commentsAfter>-- Enables to get the type name of the current diagram&#x9;</commentsAfter>
+    <commentsAfter>-- Enables to get the type name of the current diagram	</commentsAfter>
     <outPattern location="149:2-158:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="150:3-154:4" varName="di">
         <type xsi:type="ocl:OclModelElement" location="150:8-150:20" name="GraphEdge">
@@ -569,7 +569,7 @@
     </inPattern>
   </elements>
   <elements xsi:type="atl:Helper" location="162:1-169:8">
-    <commentsBefore>-- Enables to get the type name of the current diagram&#x9;</commentsBefore>
+    <commentsBefore>-- Enables to get the type name of the current diagram	</commentsBefore>
     <commentsAfter>-- Enables to get the type of the current diagram</commentsAfter>
     <definition location="162:8-169:7">
       <feature xsi:type="ocl:Operation" location="162:34-169:7" name="getDiagramTypeName">
@@ -3687,10 +3687,10 @@
     <commentsAfter>-- It is possible to use a linear router by default</commentsAfter>
     <commentsAfter>-- For example, the associated code in ATL is :</commentsAfter>
     <commentsAfter>--</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;prop : Di!Property(</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;key &lt;- 'router',</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;value &lt;- 'Rectilinear'</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;),</commentsAfter>
+    <commentsAfter>--		prop : Di!Property(</commentsAfter>
+    <commentsAfter>--			key &lt;- 'router',</commentsAfter>
+    <commentsAfter>--			value &lt;- 'Rectilinear'</commentsAfter>
+    <commentsAfter>--		),</commentsAfter>
     <commentsAfter>-- Converts and divides the string by the ratio</commentsAfter>
     <definition location="890:8-901:7">
       <feature xsi:type="ocl:Operation" location="890:31-901:7" name="isValidSourceAndTarget">
@@ -3836,10 +3836,10 @@
     <commentsBefore>-- It is possible to use a linear router by default</commentsBefore>
     <commentsBefore>-- For example, the associated code in ATL is :</commentsBefore>
     <commentsBefore>--</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;prop : Di!Property(</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;key &lt;- 'router',</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;value &lt;- 'Rectilinear'</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;),</commentsBefore>
+    <commentsBefore>--		prop : Di!Property(</commentsBefore>
+    <commentsBefore>--			key &lt;- 'router',</commentsBefore>
+    <commentsBefore>--			value &lt;- 'Rectilinear'</commentsBefore>
+    <commentsBefore>--		),</commentsBefore>
     <commentsBefore>-- Converts and divides the string by the ratio</commentsBefore>
     <commentsAfter>-- Splits the string according to $ character</commentsAfter>
     <definition location="913:8-914:47">

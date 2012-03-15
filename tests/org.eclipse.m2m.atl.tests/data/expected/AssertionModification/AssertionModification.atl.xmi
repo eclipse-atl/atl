@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="ASCII"?>
 <atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="14:1-292:2" name="AssertionModification">
-  <commentsBefore>-- @name&#x9;&#x9;AssertionModification</commentsBefore>
-  <commentsBefore>-- @version&#x9;&#x9;1.0</commentsBefore>
-  <commentsBefore>-- @domains&#x9;&#x9;Catalogue of Model Transformations</commentsBefore>
-  <commentsBefore>-- @authors&#x9;&#x9;SIMON Eric(simon.eric3&lt;at>gmail.com)</commentsBefore>
-  <commentsBefore>-- @date&#x9;&#x9;2006/08/09</commentsBefore>
-  <commentsBefore>-- @description&#x9;This transformation strenghthens or weakens an assertion(respectively postcondition and precondition).</commentsBefore>
+  <commentsBefore>-- @name		AssertionModification</commentsBefore>
+  <commentsBefore>-- @version		1.0</commentsBefore>
+  <commentsBefore>-- @domains		Catalogue of Model Transformations</commentsBefore>
+  <commentsBefore>-- @authors		SIMON Eric(simon.eric3&lt;at>gmail.com)</commentsBefore>
+  <commentsBefore>-- @date		2006/08/09</commentsBefore>
+  <commentsBefore>-- @description	This transformation strenghthens or weakens an assertion(respectively postcondition and precondition).</commentsBefore>
   <commentsBefore>-- @see http://www.dcs.kcl.ac.uk/staff/kcl/tcat.pdf   </commentsBefore>
   <commentsBefore>-- @see section 1.6, page 5</commentsBefore>
   <commentsBefore>-- @see author of article : K. Lano</commentsBefore>

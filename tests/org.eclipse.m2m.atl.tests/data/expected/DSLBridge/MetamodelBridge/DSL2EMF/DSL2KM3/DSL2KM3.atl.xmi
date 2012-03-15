@@ -110,7 +110,7 @@
     <commentsBefore>-- CONTEXT: DSL!Class </commentsBefore>
     <commentsBefore>-- RETURN:  Sequence(DSL!Role)</commentsBefore>
     <commentsAfter>-- This helper get the containmentstyle of the roles </commentsAfter>
-    <commentsAfter>-- CONTEXT: DSL!Role&#x9;</commentsAfter>
+    <commentsAfter>-- CONTEXT: DSL!Role	</commentsAfter>
     <commentsAfter>-- RETURN: Boolean (true for embedding, false for reference) </commentsAfter>
     <definition location="30:8-34:37">
       <feature xsi:type="ocl:Operation" location="30:13-34:37" name="getRoles">
@@ -170,7 +170,7 @@
   </elements>
   <elements xsi:type="atl:Helper" location="39:1-42:19">
     <commentsBefore>-- This helper get the containmentstyle of the roles </commentsBefore>
-    <commentsBefore>-- CONTEXT: DSL!Role&#x9;</commentsBefore>
+    <commentsBefore>-- CONTEXT: DSL!Role	</commentsBefore>
     <commentsBefore>-- RETURN: Boolean (true for embedding, false for reference) </commentsBefore>
     <commentsAfter>-------------------------------------------------------------------------------</commentsAfter>
     <commentsAfter>-- RULES ----------------------------------------------------------------------</commentsAfter>

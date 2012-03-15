@@ -12,12 +12,12 @@
     <commentsBefore>-------------------------------------------------------------------------------</commentsBefore>
     <commentsBefore>-- This helper provides a set containing the name of the IteratorExp elements</commentsBefore>
     <commentsBefore>-- that accepts a single Iterator.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Set(String)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	Set(String)</commentsBefore>
     <commentsAfter>-- This helper provides a set containing the name of the IteratorExp elements</commentsAfter>
     <commentsAfter>-- for which several Iterators may be declared according to the OCL spec.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;thisModule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Set(String)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	thisModule</commentsAfter>
+    <commentsAfter>-- RETURN:	Set(String)</commentsAfter>
     <definition location="12:8-16:3">
       <feature xsi:type="ocl:Attribute" location="12:13-16:3" name="singleIteratorExps">
         <initExpression xsi:type="ocl:SetExp" location="13:2-16:3">
@@ -39,12 +39,12 @@
   <elements xsi:type="atl:Helper" location="23:1-23:71">
     <commentsBefore>-- This helper provides a set containing the name of the IteratorExp elements</commentsBefore>
     <commentsBefore>-- for which several Iterators may be declared according to the OCL spec.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Set(String)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	Set(String)</commentsBefore>
     <commentsAfter>-- This helper computes the set of existing CollectionType elements within the</commentsAfter>
     <commentsAfter>-- input ATL Unit.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;thisModule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Set(ATL!CollectionType)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	thisModule</commentsAfter>
+    <commentsAfter>-- RETURN:	Set(ATL!CollectionType)</commentsAfter>
     <definition location="23:8-23:70">
       <feature xsi:type="ocl:Attribute" location="23:13-23:70" name="multiIteratorExps">
         <initExpression xsi:type="ocl:SetExp" location="23:47-23:70">
@@ -60,12 +60,12 @@
   <elements xsi:type="atl:Helper" location="30:1-31:36">
     <commentsBefore>-- This helper computes the set of existing CollectionType elements within the</commentsBefore>
     <commentsBefore>-- input ATL Unit.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Set(ATL!CollectionType)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	Set(ATL!CollectionType)</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing all the OclModel elements that</commentsAfter>
     <commentsAfter>-- are used in the input ATL Unit.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;thisModule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!OclModel)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	thisModule</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!OclModel)</commentsAfter>
     <definition location="30:8-31:35">
       <feature xsi:type="ocl:Attribute" location="30:13-31:35" name="collectionTypes">
         <initExpression xsi:type="ocl:OperationCallExp" location="31:2-31:35" operationName="allInstances">
@@ -84,13 +84,13 @@
   <elements xsi:type="atl:Helper" location="38:1-45:15">
     <commentsBefore>-- This helper computes a sequence containing all the OclModel elements that</commentsBefore>
     <commentsBefore>-- are used in the input ATL Unit.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!OclModel)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!OclModel)</commentsBefore>
     <commentsAfter>-- This helper computes the Query element that corresponds to the input ATL</commentsAfter>
     <commentsAfter>-- Unit. If the input ATL Unit corresponds to a Module (eg a transformation),</commentsAfter>
     <commentsAfter>-- the computed value is OclUndefined.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;thisModule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;ATL!Query</commentsAfter>
+    <commentsAfter>-- CONTEXT:	thisModule</commentsAfter>
+    <commentsAfter>-- RETURN:	ATL!Query</commentsAfter>
     <definition location="38:8-45:14">
       <feature xsi:type="ocl:Attribute" location="38:13-45:14" name="allModels">
         <initExpression xsi:type="ocl:LetExp" location="39:2-45:14">
@@ -131,12 +131,12 @@
     <commentsBefore>-- This helper computes the Query element that corresponds to the input ATL</commentsBefore>
     <commentsBefore>-- Unit. If the input ATL Unit corresponds to a Module (eg a transformation),</commentsBefore>
     <commentsBefore>-- the computed value is OclUndefined.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;ATL!Query</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	ATL!Query</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing all the Binding elements that</commentsAfter>
     <commentsAfter>-- are defined in the input ATL Unit.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;thisModule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!Binding)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	thisModule</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!Binding)</commentsAfter>
     <definition location="53:8-54:49">
       <feature xsi:type="ocl:Attribute" location="53:13-54:49" name="queryElt">
         <initExpression xsi:type="ocl:CollectionOperationCallExp" location="54:2-54:49" operationName="first">
@@ -157,12 +157,12 @@
   <elements xsi:type="atl:Helper" location="61:1-62:43">
     <commentsBefore>-- This helper computes a sequence containing all the Binding elements that</commentsBefore>
     <commentsBefore>-- are defined in the input ATL Unit.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!Binding)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!Binding)</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing all the Pattern elements that</commentsAfter>
     <commentsAfter>-- are defined in the input ATL Unit.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;thisModule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!InPattern)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	thisModule</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!InPattern)</commentsAfter>
     <definition location="61:8-62:42">
       <feature xsi:type="ocl:Attribute" location="61:13-62:42" name="allBindings">
         <initExpression xsi:type="ocl:CollectionOperationCallExp" location="62:2-62:42" operationName="asSequence">
@@ -183,12 +183,12 @@
   <elements xsi:type="atl:Helper" location="69:1-70:45">
     <commentsBefore>-- This helper computes a sequence containing all the Pattern elements that</commentsBefore>
     <commentsBefore>-- are defined in the input ATL Unit.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!InPattern)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!InPattern)</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing all the InPatternElement elements</commentsAfter>
     <commentsAfter>-- that are defined in the input ATL Unit.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;thisModule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!InPatternElement)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	thisModule</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!InPatternElement)</commentsAfter>
     <definition location="69:8-70:44">
       <feature xsi:type="ocl:Attribute" location="69:13-70:44" name="allInPatterns">
         <initExpression xsi:type="ocl:CollectionOperationCallExp" location="70:2-70:44" operationName="asSequence">
@@ -209,12 +209,12 @@
   <elements xsi:type="atl:Helper" location="77:1-78:52">
     <commentsBefore>-- This helper computes a sequence containing all the InPatternElement elements</commentsBefore>
     <commentsBefore>-- that are defined in the input ATL Unit.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!InPatternElement)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!InPatternElement)</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing all the OutPatternElement</commentsAfter>
     <commentsAfter>-- elements that are defined in the input ATL Unit.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;thisModule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!OutPatternElement)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	thisModule</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!OutPatternElement)</commentsAfter>
     <definition location="77:8-78:51">
       <feature xsi:type="ocl:Attribute" location="77:13-78:51" name="allInPatternElts">
         <initExpression xsi:type="ocl:CollectionOperationCallExp" location="78:2-78:51" operationName="asSequence">
@@ -235,13 +235,13 @@
   <elements xsi:type="atl:Helper" location="85:1-86:53">
     <commentsBefore>-- This helper computes a sequence containing all the OutPatternElement</commentsBefore>
     <commentsBefore>-- elements that are defined in the input ATL Unit.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!OutPatternElement)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!OutPatternElement)</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing all the Rule elements that are</commentsAfter>
     <commentsAfter>-- defined in the input ATL Unit. If the input Unit is a query, the computed</commentsAfter>
     <commentsAfter>-- sequence is empty.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;thisModule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!Rule)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	thisModule</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!Rule)</commentsAfter>
     <definition location="85:8-86:52">
       <feature xsi:type="ocl:Attribute" location="85:13-86:52" name="allOutPatternElts">
         <initExpression xsi:type="ocl:CollectionOperationCallExp" location="86:2-86:52" operationName="asSequence">
@@ -263,12 +263,12 @@
     <commentsBefore>-- This helper computes a sequence containing all the Rule elements that are</commentsBefore>
     <commentsBefore>-- defined in the input ATL Unit. If the input Unit is a query, the computed</commentsBefore>
     <commentsBefore>-- sequence is empty.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!Rule)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!Rule)</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing all the Helper elements that are</commentsAfter>
     <commentsAfter>-- defined in the input ATL Unit.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;thisModule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!Helper)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	thisModule</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!Helper)</commentsAfter>
     <definition location="94:8-95:39">
       <feature xsi:type="ocl:Attribute" location="94:13-95:39" name="allRules">
         <initExpression xsi:type="ocl:CollectionOperationCallExp" location="95:2-95:39" operationName="asSequence">
@@ -289,12 +289,12 @@
   <elements xsi:type="atl:Helper" location="102:1-103:42">
     <commentsBefore>-- This helper computes a sequence containing all the Helper elements that are</commentsBefore>
     <commentsBefore>-- defined in the input ATL Unit.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!Helper)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!Helper)</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing all the LoopExp elements that are</commentsAfter>
     <commentsAfter>-- defined in the input ATL Unit.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;thisModule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!LoopExp)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	thisModule</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!LoopExp)</commentsAfter>
     <definition location="102:8-103:41">
       <feature xsi:type="ocl:Attribute" location="102:13-103:41" name="allHelpers">
         <initExpression xsi:type="ocl:CollectionOperationCallExp" location="103:2-103:41" operationName="asSequence">
@@ -315,12 +315,12 @@
   <elements xsi:type="atl:Helper" location="110:1-111:43">
     <commentsBefore>-- This helper computes a sequence containing all the LoopExp elements that are</commentsBefore>
     <commentsBefore>-- defined in the input ATL Unit.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!LoopExp)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!LoopExp)</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing all the IterateExp elements that</commentsAfter>
     <commentsAfter>-- are defined in the input ATL Unit.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;thisModule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!IterateExp)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	thisModule</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!IterateExp)</commentsAfter>
     <definition location="110:8-111:42">
       <feature xsi:type="ocl:Attribute" location="110:13-111:42" name="allLoopExps">
         <initExpression xsi:type="ocl:CollectionOperationCallExp" location="111:2-111:42" operationName="asSequence">
@@ -341,16 +341,16 @@
   <elements xsi:type="atl:Helper" location="118:1-119:46">
     <commentsBefore>-- This helper computes a sequence containing all the IterateExp elements that</commentsBefore>
     <commentsBefore>-- are defined in the input ATL Unit.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;thisModule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!IterateExp)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	thisModule</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!IterateExp)</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing all the VariableDeclaration</commentsAfter>
     <commentsAfter>-- elements that are associated with the contextual Rule. These declarations</commentsAfter>
     <commentsAfter>-- can be of 3 different kinds:</commentsAfter>
     <commentsAfter>--  * the variables declared for the rule;</commentsAfter>
     <commentsAfter>--  * the OutPatternElements of the rule;</commentsAfter>
     <commentsAfter>--  * the InPatternElements of the rule if this last is a MatchedRule.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;ATL!Rule</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!VariableDeclaration)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	ATL!Rule</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!VariableDeclaration)</commentsAfter>
     <definition location="118:8-119:45">
       <feature xsi:type="ocl:Attribute" location="118:13-119:45" name="allIterateExps">
         <initExpression xsi:type="ocl:CollectionOperationCallExp" location="119:2-119:45" operationName="asSequence">
@@ -375,16 +375,16 @@
     <commentsBefore>--  * the variables declared for the rule;</commentsBefore>
     <commentsBefore>--  * the OutPatternElements of the rule;</commentsBefore>
     <commentsBefore>--  * the InPatternElements of the rule if this last is a MatchedRule.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;ATL!Rule</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!VariableDeclaration)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	ATL!Rule</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!VariableDeclaration)</commentsBefore>
     <commentsAfter>-- This helper computes the Rule element in which the contextual PatterElement</commentsAfter>
     <commentsAfter>-- is declared. This is achieved by returning the Rule referred by the &quot;rule&quot;</commentsAfter>
     <commentsAfter>-- reference of the Pattern that conatins the contexual PatternElement. This </commentsAfter>
     <commentsAfter>-- last one is accessed through the &quot;outPattern&quot; reference if the contextual</commentsAfter>
     <commentsAfter>-- PatternElement is an OutPatternElement, throught the &quot;inPattern&quot; if it is</commentsAfter>
     <commentsAfter>-- an InPatternElement.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;ATL!PatternElement</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;ATL!Rule</commentsAfter>
+    <commentsAfter>-- CONTEXT:	ATL!PatternElement</commentsAfter>
+    <commentsAfter>-- RETURN:	ATL!Rule</commentsAfter>
     <definition location="130:8-141:14">
       <feature xsi:type="ocl:Attribute" location="131:7-141:14" name="namedElements">
         <initExpression xsi:type="ocl:CollectionOperationCallExp" location="132:2-141:14" operationName="flatten">
@@ -447,8 +447,8 @@
     <commentsBefore>-- last one is accessed through the &quot;outPattern&quot; reference if the contextual</commentsBefore>
     <commentsBefore>-- PatternElement is an OutPatternElement, throught the &quot;inPattern&quot; if it is</commentsBefore>
     <commentsBefore>-- an InPatternElement.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;ATL!PatternElement</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;ATL!Rule</commentsBefore>
+    <commentsBefore>-- CONTEXT:	ATL!PatternElement</commentsBefore>
+    <commentsBefore>-- RETURN:	ATL!Rule</commentsBefore>
     <commentsAfter>-- This helper returns the immediate composite (container) of the contextual</commentsAfter>
     <commentsAfter>-- VariableDeclaration.</commentsAfter>
     <commentsAfter>-- If the &quot;letExp&quot; reference of the contextual VariableDeclaration is not</commentsAfter>
@@ -466,8 +466,8 @@
     <commentsAfter>-- Otherwise, if there exists a Rule element that contains the contextual VD</commentsAfter>
     <commentsAfter>-- as a rule variable iterator, the helper returns this Rule element.</commentsAfter>
     <commentsAfter>-- Otherwise, the helper returns OclUndefined as a default value.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;ATL!VariableDeclaration</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;ATL!Element</commentsAfter>
+    <commentsAfter>-- CONTEXT:	ATL!VariableDeclaration</commentsAfter>
+    <commentsAfter>-- RETURN:	ATL!Element</commentsAfter>
     <definition location="152:8-158:7">
       <feature xsi:type="ocl:Attribute" location="152:40-158:7" name="rule">
         <initExpression xsi:type="ocl:IfExp" location="153:2-158:7">
@@ -523,8 +523,8 @@
     <commentsBefore>-- Otherwise, if there exists a Rule element that contains the contextual VD</commentsBefore>
     <commentsBefore>-- as a rule variable iterator, the helper returns this Rule element.</commentsBefore>
     <commentsBefore>-- Otherwise, the helper returns OclUndefined as a default value.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;ATL!VariableDeclaration</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;ATL!Element</commentsBefore>
+    <commentsBefore>-- CONTEXT:	ATL!VariableDeclaration</commentsBefore>
+    <commentsBefore>-- RETURN:	ATL!Element</commentsBefore>
     <commentsAfter>-- This helper returns the immediate composite (container) of the contextual</commentsAfter>
     <commentsAfter>-- OclExpression.</commentsAfter>
     <commentsAfter>-- If the one of the &quot;ifExp1&quot;, &quot;ifExp2&quot; and &quot;ifExp3&quot; references of the</commentsAfter>
@@ -555,8 +555,8 @@
     <commentsAfter>-- Otherwise, if there exists a Query that has the contextual OclExp as body,</commentsAfter>
     <commentsAfter>-- the helper returns this Query.</commentsAfter>
     <commentsAfter>-- Otherwise, the helper retuns OclUndefined as default value.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;ATL!OclExpression</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;ATL!Element</commentsAfter>
+    <commentsAfter>-- CONTEXT:	ATL!OclExpression</commentsAfter>
+    <commentsAfter>-- RETURN:	ATL!Element</commentsAfter>
     <definition location="180:8-201:43">
       <feature xsi:type="ocl:Attribute" location="180:45-201:43" name="immediateComposite">
         <initExpression xsi:type="ocl:IfExp" location="181:2-201:43">
@@ -826,8 +826,8 @@
     <commentsBefore>-- Otherwise, if there exists a Query that has the contextual OclExp as body,</commentsBefore>
     <commentsBefore>-- the helper returns this Query.</commentsBefore>
     <commentsBefore>-- Otherwise, the helper retuns OclUndefined as default value.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;ATL!OclExpression</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;ATL!Element</commentsBefore>
+    <commentsBefore>-- CONTEXT:	ATL!OclExpression</commentsBefore>
+    <commentsBefore>-- RETURN:	ATL!Element</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing the VariableDeclarations that</commentsAfter>
     <commentsAfter>-- precede the contextual VariableDeclaration in its namespace.</commentsAfter>
     <commentsAfter>-- If the contextual VariableDeclaration is a PatternElement, the helper only</commentsAfter>
@@ -840,8 +840,8 @@
     <commentsAfter>-- If the container is an IterateExp, the helper a Sequence containing the same</commentsAfter>
     <commentsAfter>-- elements that the one computed for an IteratorExp.</commentsAfter>
     <commentsAfter>-- Otherwise, the helper returns the only contextual VD as default value.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;ATL!VariableDeclaration</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!VariableDeclaration)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	ATL!VariableDeclaration</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!VariableDeclaration)</commentsAfter>
     <definition location="236:8-266:37">
       <feature xsi:type="ocl:Attribute" location="236:39-266:37" name="immediateComposite">
         <initExpression xsi:type="ocl:IfExp" location="237:2-266:37">
@@ -1148,8 +1148,8 @@
     <commentsBefore>-- If the container is an IterateExp, the helper a Sequence containing the same</commentsBefore>
     <commentsBefore>-- elements that the one computed for an IteratorExp.</commentsBefore>
     <commentsBefore>-- Otherwise, the helper returns the only contextual VD as default value.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;ATL!VariableDeclaration</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!VariableDeclaration)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	ATL!VariableDeclaration</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!VariableDeclaration)</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing the VariableDeclarations that are</commentsAfter>
     <commentsAfter>-- defined higher than the contextual OclExpression in its namespace tree.</commentsAfter>
     <commentsAfter>-- The helper first computes the container of the contextual OclExp. If this</commentsAfter>
@@ -1173,8 +1173,8 @@
     <commentsAfter>--    that for an IteratorExp, with the additional &quot;result&quot; element in case the</commentsAfter>
     <commentsAfter>--    contextual OclExp is not the source of the IterateExp.</commentsAfter>
     <commentsAfter>-- Otherwise, the helper returns an empty sequence as default value.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;ATL!OclExpression</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!VariableDeclaration)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	ATL!OclExpression</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!VariableDeclaration)</commentsAfter>
     <definition location="283:8-317:7">
       <feature xsi:type="ocl:Operation" location="284:7-317:7" name="getDeclarations">
         <returnType xsi:type="ocl:SequenceType" location="284:27-284:60">
@@ -1302,8 +1302,8 @@
     <commentsBefore>--    that for an IteratorExp, with the additional &quot;result&quot; element in case the</commentsBefore>
     <commentsBefore>--    contextual OclExp is not the source of the IterateExp.</commentsBefore>
     <commentsBefore>-- Otherwise, the helper returns an empty sequence as default value.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;ATL!OclExpression</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!VariableDeclaration)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	ATL!OclExpression</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!VariableDeclaration)</commentsBefore>
     <commentsAfter>-- This helper computes a sequence containing the VariableDeclarations that are</commentsAfter>
     <commentsAfter>-- defined lower than the contextual OclExpression in its namespace tree.</commentsAfter>
     <commentsAfter>-- If the contextual OclExpression is a LetExp, the helper returns a sequence</commentsAfter>
@@ -1320,36 +1320,36 @@
     <commentsAfter>-- returns the sequence returned for an IteratorExp with its additional result</commentsAfter>
     <commentsAfter>-- element.</commentsAfter>
     <commentsAfter>-- Otherwise, the helper returns an empty sequence as default value.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;ATL!OclExpression</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;Sequence(ATL!VariableDeclaration)</commentsAfter>
+    <commentsAfter>-- CONTEXT:	ATL!OclExpression</commentsAfter>
+    <commentsAfter>-- RETURN:	Sequence(ATL!VariableDeclaration)</commentsAfter>
     <commentsAfter>--helper context ATL!OclExpression</commentsAfter>
-    <commentsAfter>--&#x9;def: getDownD() : Sequence(ATL!VariableDeclaration) =</commentsAfter>
-    <commentsAfter>--&#x9;if self.oclIsTypeOf(ATL!LetExp) then</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;Sequence{</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;self.variable,</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;self.in_.getDownD()</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;}->flatten()</commentsAfter>
-    <commentsAfter>--&#x9;else if self.oclIsTypeOf(ATL!IfExp) then</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;Sequence{</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;self.condition.getDownD(),</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;self.thenExpression.getDownD(),</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;self.elseExpression.getDownD()</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;}->flatten()</commentsAfter>
-    <commentsAfter>--&#x9;else if self.oclIsTypeOf(ATL!IteratorExp) then</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;Sequence{</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;self.iterators,</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;self.source.getDownD(),</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;self.body.getDownD()</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;}->flatten()</commentsAfter>
-    <commentsAfter>--&#x9;else if self.oclIsTypeOf(ATL!IterateExp) then</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;Sequence{</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;self.iterators,</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;self.result,</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;self.source.getDownD(),</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;&#x9;self.body.getDownD()</commentsAfter>
-    <commentsAfter>--&#x9;&#x9;}->flatten()</commentsAfter>
-    <commentsAfter>--&#x9;else Sequence{}</commentsAfter>
-    <commentsAfter>--&#x9;endif endif endif endif;</commentsAfter>
+    <commentsAfter>--	def: getDownD() : Sequence(ATL!VariableDeclaration) =</commentsAfter>
+    <commentsAfter>--	if self.oclIsTypeOf(ATL!LetExp) then</commentsAfter>
+    <commentsAfter>--		Sequence{</commentsAfter>
+    <commentsAfter>--			self.variable,</commentsAfter>
+    <commentsAfter>--			self.in_.getDownD()</commentsAfter>
+    <commentsAfter>--		}->flatten()</commentsAfter>
+    <commentsAfter>--	else if self.oclIsTypeOf(ATL!IfExp) then</commentsAfter>
+    <commentsAfter>--		Sequence{</commentsAfter>
+    <commentsAfter>--			self.condition.getDownD(),</commentsAfter>
+    <commentsAfter>--			self.thenExpression.getDownD(),</commentsAfter>
+    <commentsAfter>--			self.elseExpression.getDownD()</commentsAfter>
+    <commentsAfter>--		}->flatten()</commentsAfter>
+    <commentsAfter>--	else if self.oclIsTypeOf(ATL!IteratorExp) then</commentsAfter>
+    <commentsAfter>--		Sequence{</commentsAfter>
+    <commentsAfter>--			self.iterators,</commentsAfter>
+    <commentsAfter>--			self.source.getDownD(),</commentsAfter>
+    <commentsAfter>--			self.body.getDownD()</commentsAfter>
+    <commentsAfter>--		}->flatten()</commentsAfter>
+    <commentsAfter>--	else if self.oclIsTypeOf(ATL!IterateExp) then</commentsAfter>
+    <commentsAfter>--		Sequence{</commentsAfter>
+    <commentsAfter>--			self.iterators,</commentsAfter>
+    <commentsAfter>--			self.result,</commentsAfter>
+    <commentsAfter>--			self.source.getDownD(),</commentsAfter>
+    <commentsAfter>--			self.body.getDownD()</commentsAfter>
+    <commentsAfter>--		}->flatten()</commentsAfter>
+    <commentsAfter>--	else Sequence{}</commentsAfter>
+    <commentsAfter>--	endif endif endif endif;</commentsAfter>
     <commentsAfter>-- This helper returns the root composite (container) of the contextual</commentsAfter>
     <commentsAfter>-- OclExpression. For this purpose, the helper first computes the immediate</commentsAfter>
     <commentsAfter>-- composite of the contextual OclExpression.</commentsAfter>
@@ -1358,8 +1358,8 @@
     <commentsAfter>-- provided by its recursive call on the computed container.</commentsAfter>
     <commentsAfter>-- Finally, if this container is not an OclExpression, the root composite has</commentsAfter>
     <commentsAfter>-- been reached (Binding/InPattern/Operation/Query/Attribute) and is returned.</commentsAfter>
-    <commentsAfter>-- CONTEXT:&#x9;ATL!OclExpression</commentsAfter>
-    <commentsAfter>-- RETURN:&#x9;ATL!Element</commentsAfter>
+    <commentsAfter>-- CONTEXT:	ATL!OclExpression</commentsAfter>
+    <commentsAfter>-- RETURN:	ATL!Element</commentsAfter>
     <definition location="345:8-401:37">
       <feature xsi:type="ocl:Operation" location="346:7-401:37" name="getUpD">
         <returnType xsi:type="ocl:SequenceType" location="346:18-346:51">
@@ -1564,36 +1564,36 @@
     <commentsBefore>-- returns the sequence returned for an IteratorExp with its additional result</commentsBefore>
     <commentsBefore>-- element.</commentsBefore>
     <commentsBefore>-- Otherwise, the helper returns an empty sequence as default value.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;ATL!OclExpression</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;Sequence(ATL!VariableDeclaration)</commentsBefore>
+    <commentsBefore>-- CONTEXT:	ATL!OclExpression</commentsBefore>
+    <commentsBefore>-- RETURN:	Sequence(ATL!VariableDeclaration)</commentsBefore>
     <commentsBefore>--helper context ATL!OclExpression</commentsBefore>
-    <commentsBefore>--&#x9;def: getDownD() : Sequence(ATL!VariableDeclaration) =</commentsBefore>
-    <commentsBefore>--&#x9;if self.oclIsTypeOf(ATL!LetExp) then</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;Sequence{</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;self.variable,</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;self.in_.getDownD()</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;}->flatten()</commentsBefore>
-    <commentsBefore>--&#x9;else if self.oclIsTypeOf(ATL!IfExp) then</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;Sequence{</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;self.condition.getDownD(),</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;self.thenExpression.getDownD(),</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;self.elseExpression.getDownD()</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;}->flatten()</commentsBefore>
-    <commentsBefore>--&#x9;else if self.oclIsTypeOf(ATL!IteratorExp) then</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;Sequence{</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;self.iterators,</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;self.source.getDownD(),</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;self.body.getDownD()</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;}->flatten()</commentsBefore>
-    <commentsBefore>--&#x9;else if self.oclIsTypeOf(ATL!IterateExp) then</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;Sequence{</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;self.iterators,</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;self.result,</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;self.source.getDownD(),</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;&#x9;self.body.getDownD()</commentsBefore>
-    <commentsBefore>--&#x9;&#x9;}->flatten()</commentsBefore>
-    <commentsBefore>--&#x9;else Sequence{}</commentsBefore>
-    <commentsBefore>--&#x9;endif endif endif endif;</commentsBefore>
+    <commentsBefore>--	def: getDownD() : Sequence(ATL!VariableDeclaration) =</commentsBefore>
+    <commentsBefore>--	if self.oclIsTypeOf(ATL!LetExp) then</commentsBefore>
+    <commentsBefore>--		Sequence{</commentsBefore>
+    <commentsBefore>--			self.variable,</commentsBefore>
+    <commentsBefore>--			self.in_.getDownD()</commentsBefore>
+    <commentsBefore>--		}->flatten()</commentsBefore>
+    <commentsBefore>--	else if self.oclIsTypeOf(ATL!IfExp) then</commentsBefore>
+    <commentsBefore>--		Sequence{</commentsBefore>
+    <commentsBefore>--			self.condition.getDownD(),</commentsBefore>
+    <commentsBefore>--			self.thenExpression.getDownD(),</commentsBefore>
+    <commentsBefore>--			self.elseExpression.getDownD()</commentsBefore>
+    <commentsBefore>--		}->flatten()</commentsBefore>
+    <commentsBefore>--	else if self.oclIsTypeOf(ATL!IteratorExp) then</commentsBefore>
+    <commentsBefore>--		Sequence{</commentsBefore>
+    <commentsBefore>--			self.iterators,</commentsBefore>
+    <commentsBefore>--			self.source.getDownD(),</commentsBefore>
+    <commentsBefore>--			self.body.getDownD()</commentsBefore>
+    <commentsBefore>--		}->flatten()</commentsBefore>
+    <commentsBefore>--	else if self.oclIsTypeOf(ATL!IterateExp) then</commentsBefore>
+    <commentsBefore>--		Sequence{</commentsBefore>
+    <commentsBefore>--			self.iterators,</commentsBefore>
+    <commentsBefore>--			self.result,</commentsBefore>
+    <commentsBefore>--			self.source.getDownD(),</commentsBefore>
+    <commentsBefore>--			self.body.getDownD()</commentsBefore>
+    <commentsBefore>--		}->flatten()</commentsBefore>
+    <commentsBefore>--	else Sequence{}</commentsBefore>
+    <commentsBefore>--	endif endif endif endif;</commentsBefore>
     <commentsBefore>-- This helper returns the root composite (container) of the contextual</commentsBefore>
     <commentsBefore>-- OclExpression. For this purpose, the helper first computes the immediate</commentsBefore>
     <commentsBefore>-- composite of the contextual OclExpression.</commentsBefore>
@@ -1602,8 +1602,8 @@
     <commentsBefore>-- provided by its recursive call on the computed container.</commentsBefore>
     <commentsBefore>-- Finally, if this container is not an OclExpression, the root composite has</commentsBefore>
     <commentsBefore>-- been reached (Binding/InPattern/Operation/Query/Attribute) and is returned.</commentsBefore>
-    <commentsBefore>-- CONTEXT:&#x9;ATL!OclExpression</commentsBefore>
-    <commentsBefore>-- RETURN:&#x9;ATL!Element</commentsBefore>
+    <commentsBefore>-- CONTEXT:	ATL!OclExpression</commentsBefore>
+    <commentsBefore>-- RETURN:	ATL!Element</commentsBefore>
     <commentsAfter>-------------------------------------------------------------------------------</commentsAfter>
     <commentsAfter>-- RULES ----------------------------------------------------------------------</commentsAfter>
     <commentsAfter>-------------------------------------------------------------------------------</commentsAfter>
@@ -2426,12 +2426,12 @@
         </type>
       </elements>
       <filter xsi:type="ocl:IfExp" location="706:4-716:9">
-        <commentsBefore>--&#x9;&#x9;&#x9;s.referredVariable.varName = 'self' and </commentsBefore>
-        <commentsBefore>--&#x9;&#x9;&#x9;(</commentsBefore>
-        <commentsBefore>--&#x9;&#x9;&#x9;&#x9;let rComp : ATL!Element = s.getRootComposite() in</commentsBefore>
-        <commentsBefore>--&#x9;&#x9;&#x9;&#x9;rComp.oclIsTypeOf(ATL!Binding) or</commentsBefore>
-        <commentsBefore>--&#x9;&#x9;&#x9;&#x9;rComp.oclIsTypeOf(ATL!InPattern)</commentsBefore>
-        <commentsBefore>--&#x9;&#x9;&#x9;)</commentsBefore>
+        <commentsBefore>--			s.referredVariable.varName = 'self' and </commentsBefore>
+        <commentsBefore>--			(</commentsBefore>
+        <commentsBefore>--				let rComp : ATL!Element = s.getRootComposite() in</commentsBefore>
+        <commentsBefore>--				rComp.oclIsTypeOf(ATL!Binding) or</commentsBefore>
+        <commentsBefore>--				rComp.oclIsTypeOf(ATL!InPattern)</commentsBefore>
+        <commentsBefore>--			)</commentsBefore>
         <thenExpression xsi:type="ocl:BooleanExp" location="708:5-708:10"/>
         <condition xsi:type="ocl:OperationCallExp" location="706:7-706:42" operationName="oclIsUndefined">
           <source xsi:type="ocl:NavigationOrAttributeCallExp" location="706:7-706:25" name="referredVariable">
