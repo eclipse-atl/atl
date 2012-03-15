@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.tests.unit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.util.Properties;
 
 import org.eclipse.m2m.atl.adt.ui.editor.formatter.AtlCodeFormatter;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
@@ -23,6 +24,20 @@ import org.eclipse.m2m.atl.tests.util.FileUtils;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class TestNonRegressionFormatter extends TestNonRegression {
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		Properties properties = new Properties();
+		properties.load(TestNonRegressionParser.class
+				.getResourceAsStream("TestNonRegressionFormatter.properties")); //$NON-NLS-1$
+		setProperties(properties);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -38,17 +53,21 @@ public class TestNonRegressionFormatter extends TestNonRegression {
 				testFile(input, expected);
 			}
 		}
-
 	}
 
 	private void testFile(final File input, final File expected) {
 		String result = ""; //$NON-NLS-1$
 		try {
+			long startTime = System.currentTimeMillis();
 			result = new AtlCodeFormatter().format(new FileInputStream(input));
+			long endTime = System.currentTimeMillis();
+			System.err.println("Formatted " + input + ", took "
+					+ (endTime - startTime) / 1000. + "s.");
+
 			if (expected.exists()) {
 				String expectedResult = FileUtils.readFileAsString(expected);
-				expectedResult = expectedResult.replaceAll("\r\n","\n");
-				result = result.replaceAll("\r\n","\n");
+				expectedResult = expectedResult.replaceAll("\r\n", "\n");
+				result = result.replaceAll("\r\n", "\n");
 				assertEquals(input.getName(), expectedResult, result);
 			} else {
 				FileWriter fw = new FileWriter(expected);

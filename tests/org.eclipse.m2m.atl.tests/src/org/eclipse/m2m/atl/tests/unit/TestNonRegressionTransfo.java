@@ -58,8 +58,6 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
 	private double executionTotalTime;
 
-	// private FileWriter results;
-
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -68,9 +66,6 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		//		results = new FileWriter("results/" + getVMName() + "_results.xml"); //$NON-NLS-1$ //$NON-NLS-2$
-		//		results.write("<?xml version=\"1.0\"?>\n"); //$NON-NLS-1$
-		//		results.write("<vm>\n"); //$NON-NLS-1$
 	}
 
 	/**
@@ -147,14 +142,6 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 		} catch (Exception e) {
 			fail(directory.getName() + ": " + e.getMessage(), e); //$NON-NLS-1$
 		}
-		// try {
-		//			results.write("\t<test name=\"" + directory.getName() + "\" directory=\"" //$NON-NLS-1$ //$NON-NLS-2$
-		// +
-		// directory.toString().substring(AtlTestPlugin.getBaseDirectory().length())
-		//					+ "\" time=\"" + executionTime + "\"/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		// } catch (IOException e) {
-		//			fail("Error writing results for: " + directory.getName(), e); //$NON-NLS-1$
-		// }
 		info(directory.getName() + ": " + executionTime + "s (pure execution: " + pureExecutionTime + "s)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		/*
@@ -212,9 +199,6 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 	@Override
 	protected void tearDown() throws Exception {
 		info("total time : " + totalTime + "s (pure execution: " + executionTotalTime + "s)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		//		results.write("\t<test name=\"TOTAL\" time=\"" + totalTime + "\"/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		//		results.write("</vm>\n"); //$NON-NLS-1$
-		// results.close();
 		super.tearDown();
 	}
 

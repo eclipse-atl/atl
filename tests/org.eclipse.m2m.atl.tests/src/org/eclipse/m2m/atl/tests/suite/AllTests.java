@@ -19,7 +19,11 @@ import junit.textui.TestRunner;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.m2m.atl.tests.unit.TestNonRegressionCompiler;
+import org.eclipse.m2m.atl.tests.unit.TestNonRegressionFormatter;
+import org.eclipse.m2m.atl.tests.unit.TestNonRegressionParser;
 import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionEMFVM;
+import org.eclipse.m2m.atl.tests.unit.atlvm.TestNonRegressionVM;
 
 /**
  * Launches all the JUnit tests for ATL.
@@ -46,10 +50,10 @@ public class AllTests extends TestCase implements IApplication {
 	public static Test suite() {
 		final TestSuite suite = new TestSuite("ATL test suite"); //$NON-NLS-1$	
 		suite.addTestSuite(TestNonRegressionEMFVM.class);
-		// suite.addTestSuite(TestNonRegressionVM.class);
-		// suite.addTestSuite(TestNonRegressionParser.class);
-		// suite.addTestSuite(TestNonRegressionCompiler.class);
-		// suite.addTestSuite(TestNonRegressionFormatter.class);
+		suite.addTestSuite(TestNonRegressionVM.class);
+		suite.addTestSuite(TestNonRegressionParser.class);
+		suite.addTestSuite(TestNonRegressionCompiler.class);
+		suite.addTestSuite(TestNonRegressionFormatter.class);
 		return suite;
 	}
 
