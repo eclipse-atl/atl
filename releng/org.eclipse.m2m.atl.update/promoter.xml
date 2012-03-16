@@ -9,7 +9,7 @@
   Contributors:
       Obeo - initial API and implementation
 
- $Id: promoter.xml,v 1.4 2012/03/15 15:07:32 wpiers Exp $
+ $Id: promoter.xml,v 1.5 2012/03/16 12:58:42 wpiers Exp $
 -->
 <project name="Promoter" default="main">
 	<!--
@@ -24,7 +24,7 @@
 
 	
 	<property name="downloads.project.root" value="modeling/m2m/atl" />
-	<property name="build.root" value="/shared/jobs/m2m-atl-master/lastSuccessful/archive/org.eclipse.emf/org.eclipse.m2m.atl/releng/org.eclipse.m2m.atl.update/target/" />
+	<property name="build.root" value="/shared/jobs/m2m-atl-master/lastSuccessful/archive/org.eclipse.m2m/org.eclipse.m2m.atl/releng/org.eclipse.m2m.atl.update/target/" />
 	<property name="thirdPartyJarsDir" value="/shared/modeling/m2m/atl/3rdPartyJars" />
 	<property name="project.name" value="ATL"/>
 	<property name="final.updatesite.name" value="m2m-atl-Update"/>
