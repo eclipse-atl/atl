@@ -1,0 +1,5 @@
+Use this project to build ATL.
+
+- for local build, use this command : 'mvn -s settings.xml -P localBuild clean verify' (will use the local profile definition)
+- on hudson, just use 'clean verify'
+- to mute maven messages, use -q option
