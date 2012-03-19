@@ -125,17 +125,17 @@
 		</p>
 		<h2 id="Install_ATL_from_CVS">Install ATL from CVS</h2>
 		<h3 id="Import_team_project_set">Import team project set</h3>
-		<p>ATL provides team project sets in order to simplify access to the source code. You have to download an atl.psf file on your local disk, and then you can import projects in Eclipse using : 
+		<p>ATL provides team project sets in order to simplify access to the source code. You have to download a .psf file on your local disk, and then you can import projects in Eclipse using : 
 			<i>File->Import->Team->Team Project Set</i>
 		</p>
-		<h4 id="Anonymous_access">Anonymous access</h4>
-		<p>Anonymous access use pserver to connect on CVS. 
-			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl.releng/psf/anonymous/?root=Modeling_Project">Here</a> are the two psf files.
-		</p>
-		<h4 id="Commiter_access">Commiter access</h4>
-		<p>Commiter access use extssh to connect on CVS. 
-			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.m2m/org.eclipse.m2m.atl.releng/psf/commiter/?root=Modeling_Project">Here</a> are the two psf files.
-		</p>
+		<ul>
+			<li>
+				<a href="http://dev.eclipse.org/viewcvs/viewvc.cgi/org.eclipse.m2m/org.eclipse.atl/plugins/org.eclipse.m2m.atl/psf/ATL_anonymous.psf?view=markup&amp;root=Modeling_Project">Anonymous access, using pserver to connect on CVS</a>
+			</li>
+			<li>
+				<a href="http://dev.eclipse.org/viewcvs/viewvc.cgi/org.eclipse.m2m/org.eclipse.atl/plugins/org.eclipse.m2m.atl/psf/ATL_commiter.psf?view=markup&amp;root=Modeling_Project">Commiter access, using extssh to connect on CVS</a>
+			</li>
+		</ul>
 		<h4 id="ANTLR_installation">ANTLR installation</h4>
 		<p>Note that the download of this plugin is embedded into atl.psf files. So, if you followed the previous instructions, you don't need to read the next steps.
 			In Eclipse, antlr is managed by the 
@@ -151,13 +151,7 @@
 			<li>Checkout <code>org.antlr.runtime</code></li>
 		</ul>
 		<h4 id="MDR_installation_.28Regular_VM_only.29">MDR installation (Regular VM only)</h4>
-		<p>In each psf/ subdirectory there are two .psf files :</p>
-		<ul>
-			<li>atl.psf</li>
-			<li>mdr4atl.psf</li>
-		</ul>
-		<p>The last one provides a project set which only contains the mdr4atl driver, you can use it as for atl.psf.</p>
-		<p>Now, you need to go to the Plug-in perspective. Some external libraries are required for the plug-in org.eclipse.m2m.atl.drivers.mdr4atl but not available on the CVS repository. You need to download the jar files into the lib/ directory of this project.</p>
+		<p>Some external libraries are required for the plug-in org.eclipse.m2m.atl.drivers.mdr4atl but not available on the CVS repository. You need to download the jar files into the lib/ directory of this project.</p>
 		<p>Download mdr-standalone.zip from 
 			<a href="http://mdr.netbeans.org/download/">http://mdr.netbeans.org/download/</a> and put the included jar files into lib/ of plugin org.eclipse.m2m.atl.drivers.mdr4atl.
 		</p>

@@ -5,8 +5,6 @@
 		<topic href="guide/developer/ATL Developer Guide.html#External_dependencies" label="External dependencies"></topic>
 		<topic href="guide/developer/ATL Developer Guide.html#Install_ATL_from_CVS" label="Install ATL from CVS">
 			<topic href="guide/developer/ATL Developer Guide.html#Import_team_project_set" label="Import team project set">
-				<topic href="guide/developer/ATL Developer Guide.html#Anonymous_access" label="Anonymous access"></topic>
-				<topic href="guide/developer/ATL Developer Guide.html#Commiter_access" label="Commiter access"></topic>
 				<topic href="guide/developer/ATL Developer Guide.html#ANTLR_installation" label="ANTLR installation"></topic>
 				<topic href="guide/developer/ATL Developer Guide.html#MDR_installation_.28Regular_VM_only.29" label="MDR installation (Regular VM only)"></topic>
 				<topic href="guide/developer/ATL Developer Guide.html#Testing" label="Testing"></topic>

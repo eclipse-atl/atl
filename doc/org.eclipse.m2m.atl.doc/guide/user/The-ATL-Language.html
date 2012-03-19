@@ -2139,13 +2139,18 @@ entrypoint rule Metamodel() {
 		</ul>
 		<h2 id="ATL_Refining_Mode">ATL Refining Mode</h2>
 		<p>The refining execution mode has been introduced to ease the programming of refining (or refactoring) transformations. With the refining mode, ATL developers can focus on the ATL code dedicated to the generation of modified target elements. Other model elements (e.g. those that remain unchanged between the source and the target model) are implicitly processed by the ATL engine.</p>
-		<p>This mode is selected in the ATL language by simply replacing the from keyword by the refining keyword in the transformation header. Obviously, refining mode may only be used for endogenous transformations, i.e. when source and target model share the same metamodel. Listing below shows how the header of a refactoring transformation on a ClassDiagram metamodel may look like.</p>
+		<p>This mode is selected in the ATL language by simply replacing the 
+			<i>from</i> keyword by the 
+			<i>refining</i> keyword in the transformation header. Obviously, refining mode may only be used for endogenous transformations, i.e. when source and target model share the same metamodel. Listing below shows how the header of a refactoring transformation on a ClassDiagram metamodel may look like.
+		</p>
 		<pre>module refiningSample;
 create OUT : ClassDiagram refining IN : ClassDiagram;
 </pre>
 		<p>The ATL2010 compiler implements an in-place strategy, e.g.,  the changes are directly performed on the source model without making any copy of the elements. The rules in the transformation only need to specify the values that have changed whereas all the other elements just remain untouched. The transformations in this mode are performed in two steps. In the first step, the transformation engine executes the rules which, as a result, produce a set of changes that are temporally stored. In the second step, this set changes are applied directly on the source model.</p>
 		<p>This compiler enhances the refining capabilities provided by the 2006 compiler, that also implemented an in-place strategy. First of all, it addresses the lacking of deletion support by providing the user an explicit way to specify in the transformation that a matched element has to be removed.</p>
-		<p>To support the deletion feature, some modifications have been introduced in the concrete and abstract syntax of the language to provide a new keyword: DROP. The listing below shows and ATL 2010 refining transformation that reverses the prior introduced change in attributes visibility using the new drop keyword.</p>
+		<p>To support the deletion feature, some modifications have been introduced in the concrete and abstract syntax of the language to provide a new keyword: DROP. The listing below shows and ATL 2010 refining transformation that reverses the prior introduced change in attributes visibility using the new 
+			<i>drop</i> keyword.
+		</p>
 		<pre>rule PrivateAttribute {
   from
       s : ClassDiagram!Attribute (s.isPrivate and
@@ -2166,8 +2171,8 @@ rule DeleteOperation {
       drop
 }
 </pre>
-		<p>From the semantic point of view, we have to note that a delete can easily generate a conflict with another modification. This happens because we chose to provide delete with a cascade-delete semantics for composition associations (i.e. the deletion of a container triggers the deletion of the contained elements). For this reason, the second step in the transformation that is in charge of applying the changes is implemented by first applying all the creation changes, then all the modification changes, and finally all the deletion changes.</p>
-		<p>Some ATL standard mode advanced features are not supported in Refining Mode. Concretely, the following elements are not supported: Action blocks, Lazy rules, multiple input elements and Iterative output patterns. Covering this advances features as well as providing new refining features (like cloning) are in the future plans.</p>
+		<p>From the semantic point of view, we have to note that a deletion can easily generate a conflict with another modification. This happens because we chose to provide deletion with a cascade-delete semantics for composition associations (i.e. the deletion of a container triggers the deletion of the contained elements). For this reason, the second step in the transformation that is in charge of applying the changes is implemented by first applying all the creation changes, then all the modification changes, and finally all the deletion changes.</p>
+		<p>Some ATL standard mode advanced features are not supported in Refining Mode. Concretely, the following elements are not supported: Action blocks, Lazy rules, multiple input elements and Iterative output patterns. Covering these advanced features as well as providing new refining features (like cloning) are in the future plans.</p>
 		<h3 id="Refining_Mode_support_in_previous_compilers:">Refining Mode support in previous compilers:</h3>
 		<p>Refining transformations are implemented differently depending on the ATL compiler used for the transformation. In the following, we explain the features of the previous compilers so that ATL users can choose the refinement implementation strategy that best fits their scenario.</p>
 		<ul>
