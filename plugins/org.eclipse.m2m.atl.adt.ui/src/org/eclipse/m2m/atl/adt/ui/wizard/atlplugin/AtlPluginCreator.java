@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.adt.ui.wizard.atlplugin;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.eclipse.core.resources.IContainer;
@@ -157,8 +158,8 @@ public class AtlPluginCreator extends Wizard implements INewWizard, IExecutableE
 				CreatePluginData pluginData = new CreatePluginData(newProjectPage.getProjectName());
 				pluginData.setRunnableData(parametersPage.getRunnableData());
 
-				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
-						newProjectPage.getProjectName());
+				IProject project = ResourcesPlugin.getWorkspace().getRoot()
+						.getProject(newProjectPage.getProjectName());
 				IPath location = newProjectPage.getLocationPath();
 				if (!project.exists()) {
 					IProjectDescription desc = project.getWorkspace().newProjectDescription(
@@ -264,8 +265,8 @@ public class AtlPluginCreator extends Wizard implements INewWizard, IExecutableE
 
 			// ATL libraries copy
 			for (String libraryName : runnableData.getAllLibrariesNames()) {
-				IFile libraryFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
-						new Path(runnableData.getLibraryLocations().get(libraryName)));
+				IFile libraryFile = ResourcesPlugin.getWorkspace().getRoot()
+						.getFile(new Path(runnableData.getLibraryLocations().get(libraryName)));
 				copyAtlFile(
 						project,
 						libraryFile,
@@ -315,10 +316,14 @@ public class AtlPluginCreator extends Wizard implements INewWizard, IExecutableE
 			} else {
 				file.setContents(javaStream, true, false, monitor);
 			}
+			javaStream.close();
 		} catch (CoreException e) {
 			IStatus status = new Status(IStatus.ERROR, AtlUIPlugin.PLUGIN_ID, IStatus.OK, e.getMessage(), e);
 			AtlUIPlugin.getDefault().getLog().log(status);
 		} catch (UnsupportedEncodingException e) {
+			IStatus status = new Status(IStatus.ERROR, AtlUIPlugin.PLUGIN_ID, IStatus.OK, e.getMessage(), e);
+			AtlUIPlugin.getDefault().getLog().log(status);
+		} catch (IOException e) {
 			IStatus status = new Status(IStatus.ERROR, AtlUIPlugin.PLUGIN_ID, IStatus.OK, e.getMessage(), e);
 			AtlUIPlugin.getDefault().getLog().log(status);
 		}
@@ -339,8 +344,8 @@ public class AtlPluginCreator extends Wizard implements INewWizard, IExecutableE
 	public static void copyAtlFile(IProject project, IFile fileToCopy, IPath targetDirRelativePath,
 			IProgressMonitor monitor) {
 		if ("asm".equals(fileToCopy.getFileExtension())) { //$NON-NLS-1$
-			IFile atlFile = fileToCopy.getProject().getParent().getFile(
-					fileToCopy.getFullPath().removeFileExtension().addFileExtension("atl")); //$NON-NLS-1$
+			IFile atlFile = fileToCopy.getProject().getParent()
+					.getFile(fileToCopy.getFullPath().removeFileExtension().addFileExtension("atl")); //$NON-NLS-1$
 			if (atlFile != null && atlFile.isAccessible()) {
 				copyFile(project, atlFile, targetDirRelativePath, monitor);
 				return;
