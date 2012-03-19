@@ -9,7 +9,7 @@
   Contributors:
       Obeo - initial API and implementation
 
- $Id: promoter.xml,v 1.6 2012/03/16 15:30:50 wpiers Exp $
+ $Id: promoter.xml,v 1.7 2012/03/19 15:37:40 wpiers Exp $
 -->
 <project name="Promoter" default="main">
 	<!--
@@ -21,7 +21,7 @@
 	on build.eclipse.org, do a 
 	$> export ANT_HOME=/shared/common/apache-ant-1.8.2/ 
 	-->
-	
+
 	<property name="downloads.project.root" value="modeling/m2m/atl" />
 	<property name="build.root" value="/shared/jobs/m2m-atl-master/lastSuccessful/archive/org.eclipse.m2m/org.eclipse.m2m.atl/releng/org.eclipse.m2m.atl.update/target/" />
 	<property name="thirdPartyJarsDir" value="/shared/modeling/m2m/atl/3rdPartyJars" />
@@ -257,7 +257,7 @@ $${thirdPartyJarsDir}/ant-contrib.jar          = ${thirdPartyJarsDir}/ant-contri
 				<available file="${composite.repository.directory}/p2.index" type="file" />
 			</not>
 			<then>
-				<echo file="${composite.repository.directory}/p2.index" message="version=1${line.separator}metadata.repository.factory.order=compositeContent.jar,!${line.separator}artifact.repository.factory.order=compositeArtifacts.jar,!" />
+				<echo file="${composite.repository.directory}/p2.index" message="version = 1${line.separator}metadata.repository.factory.order = compositeContent.xml,\!${line.separator}artifact.repository.factory.order = compositeArtifacts.xml,\!" />
 			</then>
 		</if>
 
