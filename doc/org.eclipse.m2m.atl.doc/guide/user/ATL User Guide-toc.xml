@@ -171,6 +171,7 @@
 			<topic href="guide/user/The-ATL-Tools.html#Mapping_with_AM3_ant_tasks" label="Mapping with AM3 ant tasks"></topic>
 			<topic href="guide/user/The-ATL-Tools.html#Launching_an_Ant_file_with_ATL_tasks_in_an_Eclipse_workbench" label="Launching an Ant file with ATL tasks in an Eclipse workbench"></topic>
 		</topic>
+		<topic href="guide/user/The-ATL-Tools.html#ATL_Plugins" label="ATL Plugins"></topic>
 		<topic href="guide/user/The-ATL-Tools.html#Debugging_ATL" label="Debugging ATL">
 			<topic href="guide/user/The-ATL-Tools.html#Managing_breakpoints" label="Managing breakpoints">
 				<topic href="guide/user/The-ATL-Tools.html#Setting.2FRemoving_breakpoints" label="Setting/Removing breakpoints"></topic>

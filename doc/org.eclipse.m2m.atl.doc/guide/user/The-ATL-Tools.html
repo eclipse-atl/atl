@@ -704,6 +704,25 @@ uses myLib;
 		<p>
 			<img border="0" src="images/AM3AntTasks_JreTab.jpg"/>
 		</p>
+		<h2 id="ATL_Plugins">ATL Plugins</h2>
+		<p>The ATL plugin wizard helps achieving an ATL programmatic launch. This utility first will ask for transformation parameters (metamodels, libraries paths, transformation modules paths):</p>
+		<p>
+			<img border="0" src="images/ATL_plugin_wizard.png"/>
+		</p>
+		<p>Then a new plug-in will be generated, embedding:</p>
+		<ul>
+			<li>the transformation modules and libraries</li>
+			<li>a propery file containing URIs, atl file paths</li>
+			<li>a Java class which allow to programmatically launch the ATL transformation</li>
+		</ul>
+		<p>
+			<img border="0" src="images/ATL_plugin_wizard_result.png"/>
+		</p>
+		<p>Finally you will be able to launch the transformation using the generated main, or integrating the launcher class into an existing application. To use the transformation as a standalone app, you can use Eclipse Java export options:</p>
+		<p>
+			<img border="0" src="images/ATL_plugin_wizard_result_export.png"/>
+		</p>
+		<p>This will product a .jar containing all the required ATL, Eclipse and EMF libraries.</p>
 		<h2 id="Debugging_ATL">Debugging ATL</h2>
 		<p>This section aims to introduce the debugging facilities provided by the ATL IDE. The ATL development environment therefore offers ATL developers a dedicated ATL Debug perspective. This perspective provides developers with the most common debugging facilities, including step-by-step transformation execution, running a transformation to the next breakpoint, display of the variables content, etc. Moreover, the ATL IDE enables developers to know, at any time, the ATL instructions currently being executed by highlighting the corresponding code in the ATL Editor.</p>
 		<p>The ATL debugging operations are available from the ATL Debug perspective. As for a Java program, debugging an ATL transformation implies to execute this transformation in debug mode. This supposes developers to create an ATL debug launch configuration for the transformation. The debug execution mode, along with its associated debugging actions, is triggered by the execution of this debug launch configuration.</p>
