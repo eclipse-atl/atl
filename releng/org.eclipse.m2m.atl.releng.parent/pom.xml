@@ -38,7 +38,6 @@
 
   <properties>
     <tycho-version>0.14.1</tycho-version>
-	<tycho-extras-version>0.14.0</tycho-extras-version>
   </properties>
 
 
