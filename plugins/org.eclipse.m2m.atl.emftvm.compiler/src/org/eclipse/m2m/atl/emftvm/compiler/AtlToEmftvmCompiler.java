@@ -45,7 +45,6 @@ import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
-import org.eclipse.m2m.atl.emftvm.util.TimingData;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 import org.eclipse.m2m.atl.engine.ProblemConverter;
 import org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler;
@@ -172,29 +171,29 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		
 		try {
 			ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
-			env.getMetaModels().put("ATL", atlmm);
-			env.getMetaModels().put("Problem", pbmm);
-			env.getInputModels().put("IN", atlm);
-			env.getOutputModels().put("OUT", pbm);
+			env.registerMetaModel("ATL", atlmm);
+			env.registerMetaModel("Problem", pbmm);
+			env.registerInputModel("IN", atlm);
+			env.registerOutputModel("OUT", pbm);
 			env.loadModule(mr, "ATLWFR");
-			env.run(new TimingData(), null);
+			env.run(null);
 			
 			if (getProblems(pbm, pbs) == 0) {
 				env = EmftvmFactory.eINSTANCE.createExecEnv();
-				env.getMetaModels().put("ATL", atlmm);
-				env.getMetaModels().put("Problem", pbmm);
-				env.getInputModels().put("IN", atlm);
-				env.getOutputModels().put("OUT", emftvmm);
-				env.getOutputModels().put("PBS", pbm);
+				env.registerMetaModel("ATL", atlmm);
+				env.registerMetaModel("Problem", pbmm);
+				env.registerInputModel("IN", atlm);
+				env.registerOutputModel("OUT", emftvmm);
+				env.registerOutputModel("PBS", pbm);
 				env.loadModule(mr, "ATLtoEMFTVM");
-				env.run(new TimingData(), null);
+				env.run(null);
 				
 				if (getProblems(pbm, pbs) == 0) {
 					env = EmftvmFactory.eINSTANCE.createExecEnv();
-					env.getInputModels().put("IN", emftvmm);
-					env.getOutputModels().put("OUT", emftvmmi);
+					env.registerInputModel("IN", emftvmm);
+					env.registerOutputModel("OUT", emftvmmi);
 					env.loadModule(mr, "InlineCodeblocks");
-					env.run(new TimingData(), null);
+					env.run(null);
 					
 					ri.save(outputStream, Collections.emptyMap());
 				}

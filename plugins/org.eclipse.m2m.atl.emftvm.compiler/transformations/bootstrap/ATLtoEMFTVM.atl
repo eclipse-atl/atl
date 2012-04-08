@@ -3,7 +3,7 @@
 -- @path ATL=/emftvm.compiler/metamodels/ATL.ecore
 -- @path Problem=/emftvm.compiler/metamodels/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: ATLtoEMFTVM.atl,v 1.6 2011/12/12 11:11:17 dwagelaar Exp $
+-- $Id: ATLtoEMFTVM.atl,v 1.7 2012/04/08 14:34:47 dwagelaar Exp $
 module ATLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -132,14 +132,6 @@ helper context ATL!PropertyCallExp def : isStatic : Boolean =
 	if self.source.oclIsKindOf(ATL!VariableExp) then
 		self.source.referredVariable.varName = 'thisModule'
 	else self.source.oclIsUndefined() endif;
-
-helper def : reverse(seq : Sequence(OclAny)) : Sequence(OclAny) =
-	if (seq->isEmpty()) then
-		seq
-	else
-		let tail : OclAny = seq->last() in
-		thisModule.reverse(seq->excluding(tail))->prepend(tail)
-	endif;
 
 helper context ATL!OutPatternElement def : outModelName : String =
 	if self.model.oclIsUndefined() then
@@ -270,7 +262,7 @@ helper context ATL!Rule def : applyLoc : String =
 
 -- Support for multiple rule inheritance, including rules outside same module
 helper context String def : isExtendsAnn : Boolean =
-	self.substring(2).trim().startsWith('@extends');
+	self.substring(2, self.size()-1).trim().startsWith('@extends');
 
 helper context String def : extendsAnnValues : Sequence(String) =
 	if self.isExtendsAnn then
@@ -353,8 +345,8 @@ rule ModuleWithEntryPoint extends Module {
 		code <- Sequence{getenvtype_entry, invoke_entry}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{getenvtype_entry, invoke_entry}),
-	   getenvtype_entry : EMFTVM!Getenvtype,							-- [ExecEnv]
-	   invoke_entry : EMFTVM!InvokeStatic (							-- [result]
+	   getenvtype_entry : EMFTVM!Getenvtype,							-- [..., ExecEnv]
+	   invoke_entry : EMFTVM!InvokeStatic (								-- [..., result]
 	   	opname <- entryPointRule.name,
 		argcount <- 0),
 	   pb : Problem!Problem (
@@ -376,8 +368,8 @@ rule ModuleWithEndPoint extends Module {
 		code <- Sequence{getenvtype_end, invoke_end}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{getenvtype_end, invoke_end}),
-	   getenvtype_end : EMFTVM!Getenvtype,								-- [ExecEnv]
-	   invoke_end : EMFTVM!InvokeStatic (								-- [result]
+	   getenvtype_end : EMFTVM!Getenvtype,								-- [..., ExecEnv]
+	   invoke_end : EMFTVM!InvokeStatic (								-- [..., result]
 	   	opname <- endPointRule.name,
 		argcount <- 0)
 }
@@ -397,13 +389,13 @@ rule ModuleWithEntryAndEndPoint extends Module {
 		code <- Sequence{getenvtype_entry, invoke_entry, pop, getenvtype_end, invoke_end}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{getenvtype_entry, invoke_entry, pop, getenvtype_end, invoke_end}),
-	   getenvtype_entry : EMFTVM!Getenvtype,							-- [ExecEnv]
-	   invoke_entry : EMFTVM!InvokeStatic (							-- [result]
+	   getenvtype_entry : EMFTVM!Getenvtype,							-- [..., ExecEnv]
+	   invoke_entry : EMFTVM!InvokeStatic (								-- [..., result]
 	   	opname <- entryPointRule.name,
 		argcount <- 0),
-	   pop : EMFTVM!Pop,												-- []
-	   getenvtype_end : EMFTVM!Getenvtype,								-- [ExecEnv]
-	   invoke_end : EMFTVM!InvokeStatic (								-- [result]
+	   pop : EMFTVM!Pop,												-- [...]
+	   getenvtype_end : EMFTVM!Getenvtype,								-- [..., ExecEnv]
+	   invoke_end : EMFTVM!InvokeStatic (								-- [..., result]
 	   	opname <- endPointRule.name,
 		argcount <- 0),
 	   pb : Problem!Problem (
@@ -641,11 +633,11 @@ rule CalledRuleOutPatternElement {
 	   	name <- s.varName,
 		type <- s.type.typeName,
 		typeModel <- s.type.modelName),
-	   findtype : EMFTVM!Findtype (											-- [type]
+	   findtype : EMFTVM!Findtype (											-- [..., type]
 	   	modelname <- s.type.modelName,
 		typename <- s.type.typeName),
-	   new : EMFTVM!New (modelname <- s.outModelName),						-- [element]
-	   store : EMFTVM!Store (localVariable <- lv)							-- []
+	   new : EMFTVM!New (modelname <- s.outModelName),						-- [..., element]
+	   store : EMFTVM!Store (localVariable <- lv)							-- [...]
 }
 
 rule CalledRuleVariableDeclaration {
@@ -664,8 +656,8 @@ rule CalledRuleVariableDeclaration {
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
 		instructions <- Sequence{invokeCb, store}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.initExpression, argcount <- 0),			-- [value]
-	   store : EMFTVM!Store (localVariable <- s)											-- []
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.initExpression, argcount <- 0),			-- [..., value]
+	   store : EMFTVM!Store (localVariable <- s)											-- [...]
 }
 
 rule CalledRule { -- Called rules are really operations
@@ -700,7 +692,7 @@ rule CalledRule { -- Called rules are really operations
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
 		instructions <- Sequence{invokeAllCbs}),
-	   invokeAllCbs : EMFTVM!InvokeAllCbs					-- [null] * nestedCbSize
+	   invokeAllCbs : EMFTVM!InvokeAllCbs					-- [...]
 }
 
 rule CalledRuleNamedMain extends CalledRule {
@@ -725,16 +717,16 @@ rule MatchedRuleVariableDeclaration {
 	   cb : EMFTVM!CodeBlock (
 	   	lineNumbers <- Sequence{ln},
 	   	nested <- Sequence{s.initExpression},
-		code <- Sequence{invokeCb, load, set}),
+		code <- Sequence{load, invokeCb, set}),
 	   ln : EMFTVM!LineNumber (
 	   	startLine <- s.location.startLine,
 		startColumn <- s.location.startColumn,
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
-		instructions <- Sequence{invokeCb, load, set}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.initExpression, argcount <- 0),			-- [value]
-	   load : EMFTVM!Load (localVariable <- thisModule.resolveTemp(s."rule", 'a_trace')),	-- [trace, value]
-	   set : EMFTVM!"Set" (fieldname <- s.varName)											-- []
+		instructions <- Sequence{load, invokeCb, set}),
+	   load : EMFTVM!Load (localVariable <- thisModule.resolveTemp(s."rule", 'a_trace')),	-- [..., trace]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.initExpression, argcount <- 0),			-- [..., trace, value]
+	   set : EMFTVM!"Set" (fieldname <- s.varName)											-- [...]
 }
 
 rule MatchedRule {
@@ -783,7 +775,7 @@ rule MatchedRule {
 	   	name <- '__trace__',
 		type <- 'TraceLink',
 		typeModel <- 'TRACE'),
-	   a_invokeAllCbs : EMFTVM!InvokeAllCbs					-- [null] * nestedCbSize
+	   a_invokeAllCbs : EMFTVM!InvokeAllCbs					-- [...]
 }
 
 rule MatchedRuleWithFilter extends MatchedRule {
@@ -834,7 +826,7 @@ rule MatchedRuleWithFilterAndAction extends MatchedRuleWithFilter {
 		endLine <- postLoc.endLine,
 		endColumn <- postLoc.endColumn,
 		instructions <- Sequence{p_invokeAllCbs}),
-	   p_invokeAllCbs : EMFTVM!InvokeAllCbs					-- [value] * nestedCbSize
+	   p_invokeAllCbs : EMFTVM!InvokeAllCbs					-- [..., value] * nestedCbSize
 }
 
 rule MatchedRuleWithoutFilterWithAction extends MatchedRule {
@@ -863,7 +855,7 @@ rule MatchedRuleWithoutFilterWithAction extends MatchedRule {
 		endLine <- postLoc.endLine,
 		endColumn <- postLoc.endColumn,
 		instructions <- Sequence{p_invokeAllCbs}),
-	   p_invokeAllCbs : EMFTVM!InvokeAllCbs					-- [value] * nestedCbSize
+	   p_invokeAllCbs : EMFTVM!InvokeAllCbs					-- [..., value] * nestedCbSize
 }
 
 rule Binding {
@@ -871,23 +863,23 @@ rule Binding {
 	to cb : EMFTVM!CodeBlock (
 		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.value},
-		code <- Sequence{invokeCb, invoke, load, set}),
+		code <- Sequence{load, invokeCb, invoke, set}),
 	   ln : EMFTVM!LineNumber (
 	   	startLine <- s.location.startLine,
 		startColumn <- s.location.startColumn,
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
-		instructions <- Sequence{invokeCb, invoke, load, set}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),	-- [value]
-	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [rvalue]
+		instructions <- Sequence{load, invokeCb, invoke, set}),
 	   load : EMFTVM!Load (
-	   	localVariable <-													-- [lv, rvalue]
+	   	localVariable <-													-- [..., lv]
 			if s.parentRule.oclIsKindOf(ATL!MatchedRule) then
 				thisModule.resolveTemp(s.outPatternElement, 'ov')
 			else
 				thisModule.resolveTemp(s.outPatternElement, 'lv')
 			endif),
-	   set : EMFTVM!"Set" (fieldname <- s.propertyName)						-- []
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),	-- [..., lv, value]
+	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [..., lv, rvalue]
+	   set : EMFTVM!"Set" (fieldname <- s.propertyName)						-- [...]
 }
 
 -------------- VariableDeclarations -----------------
@@ -927,7 +919,7 @@ rule ExpressionStat {
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
 		instructions <- Sequence{invokeCb}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.expression, argcount <- 0)		-- [value]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.expression, argcount <- 0)	-- [..., value]
 }
 
 rule BindingStat {
@@ -935,16 +927,16 @@ rule BindingStat {
 	to cb : EMFTVM!CodeBlock (
 		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.source, s.value},
-		code <- Sequence{invokeCb, invoke, invokeCb2, set}),
+		code <- Sequence{invokeCb, invokeCb2, invoke, set}),
 	   ln : EMFTVM!LineNumber (
 	   	startLine <- s.location.startLine,
 		startColumn <- s.location.startColumn,
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
-		instructions <- Sequence{invokeCb, invoke, invokeCb2, set}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),		-- [value]
-	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),				-- [rvalue]
-	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [source, rvalue]
+		instructions <- Sequence{invokeCb, invokeCb2, invoke, set}),
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),		-- [..., source]
+	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),		-- [..., source, value]
+	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),				-- [..., source, rvalue]
 	   set : EMFTVM!"Set" (fieldname <- s.propertyName)							-- []
 }
 
@@ -960,8 +952,8 @@ rule AssignmentBindingStat {
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
 		instructions <- Sequence{invokeCb, invokeCb2, set}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),		-- [value]
-	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [source, value]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),		-- [..., source]
+	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),		-- [..., source, value]
 	   set : EMFTVM!"Set" (fieldname <- s.propertyName)							-- []
 }
 
@@ -970,15 +962,15 @@ rule IfStat {
 	to cb : EMFTVM!CodeBlock (
 		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.condition, thenCb, elseCb},
-		code <- Sequence{invokeCb, ifte}), -- TODO implement using regular IF
+		code <- Sequence{invokeCb, ifte}),
 	   ln : EMFTVM!LineNumber (
 	   	startLine <- s.location.startLine,
 		startColumn <- s.location.startColumn,
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
 		instructions <- Sequence{invokeCb, ifte}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.condition, argcount <- 0),		-- [cond]
-	   ifte : EMFTVM!Ifte (thenCb <- thenCb, elseCb <- elseCb),						-- [result]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.condition, argcount <- 0),	-- [..., cond]
+	   ifte : EMFTVM!Ifte (thenCb <- thenCb, elseCb <- elseCb),					-- [..., result]
 	   thenCb : EMFTVM!CodeBlock (
 	   	nested <- s.thenStatements,
 		code <- Sequence{invokeAllCbs}),
@@ -1002,12 +994,12 @@ rule ForStat {
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
 		instructions <- Sequence{invokeCb, it, store, invokeCb2, pop, endit}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.collection, argcount <- 0),		-- [coll]
-	   it : EMFTVM!Iterate (target <- endit),										-- [value, it(coll)]
-	   store : EMFTVM!Store (localVariable <- s.iterator),							-- [it(coll)]
-	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- loop),							-- [bogus, it(coll)]
-	   pop : EMFTVM!Pop,															-- [it(coll)]
-	   endit : EMFTVM!Enditerate (target <- it),									-- []
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.collection, argcount <- 0),		-- [..., coll]
+	   it : EMFTVM!Iterate (target <- endit),										-- [..., it(coll), value]
+	   store : EMFTVM!Store (localVariable <- s.iterator),							-- [..., it(coll)]
+	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- loop),								-- [..., it(coll), bogus]
+	   pop : EMFTVM!Pop,															-- [..., it(coll)]
+	   endit : EMFTVM!Enditerate (target <- it),									-- [...]
 	   loop : EMFTVM!CodeBlock (
 	   	nested <- s.statements,
 		code <- Sequence{invokeAllCbs}),
@@ -1037,8 +1029,8 @@ rule NavigationOrAttributeCallExp extends OclExpression {
 		code <- Sequence{invokeCb, get}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeCb, get}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [result]
-	   get : EMFTVM!Get (fieldname <- s.name)								-- [value]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [..., result]
+	   get : EMFTVM!Get (fieldname <- s.name)								-- [..., value]
 }
 
 rule StaticNavigationOrAttributeCallExp extends OclExpression {
@@ -1049,8 +1041,8 @@ rule StaticNavigationOrAttributeCallExp extends OclExpression {
 		code <- Sequence{invokeCb, getStatic}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeCb, getStatic}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [result]
-	   getStatic : EMFTVM!GetStatic (fieldname <- s.name)					-- [value]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [..., result]
+	   getStatic : EMFTVM!GetStatic (fieldname <- s.name)					-- [..., value]
 }
 
 rule SuperNavigationOrAttributeCallExp extends OclExpression {
@@ -1061,8 +1053,8 @@ rule SuperNavigationOrAttributeCallExp extends OclExpression {
 		code <- Sequence{invokeCb, getSuper}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeCb, getSuper}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [result]
-	   getSuper : EMFTVM!GetSuper (fieldname <- s.name)						-- [value]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [..., result]
+	   getSuper : EMFTVM!GetSuper (fieldname <- s.name)						-- [..., value]
 }
 
 rule OperationCallExp extends OclExpression {
@@ -1076,12 +1068,12 @@ rule OperationCallExp extends OclExpression {
 		s.operationName <> 'implies' and
 		s.operationName <> 'oclIsUndefined')
 	to cb : EMFTVM!CodeBlock (
-		nested <- thisModule.reverse(s.arguments)->append(s.source),
+		nested <- s.arguments->prepend(s.source),
 		code <- Sequence{invokeAllCbs, invoke}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeAllCbs, invoke}),
-	   invokeAllCbs : EMFTVM!InvokeAllCbs,				-- [arg] * (argsize + 1)
-	   invoke : EMFTVM!Invoke (
+	   invokeAllCbs : EMFTVM!InvokeAllCbs,									-- [..., source, args]
+	   invoke : EMFTVM!Invoke (												-- [..., result]
 	   	opname <- s.operationName, 
 		argcount <- s.arguments->size())
 }
@@ -1090,61 +1082,61 @@ rule NotOperationCallExp extends OclExpression {
 	from s : ATL!OperationCallExp in IN (
 		not s.isStatic and s.operationName = 'not')
 	to cb : EMFTVM!CodeBlock (
-		nested <- s.arguments->including(s.source),
+		nested <- s.arguments->prepend(s.source),
 		code <- Sequence{invokeCb, _not}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeCb, _not}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [source]
-	   _not : EMFTVM!Not													-- [result]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [..., source]
+	   _not : EMFTVM!Not													-- [..., result]
 }
 
 rule AndOperationCallExp extends OclExpression {
 	from s : ATL!OperationCallExp in IN (
 		not s.isStatic and s.operationName = 'and')
 	to cb : EMFTVM!CodeBlock (
-		nested <- s.arguments->including(s.source),
+		nested <- s.arguments->prepend(s.source),
 		code <- Sequence{invokeCb, _and}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeCb, _and}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [source]
-	   _and : EMFTVM!And (codeBlock <- s.arguments->first())				-- [result]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [..., source]
+	   _and : EMFTVM!And (codeBlock <- s.arguments->first())				-- [..., result]
 }
 
 rule OrOperationCallExp extends OclExpression {
 	from s : ATL!OperationCallExp in IN (
 		not s.isStatic and s.operationName = 'or')
 	to cb : EMFTVM!CodeBlock (
-		nested <- s.arguments->including(s.source),
+		nested <- s.arguments->prepend(s.source),
 		code <- Sequence{invokeCb, _or}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeCb, _or}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [source]
-	   _or : EMFTVM!Or (codeBlock <- s.arguments->first())					-- [result]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [..., source]
+	   _or : EMFTVM!Or (codeBlock <- s.arguments->first())					-- [..., result]
 }
 
 rule ImpliesOperationCallExp extends OclExpression {
 	from s : ATL!OperationCallExp in IN (
 		not s.isStatic and s.operationName = 'implies')
 	to cb : EMFTVM!CodeBlock (
-		nested <- s.arguments->including(s.source),
+		nested <- s.arguments->prepend(s.source),
 		code <- Sequence{invokeCb, _implies}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeCb, _implies}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [source]
-	   _implies : EMFTVM!Implies (codeBlock <- s.arguments->first())		-- [result]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [..., source]
+	   _implies : EMFTVM!Implies (codeBlock <- s.arguments->first())		-- [..., result]
 }
 
 rule XorOperationCallExp extends OclExpression {
 	from s : ATL!OperationCallExp in IN (
 		not s.isStatic and s.operationName = 'xor')
 	to cb : EMFTVM!CodeBlock (
-		nested <- s.arguments->including(s.source),
+		nested <- s.arguments->prepend(s.source),
 		code <- Sequence{invokeCb, invokeCb2, _xor}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeCb, invokeCb2, _xor}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.arguments->first(), argcount <- 0),	-- [arg1]
-	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),			-- [source, arg1]
-	   _xor : EMFTVM!Xor																-- [result]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),				-- [..., source]
+	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.arguments->first(), argcount <- 0),	-- [..., source, arg1]
+	   _xor : EMFTVM!Xor																-- [..., result]
 }
 
 rule OclIsUndefinedOperationCallExp extends OclExpression {
@@ -1155,20 +1147,20 @@ rule OclIsUndefinedOperationCallExp extends OclExpression {
 		code <- Sequence{invokeCb, isnull}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeCb, isnull}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [source]
-	   isnull : EMFTVM!Isnull												-- [result]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [..., source]
+	   isnull : EMFTVM!Isnull												-- [..., result]
 }
 
 rule StaticOperationCallExp extends OclExpression {
 	from s : ATL!OperationCallExp in IN (
 		s.isStatic)
 	to cb : EMFTVM!CodeBlock (
-		nested <- thisModule.reverse(s.arguments)->append(s.source),
+		nested <- s.arguments->prepend(s.source),
 		code <- Sequence{invokeAllCbs, invokeStatic}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeAllCbs, invokeStatic}),
-	   invokeAllCbs : EMFTVM!InvokeAllCbs,				-- [arg] * (argsize + 1)
-	   invokeStatic : EMFTVM!InvokeStatic (
+	   invokeAllCbs : EMFTVM!InvokeAllCbs,									-- [..., type, args]
+	   invokeStatic : EMFTVM!InvokeStatic (									-- [..., result]
 	   	opname <- s.operationName, 
 		argcount <- s.arguments->size())
 }
@@ -1178,12 +1170,12 @@ rule SuperOperationCallExp extends OclExpression {
 		not s.isStatic and 
 		s.source.oclIsKindOf(ATL!SuperExp))
 	to cb : EMFTVM!CodeBlock (
-		nested <- thisModule.reverse(s.arguments)->append(s.source),
+		nested <- s.arguments->prepend(s.source),
 		code <- Sequence{invokeAllCbs, invokeSuper}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeAllCbs, invokeSuper}),
-	   invokeAllCbs : EMFTVM!InvokeAllCbs,				-- [arg] * (argsize + 1)
-	   invokeSuper : EMFTVM!InvokeSuper (
+	   invokeAllCbs : EMFTVM!InvokeAllCbs,									-- [..., source, args]
+	   invokeSuper : EMFTVM!InvokeSuper (									-- [..., result]
 	   	opname <- s.operationName, 
 		argcount <- s.arguments->size())
 }
@@ -1211,7 +1203,7 @@ rule LetExp extends OclExpression {
 		code <- Sequence{invokeCb}),
 	   ln : EMFTVM!LineNumber (
 	   	instructions <- Sequence{invokeCb}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.variable, argcount <- 0)	-- [result]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.variable, argcount <- 0)	-- [..., result]
 }
 
 rule LetVariable {
@@ -1231,9 +1223,9 @@ rule LetVariable {
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
 		instructions <- Sequence{invokeCb, store, invokeCb2}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.initExpression, argcount <- 0),	-- [value]
-	   store : EMFTVM!Store (localVariable <- lv),									-- []
-	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.letExp.in_)					-- [result]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.initExpression, argcount <- 0),	-- [..., value]
+	   store : EMFTVM!Store (localVariable <- lv),									-- [...]
+	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.letExp.in_)						-- [..., result]
 }
 
 abstract rule VariableExp extends OclExpression {
@@ -1244,7 +1236,7 @@ abstract rule VariableExp extends OclExpression {
 		code <- Sequence{load}),
 	   ln : EMFTVM!LineNumber (
 		instructions <- Sequence{load}),
-	   load : EMFTVM!Load							-- [value]
+	   load : EMFTVM!Load													-- [..., value]
 }
 
 rule NotSelfVariableExp extends VariableExp {
@@ -1281,7 +1273,7 @@ rule ThisModuleVariableExp extends OclExpression {
 		code <- Sequence{getenvtype}),
 	   ln : EMFTVM!LineNumber (
 		instructions <- Sequence{getenvtype}),
-	   getenvtype : EMFTVM!Getenvtype				-- [envtype]
+	   getenvtype : EMFTVM!Getenvtype										-- [..., envtype]
 }
 
 rule RuleVariableExp extends OclExpression {
@@ -1291,20 +1283,20 @@ rule RuleVariableExp extends OclExpression {
 		code <- Sequence{load, get}),
 	   ln : EMFTVM!LineNumber (
 		instructions <- Sequence{load, get}),
-	   load : EMFTVM!Load (localVariable <- s.traceVariable()),		-- [trace]
-	   get : EMFTVM!Get (fieldname <- s.referredVariable.varName)	-- [value]
+	   load : EMFTVM!Load (localVariable <- s.traceVariable()),				-- [..., trace]
+	   get : EMFTVM!Get (fieldname <- s.referredVariable.varName)			-- [..., value]
 }
 
 rule IteratorExp extends OclExpression {
 	from s : ATL!IteratorExp in IN
 	to cb : EMFTVM!CodeBlock (
 		nested <- Sequence{s.source, s.body},
-		code <- Sequence{getbody, invokesource, invoke}),
+		code <- Sequence{invokesource, getbody, invoke}),
 	   ln : EMFTVM!LineNumber (
-		instructions <- Sequence{getbody, invokesource, invoke}),
-	   getbody : EMFTVM!Getcb (codeBlock <- s.body),							-- [cb]
-	   invokesource : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [source, cb]
-	   invoke : EMFTVM!Invoke (opname <- s.name, argcount <- 1)					-- [coll]
+		instructions <- Sequence{invokesource, getbody, invoke}),
+	   invokesource : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [..., source]
+	   getbody : EMFTVM!Getcb (codeBlock <- s.body),							-- [..., source, cb]
+	   invoke : EMFTVM!Invoke (opname <- s.name, argcount <- 1)					-- [..., coll]
 }
 
 rule IteratorExp2 extends IteratorExp {
@@ -1317,13 +1309,13 @@ rule IterateExp extends OclExpression {
 	from s : ATL!IterateExp in IN
 	to cb : EMFTVM!CodeBlock (
 		nested <- Sequence{s.source, s.result.initExpression, s.body},
-		code <- Sequence{getbody, invokeCb, invokesource, invoke}),
+		code <- Sequence{invokesource, invokeCb, getbody, invoke}),
 	   ln : EMFTVM!LineNumber (
-		instructions <- Sequence{getbody, invokeCb, invokesource, invoke}),
-	   getbody : EMFTVM!Getcb (codeBlock <- s.body),							-- [cb]
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.result.initExpression),		-- [acc, cb]
-	   invokesource : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [source, acc, cb]
-	   invoke : EMFTVM!Invoke (opname <- 'iterate', argcount <- 2)				-- [acc]
+		instructions <- Sequence{invokesource, invokeCb, getbody, invoke}),
+	   invokesource : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [..., source]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.result.initExpression),		-- [..., source, acc]
+	   getbody : EMFTVM!Getcb (codeBlock <- s.body),							-- [..., source, acc, cb]
+	   invoke : EMFTVM!Invoke (opname <- 'iterate', argcount <- 2)				-- [..., acc]
 }
 
 rule StringExp extends OclExpression {
@@ -1332,7 +1324,7 @@ rule StringExp extends OclExpression {
 		code <- Sequence{push}),
 	   ln : EMFTVM!LineNumber (
 		instructions <- Sequence{push}),
-	   push : EMFTVM!Push (value <- s.stringSymbol)			-- [string]
+	   push : EMFTVM!Push (value <- s.stringSymbol)							-- [..., string]
 }
 
 rule IntegerExp extends OclExpression {
@@ -1341,7 +1333,7 @@ rule IntegerExp extends OclExpression {
 		code <- Sequence{push}),
 	   ln : EMFTVM!LineNumber (
 		instructions <- Sequence{push}),
-	   push : EMFTVM!Push (value <- s.integerSymbol)		-- [integer]
+	   push : EMFTVM!Push (value <- s.integerSymbol)						-- [..., integer]
 }
 
 rule RealExp extends OclExpression {
@@ -1350,7 +1342,7 @@ rule RealExp extends OclExpression {
 		code <- Sequence{push}),
 	   ln : EMFTVM!LineNumber (
 		instructions <- Sequence{push}),
-	   push : EMFTVM!Push (value <- s.realSymbol)			-- [real]
+	   push : EMFTVM!Push (value <- s.realSymbol)							-- [..., real]
 }
 
 rule BooleanTrueExp extends OclExpression {
@@ -1359,7 +1351,7 @@ rule BooleanTrueExp extends OclExpression {
 		code <- Sequence{push}),
 	   ln : EMFTVM!LineNumber (
 		instructions <- Sequence{push}),
-	   push : EMFTVM!Pusht									-- [true]
+	   push : EMFTVM!Pusht													-- [..., true]
 }
 
 rule BooleanFalseExp extends OclExpression {
@@ -1368,23 +1360,24 @@ rule BooleanFalseExp extends OclExpression {
 		code <- Sequence{push}),
 	   ln : EMFTVM!LineNumber (
 		instructions <- Sequence{push}),
-	   push : EMFTVM!Pushf									-- [false]
+	   push : EMFTVM!Pushf													-- [..., false]
 }
 
 abstract rule CollectionExp extends OclExpression {
 	from s : ATL!CollectionExp in IN
 	using {
 		invokes : Sequence(EMFTVM!Instruction) = 
-			s.elements->collect(e|thisModule.InvokeIncluding(e));
+			s.elements->collect(e|
+				Sequence{thisModule.InvokeElement(e), thisModule.InvokeIncluding(e)}
+			)->flatten();
 	}
 	to cb : EMFTVM!CodeBlock (
-		nested <- thisModule.reverse(s.elements), -- elements go on the stack before being appended to the collection
-		code <- Sequence{invokeAllCbs, findtype, new}->union(invokes)),
+		nested <- s.elements, -- elements go on the stack before being appended to the collection
+		code <- Sequence{findtype, new}->union(invokes)),
 	   ln : EMFTVM!LineNumber (
-	   	instructions <- Sequence{invokeAllCbs, findtype, new}->union(invokes)),
-	   invokeAllCbs : EMFTVM!InvokeAllCbs,							-- [e * elementSize]
-	   findtype : EMFTVM!Findtype, -- override							-- [colltype, e * elementSize]
-	   new : EMFTVM!New													-- [coll, e * elementSize]
+	   	instructions <- Sequence{findtype, new}->union(invokes)),
+	   findtype : EMFTVM!Findtype, -- override								-- [..., colltype]
+	   new : EMFTVM!New														-- [..., coll]
 }
 
 rule SequenceExp extends CollectionExp {
@@ -1425,7 +1418,7 @@ rule OclTypeExp extends OclExpression { -- Only used as an expression, not as a 
 		code <- Sequence{findtype}),
 	   ln : EMFTVM!LineNumber (
 		instructions <- Sequence{findtype}),
-	   findtype : EMFTVM!Findtype (													-- [type]
+	   findtype : EMFTVM!Findtype (											-- [..., type]
 	   	modelname <- s.modelName, 
 		typename <- s.typeName)
 }
@@ -1436,7 +1429,7 @@ rule OclUndefinedExp extends OclExpression {
 		code <- Sequence{push}),
 	   ln : EMFTVM!LineNumber (
 		instructions <- Sequence{push}),
-	   push : EMFTVM!Push -- NULL				-- [null]
+	   push : EMFTVM!Push -- NULL											-- [..., null]
 }
 
 rule EnumLiteralExp extends OclExpression {
@@ -1445,7 +1438,7 @@ rule EnumLiteralExp extends OclExpression {
 		code <- Sequence{push}),
 	   ln : EMFTVM!LineNumber (
 		instructions <- Sequence{push}),
-	   push : EMFTVM!Push (enumValue <- s.name)	-- [enumValue]
+	   push : EMFTVM!Push (enumValue <- s.name)								-- [..., enumValue]
 }
 
 rule IfExp extends OclExpression {
@@ -1455,8 +1448,8 @@ rule IfExp extends OclExpression {
 		code <- Sequence{invokeCb, ifte}),
 	   ln : EMFTVM!LineNumber (
 		instructions <- Sequence{invokeCb, ifte}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.condition, argcount <- 0),		-- [cond]
-	   ifte : EMFTVM!Ifte (thenCb <- s.thenExpression, elseCb <- s.elseExpression)	-- [result]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.condition, argcount <- 0),		-- [..., cond]
+	   ifte : EMFTVM!Ifte (thenCb <- s.thenExpression, elseCb <- s.elseExpression)	-- [..., result]
 }
 
 -- ======================================================================
@@ -1468,9 +1461,17 @@ rule IfExp extends OclExpression {
 -- ======================================================================
 
 -- TODO Late application of lazy rules prevents the use of ATL's tracing mechanism
+lazy rule InvokeElement {
+	from s : ATL!OclExpression
+	to invokeCb : EMFTVM!InvokeCb (codeBlock <- s)							-- [..., collection, element]
+	do {
+		invokeCb; -- Cannot return collections in EMFVM
+	}
+}
+
 lazy rule InvokeIncluding {
 	from s : ATL!OclExpression
-	to invoke : EMFTVM!Invoke (opname <- 'including', argcount <- 1)
+	to invoke : EMFTVM!Invoke (opname <- 'including', argcount <- 1)		-- [..., collection]
 	do {
 		invoke;
 	}
