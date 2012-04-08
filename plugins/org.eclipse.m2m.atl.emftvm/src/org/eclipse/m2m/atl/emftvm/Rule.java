@@ -451,6 +451,19 @@ public interface Rule extends NamedElement {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns <code>true</code> iff this rule has any registered
+	 * fields with the given <code>name</code>.
+	 * @param name the field name
+	 * @return <code>true</code> iff this rule has any registered
+	 * fields with the given <code>name</code>
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	boolean hasField(String name);
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * Finds a static {@link Field} registered within this {@link Rule}.
 	 * @param context the context type of the field
 	 * @param name the operation name
@@ -460,6 +473,19 @@ public interface Rule extends NamedElement {
 	 * @generated
 	 */
 	Field findStaticField(Object context, String name);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns <code>true</code> iff this rule has any registered
+	 * static fields with the given <code>name</code>.
+	 * @param name the field name
+	 * @return <code>true</code> iff this rule has any registered
+	 * static fields with the given <code>name</code>
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	boolean hasStaticField(String name);
 
 	/**
 	 * <!-- begin-user-doc -->

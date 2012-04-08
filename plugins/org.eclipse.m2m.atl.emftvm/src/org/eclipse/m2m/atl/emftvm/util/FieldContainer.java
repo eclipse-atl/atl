@@ -97,6 +97,17 @@ public final class FieldContainer {
 	}
 
 	/**
+	 * Returns <code>true</code> iff this execution environment has any registered
+	 * fields with the given <code>name</code>.
+	 * @param name the field name
+	 * @return <code>true</code> iff this execution environment has any registered
+	 * fields with the given <code>name</code>
+	 */
+	public boolean hasField(final String name) {
+		return fields.containsKey(name);
+	}
+
+	/**
 	 * Finds the corresponding static field for <pre>name</pre> and <pre>context</pre>.
 	 * @param context the context type of the field
 	 * @param name the name of the field
@@ -111,6 +122,17 @@ public final class FieldContainer {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * Returns <code>true</code> iff this execution environment has any registered
+	 * static fields with the given <code>name</code>.
+	 * @param name the field name
+	 * @return <code>true</code> iff this execution environment has any registered
+	 * static fields with the given <code>name</code>
+	 */
+	public boolean hasStaticField(final String name) {
+		return staticFields.containsKey(name);
 	}
 
 	/**

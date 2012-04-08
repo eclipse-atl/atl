@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm;
 
+import java.lang.reflect.Method;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -55,5 +57,17 @@ public interface InvokeOperationInstruction extends InvokeInstruction {
 	 * @generated
 	 */
 	void setOpname(String value);
+
+	/**
+	 * Returns the recorded native method that was invoked as a result of this instruction.
+	 * @return the recorded native method that was invoked as a result of this instruction.
+	 */
+	Method getNativeMethod();
+
+	/**
+	 * Sets the recorded native method that was invoked as a result of this instruction.
+	 * @param method the recorded native method that was invoked as a result of this instruction
+	 */
+	void setNativeMethod(Method method);
 
 } // InvokeOperationInstruction

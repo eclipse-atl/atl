@@ -12,6 +12,7 @@
 package org.eclipse.m2m.atl.emftvm.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,7 +27,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -86,12 +86,12 @@ import org.eclipse.m2m.atl.emftvm.RuleMode;
 import org.eclipse.m2m.atl.emftvm.Set;
 import org.eclipse.m2m.atl.emftvm.SetStatic;
 import org.eclipse.m2m.atl.emftvm.Store;
+import org.eclipse.m2m.atl.emftvm.jit.CodeBlockJIT;
+import org.eclipse.m2m.atl.emftvm.jit.JITCodeBlock;
 import org.eclipse.m2m.atl.emftvm.util.DuplicateEntryException;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
-import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
 import org.eclipse.m2m.atl.emftvm.util.LazyBagOnCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
-import org.eclipse.m2m.atl.emftvm.util.LazyListOnCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyListOnList;
 import org.eclipse.m2m.atl.emftvm.util.LazySetOnSet;
 import org.eclipse.m2m.atl.emftvm.util.NativeTypes;
@@ -229,11 +229,22 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	protected StackFrame parentFrame = PARENT_FRAME_EDEFAULT;
 
+	/**
+	 * Singleton instance of the {@link ExecEnv} {@link EClass}.
+	 */
+	protected static final EClass EXEC_ENV = EmftvmPackage.eINSTANCE.getExecEnv();
+
+	private static final Object[] EMPTY = new Object[0];
+	private static final EObject[] EEMPTY = new EObject[0];
+	private static final int JIT_THRESHOLD = 100; // require > JIT_THRESHOLD runs before JIT-ing
+
 	private boolean ruleSet;
 	private Rule rule;
 	private Map<Instruction, EList<Instruction>> predecessors = new HashMap<Instruction, EList<Instruction>>();
 	private Map<Instruction, EList<Instruction>> allPredecessors = new HashMap<Instruction, EList<Instruction>>();
 	private Map<Instruction, EList<Instruction>> nlPredecessors = new HashMap<Instruction, EList<Instruction>>();
+	private JITCodeBlock jitCodeBlock;
+	private int runcount;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -707,12 +718,20 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated NOT
 	 */
 	public StackFrame execute(final StackFrame frame) {
+		final JITCodeBlock jcb = getJITCodeBlock();
+		if (jcb != null) {
+			return jcb.execute(frame);
+		}
+		runcount += 1; // increase invocation counter to trigger JIT
+
 		int pc = 0;
 		final EList<Instruction> code = getCode();
 		final int codeSize = code.size();
-		final VMMonitor monitor = frame.getEnv().getMonitor();
+		final ExecEnv env = frame.getEnv();
+		final VMMonitor monitor = env.getMonitor();
 		CodeBlock cb;
 		StackFrame rFrame;
+		int argcount;
 
 		if (monitor != null) {
 			monitor.enter(frame);
@@ -750,7 +769,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					frame.store(((Store)instr).getCbOffset(), ((Store)instr).getSlot());
 					break;
 				case SET:
-					set(((Set)instr).getFieldname(), frame);
+					set(frame.pop(), frame.pop(), ((Set)instr).getFieldname(), env);
 					break;
 				case GET:
 					frame.setPc(pc);
@@ -761,7 +780,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					frame.push(getTrans(((GetTrans)instr).getFieldname(), frame));
 					break;
 				case SET_STATIC:
-					setStatic(((SetStatic)instr).getFieldname(), frame);
+					setStatic(frame.pop(), frame.pop(), ((SetStatic)instr).getFieldname(), env);
 					break;
 				case GET_STATIC:
 					frame.setPc(pc);
@@ -834,7 +853,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					break;
 				case INVOKE:
 					frame.setPc(pc);
-					frame.push(invoke(((Invoke)instr).getOpname(), ((Invoke)instr).getArgcount(), frame));
+					frame.push(invoke((Invoke)instr, frame));
 					break;
 				case INVOKE_STATIC: 
 					frame.setPc(pc);
@@ -845,19 +864,19 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					frame.push(invokeSuper(getOperation(), ((InvokeSuper)instr).getOpname(), ((InvokeSuper)instr).getArgcount(), frame));
 					break;
 				case ALLINST:
-					frame.push(EMFTVMUtil.findAllInstances(frame.getEnv(),
-									(EClass)frame.pop()));
+					frame.push(EMFTVMUtil.findAllInstances((EClass)frame.pop(),
+									frame.getEnv()));
 					break;
 				case ALLINST_IN:
-					frame.push(EMFTVMUtil.findAllInstIn(frame.getEnv(), 
+					frame.push(EMFTVMUtil.findAllInstIn(frame.pop(), 
 									(EClass)frame.pop(), 
-									frame.pop()));
+									frame.getEnv()));
 					break;
 				case ISNULL:
 					frame.push(frame.pop() == null);
 					break;
 				case GETENVTYPE:
-					frame.push(EmftvmPackage.eINSTANCE.getExecEnv());
+					frame.push(EXEC_ENV);
 					break;
 				case NOT:
 					frame.push(!(Boolean)frame.pop());
@@ -898,8 +917,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					frame.push(((Getcb)instr).getCodeBlock());
 					break;
 				case INVOKE_ALL_CBS:
-					Object[] args = getArguments(((InvokeAllCbs)instr).getArgcount(), frame);
 					frame.setPc(pc);
+					// Use Java's left-to-right evaluation semantics:
+					// stack = [..., arg1, arg2]
+					argcount = ((InvokeAllCbs)instr).getArgcount();
+					Object[] args = argcount > 0 ? frame.pop(argcount) : EMPTY;
 					for (CodeBlock ncb : getNested()) {
 						rFrame = ncb.execute(frame.getSubFrame(ncb, args));
 						if (!rFrame.stackEmpty()) {
@@ -910,7 +932,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				case INVOKE_CB:
 					cb = ((InvokeCb)instr).getCodeBlock();
 					frame.setPc(pc);
-					rFrame = cb.execute(frame.getSubFrame(cb, getArguments(((InvokeCb)instr).getArgcount(), frame)));
+					// Use Java's left-to-right evaluation semantics:
+					// stack = [..., arg1, arg2]
+					argcount = ((InvokeCb)instr).getArgcount();
+					rFrame = cb.execute(frame.getSubFrame(cb, argcount > 0 ? frame.pop(argcount) : EMPTY));
 					if (!rFrame.stackEmpty()) {
 						frame.push(rFrame.pop());
 					}
@@ -918,7 +943,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				case INVOKE_CB_S: 
 					cb = (CodeBlock)frame.pop();
 					frame.setPc(pc);
-					rFrame = cb.execute(frame.getSubFrame(cb, getArguments(((InvokeCbS)instr).getArgcount(), frame)));
+					// Use Java's left-to-right evaluation semantics:
+					// stack = [..., arg1, arg2]
+					argcount = ((InvokeCbS)instr).getArgcount();
+					rFrame = cb.execute(frame.getSubFrame(cb, argcount > 0 ? frame.pop(argcount) : EMPTY));
 					if (!rFrame.stackEmpty()) {
 						frame.push(rFrame.pop());
 					} else {
@@ -927,29 +955,38 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					break;
 				case MATCH:
 					frame.setPc(pc);
-					frame.push(matchOne(frame, findRule(frame.getEnv(), (Match)instr), ((Match)instr).getArgcount()));
+					// Use Java's left-to-right evaluation semantics:
+					// stack = [..., arg1, arg2]
+					argcount = ((Match)instr).getArgcount();
+					frame.push(argcount > 0 ? 
+							matchOne(frame, findRule(frame.getEnv(), ((Match)instr).getRulename()),	frame.pop(argcount, new EObject[argcount])) :
+							matchOne(frame, findRule(frame.getEnv(), ((Match)instr).getRulename())));
 					break;
 				case MATCH_S: 
 					frame.setPc(pc);
-					frame.push(matchOne(frame, (Rule)frame.pop(), ((MatchS)instr).getArgcount()));
+					// stack = [..., arg1, arg2, rule]
+					argcount = ((MatchS)instr).getArgcount();
+					frame.push(argcount > 0 ? 
+							matchOne(frame, (Rule)frame.pop(), frame.pop(argcount, new EObject[argcount])) :
+							matchOne(frame, (Rule)frame.pop()));
 					break;
 				case ADD:
-					add(frame.pop(), frame.pop(), ((Add)instr).getFieldname(), 
-							frame.getEnv(), -1);
+					add(-1, frame.pop(), frame.pop(), 
+							((Add)instr).getFieldname(), env);
 					break;
 				case REMOVE:
-					remove(((Remove)instr).getFieldname(), frame);
+					remove(frame.pop(), frame.pop(), ((Remove)instr).getFieldname(), env);
 					break;
 				case INSERT:
-					add(frame.pop(), frame.pop(), ((Insert)instr).getFieldname(), 
-							frame.getEnv(), (Integer)frame.pop());
+					add((Integer)frame.pop(), frame.pop(), frame.pop(), 
+							((Insert)instr).getFieldname(), env);
 					break;
 				case GET_SUPER:
 					frame.setPc(pc);
 					frame.push(getSuper(getField(), ((GetSuper)instr).getFieldname(), frame));
 					break;
 				case GETENV:
-					frame.push(frame.getEnv());
+					frame.push(env);
 					break;
 				default:
 					throw new VMException(frame, String.format("Unsupported opcode: %s", instr.getOpcode()));
@@ -964,6 +1001,16 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 		if (monitor != null) {
 			monitor.leave(frame);
+		}
+
+		final CodeBlockJIT jc = env.getJITCompiler();
+		if (jc != null && runcount > JIT_THRESHOLD && getJITCodeBlock() == null) { // JIT everything that runs more than JIT_THRESHOLD
+			try {
+				setJITCodeBlock(jc.jit(this));
+			} catch (Exception e) {
+				frame.setPc(pc);
+				throw new VMException(frame, e);
+			}
 		}
 
 		return frame;
@@ -1455,6 +1502,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
 			localVariablesChanged();
 			break;
+		case EmftvmPackage.CODE_BLOCK__NESTED:
+			nestedChanged();
+			break;
 		}
 	}
 
@@ -1511,6 +1561,20 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public JITCodeBlock getJITCodeBlock() {
+		return jitCodeBlock;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setJITCodeBlock(final JITCodeBlock jcb) {
+		this.jitCodeBlock = jcb;
+	}
+
+	/**
 	 * Returns the {@link Module} (for debugger).
 	 * @return the {@link Module}
 	 * @see CodeBlockImpl#getModule()
@@ -1520,11 +1584,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * Finds the the {@link Rule} that contains this codeblock.
-	 * @return the {@link Rule} that contains this codeblock, or <code>null</code>
-	 * if not contained by a {@link Rule}.
+	 * {@inheritDoc}
 	 */
-	private Rule getRule() {
+	public Rule getRule() {
 		if (!ruleSet) {
 			CodeBlock cb = this;
 			while (cb != null) {
@@ -1584,19 +1646,16 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 	/**
 	 * Implements the SET instruction.
-	 * @param propname
-	 * @param env
-	 * @param frame
+	 * @param v value
+	 * @param o object
+	 * @param propname the property name
+	 * @param env the execution environment
 	 * @throws NoSuchFieldException 
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	private void set(final String propname, final StackFrame frame) 
+	private void set(final Object v, final Object o, final String propname, final ExecEnv env) 
 	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-		final ExecEnv env = frame.getEnv();
-		final Object o = frame.pop();
-		final Object v = frame.pop();
-
 		if (o instanceof EObject) {
 			final EObject eo = (EObject)o;
 			final EClass type = eo.eClass();
@@ -1638,17 +1697,17 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	/**
 	 * Adds <code>v</code> to <code>o.propname</code>.
 	 * Implements the ADD and INSERT instructions.
-	 * @param o
-	 * @param v
-	 * @param propname
-	 * @param env
 	 * @param index the insertion index (-1 for end)
+	 * @param v value
+	 * @param o object
+	 * @param propname the property name
+	 * @param env the execution environment
 	 * @throws NoSuchFieldException 
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	private void add(final Object o, final Object v, final String propname, 
-			final ExecEnv env, final int index) 
+	private void add(final int index, final Object v, final Object o, 
+			final String propname, final ExecEnv env) 
 	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		//TODO enable add on fields
 		if (o instanceof EObject) {
@@ -1679,19 +1738,17 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 	/**
 	 * Implements the REMOVE instruction.
-	 * @param propname
-	 * @param env
-	 * @param frame
+	 * @param v value
+	 * @param o object
+	 * @param propname the property name
+	 * @param env the execution environment
 	 * @throws NoSuchFieldException 
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	private void remove(final String propname, final StackFrame frame) 
+	private void remove(final Object v, final Object o, final String propname, 
+			final ExecEnv env) 
 	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-		final ExecEnv env = frame.getEnv();
-		final Object o = frame.pop();
-		final Object v = frame.pop();
-
 		//TODO enable remove on fields
 		if (o instanceof EObject) {
 			final EObject eo = (EObject)o;
@@ -1791,139 +1848,25 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			final EClass type = eo.eClass();
 			final Field field = findField(env, type, propname);
 			if (field != null) {
-				return getTrans(o, field, frame, new LazyList<Object>());
+				return EMFTVMUtil.getTrans(o, field, frame, new LazyList<Object>());
 			} else {
 				final EStructuralFeature sf = type.getEStructuralFeature(propname);
 				if (sf == null) {
 					throw new NoSuchFieldException(String.format("Field %s::%s not found", 
 							EMFTVMUtil.toPrettyString(type, env), propname));
 				}
-				return getTrans(eo, sf, env, new LazyList<Object>());
+				return EMFTVMUtil.getTrans(eo, sf, env, new LazyList<Object>());
 			}
 		} else {
 			final Class<?> type = o.getClass();
 			final Field field = findField(env, type, propname);
 			if (field != null) {
-				return getTrans(o, field, frame, new LazyList<Object>());
+				return EMFTVMUtil.getTrans(o, field, frame, new LazyList<Object>());
 			} else {
 				final java.lang.reflect.Field f = type.getField(propname);
-				return getTrans(o, f, new LazyList<Object>());
+				return EMFTVMUtil.getTrans(o, f, new LazyList<Object>());
 			}
 		}
-	}
-
-	/**
-	 * Retrieves the transitive closure of <pre>field</pre> on <pre>object</pre>.
-	 * @param object the object on which to retrieve <pre>field</pre>
-	 * @param field the field for which to retrieve the value
-	 * @param frame the current {@link StackFrame}
-	 * @param result the intermediate list of values
-	 * @return the updated result
-	 */
-	@SuppressWarnings("unchecked")
-	private static LazyList<Object> getTrans(final Object object, final Field field, 
-			final StackFrame frame, final LazyList<Object> result) {
-		LazyList<Object> newResult = result;
-		final Object value = field.getValue(object, frame);
-		if (value instanceof List<?>) {
-			final List<Object> cvalue = (List<Object>)value;
-			newResult = newResult.union(new LazyListOnList<Object>(cvalue));
-			for (Object v : cvalue) {
-				newResult = getTrans(v, field, frame, newResult);
-			}
-		} else if (value instanceof Collection<?>) {
-			final Collection<Object> cvalue = (Collection<Object>)value;
-			newResult = newResult.union(new LazyListOnCollection<Object>(cvalue));
-			for (Object v : cvalue) {
-				newResult = getTrans(v, field, frame, newResult);
-			}
-		} else if (value != null) {
-			newResult = newResult.append(value);
-			newResult = getTrans(value, field, frame, newResult);
-		}
-		return newResult;
-	}
-
-	/**
-	 * Retrieves the transitive closure of <pre>sf</pre> on <pre>object</pre>.
-	 * @param object the object on which to retrieve <pre>sf</pre>
-	 * @param sf the structural feature for which to retrieve the value
-	 * @param env the current {@link ExecEnv}
-	 * @param result the intermediate list of values
-	 * @return the updated result
-	 */
-	@SuppressWarnings("unchecked")
-	private static LazyList<Object> getTrans(final EObject object, 
-			final EStructuralFeature sf, final ExecEnv env, 
-			final LazyList<Object> result) {
-		if (!sf.getEContainingClass().isSuperTypeOf(object.eClass())) {
-			return result; // feature does not apply to object
-		}
-		LazyList<Object> newResult = result;
-		final Object value = EMFTVMUtil.get(env, object, sf);
-		if (value instanceof LazyList<?>) {
-			final LazyList<Object> cvalue = (LazyList<Object>)value;
-			newResult = newResult.union(cvalue);
-			for (Object v : cvalue) {
-				if (v instanceof EObject) {
-					newResult = getTrans((EObject)v, sf, env, newResult);
-				}
-			}
-		} else if (value != null) {
-			assert !(value instanceof Collection<?>); // All collections should be LazyLists
-			if (value instanceof Enumerator) {
-				newResult = newResult.append(new EnumLiteral(value.toString()));
-			} else {
-				newResult = newResult.append(value);
-				if (value instanceof EObject) {
-					newResult = getTrans((EObject)value, sf, env, newResult);
-				}
-			}
-		}
-		return newResult;
-	}
-
-	/**
-	 * Retrieves the transitive closure of <pre>field</pre> on <pre>object</pre>.
-	 * @param object the object on which to retrieve <pre>field</pre>
-	 * @param field the field for which to retrieve the value
-	 * @param result the intermediate list of values
-	 * @return the updated result
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
-	 */
-	@SuppressWarnings("unchecked")
-	private static LazyList<Object> getTrans(final Object object, 
-			final java.lang.reflect.Field field, 
-			final LazyList<Object> result) throws IllegalArgumentException, IllegalAccessException {
-		if (!field.getDeclaringClass().isAssignableFrom(object.getClass())) {
-			return result; // field does not apply to object
-		}
-		LazyList<Object> newResult = result;
-		final Object value = field.get(object);
-		if (value instanceof LazyList<?>) {
-			final LazyList<Object> cvalue = (LazyList<Object>)value;
-			newResult = newResult.union(cvalue);
-			for (Object v : cvalue) {
-				newResult = getTrans(v, field, newResult);
-			}
-		} else if (value instanceof List<?>) {
-			final List<Object> cvalue = (List<Object>)value;
-			newResult = newResult.union(new LazyListOnList<Object>(cvalue));
-			for (Object v : cvalue) {
-				newResult = getTrans(v, field, newResult);
-			}
-		} else if (value instanceof Collection<?>) {
-			final Collection<Object> cvalue = (Collection<Object>)value;
-			newResult = newResult.union(new LazyListOnCollection<Object>(cvalue));
-			for (Object v : cvalue) {
-				newResult = getTrans(v, field, newResult);
-			}
-		} else if (value != null) {
-			newResult = newResult.append(value);
-			newResult = getTrans(value, field, newResult);
-		}
-		return newResult;
 	}
 
 	/**
@@ -2048,19 +1991,20 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 	/**
 	 * Implements the SET_STATIC instruction.
-	 * @param propname
-	 * @param frame
+	 * @param v value
+	 * @param o object
+	 * @param propname the property name
+	 * @param env the execution environment
 	 * @throws NoSuchFieldException 
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	private void setStatic(final String propname, final StackFrame frame) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-		final ExecEnv env = frame.getEnv();
-		final Object o = EMFTVMUtil.getRegistryType(frame.pop());
-		final Object v = frame.pop();
+	private void setStatic(final Object v, final Object o, final String propname, final ExecEnv env)
+	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		final Object ort = EMFTVMUtil.getRegistryType(o);
 
-		if (o instanceof EClass) {
-			final EClass type = (EClass)o;
+		if (ort instanceof EClass) {
+			final EClass type = (EClass)ort;
 			final Field field = findStaticField(env, type, propname);
 			if (field != null) {
 				field.setStaticValue(v);
@@ -2068,11 +2012,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				throw new NoSuchFieldException(String.format("Field %s::%s not found", 
 						EMFTVMUtil.toPrettyString(type, env), propname));
 			}
-		} else if (o instanceof Class<?>) {
-			final Class<?> type = (Class<?>)o;
+		} else if (ort instanceof Class<?>) {
+			final Class<?> type = (Class<?>)ort;
 			final Field field = findStaticField(env, type, propname);
 			if (field != null) {
-				field.setValue(o, v);	
+				field.setValue(ort, v);	
 			} else {
 				final java.lang.reflect.Field f = type.getField(propname);
 				if (Modifier.isStatic(f.getModifiers())) {
@@ -2084,7 +2028,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			}
 		} else {
 			throw new IllegalArgumentException(String.format("%s is not a type", 
-					EMFTVMUtil.toPrettyString(o, env)));
+					EMFTVMUtil.toPrettyString(ort, env)));
 		}
 	}
 
@@ -2182,29 +2126,96 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 	/**
 	 * Implements the INVOKE instruction.
-	 * @param opname
-	 * @param argcount
-	 * @param frame
+	 * @param instr the INVOKE instruction
+	 * @param frame the current stack frame
 	 * @return the invocation result
 	 * @throws InvocationTargetException 
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	private static Object invoke(final String opname, final int argcount, 
-			final StackFrame frame) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		final Object o = frame.pop();
-
-		final Object[] args = getArguments(argcount, frame);
-		final Operation op = frame.getEnv().findOperation(
-				EMFTVMUtil.getArgumentType(o), 
-				opname, 
-				EMFTVMUtil.getArgumentTypes(args));
-		if (op != null) {
-			final CodeBlock body = op.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, o, args));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
+	private static Object invoke(final Invoke instr, final StackFrame frame) 
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+		final String opname = instr.getOpname();
+		final int argcount = instr.getArgcount(); 
+		final Object o;
+		final Operation op;
+		switch (argcount) {
+		case 0:
+			// Use Java's left-to-right evaluation semantics:
+			// stack = [..., self, arg1, arg2]
+			o = frame.pop();
+			op = frame.getEnv().findOperation(
+					EMFTVMUtil.getArgumentType(o),
+					opname);
+			if (op != null) {
+				final CodeBlock body = op.getBody();
+				final StackFrame rFrame = body.execute(frame.getSubFrame(body, o));
+				return rFrame.stackEmpty() ? null : rFrame.pop();
+			}
+			final Method method = EMFTVMUtil.findNativeMethod(o == null? Void.TYPE : o.getClass(), opname, false);
+			if (method != null) {
+				instr.setNativeMethod(method); // record invoked method for JIT compiler
+				return EMFTVMUtil.invokeNative(frame, o, opname);
+			}
+			throw new UnsupportedOperationException(String.format("%s::%s()", 
+					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)), 
+					opname));
+		case 1:
+			// Use Java's left-to-right evaluation semantics:
+			// stack = [..., self, arg1, arg2]
+			final Object arg = frame.pop();
+			o = frame.pop();
+			op = frame.getEnv().findOperation(
+					EMFTVMUtil.getArgumentType(o),
+					opname, 
+					EMFTVMUtil.getArgumentType(arg));
+			if (op != null) {
+				final CodeBlock body = op.getBody();
+				final StackFrame rFrame = body.execute(frame.getSubFrame(body, o, arg));
+				return rFrame.stackEmpty() ? null : rFrame.pop();
+			}
+			final Method method1 = EMFTVMUtil.findNativeMethod(
+					o == null? Void.TYPE : o.getClass(), 
+					opname, 
+					arg == null ? Void.TYPE : arg.getClass(), 
+					false);
+			if (method1 != null) {
+				instr.setNativeMethod(method1); // record invoked method for JIT compiler
+				return EMFTVMUtil.invokeNative(frame, o, method1, arg);
+			}
+			throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
+					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)), 
+					opname, 
+					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(arg))));
+		default:
+			// Use Java's left-to-right evaluation semantics:
+			// stack = [..., self, arg1, arg2]
+			final Object[] args = frame.pop(argcount);
+			//TODO treat context as a regular argument (cf. Java's Method.invoke())
+			o = frame.pop();
+			op = frame.getEnv().findOperation(
+					EMFTVMUtil.getArgumentType(o),
+					opname, 
+					EMFTVMUtil.getArgumentTypes(args));
+			if (op != null) {
+				final CodeBlock body = op.getBody();
+				final StackFrame rFrame = body.execute(frame.getSubFrame(body, o, args));
+				return rFrame.stackEmpty() ? null : rFrame.pop();
+			}
+			final Method methodn = EMFTVMUtil.findNativeMethod(
+					o == null? Void.TYPE : o.getClass(), 
+					opname, 
+					EMFTVMUtil.getArgumentClasses(args), 
+					false);
+			if (methodn != null) {
+				instr.setNativeMethod(methodn); // record invoked method for JIT compiler
+				return EMFTVMUtil.invokeNative(frame, o, methodn, args);
+			}
+			throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
+					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)), 
+					opname, 
+					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentTypes(args))));
 		}
-		return EMFTVMUtil.invokeNative(frame, o, opname, args);
 	}
 
 	/**
@@ -2220,41 +2231,114 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	private static Object invokeStatic(final String opname, final int argcount, 
 			final StackFrame frame) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		final ExecEnv env = frame.getEnv();
-		final Object type = frame.pop();
+		final Object type;
+		final Operation op;
+		switch (argcount) {
+		case 0:
+			// Use Java's left-to-right evaluation semantics:
+			// stack = [..., type, arg1, arg2]
+			type = frame.pop();
 
-		if (type == null) {
-			throw new IllegalArgumentException(String.format("Cannot invoke static operation %s on null type", opname));
-		}
-
-		if (type == env.eClass()) { // Lazy and called rule invocations are indistinguishable from static operations in ATL
-			final Rule rule = env.findRule(opname);
-			if (rule != null && rule.getMode() == RuleMode.MANUAL) {
-				return matchOne(frame, rule, argcount);
+			if (type == null) {
+				throw new IllegalArgumentException(String.format("Cannot invoke static operation %s on null type", opname));
 			}
-		}
 
-		final Object[] args = getArguments(argcount, frame);
-		final Operation op = env.findStaticOperation(
-				type, 
-				opname, 
-				EMFTVMUtil.getArgumentTypes(args));
-		if (op != null) {
-			final CodeBlock body = op.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, args));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
+			if (type == env.eClass()) { // Lazy and called rule invocations are indistinguishable from static operations in ATL
+				final Rule rule = env.findRule(opname);
+				if (rule != null && rule.getMode() == RuleMode.MANUAL) {
+					return matchOne(frame, rule);
+				}
+			}
+
+			op = env.findStaticOperation(
+					type, 
+					opname);
+			if (op != null) {
+				final CodeBlock body = op.getBody();
+				final StackFrame rFrame = body.execute(new StackFrame(frame, body)); // no need to copy arguments
+				return rFrame.stackEmpty() ? null : rFrame.pop();
+			}
+			if (type instanceof Class<?>) {
+				return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname);
+			}
+			throw new UnsupportedOperationException(String.format("static %s::%s()", 
+					EMFTVMUtil.getTypeName(env, type), 
+					opname));
+		case 1:
+			// Use Java's left-to-right evaluation semantics:
+			// stack = [..., type, arg1, arg2]
+			final Object arg = frame.pop();
+			type = frame.pop();
+
+			if (type == null) {
+				throw new IllegalArgumentException(String.format("Cannot invoke static operation %s on null type", opname));
+			}
+
+			if (type == env.eClass()) { // Lazy and called rule invocations are indistinguishable from static operations in ATL
+				final Rule rule = env.findRule(opname);
+				if (rule != null && rule.getMode() == RuleMode.MANUAL) {
+					return matchOne(frame, rule, new EObject[]{(EObject)arg});
+				}
+			}
+
+			op = env.findStaticOperation(
+					type, 
+					opname, 
+					EMFTVMUtil.getArgumentType(arg));
+			if (op != null) {
+				final CodeBlock body = op.getBody();
+				final StackFrame rFrame = body.execute(frame.getSubFrame(body, arg));
+				return rFrame.stackEmpty() ? null : rFrame.pop();
+			}
+			if (type instanceof Class<?>) {
+				return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname, arg);
+			}
+			throw new UnsupportedOperationException(String.format("static %s::%s(%s)", 
+					EMFTVMUtil.getTypeName(env, type), 
+					opname, 
+					EMFTVMUtil.getTypeName(env, EMFTVMUtil.getArgumentType(arg))));
+		default:
+			// Use Java's left-to-right evaluation semantics:
+			// stack = [..., type, arg1, arg2]
+			final Object[] args = frame.pop(argcount);
+			type = frame.pop();
+
+			if (type == null) {
+				throw new IllegalArgumentException(String.format("Cannot invoke static operation %s on null type", opname));
+			}
+
+			if (type == env.eClass()) { // Lazy and called rule invocations are indistinguishable from static operations in ATL
+				final Rule rule = env.findRule(opname);
+				if (rule != null && rule.getMode() == RuleMode.MANUAL) {
+					EObject[] eargs = new EObject[argcount];
+					System.arraycopy(args, 0, eargs, 0, argcount);
+					return matchOne(frame, rule, eargs);
+				}
+			}
+
+			//TODO treat context type as a regular argument (cf. Java's Method.invoke())
+			op = env.findStaticOperation(
+					type, 
+					opname, 
+					EMFTVMUtil.getArgumentTypes(args));
+			if (op != null) {
+				final CodeBlock body = op.getBody();
+				final StackFrame rFrame = body.execute(frame.getSubFrame(body, args));
+				return rFrame.stackEmpty() ? null : rFrame.pop();
+			}
+			if (type instanceof Class<?>) {
+				return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname, args);
+			}
+			throw new UnsupportedOperationException(String.format("static %s::%s(%s)", 
+					EMFTVMUtil.getTypeName(env, type), 
+					opname, 
+					EMFTVMUtil.getTypeNames(env, EMFTVMUtil.getArgumentTypes(args))));
 		}
-		if (type instanceof Class<?>) {
-			return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname, args);
-		}
-		throw new UnsupportedOperationException(String.format("static %s::%s(%s)", 
-				EMFTVMUtil.getTypeName(env, type), 
-				opname, 
-				EMFTVMUtil.getTypeNames(env, EMFTVMUtil.getArgumentTypes(args))));
 	}
 
 	/**
 	 * Implements the INVOKE_SUPER instruction.
-	 * @param context the current execution context type
+	 * @param eContext the current execution context type
 	 * @param opname
 	 * @param argcount
 	 * @param frame
@@ -2273,9 +2357,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			throw new IllegalArgumentException(String.format("Operation misses context type: %s", op));
 		}
 
-		final ExecEnv env = frame.getEnv();
-		final Object o = frame.pop();
-
 		final java.util.Set<Operation> ops = new LinkedHashSet<Operation>();
 		final List<?> superTypes;
 		if (context instanceof EClass) {
@@ -2288,63 +2369,129 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			superTypes = Collections.singletonList(ic.getSuperclass());
 		}
 
-		final Object[] args = getArguments(argcount, frame);
+		final ExecEnv env = frame.getEnv();
 		Operation superOp = null;
-		for (Object superType : superTypes) {
-			superOp = env.findOperation(superType, opname, EMFTVMUtil.getArgumentTypes(args));
-			if (superOp != null) {
-				ops.add(superOp);
+		final Object o;
+		final Class<?> ic;
+
+		switch (argcount) {
+		case 0:
+			// Use Java's left-to-right evaluation semantics:
+			// stack = [..., self, arg1, arg2]
+			o = frame.pop();
+
+			for (Object superType : superTypes) {
+				superOp = env.findOperation(superType, opname);
+				if (superOp != null) {
+					ops.add(superOp);
+				}
 			}
-		}
-		if (ops.size() > 1) {
-			throw new DuplicateEntryException(String.format(
-					"More than one super-operation found for context %s: %s",
-					context, ops));
-		}
-		if (!ops.isEmpty()) {
-			superOp = ops.iterator().next();
-		}
+			if (ops.size() > 1) {
+				throw new DuplicateEntryException(String.format(
+						"More than one super-operation found for context %s: %s",
+						context, ops));
+			}
+			if (!ops.isEmpty()) {
+				superOp = ops.iterator().next();
+			}
 
-		if (superOp != null) {
-			final CodeBlock body = superOp.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, o, args));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
-		}
+			if (superOp != null) {
+				final CodeBlock body = superOp.getBody();
+				final StackFrame rFrame = body.execute(frame.getSubFrame(body, o));
+				return rFrame.stackEmpty() ? null : rFrame.pop();
+			}
 
-		final Class<?> ic = context.getInstanceClass();
-		if (ic != null) {
-			return EMFTVMUtil.invokeNativeSuper(frame, ic, o, opname, args);
-		}
+			ic = context.getInstanceClass();
+			if (ic != null) {
+				return EMFTVMUtil.invokeNativeSuper(frame, ic, o, opname);
+			}
 
-		throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
-				EMFTVMUtil.getTypeName(env, context), 
-				opname, 
-				EMFTVMUtil.getTypeNames(env, EMFTVMUtil.getArgumentTypes(args))));
-	}
+			throw new UnsupportedOperationException(String.format("super %s::%s()", 
+					EMFTVMUtil.getTypeName(env, context), 
+					opname));
+		case 1:
+			// Use Java's left-to-right evaluation semantics:
+			// stack = [..., self, arg1, arg2]
+			final Object arg = frame.pop();
+			o = frame.pop();
 
-	/**
-	 * Gets argcount objects off the stack and returns them.
-	 * @param argcount
-	 * @param frame
-	 * @return the arguments
-	 */
-	private static Object[] getArguments(final int argcount, final StackFrame frame) {
-		final Object[] args = new Object[argcount];
-		for (int i = 0; i < argcount; i++) {
-			args[i] = frame.pop();
+			for (Object superType : superTypes) {
+				superOp = env.findOperation(superType, opname, EMFTVMUtil.getArgumentType(arg));
+				if (superOp != null) {
+					ops.add(superOp);
+				}
+			}
+			if (ops.size() > 1) {
+				throw new DuplicateEntryException(String.format(
+						"More than one super-operation found for context %s: %s",
+						context, ops));
+			}
+			if (!ops.isEmpty()) {
+				superOp = ops.iterator().next();
+			}
+
+			if (superOp != null) {
+				final CodeBlock body = superOp.getBody();
+				final StackFrame rFrame = body.execute(frame.getSubFrame(body, o, arg));
+				return rFrame.stackEmpty() ? null : rFrame.pop();
+			}
+
+			ic = context.getInstanceClass();
+			if (ic != null) {
+				return EMFTVMUtil.invokeNativeSuper(frame, ic, o, opname, arg);
+			}
+
+			throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
+					EMFTVMUtil.getTypeName(env, context), 
+					opname, 
+					EMFTVMUtil.getTypeName(env, EMFTVMUtil.getArgumentType(arg))));
+		default:
+			// Use Java's left-to-right evaluation semantics:
+			// stack = [..., self, arg1, arg2]
+			final Object[] args = frame.pop(argcount);
+			o = frame.pop();
+
+			for (Object superType : superTypes) {
+				superOp = env.findOperation(superType, opname, EMFTVMUtil.getArgumentTypes(args));
+				if (superOp != null) {
+					ops.add(superOp);
+				}
+			}
+			if (ops.size() > 1) {
+				throw new DuplicateEntryException(String.format(
+						"More than one super-operation found for context %s: %s",
+						context, ops));
+			}
+			if (!ops.isEmpty()) {
+				superOp = ops.iterator().next();
+			}
+
+			if (superOp != null) {
+				final CodeBlock body = superOp.getBody();
+				final StackFrame rFrame = body.execute(frame.getSubFrame(body, o, args));
+				return rFrame.stackEmpty() ? null : rFrame.pop();
+			}
+
+			ic = context.getInstanceClass();
+			if (ic != null) {
+				return EMFTVMUtil.invokeNativeSuper(frame, ic, o, opname, args);
+			}
+
+			throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
+					EMFTVMUtil.getTypeName(env, context), 
+					opname, 
+					EMFTVMUtil.getTypeNames(env, EMFTVMUtil.getArgumentTypes(args))));
 		}
-		return args;
 	}
 
 	/**
 	 * Finds the rule referred to by <pre>instr</pre>.
 	 * @param env
-	 * @param instr
+	 * @param rulename
 	 * @return the rule mentioned by instr
 	 * @throws IllegalArgumentException if rule not found
 	 */
-	private static Rule findRule(final ExecEnv env, final Match instr) {
-		final String rulename = instr.getRulename();
+	private static Rule findRule(final ExecEnv env, final String rulename) {
 		final Rule rule = env.findRule(rulename);
 		if (rule == null) {
 			throw new IllegalArgumentException(String.format("Rule %s not found", rulename));
@@ -2353,22 +2500,33 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	}
 
 	/**
-	 * Executes rule with parameters derived from <code>rule</code>.
-	 * @param frame
-	 * @param rule
-	 * @param argcount
+	 * Executes <code>rule</code> with <code>args</code>.
+	 * @param frame the current stack frame
+	 * @param rule the rule
+	 * @param args the rule arguments
 	 */
-	private static Object matchOne(final StackFrame frame, final Rule rule, final int argcount) {
+	private static Object matchOne(final StackFrame frame, final Rule rule, final EObject[] args) {
+		final int argcount = args.length;
 		if (argcount != rule.getInputElements().size()) {
 			throw new VMException(frame, String.format(
 					"Rule %s has different amount of input elements than expected: %d instead of %d",
 					rule.getName(), rule.getInputElements().size(), argcount));
 		}
-		final EObject[] elements = new EObject[argcount];
-		for (int i = 0; i < argcount; i++) {
-			elements[i] = (EObject)frame.pop();
+		return rule.matchManual(frame, args);
+	}
+
+	/**
+	 * Executes <code>rule</code> without arguments.
+	 * @param frame the current stack frame
+	 * @param rule the rule
+	 */
+	private static Object matchOne(final StackFrame frame, final Rule rule) {
+		if (rule.getInputElements().size() != 0) {
+			throw new VMException(frame, String.format(
+					"Rule %s has different amount of input elements than expected: %d instead of %d",
+					rule.getName(), rule.getInputElements().size(), 0));
 		}
-		return rule.matchManual(frame, elements);
+		return rule.matchManual(frame, EEMPTY);
 	}
 
 	/**
@@ -2379,6 +2537,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		allPredecessors.clear();
 		nlPredecessors.clear();
 		eUnset(EmftvmPackage.CODE_BLOCK__MAX_STACK);
+		setJITCodeBlock(null);
 	}
 
 	/**
@@ -2386,6 +2545,14 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	private void localVariablesChanged() {
 		eUnset(EmftvmPackage.CODE_BLOCK__MAX_LOCALS);
+		setJITCodeBlock(null);
+	}
+
+	/**
+	 * Clears values derived from {@link #getNested()}.
+	 */
+	private void nestedChanged() {
+		setJITCodeBlock(null);
 	}
 
 } //CodeBlockImpl

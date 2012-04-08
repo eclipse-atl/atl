@@ -118,13 +118,12 @@ public final class EMFTVMUtil {
 	 */
 	public static String getTypeName(final ExecEnv env, final Object type) {
 		if (type instanceof EClass) {
-			EClass eCls = (EClass)type;
-			for (Map.Entry<String, Metamodel> mm : env.getMetaModels().entrySet()) {
-				if (mm.getValue().getResource() == eCls.eResource()) {
-					return mm.getKey() + '!' + eCls.getName();
-				}
+			final EClass eCls = (EClass)type;
+			final Metamodel mm = env.getMetaModel(eCls.eResource());
+			if (mm != null) {
+				return env.getMetaModelID(mm) + '!' + eCls.getName();
 			}
-			return ((EClass)type).getName();
+			return eCls.getName();
 		} else if (type instanceof Class<?>) {
 			return NATIVE + '!' + ((Class<?>)type).getName();
 		} else {
@@ -206,11 +205,11 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Finds all instances of type in the registered input/inout models.
-	 * @param env the current {@link ExecEnv}
 	 * @param type the type
+	 * @param env the current {@link ExecEnv}
 	 * @return all instances of type in the registered input/inout models
 	 */
-	public static LazyList<EObject> findAllInstances(final ExecEnv env, final EClass type) {
+	public static LazyList<EObject> findAllInstances(final EClass type, final ExecEnv env) {
 		LazyList<EObject> allInst = new LazyList<EObject>();
 		for (Model model : env.getInputModels().values()) {
 			allInst = allInst.union(model.allInstancesOf(type));
@@ -223,12 +222,12 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Finds all instances of type in the given model.
-	 * @param env the current {@link ExecEnv}
-	 * @param type the type
 	 * @param modelname the model name
+	 * @param type the type
+	 * @param env the current {@link ExecEnv}
 	 * @return all instances of type in the given model
 	 */
-	public static LazyList<EObject> findAllInstIn(final ExecEnv env, final EClass type, final Object modelname) {
+	public static LazyList<EObject> findAllInstIn(final Object modelname, final EClass type, final ExecEnv env) {
 		Model model = env.getInputModels().get(modelname);
 		if (model == null) {
 			model = env.getInoutModels().get(modelname);
@@ -365,16 +364,16 @@ public final class EMFTVMUtil {
 	 * @return the EMFTVM value
 	 */
 	@SuppressWarnings("unchecked")
-	private static Object emf2vm(final ExecEnv env, final EObject eo, final Object value) {
+	public static Object emf2vm(final ExecEnv env, final EObject eo, final Object value) {
 		if (value instanceof Enumerator) {
 			return new EnumLiteral(value.toString());
 		} else if (value instanceof EList<?>) {
-			final EnumConversionList converted = new EnumConversionList((EList<Object>)value);
 			if (eo != null && env.getInoutModelOf(eo) != null) {
 				//Copy list for inout models
-				converted.cache();
+				return new EnumConversionList((EList<Object>)value).cache();
+			} else {
+				return new EnumConversionList((EList<Object>)value);
 			}
-			return converted;
 		} else if (value != null && value.getClass().isArray()) {
 			return new LazyListOnList<Object>(Arrays.asList((Object[])value));
 		}
@@ -796,11 +795,9 @@ public final class EMFTVMUtil {
 		}
 		if (eo.eContainer() != null) {
 			eo.eResource().getContents().remove(eo);
-			assert eo.eResource() != null;
 		}
 		if (v.eContainer() != null) {
 			v.eResource().getContents().remove(v);
-			assert v.eResource() != null;
 		}
 	}
 
@@ -894,8 +891,9 @@ public final class EMFTVMUtil {
 	 * @return the types of <code>args</code>
 	 */
 	public static Object[] getArgumentTypes(final Object[] args) {
-		final Object[] argTypes = new Object[args.length];
-		for (int i = 0; i < args.length; i++) {
+		final int argcount = args.length;
+		final Object[] argTypes = new Object[argcount];
+		for (int i = 0; i < argcount; i++) {
 			argTypes[i] = getArgumentType(args[i]);
 		}
 		return argTypes;
@@ -924,10 +922,11 @@ public final class EMFTVMUtil {
 	 * @param args the method arguments
 	 * @return the method result
 	 */
+	//TODO remove
 	public static Object invokeNative(final StackFrame frame, final Object self, 
 			final String opname, final Object[] args) {
 		final Method method = EMFTVMUtil.findNativeMethod(
-				self.getClass(), 
+				self == null? Void.TYPE : self.getClass(), 
 				opname, 
 				EMFTVMUtil.getArgumentClasses(args), 
 				false);
@@ -952,9 +951,195 @@ public final class EMFTVMUtil {
 			}
 		}
 		throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
-				EMFTVMUtil.getTypeName(frame.getEnv(), self.getClass()), 
+				EMFTVMUtil.getTypeName(frame.getEnv(), getArgumentType(self)), 
 				opname, 
 				EMFTVMUtil.getTypeNames(frame.getEnv(), getArgumentTypes(args))));
+	}
+
+	/**
+	 * Invokes native Java <code>method</code> on <code>self</code> with arguments <code>args</code>.
+	 * @param frame the current stack frame
+	 * @param self the object on which to invoke the method
+	 * @param method the method
+	 * @param args the method arguments
+	 * @return the method result
+	 */
+	public static Object invokeNative(final StackFrame frame, final Object self, 
+			final Method method, final Object[] args) {
+		final StackFrame subFrame = frame.prepareNativeArgs(method, self, args);
+		try {
+			return emf2vm(
+					frame.getEnv(), 
+					self instanceof EObject ? (EObject)self : null, 
+					method.invoke(self, args));
+		} catch (InvocationTargetException e) {
+			final Throwable target = e.getTargetException();
+			if (target instanceof VMException) {
+				throw (VMException)target;
+			} else {
+				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
+			}
+		} catch (VMException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
+		}
+	}
+
+	/**
+	 * Invokes native Java method <code>opname</code> on <code>self</code> with arguments <code>args</code>.
+	 * @param frame the current stack frame
+	 * @param self the object on which to invoke the method
+	 * @param opname the method name
+	 * @param arg the method argument
+	 * @return the method result
+	 */
+	//TODO remove
+	public static Object invokeNative(final StackFrame frame, final Object self, 
+			final String opname, Object arg) {
+		final Method method = EMFTVMUtil.findNativeMethod(
+				self == null? Void.TYPE : self.getClass(), 
+				opname, 
+				arg == null ? Void.TYPE : arg.getClass(), 
+				false);
+		if (method != null) {
+			StackFrame subFrame = frame.prepareNativeContext(method, self);
+			if (arg instanceof CodeBlock) {
+				if (subFrame == null) {
+					subFrame = new StackFrame(frame, method);
+				}
+				((CodeBlock)arg).setParentFrame(subFrame);
+			} else if (arg instanceof EnumLiteral) {
+				arg = convertEnumLiteral((EnumLiteral)arg, method.getParameterTypes()[0]);
+			}
+			try {
+				return emf2vm(
+						frame.getEnv(), 
+						self instanceof EObject ? (EObject)self : null, 
+						method.invoke(self, arg));
+			} catch (InvocationTargetException e) {
+				final Throwable target = e.getTargetException();
+				if (target instanceof VMException) {
+					throw (VMException)target;
+				} else {
+					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
+				}
+			} catch (VMException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
+			}
+		}
+		throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
+				EMFTVMUtil.getTypeName(frame.getEnv(), getArgumentType(self)), 
+				opname, 
+				EMFTVMUtil.getTypeName(frame.getEnv(), getArgumentType(arg))));
+	}
+
+	/**
+	 * Invokes native Java <code>method</code> on <code>self</code> with arguments <code>args</code>.
+	 * @param frame the current stack frame
+	 * @param self the object on which to invoke the method
+	 * @param method the method
+	 * @param arg the method argument
+	 * @return the method result
+	 */
+	public static Object invokeNative(final StackFrame frame, final Object self, 
+			final Method method, Object arg) {
+		StackFrame subFrame = frame.prepareNativeContext(method, self);
+		if (arg instanceof CodeBlock) {
+			if (subFrame == null) {
+				subFrame = new StackFrame(frame, method);
+			}
+			((CodeBlock)arg).setParentFrame(subFrame);
+		} else if (arg instanceof EnumLiteral) {
+			arg = convertEnumLiteral((EnumLiteral)arg, method.getParameterTypes()[0]);
+		}
+		try {
+			return emf2vm(
+					frame.getEnv(), 
+					self instanceof EObject ? (EObject)self : null, 
+					method.invoke(self, arg));
+		} catch (InvocationTargetException e) {
+			final Throwable target = e.getTargetException();
+			if (target instanceof VMException) {
+				throw (VMException)target;
+			} else {
+				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
+			}
+		} catch (VMException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
+		}
+	}
+
+	/**
+	 * Invokes native Java method <code>opname</code> on <code>self</code> without arguments.
+	 * @param frame the current stack frame
+	 * @param self the object on which to invoke the method
+	 * @param opname the method name
+	 * @return the method result
+	 */
+	//TODO remove
+	public static Object invokeNative(final StackFrame frame, final Object self, 
+			final String opname) {
+		final Method method = EMFTVMUtil.findNativeMethod(
+				self == null? Void.TYPE : self.getClass(), 
+				opname, 
+				false);
+		if (method != null) {
+			final StackFrame subFrame = frame.prepareNativeContext(method, self);
+			try {
+				return emf2vm(
+						frame.getEnv(), 
+						self instanceof EObject ? (EObject)self : null, 
+						method.invoke(self));
+			} catch (InvocationTargetException e) {
+				final Throwable target = e.getTargetException();
+				if (target instanceof VMException) {
+					throw (VMException)target;
+				} else {
+					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
+				}
+			} catch (VMException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
+			}
+		}
+		throw new UnsupportedOperationException(String.format("%s::%s()", 
+				EMFTVMUtil.getTypeName(frame.getEnv(), getArgumentType(self)), 
+				opname));
+	}
+
+	/**
+	 * Invokes native Java <code>method</code> on <code>self</code> without arguments.
+	 * @param frame the current stack frame
+	 * @param self the object on which to invoke the method
+	 * @param method the method
+	 * @return the method result
+	 */
+	public static Object invokeNative(final StackFrame frame, final Object self, 
+			final Method method) {
+		final StackFrame subFrame = frame.prepareNativeContext(method, self);
+		try {
+			return emf2vm(
+					frame.getEnv(), 
+					self instanceof EObject ? (EObject)self : null, 
+					method.invoke(self));
+		} catch (InvocationTargetException e) {
+			final Throwable target = e.getTargetException();
+			if (target instanceof VMException) {
+				throw (VMException)target;
+			} else {
+				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
+			}
+		} catch (VMException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
+		}
 	}
 
 	/**
@@ -993,6 +1178,84 @@ public final class EMFTVMUtil {
 				EMFTVMUtil.getTypeName(frame.getEnv(), type), 
 				opname, 
 				EMFTVMUtil.getTypeNames(frame.getEnv(), getArgumentTypes(args))));
+	}
+
+	/**
+	 * Invokes static native Java method <code>opname</code> with argument <code>arg</code>.
+	 * @param frame the current stack frame
+	 * @param type the class in which the static method is defined
+	 * @param opname the method name
+	 * @param arg the method arguments
+	 * @return the method result
+	 */
+	public static Object invokeNativeStatic(final StackFrame frame, final Class<?> type, 
+			final String opname, Object arg) {
+		final Method method = EMFTVMUtil.findNativeMethod(
+				type, 
+				opname, 
+				arg == null ? Void.TYPE : arg.getClass(), 
+				true);
+		if (method != null) {
+			StackFrame subFrame = null;
+			if (arg instanceof CodeBlock) {
+				subFrame = new StackFrame(frame, method);
+				((CodeBlock)arg).setParentFrame(subFrame);
+			} else if (arg instanceof EnumLiteral) {
+				arg = convertEnumLiteral((EnumLiteral)arg, method.getParameterTypes()[0]);
+			}
+			try {
+				return emf2vm(frame.getEnv(), null, method.invoke(type, arg));
+			} catch (InvocationTargetException e) {
+				final Throwable target = e.getTargetException();
+				if (target instanceof VMException) {
+					throw (VMException)target;
+				} else {
+					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
+				}
+			} catch (VMException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
+			}
+		}
+		throw new UnsupportedOperationException(String.format("static %s::%s(%s)", 
+				EMFTVMUtil.getTypeName(frame.getEnv(), type), 
+				opname, 
+				EMFTVMUtil.getTypeName(frame.getEnv(), getArgumentType(arg))));
+	}
+
+	/**
+	 * Invokes static native Java method <code>opname</code> without arguments.
+	 * @param frame the current stack frame
+	 * @param type the class in which the static method is defined
+	 * @param opname the method name
+	 * @return the method result
+	 */
+	public static Object invokeNativeStatic(final StackFrame frame, final Class<?> type, 
+			final String opname) {
+		final Method method = EMFTVMUtil.findNativeMethod(
+				type, 
+				opname,  
+				true);
+		if (method != null) {
+			try {
+				return emf2vm(frame.getEnv(), null, method.invoke(type));
+			} catch (InvocationTargetException e) {
+				final Throwable target = e.getTargetException();
+				if (target instanceof VMException) {
+					throw (VMException)target;
+				} else {
+					throw new VMException(new StackFrame(frame, method), target);
+				}
+			} catch (VMException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new VMException(new StackFrame(frame, method), e);
+			}
+		}
+		throw new UnsupportedOperationException(String.format("static %s::%s()", 
+				EMFTVMUtil.getTypeName(frame.getEnv(), type), 
+				opname));
 	}
 
 	/**
@@ -1039,9 +1302,100 @@ public final class EMFTVMUtil {
 	}
 
 	/**
+	 * Invokes native Java super-method <code>opname</code> on <code>self</code> with arguments <code>args</code>.
+	 * @param frame the current stack frame
+	 * @param context the execution context class of the invoking operation
+	 * @param self the object on which to invoke the method
+	 * @param opname the method name
+	 * @param arg the method argument
+	 * @return the method result
+	 */
+	public static Object invokeNativeSuper(final StackFrame frame, final Class<?> context, 
+			final Object self, final String opname, Object arg) {
+		assert context.isAssignableFrom(self.getClass());
+		final Method method = EMFTVMUtil.findNativeMethod(
+				context.getSuperclass(), 
+				opname, 
+				arg == null ? Void.TYPE : arg.getClass(), 
+				false);
+		if (method != null) {
+			StackFrame subFrame = frame.prepareNativeContext(method, self);
+			if (arg instanceof CodeBlock) {
+				if (subFrame == null) {
+					subFrame = new StackFrame(frame, method);
+				}
+				((CodeBlock)arg).setParentFrame(subFrame);
+			} else if (arg instanceof EnumLiteral) {
+				arg = convertEnumLiteral((EnumLiteral)arg, method.getParameterTypes()[0]);
+			}
+			try {
+				return emf2vm(
+						frame.getEnv(), 
+						self instanceof EObject ? (EObject)self : null, 
+						method.invoke(self, arg));
+			} catch (InvocationTargetException e) {
+				final Throwable target = e.getTargetException();
+				if (target instanceof VMException) {
+					throw (VMException)target;
+				} else {
+					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
+				}
+			} catch (VMException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
+			}
+		}
+		throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
+				EMFTVMUtil.getTypeName(frame.getEnv(), self.getClass()), 
+				opname, 
+				EMFTVMUtil.getTypeName(frame.getEnv(), getArgumentType(arg))));
+	}
+
+	/**
+	 * Invokes native Java super-method <code>opname</code> on <code>self</code> without arguments.
+	 * @param frame the current stack frame
+	 * @param context the execution context class of the invoking operation
+	 * @param self the object on which to invoke the method
+	 * @param opname the method name
+	 * @return the method result
+	 */
+	public static Object invokeNativeSuper(final StackFrame frame, final Class<?> context, 
+			final Object self, final String opname) {
+		assert context.isAssignableFrom(self.getClass());
+		final Method method = EMFTVMUtil.findNativeMethod(
+				context.getSuperclass(), 
+				opname,  
+				false);
+		if (method != null) {
+			final StackFrame subFrame = frame.prepareNativeContext(method, self);
+			try {
+				return emf2vm(
+						frame.getEnv(), 
+						self instanceof EObject ? (EObject)self : null, 
+						method.invoke(self));
+			} catch (InvocationTargetException e) {
+				final Throwable target = e.getTargetException();
+				if (target instanceof VMException) {
+					throw (VMException)target;
+				} else {
+					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
+				}
+			} catch (VMException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
+			}
+		}
+		throw new UnsupportedOperationException(String.format("super %s::%s()", 
+				EMFTVMUtil.getTypeName(frame.getEnv(), self.getClass()), 
+				opname));
+	}
+
+	/**
 	 * Looks for a native Java method.
 	 * 
-	 * @param caller
+	 * @param context
 	 *            The class of the method
 	 * @param name
 	 *            The method name
@@ -1056,7 +1410,7 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	//TODO implement multi-methods in ExecEnv
-	private static Method findNativeMethod(final Class<?> context, final String opname, 
+	public static Method findNativeMethod(final Class<?> context, final String opname, 
 			final Class<?>[] argTypes, final boolean isStatic) {
 		if (context == Void.TYPE) {
 			return null; // Java methods cannot be invoked on null, or defined on Void
@@ -1069,7 +1423,8 @@ public final class EMFTVMUtil {
 		}
 	
 		final Method[] methods = context.getDeclaredMethods();
-		for (int i = 0; i < (methods.length) && (ret == null); i++) {
+		METHODS:
+		for (int i = 0; i < methods.length; i++) {
 			Method method = methods[i];
 			if ((Modifier.isStatic(method.getModifiers()) == isStatic) && method.getName().equals(opname)) {
 				Class<?>[] pts = method.getParameterTypes();
@@ -1091,6 +1446,7 @@ public final class EMFTVMUtil {
 					}
 					if (ok) {
 						ret = method;
+						break METHODS;
 					}
 				}
 			}
@@ -1098,6 +1454,123 @@ public final class EMFTVMUtil {
 	
 		if ((ret == null) && !isStatic && (context.getSuperclass() != null)) {
 			ret = findNativeMethod(context.getSuperclass(), opname, argTypes, isStatic);
+		}
+	
+		cacheMethod(context, sig, ret);
+	
+		return ret;
+	}
+
+	/**
+	 * Looks for a native Java method.
+	 * 
+	 * @param context
+	 *            The class of the method
+	 * @param name
+	 *            The method name
+	 * @param argumentType
+	 *            The type of the argument
+	 * @param isStatic
+	 *            Whether to look for a static method or not
+	 * @return the method if found, null otherwise
+	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	//TODO implement multi-methods in ExecEnv
+	public static Method findNativeMethod(final Class<?> context, final String opname, 
+			final Class<?> argType, final boolean isStatic) {
+		if (context == Void.TYPE) {
+			return null; // Java methods cannot be invoked on null, or defined on Void
+		}
+	
+		final int sig = getMethodSignature(opname, argType, isStatic);
+		Method ret = findCachedMethod(context, sig);
+		if (ret != null) {
+			return ret;
+		}
+	
+		final Method[] methods = context.getDeclaredMethods();
+		METHODS:
+		for (int i = 0; i < methods.length; i++) {
+			Method method = methods[i];
+			if ((Modifier.isStatic(method.getModifiers()) == isStatic) && method.getName().equals(opname)) {
+				Class<?>[] pts = method.getParameterTypes();
+				if (pts.length == 1) {
+					Class<?> pt = pts[0];
+					if (argType == EnumLiteral.class && Enumerator.class.isAssignableFrom(pt)) {
+						ret = method;
+						break METHODS;
+					}
+					boolean ok = true;
+					if (!pt.isAssignableFrom(argType)) {
+						if (pt == boolean.class) ok = argType == Boolean.class;
+						else if (pt == int.class) ok = argType == Integer.class;
+						else if (pt == char.class) ok = argType == Character.class;
+						else if (pt == long.class) ok = argType == Long.class;
+						else if (pt == float.class) ok = argType == Float.class;
+						else if (pt == double.class) ok = argType == Double.class;
+						else ok = argType == Void.TYPE; // any type
+					}
+					if (ok) {
+						ret = method;
+						break METHODS;
+					}
+				}
+			}
+		}
+	
+		if ((ret == null) && !isStatic && (context.getSuperclass() != null)) {
+			ret = findNativeMethod(context.getSuperclass(), opname, argType, isStatic);
+		}
+	
+		cacheMethod(context, sig, ret);
+	
+		return ret;
+	}
+
+	/**
+	 * Looks for a native Java method without arguments.
+	 * 
+	 * @param context
+	 *            The class of the method
+	 * @param name
+	 *            The method name
+	 * @param isStatic
+	 *            Whether to look for a static method or not
+	 * @return the method if found, null otherwise
+	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	public static Method findNativeMethod(final Class<?> context, final String opname, 
+			final boolean isStatic) {
+		if (context == Void.TYPE) {
+			return null; // Java methods cannot be invoked on null, or defined on Void
+		}
+	
+		final int sig = getMethodSignature(opname, isStatic);
+		Method ret = findCachedMethod(context, sig);
+		if (ret != null) {
+			return ret;
+		}
+	
+		final Method[] methods = context.getDeclaredMethods();
+		METHODS:
+		for (int i = 0; i < methods.length; i++) {
+			Method method = methods[i];
+			if ((Modifier.isStatic(method.getModifiers()) == isStatic) && method.getName().equals(opname)) {
+				if (method.getParameterTypes().length == 0) {
+					ret = method;
+					break METHODS;
+				}
+			}
+		}
+	
+		if ((ret == null) && !isStatic && (context.getSuperclass() != null)) {
+			ret = findNativeMethod(context.getSuperclass(), opname, isStatic);
 		}
 	
 		cacheMethod(context, sig, ret);
@@ -1167,8 +1640,7 @@ public final class EMFTVMUtil {
 	 */
 	private static int getMethodSignature(final String name, final Class<?>[] argumentTypes, 
 			final boolean isStatic) {
-		int sig = isStatic ? 1 : 0;
-		sig = 31 * sig + name.hashCode();
+		int sig = (isStatic ? 31 : 0) + name.hashCode();
 		for (int i = 0; i < argumentTypes.length; i++) {
 			sig = sig * 31 + argumentTypes[i].hashCode();
 		}
@@ -1176,13 +1648,46 @@ public final class EMFTVMUtil {
 	}
 
 	/**
+	 * Generates an int signature to store methods.
+	 * 
+	 * @param name
+	 * @param argumentType
+	 * @param isStatic
+	 * @return The method signature
+	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	private static int getMethodSignature(final String name, final Class<?> argumentType, 
+			final boolean isStatic) {
+		return ((isStatic ? 31 : 0) + name.hashCode()) * 31 + argumentType.hashCode();
+	}
+
+	/**
+	 * Generates an int signature to store methods.
+	 * 
+	 * @param name
+	 * @param isStatic
+	 * @return The method signature
+	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	private static int getMethodSignature(final String name, final boolean isStatic) {
+		return (isStatic ? 31 : 0) + name.hashCode();
+	}
+
+	/**
 	 * Retrieves the classes of <code>args</code>.
 	 * @param args
 	 * @return the classes of <code>args</code>
 	 */
-	private static Class<?>[] getArgumentClasses(final Object[] args) {
-		final Class<?>[] argTypes = new Class<?>[args.length];
-		for (int i = 0; i < args.length; i++) {
+	public static Class<?>[] getArgumentClasses(final Object[] args) {
+		final int argcount = args.length;
+		final Class<?>[] argTypes = new Class<?>[argcount];
+		for (int i = 0; i < argcount; i++) {
 			argTypes[i] = args[i] == null ? Void.TYPE : args[i].getClass();
 		}
 		return argTypes;
@@ -1309,6 +1814,157 @@ public final class EMFTVMUtil {
 		f.setInitialiser(initialiser);
 		f.setStatic(isStatic);
 		return f;
+	}
+
+	/**
+	 * Retrieves the transitive closure of <pre>field</pre> on <pre>object</pre>.
+	 * @param object the object on which to retrieve <pre>field</pre>
+	 * @param field the field for which to retrieve the value
+	 * @param frame the current {@link StackFrame}
+	 * @param result the intermediate list of values
+	 * @return the updated result
+	 */
+	@SuppressWarnings("unchecked")
+	public static LazyList<Object> getTrans(final Object object, final Field field, 
+			final StackFrame frame, final LazyList<Object> result) {
+		LazyList<Object> newResult = result;
+		final Object value = field.getValue(object, frame);
+		if (value instanceof List<?>) {
+			final List<Object> cvalue = (List<Object>)value;
+			newResult = newResult.union(new LazyListOnList<Object>(cvalue));
+			for (Object v : cvalue) {
+				newResult = getTrans(v, field, frame, newResult);
+			}
+		} else if (value instanceof Collection<?>) {
+			final Collection<Object> cvalue = (Collection<Object>)value;
+			newResult = newResult.union(new LazyListOnCollection<Object>(cvalue));
+			for (Object v : cvalue) {
+				newResult = getTrans(v, field, frame, newResult);
+			}
+		} else if (value != null) {
+			newResult = newResult.append(value);
+			newResult = getTrans(value, field, frame, newResult);
+		}
+		return newResult;
+	}
+
+	/**
+	 * Retrieves the transitive closure of <pre>sf</pre> on <pre>object</pre>.
+	 * @param object the object on which to retrieve <pre>sf</pre>
+	 * @param sf the structural feature for which to retrieve the value
+	 * @param env the current {@link ExecEnv}
+	 * @param result the intermediate list of values
+	 * @return the updated result
+	 */
+	@SuppressWarnings("unchecked")
+	public static LazyList<Object> getTrans(final EObject object, 
+			final EStructuralFeature sf, final ExecEnv env, 
+			final LazyList<Object> result) {
+		if (!sf.getEContainingClass().isSuperTypeOf(object.eClass())) {
+			return result; // feature does not apply to object
+		}
+		LazyList<Object> newResult = result;
+		final Object value = get(env, object, sf);
+		if (value instanceof LazyList<?>) {
+			final LazyList<Object> cvalue = (LazyList<Object>)value;
+			newResult = newResult.union(cvalue);
+			for (Object v : cvalue) {
+				if (v instanceof EObject) {
+					newResult = getTrans((EObject)v, sf, env, newResult);
+				}
+			}
+		} else if (value != null) {
+			assert !(value instanceof Collection<?>); // All collections should be LazyLists
+			if (value instanceof Enumerator) {
+				newResult = newResult.append(new EnumLiteral(value.toString()));
+			} else {
+				newResult = newResult.append(value);
+				if (value instanceof EObject) {
+					newResult = getTrans((EObject)value, sf, env, newResult);
+				}
+			}
+		}
+		return newResult;
+	}
+
+	/**
+	 * Retrieves the transitive closure of <pre>field</pre> on <pre>object</pre>.
+	 * @param object the object on which to retrieve <pre>field</pre>
+	 * @param field the field for which to retrieve the value
+	 * @param result the intermediate list of values
+	 * @return the updated result
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
+	 */
+	@SuppressWarnings("unchecked")
+	public
+	static LazyList<Object> getTrans(final Object object, 
+			final java.lang.reflect.Field field, 
+			final LazyList<Object> result) throws IllegalArgumentException, IllegalAccessException {
+		if (!field.getDeclaringClass().isAssignableFrom(object.getClass())) {
+			return result; // field does not apply to object
+		}
+		LazyList<Object> newResult = result;
+		final Object value = field.get(object);
+		if (value instanceof LazyList<?>) {
+			final LazyList<Object> cvalue = (LazyList<Object>)value;
+			newResult = newResult.union(cvalue);
+			for (Object v : cvalue) {
+				newResult = getTrans(v, field, newResult);
+			}
+		} else if (value instanceof List<?>) {
+			final List<Object> cvalue = (List<Object>)value;
+			newResult = newResult.union(new LazyListOnList<Object>(cvalue));
+			for (Object v : cvalue) {
+				newResult = getTrans(v, field, newResult);
+			}
+		} else if (value instanceof Collection<?>) {
+			final Collection<Object> cvalue = (Collection<Object>)value;
+			newResult = newResult.union(new LazyListOnCollection<Object>(cvalue));
+			for (Object v : cvalue) {
+				newResult = getTrans(v, field, newResult);
+			}
+		} else if (value != null) {
+			newResult = newResult.append(value);
+			newResult = getTrans(value, field, newResult);
+		}
+		return newResult;
+	}
+
+	/**
+	 * Tries to convert literal to an instance of type.
+	 * @param literal the enum literal to convert
+	 * @param type the type to instantiate
+	 * @return an instance of type, or literal if conversion failed
+	 */
+	static Object convertEnumLiteral(final EnumLiteral literal, final Class<?> type) {
+		if (Enumerator.class.isAssignableFrom(type)) {
+			try {
+				final String litName = literal.getName();
+				final java.lang.reflect.Field valuesField = type.getDeclaredField("VALUES");
+				final Object values = valuesField.get(null);
+				if (values instanceof Collection<?>) {
+					for (Object value : (Collection<?>)values) {
+						if (value instanceof Enumerator) {
+							if (litName.equals(((Enumerator)value).getName()) ||
+								litName.equals(value.toString())) {
+								return value;
+							}
+						}
+					}
+				}
+			// Ignore exceptions; just don't convert here
+			} catch (SecurityException e) {
+				// do nothing
+			} catch (NoSuchFieldException e) {
+				// do nothing
+			} catch (IllegalArgumentException e) {
+				// do nothing
+			} catch (IllegalAccessException e) {
+				// do nothing
+			}
+		}
+		return literal;
 	}
 
 }

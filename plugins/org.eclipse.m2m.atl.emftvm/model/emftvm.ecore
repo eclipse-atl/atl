@@ -122,13 +122,25 @@
       <eParameters name="resolver" eType="#//ModuleResolver"/>
       <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eOperations>
-    <eOperations name="registerFeature">
-      <eParameters name="feature" eType="#//Feature"/>
-    </eOperations>
-    <eOperations name="registerRule">
-      <eParameters name="rule" eType="#//Rule"/>
+    <eOperations name="findOperation" eType="#//Operation">
+      <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="parameterTypes" eType="#//EJavaObjectArray"/>
     </eOperations>
     <eOperations name="findOperation" eType="#//Operation">
+      <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="findOperation" eType="#//Operation">
+      <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="parameterType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eOperations>
+    <eOperations name="hasOperation" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="argcount" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
+    </eOperations>
+    <eOperations name="findStaticOperation" eType="#//Operation">
       <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
       <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
       <eParameters name="parameterTypes" eType="#//EJavaObjectArray"/>
@@ -136,14 +148,28 @@
     <eOperations name="findStaticOperation" eType="#//Operation">
       <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
       <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-      <eParameters name="parameterTypes" eType="#//EJavaObjectArray"/>
+    </eOperations>
+    <eOperations name="findStaticOperation" eType="#//Operation">
+      <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="parameterType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eOperations>
+    <eOperations name="hasStaticOperation" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="argcount" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
     </eOperations>
     <eOperations name="findField" eType="#//Field">
       <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
       <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eOperations>
+    <eOperations name="hasField" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
     <eOperations name="findStaticField" eType="#//Field">
       <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="hasStaticField" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
       <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eOperations>
     <eOperations name="findRule" eType="#//Rule">
@@ -156,7 +182,6 @@
     </eOperations>
     <eOperations name="run" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject">
       <eParameters name="timingData" eType="#//TimingData"/>
-      <eParameters name="monitor" eType="#//VMMonitor"/>
     </eOperations>
     <eOperations name="getRules">
       <eGenericType eClassifier="#//LazyList">
@@ -168,6 +193,9 @@
     </eOperations>
     <eOperations name="getModelID" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
       <eParameters name="model" eType="#//Model"/>
+    </eOperations>
+    <eOperations name="getMetaModelID" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="metamodel" eType="#//Metamodel"/>
     </eOperations>
     <eOperations name="queueForDelete">
       <eParameters name="element" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
@@ -184,36 +212,58 @@
       <eParameters name="object" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eOperations>
     <eOperations name="getMonitor" eType="#//VMMonitor"/>
+    <eOperations name="setMonitor">
+      <eParameters name="monitor" eType="#//VMMonitor"/>
+    </eOperations>
+    <eOperations name="registerMetaModel">
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="metamodel" eType="#//Metamodel"/>
+    </eOperations>
+    <eOperations name="registerInputModel">
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="model" eType="#//Model"/>
+    </eOperations>
+    <eOperations name="registerInOutModel">
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="model" eType="#//Model"/>
+    </eOperations>
+    <eOperations name="registerOutputModel">
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="model" eType="#//Model"/>
+    </eOperations>
+    <eOperations name="getMetaModel" eType="#//Metamodel">
+      <eParameters name="resource" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EResource"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="metaModels" lowerBound="1"
-        changeable="false" transient="true" defaultValueLiteral="">
+        changeable="false" transient="true" defaultValueLiteral="" derived="true">
       <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
         <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
         <eTypeArguments eClassifier="#//Metamodel"/>
       </eGenericType>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="inputModels" lowerBound="1"
-        changeable="false" transient="true" defaultValueLiteral="">
+        changeable="false" transient="true" defaultValueLiteral="" derived="true">
       <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
         <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
         <eTypeArguments eClassifier="#//Model"/>
       </eGenericType>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="inoutModels" lowerBound="1"
-        changeable="false" transient="true" defaultValueLiteral="">
+        changeable="false" transient="true" defaultValueLiteral="" derived="true">
       <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
         <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
         <eTypeArguments eClassifier="#//Model"/>
       </eGenericType>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputModels" lowerBound="1"
-        changeable="false" transient="true" defaultValueLiteral="">
+        changeable="false" transient="true" defaultValueLiteral="" derived="true">
       <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
         <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
         <eTypeArguments eClassifier="#//Model"/>
       </eGenericType>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modules" lowerBound="1"
-        changeable="false" transient="true">
+        changeable="false" transient="true" derived="true">
       <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
         <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
         <eTypeArguments eClassifier="#//Module"/>
@@ -232,6 +282,9 @@
         <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
       </eGenericType>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jitDisabled" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
+        transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Model">
     <eOperations name="allInstancesOf">
@@ -404,8 +457,14 @@
       <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
       <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eOperations>
+    <eOperations name="hasField" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
     <eOperations name="findStaticField" eType="#//Field">
       <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="hasStaticField" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
       <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eOperations>
     <eOperations name="registerField">

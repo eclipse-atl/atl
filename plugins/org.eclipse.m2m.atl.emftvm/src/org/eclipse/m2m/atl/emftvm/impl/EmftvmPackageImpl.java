@@ -2550,6 +2550,15 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getExecEnv_JitDisabled() {
+		return (EAttribute)execEnvEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getExecEnv_MetaModels() {
 		return (EAttribute)execEnvEClass.getEStructuralFeatures().get(0);
 	}
@@ -2906,6 +2915,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		createEReference(execEnvEClass, EXEC_ENV__MATCHES);
 		createEReference(execEnvEClass, EXEC_ENV__TRACES);
 		createEAttribute(execEnvEClass, EXEC_ENV__UNIQUE_RESULTS);
+		createEAttribute(execEnvEClass, EXEC_ENV__JIT_DISABLED);
 
 		modelEClass = createEClass(MODEL);
 		createEAttribute(modelEClass, MODEL__RESOURCE);
@@ -3315,31 +3325,31 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(this.getMetamodel());
 		g1.getETypeArguments().add(g2);
-		initEAttribute(getExecEnv_MetaModels(), g1, "metaModels", "", 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExecEnv_MetaModels(), g1, "metaModels", "", 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(theEcorePackage.getEMap());
 		g2 = createEGenericType(theEcorePackage.getEString());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(this.getModel());
 		g1.getETypeArguments().add(g2);
-		initEAttribute(getExecEnv_InputModels(), g1, "inputModels", "", 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExecEnv_InputModels(), g1, "inputModels", "", 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(theEcorePackage.getEMap());
 		g2 = createEGenericType(theEcorePackage.getEString());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(this.getModel());
 		g1.getETypeArguments().add(g2);
-		initEAttribute(getExecEnv_InoutModels(), g1, "inoutModels", "", 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExecEnv_InoutModels(), g1, "inoutModels", "", 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(theEcorePackage.getEMap());
 		g2 = createEGenericType(theEcorePackage.getEString());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(this.getModel());
 		g1.getETypeArguments().add(g2);
-		initEAttribute(getExecEnv_OutputModels(), g1, "outputModels", "", 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExecEnv_OutputModels(), g1, "outputModels", "", 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(theEcorePackage.getEMap());
 		g2 = createEGenericType(theEcorePackage.getEString());
 		g1.getETypeArguments().add(g2);
 		g2 = createEGenericType(this.getModule());
 		g1.getETypeArguments().add(g2);
-		initEAttribute(getExecEnv_Modules(), g1, "modules", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExecEnv_Modules(), g1, "modules", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEReference(getExecEnv_Matches(), theTracePackage.getTraceLinkSet(), null, "matches", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEReference(getExecEnv_Traces(), theTracePackage.getTraceLinkSet(), null, "traces", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(theEcorePackage.getEMap());
@@ -3348,18 +3358,31 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		g2 = createEGenericType(ecorePackage.getEJavaObject());
 		g1.getETypeArguments().add(g2);
 		initEAttribute(getExecEnv_UniqueResults(), g1, "uniqueResults", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExecEnv_JitDisabled(), theEcorePackage.getEBoolean(), "jitDisabled", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		EOperation op = addEOperation(execEnvEClass, this.getModule(), "loadModule", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getModuleResolver(), "resolver", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = addEOperation(execEnvEClass, null, "registerFeature", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getFeature(), "feature", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		op = addEOperation(execEnvEClass, null, "registerRule", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getRule(), "rule", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = addEOperation(execEnvEClass, this.getOperation(), "findOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getEJavaObjectArray(), "parameterTypes", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(execEnvEClass, this.getOperation(), "findOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, this.getOperation(), "findOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEJavaObject(), "parameterType", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, theEcorePackage.getEBoolean(), "hasOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEInt(), "argcount", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, this.getOperation(), "findStaticOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getEJavaObjectArray(), "parameterTypes", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3367,14 +3390,28 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		op = addEOperation(execEnvEClass, this.getOperation(), "findStaticOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getEJavaObjectArray(), "parameterTypes", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, this.getOperation(), "findStaticOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEJavaObject(), "parameterType", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, theEcorePackage.getEBoolean(), "hasStaticOperation", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEInt(), "argcount", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(execEnvEClass, this.getField(), "findField", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		op = addEOperation(execEnvEClass, theEcorePackage.getEBoolean(), "hasField", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		op = addEOperation(execEnvEClass, this.getField(), "findStaticField", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, theEcorePackage.getEBoolean(), "hasStaticField", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(execEnvEClass, this.getRule(), "findRule", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3387,7 +3424,6 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		op = addEOperation(execEnvEClass, theEcorePackage.getEJavaObject(), "run", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getTimingData(), "timingData", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getVMMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(execEnvEClass, null, "getRules", 0, 1, IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(this.getLazyList());
@@ -3400,6 +3436,9 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		op = addEOperation(execEnvEClass, theEcorePackage.getEString(), "getModelID", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getModel(), "model", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, theEcorePackage.getEString(), "getMetaModelID", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getMetamodel(), "metamodel", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(execEnvEClass, null, "queueForDelete", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEObject(), "element", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3417,6 +3456,28 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		addEParameter(op, theEcorePackage.getEObject(), "object", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(execEnvEClass, this.getVMMonitor(), "getMonitor", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, null, "setMonitor", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getVMMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, null, "registerMetaModel", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getMetamodel(), "metamodel", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, null, "registerInputModel", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getModel(), "model", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, null, "registerInOutModel", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getModel(), "model", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, null, "registerOutputModel", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getModel(), "model", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, this.getMetamodel(), "getMetaModel", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEResource(), "resource", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getModel_Resource(), theEcorePackage.getEResource(), "resource", null, 1, 1, Model.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -3550,8 +3611,14 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		op = addEOperation(ruleEClass, theEcorePackage.getEBoolean(), "hasField", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		op = addEOperation(ruleEClass, this.getField(), "findStaticField", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, theEcorePackage.getEBoolean(), "hasStaticField", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(ruleEClass, null, "registerField", 0, 1, IS_UNIQUE, IS_ORDERED);

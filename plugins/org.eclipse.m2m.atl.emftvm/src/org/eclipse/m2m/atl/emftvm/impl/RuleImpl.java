@@ -1996,7 +1996,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
-	public Field findField(Object context, String name) {
+	public Field findField(final Object context, final String name) {
 		return fieldContainer.findField(context, name);
 	}
 
@@ -2004,9 +2004,29 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
-	public Field findStaticField(Object context, String name) {
+	public boolean hasField(final String name) {
+		return fieldContainer.hasField(name);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 */
+	public Field findStaticField(final Object context, final String name) {
 		return fieldContainer.findStaticField(context, name);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public boolean hasStaticField(final String name) {
+		return fieldContainer.hasStaticField(name);
 	}
 
 	/**

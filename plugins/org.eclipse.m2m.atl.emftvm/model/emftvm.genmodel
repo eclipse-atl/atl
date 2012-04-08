@@ -135,33 +135,60 @@
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//ExecEnv/matches"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//ExecEnv/traces"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/uniqueResults"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/jitDisabled"/>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/loadModule">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule/resolver"/>
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule/name"/>
-      </genOperations>
-      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/registerFeature">
-        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/registerFeature/feature"/>
-      </genOperations>
-      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/registerRule">
-        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/registerRule/rule"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findOperation">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation/context"/>
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation/name"/>
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation/parameterTypes"/>
       </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findOperation.1">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation.1/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation.1/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findOperation.2">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation.2/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation.2/name"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation.2/parameterType"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/hasOperation">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/hasOperation/name"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/hasOperation/argcount"/>
+      </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findStaticOperation">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticOperation/context"/>
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticOperation/name"/>
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticOperation/parameterTypes"/>
       </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findStaticOperation.1">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticOperation.1/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticOperation.1/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findStaticOperation.2">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticOperation.2/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticOperation.2/name"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticOperation.2/parameterType"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/hasStaticOperation">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/hasStaticOperation/name"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/hasStaticOperation/argcount"/>
+      </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findField">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findField/context"/>
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findField/name"/>
       </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/hasField">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/hasField/name"/>
+      </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findStaticField">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticField/context"/>
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findStaticField/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/hasStaticField">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/hasStaticField/name"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findRule">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findRule/name"/>
@@ -172,7 +199,6 @@
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/run">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/run/timingData"/>
-        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/run/monitor"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getRules"/>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getModelOf">
@@ -180,6 +206,9 @@
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getModelID">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/getModelID/model"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getMetaModelID">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/getMetaModelID/metamodel"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/queueForDelete">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForDelete/element"/>
@@ -196,6 +225,28 @@
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/getOutputModelOf/object"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getMonitor"/>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/setMonitor">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/setMonitor/monitor"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/registerMetaModel">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/registerMetaModel/name"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/registerMetaModel/metamodel"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/registerInputModel">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/registerInputModel/name"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/registerInputModel/model"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/registerInOutModel">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/registerInOutModel/name"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/registerInOutModel/model"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/registerOutputModel">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/registerOutputModel/name"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/registerOutputModel/model"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getMetaModel">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/getMetaModel/resource"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//Model">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Model/resource"/>
@@ -324,9 +375,15 @@
         <genParameters ecoreParameter="emftvm.ecore#//Rule/findField/context"/>
         <genParameters ecoreParameter="emftvm.ecore#//Rule/findField/name"/>
       </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/hasField">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/hasField/name"/>
+      </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/findStaticField">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/findStaticField/context"/>
         <genParameters ecoreParameter="emftvm.ecore#//Rule/findStaticField/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/hasStaticField">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/hasStaticField/name"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/registerField">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/registerField/field"/>

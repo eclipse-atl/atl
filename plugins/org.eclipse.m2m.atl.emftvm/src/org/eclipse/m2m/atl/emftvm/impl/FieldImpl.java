@@ -248,7 +248,7 @@ public class FieldImpl extends FeatureImpl implements Field {
 		if (!values.containsKey(context==null ? Void.TYPE : context)) {
 			checkFrame(context, frame);
 			final CodeBlock cb = getInitialiser();
-			setValue(context, cb.execute(frame.getSubFrame(cb, context, null)).pop());
+			setValue(context, cb.execute(frame.getSubFrame(cb, context)).pop());
 		}
 		return getValue(context);
 	}
@@ -282,7 +282,7 @@ public class FieldImpl extends FeatureImpl implements Field {
 		if (!staticValueInitialised) {
 			checkStaticFrame(frame);
 			final CodeBlock cb = getInitialiser();
-			setStaticValue(cb.execute(frame.getSubFrame(cb, null)).pop());
+			setStaticValue(cb.execute(new StackFrame(frame, cb)).pop());
 			staticValueInitialised = true;
 		}
 		return getStaticValue();

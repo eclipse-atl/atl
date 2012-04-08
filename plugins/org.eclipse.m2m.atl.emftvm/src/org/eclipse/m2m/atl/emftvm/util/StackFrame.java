@@ -12,11 +12,9 @@
 package org.eclipse.m2m.atl.emftvm.util;
 
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.LineNumber;
@@ -35,6 +33,7 @@ public final class StackFrame {
 	private final StackFrame parent;
 	private final CodeBlock codeBlock;
 	private final Method nativeMethod;
+	private String opName;
 	private final Object[] locals;
 	private final Object[] stack;
 	private int sp = -1;
@@ -84,6 +83,21 @@ public final class StackFrame {
 	}
 
 	/**
+	 * Creates a new {@link StackFrame}.
+	 * @param parent the parent stack frame, if any
+	 * @param opName the operation name for the debugger
+	 */
+	public StackFrame(final StackFrame parent, final String opName) {
+		this.env = parent.env;
+		this.parent = parent;
+		this.codeBlock = null;
+		this.nativeMethod = null;
+		this.locals = EMPTY;
+		this.stack = EMPTY;
+		this.opName = opName;
+	}
+
+	/**
 	 * Pushes <pre>value</pre> onto the stack.
 	 * @param value the value to push
 	 */
@@ -104,6 +118,30 @@ public final class StackFrame {
 	 */
 	public void popv() {
 		sp--;
+	}
+
+	/**
+	 * Pops <code>n</code> elements off the stack.
+	 * @param n the number of elements to pop
+	 * @return the top <code>n</code> element of the stack.
+	 */
+	public Object[] pop(final int n) {
+		final Object[] result = new Object[n];
+		sp -= n;
+		System.arraycopy(stack, sp+1, result, 0, n);
+		return result;
+	}
+
+	/**
+	 * Pops <code>n</code> elements off the stack.
+	 * @param n the number of elements to pop
+	 * @param result the target array
+	 * @return the top <code>n</code> element of the stack, in <code>result</code>.
+	 */
+	public <T> T[] pop(final int n, T[] result) {
+		sp -= n;
+		System.arraycopy(stack, sp+1, result, 0, n);
+		return result;
 	}
 
 	/**
@@ -153,11 +191,11 @@ public final class StackFrame {
 
 	/**
 	 * Sets local variable with given <pre>slot</pre> to <pre>value</pre>.
+	 * @param value the value to set
 	 * @param cbOffset the codeblock offset
 	 * @param slot the variable slot
-	 * @param value the value to set
 	 */
-	public void setLocal(final int cbOffset, final int slot, final Object value) {
+	public void setLocal(final Object value, final int cbOffset, final int slot) {
 		if (cbOffset > 0) {
 			try {
 				final CodeBlock cb = getCodeBlock(cbOffset);
@@ -171,6 +209,15 @@ public final class StackFrame {
 		} else {
 			locals[slot] = value;
 		}
+	}
+
+	/**
+	 * Sets local variable with given <pre>slot</pre> to <pre>value</pre>.
+	 * @param value the value to set
+	 * @param slot the variable slot
+	 */
+	public void setLocal(final Object value, final int slot) {
+		locals[slot] = value;
 	}
 
 	/**
@@ -213,6 +260,15 @@ public final class StackFrame {
 	}
 
 	/**
+	 * Returns the local variable value with the given slot.
+	 * @param slot the local variable slot
+	 * @return the local variable value with the given slot.
+	 */
+	public Object getLocal(final int slot) {
+		return locals[slot];
+	}
+
+	/**
 	 * Loads local variable with given cbOffset and slot onto the stack.
 	 * @param cbOffset code block offset
 	 * @param slot the local variable slot
@@ -227,7 +283,7 @@ public final class StackFrame {
 	 * @param slot the local variable slot
 	 */
 	public void store(final int cbOffset, final int slot) {
-		setLocal(cbOffset, slot, stack[sp--]);
+		setLocal(stack[sp--], cbOffset, slot);
 	}
 
 	/**
@@ -310,16 +366,9 @@ public final class StackFrame {
 	@Override
 	public String toString() {
 		final CodeBlock cb = getCodeBlock();
-		final Method m = getNativeMethod();
 		final int loc = getLocation();
 		final StringBuffer sb = new StringBuffer("at ");
-		if (cb != null) {
-			sb.append(cb);
-		} else if (m != null) {
-			sb.append(m);
-		} else {
-			sb.append(super.toString());
-		}
+		sb.append(getOpName());
 		if (loc > -1) {
 			sb.append('#');
 			sb.append(loc);
@@ -403,9 +452,7 @@ public final class StackFrame {
 	 */
 	public StackFrame getSubFrame(final CodeBlock cb, final Object[] args) {
 		final StackFrame frame = new StackFrame(this, cb);
-		if (args != null) {
-			frame.setLocals(args);
-		}
+		frame.setLocals(args);
 		return frame;
 	}
 
@@ -418,11 +465,33 @@ public final class StackFrame {
 	 */
 	public StackFrame getSubFrame(final CodeBlock cb, final Object context, final Object[] args) {
 		final StackFrame frame = new StackFrame(this, cb);
-		if (args != null) {
-			frame.setLocals(context, args);
-		} else {
-			frame.setLocal(0, 0, context);
-		}
+		frame.setLocals(context, args);
+		return frame;
+	}
+
+	/**
+	 * Retrieves a new stack frame that is a sub-frame of <code>this</code>.
+	 * @param cb the code block of the sub-frame
+	 * @param context the <code>self</code> argument to pass into the sub-frame
+	 * @return a new stack frame
+	 */
+	public StackFrame getSubFrame(final CodeBlock cb, final Object context) {
+		final StackFrame frame = new StackFrame(this, cb);
+		frame.locals[0] = context;
+		return frame;
+	}
+
+	/**
+	 * Retrieves a new stack frame that is a sub-frame of <code>this</code>.
+	 * @param cb the code block of the sub-frame
+	 * @param context the <code>self</code> argument to pass into the sub-frame
+	 * @param arg the other argument to pass into the sub-frame
+	 * @return a new stack frame
+	 */
+	public StackFrame getSubFrame(final CodeBlock cb, final Object context, final Object arg) {
+		final StackFrame frame = new StackFrame(this, cb);
+		frame.locals[0] = context;
+		frame.locals[1] = arg;
 		return frame;
 	}
 
@@ -445,7 +514,7 @@ public final class StackFrame {
 				}
 				((CodeBlock)arg).setParentFrame(subFrame);
 			} else if (arg instanceof EnumLiteral) {
-				args[i] = convertEnumLiteral((EnumLiteral)arg, method.getParameterTypes()[i]);
+				args[i] = EMFTVMUtil.convertEnumLiteral((EnumLiteral)arg, method.getParameterTypes()[i]);
 			}
 		}
 		return subFrame;
@@ -464,9 +533,7 @@ public final class StackFrame {
 	public StackFrame prepareNativeArgs(final Method method, final Object context, final Object[] args) {
 		StackFrame subFrame = null;
 		if (context instanceof CodeBlock) {
-			if (subFrame == null) {
-				subFrame = new StackFrame(this, method);
-			}
+			subFrame = new StackFrame(this, method);
 			((CodeBlock)context).setParentFrame(subFrame);
 		} // context can never be an enumeration literal
 		for (int i = 0; i < args.length; i++) {
@@ -477,46 +544,27 @@ public final class StackFrame {
 				}
 				((CodeBlock)arg).setParentFrame(subFrame);
 			} else if (arg instanceof EnumLiteral) {
-				args[i] = convertEnumLiteral((EnumLiteral)arg, method.getParameterTypes()[i]);
+				args[i] = EMFTVMUtil.convertEnumLiteral((EnumLiteral)arg, method.getParameterTypes()[i]);
 			}
 		}
 		return subFrame;
 	}
 
 	/**
-	 * Tries to convert literal to an instance of type.
-	 * @param literal the enum literal to convert
-	 * @param type the type to instantiate
-	 * @return an instance of type, or literal if conversion failed
+	 * Prepares <code>context</code> instances of {@link CodeBlock}
+	 * by setting their parent frame (for VM re-entry).
+	 * Creates a sub-frame only when necessary for VM re-entry.
+	 * @param method the native method to be invoked
+	 * @param context the method context (i.e. self)
+	 * @return the sub-frame, if necessary
 	 */
-	private static Object convertEnumLiteral(final EnumLiteral literal, final Class<?> type) {
-		if (Enumerator.class.isAssignableFrom(type)) {
-			try {
-				final String litName = literal.getName();
-				final java.lang.reflect.Field valuesField = type.getDeclaredField("VALUES");
-				final Object values = valuesField.get(null);
-				if (values instanceof Collection<?>) {
-					for (Object value : (Collection<?>)values) {
-						if (value instanceof Enumerator) {
-							if (litName.equals(((Enumerator)value).getName()) ||
-								litName.equals(value.toString())) {
-								return value;
-							}
-						}
-					}
-				}
-			// Ignore exceptions; just don't convert here
-			} catch (SecurityException e) {
-				// do nothing
-			} catch (NoSuchFieldException e) {
-				// do nothing
-			} catch (IllegalArgumentException e) {
-				// do nothing
-			} catch (IllegalAccessException e) {
-				// do nothing
-			}
-		}
-		return literal;
+	public StackFrame prepareNativeContext(final Method method, final Object context) {
+		StackFrame subFrame = null;
+		if (context instanceof CodeBlock) {
+			subFrame = new StackFrame(this, method);
+			((CodeBlock)context).setParentFrame(subFrame);
+		} // context can never be an enumeration literal
+		return subFrame;
 	}
 
 	/**
@@ -623,15 +671,20 @@ public final class StackFrame {
 	 * @return the "operation" name for this stack frame
 	 */
 	public String getOpName() {
-		final CodeBlock cb = getCodeBlock();
-		if (cb != null) {
-			return cb.toString();
+		if (opName == null) {
+			final CodeBlock cb = getCodeBlock();
+			if (cb != null) {
+				opName = cb.toString();
+			} else {
+				final Method m = getNativeMethod();
+				if (m != null) {
+					opName = m.toString();
+				} else {
+					opName = "<unknown>";
+				}
+			}
 		}
-		final Method m = getNativeMethod();
-		if (m != null) {
-			return m.toString();
-		}
-		return "<unknown>";
+		return opName;
 	}
 
 }

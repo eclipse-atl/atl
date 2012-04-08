@@ -12,6 +12,8 @@
 package org.eclipse.m2m.atl.emftvm.impl;
 
 
+import java.lang.reflect.Method;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -51,6 +53,8 @@ public abstract class InvokeOperationInstructionImpl extends InvokeInstructionIm
 	 * @ordered
 	 */
 	protected String opname = OPNAME_EDEFAULT;
+
+	private Method nativeMethod;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -175,6 +179,20 @@ public abstract class InvokeOperationInstructionImpl extends InvokeInstructionIm
 		result.append(opname);
 		result.append(')');
 		return result.toString();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Method getNativeMethod() {
+		return nativeMethod;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setNativeMethod(final Method method) {
+		this.nativeMethod = method;
 	}
 
 } //InvokeOperationInstructionImpl

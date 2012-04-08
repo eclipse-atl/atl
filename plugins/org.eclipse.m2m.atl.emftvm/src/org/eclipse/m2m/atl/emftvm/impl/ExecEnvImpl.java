@@ -59,6 +59,7 @@ import org.eclipse.m2m.atl.emftvm.Parameter;
 import org.eclipse.m2m.atl.emftvm.Rule;
 import org.eclipse.m2m.atl.emftvm.RuleElement;
 import org.eclipse.m2m.atl.emftvm.RuleMode;
+import org.eclipse.m2m.atl.emftvm.jit.CodeBlockJIT;
 import org.eclipse.m2m.atl.emftvm.trace.TraceFactory;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
@@ -97,6 +98,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getMatches <em>Matches</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getTraces <em>Traces</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getUniqueResults <em>Unique Results</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#isJitDisabled <em>Jit Disabled</em>}</li>
  * </ul>
  * </p>
  *
@@ -233,15 +235,65 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	protected Map<TraceLink, Object> uniqueResults;
 
 	/**
+	 * The default value of the '{@link #isJitDisabled() <em>Jit Disabled</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isJitDisabled()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean JIT_DISABLED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isJitDisabled() <em>Jit Disabled</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isJitDisabled()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean jitDisabled = JIT_DISABLED_EDEFAULT;
+
+	/**
+	 * The internal value of the '{@link #getMetaModels() <em>Meta Models</em>}' attribute.
+	 */
+	protected final Map<String, Metamodel> internalMetaModels = 
+			Collections.synchronizedMap(new HashMap<String, Metamodel>());
+
+	/**
+	 * The internal value of the '{@link #getInputModels() <em>Input Models</em>}' attribute.
+	 */
+	protected final Map<String, Model> internalInputModels =
+			Collections.synchronizedMap(new HashMap<String, Model>());
+
+	/**
+	 * The internal value of the '{@link #getInoutModels() <em>Inout Models</em>}' attribute.
+	 */
+	protected final Map<String, Model> internalInoutModels =
+			Collections.synchronizedMap(new HashMap<String, Model>());
+
+	/**
+	 * The internal value of the '{@link #getOutputModels() <em>Output Models</em>}' attribute.
+	 */
+	protected final Map<String, Model> internalOutputModels =
+			Collections.synchronizedMap(new HashMap<String, Model>());
+
+	/**
+	 * The internal value of the '{@link #getModules() <em>Modules</em>}' attribute.
+	 */
+	protected final Map<String, Module> internalModules =
+			Collections.synchronizedMap(new LinkedHashMap<String, Module>());
+
+	/**
 	 * Set of modules that have effectively been loaded.
 	 * Intended for keeping track of cyclic imports.
 	 */
-	protected Set<String> loadedModules = new HashSet<String>();
+	protected final Set<String> loadedModules = new HashSet<String>();
 	
 	/**
 	 * The chain of '<code>main()</code>' operations to be executed after the automatic rules.
 	 */
-	protected EList<Operation> mainChain = new BasicEList<Operation>();
+	protected final EList<Operation> mainChain = new BasicEList<Operation>();
 
 	/**
 	 * Field storage and lookup. 
@@ -269,32 +321,42 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	/**
 	 * Lookup table for rules: (name -> rule).
 	 */
-	protected Map<String, Rule> rules = new LinkedHashMap<String, Rule>();
+	protected final Map<String, Rule> rules = new LinkedHashMap<String, Rule>();
 
 	/**
 	 * Lookup table of (resource -> model).
 	 */
-	protected Map<Resource, Model> modelOf = new HashMap<Resource, Model>();
+	protected final Map<Resource, Model> modelOf = new HashMap<Resource, Model>();
 
 	/**
 	 * Lookup table of (resource -> model).
 	 */
-	protected Map<Resource, Model> inputModelOf = new HashMap<Resource, Model>();
+	protected final Map<Resource, Model> inputModelOf = new HashMap<Resource, Model>();
 
 	/**
 	 * Lookup table of (resource -> model).
 	 */
-	protected Map<Resource, Model> inoutModelOf = new HashMap<Resource, Model>();
+	protected final Map<Resource, Model> inoutModelOf = new HashMap<Resource, Model>();
 
 	/**
 	 * Lookup table of (resource -> model).
 	 */
-	protected Map<Resource, Model> outputModelOf = new HashMap<Resource, Model>();
+	protected final Map<Resource, Model> outputModelOf = new HashMap<Resource, Model>();
+
+	/**
+	 * Lookup table of (resource -> metamodel).
+	 */
+	protected final Map<Resource, Metamodel> metaModelOf = new HashMap<Resource, Metamodel>();
 
 	/**
 	 * Lookup table of (model -> ID).
 	 */
-	protected Map<Model, String> modelId = new HashMap<Model, String>();
+	protected final Map<Model, String> modelId = new HashMap<Model, String>();
+
+	/**
+	 * Lookup table of (metamodel -> ID).
+	 */
+	protected final Map<Metamodel, String> metaModelId = new HashMap<Metamodel, String>();
 
 	/**
 	 * Model cache initialised?
@@ -312,6 +374,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	protected final Queue<DeletionEntry> deletionQueue = new LinkedList<DeletionEntry>();
 
+	private CodeBlockJIT cbJit;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * Creates a new {@link ExecEnvImpl}.
@@ -319,10 +383,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	protected ExecEnvImpl() {
 		super();
-		final Map<String, Metamodel> mms = getMetaModels();
-		mms.put(EcorePackage.eNAME.toUpperCase(), EMFTVMUtil.getEcoreMetamodel());
-		mms.put(EmftvmPackage.eNAME.toUpperCase(), EMFTVMUtil.getEmfTvmMetamodel());
-		mms.put(TracePackage.eNAME.toUpperCase(), EMFTVMUtil.getTraceMetamodel());
+		registerMetaModel(EcorePackage.eNAME.toUpperCase(), EMFTVMUtil.getEcoreMetamodel());
+		registerMetaModel(EmftvmPackage.eNAME.toUpperCase(), EMFTVMUtil.getEmfTvmMetamodel());
+		registerMetaModel(TracePackage.eNAME.toUpperCase(), EMFTVMUtil.getTraceMetamodel());
 		createField("matches", true, Types.EXEC_ENV_TYPE, Types.TRACE_LINK_SET_TYPE, new NativeCodeBlock() {
 			@Override
 			public StackFrame execute(final StackFrame frame) {
@@ -379,7 +442,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	public Map<String, Module> getModules() {
 		if (modules == null) {
-			modules = Collections.synchronizedMap(new LinkedHashMap<String, Module>());
+			modules = Collections.unmodifiableMap(internalModules);
 		}
 		return modules;
 	}
@@ -392,7 +455,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	public TraceLinkSet getMatches() {
 		if (matches == null) {
-			return basicGetMatches();
+			basicGetMatches();
 		}
 		if (matches != null && matches.eIsProxy()) {
 			InternalEObject oldMatches = (InternalEObject)matches;
@@ -433,7 +496,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	public TraceLinkSet getTraces() {
 		if (traces == null) {
-			return basicGetTraces();
+			basicGetTraces();
 		}
 		if (traces != null && traces.eIsProxy()) {
 			InternalEObject oldTraces = (InternalEObject)traces;
@@ -480,6 +543,27 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isJitDisabled() {
+		return jitDisabled;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setJitDisabled(boolean newJitDisabled) {
+		boolean oldJitDisabled = jitDisabled;
+		jitDisabled = newJitDisabled;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.EXEC_ENV__JIT_DISABLED, oldJitDisabled, jitDisabled));
+	}
+
+	/**
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
@@ -495,9 +579,78 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	public synchronized void setMonitor(final VMMonitor monitor) {
+		resetJITCompiler();
+		this.monitor = monitor;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public synchronized void registerMetaModel(final String name, final Metamodel metamodel) {
+		clearModelCaches();
+		resetJITCompiler();
+		internalMetaModels.put(name, metamodel);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public synchronized void registerInputModel(final String name, final Model model) {
+		clearModelCaches();
+		internalInputModels.put(name, model);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public synchronized void registerInOutModel(final String name, final Model model) {
+		clearModelCaches();
+		internalInoutModels.put(name, model);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public synchronized void registerOutputModel(final String name, final Model model) {
+		clearModelCaches();
+		internalOutputModels.put(name, model);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Metamodel getMetaModel(final Resource resource) {
+		if (!modelCacheInit) {
+			cacheModels();
+		}
+		return (resource == null) ? null : metaModelOf.get(resource);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
 	public Map<String, Metamodel> getMetaModels() {
 		if (metaModels == null) {
-			metaModels = Collections.synchronizedMap(new HashMap<String, Metamodel>());
+			metaModels = Collections.unmodifiableMap(internalMetaModels);
 		}
 		return metaModels;
 	}
@@ -510,7 +663,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	public Map<String, Model> getInputModels() {
 		if (inputModels == null) {
-			inputModels = Collections.synchronizedMap(new HashMap<String, Model>());
+			inputModels = Collections.unmodifiableMap(internalInputModels);
 		}
 		return inputModels;
 	}
@@ -523,7 +676,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	public Map<String, Model> getInoutModels() {
 		if (inoutModels == null) {
-			inoutModels = Collections.synchronizedMap(new HashMap<String, Model>());
+			inoutModels = Collections.unmodifiableMap(internalInoutModels);
 		}
 		return inoutModels;
 	}
@@ -536,7 +689,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	public Map<String, Model> getOutputModels() {
 		if (outputModels == null) {
-			outputModels = Collections.synchronizedMap(new HashMap<String, Model>());
+			outputModels = Collections.unmodifiableMap(internalOutputModels);
 		}
 		return outputModels;
 	}
@@ -548,16 +701,16 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public synchronized Module loadModule(final ModuleResolver resolver, final String name) {
+		resetJITCompiler();
 		try {
-			final Map<String, Module> modules = getModules();
 			//detect cyclic imports w.r.t. redefinition
-			if (modules.containsKey(name)) {
+			if (internalModules.containsKey(name)) {
 				if (!loadedModules.contains(name)) {
 					ATLLogger.warning(String.format(
 							"Cyclic import of module %s detected; element redefinition will not work",
 							name));
 				}
-				return modules.get(name);
+				return internalModules.get(name);
 			}
 			final Module module = resolver.resolveModule(name);
 			if (module.eResource() != null) { // skip built-in native modules
@@ -569,7 +722,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 					throw new CoreException(results);
 				}
 			}
-			modules.put(name, module);
+			internalModules.put(name, module);
 			resolveImports(module, resolver);
 			for (Feature f : module.getFeatures()) {
 				registerFeature(f);
@@ -604,12 +757,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
-	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * Registers a {@link Feature} into this {@link ExecEnv}.
+	 * @param feature the {@link Feature} to register
 	 */
-	public synchronized void registerFeature(final Feature feature) {
+	protected void registerFeature(final Feature feature) {
 		feature.setEContext(findEClassifier(feature.getContextModel(), feature.getContext()));
 		feature.setEType(findEClassifier(feature.getTypeModel(), feature.getType()));
 		switch (feature.eClass().getClassifierID()) {
@@ -786,12 +937,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
-	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * Registers a {@link Rule} into this {@link ExecEnv}.
+	 * @param rule the {@link Rule} to register
 	 */
-	public synchronized void registerRule(final Rule r) {
+	protected void registerRule(final Rule r) {
 		//TODO check rule redefinition consistency? (types, mapsTo, ...)
 		final String rName = r.getName();
 		if (rules.containsKey(rName)) {
@@ -901,56 +1050,139 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			
 			if (ctxMap != null) {
 				// There are operations with argCount arguments
-				if (argCount == 0) {
-
-					// First try to find with direct type
-					op = (Operation)ctxMap.get(context);
-					// Fall back to full resolving algorithm
-					if (op == null) {
-						final Object ctxKey = ctxMap.findKey(context);
-						if (ctxKey != null) {
-							// There is an operation with the given context type
-							op = (Operation)ctxMap.get(ctxKey);
-							assert op != null;
-							// Now register directly under context type
-							ctxMap.put(context, op);
-						}
+				// First try to find with direct types
+				TypeMap<Object, Object> argMap = (TypeMap<Object, Object>)ctxMap.get(context);
+				if (argMap != null) {
+					op = findOperationDirect(argMap, parameterTypes, 0);
+				}
+				// Fall back to full resolving algorithm
+				if (op == null) {
+					final Set<Object> ctxKeys = new HashSet<Object>();
+					ctxMap.findAllKeys(context, ctxKeys);
+					final Set<Operation> ops = new LinkedHashSet<Operation>();
+					for (Object ctxKey : ctxKeys) {
+						// There are operations defined on the given context type
+						argMap = (TypeMap<Object, Object>)ctxMap.get(ctxKey);
+						findOperations(argMap, parameterTypes, ops, 0);
 					}
-
-				} else { //argCount > 0
-					
-					// First try to find with direct types
-					TypeMap<Object, Object> argMap = (TypeMap<Object, Object>)ctxMap.get(context);
-					if (argMap != null) {
-						op = findOperationDirect(argMap, parameterTypes, 0);
-					}
-					// Fall back to full resolving algorithm
-					if (op == null) {
-						final Set<Object> ctxKeys = new HashSet<Object>();
-						ctxMap.findAllKeys(context, ctxKeys);
-						final Set<Operation> ops = new LinkedHashSet<Operation>();
-						for (Object ctxKey : ctxKeys) {
-							// There are operations defined on the given context type
-							argMap = (TypeMap<Object, Object>)ctxMap.get(ctxKey);
-							findOperations(argMap, parameterTypes, ops, 0);
+					op = findMostSpecificOperation(ops);
+					if (op != null) {
+						// Now register directly under context type
+						argMap = (TypeMap<Object, Object>)ctxMap.get(context);
+						if (argMap == null) {
+							argMap = new TypeHashMap<Object, Object>();
+							ctxMap.put(context, argMap);
 						}
-						op = findMostSpecificOperation(ops);
-						if (op != null) {
-							// Now register directly under context type
-							argMap = (TypeMap<Object, Object>)ctxMap.get(context);
-							if (argMap == null) {
-								argMap = new TypeHashMap<Object, Object>();
-								ctxMap.put(context, argMap);
-							}
-							registerOperationByArgTypes(op, argMap, parameterTypes, 0);
-						}
+						registerOperationByArgTypes(op, argMap, parameterTypes, 0);
 					}
-
 				}
 			}
 		}
 		
 		return op;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Operation findOperation(Object context, String name) {
+		Operation op = null;
+		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = operations.get(name);
+
+		if (argcountOpsMap != null) {
+			// There are operations with the given name
+			final TypeMap<Object, Object> ctxMap = argcountOpsMap.get(0);
+			
+			if (ctxMap != null) {
+				// There are operations with 0 arguments
+				// First try to find with direct type
+				op = (Operation)ctxMap.get(context);
+				// Fall back to full resolving algorithm
+				if (op == null) {
+					final Object ctxKey = ctxMap.findKey(context);
+					if (ctxKey != null) {
+						// There is an operation with the given context type
+						op = (Operation)ctxMap.get(ctxKey);
+						assert op != null;
+						// Now register directly under context type
+						ctxMap.put(context, op);
+					}
+				}
+			}
+		}
+		
+		return op;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@SuppressWarnings("unchecked")
+	public Operation findOperation(Object context, String name, Object parameterType) {
+		Operation op = null;
+		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = operations.get(name);
+
+		if (argcountOpsMap != null) {
+			// There are operations with the given name
+			final TypeMap<Object, Object> ctxMap = argcountOpsMap.get(1);
+			
+			if (ctxMap != null) {
+				// There are operations with 1 argument
+				// First try to find with direct types
+				TypeMap<Object, Object> argMap = (TypeMap<Object, Object>)ctxMap.get(context);
+				if (argMap != null) {
+					op = (Operation)argMap.get(parameterType);
+				}
+				// Fall back to full resolving algorithm
+				if (op == null) {
+					final Set<Object> ctxKeys = new HashSet<Object>();
+					ctxMap.findAllKeys(context, ctxKeys);
+					final Set<Operation> ops = new LinkedHashSet<Operation>();
+					for (Object ctxKey : ctxKeys) {
+						// There are operations defined on the given context type
+						argMap = (TypeMap<Object, Object>)ctxMap.get(ctxKey);
+						final Set<Object> argTypeKeys = new HashSet<Object>();
+						argMap.findAllKeys(parameterType, argTypeKeys);
+						for (Object argTypeKey : argTypeKeys) {
+							// There are operations defined on all given parameter types
+							ops.add((Operation)argMap.get(argTypeKey));
+						}
+					}
+					op = findMostSpecificOperation(ops);
+					if (op != null) {
+						// Now register directly under context type
+						argMap = (TypeMap<Object, Object>)ctxMap.get(context);
+						if (argMap == null) {
+							argMap = new TypeHashMap<Object, Object>();
+							ctxMap.put(context, argMap);
+						}
+						argMap.put(parameterType, op);
+					}
+				}
+			}
+		}
+		
+		return op;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public boolean hasOperation(String name, int argcount) {
+		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = operations.get(name);
+		if (argcountOpsMap != null) { // There are operations with the given name
+			return argcountOpsMap.get(argcount) != null;
+		}
+		return false;
 	}
 
 	/**
@@ -971,35 +1203,113 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			
 			if (ctxMap != null) {
 				// There are operations with argCount arguments
-				if (argCount == 0) {
-
-					// Static operations must be defined in exact context type
-					op = (Operation)ctxMap.get(context);
-
-				} else { //argCount > 0
-					
-					// Static operations must be defined in exact context type
-					TypeMap<Object, Object> argMap = (TypeMap<Object, Object>)ctxMap.get(context);
-					if (argMap != null) {
-						// First try to find with direct types
-						op = findOperationDirect(argMap, parameterTypes, 0);
-						// Fall back to full resolving algorithm
-						if (op == null) {
-							final Set<Operation> ops = new LinkedHashSet<Operation>();
-							findOperations(argMap, parameterTypes, ops, 0);
-							op = findMostSpecificOperation(ops);
-							if (op != null) {
-								// Now register directly under context type
-								registerOperationByArgTypes(op, argMap, parameterTypes, 0);
-							}
+				// Static operations must be defined in exact context type
+				TypeMap<Object, Object> argMap = (TypeMap<Object, Object>)ctxMap.get(context);
+				if (argMap != null) {
+					// First try to find with direct types
+					op = findOperationDirect(argMap, parameterTypes, 0);
+					// Fall back to full resolving algorithm
+					if (op == null) {
+						final Set<Operation> ops = new LinkedHashSet<Operation>();
+						findOperations(argMap, parameterTypes, ops, 0);
+						op = findMostSpecificOperation(ops);
+						if (op != null) {
+							// Now register directly under context type
+							registerOperationByArgTypes(op, argMap, parameterTypes, 0);
 						}
 					}
-
 				}
 			}
 		}
 		
 		return op;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Operation findStaticOperation(Object context, String name) {
+		Operation op = null;
+		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = staticOperations.get(name);
+
+		if (argcountOpsMap != null) {
+			// There are operations with the given name
+			final TypeMap<Object, Object> ctxMap = argcountOpsMap.get(0);
+			
+			if (ctxMap != null) {
+				// There are operations with 0 arguments
+				// Static operations must be defined in exact context type
+				op = (Operation)ctxMap.get(context);
+			}
+		}
+		
+		return op;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@SuppressWarnings("unchecked")
+	public Operation findStaticOperation(Object context, String name, Object parameterType) {
+		Operation op = null;
+		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = staticOperations.get(name);
+
+		if (argcountOpsMap != null) {
+			// There are operations with the given name
+			final TypeMap<Object, Object> ctxMap = argcountOpsMap.get(1);
+			
+			if (ctxMap != null) {
+				// There are operations with 1 argument
+				// Static operations must be defined in exact context type
+				TypeMap<Object, Object> argMap = (TypeMap<Object, Object>)ctxMap.get(context);
+				if (argMap != null) {
+					// First try to find with direct types
+					op = (Operation)argMap.get(parameterType);
+					// Fall back to full resolving algorithm
+					if (op == null) {
+						final Set<Operation> ops = new LinkedHashSet<Operation>();
+						final Set<Object> argTypeKeys = new HashSet<Object>();
+						argMap.findAllKeys(parameterType, argTypeKeys);
+						for (Object argTypeKey : argTypeKeys) {
+							// There are operations defined on all given parameter types
+							ops.add((Operation)argMap.get(argTypeKey));
+						}
+						op = findMostSpecificOperation(ops);
+						if (op != null) {
+							// Now register directly under context type
+							argMap = (TypeMap<Object, Object>)ctxMap.get(context);
+							if (argMap == null) {
+								argMap = new TypeHashMap<Object, Object>();
+								ctxMap.put(context, argMap);
+							}
+							argMap.put(parameterType, op);
+						}
+					}
+				}
+			}
+		}
+		
+		return op;
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public boolean hasStaticOperation(String name, int argcount) {
+		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = staticOperations.get(name);
+		if (argcountOpsMap != null) { // There are operations with the given name
+			return argcountOpsMap.get(argcount) != null;
+		}
+		return false;
 	}
 
 	/**
@@ -1105,8 +1415,28 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	public boolean hasField(final String name) {
+		return fieldContainer.hasField(name);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
 	public Field findStaticField(Object context, String name) {
 		return fieldContainer.findStaticField(context, name);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public boolean hasStaticField(final String name) {
+		return fieldContainer.hasStaticField(name);
 	}
 
 	/**
@@ -1138,42 +1468,18 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * Finds the {@link EClassifier} for the given (meta-)<pre>modelName</pre> and <pre>typeName</pre>.
-	 * @param modelName the name under which the metamodel that contains the type is registered
-	 * @param typeName the type/metaclass name (may be fully qualified using '<pre>::</pre>')
-	 * @return the type/metaclass, or <code>null</code> if not found
-	 */
-	private EClassifier findEClassifier(String modelName, String typeName) {
-		try {
-			final Object type = findType(modelName, typeName);
-			if (type instanceof Class<?>) {
-				// Wrap Java class
-				final EDataType dt = EcoreFactory.eINSTANCE.createEDataType();
-				dt.setName(typeName);
-				dt.setInstanceClass((Class<?>)type);
-				return dt;
-			} else {
-				return (EClassifier)type;
-			}
-		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
-
-	/**
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public synchronized Object run(final TimingData timingData, VMMonitor monitor) {
-		this.monitor = monitor;
+	public synchronized Object run(final TimingData timingData) {
 		Object result = null;
 		try {
 			assert deletionQueue.isEmpty();
-			clearModelCaches(); // clear model cache to make sure model maps are up to date
-			for (Rule rule : getRules()) {
-				rule.compileState(this); // compile internal state for all registered rules
+			//TODO re-think rule state to allow pre-calculation
+			for (Rule r : getRules()) {
+				r.compileState(this); // compile internal state for all registered rules
 			}
 			final Iterator<Operation> mains = mainChain.iterator();
 			if (!mains.hasNext()) {
@@ -1201,15 +1507,15 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			}
 			throw e;
 		} finally {
-			this.monitor = null;
+			//TODO re-think rule state to allow pre-calculation
+			for (Rule r : getRules()) {
+				r.resetState();
+			}
 			this.matches = null;
 			this.traces = null;
 			this.uniqueResults = null;
 			findStaticField(eClass(), "matches").clear();
 			findStaticField(eClass(), "traces").clear();
-			for (Rule rule : getRules()) {
-				rule.resetState(); // reset internal state for all registered rules
-			}
 			assert findStaticField(eClass(), "matches").getStaticValue() == null;
 			assert findStaticField(eClass(), "traces").getStaticValue() == null;
 		}
@@ -1217,9 +1523,33 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
+	 * Finds the {@link EClassifier} for the given (meta-)<pre>modelName</pre> and <pre>typeName</pre>.
+	 * @param modelName the name under which the metamodel that contains the type is registered
+	 * @param typeName the type/metaclass name (may be fully qualified using '<pre>::</pre>')
+	 * @return the type/metaclass, or <code>null</code> if not found
+	 */
+	private EClassifier findEClassifier(String modelName, String typeName) {
+		try {
+			final Object type = findType(modelName, typeName);
+			if (type instanceof Class<?>) {
+				// Wrap Java class
+				final EDataType dt = EcoreFactory.eINSTANCE.createEDataType();
+				dt.setName(typeName);
+				dt.setInstanceClass((Class<?>)type);
+				return dt;
+			} else {
+				return (EClassifier)type;
+			}
+		} catch (ClassNotFoundException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	/**
 	 * Caches run-time models in various lookup tables.
 	 */
 	protected synchronized void cacheModels() {
+		cacheMetaModels(getMetaModels(), metaModelOf);
 		cacheModels(getInputModels(), inputModelOf);
 		cacheModels(getOutputModels(), outputModelOf);
 		cacheModels(getInoutModels(), inoutModelOf);
@@ -1231,10 +1561,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * Clears the model caches.
 	 */
 	protected synchronized void clearModelCaches() {
+		metaModelOf.clear();
 		modelOf.clear();
 		inputModelOf.clear();
 		inoutModelOf.clear();
 		outputModelOf.clear();
+		metaModelId.clear();
 		modelId.clear();
 		modelCacheInit = false;
 	}
@@ -1253,6 +1585,22 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				thisModelOf.put(model.getResource(), model);
 			}
 			modelId.put(model, id);
+		}
+	}
+
+	/**
+	 * Caches <code>models</code> in various lookup tables.
+	 * @param models
+	 * @param thisModelOf local resource to model map
+	 */
+	private void cacheMetaModels(final Map<String, ? extends Metamodel> models, final Map<Resource, Metamodel> thisModelOf) {
+		for (Entry<String, ? extends Metamodel> entry : models.entrySet()) {
+			String id = entry.getKey();
+			Metamodel model = entry.getValue();
+			if (thisModelOf != null) {
+				thisModelOf.put(model.getResource(), model);
+			}
+			metaModelId.put(model, id);
 		}
 	}
 
@@ -1388,6 +1736,19 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	public String getMetaModelID(final Metamodel metamodel) {
+		if (!modelCacheInit) {
+			cacheModels();
+		}
+		return (metamodel == null) ? null : metaModelId.get(metamodel);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
 	public void queueForDelete(final EObject element, final StackFrame frame) {
 		deletionQueue.offer(new DeletionEntry(element, frame));
 	}
@@ -1473,8 +1834,40 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				return basicGetTraces();
 			case EmftvmPackage.EXEC_ENV__UNIQUE_RESULTS:
 				return getUniqueResults();
+			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
+				return isJitDisabled();
 		}
 		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
+				setJitDisabled((Boolean)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
+				setJitDisabled(JIT_DISABLED_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
 	}
 
 	/**
@@ -1502,6 +1895,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				return traces != null;
 			case EmftvmPackage.EXEC_ENV__UNIQUE_RESULTS:
 				return uniqueResults != null;
+			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
+				return jitDisabled != JIT_DISABLED_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1529,8 +1924,30 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		result.append(modules);
 		result.append(", uniqueResults: ");
 		result.append(uniqueResults);
+		result.append(", jitDisabled: ");
+		result.append(jitDisabled);
 		result.append(')');
 		return result.toString();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public synchronized CodeBlockJIT getJITCompiler() {
+		if (cbJit == null && !isJitDisabled()) {
+			cbJit = new CodeBlockJIT(this);
+		}
+		return cbJit;
+	}
+
+	/**
+	 * Sets the JIT compiler instance for this execution environment to <code>null</code>.
+	 */
+	protected synchronized void resetJITCompiler() {
+		if (cbJit != null) {
+			cbJit.cleanup(); // Clean up all generated JVM bytecode
+		}
+		cbJit = null;
 	}
 
 } //ExecEnvImpl

@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.emftvm.jit.JITCodeBlock;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 
 /**
@@ -523,5 +524,24 @@ public interface CodeBlock extends EObject {
 	 * @generated
 	 */
 	EList<Instruction> getNonLoopingPredecessors(Instruction i);
+
+	/**
+	 * Finds the the {@link Rule} that contains this codeblock.
+	 * @return the {@link Rule} that contains this codeblock, or <code>null</code>
+	 * if not contained by a {@link Rule}.
+	 */
+	Rule getRule();
+
+	/**
+	 * Returns the compiled {@link JITCodeBlock}, if any.
+	 * @return the compiled {@link JITCodeBlock}, or <code>null</code>
+	 */
+	JITCodeBlock getJITCodeBlock();
+
+	/**
+	 * Sets the compiled {@link JITCodeBlock}.
+	 * @param jcb the compiled {@link JITCodeBlock}
+	 */
+	void setJITCodeBlock(JITCodeBlock jcb);
 
 } // CodeBlock

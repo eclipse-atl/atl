@@ -120,8 +120,9 @@ public class EnumConversionList extends LazyList<Object> {
 
 	/**
 	 * Forces cache completion.
+	 * @return this list
 	 */
-	public void cache() {
+	public EnumConversionList cache() {
 		synchronized (cache) {
 			if (dataSource != null) {
 				cache.clear();
@@ -132,6 +133,7 @@ public class EnumConversionList extends LazyList<Object> {
 				dataSource = null;
 			}
 		}
+		return this;
 	}
 
 	/**

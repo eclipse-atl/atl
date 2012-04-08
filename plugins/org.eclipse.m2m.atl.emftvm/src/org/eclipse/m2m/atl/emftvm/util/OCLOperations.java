@@ -851,7 +851,7 @@ public final class OCLOperations {
 					@Override
 					public StackFrame execute(final StackFrame frame) {
 						final EClass c = (EClass)frame.getLocal(0, 0);
-						frame.push(EMFTVMUtil.findAllInstances(frame.getEnv(), c));
+						frame.push(EMFTVMUtil.findAllInstances(c, frame.getEnv()));
 						return frame;
 					}
 		});
@@ -862,7 +862,7 @@ public final class OCLOperations {
 					public StackFrame execute(final StackFrame frame) {
 						final EClass c = (EClass)frame.getLocal(0, 0);
 						final String mm = (String)frame.getLocal(0, 1);
-						frame.push(EMFTVMUtil.findAllInstIn(frame.getEnv(), c, mm));
+						frame.push(EMFTVMUtil.findAllInstIn(mm, c, frame.getEnv()));
 						return frame;
 					}
 		});
@@ -1473,8 +1473,12 @@ public final class OCLOperations {
 				new NativeCodeBlock() {
 					@Override
 					public StackFrame execute(final StackFrame frame) {
-						frame.push(((String)frame.getLocal(0, 0)).substring(
-								(Integer)frame.getLocal(0, 1) - 1));
+						try {
+							frame.push(((String)frame.getLocal(0, 0)).substring(
+									(Integer)frame.getLocal(0, 1) - 1));
+						} catch (IndexOutOfBoundsException e) {
+							throw new VMException(frame, e);
+						}
 						return frame;
 					}
 		});
@@ -1483,9 +1487,13 @@ public final class OCLOperations {
 				new NativeCodeBlock() {
 					@Override
 					public StackFrame execute(final StackFrame frame) {
-						frame.push(((String)frame.getLocal(0, 0)).substring(
-								(Integer)frame.getLocal(0, 1) - 1,
-								(Integer)frame.getLocal(0, 2)));
+						try {
+							frame.push(((String)frame.getLocal(0, 0)).substring(
+									(Integer)frame.getLocal(0, 1) - 1,
+									(Integer)frame.getLocal(0, 2)));
+						} catch (IndexOutOfBoundsException e) {
+							throw new VMException(frame, e);
+						}
 						return frame;
 					}
 		});
@@ -1494,7 +1502,11 @@ public final class OCLOperations {
 				new NativeCodeBlock() {
 					@Override
 					public StackFrame execute(final StackFrame frame) {
-						frame.push(Integer.parseInt((String)frame.getLocal(0, 0)));
+						try {
+							frame.push(Integer.parseInt((String)frame.getLocal(0, 0)));
+						} catch (NumberFormatException e) {
+							throw new VMException(frame, e);
+						}
 						return frame;
 					}
 		});
@@ -1503,7 +1515,11 @@ public final class OCLOperations {
 				new NativeCodeBlock() {
 					@Override
 					public StackFrame execute(final StackFrame frame) {
-						frame.push(Double.parseDouble((String)frame.getLocal(0, 0)));
+						try {
+							frame.push(Double.parseDouble((String)frame.getLocal(0, 0)));
+						} catch (NumberFormatException e) {
+							throw new VMException(frame, e);
+						}
 						return frame;
 					}
 		});
@@ -1530,7 +1546,12 @@ public final class OCLOperations {
 				new NativeCodeBlock() {
 					@Override
 					public StackFrame execute(final StackFrame frame) {
-						frame.push(String.valueOf(((String)frame.getLocal(0, 0)).charAt((Integer)frame.getLocal(0, 1) - 1)));
+						try {
+							frame.push(String.valueOf(((String)frame.getLocal(0, 0))
+									.charAt((Integer)frame.getLocal(0, 1) - 1)));
+						} catch (IndexOutOfBoundsException e) {
+							throw new VMException(frame, e);
+						}
 						return frame;
 					}
 		});

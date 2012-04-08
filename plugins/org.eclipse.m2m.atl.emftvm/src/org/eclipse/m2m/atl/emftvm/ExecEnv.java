@@ -14,6 +14,8 @@ package org.eclipse.m2m.atl.emftvm;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.m2m.atl.emftvm.jit.CodeBlockJIT;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
@@ -39,6 +41,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMatches <em>Matches</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getTraces <em>Traces</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getUniqueResults <em>Unique Results</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#isJitDisabled <em>Jit Disabled</em>}</li>
  * </ul>
  * </p>
  *
@@ -58,7 +61,7 @@ public interface ExecEnv extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Modules</em>' attribute.
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv_Modules()
-	 * @model required="true" transient="true" changeable="false"
+	 * @model required="true" transient="true" changeable="false" derived="true"
 	 * @generated
 	 */
 	Map<String, Module> getModules();
@@ -109,6 +112,32 @@ public interface ExecEnv extends EObject {
 	Map<TraceLink, Object> getUniqueResults();
 
 	/**
+	 * Returns the value of the '<em><b>Jit Disabled</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Jit Disabled</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Jit Disabled</em>' attribute.
+	 * @see #setJitDisabled(boolean)
+	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv_JitDisabled()
+	 * @model required="true" transient="true"
+	 * @generated
+	 */
+	boolean isJitDisabled();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#isJitDisabled <em>Jit Disabled</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Jit Disabled</em>' attribute.
+	 * @see #isJitDisabled()
+	 * @generated
+	 */
+	void setJitDisabled(boolean value);
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * Returns the {@link VMMonitor} for the currently running VM instance.
@@ -122,6 +151,69 @@ public interface ExecEnv extends EObject {
 	VMMonitor getMonitor();
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model monitorDataType="org.eclipse.m2m.atl.emftvm.VMMonitor"
+	 * @generated
+	 */
+	void setMonitor(VMMonitor monitor);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Registers <code>metamodel</code> under <code>name</code>.
+	 * @param name the name under which to register
+	 * @param metamodel the metamodel to register
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void registerMetaModel(String name, Metamodel metamodel);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Registers <code>model</code> as an input model under <code>name</code>.
+	 * @param name the name under which to register
+	 * @param model the model to register
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void registerInputModel(String name, Model model);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Registers <code>model</code> as an in/out model under <code>name</code>.
+	 * @param name the name under which to register
+	 * @param model the model to register
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void registerInOutModel(String name, Model model);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Registers <code>model</code> as an output model under <code>name</code>.
+	 * @param name the name under which to register
+	 * @param model the model to register
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void registerOutputModel(String name, Model model);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns the {@link Metamodel} for the given <code>resource</code>, or <code>null</code>.
+	 * @param resource the EMF {@link Resource} of the {@link Metamodel}
+	 * @return the {@link Metamodel}
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	Metamodel getMetaModel(Resource resource);
+
+	/**
 	 * Returns the value of the '<em><b>Meta Models</b></em>' attribute.
 	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
@@ -132,7 +224,7 @@ public interface ExecEnv extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Meta Models</em>' attribute.
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv_MetaModels()
-	 * @model default="" required="true" transient="true" changeable="false"
+	 * @model default="" required="true" transient="true" changeable="false" derived="true"
 	 * @generated
 	 */
 	Map<String, Metamodel> getMetaModels();
@@ -148,7 +240,7 @@ public interface ExecEnv extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Input Models</em>' attribute.
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv_InputModels()
-	 * @model default="" required="true" transient="true" changeable="false"
+	 * @model default="" required="true" transient="true" changeable="false" derived="true"
 	 * @generated
 	 */
 	Map<String, Model> getInputModels();
@@ -164,7 +256,7 @@ public interface ExecEnv extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Inout Models</em>' attribute.
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv_InoutModels()
-	 * @model default="" required="true" transient="true" changeable="false"
+	 * @model default="" required="true" transient="true" changeable="false" derived="true"
 	 * @generated
 	 */
 	Map<String, Model> getInoutModels();
@@ -180,7 +272,7 @@ public interface ExecEnv extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Output Models</em>' attribute.
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv_OutputModels()
-	 * @model default="" required="true" transient="true" changeable="false"
+	 * @model default="" required="true" transient="true" changeable="false" derived="true"
 	 * @generated
 	 */
 	Map<String, Model> getOutputModels();
@@ -201,26 +293,6 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Registers a {@link Feature} into this {@link ExecEnv}.
-	 * @param feature the {@link Feature} to register
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	void registerFeature(Feature feature);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * Registers a {@link Rule} into this {@link ExecEnv}.
-	 * @param rule the {@link Rule} to register
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	void registerRule(Rule rule);
-
-	/**
-	 * <!-- begin-user-doc -->
 	 * Finds an {@link Operation} registered within this {@link ExecEnv}.
 	 * @param context the context type of the operation
 	 * @param name the operation name
@@ -231,6 +303,45 @@ public interface ExecEnv extends EObject {
 	 * @generated
 	 */
 	Operation findOperation(Object context, String name, Object[] parameterTypes);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Finds an {@link Operation} registered within this {@link ExecEnv}.
+	 * @param context the context type of the operation
+	 * @param name the operation name
+	 * @return the {@link Operation} with the given properties, or <code>null</code> if none registered
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	Operation findOperation(Object context, String name);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Finds an {@link Operation} registered within this {@link ExecEnv}.
+	 * @param context the context type of the operation
+	 * @param name the operation name
+	 * @param parameterType the parameter type of the operation
+	 * @return the {@link Operation} with the given properties, or <code>null</code> if none registered
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	Operation findOperation(Object context, String name, Object parameterType);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns <code>true</code> iff this execution environment has any registered
+	 * operations with the given <code>name</code> and <code>argcount</code>.
+	 * @param name the operation name
+	 * @param argcount the number of operation arguments (excluding <code>self</code>)
+	 * @return <code>true</code> iff this execution environment has any registered
+	 * operations with the given <code>name</code> and <code>argcount</code>
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	boolean hasOperation(String name, int argcount);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -247,6 +358,45 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Finds a static {@link Operation} registered within this {@link ExecEnv}.
+	 * @param context the context type of the operation
+	 * @param name the operation name
+	 * @return the static {@link Operation} with the given properties, or <code>null</code> if none registered
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	Operation findStaticOperation(Object context, String name);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Finds a static {@link Operation} registered within this {@link ExecEnv}.
+	 * @param context the context type of the operation
+	 * @param name the operation name
+	 * @param parameterType the parameter type of the operation
+	 * @return the static {@link Operation} with the given properties, or <code>null</code> if none registered
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	Operation findStaticOperation(Object context, String name, Object parameterType);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns <code>true</code> iff this execution environment has any registered
+	 * static operations with the given <code>name</code> and <code>argcount</code>.
+	 * @param name the operation name
+	 * @param argcount the number of operation arguments
+	 * @return <code>true</code> iff this execution environment has any registered
+	 * static operations with the given <code>name</code> and <code>argcount</code>
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	boolean hasStaticOperation(String name, int argcount);
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * Finds a {@link Field} registered within this {@link ExecEnv}.
 	 * @param context the context type of the field
 	 * @param name the operation name
@@ -259,6 +409,19 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns <code>true</code> iff this execution environment has any registered
+	 * fields with the given <code>name</code>.
+	 * @param name the field name
+	 * @return <code>true</code> iff this execution environment has any registered
+	 * fields with the given <code>name</code>
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	boolean hasField(String name);
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * Finds a static {@link Field} registered within this {@link ExecEnv}.
 	 * @param context the context type of the field
 	 * @param name the operation name
@@ -268,6 +431,19 @@ public interface ExecEnv extends EObject {
 	 * @generated
 	 */
 	Field findStaticField(Object context, String name);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns <code>true</code> iff this execution environment has any registered
+	 * static fields with the given <code>name</code>.
+	 * @param name the field name
+	 * @return <code>true</code> iff this execution environment has any registered
+	 * static fields with the given <code>name</code>
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	boolean hasStaticField(String name);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -292,6 +468,17 @@ public interface ExecEnv extends EObject {
 	 * @generated
 	 */
 	Object findType(String modelName, String typeName) throws ClassNotFoundException;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Executes the loaded modules and returns the execution result.
+	 * @param timingData the timing data object, or <code>null</code>
+	 * @return the execution result of the last loaded module's <code>main</code> operation
+	 * <!-- end-user-doc -->
+	 * @model timingDataDataType="org.eclipse.m2m.atl.emftvm.TimingData"
+	 * @generated
+	 */
+	Object run(TimingData timingData);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -324,6 +511,17 @@ public interface ExecEnv extends EObject {
 	 * @generated
 	 */
 	String getModelID(Model model);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Returns the ID under which <code>metamodel</code> is registered within this {@link ExecEnv}.
+	 * @param metamodel the registered {@link Metamodel} to retrieve the ID for
+	 * @return the ID under which <code>metamodel</code> is registered within this {@link ExecEnv}.
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	String getMetaModelID(Metamodel metamodel);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -379,11 +577,9 @@ public interface ExecEnv extends EObject {
 	Model getOutputModelOf(EObject object);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model timingDataDataType="org.eclipse.m2m.atl.emftvm.TimingData" monitorDataType="org.eclipse.m2m.atl.emftvm.VMMonitor"
-	 * @generated
+	 * Returns the JIT compiler instance for this execution environment.
+	 * @return the JIT compiler instance
 	 */
-	Object run(TimingData timingData, VMMonitor monitor);
+	CodeBlockJIT getJITCompiler();
 
 } // ExecEnv

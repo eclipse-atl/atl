@@ -174,7 +174,7 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	 */
 	public Iterable<EObject> createIterable(final ExecEnv env) {
 		if (getEModels().isEmpty()) {
-			return EMFTVMUtil.findAllInstances(env, (EClass)getEType());
+			return EMFTVMUtil.findAllInstances((EClass)getEType(), env);
 		} else {
 			LazyList<EObject> allInstances = new LazyList<EObject>();
 			for (Model m : getEModels()) {
