@@ -42,7 +42,7 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 	private Composite rootContainer;
 	private Group parameterGroup;
 	private Button displayTimingData;
-	private Button enableJIT;
+	private Button disableJIT;
 
 	/**
 	 * {@inheritDoc}
@@ -70,9 +70,9 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		enableJIT = new Button(parameterGroup, SWT.CHECK);
-		enableJIT.setText("Enable JIT compiler");
-		enableJIT.addSelectionListener(new SelectionAdapter() {
+		disableJIT = new Button(parameterGroup, SWT.CHECK);
+		disableJIT.setText("Disable JIT compiler");
+		disableJIT.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateLaunchConfigurationDialog();
@@ -98,9 +98,9 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 			displayTimingData.setSelection(
 					configuration.getAttribute(
 							EMFTVMLaunchConstants.DISPLAY_TIMING, true));
-			enableJIT.setSelection(
+			disableJIT.setSelection(
 					configuration.getAttribute(
-							EMFTVMLaunchConstants.DISABLE_JIT, true));
+							EMFTVMLaunchConstants.DISABLE_JIT, false));
 		} catch (CoreException e) {
 			EmftvmLauncherPlugin.log(e.getStatus());
 		}
@@ -113,7 +113,7 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(
 				EMFTVMLaunchConstants.DISPLAY_TIMING, displayTimingData.getSelection());
 		configuration.setAttribute(
-				EMFTVMLaunchConstants.DISABLE_JIT, enableJIT.getSelection());
+				EMFTVMLaunchConstants.DISABLE_JIT, disableJIT.getSelection());
 	}
 
 	/**
