@@ -12,9 +12,7 @@
 package org.eclipse.m2m.atl.emftvm.ant;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.eclipse.emf.common.util.URI;
@@ -36,6 +34,7 @@ public class RunTask extends EMFTVMTask {
 
 	private String module;
 	private String modulePath;
+	private boolean disableJIT = true; //TODO
 	private final List<MetaModel> metaModels = new ArrayList<MetaModel>();
 	private final List<InModel> inputModels = new ArrayList<InModel>();
 	private final List<InOutModel> inoutModels = new ArrayList<InOutModel>();
@@ -71,6 +70,22 @@ public class RunTask extends EMFTVMTask {
 	 */
 	public String getModulePath() {
 		return modulePath;
+	}
+
+	/**
+	 * Returns whether to disable the JIT compiler.
+	 * @return whether to disable the JIT compiler
+	 */
+	public boolean isDisableJIT() {
+		return disableJIT;
+	}
+
+	/**
+	 * Sets whether to disable the JIT compiler
+	 * @param disableJIT whether to disable the JIT compiler
+	 */
+	public void setDisableJIT(boolean disableJIT) {
+		this.disableJIT = disableJIT;
 	}
 
 	/**
@@ -143,10 +158,11 @@ public class RunTask extends EMFTVMTask {
 	@Override
 	protected void innerExecute() throws Exception {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
-		addMetamodelsToMap(getMetaModels(), env.getMetaModels());
-		addModelsToMap(getInputModels(), env.getInputModels());
-		addModelsToMap(getInoutModels(), env.getInoutModels());
-		addOutModelsToMap(getOutputModels(), env.getOutputModels());
+		env.setJitDisabled(isDisableJIT());
+		addMetamodelsToEnv(env);
+		addInputModelsToEnv(env);
+		addInoutModelsToEnv(env);
+		addOutputModelsToEnv(env);
 		final StringTokenizer pathElements = new StringTokenizer(getModulePath(), ",");
 		final DefaultModuleResolver resolver = new DefaultModuleResolver(pathElements.nextToken(), getResourceSet());
 		while (pathElements.hasMoreTokens()) {
@@ -155,51 +171,73 @@ public class RunTask extends EMFTVMTask {
 		final TimingData timingData = new TimingData();
 		env.loadModule(resolver, getModule());
 		timingData.finishLoading();
-		env.run(timingData, null);
+		env.run(timingData);
 		timingData.finish();
 		log(timingData.toString());
 	}
 
-	private void addModelsToMap(final Collection<? extends ModelElement> ms, final Map<String, Model> map) {
-		for (ModelElement m : ms) {
-			String name = m.getName();
-			String as = m.getAs();
-			if (as == null) {
-				as = name;
-			}
-			Model model = getModel(name);
-			model.setAllowInterModelReferences(m.isAllowInterModelReferences());
-			map.put(as, model);
+	/**
+	 * Returns the {@link Model} for <code>me</code>.
+	 * @param me the {@link ModelElement} task parameter
+	 * @return the {@link Model}
+	 */
+	private Model getModel(final ModelElement me) {
+		final Model model = getModel(me.getName());
+		model.setAllowInterModelReferences(me.isAllowInterModelReferences());
+		return model;
+	}
+
+	/**
+	 * Returns the {@link Metamodel} for <code>me</code>.
+	 * @param mm the {@link MetaModel} task parameter
+	 * @return the {@link Metamodel}
+	 */
+	private Metamodel getMetamodel(final MetaModel mm) {
+		return getMetamodel(mm.getName());
+	}
+
+	/**
+	 * Returns the model name key to use in the {@link ExecEnv} for <code>me</code>.
+	 * @param me the {@link ModelElement} task parameter
+	 * @return the model name key
+	 */
+	private String getModelKey(final ModelElement me) {
+		String as = me.getAs();
+		if (as == null) {
+			as = me.getName();
+		}
+		return as;
+	}
+
+	private void addInputModelsToEnv(final ExecEnv env) {
+		for (ModelElement me : getInputModels()) {
+			env.registerInputModel(getModelKey(me), getModel(me));
 		}
 	}
 
-	private void addMetamodelsToMap(final Collection<? extends ModelElement> ms, final Map<String, Metamodel> map) {
-		for (ModelElement m : ms) {
-			String name = m.getName();
-			String as = m.getAs();
-			if (as == null) {
-				as = name;
-			}
-			map.put(as, getMetamodel(name));
+	private void addInoutModelsToEnv(final ExecEnv env) {
+		for (ModelElement me : getInoutModels()) {
+			env.registerInOutModel(getModelKey(me), getModel(me));
 		}
 	}
 
-	private void addOutModelsToMap(final Collection<? extends OutModel> ms, final Map<String, Model> map) {
+	private void addOutputModelsToEnv(final ExecEnv env) {
 		final ResourceSet rs = getResourceSet();
-		for (OutModel m : ms) {
-			String name = m.getName();
-			String as = m.getAs();
-			if (as == null) {
-				as = name;
-			}
+		for (OutModel m : getOutputModels()) {
 			String u = m.getUri();
 			URI uri = u == null ? URI.createPlatformResourceURI(m.getWspath(), true) : URI.createURI(u);
 			Resource r = rs.createResource(uri);
 			Model model = EmftvmFactory.eINSTANCE.createModel();
 			model.setResource(r);
 			model.setAllowInterModelReferences(m.isAllowInterModelReferences());
-			setModel(name, model);
-			map.put(as, model);
+			setModel(m.getName(), model);
+			env.registerOutputModel(getModelKey(m), model);
+		}
+	}
+
+	private void addMetamodelsToEnv(final ExecEnv env) {
+		for (MetaModel m : getMetaModels()) {
+			env.registerMetaModel(getModelKey(m), getMetamodel(m));
 		}
 	}
 
