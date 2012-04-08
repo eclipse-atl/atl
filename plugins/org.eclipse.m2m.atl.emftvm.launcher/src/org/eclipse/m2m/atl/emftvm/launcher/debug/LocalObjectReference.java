@@ -222,38 +222,73 @@ public class LocalObjectReference extends ObjectReference {
 		Value ret = null;
 
 		final Object type = getType();
-		final Object[] realArgs = getRealArgs(args);
-		final Object[] argTypes = EMFTVMUtil.getArgumentTypes(realArgs);
-		final Operation op = execEnv.findOperation(type, opName, argTypes);
+		if (args.isEmpty()) {
+			final Operation op = execEnv.findOperation(type, opName);
 
-		if (op == null) {
-			try {
-				final StackFrame frame = new StackFrame(execEnv, EMPTY_CB);
-				ret = object2value(EMFTVMUtil.invokeNative(frame, object, opName, realArgs));
-			} catch (VMException e) {
-				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			} catch (UnsupportedOperationException e) {
-				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			}
-		} else {
-			if (debug) {
-				ATLLogger.info(object + " : " + type + "." + opName + "("); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-				for (Iterator<Value> i = args.iterator(); i.hasNext();) {
-					Value v = i.next();
-					ATLLogger.info(v + ((i.hasNext()) ? ", " : "")); //$NON-NLS-1$ //$NON-NLS-2$
+			if (op == null) {
+				try {
+					final StackFrame frame = new StackFrame(execEnv, EMPTY_CB);
+					ret = object2value(EMFTVMUtil.invokeNative(frame, object, opName));
+				} catch (VMException e) {
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				} catch (UnsupportedOperationException e) {
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				}
+			} else {
+				if (debug) {
+					ATLLogger.info(object + " : " + type + "." + opName + "("); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+					for (Iterator<Value> i = args.iterator(); i.hasNext();) {
+						Value v = i.next();
+						ATLLogger.info(v + ((i.hasNext()) ? ", " : "")); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+				}
+
+				final CodeBlock body = op.getBody();
+				final StackFrame frame = new StackFrame(execEnv, body);
+				frame.setLocal(object, 0, 0);
+				body.execute(frame);
+				final Object o = frame.stackEmpty() ? null : frame.pop();
+				ret = object2value(o);
+
+				if (debug) {
+					ATLLogger.info(") = " + o); //$NON-NLS-1$
+					ATLLogger.info(" => " + ret); //$NON-NLS-1$
 				}
 			}
+		} else {
+			final Object[] realArgs = getRealArgs(args);
+			final Object[] argTypes = EMFTVMUtil.getArgumentTypes(realArgs);
+			final Operation op = execEnv.findOperation(type, opName, argTypes);
 
-			final CodeBlock body = op.getBody();
-			final StackFrame frame = new StackFrame(execEnv, body);
-			frame.setLocals(object, realArgs);
-			body.execute(frame);
-			final Object o = frame.stackEmpty() ? null : frame.pop();
-			ret = object2value(o);
+			if (op == null) {
+				try {
+					final StackFrame frame = new StackFrame(execEnv, EMPTY_CB);
+					ret = object2value(EMFTVMUtil.invokeNative(frame, object, opName, realArgs));
+				} catch (VMException e) {
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				} catch (UnsupportedOperationException e) {
+					ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				}
+			} else {
+				if (debug) {
+					ATLLogger.info(object + " : " + type + "." + opName + "("); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+					for (Iterator<Value> i = args.iterator(); i.hasNext();) {
+						Value v = i.next();
+						ATLLogger.info(v + ((i.hasNext()) ? ", " : "")); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+				}
 
-			if (debug) {
-				ATLLogger.info(") = " + o); //$NON-NLS-1$
-				ATLLogger.info(" => " + ret); //$NON-NLS-1$
+				final CodeBlock body = op.getBody();
+				final StackFrame frame = new StackFrame(execEnv, body);
+				frame.setLocals(object, realArgs);
+				body.execute(frame);
+				final Object o = frame.stackEmpty() ? null : frame.pop();
+				ret = object2value(o);
+
+				if (debug) {
+					ATLLogger.info(") = " + o); //$NON-NLS-1$
+					ATLLogger.info(" => " + ret); //$NON-NLS-1$
+				}
 			}
 		}
 

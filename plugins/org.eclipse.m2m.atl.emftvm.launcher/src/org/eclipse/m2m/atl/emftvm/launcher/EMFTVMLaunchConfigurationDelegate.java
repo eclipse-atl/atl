@@ -127,26 +127,28 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		}
 
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		env.setJitDisabled(configuration.getAttribute(EMFTVMLaunchConstants.DISABLE_JIT, false));
+		env.setMonitor(vmmon);
 		final ResourceSet rs = new ResourceSetImpl();
 		
 		final Map<String, String> metamodelLocations = configuration.getAttribute(EMFTVMLaunchConstants.METAMODELS, Collections.emptyMap());
 		final Map<String, String> metamodelOptions = configuration.getAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, Collections.emptyMap());
-		loadFileMetaModels(rs, metamodelLocations, metamodelOptions, env.getMetaModels());
+		loadFileMetaModels(rs, metamodelLocations, metamodelOptions, env);
 		
 		final Map<String, String> inputModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODELS, Collections.emptyMap());
 		final Map<String, String> inputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, Collections.emptyMap());
-		loadModels(rs, inputModelLocations, inputModelOptions, env.getInputModels());
+		loadInputModels(rs, inputModelLocations, inputModelOptions, env);
 		
 		final Map<String, String> inoutModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODELS, Collections.emptyMap());
 		final Map<String, String> inoutModelOutLocations = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_OUT_MODELS, Collections.emptyMap());
 		final Map<String, String> inoutModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, Collections.emptyMap());
-		loadModels(rs, inoutModelLocations, inoutModelOptions, env.getInoutModels());
+		loadInOutModels(rs, inoutModelLocations, inoutModelOptions, env);
 		
 		final Map<String, String> outputModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODELS, Collections.emptyMap());
 		final Map<String, String> outputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, Collections.emptyMap());
-		createModels(rs, outputModelLocations, outputModelOptions, env.getOutputModels());
+		createOutputModels(rs, outputModelLocations, outputModelOptions, env);
 
-		loadOtherMetaModels(rs, metamodelLocations, metamodelOptions, env.getMetaModels());
+		loadOtherMetaModels(rs, metamodelLocations, metamodelOptions, env);
 
 		String name = configuration.getAttribute(EMFTVMLaunchConstants.MODULE_NAME, "");
 		String path = configuration.getAttribute(EMFTVMLaunchConstants.MODULE_PATH, "");
@@ -163,10 +165,13 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		final TimingData timingData = new TimingData();
 		env.loadModule(resolver, name);
 		timingData.finishLoading();
-		env.run(timingData, vmmon);
+		env.run(timingData);
 		timingData.finish();
 		if (configuration.getAttribute(EMFTVMLaunchConstants.DISPLAY_TIMING, true)) {
 			ATLLogger.info(timingData.toString());
+		}
+		if (ILaunchManager.DEBUG_MODE.equals(mode)) {
+			ATLLogger.info(vmmon.toString()); // display debugger statistics
 		}
 		saveModels(env.getInoutModels(), inoutModelOptions, inoutModelOutLocations);
 		final Map<String, String> emptyMap = Collections.emptyMap();
@@ -174,15 +179,15 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	}
 	
 	/**
-	 * Loads all metamodels that have a file or platform URI from <code>modelLocations</code> into <code>models</code>.
+	 * Loads all metamodels that have a file or platform URI from <code>modelLocations</code> into <code>env</code>.
 	 * @param rs the resource set to use
 	 * @param modelLocations the input map of model names to locations
 	 * @param modelOptions map of additional model options
-	 * @param models the map of model names to loaded models to write to
+	 * @param env the {@link ExecEnv} to register the metamodels in
 	 */
 	private void loadFileMetaModels(final ResourceSet rs, final Map<String, String> modelLocations, 
 			final Map<String, String> modelOptions,
-			final Map<String, Metamodel> models) {
+			final ExecEnv env) {
 		for (Entry<String, String> entry : modelLocations.entrySet()) {
 			URI uri = URI.createURI((String)entry.getValue());
 			if (uri.isFile() || uri.isPlatform()) {
@@ -194,21 +199,21 @@ public class EMFTVMLaunchConfigurationDelegate implements
 				}
 				Metamodel m = EmftvmFactory.eINSTANCE.createMetamodel();
 				m.setResource(r);
-				models.put((String)entry.getKey(), m);
+				env.registerMetaModel((String)entry.getKey(), m);
 			}
 		}
 	}
 	
 	/**
-	 * Loads all metamodels that don't have a file or platform URI from <code>modelLocations</code> into <code>models</code>.
+	 * Loads all metamodels that don't have a file or platform URI from <code>modelLocations</code> into <code>env</code>.
 	 * @param rs the resource set to use
 	 * @param modelLocations the input map of model names to locations
 	 * @param modelOptions map of additional model options
-	 * @param models the map of model names to loaded models to write to
+	 * @param env the {@link ExecEnv} to register the metamodels in
 	 */
 	private void loadOtherMetaModels(final ResourceSet rs, final Map<String, String> modelLocations, 
 			final Map<String, String> modelOptions,
-			final Map<String, Metamodel> models) {
+			final ExecEnv env) {
 		for (Entry<String, String> entry : modelLocations.entrySet()) {
 			URI uri = URI.createURI((String)entry.getValue());
 			if (!uri.isFile() && !uri.isPlatform()) {
@@ -220,51 +225,78 @@ public class EMFTVMLaunchConfigurationDelegate implements
 				}
 				Metamodel m = EmftvmFactory.eINSTANCE.createMetamodel();
 				m.setResource(r);
-				models.put((String)entry.getKey(), m);
+				env.registerMetaModel((String)entry.getKey(), m);
 			}
 		}
 	}
+
+	/**
+	 * Creates and loads a {@link Model} for the given <code>entry</code>.
+	 * @param rs the {@link ResourceSet} to load the model into
+	 * @param entry the model name and URI to load
+	 * @param modelOptions the map of model options
+	 * @return the loaded {@link Model}
+	 */
+	private Model loadModel(final ResourceSet rs, final Entry<String, String> entry, 
+			final Map<String, String> modelOptions) {
+		final Resource r;
+		if (getBoolOption(
+				modelOptions, 
+				entry.getKey(), 
+				EMFTVMLaunchConstants.OPT_CREATE_NEW_MODEL)) {
+			r = rs.createResource(URI.createURI(entry.getValue()));
+		} else {
+			r = rs.getResource(URI.createURI(entry.getValue()), true);
+		}
+		final Model m = EmftvmFactory.eINSTANCE.createModel();
+		m.setResource(r);
+		m.setAllowInterModelReferences(getBoolOption(
+				modelOptions, 
+				entry.getKey(), 
+				EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
+		return m;
+	}
 	
 	/**
-	 * Loads all models from <code>modelLocations</code> into <code>models</code>.
+	 * Loads all models from <code>modelLocations</code> into <code>env</code>.
 	 * @param rs the resource set to use
 	 * @param modelLocations the input map of model names to locations
 	 * @param modelOptions map of additional model options
-	 * @param models the map of model names to loaded models to write to
+	 * @param env the {@link ExecEnv} to register the models in
 	 */
-	private void loadModels(final ResourceSet rs, final Map<String, String> modelLocations,
+	private void loadInputModels(final ResourceSet rs, final Map<String, String> modelLocations,
 			final Map<String, String> modelOptions,
-			final Map<String, Model> models) {
+			final ExecEnv env) {
 		for (Entry<String, String> entry : modelLocations.entrySet()) {
-			Resource r;
-			if (getBoolOption(
-					modelOptions, 
-					entry.getKey(), 
-					EMFTVMLaunchConstants.OPT_CREATE_NEW_MODEL)) {
-				r = rs.createResource(URI.createURI(entry.getValue()));
-			} else {
-				r = rs.getResource(URI.createURI(entry.getValue()), true);
-			}
-			Model m = EmftvmFactory.eINSTANCE.createModel();
-			m.setResource(r);
-			m.setAllowInterModelReferences(getBoolOption(
-					modelOptions, 
-					entry.getKey(), 
-					EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
-			models.put(entry.getKey(), m);
+			env.registerInputModel(entry.getKey(), loadModel(rs, entry, modelOptions));
 		}
 	}
 	
 	/**
-	 * Creates new models for all models from <code>modelLocations</code> in <code>models</code>.
+	 * Loads all models from <code>modelLocations</code> into <code>env</code>.
 	 * @param rs the resource set to use
 	 * @param modelLocations the input map of model names to locations
 	 * @param modelOptions map of additional model options
-	 * @param models the map of model names to loaded models to write to
+	 * @param env the {@link ExecEnv} to register the models in
 	 */
-	private void createModels(final ResourceSet rs, final Map<String, String> modelLocations, 
+	private void loadInOutModels(final ResourceSet rs, final Map<String, String> modelLocations,
 			final Map<String, String> modelOptions,
-			final Map<String, Model> models) {
+			final ExecEnv env) {
+		for (Entry<String, String> entry : modelLocations.entrySet()) {
+			env.registerInOutModel(entry.getKey(), loadModel(rs, entry, modelOptions));
+		}
+	}
+	
+	/**
+	 * Creates new models for all models from <code>modelLocations</code> in <code>env</code>.
+	 * @param rs the resource set to use
+	 * @param modelLocations the input map of model names to locations
+	 * @param modelOptions map of additional model options
+	 * @param env the {@link ExecEnv} to register the models in
+	 */
+	private void createOutputModels(final ResourceSet rs, final Map<String, String> modelLocations, 
+			final Map<String, String> modelOptions,
+			final ExecEnv env) {
 		for (Entry<String, String> entry : modelLocations.entrySet()) {
 			Resource r = rs.createResource(URI.createURI(entry.getValue()));
 			Model m = EmftvmFactory.eINSTANCE.createModel();
@@ -273,7 +305,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 					modelOptions, 
 					entry.getKey(), 
 					EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
-			models.put(entry.getKey(), m);
+			env.registerOutputModel(entry.getKey(), m);
 		}
 	}
 

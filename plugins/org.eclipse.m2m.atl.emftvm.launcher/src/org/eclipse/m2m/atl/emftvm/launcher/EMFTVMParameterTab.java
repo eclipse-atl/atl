@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 INRIA and Vrije Universiteit Brussel.
+ * Copyright (c) 2004-2012 INRIA and Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,7 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 	private Composite rootContainer;
 	private Group parameterGroup;
 	private Button displayTimingData;
+	private Button enableJIT;
 
 	/**
 	 * {@inheritDoc}
@@ -69,6 +70,15 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 
+		enableJIT = new Button(parameterGroup, SWT.CHECK);
+		enableJIT.setText("Enable JIT compiler");
+		enableJIT.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+		});
+
 		setControl(scrollContainer);
 	}
 
@@ -77,6 +87,7 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 	 */
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(EMFTVMLaunchConstants.DISPLAY_TIMING, true);
+		configuration.setAttribute(EMFTVMLaunchConstants.DISABLE_JIT, true);
 	}
 
 	/**
@@ -87,6 +98,9 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 			displayTimingData.setSelection(
 					configuration.getAttribute(
 							EMFTVMLaunchConstants.DISPLAY_TIMING, true));
+			enableJIT.setSelection(
+					configuration.getAttribute(
+							EMFTVMLaunchConstants.DISABLE_JIT, true));
 		} catch (CoreException e) {
 			EmftvmLauncherPlugin.log(e.getStatus());
 		}
@@ -98,6 +112,8 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(
 				EMFTVMLaunchConstants.DISPLAY_TIMING, displayTimingData.getSelection());
+		configuration.setAttribute(
+				EMFTVMLaunchConstants.DISABLE_JIT, enableJIT.getSelection());
 	}
 
 	/**

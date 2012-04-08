@@ -39,6 +39,8 @@ public interface EMFTVMLaunchConstants {
 	String OUTPUT_MODELS = "Output Models"; //$NON-NLS-1$
 	/** Display Timing Data. */
 	String DISPLAY_TIMING = "Display Timing Data"; //$NON-NLS-1$
+	/** Disable JIT compiler. */
+	String DISABLE_JIT = "Disable JIT compiler"; //$NON-NLS-1$
 	/** Metamodel Options. */
 	String METAMODEL_OPTIONS = "Metamodel Options"; //$NON-NLS-1$
 	/** Input Model Options. */

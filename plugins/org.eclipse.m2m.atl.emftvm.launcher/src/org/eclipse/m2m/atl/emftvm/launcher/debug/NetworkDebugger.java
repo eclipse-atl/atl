@@ -37,6 +37,7 @@ import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Instruction;
 import org.eclipse.m2m.atl.emftvm.LineNumber;
+import org.eclipse.m2m.atl.emftvm.Opcode;
 import org.eclipse.m2m.atl.emftvm.launcher.EmftvmLauncherPlugin;
 import org.eclipse.m2m.atl.emftvm.launcher.LaunchAdapter;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
@@ -60,6 +61,7 @@ public class NetworkDebugger extends LaunchAdapter {
 	private int depth;
 	private Map<Integer, Command> commands = new HashMap<Integer, Command>();
 	private Set<String> breakpoints = new HashSet<String>();
+	private final int[] opcodeCount = new int[Opcode.values().length];
 
 	/**
 	 * Creates a new {@link NetworkDebugger}.
@@ -69,6 +71,7 @@ public class NetworkDebugger extends LaunchAdapter {
 	 */
 	public NetworkDebugger(ILaunch launch, final int port, boolean suspend) {
 		super(launch);
+		Arrays.fill(opcodeCount, 0);
 		if (suspend) {
 			step = true;
 		}
@@ -132,6 +135,7 @@ public class NetworkDebugger extends LaunchAdapter {
 	@Override
 	public void step(StackFrame frame) {
 		super.step(frame);
+		opcodeCount[frame.getCodeBlock().getCode().get(frame.getPc()-1).getOpcode().getValue()] += 1;
 		this.lastFrame = frame;
 		if (stepOver && (depth == 0)) {
 			stepOver = false;
@@ -195,14 +199,32 @@ public class NetworkDebugger extends LaunchAdapter {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		final StringBuffer b = new StringBuffer();
+		b.append("Instruction counts:\n");
+		for (int i = 0; i < opcodeCount.length; i++) {
+			if (opcodeCount[i] > 0) {
+				b.append('\t');
+				b.append(Opcode.get(i));
+				b.append(" : ");
+				b.append(opcodeCount[i]);
+				b.append('\n');
+			}
+		}
+		return b.toString();
+	}
+
+	/**
 	 * Sends a STOPPED message to the debuggee.
 	 * @param frame the current stack frame
 	 * @param msg the message contents
 	 */
 	private void dialog(StackFrame frame, String msg) {
 		final boolean debug = false;
-		final CodeBlock cb = frame.getCodeBlock();
-		final String opName = cb == null ? frame.getNativeMethod().toString() : cb.toString();
+		final String opName = frame.getOpName();
 
 		StackFrame sourceFrame = frame;
 		while (sourceFrame.getCodeBlock() == null) {

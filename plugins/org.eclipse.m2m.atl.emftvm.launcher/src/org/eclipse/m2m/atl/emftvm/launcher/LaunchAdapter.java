@@ -22,16 +22,31 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 public class LaunchAdapter implements VMMonitor {
 
 	private final ILaunch launch;
+	private boolean terminated;
 
 	/**
 	 * Creates a new {@link LaunchAdapter}.
 	 * @param launch the launch object to wrap
 	 */
-	public LaunchAdapter(ILaunch launch) {
+	public LaunchAdapter(final ILaunch launch) {
 		if (launch == null) {
 			throw new IllegalArgumentException("launch cannot be null.");
 		}
 		this.launch = launch;
+		new Thread() {
+			@Override
+			public void run() {
+				// This runs until the launch is terminated
+				while (!isTerminated()) {
+					setTerminated(launch.isTerminated()); // very slow
+					try {
+						sleep(500);
+					} catch (InterruptedException e) {
+						// do nothing
+					}
+				}
+			}
+		}.start();
 	}
 
 	/**
@@ -40,7 +55,7 @@ public class LaunchAdapter implements VMMonitor {
 	 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor#isTerminated()
 	 */
 	public boolean isTerminated() {
-		return launch.isTerminated();
+		return terminated;
 	}
 
 	/**
@@ -48,7 +63,7 @@ public class LaunchAdapter implements VMMonitor {
 	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor#enter(org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 */
-	public void enter(StackFrame frame) {
+	public void enter(final StackFrame frame) {
 	}
 
 	/**
@@ -56,7 +71,7 @@ public class LaunchAdapter implements VMMonitor {
 	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor#leave(org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 */
-	public void leave(StackFrame frame) {
+	public void leave(final StackFrame frame) {
 	}
 
 	/**
@@ -64,7 +79,7 @@ public class LaunchAdapter implements VMMonitor {
 	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor#step(org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 */
-	public void step(StackFrame frame) {
+	public void step(final StackFrame frame) {
 	}
 
 	/**
@@ -80,7 +95,7 @@ public class LaunchAdapter implements VMMonitor {
 	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.util.VMMonitor#error(StackFrame, String, Exception)
 	 */
-	public void error(StackFrame frame, String msg, Exception e) {
+	public void error(final StackFrame frame, final String msg, final Exception e) {
 	}
 
 	/**
@@ -89,6 +104,14 @@ public class LaunchAdapter implements VMMonitor {
 	 */
 	public ILaunch getLaunch() {
 		return launch;
+	}
+
+	/**
+	 * Sets whether this launch is terminated.
+	 * @param terminated whether this launch is terminated
+	 */
+	protected void setTerminated(final boolean terminated) {
+		this.terminated = terminated;
 	}
 
 }
