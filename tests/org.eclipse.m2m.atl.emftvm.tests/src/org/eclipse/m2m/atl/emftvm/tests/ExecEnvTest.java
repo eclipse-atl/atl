@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
+import java.util.Map;
+
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
@@ -25,18 +27,23 @@ import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Field;
+import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.Operation;
 import org.eclipse.m2m.atl.emftvm.Rule;
-import org.eclipse.m2m.atl.emftvm.RuleMode;
+import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
+import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.ModuleNotFoundException;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
+import org.eclipse.m2m.atl.emftvm.util.NativeCodeBlock;
+import org.eclipse.m2m.atl.emftvm.util.NativeTypes.NativeType;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
+import org.eclipse.m2m.atl.emftvm.util.Types;
 import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 import org.osgi.framework.Bundle;
 
@@ -49,6 +56,11 @@ import org.osgi.framework.Bundle;
  * <p>
  * The following features are tested:
  * <ul>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModels() <em>Meta Models</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInputModels() <em>Input Models</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInoutModels() <em>Inout Models</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getOutputModels() <em>Output Models</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getModules() <em>Modules</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMatches() <em>Matches</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getTraces() <em>Traces</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getUniqueResults() <em>Unique Results</em>}</li>
@@ -58,24 +70,37 @@ import org.osgi.framework.Bundle;
  * The following operations are tested:
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#loadModule(org.eclipse.m2m.atl.emftvm.util.ModuleResolver, java.lang.String) <em>Load Module</em>}</li>
- *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerFeature(org.eclipse.m2m.atl.emftvm.Feature) <em>Register Feature</em>}</li>
- *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerRule(org.eclipse.m2m.atl.emftvm.Rule) <em>Register Rule</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findOperation(java.lang.Object, java.lang.String, java.lang.Object[]) <em>Find Operation</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findOperation(java.lang.Object, java.lang.String) <em>Find Operation</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findOperation(java.lang.Object, java.lang.String, java.lang.Object) <em>Find Operation</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#hasOperation(java.lang.String, int) <em>Has Operation</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findStaticOperation(java.lang.Object, java.lang.String, java.lang.Object[]) <em>Find Static Operation</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findStaticOperation(java.lang.Object, java.lang.String) <em>Find Static Operation</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findStaticOperation(java.lang.Object, java.lang.String, java.lang.Object) <em>Find Static Operation</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#hasStaticOperation(java.lang.String, int) <em>Has Static Operation</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findField(java.lang.Object, java.lang.String) <em>Find Field</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#hasField(java.lang.String) <em>Has Field</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findStaticField(java.lang.Object, java.lang.String) <em>Find Static Field</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#hasStaticField(java.lang.String) <em>Has Static Field</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findRule(java.lang.String) <em>Find Rule</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findType(java.lang.String, java.lang.String) <em>Find Type</em>}</li>
- *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData, org.eclipse.m2m.atl.emftvm.util.VMMonitor) <em>Run</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData) <em>Run</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getRules() <em>Get Rules</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getModelOf(org.eclipse.emf.ecore.EObject) <em>Get Model Of</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getModelID(org.eclipse.m2m.atl.emftvm.Model) <em>Get Model ID</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModelID(org.eclipse.m2m.atl.emftvm.Metamodel) <em>Get Meta Model ID</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForDelete(org.eclipse.emf.ecore.EObject, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Delete</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#deleteQueue() <em>Delete Queue</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInputModelOf(org.eclipse.emf.ecore.EObject) <em>Get Input Model Of</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInoutModelOf(org.eclipse.emf.ecore.EObject) <em>Get Inout Model Of</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getOutputModelOf(org.eclipse.emf.ecore.EObject) <em>Get Output Model Of</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMonitor() <em>Get Monitor</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#setMonitor(org.eclipse.m2m.atl.emftvm.util.VMMonitor) <em>Set Monitor</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerMetaModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Metamodel) <em>Register Meta Model</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerInputModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model) <em>Register Input Model</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerInOutModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model) <em>Register In Out Model</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerOutputModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model) <em>Register Output Model</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModel(org.eclipse.emf.ecore.resource.Resource) <em>Get Meta Model</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -157,16 +182,83 @@ public class ExecEnvTest extends TestCase {
 	}
 
 	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModels() <em>Meta Models</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModels()
+	 * @generated NOT
+	 */
+	public void testGetMetaModels() {
+		final Map<String, Metamodel> mms = getFixture().getMetaModels();
+		assertNotNull(mms);
+		final Metamodel emftvm = mms.get(EmftvmPackage.eNAME.toUpperCase());
+		assertNotNull(emftvm);
+		assertEquals(EmftvmPackage.eINSTANCE.eResource(), emftvm.getResource());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInputModels() <em>Input Models</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getInputModels()
+	 * @generated NOT
+	 */
+	public void testGetInputModels() {
+		final Map<String, Model> ms = getFixture().getInputModels();
+		assertNotNull(ms);
+		assertTrue(ms.isEmpty());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInoutModels() <em>Inout Models</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getInoutModels()
+	 * @generated NOT
+	 */
+	public void testGetInoutModels() {
+		final Map<String, Model> ms = getFixture().getInoutModels();
+		assertNotNull(ms);
+		assertTrue(ms.isEmpty());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getOutputModels() <em>Output Models</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getOutputModels()
+	 * @generated NOT
+	 */
+	public void testGetOutputModels() {
+		final Map<String, Model> ms = getFixture().getOutputModels();
+		assertNotNull(ms);
+		assertTrue(ms.isEmpty());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getModules() <em>Modules</em>}' feature getter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getModules()
+	 * @generated NOT
+	 */
+	public void testGetModules() {
+		final Map<String, Module> ms = getFixture().getModules();
+		assertNotNull(ms);
+		assertTrue(ms.containsKey("OCL"));
+	}
+
+	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMatches() <em>Matches</em>}' feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getMatches()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetMatches() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final TraceLinkSet tls = getFixture().getMatches();
+		assertNotNull(tls);
+		assertTrue(tls.getRules().isEmpty());
 	}
 
 	/**
@@ -174,12 +266,12 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getTraces()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetTraces() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final TraceLinkSet tls = getFixture().getTraces();
+		assertNotNull(tls);
+		assertTrue(tls.getRules().isEmpty());
 	}
 
 	/**
@@ -187,12 +279,12 @@ public class ExecEnvTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getUniqueResults()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetUniqueResults() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Map<TraceLink, Object> urs = getFixture().getUniqueResults();
+		assertNotNull(urs);
+		assertTrue(urs.isEmpty());
 	}
 
 	/**
@@ -255,8 +347,146 @@ public class ExecEnvTest extends TestCase {
 		env.loadModule(mr, "dummy");
 		// Run
 		assertNull(env.getMonitor());
-		env.run(null, mon);
+		env.setMonitor(mon);
+		assertNotNull(env.getMonitor());
+		env.run(null);
+		assertNotNull(env.getMonitor());
+		env.setMonitor(null);
 		assertNull(env.getMonitor());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#setMonitor(org.eclipse.m2m.atl.emftvm.util.VMMonitor) <em>Set Monitor</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#setMonitor(org.eclipse.m2m.atl.emftvm.util.VMMonitor)
+	 * @generated NOT
+	 */
+	public void testSetMonitor__VMMonitor() {
+		final VMMonitor monitor = new VMMonitor() {
+			public void terminated() {
+			}
+			public void step(StackFrame frame) {
+			}
+			public void leave(StackFrame frame) {
+			}
+			public boolean isTerminated() {
+				return false;
+			}
+			public void error(StackFrame frame, String msg, Exception e) {
+			}
+			public void enter(StackFrame frame) {
+			}
+		};
+		getFixture().setMonitor(monitor);
+		assertEquals(monitor, getFixture().getMonitor());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerMetaModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Metamodel) <em>Register Meta Model</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#registerMetaModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Metamodel)
+	 * @generated NOT
+	 */
+	public void testRegisterMetaModel__String_Metamodel() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load metamodel
+		final Resource portsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true), true);
+		final Metamodel metaModel = EmftvmFactory.eINSTANCE.createMetamodel();
+		metaModel.setResource(portsRes);
+		env.registerMetaModel("PORTS", metaModel);
+
+		assertTrue(env.getMetaModels().containsKey("PORTS"));
+		assertEquals(metaModel, env.getMetaModels().get("PORTS"));
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerInputModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model) <em>Register Input Model</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#registerInputModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model)
+	 * @generated NOT
+	 */
+	public void testRegisterInputModel__String_Model() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load and register model
+		final Resource res = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
+		final Model model = EmftvmFactory.eINSTANCE.createModel();
+		model.setResource(res);
+		env.registerInputModel("M", model);
+
+		assertTrue(env.getInputModels().containsKey("M"));
+		assertEquals(model, env.getInputModels().get("M"));
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerInOutModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model) <em>Register In Out Model</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#registerInOutModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model)
+	 * @generated NOT
+	 */
+	public void testRegisterInOutModel__String_Model() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load and register model
+		final Resource res = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
+		final Model model = EmftvmFactory.eINSTANCE.createModel();
+		model.setResource(res);
+		env.registerInOutModel("M", model);
+
+		assertTrue(env.getInoutModels().containsKey("M"));
+		assertEquals(model, env.getInoutModels().get("M"));
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerOutputModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model) <em>Register Output Model</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#registerOutputModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model)
+	 * @generated NOT
+	 */
+	public void testRegisterOutputModel__String_Model() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Create and register model
+		final Resource res = rs.createResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/out.xmi", true));
+		final Model model = EmftvmFactory.eINSTANCE.createModel();
+		model.setResource(res);
+		env.registerOutputModel("M", model);
+
+		assertTrue(env.getOutputModels().containsKey("M"));
+		assertEquals(model, env.getOutputModels().get("M"));
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModel(org.eclipse.emf.ecore.resource.Resource) <em>Get Meta Model</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModel(org.eclipse.emf.ecore.resource.Resource)
+	 * @generated NOT
+	 */
+	public void testGetMetaModel__Resource() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load metamodel
+		final Resource portsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true), true);
+		final Metamodel metaModel = EmftvmFactory.eINSTANCE.createMetamodel();
+		metaModel.setResource(portsRes);
+		env.registerMetaModel("PORTS", metaModel);
+
+		final Metamodel mm = env.getMetaModel(portsRes);
+
+		assertNotNull(mm);
+		assertEquals(metaModel, mm);
 	}
 
 	/**
@@ -283,63 +513,6 @@ public class ExecEnvTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerFeature(org.eclipse.m2m.atl.emftvm.Feature) <em>Register Feature</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#registerFeature(org.eclipse.m2m.atl.emftvm.Feature)
-	 * @generated NOT
-	 */
-	public void testRegisterFeature__Feature() {
-		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
-
-		final Field f = EmftvmFactory.eINSTANCE.createField();
-		f.setName("field");
-		f.setContextModel("EMFTVM");
-		f.setContext("ExecEnv");
-		f.setTypeModel(EMFTVMUtil.NATIVE);
-		f.setType("Sequence");
-
-		assertNull(env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "field"));
-
-		env.registerFeature(f);
-
-		assertEquals(f, env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "field"));
-	}
-
-	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerRule(org.eclipse.m2m.atl.emftvm.Rule) <em>Register Rule</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#registerRule(org.eclipse.m2m.atl.emftvm.Rule)
-	 * @generated NOT
-	 */
-	public void testRegisterRule__Rule() {
-		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
-
-		final Rule r = EmftvmFactory.eINSTANCE.createRule();
-		r.setName("rule");
-		assertNull(env.findRule("rule"));
-		env.registerRule(r);
-		assertEquals(r, env.findRule("rule"));
-
-		final Rule rr = EmftvmFactory.eINSTANCE.createRule();
-		rr.setName("rule");
-		env.registerRule(rr);
-		assertEquals(rr, env.findRule("rule"));
-
-		final Rule rrr = EmftvmFactory.eINSTANCE.createRule();
-		rrr.setName("rule");
-		rrr.setMode(RuleMode.AUTOMATIC_SINGLE);
-		try {
-			env.registerRule(rrr);
-			fail("Rule redefinition should not work across different rule modes");
-		} catch (IllegalArgumentException e) {
-			//expected
-		}
-		assertEquals(rr, env.findRule("rule"));
-	}
-
-	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findOperation(java.lang.Object, java.lang.String, java.lang.Object[]) <em>Find Operation</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -351,9 +524,46 @@ public class ExecEnvTest extends TestCase {
 
 		// Find OclAny::oclAsType(ECORE!EClassifier)
 		final Operation op = env.findOperation(
-				Object.class, "oclAsType", new Object[]{EcorePackage.eINSTANCE.getEClass()});
+				NativeType.OBJECT.getType(), "oclAsType", new Object[]{EcorePackage.eINSTANCE.getEClass()});
 		assertNotNull(op);
 		assertEquals(Object.class, op.getEType().getInstanceClass());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findOperation(java.lang.Object, java.lang.String) <em>Find Operation</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#findOperation(java.lang.Object, java.lang.String)
+	 * @generated NOT
+	 */
+	public void testFindOperation__Object_String() {
+		final Operation op = getFixture().findOperation(NativeType.OBJECT.getType(), "oclType");
+		assertNotNull(op);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findOperation(java.lang.Object, java.lang.String, java.lang.Object) <em>Find Operation</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#findOperation(java.lang.Object, java.lang.String, java.lang.Object)
+	 * @generated NOT
+	 */
+	public void testFindOperation__Object_String_Object_1() {
+		final Operation op = getFixture().findOperation(
+				NativeType.OBJECT.getType(), "oclAsType", EcorePackage.eINSTANCE.getEClass());
+		assertNotNull(op);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#hasOperation(java.lang.String, int) <em>Has Operation</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#hasOperation(java.lang.String, int)
+	 * @generated NOT
+	 */
+	public void testHasOperation__String_int() {
+		assertTrue(getFixture().hasOperation("oclAsType", 1));
+		assertFalse(getFixture().hasOperation("oclAsType", 2));
 	}
 
 	/**
@@ -374,6 +584,72 @@ public class ExecEnvTest extends TestCase {
 	}
 
 	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findStaticOperation(java.lang.Object, java.lang.String) <em>Find Static Operation</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#findStaticOperation(java.lang.Object, java.lang.String)
+	 * @generated NOT
+	 */
+	public void testFindStaticOperation__Object_String() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+
+		// Create and register operation
+		final Operation op = EMFTVMUtil.createOperation(true, "test", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE, 
+				new String[][][]{}, new NativeCodeBlock());
+		final Module module = EmftvmFactory.eINSTANCE.createModule();
+		module.setName("testmodule");
+		module.getFeatures().add(op);
+		env.loadModule(new ModuleResolver() {
+			public Module resolveModule(String name) throws ModuleNotFoundException {
+				return module;
+			}
+		}, "testmodule");
+
+		final Operation test = env.findStaticOperation(EmftvmPackage.eINSTANCE.getExecEnv(), "test");
+		assertNotNull(test);
+		assertEquals(op, test);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findStaticOperation(java.lang.Object, java.lang.String, java.lang.Object) <em>Find Static Operation</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#findStaticOperation(java.lang.Object, java.lang.String, java.lang.Object)
+	 * @generated NOT
+	 */
+	public void testFindStaticOperation__Object_String_Object_1() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+
+		// Create and register operation
+		final Operation op = EMFTVMUtil.createOperation(true, "test", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE, 
+				new String[][][]{{{"var"}, Types.OCL_ANY_TYPE}}, new NativeCodeBlock());
+		final Module module = EmftvmFactory.eINSTANCE.createModule();
+		module.setName("testmodule");
+		module.getFeatures().add(op);
+		env.loadModule(new ModuleResolver() {
+			public Module resolveModule(String name) throws ModuleNotFoundException {
+				return module;
+			}
+		}, "testmodule");
+
+		final Operation test = env.findStaticOperation(EmftvmPackage.eINSTANCE.getExecEnv(), "test", NativeType.OBJECT.getType());
+		assertNotNull(test);
+		assertEquals(op, test);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#hasStaticOperation(java.lang.String, int) <em>Has Static Operation</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#hasStaticOperation(java.lang.String, int)
+	 * @generated NOT
+	 */
+	public void testHasStaticOperation__String_int() {
+		assertTrue(getFixture().hasStaticOperation("resolveTemp", 2));
+		assertFalse(getFixture().hasStaticOperation("resolveTemp", 1));
+	}
+
+	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findField(java.lang.Object, java.lang.String) <em>Find Field</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -390,11 +666,52 @@ public class ExecEnvTest extends TestCase {
 		f.setTypeModel(EMFTVMUtil.NATIVE);
 		f.setType("Sequence");
 
+		final Module m = EmftvmFactory.eINSTANCE.createModule();
+		m.setName("test");
+		m.getFeatures().add(f);
+
 		assertNull(env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "field"));
 
-		env.registerFeature(f);
+		env.loadModule(new ModuleResolver() {
+			public Module resolveModule(String name) throws ModuleNotFoundException {
+				return m;
+			}
+		}, "test");
 
 		assertEquals(f, env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "field"));
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#hasField(java.lang.String) <em>Has Field</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#hasField(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testHasField__String() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+
+		final Field f = EmftvmFactory.eINSTANCE.createField();
+		f.setName("field");
+		f.setContextModel("EMFTVM");
+		f.setContext("ExecEnv");
+		f.setTypeModel(EMFTVMUtil.NATIVE);
+		f.setType("Sequence");
+
+		final Module m = EmftvmFactory.eINSTANCE.createModule();
+		m.setName("test");
+		m.getFeatures().add(f);
+
+		assertNull(env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "field"));
+
+		env.loadModule(new ModuleResolver() {
+			public Module resolveModule(String name) throws ModuleNotFoundException {
+				return m;
+			}
+		}, "test");
+
+		assertTrue(env.hasField("field"));
+		assertFalse(env.hasField("nonfield"));
 	}
 
 	/**
@@ -414,6 +731,21 @@ public class ExecEnvTest extends TestCase {
 	}
 
 	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#hasStaticField(java.lang.String) <em>Has Static Field</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#hasStaticField(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testHasStaticField__String() {
+		final ExecEnv env = getFixture();
+
+		// Find static EMFTVM!ExecEnv::traces : TRACE!TraceLinkSet
+		assertTrue(env.hasStaticField("traces"));
+		assertFalse(env.hasStaticField("nontraces"));
+	}
+
+	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#findRule(java.lang.String) <em>Find Rule</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -426,9 +758,17 @@ public class ExecEnvTest extends TestCase {
 		final Rule r = EmftvmFactory.eINSTANCE.createRule();
 		r.setName("rule");
 
+		final Module m = EmftvmFactory.eINSTANCE.createModule();
+		m.setName("test");
+		m.getRules().add(r);
+
 		assertNull(env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "rule"));
 
-		env.registerRule(r);
+		env.loadModule(new ModuleResolver() {
+			public Module resolveModule(String name) throws ModuleNotFoundException {
+				return m;
+			}
+		}, "test");
 
 		assertEquals(r, env.findRule("rule"));
 	}
@@ -454,13 +794,13 @@ public class ExecEnvTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData, org.eclipse.m2m.atl.emftvm.util.VMMonitor) <em>Run</em>}' operation.
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData) <em>Run</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData, org.eclipse.m2m.atl.emftvm.util.VMMonitor)
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData)
 	 * @generated NOT
 	 */
-	public void testRun__TimingData_VMMonitor() {
+	public void testRun__TimingData() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ResourceSet rs = new ResourceSetImpl();
 
@@ -468,19 +808,19 @@ public class ExecEnvTest extends TestCase {
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
-		env.getInputModels().put("IN", inModel);
+		env.registerInputModel("IN", inModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
 		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
 		outModel.setResource(outRes);
-		env.getOutputModels().put("OUT", outModel);
+		env.registerOutputModel("OUT", outModel);
 
 		// Load and run module
 		final ModuleResolver mr = new DefaultModuleResolver(PLUGIN_URI + "/test-data/", rs);
 		final TimingData td = new TimingData();
 		env.loadModule(mr, "EMFTVMCopy");
 		td.finishLoading();
-		env.run(td, null);
+		env.run(td);
 		td.finish();
 		System.out.print(td.toString());
 	}
@@ -498,9 +838,17 @@ public class ExecEnvTest extends TestCase {
 		final Rule r = EmftvmFactory.eINSTANCE.createRule();
 		r.setName("rule");
 
+		final Module m = EmftvmFactory.eINSTANCE.createModule();
+		m.setName("test");
+		m.getRules().add(r);
+
 		assertTrue(env.getRules().isEmpty());
 
-		env.registerRule(r);
+		env.loadModule(new ModuleResolver() {
+			public Module resolveModule(String name) throws ModuleNotFoundException {
+				return m;
+			}
+		}, "test");
 
 		assertFalse(env.getRules().isEmpty());
 		assertEquals(r, env.getRules().get(0));
@@ -521,12 +869,12 @@ public class ExecEnvTest extends TestCase {
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
-		env.getInputModels().put("IN", inModel);
+		env.registerInputModel("IN", inModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
 		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
 		outModel.setResource(outRes);
-		env.getOutputModels().put("OUT", outModel);
+		env.registerOutputModel("OUT", outModel);
 		
 		// Get an object, and retrieve its model
 		final EObject object = inRes.getContents().get(0);
@@ -553,17 +901,40 @@ public class ExecEnvTest extends TestCase {
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
-		env.getInputModels().put("IN", inModel);
+		env.registerInputModel("IN", inModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
 		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
 		outModel.setResource(outRes);
-		env.getOutputModels().put("OUT", outModel);
+		env.registerOutputModel("OUT", outModel);
 		
 		final String modelID = env.getModelID(inModel);
 
 		assertNotNull(modelID);
 		assertEquals("IN", modelID);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModelID(org.eclipse.m2m.atl.emftvm.Metamodel) <em>Get Meta Model ID</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModelID(org.eclipse.m2m.atl.emftvm.Metamodel)
+	 * @generated NOT
+	 */
+	public void testGetMetaModelID__Metamodel() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load metamodel
+		final Resource portsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true), true);
+		final Metamodel metaModel = EmftvmFactory.eINSTANCE.createMetamodel();
+		metaModel.setResource(portsRes);
+		env.registerMetaModel("PORTS", metaModel);
+
+		final String id = env.getMetaModelID(metaModel);
+
+		assertNotNull(id);
+		assertEquals("PORTS", id);
 	}
 
 	/**
@@ -581,12 +952,12 @@ public class ExecEnvTest extends TestCase {
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
-		env.getInputModels().put("IN", inModel);
+		env.registerInputModel("IN", inModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
 		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
 		outModel.setResource(outRes);
-		env.getOutputModels().put("OUT", outModel);
+		env.registerOutputModel("OUT", outModel);
 		
 		// Create output element
 		final EObject element = outModel.newElement(EmftvmPackage.eINSTANCE.getModule());
@@ -629,12 +1000,12 @@ public class ExecEnvTest extends TestCase {
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
-		env.getInputModels().put("IN", inModel);
+		env.registerInputModel("IN", inModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
 		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
 		outModel.setResource(outRes);
-		env.getOutputModels().put("OUT", outModel);
+		env.registerOutputModel("OUT", outModel);
 		
 		// Get an object, and retrieve its model
 		final EObject object = inRes.getContents().get(0);
@@ -661,12 +1032,12 @@ public class ExecEnvTest extends TestCase {
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
-		env.getInoutModels().put("IN", inModel);
+		env.registerInOutModel("IN", inModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
 		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
 		outModel.setResource(outRes);
-		env.getOutputModels().put("OUT", outModel);
+		env.registerOutputModel("OUT", outModel);
 		
 		// Get an object, and retrieve its model
 		final EObject object = inRes.getContents().get(0);
@@ -693,12 +1064,12 @@ public class ExecEnvTest extends TestCase {
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
-		env.getInputModels().put("IN", inModel);
+		env.registerInputModel("IN", inModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
 		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
 		outModel.setResource(outRes);
-		env.getOutputModels().put("OUT", outModel);
+		env.registerOutputModel("OUT", outModel);
 		
 		// Create output element, and retrieve its model
 		final EObject element = outModel.newElement(EmftvmPackage.eINSTANCE.getModule());

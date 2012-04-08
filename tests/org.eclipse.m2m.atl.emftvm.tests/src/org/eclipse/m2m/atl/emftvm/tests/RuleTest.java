@@ -34,7 +34,9 @@ import org.eclipse.m2m.atl.emftvm.Rule;
  * The following operations are tested:
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#findField(java.lang.Object, java.lang.String) <em>Find Field</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#hasField(java.lang.String) <em>Has Field</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#findStaticField(java.lang.Object, java.lang.String) <em>Find Static Field</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#hasStaticField(java.lang.String) <em>Has Static Field</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#registerField(org.eclipse.m2m.atl.emftvm.Field) <em>Register Field</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#matchSingle(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Match Single</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#matchRecursive(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Match Recursive</em>}</li>
@@ -175,6 +177,19 @@ public class RuleTest extends NamedElementTest {
 	}
 
 	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#hasField(java.lang.String) <em>Has Field</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#hasField(java.lang.String)
+	 * @generated
+	 */
+	public void testHasField__String() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#findStaticField(java.lang.Object, java.lang.String) <em>Find Static Field</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -182,6 +197,19 @@ public class RuleTest extends NamedElementTest {
 	 * @generated
 	 */
 	public void testFindStaticField__Object_String() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#hasStaticField(java.lang.String) <em>Has Static Field</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#hasStaticField(java.lang.String)
+	 * @generated
+	 */
+	public void testHasStaticField__String() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();

@@ -1,0 +1,19 @@
+-- @atlcompiler atl2010
+-- See benchmark on http://julialang.org/
+query Fibonacci = --(30).fib().debug('fib');
+	(1000).collectFib().debug('fib');
+
+helper context Integer def : fib() : Integer =
+    if (self < 2) then
+		self
+    else
+    	(self-1).fib() + (self-2).fib()
+	endif;
+
+helper context Integer def : collectFib() : Boolean =
+	let fib : Boolean = (20).fib() = 6765 in
+	if (self < 2) then
+		fib
+	else
+		fib and (self - 1).collectFib()
+	endif;

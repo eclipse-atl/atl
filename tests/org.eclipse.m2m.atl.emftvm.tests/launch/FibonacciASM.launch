@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
+<stringAttribute key="ATL File Name" value="/org.eclipse.m2m.atl.emftvm.tests/test-data/FibonacciASM.atl"/>
+<stringAttribute key="ATL VM" value="EMF-specific VM"/>
+<stringAttribute key="ATL_COMPILER" value="atl2010"/>
+<booleanAttribute key="IS_REFINING" value="false"/>
+<mapAttribute key="Input"/>
+<mapAttribute key="Libs"/>
+<mapAttribute key="Model Handler"/>
+<mapAttribute key="ModelType"/>
+<mapAttribute key="Options">
+<mapEntry key="OPTION_CLEAR" value="false"/>
+<mapEntry key="OPTION_CONTENT_TYPE" value="false"/>
+<mapEntry key="OPTION_DERIVED" value="true"/>
+<mapEntry key="allowInterModelReferences" value="false"/>
+<mapEntry key="printExecutionTime" value="true"/>
+<mapEntry key="step" value="false"/>
+<mapEntry key="supportUML2Stereotypes" value="false"/>
+</mapAttribute>
+<listAttribute key="OrderedInput"/>
+<listAttribute key="OrderedOutput"/>
+<mapAttribute key="Output"/>
+<mapAttribute key="Path"/>
+<listAttribute key="Superimpose"/>
+</launchConfiguration>
