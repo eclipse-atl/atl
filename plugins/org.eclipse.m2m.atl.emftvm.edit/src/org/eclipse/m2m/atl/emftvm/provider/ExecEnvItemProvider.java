@@ -76,6 +76,7 @@ public class ExecEnvItemProvider
 			addMatchesPropertyDescriptor(object);
 			addTracesPropertyDescriptor(object);
 			addUniqueResultsPropertyDescriptor(object);
+			addJitDisabledPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -164,6 +165,28 @@ public class ExecEnvItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Jit Disabled feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addJitDisabledPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_ExecEnv_jitDisabled_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ExecEnv_jitDisabled_feature", "_UI_ExecEnv_type"),
+				 EmftvmPackage.Literals.EXEC_ENV__JIT_DISABLED,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -299,6 +322,7 @@ public class ExecEnvItemProvider
 			case EmftvmPackage.EXEC_ENV__INOUT_MODELS:
 			case EmftvmPackage.EXEC_ENV__OUTPUT_MODELS:
 			case EmftvmPackage.EXEC_ENV__UNIQUE_RESULTS:
+			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}
