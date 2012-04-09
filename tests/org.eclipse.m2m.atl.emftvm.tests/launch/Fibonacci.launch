@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.m2m.atl.emftvm.launcher.EMFTVMTransformation">
 <stringAttribute key="ATL File Name" value="//org.eclipse.m2m.atl.emftvm.tests/test-data/Fibonacci.atl"/>
+<booleanAttribute key="Disable JIT compiler" value="false"/>
 <booleanAttribute key="Display Timing Data" value="true"/>
-<booleanAttribute key="Enable JIT compiler" value="true"/>
 <mapAttribute key="Inout Model Options"/>
 <mapAttribute key="Inout Models"/>
 <mapAttribute key="Inout Models Output Locations"/>
