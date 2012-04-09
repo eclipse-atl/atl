@@ -232,8 +232,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public void checkAndCreateUniqueMapping(TracedRule tr,
-				EList<SourceElement> ses) {
+		public void checkAndCreateUniqueMapping(final TracedRule tr, final EList<SourceElement> ses) {
 			assert isUnique();
 			if (ses.size() == 1) {
 				final SourceElement se = ses.get(0);
@@ -281,14 +280,16 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		public boolean matchFor(final StackFrame frame, final EObject[] values) {
 			assert isUnique();
 			// Don't match if values have previously matched
-			final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(getName(), true);
-			if (values.length == 1) {
-				if (tr.getUniqueSourceElement(values[0]) != null) {
-					return false;
-				}
-			} else {
-				if (tr.getUniqueSourceElements(Arrays.asList(values)) != null) {
-					return false;
+			final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(getName(), false);
+			if (tr != null) {
+				if (values.length == 1) {
+					if (tr.getUniqueSourceElement(values[0]) != null) {
+						return false;
+					}
+				} else {
+					if (tr.getUniqueSourceElements(Arrays.asList(values)) != null) {
+						return false;
+					}
 				}
 			}
 			// Otherwise match as normal
@@ -303,14 +304,16 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 				final EObject[] values) {
 			assert isUnique();
 			// Don't match if values have previously matched
-			final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(getName(), true);
-			if (values.length == 1) {
-				if (tr.getUniqueSourceElement(values[0]) != null) {
-					return false;
-				}
-			} else {
-				if (tr.getUniqueSourceElements(Arrays.asList(values)) != null) {
-					return false;
+			final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(getName(), false);
+			if (tr != null) {
+				if (values.length == 1) {
+					if (tr.getUniqueSourceElement(values[0]) != null) {
+						return false;
+					}
+				} else {
+					if (tr.getUniqueSourceElements(Arrays.asList(values)) != null) {
+						return false;
+					}
 				}
 			}
 			// Otherwise match as normal
@@ -324,16 +327,18 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * @return the unique rule application trace, or <code>null</code>
 		 */
 		private TraceLink getUniqueTrace(final StackFrame frame, final EObject[] values) {
-			final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(getName(), true);
-			if (values.length == 1) {
-				final SourceElement se = tr.getUniqueSourceElement(values[0]);
-				if (se != null) {
-					return se.getSourceOf();
-				}
-			} else {
-				final SourceElementList sel = tr.getUniqueSourceElements(Arrays.asList(values));
-				if (sel != null) {
-					return sel.getSourceElements().get(0).getSourceOf();
+			final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(getName(), false);
+			if (tr != null) {
+				if (values.length == 1) {
+					final SourceElement se = tr.getUniqueSourceElement(values[0]);
+					if (se != null) {
+						return se.getSourceOf();
+					}
+				} else {
+					final SourceElementList sel = tr.getUniqueSourceElements(Arrays.asList(values));
+					if (sel != null) {
+						return sel.getSourceElements().get(0).getSourceOf();
+					}
 				}
 			}
 			return null;
