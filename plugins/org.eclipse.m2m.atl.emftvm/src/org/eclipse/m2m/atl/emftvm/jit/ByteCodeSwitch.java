@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.emftvm.jit;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -85,6 +86,7 @@ import org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch;
 import org.eclipse.m2m.atl.emftvm.util.EnumConversionList;
 import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
+import org.eclipse.m2m.atl.emftvm.util.LazyListOnList;
 import org.eclipse.m2m.atl.emftvm.util.NativeTypes;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
@@ -2016,6 +2018,22 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 				invokeVirt(EnumConversionList.class, "cache", EnumConversionList.class); // enumlist.cache(): [..., enumlist] 
 				label(ifModelNull); // [..., enumlist]
 			}
+		} else if (cls.isArray()) {
+			final Class<?> cType = cls.getComponentType();
+			// Array of cType
+			final Label ifNull = new Label();
+			dup(); // [..., array, array]
+			ifnull(ifNull); // jump if array == null: [..., array]
+			if (Object.class.isAssignableFrom(cType)) {
+				invokeStat(Arrays.class, "asList", List.class, Object[].class); // Arrays.asList(array): [..., list]
+			} else {
+				invokeStat(JITCodeBlock.class, "asList", List.class, cls); // JITCodeBlock.asList(array): [..., list]
+			}
+			new_(LazyListOnList.class); // new LazyListOnList: [..., list, lazylist]
+			dup_x1(); // [..., lazylist, list, lazylist]
+			swap(); // [..., lazylist, lazylist, list]
+			invokeCons(LazyListOnList.class, List.class); // lazylist.<init>(list): [..., lazylist]
+			label(ifNull);
 		}
 		// [..., Object]
 	}
