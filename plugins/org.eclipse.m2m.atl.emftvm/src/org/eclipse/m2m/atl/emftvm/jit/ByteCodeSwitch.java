@@ -1171,11 +1171,12 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	 */
 	@Override
 	public MethodVisitor caseAllinstIn(final AllinstIn object) {
-		// [..., modelName, type]
+		// [..., type, modelName]
+		swap(); // [..., modelName, type]
 		checkcast(EClass.class); // [..., modelName, type]
 		aload(2); // env: [..., modelName, type, env]
 		invokeStat( // EMFTVMUtil.findAllInstances(modelName, type, env) 
-				EMFTVMUtil.class, "findAllInstances", LazyList.class,
+				EMFTVMUtil.class, "findAllInstIn", LazyList.class,
 				Object.class, EClass.class, ExecEnv.class);
 		return super.caseAllinstIn(object);
 	}
