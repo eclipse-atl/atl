@@ -885,13 +885,13 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					cb = ((And)instr).getCodeBlock();
 					frame.setPc(pc);
 					frame.push((Boolean)frame.pop() && 
-								(Boolean)cb.execute(frame.getSubFrame(cb, null)).pop());
+								(Boolean)cb.execute(new StackFrame(frame, cb)).pop());
 					break;
 				case OR:
 					cb = ((Or)instr).getCodeBlock();
 					frame.setPc(pc);
 					frame.push((Boolean)frame.pop() ||
-								(Boolean)cb.execute(frame.getSubFrame(cb, null)).pop());
+								(Boolean)cb.execute(new StackFrame(frame, cb)).pop());
 					break;
 				case XOR:
 					frame.push((Boolean)frame.pop() ^ (Boolean)frame.pop());
@@ -900,7 +900,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					cb = ((Implies)instr).getCodeBlock();
 					frame.setPc(pc);
 					frame.push(!(Boolean)frame.pop() ||
-								(Boolean)cb.execute(frame.getSubFrame(cb, null)).pop());
+								(Boolean)cb.execute(new StackFrame(frame, cb)).pop());
 					break;
 				case IFTE:
 					frame.setPc(pc);
@@ -909,7 +909,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					} else {
 						cb = ((Ifte)instr).getElseCb();
 					}
-					frame.push(cb.execute(frame.getSubFrame(cb, null)).pop());
+					frame.push(cb.execute(new StackFrame(frame, cb)).pop());
 					break;
 				case RETURN:
 					break LOOP;
