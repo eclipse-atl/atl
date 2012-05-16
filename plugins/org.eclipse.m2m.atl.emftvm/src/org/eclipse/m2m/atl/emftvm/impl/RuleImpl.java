@@ -2293,7 +2293,9 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated NOT
 	 */
 	public void resetState() {
+		withLeaves = WITH_LEAVES_EDEFAULT;
 		withLeavesSet = false;
+		leaf = LEAF_EDEFAULT;
 		leafSet = false;
 		allESuperRules = null;
 		iterableList = null;
