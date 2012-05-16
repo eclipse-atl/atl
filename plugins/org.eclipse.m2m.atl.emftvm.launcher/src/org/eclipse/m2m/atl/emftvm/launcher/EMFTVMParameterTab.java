@@ -87,7 +87,7 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 	 */
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(EMFTVMLaunchConstants.DISPLAY_TIMING, true);
-		configuration.setAttribute(EMFTVMLaunchConstants.DISABLE_JIT, true);
+		configuration.setAttribute(EMFTVMLaunchConstants.DISABLE_JIT, false);
 	}
 
 	/**
