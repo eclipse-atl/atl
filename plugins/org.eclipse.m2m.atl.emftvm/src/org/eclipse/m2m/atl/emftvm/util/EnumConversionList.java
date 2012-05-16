@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.eclipse.emf.common.util.Enumerator;
+import org.eclipse.emf.ecore.EEnumLiteral;
 
 /**
  * Converts {@link Enumerator}s to {@link EnumLiteral}s.
@@ -64,7 +65,7 @@ public class EnumConversionList extends LazyList<Object> {
 	 * @return the converted object
 	 */
 	protected final Object convert(final Object object) {
-		if (object instanceof Enumerator) {
+		if (object instanceof Enumerator && !(object instanceof EEnumLiteral)) {
 			return new EnumLiteral(object.toString());
 		}
 		return object;

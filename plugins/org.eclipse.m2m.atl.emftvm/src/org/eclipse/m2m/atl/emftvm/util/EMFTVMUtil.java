@@ -38,6 +38,7 @@ import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -365,7 +366,7 @@ public final class EMFTVMUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static Object emf2vm(final ExecEnv env, final EObject eo, final Object value) {
-		if (value instanceof Enumerator) {
+		if (value instanceof Enumerator && !(value instanceof EEnumLiteral)) {
 			return new EnumLiteral(value.toString());
 		} else if (value instanceof EList<?>) {
 			if (eo != null && env.getInoutModelOf(eo) != null) {
