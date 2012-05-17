@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="My"
-    nsURI="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/EcoreCopy/My.ecore"
-    nsPrefix="My">
-  <eClassifiers xsi:type="ecore:EClass" name="TestClass">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="My2"
+    nsURI="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/EcoreCopy/My2.ecore"
+    nsPrefix="My2">
+  <eClassifiers xsi:type="ecore:EClass" name="TestClass2">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="testAtt" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="testAtt2" eType="#//TestEnum"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="testAtt2" eType="#//TestEnum2"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="TestEnum">
+  <eClassifiers xsi:type="ecore:EEnum" name="TestEnum2">
     <eLiterals name="testLiteral"/>
     <eLiterals name="testLiteral2" value="1"/>
   </eClassifiers>

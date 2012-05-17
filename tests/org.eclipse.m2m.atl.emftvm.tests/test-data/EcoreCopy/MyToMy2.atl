@@ -1,0 +1,13 @@
+-- @atlcompiler emftvm
+-- @path My=/org.eclipse.m2m.atl.emftvm.tests/test-data/EcoreCopy/My.ecore
+-- @path My2=/org.eclipse.m2m.atl.emftvm.tests/test-data/EcoreCopy/My2.ecore
+module MyToMy2;
+
+create OUT : My2 from IN : My;
+
+rule TestClass {
+	from s : My!TestClass
+	to t : My2!TestClass2 (
+		testAtt <- s.testAtt,
+		testAtt2 <- s.testAtt2)
+}

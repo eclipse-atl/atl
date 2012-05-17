@@ -7,6 +7,10 @@
         <element xmi:type="ecore:EAttribute" href="My.ecore#//TestClass/testAtt"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_9IqrUZ-JEeGYcc__s7M97A"/>
       </children>
+      <children xmi:type="notation:Node" xmi:id="_67YvQZ_oEeG5ddZYiw6BCA" type="2001">
+        <element xmi:type="ecore:EAttribute" href="My.ecore#//TestClass/testAtt2"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_67YvQp_oEeG5ddZYiw6BCA"/>
+      </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="_8NKFUZ-JEeGYcc__s7M97A"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="_8NKFUp-JEeGYcc__s7M97A"/>
       <styles xmi:type="notation:FilteringStyle" xmi:id="_8NKFU5-JEeGYcc__s7M97A"/>
@@ -26,6 +30,10 @@
       <children xmi:type="notation:Node" xmi:id="_Aef-sJ-KEeGYcc__s7M97A" type="2006">
         <element xmi:type="ecore:EEnumLiteral" href="My.ecore#//TestEnum/testLiteral"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="_Aef-sZ-KEeGYcc__s7M97A"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_6P2CcJ_pEeG5ddZYiw6BCA" type="2006">
+        <element xmi:type="ecore:EEnumLiteral" href="My.ecore#//TestEnum/testLiteral2"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_6P2CcZ_pEeG5ddZYiw6BCA"/>
       </children>
       <styles xmi:type="notation:DrawerStyle" xmi:id="__VkAsp-JEeGYcc__s7M97A"/>
       <styles xmi:type="notation:SortingStyle" xmi:id="__VkAs5-JEeGYcc__s7M97A"/>
