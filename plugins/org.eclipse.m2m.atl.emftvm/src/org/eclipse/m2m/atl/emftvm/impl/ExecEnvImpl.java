@@ -375,6 +375,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	protected final Queue<DeletionEntry> deletionQueue = new LinkedList<DeletionEntry>();
 
 	private CodeBlockJIT cbJit;
+	private boolean ruleStateCompiled;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -580,7 +581,16 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public synchronized void setMonitor(final VMMonitor monitor) {
-		resetJITCompiler();
+		// Reset JIT compiler if monitor changes from or to null
+		if (this.monitor == null) {
+			if (monitor != null) {
+				resetJITCompiler();
+			}
+		} else {
+			if (monitor == null) {
+				resetJITCompiler();
+			}
+		}
 		this.monitor = monitor;
 	}
 
@@ -591,9 +601,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public synchronized void registerMetaModel(final String name, final Metamodel metamodel) {
+		internalMetaModels.put(name, metamodel);
 		clearModelCaches();
 		resetJITCompiler();
-		internalMetaModels.put(name, metamodel);
 	}
 
 	/**
@@ -603,8 +613,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public synchronized void registerInputModel(final String name, final Model model) {
-		clearModelCaches();
 		internalInputModels.put(name, model);
+		clearModelCaches();
 	}
 
 	/**
@@ -614,8 +624,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public synchronized void registerInOutModel(final String name, final Model model) {
-		clearModelCaches();
 		internalInoutModels.put(name, model);
+		clearModelCaches();
 	}
 
 	/**
@@ -625,8 +635,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public synchronized void registerOutputModel(final String name, final Model model) {
-		clearModelCaches();
 		internalOutputModels.put(name, model);
+		clearModelCaches();
 	}
 
 	/**
@@ -702,6 +712,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	public synchronized Module loadModule(final ModuleResolver resolver, final String name) {
 		resetJITCompiler();
+		if (isRuleStateCompiled()) {
+			for (Rule r : getRules()) {
+				r.resetState();
+			}
+		}
+		setRuleStateCompiled(false);
 		try {
 			//detect cyclic imports w.r.t. redefinition
 			if (internalModules.containsKey(name)) {
@@ -953,16 +969,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		}
 		rules.put(rName, r);
 
-		final Map<String, Model> inModels = new LinkedHashMap<String, Model>(getInputModels());
-		inModels.putAll(getInoutModels());
 		for (RuleElement re : r.getInputElements()) {
-			resolveRuleElement(re, inModels);
+			resolveRuleElement(re);
 		}
 
-		final Map<String, Model> outModels = new LinkedHashMap<String, Model>(getOutputModels());
-		outModels.putAll(getInoutModels());
 		for (OutputRuleElement re : r.getOutputElements()) {
-			resolveRuleElement(re, outModels);
+			resolveRuleElement(re);
 		}
 
 		for (Field field : r.getFields()) {
@@ -973,22 +985,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
-	 * Resolves model and type references in <pre>re</pre>.
+	 * Resolves type references in <pre>re</pre>.
 	 * @param re the rule element to resolve references for
-	 * @param models the map of models resolve from
 	 * @throws IllegalArgumentException when a reference cannot be resolved
 	 */
-	private void resolveRuleElement(final RuleElement re, final Map<String, Model> models) {
+	private void resolveRuleElement(final RuleElement re) {
 		re.setEType(findEClassifier(re.getTypeModel(), re.getType()));
-		final EList<Model> eModels = re.getEModels();
-		eModels.clear();
-		for (String modelName : re.getModels()) {
-			final Model model = models.get(modelName);
-			if (model == null) {
-				throw new IllegalArgumentException(String.format("Model %s not found", modelName));
-			}
-			eModels.add(model);
-		}
 	}
 
 	/**
@@ -1029,6 +1031,43 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				}
 			}
 			eSuperRules.add(superRule);
+		}
+	}
+
+	/**
+	 * Resolves model references for a {@link Rule}.
+	 * @param rule the {@link Rule} to resolve
+	 */
+	protected void resolveRuleModels(final Rule r) {
+		final Map<String, Model> inModels = new LinkedHashMap<String, Model>(getInputModels());
+		inModels.putAll(getInoutModels());
+		for (RuleElement re : r.getInputElements()) {
+			resolveRuleElementModels(re, inModels);
+		}
+
+		final Map<String, Model> outModels = new LinkedHashMap<String, Model>(getOutputModels());
+		outModels.putAll(getInoutModels());
+		for (OutputRuleElement re : r.getOutputElements()) {
+			resolveRuleElementModels(re, outModels);
+		}
+	}
+
+	/**
+	 * Resolves model references in <pre>re</pre>.
+	 * @param re the rule element to resolve references for
+	 * @param models the map of models resolve from
+	 * @throws IllegalArgumentException when a reference cannot be resolved
+	 */
+	private void resolveRuleElementModels(final RuleElement re, final Map<String, Model> models) {
+		re.setEType(findEClassifier(re.getTypeModel(), re.getType()));
+		final EList<Model> eModels = re.getEModels();
+		eModels.clear();
+		for (String modelName : re.getModels()) {
+			final Model model = models.get(modelName);
+			if (model == null) {
+				throw new IllegalArgumentException(String.format("Model %s not found", modelName));
+			}
+			eModels.add(model);
 		}
 	}
 
@@ -1477,9 +1516,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		Object result = null;
 		try {
 			assert deletionQueue.isEmpty();
-			//TODO re-think rule state to allow pre-calculation
 			for (Rule r : getRules()) {
-				r.compileState(this); // compile internal state for all registered rules
+				resolveRuleModels(r);
+			}
+			if (!isRuleStateCompiled()) {
+				for (Rule r : getRules()) {
+					r.compileState(this); // compile internal state for all registered rules
+				}
 			}
 			final Iterator<Operation> mains = mainChain.iterator();
 			if (!mains.hasNext()) {
@@ -1507,10 +1550,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			}
 			throw e;
 		} finally {
-			//TODO re-think rule state to allow pre-calculation
-			for (Rule r : getRules()) {
-				r.resetState();
-			}
 			this.matches = null;
 			this.traces = null;
 			this.uniqueResults = null;
@@ -1948,6 +1987,22 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			cbJit.cleanup(); // Clean up all generated JVM bytecode
 		}
 		cbJit = null;
+	}
+
+	/**
+	 * Returns whether the internal state of the rules has been compiled.
+	 * @return the ruleStateCompiled
+	 */
+	protected boolean isRuleStateCompiled() {
+		return ruleStateCompiled;
+	}
+
+	/**
+	 * Sets whether the internal state of the rules has been compiled.
+	 * @param ruleStateCompiled the ruleStateCompiled to set
+	 */
+	protected void setRuleStateCompiled(boolean ruleStateCompiled) {
+		this.ruleStateCompiled = ruleStateCompiled;
 	}
 
 } //ExecEnvImpl
