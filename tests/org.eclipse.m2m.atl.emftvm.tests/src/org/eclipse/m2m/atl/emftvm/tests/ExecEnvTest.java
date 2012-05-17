@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -18,6 +20,13 @@ import junit.textui.TestRunner;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
+import org.eclipse.emf.compare.diff.metamodel.DiffModel;
+import org.eclipse.emf.compare.diff.metamodel.ReferenceOrderChange;
+import org.eclipse.emf.compare.diff.service.DiffService;
+import org.eclipse.emf.compare.match.MatchOptions;
+import org.eclipse.emf.compare.match.metamodel.MatchModel;
+import org.eclipse.emf.compare.match.service.MatchService;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -109,6 +118,8 @@ public class ExecEnvTest extends TestCase {
 
 	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.tests";
 	public static final String PLUGIN_URI = "platform:/plugin/" + PLUGIN_ID;
+	public static final String COMPILER_PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.compiler";
+	public static final String COMPILER_PLUGIN_URI = "platform:/plugin/" + COMPILER_PLUGIN_ID;
 
 	public static final Bundle bundle = Platform.getBundle(PLUGIN_ID);
 
@@ -127,6 +138,30 @@ public class ExecEnvTest extends TestCase {
 	 */
 	public static void main(String[] args) {
 		TestRunner.run(ExecEnvTest.class);
+	}
+
+	/**
+	 * Asserts that leftResource and rightResource are equal. Uses EMF Compare.
+	 * @param leftObject
+	 * @param rightObject
+	 * @throws InterruptedException 
+	 */
+	public static void assertEquals(Resource leftResource, Resource rightResource)
+	throws InterruptedException {
+		final Map<String, Object> options = new HashMap<String, Object>();
+		options.put(MatchOptions.OPTION_IGNORE_XMI_ID, Boolean.TRUE);
+		final MatchModel match = MatchService.doResourceMatch(leftResource, rightResource, options);
+		assertTrue(match.getUnmatchedElements().isEmpty());
+		if (!leftResource.getContents().isEmpty()) {
+			assertFalse(match.getMatchedElements().isEmpty());
+		}
+		final DiffModel diff = DiffService.doDiff(match);
+		assertTrue(diff.getOwnedElements().size() == 1);
+		for (Iterator<EObject> allContents = diff.eAllContents(); allContents.hasNext();) {
+			EObject de = allContents.next();
+			//allow only certain kinds of diff elements
+			assertTrue(de instanceof DiffGroup || de instanceof ReferenceOrderChange);
+		}
 	}
 
 	/**
@@ -193,7 +228,7 @@ public class ExecEnvTest extends TestCase {
 		assertNotNull(mms);
 		final Metamodel emftvm = mms.get(EmftvmPackage.eNAME.toUpperCase());
 		assertNotNull(emftvm);
-		assertEquals(EmftvmPackage.eINSTANCE.eResource(), emftvm.getResource());
+		assertTrue(EmftvmPackage.eINSTANCE.eResource() == emftvm.getResource());
 	}
 
 	/**
@@ -797,32 +832,97 @@ public class ExecEnvTest extends TestCase {
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData) <em>Run</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @throws InterruptedException 
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData)
 	 * @generated NOT
 	 */
-	public void testRun__TimingData() {
+	public void testRun__TimingData() throws InterruptedException {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ResourceSet rs = new ResourceSetImpl();
 
 		// Load models
-		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		{
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(COMPILER_PLUGIN_ID + "/transformations/ATLtoEMFTVM.atl", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
 		env.registerInputModel("IN", inModel);
+		}
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
 		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
 		outModel.setResource(outRes);
 		env.registerOutputModel("OUT", outModel);
+		assertEquals(outModel, env.getOutputModels().get("OUT"));
+
+		final Resource pbsRes = rs.createResource(URI.createFileURI("pbs.xmi"));
+		final Model pbsModel = EmftvmFactory.eINSTANCE.createModel();
+		pbsModel.setResource(pbsRes);
+		env.registerOutputModel("PBS", pbsModel);
+		assertEquals(pbsModel, env.getOutputModels().get("PBS"));
+
+		{
+		final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
+		atlmm.setResource(rs.getResource(URI.createURI("http://www.eclipse.org/gmt/2005/ATL"), true));
+		env.registerMetaModel("ATL", atlmm);
+		}
+
+		{
+		final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
+		pbmm.setResource(rs.getResource(URI.createPlatformPluginURI(COMPILER_PLUGIN_ID + "/metamodels/Problem.ecore", true), true));
+		env.registerMetaModel("Problem", pbmm);
+		}
 
 		// Load and run module
-		final ModuleResolver mr = new DefaultModuleResolver(PLUGIN_URI + "/test-data/", rs);
+		{
+		final ModuleResolver mr = new DefaultModuleResolver(COMPILER_PLUGIN_URI + "/transformations/", rs);
 		final TimingData td = new TimingData();
-		env.loadModule(mr, "EMFTVMCopy");
+		env.loadModule(mr, "ATLtoEMFTVM");
 		td.finishLoading();
 		env.run(td);
 		td.finish();
 		System.out.print(td.toString());
+		}
+
+		// Create another output model, and run the transformation again
+		final Resource outRes2 = rs.createResource(URI.createFileURI("out2.xmi"));
+		final Model outModel2 = EmftvmFactory.eINSTANCE.createModel();
+		outModel2.setResource(outRes2);
+		env.registerOutputModel("OUT", outModel2);
+		assertEquals(outModel2, env.getOutputModels().get("OUT"));
+
+		final Resource pbsRes2 = rs.createResource(URI.createFileURI("pbs2.xmi"));
+		final Model pbsModel2 = EmftvmFactory.eINSTANCE.createModel();
+		pbsModel2.setResource(pbsRes2);
+		env.registerOutputModel("PBS", pbsModel2);
+		assertEquals(pbsModel2, env.getOutputModels().get("PBS"));
+
+		{
+		final TimingData td2 = new TimingData();
+		td2.finishLoading();
+		env.run(td2);
+		td2.finish();
+		System.out.print(td2.toString());
+		}
+		
+		// Compare results
+		assertEquals(outRes, outRes2);
+		assertEquals(pbsRes, pbsRes2);
+		
+		// Run once more
+		outRes2.getContents().clear();
+		pbsRes2.getContents().clear();
+
+		{
+		final TimingData td2 = new TimingData();
+		td2.finishLoading();
+		env.run(td2);
+		td2.finish();
+		System.out.print(td2.toString());
+		}
+		
+		// Compare results
+		assertEquals(outRes, outRes2);
+		assertEquals(pbsRes, pbsRes2);
 	}
 
 	/**
@@ -866,7 +966,7 @@ public class ExecEnvTest extends TestCase {
 		final ResourceSet rs = new ResourceSetImpl();
 
 		// Load models
-		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
 		env.registerInputModel("IN", inModel);
@@ -898,7 +998,7 @@ public class ExecEnvTest extends TestCase {
 		final ResourceSet rs = new ResourceSetImpl();
 
 		// Load models
-		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
 		env.registerInputModel("IN", inModel);
@@ -949,7 +1049,7 @@ public class ExecEnvTest extends TestCase {
 		final ResourceSet rs = new ResourceSetImpl();
 
 		// Load models
-		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
 		env.registerInputModel("IN", inModel);
@@ -997,7 +1097,7 @@ public class ExecEnvTest extends TestCase {
 		final ResourceSet rs = new ResourceSetImpl();
 
 		// Load models
-		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
 		env.registerInputModel("IN", inModel);
@@ -1029,7 +1129,7 @@ public class ExecEnvTest extends TestCase {
 		final ResourceSet rs = new ResourceSetImpl();
 
 		// Load models
-		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
 		env.registerInOutModel("IN", inModel);
@@ -1061,7 +1161,7 @@ public class ExecEnvTest extends TestCase {
 		final ResourceSet rs = new ResourceSetImpl();
 
 		// Load models
-		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/ATLtoEMFTVM.emftvm", true), true);
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
 		env.registerInputModel("IN", inModel);

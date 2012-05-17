@@ -1,22 +1,16 @@
-<project name="org.eclipse.m2m.atl.emftvm.tests/test-data" default="all">
+<project name="org.eclipse.m2m.atl.emftvm.tests/test-data" default="clean">
 
 	<target name="clean">
 		<delete>
 			<fileset dir=".">
 	    		<exclude name="**/build.xml"/>
 	    		<exclude name="**/*.atl"/>
+				<exclude name="**/*.xmi"/>
+				<exclude name="**/*.ecore"/>
+				<exclude name="**/*.ecorediag"/>
 			</fileset>
 		</delete>
+		<eclipse.refreshLocal resource="${ant.project.name}"/>
 	</target>
-	
-	<target name="copy-emftvm-file">
-		<copy todir=".">
-			<fileset dir="../../org.eclipse.m2m.atl.emftvm.compiler/transformations">
-				<include name="*.emftvm"/>
-			</fileset>
-		</copy>
-	</target>
-	
-	<target name="all" depends="copy-emftvm-file"/>
 	
 </project>
