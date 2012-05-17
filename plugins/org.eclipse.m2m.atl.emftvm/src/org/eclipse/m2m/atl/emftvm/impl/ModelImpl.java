@@ -148,12 +148,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 		 */
 		@Override
 		public boolean remove(Object o) {
-			synchronized (cache) {
-				if (dataSource == null) { // cache complete
-					return cache.remove(o);
-				}
-			}
-			return super.remove(o);
+			// try to remove from cache - if not contained, nothing needs to be done
+			return cache.remove(o);
 		}
 
 		/**
@@ -161,12 +157,13 @@ public class ModelImpl extends EObjectImpl implements Model {
 		 */
 		@Override
 		public boolean add(EObject o) {
+			// add to cache only if complete - if not contained, it will show up on the next iteration
 			synchronized (cache) {
 				if (dataSource == null) { // cache complete
 					return cache.add(o);
 				}
 			}
-			return super.add(o);
+			return false;
 		}
 
 		/**
@@ -312,11 +309,7 @@ public class ModelImpl extends EObjectImpl implements Model {
 		getResource().getContents().add(instance);
 		assert instance.eResource() == getResource();
 		if (allInstancesMap.containsKey(type)) {
-			try {
-				allInstancesMap.get(type).add(instance);
-			} catch (UnsupportedOperationException e) {
-				allInstancesMap.remove(type);
-			}
+			allInstancesMap.get(type).add(instance);
 		}
 		return instance;
 	}
@@ -337,11 +330,7 @@ public class ModelImpl extends EObjectImpl implements Model {
 		}
 		final EClass type = element.eClass();
 		if (allInstancesMap.containsKey(type)) {
-			try {
-				allInstancesMap.get(type).remove(element);
-			} catch (UnsupportedOperationException e) {
-				allInstancesMap.remove(type);
-			}
+			allInstancesMap.get(type).remove(element);
 		}
 	}
 
