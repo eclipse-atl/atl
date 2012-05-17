@@ -38,7 +38,6 @@ import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -353,8 +352,19 @@ public final class EMFTVMUtil {
 	 * @param sf the structural feature to retrieve the value from
 	 * @return the value of <code>eo.sf</code>.
 	 */
+	@SuppressWarnings("unchecked")
 	public static Object uncheckedGet(final ExecEnv env, final EObject eo, final EStructuralFeature sf) {
-		return emf2vm(env, eo, eo.eGet(sf));
+		if (sf instanceof EReference) {
+			// EReferences need only EList conversion, notably not EnumLiteral conversion
+			final Object value = eo.eGet(sf);
+			if (value instanceof EList<?>) {
+				return new LazyListOnList<Object>((EList<Object>)value);
+			}
+			assert !(value instanceof Collection<?>); // All EMF collections should be ELists
+			return value;
+		} else {
+			return emf2vm(env, eo, eo.eGet(sf));
+		}
 	}
 
 	/**
@@ -366,7 +376,7 @@ public final class EMFTVMUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static Object emf2vm(final ExecEnv env, final EObject eo, final Object value) {
-		if (value instanceof Enumerator && !(value instanceof EEnumLiteral)) {
+		if (value instanceof Enumerator) {
 			return new EnumLiteral(value.toString());
 		} else if (value instanceof EList<?>) {
 			if (eo != null && env.getInoutModelOf(eo) != null) {
