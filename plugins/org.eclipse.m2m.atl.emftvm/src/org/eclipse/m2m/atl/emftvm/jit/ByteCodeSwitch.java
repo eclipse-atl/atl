@@ -579,57 +579,9 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		generateSetPc(object);
 		final int argcount = object.getArgcount();
 		switch (argcount) {
-		//TODO test speedup
 		case 0:  generateInvoke0(object); break;
 		case 1:  generateInvoke1(object); break;
 		default: generateInvokeN(object, argcount);	break;	
-//		case 0: // [..., self]
-//			aload(1); // frame: [..., self, frame]
-//			mv.visitLdcInsn(object.getOpname()); // [..., self, frame, opname]
-//			mv.visitMethodInsn(INVOKESTATIC, // invoke(self, frame, opname)
-//					Type.getInternalName(JITCodeBlock.class), 
-//					"invoke", 
-//					Type.getMethodDescriptor(Type.getType(Object.class), new Type[]{
-//						Type.getType(Object.class),
-//						Type.getType(StackFrame.class),
-//						Type.getType(String.class)
-//					}));
-//			break;
-//		case 1: // [..., self, arg]
-//			aload(1); // frame: [..., self, arg, frame]
-//			mv.visitLdcInsn(object.getOpname()); // [..., self, arg, frame, opname]
-//			mv.visitMethodInsn(INVOKESTATIC, // invoke(self, arg, frame, opname)
-//					Type.getInternalName(JITCodeBlock.class), 
-//					"invoke", 
-//					Type.getMethodDescriptor(Type.getType(Object.class), new Type[]{
-//						Type.getType(Object.class),
-//						Type.getType(Object.class),
-//						Type.getType(StackFrame.class),
-//						Type.getType(String.class)
-//					}));
-//			break;
-//		default: // [..., self, args]
-//			generatePushInt(argcount); // [..., self, args, argcount]
-//			anewarray(Object.class); // new Object[argcount]: [..., self, args, array]
-//			for (int i = 0; i < argcount; i++) {
-//				dup_x1(); // copy array ref below value: [..., self, args, array, arg, array]
-//				swap(); // swap arg over array ref: [..., self, args, array, array, arg]
-//				generatePushInt(argcount - 1 - i); // index: [..., self, args, array, array, arg, index]
-//				swap(); // swap index over arg: [..., self, args, array, array, index, arg]
-//				aastore(); // store: [..., self, args, array]
-//			} // no more args: [..., self, array]
-//			aload(1); // frame: [..., self, array, frame]
-//			mv.visitLdcInsn(object.getOpname()); // [..., self, array, frame, opname]
-//			mv.visitMethodInsn(INVOKESTATIC, // invoke(type, array, frame, opname)
-//					Type.getInternalName(JITCodeBlock.class), 
-//					"invoke", 
-//					Type.getMethodDescriptor(Type.getType(Object.class), new Type[]{
-//						Type.getType(Object.class),
-//						Type.getType(Object[].class),
-//						Type.getType(StackFrame.class),
-//						Type.getType(String.class)
-//					}));
-//			break;	
 		}
 		return super.caseInvoke(object);
 	}
@@ -709,7 +661,6 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			ifeq(tryEnd); // jump if context type does not match: [...]
 			// start try-block with native Java INVOKE instruction
 			label(tryStart); // [...]
-			//TODO find "root" method
 			final int opcode;
 			if (dc.isInterface()) {
 				opcode = INVOKEINTERFACE;
@@ -758,7 +709,6 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			// end of try-catch
 			label(tryEnd); // [...]
 			// Fall back to reflective invocation
-			//TODO remove logging statement
 			ldc("JIT miss for " + method.toString()); // [..., msg]
 			invokeStat(ATLLogger.class, "info", Type.VOID_TYPE, String.class); // ATLLogger.info(msg): [...]
 			aload(1); // frame: [..., frame]
@@ -868,7 +818,6 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			ifeq(tryEnd); // jump if arg type does not match: [...]
 			// start try-block with native Java INVOKE instruction
 			label(tryStart); // [...]
-			//TODO find "root" method
 			final int opcode;
 			if (dc.isInterface()) {
 				opcode = INVOKEINTERFACE;
@@ -928,7 +877,6 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			// end of try-catch
 			label(tryEnd); // [...]
 			// Fall back to reflective invocation
-			//TODO remove logging statement
 			ldc("JIT miss for " + method.toString()); // [..., msg]
 			invokeStat(ATLLogger.class, "info", Type.VOID_TYPE, String.class); // ATLLogger.info(msg): [...]
 			aload(1); // frame: [..., frame]
