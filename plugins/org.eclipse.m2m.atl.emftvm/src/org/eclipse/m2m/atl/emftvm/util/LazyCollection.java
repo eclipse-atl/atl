@@ -882,7 +882,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
-	 * Flattens any nested {@link Iterable}s by iterating over their elements
+	 * Recursively flattens any nested {@link Iterable}s by iterating over their elements
 	 * as well.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
@@ -913,8 +913,14 @@ public abstract class LazyCollection<E> implements Collection<E> {
 				} else {
 					while (!nextSet && inner.hasNext()) {
 						next = inner.next();
-						if (next instanceof Iterable<?>) {
-							current = ((Iterable<?>)next).iterator();
+						if (next instanceof Set<?>) {
+							current = new FlattenSetIterator((Set<?>)next);
+							if (current.hasNext()) {
+								next = current.next();
+								nextSet = true;
+							}
+						} else if (next instanceof Iterable<?>) {
+							current = new FlattenIterator((Iterable<?>)next);
 							if (current.hasNext()) {
 								next = current.next();
 								nextSet = true;
@@ -938,8 +944,14 @@ public abstract class LazyCollection<E> implements Collection<E> {
 				} else {
 					while (!nextSet) {
 						next = inner.next();
-						if (next instanceof Iterable<?>) {
-							current = ((Iterable<?>)next).iterator();
+						if (next instanceof Set<?>) {
+							current = new FlattenSetIterator((Set<?>)next);
+							if (current.hasNext()) {
+								next = current.next();
+								nextSet = true;
+							}
+						} else if (next instanceof Iterable<?>) {
+							current = new FlattenIterator((Iterable<?>)next);
 							if (current.hasNext()) {
 								next = current.next();
 								nextSet = true;
@@ -959,13 +971,14 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
-	 * Flattens any nested {@link Iterable}s by iterating over their elements
+	 * Recursively flattens any nested {@link Iterable}s by iterating over their elements
 	 * as well. Removes any duplicates from the returned elements.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static class FlattenSetIterator extends ReadOnlyIterator<Object> {
 		
-		protected final LazyCollection<?>.CachingSetIterator inner;
+		protected final Iterator<?> inner;
+		protected final Set<?> returnedValues;
 		protected Iterator<?> current;
 		protected Object next;
 		protected boolean nextSet;
@@ -974,18 +987,15 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * Creates a new {@link FlattenSetIterator} around <code>inner</code>.
 		 * @param inner the underlying collection
 		 */
-		public FlattenSetIterator(final LazySet<?> inner) {
+		public FlattenSetIterator(final Iterable<?> inner) {
 			super();
-			this.inner = (LazyCollection<?>.CachingSetIterator)inner.iterator();
-		}
-
-		/**
-		 * Creates a new {@link FlattenSetIterator} around <code>inner</code>.
-		 * @param inner the underlying collection
-		 */
-		public FlattenSetIterator(final LazyOrderedSet<?> inner) {
-			super();
-			this.inner = (LazyCollection<?>.CachingSetIterator)inner.iterator();
+			this.inner = inner.iterator();
+			if (this.inner instanceof LazyCollection<?>.CachingSetIterator) {
+				this.returnedValues = ((LazyCollection<?>.CachingSetIterator)
+						inner.iterator()).returnedValues;
+			} else {
+				this.returnedValues  = new HashSet<Object>();
+			}
 		}
 
 		/**
@@ -994,15 +1004,21 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * @see java.util.Iterator#hasNext()
 		 */
 		public boolean hasNext() {
-			while (!nextSet || inner.returnedValues.contains(next)) {
+			while (!nextSet || returnedValues.contains(next)) {
 				if (current != null && current.hasNext()) {
 					next = current.next();
 					nextSet = true;
 				} else if (inner.hasNext()) {
 					nextSet = false;
 					next = inner.next();
-					if (next instanceof Iterator<?>) {
-						current = (Iterator<?>)next;
+					if (next instanceof Set<?>) {
+						current = new FlattenSetIterator((Set<?>)next);
+						if (current.hasNext()) {
+							next = current.next();
+							nextSet = true;
+						}
+					} else if (next instanceof Iterable<?>) {
+						current = new FlattenIterator((Iterable<?>)next);
 						if (current.hasNext()) {
 							next = current.next();
 							nextSet = true;
@@ -1010,9 +1026,11 @@ public abstract class LazyCollection<E> implements Collection<E> {
 					} else {
 						nextSet = true;
 					}
+				} else {
+					break;
 				}
 			}
-			return nextSet && !inner.returnedValues.contains(next);
+			return nextSet && !returnedValues.contains(next);
 		}
 
 		/**
@@ -1021,15 +1039,21 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * @see java.util.Iterator#next()
 		 */
 		public Object next() {
-			while (!nextSet || inner.returnedValues.contains(next)) {
+			while (!nextSet || returnedValues.contains(next)) {
 				if (current != null && current.hasNext()) {
 					next = current.next();
 					nextSet = true;
 				} else {
 					nextSet = false;
 					next = inner.next();
-					if (next instanceof Iterator<?>) {
-						current = (Iterator<?>)next;
+					if (next instanceof Set<?>) {
+						current = new FlattenSetIterator((Set<?>)next);
+						if (current.hasNext()) {
+							next = current.next();
+							nextSet = true;
+						}
+					} else if (next instanceof Iterable<?>) {
+						current = new FlattenIterator((Iterable<?>)next);
 						if (current.hasNext()) {
 							next = current.next();
 							nextSet = true;
@@ -1041,7 +1065,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 				nextSet = true;
 			}
 			nextSet = false;
-			assert !nextSet && !inner.returnedValues.contains(next);
+			assert !nextSet && !returnedValues.contains(next);
 			return next;
 		}
 	}
