@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2012 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Dennis Wagelaar, Vrije Universiteit Brussel - initial API and
+ *     Dennis Wagelaar - initial API and
  *         implementation and/or initial documentation
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.util.tests;
@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -30,11 +31,12 @@ import org.eclipse.m2m.atl.emftvm.util.LazyOrderedSet;
 import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.NativeCodeBlock;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
+import org.eclipse.m2m.atl.emftvm.util.Tuple;
 
 /**
  * Tests {@link LazyList}.
  * 
- * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class LazyListTest extends TestCase {
 
@@ -46,18 +48,15 @@ public class LazyListTest extends TestCase {
 		dataSource.add("Three");
 	}
 
-	private LazyList<String> testLazyList;
-
 	/**
 	 * Returns a {@link LazyList} for testing.
 	 * 
 	 * @return a {@link LazyList}
 	 */
 	protected LazyList<String> getTestLazyList() {
-		if (testLazyList == null) {
-			testLazyList = new LazyList<String>(dataSource);
-		}
-		return testLazyList;
+		// Don't reuse lazy collections because their cache takes over when it
+		// is complete
+		return new LazyList<String>(dataSource);
 	}
 
 	/**
@@ -436,7 +435,150 @@ public class LazyListTest extends TestCase {
 			assertFalse(wli.hasNext());
 		}
 	}
-	
+
+	/**
+	 * Tests {@link LazyList#exists(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testExists() {
+		final LazyList<String> list = getTestLazyList();
+		assertTrue(list.exists(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(frame.getLocal(0).equals("One"));
+				return frame;
+			}
+
+		}));
+		assertFalse(list.exists(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(!list.contains(frame.getLocal(0)));
+				return frame;
+			}
+
+		}));
+		assertTrue(list.exists(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(true);
+				return frame;
+			}
+
+		}));
+		assertFalse(list.exists(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(false);
+				return frame;
+			}
+
+		}));
+	}
+
+	/**
+	 * Tests {@link LazyList#exists2(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testExists2() {
+		final LazyList<String> list = getTestLazyList();
+		assertTrue(list.exists2(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(frame.getLocal(0).equals(frame.getLocal(1)));
+				return frame;
+			}
+
+		}));
+		assertFalse(list.exists2(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(!list.contains(frame.getLocal(0))
+						|| !list.contains(frame.getLocal(1)));
+				return frame;
+			}
+
+		}));
+		assertTrue(list.exists2(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(true);
+				return frame;
+			}
+
+		}));
+		assertFalse(list.exists2(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(false);
+				return frame;
+			}
+
+		}));
+	}
+
 	/**
 	 * Tests {@link LazyList#first()}.
 	 */
@@ -450,6 +592,171 @@ public class LazyListTest extends TestCase {
 		} catch (NoSuchElementException e) {
 			// expected
 		}
+	}
+
+	/**
+	 * Tests {@link LazyList#flatten()}.
+	 */
+	public void testFlatten() {
+		final LazyList<String> list = getTestLazyList();
+		final LazyList<?> newList = list.flatten();
+		assertEquals(list, newList);
+
+		final LazyList<LazyList<String>> listList = new LazyList<LazyList<String>>()
+				.append(list);
+		assertEquals(list, listList.flatten());
+
+		final LazyList<LazyList<LazyList<String>>> listListList = new LazyList<LazyList<LazyList<String>>>()
+				.append(listList);
+		assertEquals(list, listListList.flatten());
+
+		final LazyList<LazySet<LazyList<String>>> listSetList = new LazyList<LazySet<LazyList<String>>>()
+				.append(new LazySet<LazyList<String>>().including(list)
+						.including(list));
+		assertEquals(list, listSetList.flatten());
+	}
+
+	/**
+	 * Tests {@link LazyList#forAll(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testForAll() {
+		final LazyList<String> list = getTestLazyList();
+		assertFalse(list.forAll(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(frame.getLocal(0).equals("One"));
+				return frame;
+			}
+
+		}));
+		assertTrue(list.forAll(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(list.contains(frame.getLocal(0)));
+				return frame;
+			}
+
+		}));
+		assertTrue(list.forAll(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(true);
+				return frame;
+			}
+
+		}));
+		assertFalse(list.forAll(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(false);
+				return frame;
+			}
+
+		}));
+	}
+
+	/**
+	 * Tests {@link LazyList#forAll2(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testForAll2() {
+		final LazyList<String> list = getTestLazyList();
+		assertFalse(list.forAll2(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(frame.getLocal(0).equals(frame.getLocal(1)));
+				return frame;
+			}
+
+		}));
+		assertTrue(list.forAll2(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(list.contains(frame.getLocal(0))
+						&& list.contains(frame.getLocal(1)));
+				return frame;
+			}
+
+		}));
+		assertTrue(list.forAll2(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(true);
+				return frame;
+			}
+
+		}));
+		assertFalse(list.forAll2(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(false);
+				return frame;
+			}
+
+		}));
 	}
 
 	/**
@@ -475,6 +782,254 @@ public class LazyListTest extends TestCase {
 	}
 
 	/**
+	 * Tests {@link LazyList#hashCode()}.
+	 */
+	public void testHashCode() {
+		final LazyList<String> list = getTestLazyList();
+		assertEquals(dataSource.hashCode(), list.hashCode());
+		assertFalse(list.hashCode() == list.append("Four").hashCode());
+		assertFalse(list.hashCode() == list.append(null).hashCode());
+	}
+
+	/**
+	 * Tests {@link LazyList#includes(Object)}.
+	 */
+	public void testIncludes() {
+		final LazyList<String> list = getTestLazyList();
+		assertFalse(list.includes("NotContained"));
+		assertFalse(list.includes(null));
+		assertTrue(list.includes(list.first()));
+		assertTrue(list.includes(list.last()));
+	}
+
+	/**
+	 * Tests {@link LazyList#includesAll(java.util.Collection)}.
+	 */
+	public void testIncludesAll() {
+		final LazyList<String> list = getTestLazyList();
+		assertTrue(list.includesAll(list));
+		assertTrue(list.includesAll(list.excluding(list.first())));
+		assertTrue(list.includesAll(list.excluding(list.last())));
+		assertTrue(list.includesAll(new LazyList<String>()));
+		assertFalse(list.includesAll(new LazyList<String>()
+				.append("NotContained")));
+		assertFalse(list.includesAll(new LazyList<String>().append(null)));
+		try {
+			list.includesAll(null);
+			fail("Expected NullPointerException");
+		} catch (NullPointerException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests {@link LazyList#including(Object)}.
+	 */
+	public void testIncluding() {
+		final LazyList<String> list = getTestLazyList();
+		final LazyList<String> appended = list.including("Four");
+		assertEquals(list.size() + 1, appended.size());
+		assertTrue(appended.contains("Four"));
+	}
+
+	/**
+	 * Tests {@link LazyList#indexOf(Object)}.
+	 */
+	public void testIndexOf() {
+		final LazyList<String> list = getTestLazyList();
+		assertEquals(0, list.indexOf(list.first()));
+		assertTrue(list.indexOf(list.last()) >= 0);
+		assertTrue(list.indexOf(list.last()) < list.size());
+		assertEquals(-1, list.indexOf("NotContained"));
+		assertEquals(-1, list.indexOf(null));
+	}
+
+	/**
+	 * Tests {@link LazyList#indexOf2(Object)}.
+	 */
+	public void testIndexOf2() {
+		final LazyList<String> list = getTestLazyList();
+		assertEquals(1, list.indexOf2(list.first()));
+		assertTrue(list.indexOf2(list.last()) >= 1);
+		assertTrue(list.indexOf2(list.last()) <= list.size());
+		try {
+			final int index = list.indexOf2("NotContained");
+			fail("Expected IndexOutOfBoundsException, but got " + index);
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			final int index = list.indexOf2(null);
+			fail("Expected IndexOutOfBoundsException, but got " + index);
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests {@link LazyList#insertAt(int, Object)}.
+	 */
+	public void testInsertAt() {
+		final LazyList<String> list = getTestLazyList();
+		{
+			final LazyList<String> inserted = list.insertAt(2, "Four");
+			assertEquals(list.size() + 1, inserted.size());
+			assertTrue(inserted.contains("Four"));
+			assertEquals("Four", inserted.get(1));
+		}
+		{
+			final LazyList<String> inserted = list.insertAt(1, "Four");
+			assertEquals(list.size() + 1, inserted.size());
+			assertTrue(inserted.contains("Four"));
+			assertEquals("Four", inserted.get(0));
+		}
+		{
+			final LazyList<String> inserted = list
+					.insertAt(list.size(), "Four");
+			assertEquals(list.size() + 1, inserted.size());
+			assertTrue(inserted.contains("Four"));
+			assertEquals("Four", inserted.get(list.size() - 1));
+		}
+		{
+			final LazyList<String> inserted = list.insertAt(list.size() + 1,
+					"Four");
+			assertEquals(list.size() + 1, inserted.size());
+			assertTrue(inserted.contains("Four"));
+			assertEquals("Four", inserted.get(list.size()));
+		}
+		try {
+			list.insertAt(0, "Four");
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			list.insertAt(list.size() + 2, "Four").last();
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests {@link LazyList#isEmpty()}.
+	 */
+	public void testIsEmpty() {
+		final LazyList<String> list = getTestLazyList();
+		assertFalse(list.isEmpty());
+		assertTrue(new LazyList<Object>().isEmpty());
+	}
+
+	/**
+	 * Tests {@link LazyList#isUnique(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testIsUnique() {
+		final LazyList<String> list = getTestLazyList();
+		assertFalse(list.isUnique(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(null);
+				return frame;
+			}
+
+		}));
+		assertFalse(list.isUnique(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(frame.getLocal(0));
+				return frame;
+			}
+
+		}));
+		assertTrue(list.excluding("Three").isUnique(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(frame.getLocal(0));
+				return frame;
+			}
+
+		}));
+	}
+
+	/**
+	 * Tests
+	 * {@link LazyList#iterate(Object, org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testIterate() {
+		final LazyList<String> list = getTestLazyList();
+		final String result = list.iterate("", new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(((String) frame.getLocal(1))
+						+ ((String) frame.getLocal(0)));
+				return frame;
+			}
+
+		});
+		final StringBuffer expected = new StringBuffer();
+		for (String s : list) {
+			expected.append(s);
+		}
+		assertEquals(expected.toString(), result);
+	}
+
+	/**
+	 * Tests {@link LazyList#iterator()}.
+	 */
+	public void testIterator() {
+		final LazyList<String> list = getTestLazyList();
+		final Iterator<String> listIt = list.iterator();
+		final Iterator<String> dsIt = dataSource.iterator();
+		while (dsIt.hasNext()) {
+			assertTrue(listIt.hasNext());
+			assertEquals(dsIt.next(), listIt.next());
+		}
+		assertFalse(listIt.hasNext());
+		try {
+			listIt.remove();
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+		try {
+			listIt.next();
+			fail("Expected NoSuchElementException");
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+	}
+
+	/**
 	 * Tests {@link LazyList#last()}.
 	 */
 	public void testLast() {
@@ -487,6 +1042,161 @@ public class LazyListTest extends TestCase {
 		} catch (NoSuchElementException e) {
 			// expected
 		}
+	}
+
+	/**
+	 * Tests {@link LazyList#lastIndexOf(Object)}.
+	 */
+	public void testLastIndexOf() {
+		final LazyList<String> list = getTestLazyList();
+		assertEquals(list.size() - 1, list.lastIndexOf(list.last()));
+		assertTrue(list.lastIndexOf(list.first()) >= 0);
+		assertTrue(list.lastIndexOf(list.first()) < list.size());
+		assertEquals(-1, list.lastIndexOf("NotContained"));
+		assertEquals(-1, list.lastIndexOf(null));
+	}
+
+	/**
+	 * Tests {@link LazyList#lastIndexOf2(Object)}.
+	 */
+	public void testLastIndexOf2() {
+		final LazyList<String> list = getTestLazyList();
+		assertEquals(list.size(), list.lastIndexOf2(list.last()));
+		assertTrue(list.lastIndexOf2(list.first()) >= 1);
+		assertTrue(list.lastIndexOf2(list.first()) <= list.size());
+		try {
+			final int index = list.lastIndexOf2("NotContained");
+			fail("Expected IndexOutOfBoundsException, but got " + index);
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			final int index = list.lastIndexOf2(null);
+			fail("Expected IndexOutOfBoundsException, but got " + index);
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests {@link LazyList#listIterator()}.
+	 */
+	public void testListIterator() {
+		final LazyList<String> list = getTestLazyList();
+		final ListIterator<String> listIt = list.listIterator();
+		final ListIterator<String> dsIt = dataSource.listIterator();
+		while (dsIt.hasNext()) {
+			assertTrue(listIt.hasNext());
+			assertEquals(dsIt.nextIndex(), listIt.nextIndex());
+			assertEquals(dsIt.next(), listIt.next());
+		}
+		assertFalse(listIt.hasNext());
+		try {
+			listIt.remove();
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+		try {
+			listIt.add("Four");
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+		try {
+			listIt.set("Four");
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+		try {
+			listIt.next();
+			fail("Expected NoSuchElementException");
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+		assertEquals(list.size(), listIt.nextIndex());
+		while (dsIt.hasPrevious()) {
+			assertTrue(listIt.hasPrevious());
+			assertEquals(dsIt.previousIndex(), listIt.previousIndex());
+			assertEquals(dsIt.previous(), listIt.previous());
+		}
+		assertFalse(listIt.hasPrevious());
+		try {
+			listIt.previous();
+			fail("Expected NoSuchElementException");
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+		assertEquals(-1, listIt.previousIndex());
+	}
+
+	/**
+	 * Tests {@link LazyList#listIterator(int)}.
+	 */
+	public void testListIterator__int() {
+		try {
+			getTestLazyList().listIterator(-1);
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			final LazyList<String> list = getTestLazyList();
+			list.listIterator(list.size() + 1);
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+
+		final LazyList<String> list = getTestLazyList();
+		final ListIterator<String> listIt = list.listIterator(list.size() - 1);
+		final ListIterator<String> dsIt = dataSource.listIterator(dataSource
+				.size() - 1);
+		while (dsIt.hasPrevious()) {
+			assertTrue(listIt.hasPrevious());
+			assertEquals(dsIt.previousIndex(), listIt.previousIndex());
+			assertEquals(dsIt.previous(), listIt.previous());
+		}
+		assertFalse(listIt.hasPrevious());
+		try {
+			listIt.previous();
+			fail("Expected NoSuchElementException");
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+		assertEquals(-1, listIt.previousIndex());
+		while (dsIt.hasNext()) {
+			assertTrue(listIt.hasNext());
+			assertEquals(dsIt.nextIndex(), listIt.nextIndex());
+			assertEquals(dsIt.next(), listIt.next());
+		}
+		assertFalse(listIt.hasNext());
+		try {
+			listIt.remove();
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+		try {
+			listIt.add("Four");
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+		try {
+			listIt.set("Four");
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+		try {
+			listIt.next();
+			fail("Expected NoSuchElementException");
+		} catch (NoSuchElementException e) {
+			// expected
+		}
+		assertEquals(list.size(), listIt.nextIndex());
 	}
 
 	/**
@@ -536,18 +1246,164 @@ public class LazyListTest extends TestCase {
 				});
 		assertEquals(1, intList.min().intValue());
 	}
-
+	
 	/**
-	 * Tests {@link LazyList#remove(int)}.
+	 * Tests {@link LazyList#notEmpty()}.
 	 */
-	public void testRemove__int() {
+	public void testNotEmpty() {
 		final LazyList<String> list = getTestLazyList();
-		try {
-			list.remove(1);
-			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
-			// expected
+		assertTrue(list.notEmpty());
+		assertFalse(new LazyList<Object>().notEmpty());
+	}
+	
+	/**
+	 * Tests {@link LazyList#one(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testOne() {
+		final LazyList<String> list = getTestLazyList();
+		assertTrue(list.one(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(frame.getLocal(0).equals("One"));
+				return frame;
+			}
+
+		}));
+		assertFalse(list.one(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(!list.contains(frame.getLocal(0)));
+				return frame;
+			}
+
+		}));
+		assertFalse(list.one(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(true);
+				return frame;
+			}
+
+		}));
+		assertFalse(list.one(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(false);
+				return frame;
+			}
+
+		}));
+	}
+	
+	/**
+	 * Tests {@link LazyList#prepend(Object)}.
+	 */
+	public void testPrepend() {
+		final LazyList<String> list = getTestLazyList();
+		final LazyList<String> prepended = list.prepend("Four");
+		assertEquals(list.size() + 1, prepended.size());
+		assertTrue(prepended.contains("Four"));
+		assertEquals("Four", prepended.get(0));
+	}
+	
+	/**
+	 * Tests {@link LazyList#product(Iterable)}.
+	 */
+	public void testProduct() {
+		final LazyList<String> list = getTestLazyList();
+		final LazySet<Tuple> product = list.product(list);
+		assertEquals(list.asSet().size() * list.asSet().size(), product.size());
+		for (Tuple t : product) {
+			assertEquals(2, t.asMap().size());
+			assertTrue(list.contains(t.get("first")));
+			assertTrue(list.contains(t.get("second")));
 		}
+		assertEquals(0, list.product(new LazyList<String>()).size());
+	}
+	
+	/**
+	 * Tests {@link LazyList#reject(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testReject() {
+		final LazyList<String> list = getTestLazyList();
+		final LazyList<String> rejected = list.reject(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(((String) frame.getLocal(0)).equals(list.first()));
+				return frame;
+			}
+
+		});
+		assertEquals(list.size() - list.count(list.first()), rejected.size());
+		assertFalse(rejected.contains(list.first()));
+		assertEquals(list.excluding(list.first()), rejected);
+		
+		assertEquals(0, list.reject(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(true);
+				return frame;
+			}
+
+		}).size());
+		
+		assertEquals(list.size(), list.reject(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(false);
+				return frame;
+			}
+
+		}).size());
 	}
 
 	/**
@@ -557,6 +1413,19 @@ public class LazyListTest extends TestCase {
 		final LazyList<String> list = getTestLazyList();
 		try {
 			list.remove("One");
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests {@link LazyList#remove(int)}.
+	 */
+	public void testRemove__int() {
+		final LazyList<String> list = getTestLazyList();
+		try {
+			list.remove(1);
 			fail("Expected UnsupportedOperationException");
 		} catch (UnsupportedOperationException e) {
 			// expected
@@ -579,27 +1448,5 @@ public class LazyListTest extends TestCase {
 	/*
 	 * TODO all other operations.
 	 */
-
-	/**
-	 * Tests {@link LazyList#flatten()}.
-	 */
-	public void testFlatten() {
-		final LazyList<String> list = getTestLazyList();
-		final LazyList<?> newList = list.flatten();
-		assertEquals(list, newList);
-
-		final LazyList<LazyList<String>> listList = new LazyList<LazyList<String>>()
-				.append(list);
-		assertEquals(list, listList.flatten());
-
-		final LazyList<LazyList<LazyList<String>>> listListList = new LazyList<LazyList<LazyList<String>>>()
-				.append(listList);
-		assertEquals(list, listListList.flatten());
-
-		final LazyList<LazySet<LazyList<String>>> listSetList = new LazyList<LazySet<LazyList<String>>>()
-				.append(new LazySet<LazyList<String>>().including(list)
-						.including(list));
-		assertEquals(list, listSetList.flatten());
-	}
 
 }

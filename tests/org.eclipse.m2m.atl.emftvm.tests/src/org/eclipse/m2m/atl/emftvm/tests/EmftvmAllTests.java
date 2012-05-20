@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,10 +15,13 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.eclipse.m2m.atl.emftvm.util.tests.LazyListTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.LazyOrderedSetTest;
+
 /**
  * <!-- begin-user-doc -->
  * A test suite for the '<em><b>Emftvm</b></em>' model.
- * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
  * @generated
  */
@@ -36,11 +39,13 @@ public class EmftvmAllTests extends TestSuite {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public static Test suite() {
 		TestSuite suite = new EmftvmAllTests("Emftvm Tests");
 		suite.addTest(EmftvmTests.suite());
+		suite.addTestSuite(LazyListTest.class);
+		suite.addTestSuite(LazyOrderedSetTest.class);
 		return suite;
 	}
 
