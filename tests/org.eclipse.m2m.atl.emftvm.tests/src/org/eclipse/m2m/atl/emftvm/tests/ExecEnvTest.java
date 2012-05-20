@@ -470,6 +470,7 @@ public class ExecEnvTest extends TestCase {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ResourceSet rs = new ResourceSetImpl();
 
+		{
 		// Load and register model
 		final Resource res = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
 		final Model model = EmftvmFactory.eINSTANCE.createModel();
@@ -478,6 +479,18 @@ public class ExecEnvTest extends TestCase {
 
 		assertTrue(env.getInoutModels().containsKey("M"));
 		assertEquals(model, env.getInoutModels().get("M"));
+		}
+
+		{
+		// Load and register model
+		final Resource res = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
+		final Model model = EmftvmFactory.eINSTANCE.createModel();
+		model.setResource(res);
+		env.registerInOutModel("M", model);
+
+		assertTrue(env.getInoutModels().containsKey("M"));
+		assertEquals(model, env.getInoutModels().get("M"));
+		}
 	}
 
 	/**

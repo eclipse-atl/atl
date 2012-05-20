@@ -53,6 +53,8 @@ import org.eclipse.m2m.atl.emftvm.Rule;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#createUniqueMapping(org.eclipse.m2m.atl.emftvm.trace.TraceLink) <em>Create Unique Mapping</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#compileState(org.eclipse.m2m.atl.emftvm.ExecEnv) <em>Compile State</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#resetState() <em>Reset State</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#compileIterables(org.eclipse.m2m.atl.emftvm.ExecEnv) <em>Compile Iterables</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#clearFields() <em>Clear Fields</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -418,6 +420,32 @@ public class RuleTest extends NamedElementTest {
 	 * @generated
 	 */
 	public void testResetState() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#compileIterables(org.eclipse.m2m.atl.emftvm.ExecEnv) <em>Compile Iterables</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#compileIterables(org.eclipse.m2m.atl.emftvm.ExecEnv)
+	 * @generated
+	 */
+	public void testCompileIterables__ExecEnv() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#clearFields() <em>Clear Fields</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#clearFields()
+	 * @generated
+	 */
+	public void testClearFields() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
