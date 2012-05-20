@@ -3681,6 +3681,11 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		addEOperation(ruleEClass, null, "resetState", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		op = addEOperation(ruleEClass, null, "compileIterables", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getExecEnv(), "env", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(ruleEClass, null, "clearFields", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(ruleElementEClass, RuleElement.class, "RuleElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRuleElement_Models(), theEcorePackage.getEString(), "models", null, 0, -1, RuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRuleElement_EModels(), this.getModel(), null, "eModels", null, 0, -1, RuleElement.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);

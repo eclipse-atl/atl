@@ -494,6 +494,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 				}
 			}
 			iterableList = iterables;
+			iterableMap = null;
 		}
 	}
 	
@@ -572,6 +573,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 				}
 			}
 			iterableMap = iterables;
+			iterableList = null;
 		}
 	}
 
@@ -2283,7 +2285,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		updateMatcherCbState();
 		updateApplierCbState();
 		updateDistinctState();
-		superRulesState.compileIterables(env);
 	}
 
 	/**
@@ -2301,6 +2302,26 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		iterableList = null;
 		iterableMap = null;
 		assert applyArgs.isEmpty(); // applyArgs should have been emptied after post-applying each applied rule
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void compileIterables(ExecEnv env) {
+		superRulesState.compileIterables(env);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void clearFields() {
+		fieldContainer.clear();
 	}
 
 	/**
@@ -2867,6 +2888,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final String key = keys.get(keyIndex);
 			assert !values.containsKey(key);
 			for (EObject o : iterables.get(key)) {
+				assert frame.getEnv().getModelOf(o) != null;
 				if (isDistinctElements() && values.containsValue(o)) {
 					continue; // all elements in this rule are distinct
 				}
@@ -2901,6 +2923,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			boolean result = false;
 			
 			for (EObject o : iterables.get(newIndex)) {
+				assert frame.getEnv().getModelOf(o) != null;
 				if (!distinctState.checkDistinct(values, newIndex, o)) {
 					continue; // all elements in this rule are distinct
 				}
@@ -3127,6 +3150,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final String key = keys.get(keyIndex);
 			assert !values.containsKey(key);
 			for (EObject o : iterables.get(key)) {
+				assert frame.getEnv().getModelOf(o) != null;
 				if (isDistinctElements() && values.containsValue(o)) {
 					continue; // all elements in this rule are distinct
 				}
@@ -3161,6 +3185,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 
 		if (newIndex < values.length) {
 			for (EObject o : iterables.get(newIndex)) {
+				assert frame.getEnv().getModelOf(o) != null;
 				if (!distinctState.checkDistinct(values, newIndex, o)) {
 					continue;
 				}

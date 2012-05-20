@@ -682,4 +682,24 @@ public interface Rule extends NamedElement {
 	 */
 	void resetState();
 
+	/**
+	 * <!-- begin-user-doc. -->
+	 * Compiles the model element iterables for this rule.
+	 * Call this method whenever any input or in/out model has changed.
+	 * @param env the execution environment context
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void compileIterables(ExecEnv env);
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * Clears the values of all registered fields within this rule.
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void clearFields();
+
 } // Rule

@@ -12,16 +12,16 @@
 package org.eclipse.m2m.atl.emftvm.util;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.m2m.atl.emftvm.Field;
 
-
 /**
  * Reusable class for storage and lookup of {@link Field}s.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
- *
  */
 public final class FieldContainer {
 
@@ -38,6 +38,11 @@ public final class FieldContainer {
 		new HashMap<String, TypeMap<Object,Field>>();
 
 	/**
+	 * Set of all fields (for clearing values).
+	 */
+	protected final Set<Field> allFields = new HashSet<Field>();
+
+	/**
 	 * Registers f in the corresponding lookup table.
 	 * @param f the field to register
 	 */
@@ -48,6 +53,7 @@ public final class FieldContainer {
 		} else {
 			registerFieldIn(f, fields);
 		}
+		allFields.add(f);
 	}
 
 	/**
@@ -133,6 +139,15 @@ public final class FieldContainer {
 	 */
 	public boolean hasStaticField(final String name) {
 		return staticFields.containsKey(name);
+	}
+
+	/**
+	 * Clears the values of all registered fields.
+	 */
+	public void clear() {
+		for (Field f : allFields) {
+			f.clear();
+		}
 	}
 
 	/**

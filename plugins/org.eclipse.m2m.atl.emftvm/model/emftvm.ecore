@@ -525,6 +525,10 @@
       <eParameters name="env" eType="#//ExecEnv"/>
     </eOperations>
     <eOperations name="resetState"/>
+    <eOperations name="compileIterables">
+      <eParameters name="env" eType="#//ExecEnv"/>
+    </eOperations>
+    <eOperations name="clearFields"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//Module"
         eOpposite="#//Module/rules"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mode" lowerBound="1" eType="#//RuleMode"/>

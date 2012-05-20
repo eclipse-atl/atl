@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.eclipse.m2m.atl.emftvm.CodeBlock;
 
 /**
  * Immutable {@link List} that supports lazy evaluation.
- * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  *
  * @param <E> the collection element type
  */
@@ -801,7 +801,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		@Override
 		public E get(final int index) {
 			final int size = ((List<E>)dataSource).size();
-			if (index < size) {
+			if (index <= size) {
 				if (index < this.index) {
 					return ((List<E>)dataSource).get(index);
 				} else if (index == this.index) {

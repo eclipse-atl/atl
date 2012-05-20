@@ -1050,6 +1050,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		for (OutputRuleElement re : r.getOutputElements()) {
 			resolveRuleElementModels(re, outModels);
 		}
+		r.compileIterables(this);
 	}
 
 	/**
@@ -1516,13 +1517,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		Object result = null;
 		try {
 			assert deletionQueue.isEmpty();
-			for (Rule r : getRules()) {
-				resolveRuleModels(r);
-			}
 			if (!isRuleStateCompiled()) {
 				for (Rule r : getRules()) {
 					r.compileState(this); // compile internal state for all registered rules
 				}
+			}
+			for (Rule r : getRules()) {
+				resolveRuleModels(r);
 			}
 			final Iterator<Operation> mains = mainChain.iterator();
 			if (!mains.hasNext()) {
@@ -1553,8 +1554,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			this.matches = null;
 			this.traces = null;
 			this.uniqueResults = null;
-			findStaticField(eClass(), "matches").clear();
-			findStaticField(eClass(), "traces").clear();
+			fieldContainer.clear();
+			for (Rule r : getRules()) {
+				r.clearFields();
+			}
 			assert findStaticField(eClass(), "matches").getStaticValue() == null;
 			assert findStaticField(eClass(), "traces").getStaticValue() == null;
 		}

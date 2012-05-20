@@ -254,6 +254,9 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		public IteratorToListIterator(final int index) {
 			super(iterator());
+			if (index < 0) {
+				throw new IndexOutOfBoundsException();
+			}
 			while (nextIndex() < index) {
 				next();
 			}
