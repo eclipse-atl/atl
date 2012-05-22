@@ -92,6 +92,64 @@ public class LazyOrderedSetTest extends TestCase {
 		}
 	}
 
+	/**
+	 * Tests {@link LazyList#subList(int, int)}.
+	 */
+	public void testSubList() {
+		final LazyOrderedSet<String> orderedSet = getTestLazyOrderedSet();
+		assertTrue(orderedSet.subList(0, 0).isEmpty());
+		assertTrue(orderedSet.subList(orderedSet.size() - 1, orderedSet.size() - 1).isEmpty());
+		assertEquals(orderedSet.first(), orderedSet.subList(0, 1).get(0));
+		assertEquals(orderedSet, orderedSet.subList(0, orderedSet.size()));
+		try {
+			orderedSet.subList(-1, orderedSet.size());
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			orderedSet.subList(orderedSet.size(), orderedSet.size() - 1);
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			orderedSet.subList(0, orderedSet.size() + 1).get(orderedSet.size());
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests {@link LazyList#subSequence(int, int).
+	 */
+	public void testSubSequence() {
+		final LazyOrderedSet<String> orderedSet = getTestLazyOrderedSet();
+		assertTrue(orderedSet.subSequence(1, 0).isEmpty());
+		assertTrue(orderedSet.subSequence(orderedSet.size(), orderedSet.size() - 1).isEmpty());
+		assertEquals(orderedSet.first(), orderedSet.subSequence(1, 1).first());
+		assertEquals(orderedSet, orderedSet.subSequence(1, orderedSet.size()));
+		try {
+			orderedSet.subSequence(0, orderedSet.size());
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			orderedSet.subSequence(orderedSet.size() + 1, orderedSet.size() - 1);
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			orderedSet.subSequence(1, orderedSet.size() + 1).at(orderedSet.size() + 1);
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+	}
+
 	/*
 	 * TODO all other operations.
 	 */
