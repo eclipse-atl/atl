@@ -12,6 +12,7 @@
 package org.eclipse.m2m.atl.emftvm.util.tests;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -420,7 +421,7 @@ public class LazyListTest extends TestCase {
 			final Iterator<String> wfi = withoutFirst.iterator();
 			for (String s : list) {
 				if (!s.equals(first)) {
-					assertEquals(s, wfi.next());
+					assertSame(s, wfi.next());
 				}
 			}
 			assertFalse(wfi.hasNext());
@@ -429,7 +430,7 @@ public class LazyListTest extends TestCase {
 			final Iterator<String> wli = withoutLast.iterator();
 			for (String s : list) {
 				if (!s.equals(last)) {
-					assertEquals(s, wli.next());
+					assertSame(s, wli.next());
 				}
 			}
 			assertFalse(wli.hasNext());
@@ -1012,7 +1013,7 @@ public class LazyListTest extends TestCase {
 		final Iterator<String> dsIt = dataSource.iterator();
 		while (dsIt.hasNext()) {
 			assertTrue(listIt.hasNext());
-			assertEquals(dsIt.next(), listIt.next());
+			assertSame(dsIt.next(), listIt.next());
 		}
 		assertFalse(listIt.hasNext());
 		try {
@@ -1034,7 +1035,7 @@ public class LazyListTest extends TestCase {
 	 */
 	public void testLast() {
 		final LazyList<String> list = getTestLazyList();
-		assertEquals(dataSource.get(dataSource.size() - 1), list.last());
+		assertSame(dataSource.get(dataSource.size() - 1), list.last());
 
 		try {
 			String last = new LazyList<String>().last();
@@ -1088,7 +1089,7 @@ public class LazyListTest extends TestCase {
 		while (dsIt.hasNext()) {
 			assertTrue(listIt.hasNext());
 			assertEquals(dsIt.nextIndex(), listIt.nextIndex());
-			assertEquals(dsIt.next(), listIt.next());
+			assertSame(dsIt.next(), listIt.next());
 		}
 		assertFalse(listIt.hasNext());
 		try {
@@ -1119,7 +1120,7 @@ public class LazyListTest extends TestCase {
 		while (dsIt.hasPrevious()) {
 			assertTrue(listIt.hasPrevious());
 			assertEquals(dsIt.previousIndex(), listIt.previousIndex());
-			assertEquals(dsIt.previous(), listIt.previous());
+			assertSame(dsIt.previous(), listIt.previous());
 		}
 		assertFalse(listIt.hasPrevious());
 		try {
@@ -1156,7 +1157,7 @@ public class LazyListTest extends TestCase {
 		while (dsIt.hasPrevious()) {
 			assertTrue(listIt.hasPrevious());
 			assertEquals(dsIt.previousIndex(), listIt.previousIndex());
-			assertEquals(dsIt.previous(), listIt.previous());
+			assertSame(dsIt.previous(), listIt.previous());
 		}
 		assertFalse(listIt.hasPrevious());
 		try {
@@ -1169,7 +1170,7 @@ public class LazyListTest extends TestCase {
 		while (dsIt.hasNext()) {
 			assertTrue(listIt.hasNext());
 			assertEquals(dsIt.nextIndex(), listIt.nextIndex());
-			assertEquals(dsIt.next(), listIt.next());
+			assertSame(dsIt.next(), listIt.next());
 		}
 		assertFalse(listIt.hasNext());
 		try {
@@ -1246,7 +1247,7 @@ public class LazyListTest extends TestCase {
 				});
 		assertEquals(1, intList.min().intValue());
 	}
-	
+
 	/**
 	 * Tests {@link LazyList#notEmpty()}.
 	 */
@@ -1255,7 +1256,7 @@ public class LazyListTest extends TestCase {
 		assertTrue(list.notEmpty());
 		assertFalse(new LazyList<Object>().notEmpty());
 	}
-	
+
 	/**
 	 * Tests {@link LazyList#one(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
 	 */
@@ -1322,7 +1323,7 @@ public class LazyListTest extends TestCase {
 
 		}));
 	}
-	
+
 	/**
 	 * Tests {@link LazyList#prepend(Object)}.
 	 */
@@ -1333,7 +1334,7 @@ public class LazyListTest extends TestCase {
 		assertTrue(prepended.contains("Four"));
 		assertEquals("Four", prepended.get(0));
 	}
-	
+
 	/**
 	 * Tests {@link LazyList#product(Iterable)}.
 	 */
@@ -1348,7 +1349,7 @@ public class LazyListTest extends TestCase {
 		}
 		assertEquals(0, list.product(new LazyList<String>()).size());
 	}
-	
+
 	/**
 	 * Tests {@link LazyList#reject(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
 	 */
@@ -1372,7 +1373,7 @@ public class LazyListTest extends TestCase {
 		assertEquals(list.size() - list.count(list.first()), rejected.size());
 		assertFalse(rejected.contains(list.first()));
 		assertEquals(list.excluding(list.first()), rejected);
-		
+
 		assertEquals(0, list.reject(new NativeCodeBlock() {
 			{
 				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
@@ -1388,7 +1389,7 @@ public class LazyListTest extends TestCase {
 			}
 
 		}).size());
-		
+
 		assertEquals(list.size(), list.reject(new NativeCodeBlock() {
 			{
 				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
@@ -1438,6 +1439,12 @@ public class LazyListTest extends TestCase {
 	public void testRemoveAll() {
 		final LazyList<String> list = getTestLazyList();
 		try {
+			list.removeAll(Collections.emptyList());
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+		try {
 			list.removeAll(dataSource);
 			fail("Expected UnsupportedOperationException");
 		} catch (UnsupportedOperationException e) {
@@ -1445,8 +1452,255 @@ public class LazyListTest extends TestCase {
 		}
 	}
 
-	/*
-	 * TODO all other operations.
+	/**
+	 * Tests {@link LazyList#retainAll(java.util.Collection)}.
 	 */
+	public void testRetainAll() {
+		final LazyList<String> list = getTestLazyList();
+		try {
+			list.retainAll(Collections.emptyList());
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+		try {
+			list.retainAll(dataSource);
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests {@link LazyList#reverse()}.
+	 */
+	public void testReverse() {
+		final LazyList<String> list = getTestLazyList();
+		final LazyList<String> reverse = list.reverse();
+		final ListIterator<String> listIt = list.listIterator(list.size());
+		for (String s : reverse) {
+			assertTrue(listIt.hasPrevious());
+			assertSame(listIt.previous(), s);
+		}
+		assertFalse(listIt.hasPrevious());
+	}
+
+	/**
+	 * Tests {@link LazyList#select(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testSelect() {
+		final LazyList<String> list = getTestLazyList();
+		final LazyList<String> selected = list.select(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(((String) frame.getLocal(0)).equals(list.first()));
+				return frame;
+			}
+
+		});
+		assertEquals(list.count(list.first()), selected.size());
+		assertTrue(selected.contains(list.first()));
+		for (String s : selected) {
+			assertEquals(list.first(), s);
+		}
+
+		assertEquals(0, list.select(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(false);
+				return frame;
+			}
+
+		}).size());
+
+		assertEquals(list.size(), list.select(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
+						.createExecEnv(), this);
+				getLocalVariables().add(
+						EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(true);
+				return frame;
+			}
+
+		}).size());
+	}
+
+	/**
+	 * Tests {@link LazyList#set(int, Object)}.
+	 */
+	public void testSet() {
+		final LazyList<String> list = getTestLazyList();
+		try {
+			list.set(0, "Four");
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests {@link LazyList#size()}.
+	 */
+	public void testSize() {
+		final LazyList<String> list = getTestLazyList();
+		assertEquals(dataSource.size(), list.size());
+		assertEquals(0, new LazyList<Object>().size());
+	}
+
+	/**
+	 * Tests {@link LazyList#subList(int, int)}.
+	 */
+	public void testSubList() {
+		final LazyList<String> list = getTestLazyList();
+		assertTrue(list.subList(0, 0).isEmpty());
+		assertTrue(list.subList(list.size() - 1, list.size() - 1).isEmpty());
+		assertEquals(list.first(), list.subList(0, 1).get(0));
+		assertEquals(list, list.subList(0, list.size()));
+		try {
+			list.subList(-1, list.size());
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			list.subList(list.size(), list.size() - 1);
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			list.subList(0, list.size() + 1).get(list.size());
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests {@link LazyList#subSequence(int, int).
+	 */
+	public void testSubSequence() {
+		final LazyList<String> list = getTestLazyList();
+		assertTrue(list.subSequence(1, 0).isEmpty());
+		assertTrue(list.subSequence(list.size(), list.size() - 1).isEmpty());
+		assertEquals(list.first(), list.subSequence(1, 1).first());
+		assertEquals(list, list.subSequence(1, list.size()));
+		try {
+			list.subSequence(0, list.size());
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			list.subSequence(list.size() + 1, list.size() - 1);
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+		try {
+			list.subSequence(1, list.size() + 1).at(list.size() + 1);
+			fail("Expected IndexOutOfBoundsException");
+		} catch (IndexOutOfBoundsException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests {@link LazyList#sum()}.
+	 */
+	public void testSum() {
+		final LazyList<String> list = getTestLazyList();
+		try {
+			list.sum();
+			fail("Expected IllegalArgumentException");
+		} catch (IllegalArgumentException e) {
+			// expected
+		}
+		assertEquals(0, new LazyList<Integer>().sum().intValue());
+		assertEquals(4, new LazyList<Integer>().including(1).including(-2)
+				.including(3).including(2).sum().intValue());
+		assertEquals(4L, new LazyList<Long>().including(1L).including(-2L)
+				.including(3L).including(2L).sum().longValue());
+		assertEquals(4.0f,
+				new LazyList<Float>().including(1.0f).including(-2.0f)
+						.including(3.0f).including(2.0f).sum().floatValue());
+		assertEquals(4.0, new LazyList<Double>().including(1.0).including(-2.0)
+				.including(3.0).including(2.0).sum().doubleValue());
+	}
+
+	/**
+	 * Tests {@link LazyList#toArray()}.
+	 */
+	public void testToArray() {
+		final LazyList<String> list = getTestLazyList();
+		final Object[] array = list.toArray();
+		assertEquals(list.size(), array.length);
+		for (int i = 0; i < list.size(); i++) {
+			assertSame(list.get(i), array[i]);
+		}
+	}
+
+	/**
+	 * Tests {@link LazyList#toArray(Object[])}.
+	 */
+	public void testToArray__Object() {
+		final LazyList<String> list = getTestLazyList();
+		final String[] array = list.toArray(new String[0]);
+		assertEquals(list.size(), array.length);
+		for (int i = 0; i < list.size(); i++) {
+			assertSame(list.get(i), array[i]);
+		}
+		assertSame(array, list.toArray(array));
+	}
+	
+	/**
+	 * Tests {@link LazyList#toString()}.
+	 */
+	public void testToString() {
+		final LazyList<String> list = getTestLazyList();
+		assertTrue(list.toString().length() > 0);
+		assertFalse(list.toString().equals(new LazyList<String>().toString()));
+		assertEquals(dataSource.toString(), list.toString());
+	}
+	
+	/**
+	 * Tests {@link LazyList#union(LazyList)}.
+	 */
+	public void testUnion() {
+		final LazyList<String> list = getTestLazyList();
+		final LazyList<String> union = list.union(list);
+		assertEquals(list.size() * 2, union.size());
+		final Iterator<String> unionIt = union.iterator();
+		for (String s : list) {
+			assertTrue(unionIt.hasNext());
+			assertSame(s, unionIt.next());
+		}
+		for (String s : list) {
+			assertTrue(unionIt.hasNext());
+			assertSame(s, unionIt.next());
+		}
+		assertFalse(unionIt.hasNext());
+		assertEquals(list, list.union(new LazyList<String>()));
+		assertEquals(list, new LazyList<String>().union(list));
+	}
 
 }
