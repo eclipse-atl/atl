@@ -970,7 +970,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		 */
 		@Override
 		public boolean isEmpty() {
-			return fromIndex < toIndex;
+			return fromIndex >= toIndex;
 		}
 
 		/**

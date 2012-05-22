@@ -444,7 +444,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
-			return i <= toIndex;
+			return i < toIndex;
 		}
 
 		/**
@@ -502,7 +502,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
-			return i <= toIndex;
+			return i < toIndex;
 		}
 	
 		/**

@@ -136,7 +136,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 */
 		@Override
 		public boolean isEmpty() {
-			return fromIndex < toIndex;
+			return fromIndex >= toIndex;
 		}
 
 		/**
