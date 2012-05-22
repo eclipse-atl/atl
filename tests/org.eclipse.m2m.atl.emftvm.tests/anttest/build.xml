@@ -15,7 +15,7 @@
 		<emftvm.loadModel name="ATLCopy" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLCopy.atl"/>
 		<emftvm.loadModel name="EMFTVMCopy" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/EMFTVMCopy.atl"/>
 		<emftvm.loadMetamodel name="ATL" uri="http://www.eclipse.org/gmt/2005/ATL"/>
-		<emftvm.loadModel name="InlineCodeblocks" wspath="org.eclipse.m2m.atl.emftvm.tests/test-data/InlineCodeblocks.emftvm"/>
+		<emftvm.loadModel name="InlineCodeblocks" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/InlineCodeblocks.emftvm"/>
 	</target>
 
 	<target name="run" depends="loadModels">
