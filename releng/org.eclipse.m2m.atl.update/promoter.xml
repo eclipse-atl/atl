@@ -9,7 +9,7 @@
   Contributors:
       Obeo - initial API and implementation
 
- $Id: promoter.xml,v 1.7 2012/03/19 15:37:40 wpiers Exp $
+ $Id: promoter.xml,v 1.8 2012/05/24 13:40:30 wpiers Exp $
 -->
 <project name="Promoter" default="main">
 	<!--
@@ -22,13 +22,13 @@
 	$> export ANT_HOME=/shared/common/apache-ant-1.8.2/ 
 	-->
 
-	<property name="downloads.project.root" value="modeling/m2m/atl" />
+	<property name="downloads.project.root" value="mmt/atl" />
 	<property name="build.root" value="/shared/jobs/m2m-atl-master/lastSuccessful/archive/org.eclipse.m2m/org.eclipse.m2m.atl/releng/org.eclipse.m2m.atl.update/target/" />
 	<property name="thirdPartyJarsDir" value="/shared/modeling/m2m/atl/3rdPartyJars" />
 	<property name="project.name" value="ATL"/>
 	<property name="final.updatesite.name" value="m2m-atl-Update"/>
 	<property name="build.root.updatesite.name" value="org.eclipse.m2m.atl.update.zip"/>
-	<property name="group.owner" value="modeling.m2m.atl" />
+	<property name="group.owner" value="modeling.mmt.atl" />
 
 	<!--# To permit automatic downloads of non-EPL compatible code, override this to property to "Y" -->
 	<property name="thirdPartyDownloadLicenseAcceptance" value="Y" />
