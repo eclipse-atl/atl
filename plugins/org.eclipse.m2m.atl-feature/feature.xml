@@ -11,7 +11,7 @@
    </description>
 
    <copyright url="%copyrightURL">
-	  %copyright
+      %copyright
    </copyright>
 
    <license url="%licenseURL">
@@ -37,15 +37,14 @@
       <import plugin="org.eclipse.emf.edit"/>
       <import plugin="org.eclipse.emf.common.ui"/>
       <import plugin="org.eclipse.core.resources" version="3.5.2" match="greaterOrEqual"/>
+      <import plugin="org.antlr.runtime" version="3.0.0" match="equivalent"/>
       <import plugin="org.eclipse.emf.common"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.debug.core" version="3.5.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.codegen"/>
       <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.update.core"/>
       <import plugin="org.eclipse.emf.ecore.editor"/>
       <import plugin="org.apache.ant" version="1.7.1" match="greaterOrEqual"/>
-      <import plugin="org.antlr.runtime" version="3.0.0" match="equivalent"/>
    </requires>
 
    <plugin
