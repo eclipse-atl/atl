@@ -15,8 +15,12 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.eclipse.m2m.atl.emftvm.util.tests.LazyBagTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.LazyListOnCollectionTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.LazyListOnListTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyListTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyOrderedSetTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.LazySetTest;
 
 /**
  * <!-- begin-user-doc -->
@@ -45,6 +49,10 @@ public class EmftvmAllTests extends TestSuite {
 		TestSuite suite = new EmftvmAllTests("Emftvm Tests");
 		suite.addTest(EmftvmTests.suite());
 		suite.addTestSuite(LazyListTest.class);
+		suite.addTestSuite(LazyListOnCollectionTest.class);
+		suite.addTestSuite(LazyListOnListTest.class);
+		suite.addTestSuite(LazyBagTest.class);
+		suite.addTestSuite(LazySetTest.class);
 		suite.addTestSuite(LazyOrderedSetTest.class);
 		return suite;
 	}
