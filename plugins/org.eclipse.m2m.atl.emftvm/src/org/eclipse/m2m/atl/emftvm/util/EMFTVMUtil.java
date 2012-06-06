@@ -634,13 +634,14 @@ public final class EMFTVMUtil {
 		} else if (sf instanceof EReference) {
 			final EReference ref = (EReference)sf;
 			final boolean allowInterModelReferences = isAllowInterModelReferences(env, eo);
+			final Collection<?> srcValues = ref.isContainment() ? new ArrayList<Object>(value) : value;
 			if (index > -1) {
 				int currentIndex = index;
-				for (Object v : value) {
+				for (Object v : srcValues) {
 					addRefValue(env, ref, eo, values, (EObject)v, currentIndex++, allowInterModelReferences);
 				}
 			} else {
-				for (Object v : value) {
+				for (Object v : srcValues) {
 					addRefValue(env, ref, eo, values, (EObject)v, -1, allowInterModelReferences);
 				}
 			}
@@ -697,7 +698,8 @@ public final class EMFTVMUtil {
 			}
 		} else if (sf instanceof EReference) {
 			final EReference ref = (EReference)sf;
-			for (Object v : value) {
+			final Collection<?> srcValues = ref.isContainment() ? new ArrayList<Object>(value) : value;
+			for (Object v : srcValues) {
 				removeRefValue(ref, eo, values, (EObject)v);
 			}
 		} else {
