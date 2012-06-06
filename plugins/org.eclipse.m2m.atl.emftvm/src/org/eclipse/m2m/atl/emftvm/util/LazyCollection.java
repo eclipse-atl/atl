@@ -290,6 +290,19 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		/**
 		 * {@inheritDoc}
 		 */
+		public E next() {
+			if (i < cache.size()) {
+				return ((List<E>) cache).get(i++);
+			} else {
+				final E next = inner.next();
+				updateCache(next);
+				return next;
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
 		public int nextIndex() {
 			return i;
 		}
@@ -1904,6 +1917,18 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @return The collection containing all elements of self plus <code>object</code>.
 	 */
 	public abstract LazyCollection<E> including(final E object);
+
+	/**
+	 * Returns the collection containing all elements of self apart from all occurrences of <code>object</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param object
+	 *            the object to exclude
+	 * @return The collection containing all elements of self apart from all occurrences of <code>object</code>.
+	 */
+	public abstract LazyCollection<E> excluding(final E object);
 
 	/* *********************************************************************
 	 * Higher-order operations                                             *

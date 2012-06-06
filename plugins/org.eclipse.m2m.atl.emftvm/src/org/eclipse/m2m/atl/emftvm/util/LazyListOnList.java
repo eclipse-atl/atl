@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.util;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -40,6 +41,9 @@ public class LazyListOnList<E> extends LazyListOnCollection<E> {
 	 */
 	@Override
 	public E get(final int index) {
+		if (dataSource == null) {
+			return ((List<E>) cache).get(index);
+		}
 		return ((List<E>)dataSource).get(index);
 	}
 
@@ -64,7 +68,10 @@ public class LazyListOnList<E> extends LazyListOnCollection<E> {
 	 */
 	@Override
 	public ListIterator<E> listIterator() {
-		return ((List<E>)dataSource).listIterator();
+		if (dataSource == null) {
+			return Collections.unmodifiableList((List<E>) cache).listIterator();
+		}
+		return Collections.unmodifiableList((List<E>) dataSource).listIterator(); // don't cache
 	}
 
 	/**
@@ -72,7 +79,10 @@ public class LazyListOnList<E> extends LazyListOnCollection<E> {
 	 */
 	@Override
 	public ListIterator<E> listIterator(final int index) {
-		return ((List<E>)dataSource).listIterator(index);
+		if (dataSource == null) {
+			return Collections.unmodifiableList((List<E>) cache).listIterator(index);
+		}
+		return Collections.unmodifiableList((List<E>) dataSource).listIterator(index); // don't cache
 	}
 
 	/**
@@ -80,6 +90,9 @@ public class LazyListOnList<E> extends LazyListOnCollection<E> {
 	 */
 	@Override
 	public List<E> subList(final int fromIndex, final int toIndex) {
+		if (dataSource == null) {
+			return ((List<E>) cache).subList(fromIndex, toIndex);
+		}
 		return ((List<E>)dataSource).subList(fromIndex, toIndex);
 	}
 
@@ -88,6 +101,9 @@ public class LazyListOnList<E> extends LazyListOnCollection<E> {
 	 */
 	@Override
 	public Object[] toArray() {
+		if (dataSource == null) {
+			return ((List<E>) cache).toArray();
+		}
 		return ((List<E>)dataSource).toArray();
 	}
 
@@ -96,6 +112,9 @@ public class LazyListOnList<E> extends LazyListOnCollection<E> {
 	 */
 	@Override
 	public <T> T[] toArray(T[] a) {
+		if (dataSource == null) {
+			return ((List<E>) cache).toArray(a);
+		}
 		return ((List<E>)dataSource).toArray(a);
 	}
 

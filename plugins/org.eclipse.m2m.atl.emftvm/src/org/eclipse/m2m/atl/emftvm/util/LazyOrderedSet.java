@@ -1082,7 +1082,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			protected boolean nextSet;
 		
 			/**
-			 * Creates a new {@link ExcludingIterator}.
+			 * Creates a new {@link ExcludingOrderedSetIterator}.
 			 */
 			public ExcludingOrderedSetIterator() {
 				super();
@@ -1093,9 +1093,6 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			 */
 			@Override
 			public boolean hasNext() {
-				if (excludedIndexSet) {
-					return i < excludedIndex || inner.hasNext();
-				}
 				if (!nextSet && inner.hasNext()) {
 					next = inner.next(); // support null values for next
 					nextSet = true;
@@ -1109,6 +1106,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 					}
 				}
 				final boolean hasNext = nextSet && !(object == null ? next == null : object.equals(next));
+				assert !hasNext || inner.hasNext();
 				if (!hasNext && !excludedIndexSet) {
 					excludedIndex = -1;
 					excludedIndexSet = true;
@@ -1122,22 +1120,6 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			@Override
 			public E next() {
 				i++;
-				if (excludedIndexSet) {
-					if (i == excludedIndex) {
-						// Skip value
-						if (nextSet) {
-							nextSet = false;
-						} else {
-							inner.next();
-						}
-						assert !nextSet;
-					}
-					if (nextSet) {
-						nextSet = false;
-						return next;
-					}
-					return inner.next();
-				}
 				if (!nextSet) {
 					next = inner.next();
 				} else {
@@ -1191,9 +1173,6 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			 */
 			@Override
 			public boolean hasNext() {
-				if (excludedIndexSet) {
-					return i < excludedIndex || inner.hasNext();
-				}
 				if (!nextSet && inner.hasNext()) {
 					next = inner.next(); // support null values for next
 					nextSet = true;
@@ -1220,22 +1199,6 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			@Override
 			public E next() {
 				i++;
-				if (excludedIndexSet) {
-					if (i == excludedIndex) {
-						// Skip value
-						if (nextSet) {
-							nextSet = false;
-							assert !nextSet;
-						} else {
-							inner.next();
-						}
-					}
-					if (nextSet) {
-						nextSet = false;
-						return next;
-					}
-					return inner.next();
-				}
 				if (!nextSet) {
 					next = inner.next();
 				} else {
@@ -1263,9 +1226,6 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			 */
 			@Override
 			public boolean hasPrevious() {
-				if (excludedIndexSet) {
-					return i > excludedIndex || inner.hasPrevious();
-				}
 				if (!prevSet && inner.hasPrevious()) {
 					prev = inner.previous(); // support null values for next
 					prevSet = true;
@@ -1291,23 +1251,6 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			 */
 			@Override
 			public E previous() {
-				if (excludedIndexSet) {
-					if (i == excludedIndex) {
-						// Skip value
-						if (prevSet) {
-							prevSet = false;
-							assert !prevSet;
-						} else {
-							inner.previous();
-						}
-					}
-					i--;
-					if (prevSet) {
-						prevSet = false;
-						return prev;
-					}
-					return inner.previous();
-				}
 				if (!prevSet) {
 					prev = inner.previous();
 				} else {
