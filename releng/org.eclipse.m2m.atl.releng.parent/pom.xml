@@ -238,26 +238,14 @@
   
 	<profiles>
 		<profile>
-			<id>juno4.2</id>
+			<id>juno</id>
 			<properties>
 				<platform-version>[4.0,5.0)</platform-version>
 			</properties>
 			<repositories>
 				<repository><id>releasetrain</id><layout>p2</layout>
-					<url>http://download.eclipse.org/eclipse/updates/4.2-I-builds</url>
+					<url>http://download.eclipse.org/releases/juno</url>
 				</repository>
-				<repository><id>emf</id><layout>p2</layout>
-					<url>http://download.eclipse.org/modeling/emf/emf/updates/2.8milestones</url>
-				</repository>
-				<repository><id>validation</id><layout>p2</layout>
-			        <url>http://download.eclipse.org/modeling/emf/updates/milestones/</url>
-		        </repository>
-				<repository><id>compare</id><layout>p2</layout>
-          			<url>http://download.eclipse.org/modeling/emf/compare/updates/releases/1.2</url>
-        		</repository>
-				<repository><id>uml2</id><layout>p2</layout>
-          			<url>http://download.eclipse.org/modeling/mdt/uml2/updates/4.0milestones/</url>
-        		</repository>
 				<repository><id>antlr</id><layout>p2</layout>
           			<url>http://archive.eclipse.org/tools/orbit/downloads/drops/R20100519200754/repository</url>
         		</repository>
@@ -266,37 +254,7 @@
         		</repository>
 			</repositories>
 		</profile>
-		
-		<profile>
-			<id>juno3.8</id>
-			<properties>
-				<platform-version>[3.0,4.0)</platform-version>
-			</properties>
-			<repositories>
-				<repository><id>releasetrain</id><layout>p2</layout>
-					<url>http://download.eclipse.org/eclipse/updates/3.8milestones</url>
-				</repository>
-				<repository><id>emf</id><layout>p2</layout>
-					<url>http://download.eclipse.org/modeling/emf/emf/updates/2.8milestones</url>
-				</repository>
-				<repository><id>validation</id><layout>p2</layout>
-			        <url>http://download.eclipse.org/modeling/emf/updates/milestones/</url>
-		        </repository>
-				<repository><id>compare</id><layout>p2</layout>
-          			<url>http://download.eclipse.org/modeling/emf/compare/updates/releases/1.2</url>
-        		</repository>
-				<repository><id>uml2</id><layout>p2</layout>
-          			<url>http://download.eclipse.org/modeling/mdt/uml2/updates/4.0milestones/</url>
-        		</repository>
-				<repository><id>antlr</id><layout>p2</layout>
-          			<url>http://archive.eclipse.org/tools/orbit/downloads/drops/R20100519200754/repository</url>
-        		</repository>
-        		<repository><id>orbit</id><layout>p2</layout>
-			 	    <url>http://download.eclipse.org/tools/orbit/downloads/drops/updateSite</url>
-        		</repository>
-			</repositories>
-		</profile>
-
+	
 		<profile>
 			<id>checkstyle</id>
 			<activation>
