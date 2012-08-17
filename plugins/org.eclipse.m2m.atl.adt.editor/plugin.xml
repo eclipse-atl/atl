@@ -242,24 +242,60 @@
              class="org.eclipse.m2m.atl.adt.ui.preferences.AtlMainPropertyPage"
              id="org.eclipse.m2m.atl.adt.editor.preferences.AtlPropertyPage"
              name="ATL">
+          <enabledWhen>
+             <adapt
+                   type="org.eclipse.core.resources.IProject">
+             </adapt>
+          </enabledWhen>
+          <filter
+                name="nature"
+                value="org.eclipse.m2m.atl.adt.builder.atlNature">
+          </filter>
        </page>
        <page
              category="org.eclipse.m2m.atl.adt.editor.preferences.AtlPropertyPage"
              class="org.eclipse.m2m.atl.adt.ui.preferences.AtlEditorPropertyPage"
              id="org.eclipse.m2m.atl.adt.editor.preferences.AtlEditorPropertyPage"
              name="Editor">
+          <enabledWhen>
+             <adapt
+                   type="org.eclipse.core.resources.IProject">
+             </adapt>
+          </enabledWhen>
+          <filter
+                name="nature"
+                value="org.eclipse.m2m.atl.adt.builder.atlNature">
+          </filter>
        </page>
        <page
              category="org.eclipse.m2m.atl.adt.editor.preferences.AtlEditorPropertyPage"
              class="org.eclipse.m2m.atl.adt.ui.preferences.AtlTypingPreferencePage"
              id="org.eclipse.m2m.atl.adt.editor.preferences.AtlTypingPropertyPage"
              name="Typing">
+          <enabledWhen>
+             <adapt
+                   type="org.eclipse.core.resources.IProject">
+             </adapt>
+          </enabledWhen>
+          <filter
+                name="nature"
+                value="org.eclipse.m2m.atl.adt.builder.atlNature">
+          </filter>
        </page>
        <page
              category="org.eclipse.m2m.atl.adt.editor.preferences.AtlEditorPropertyPage"
              class="org.eclipse.m2m.atl.adt.ui.preferences.AtlCodeFormatterPropertyPage"
              id="org.eclipse.m2m.atl.adt.editor.preferences.AtlCodeFormatterPropertyPage"
              name="Code Formatter">
+          <enabledWhen>
+             <adapt
+                   type="org.eclipse.core.resources.IProject">
+             </adapt>
+          </enabledWhen>
+          <filter
+                name="nature"
+                value="org.eclipse.m2m.atl.adt.builder.atlNature">
+          </filter>
        </page>
     </extension>
 </plugin>
