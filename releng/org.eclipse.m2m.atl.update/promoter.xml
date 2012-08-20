@@ -9,7 +9,7 @@
   Contributors:
       Obeo - initial API and implementation
 
- $Id: promoter.xml,v 1.8 2012/05/24 13:40:30 wpiers Exp $
+ $Id: promoter.xml,v 1.8.2.1 2012/08/20 12:41:22 wpiers Exp $
 -->
 <project name="Promoter" default="main">
 	<!--
@@ -23,7 +23,7 @@
 	-->
 
 	<property name="downloads.project.root" value="mmt/atl" />
-	<property name="build.root" value="/shared/jobs/m2m-atl-master/lastSuccessful/archive/org.eclipse.m2m/org.eclipse.m2m.atl/releng/org.eclipse.m2m.atl.update/target/" />
+	<property name="build.root" value="/shared/jobs/mmt-atl-3.3/lastSuccessful/archive/org.eclipse.m2m/org.eclipse.m2m.atl/releng/org.eclipse.m2m.atl.update/target/" />
 	<property name="thirdPartyJarsDir" value="/shared/modeling/m2m/atl/3rdPartyJars" />
 	<property name="project.name" value="ATL"/>
 	<property name="final.updatesite.name" value="m2m-atl-Update"/>
