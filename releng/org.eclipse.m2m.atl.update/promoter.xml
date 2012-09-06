@@ -9,7 +9,7 @@
   Contributors:
       Obeo - initial API and implementation
 
- $Id: promoter.xml,v 1.8.2.2 2012/09/06 13:31:40 wpiers Exp $
+ $Id: promoter.xml,v 1.8.2.3 2012/09/06 14:52:58 wpiers Exp $
 -->
 <project name="Promoter" default="main">
 	<!--
@@ -27,7 +27,7 @@
 	<property name="thirdPartyJarsDir" value="/shared/modeling/m2m/atl/3rdPartyJars" />
 	<property name="project.name" value="ATL"/>
 	<property name="final.updatesite.name" value="m2m-atl-Update"/>
-	<property name="build.root.updatesite.name" value="org.eclipse.m2m.atl.update-3.3.1-SNAPSHOT.zip"/>
+	<property name="build.root.updatesite.name" value="org.eclipse.m2m.atl.update.zip"/>
 	<property name="group.owner" value="modeling.mmt.atl" />
 
 	<!--# To permit automatic downloads of non-EPL compatible code, override this to property to "Y" -->
