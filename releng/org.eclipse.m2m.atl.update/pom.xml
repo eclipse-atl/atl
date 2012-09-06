@@ -21,6 +21,7 @@
   
   <artifactId>org.eclipse.m2m.atl.update</artifactId>
   <packaging>eclipse-repository</packaging>
+  <zipName>${project.artifactId}-${project.version}</zipName>
 
   <!-- see http://issues.sonatype.org/browse/TYCHO-313 -->
   <version>3.3.1-SNAPSHOT</version>
@@ -98,7 +99,7 @@
 								<!-- Pack the p2 repository. -->
 								<id>pack</id>
 								<configuration>
-									<inputFile>${project.build.directory}/${project.artifactId}.zip</inputFile>
+									<inputFile>${project.build.directory}/${project.zipName}.zip</inputFile>
 								</configuration>
 								<phase>package</phase>
 								<goals>
@@ -109,7 +110,7 @@
 								<!-- Sign the p2 repository -->
 								<id>sign</id>
 								<configuration>
-									<inputFile>${project.build.directory}/${project.artifactId}.zip</inputFile>
+									<inputFile>${project.build.directory}/${project.zipName}.zip</inputFile>
 									<signerInputDirectory>/home/data/httpd/download-staging.priv/m2m/atl</signerInputDirectory>
 								</configuration>
 								<phase>package</phase>
@@ -152,8 +153,8 @@
 										<!-- prepare zip repo and repo for archiving -->
 										<move file="${project.build.directory}/repository" tofile="${project.build.directory}/repository-not-signed"/>
 										<move file="${project.build.directory}/checksumFix" tofile="${project.build.directory}/repository"/>
-										<move file="${project.build.directory}/${project.artifactId}.zip" tofile="${project.build.directory}/${project.artifactId}-not-signed.zip"/>
-										<zip destfile="${project.build.directory}/${project.artifactId}.zip" basedir="${project.build.directory}/repository"/>
+										<move file="${project.build.directory}/${project.zipName}.zip" tofile="${project.build.directory}/${project.zipName}-not-signed.zip"/>
+										<zip destfile="${project.build.directory}/${project.zipName}.zip" basedir="${project.build.directory}/repository"/>
 									</tasks>
 								</configuration>
 							</execution>
