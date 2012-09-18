@@ -12,6 +12,7 @@
 package org.eclipse.m2m.atl.emftvm.util;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -595,7 +596,12 @@ public final class OCLOperations {
 							assert target instanceof EObject;
 							final ExecEnv env = frame.getEnv();
 							for (Model m : env.getInoutModels().values()) {
-								for (EObject o : new ResourceIterable(m.eResource())) {
+								List<EObject> eObjects = new ArrayList<EObject>();
+								for (EObject o : new ResourceIterable(m.getResource())) {
+									eObjects.add(o);
+								}
+								// Prevent ConcurrentModificationException by using eObjects copy
+								for (EObject o : eObjects) {
 									for (EReference ref : o.eClass().getEAllReferences()) {
 										if (ref.isChangeable()) {
 											Object val = o.eGet(ref);
