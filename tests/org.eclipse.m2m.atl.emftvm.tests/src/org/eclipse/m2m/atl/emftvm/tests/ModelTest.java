@@ -14,8 +14,17 @@ package org.eclipse.m2m.atl.emftvm.tests;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.Module;
 
 /**
  * <!-- begin-user-doc -->
@@ -114,12 +123,11 @@ public class ModelTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.Model#getResource()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetResource() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Model model = getFixture();
+		assertNull(model.getResource());
 	}
 
 	/**
@@ -127,12 +135,15 @@ public class ModelTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.Model#setResource(org.eclipse.emf.ecore.resource.Resource)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetResource() {
-		// TODO: implement this feature setter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Model model = getFixture();
+		final Resource res = new ResourceImpl();
+		model.setResource(res);
+		assertSame(res, model.getResource());
+		model.setResource(null);
+		assertNull(model.getResource());
 	}
 
 	/**
@@ -140,12 +151,12 @@ public class ModelTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.Model#allInstancesOf(org.eclipse.emf.ecore.EClass)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testAllInstancesOf__EClass() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Model model = getFixture();
+		model.setResource(EmftvmPackage.eINSTANCE.eResource());
+		assertEquals(1, model.allInstancesOf(EcorePackage.eINSTANCE.getEPackage()).size());
 	}
 
 	/**
@@ -153,12 +164,16 @@ public class ModelTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.Model#newElement(org.eclipse.emf.ecore.EClass)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testNewElement__EClass() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Model model = getFixture();
+		final Resource res = new ResourceImpl();
+		model.setResource(res);
+		final EObject module = model.newElement(EmftvmPackage.eINSTANCE.getModule());
+		assertTrue(module instanceof Module);
+		assertEquals(1, model.allInstancesOf(EmftvmPackage.eINSTANCE.getModule()).size());
+		assertEquals(module, model.allInstancesOf(EmftvmPackage.eINSTANCE.getModule()).first());
 	}
 
 	/**
@@ -166,12 +181,21 @@ public class ModelTest extends TestCase {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.Model#deleteElement(org.eclipse.emf.ecore.EObject)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testDeleteElement__EObject() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Model model = getFixture();
+		final Resource res = new ResourceImpl();
+		final EPackage container = EcoreFactory.eINSTANCE.createEPackage();
+		final EClass object = EcoreFactory.eINSTANCE.createEClass();
+		container.getEClassifiers().add(object);
+		res.getContents().add(container);
+		model.setResource(res);
+		assertEquals(container, model.allInstancesOf(EcorePackage.eINSTANCE.getEPackage()).first());
+		assertEquals(object, model.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).first());
+		model.deleteElement(container);
+		assertTrue(model.allInstancesOf(EcorePackage.eINSTANCE.getEPackage()).isEmpty());
+		assertEquals(object, model.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).first());
 	}
 
 } //ModelTest
