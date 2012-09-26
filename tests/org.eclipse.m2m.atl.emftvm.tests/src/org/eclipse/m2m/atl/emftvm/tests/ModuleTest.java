@@ -84,16 +84,22 @@ public class ModuleTest extends NamedElementTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Module#getEImports() <em>EImports</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Module#getEImports() <em>EImports</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Module#getEImports()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetEImports() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Module module = getFixture();
+		assertTrue(module.getEImports().isEmpty());
+		final Module imported = EmftvmFactory.eINSTANCE.createModule();
+		module.getEImports().add(imported);
+		assertEquals(1, module.getEImports().size());
+		assertTrue(module.getEImports().contains(imported));
+		module.getEImports().remove(imported);
+		assertTrue(module.getEImports().isEmpty());
+		assertFalse(module.getEImports().contains(imported));
 	}
 
 } //ModuleTest
