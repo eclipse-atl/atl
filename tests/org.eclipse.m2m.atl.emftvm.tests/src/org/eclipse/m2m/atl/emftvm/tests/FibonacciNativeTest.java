@@ -19,7 +19,6 @@ import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Operation;
 import org.eclipse.m2m.atl.emftvm.tests.fib.Fibonacci;
-import org.eclipse.m2m.atl.emftvm.tests.fib.FibonacciNaive;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
@@ -31,12 +30,13 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 public class FibonacciNativeTest extends TestCase {
 	
 	public void testRegularFibonacci() {
+		ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		env.setJitDisabled(true);
+		ResourceSet rs = new ResourceSetImpl();
+		ModuleResolver mr = new DefaultModuleResolver(ExecEnvTest.PLUGIN_URI + "/test-data/", rs);
+		env.loadModule(mr, "Fibonacci");
 		for (int i = 0; i < 3; i++) {
-			ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
-			ResourceSet rs = new ResourceSetImpl();
-			ModuleResolver mr = new DefaultModuleResolver(ExecEnvTest.PLUGIN_URI + "/test-data/", rs);
 			TimingData td = new TimingData();
-			env.loadModule(mr, "Fibonacci");
 			td.finishLoading();
 			env.run(td);
 			td.finish();
@@ -44,35 +44,15 @@ public class FibonacciNativeTest extends TestCase {
 		}
 	}
 
-	public void testNaiveNativeFibonacci() {
-		for (int i = 0; i < 3; i++) {
-			ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
-			ResourceSet rs = new ResourceSetImpl();
-			ModuleResolver mr = new DefaultModuleResolver(ExecEnvTest.PLUGIN_URI + "/test-data/", rs);
-			TimingData td = new TimingData();
-			env.loadModule(mr, "Fibonacci");
-			Operation fibOp = env.findOperation(Integer.class, "fib", new Object[0]);
-			assertNotNull(fibOp);
-			CodeBlock cb = fibOp.getBody();
-			CodeBlock nb = new FibonacciNaive();
-			nb.getCode().addAll(cb.getCode());
-			nb.getLineNumbers().addAll(cb.getLineNumbers());
-			fibOp.setBody(nb); // native Fibonacci implementation
-			td.finishLoading();
-			env.run(td);
-			td.finish();
-			System.out.print("Fibonacci naive native: " + td.toString());
-		}
-	}
-
 	public void testNativeFibonacci() {
+		ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		env.setJitDisabled(true);
+		ResourceSet rs = new ResourceSetImpl();
+		ModuleResolver mr = new DefaultModuleResolver(ExecEnvTest.PLUGIN_URI + "/test-data/", rs);
+		env.loadModule(mr, "Fibonacci");
 		for (int i = 0; i < 3; i++) {
-			ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
-			ResourceSet rs = new ResourceSetImpl();
-			ModuleResolver mr = new DefaultModuleResolver(ExecEnvTest.PLUGIN_URI + "/test-data/", rs);
 			TimingData td = new TimingData();
-			env.loadModule(mr, "Fibonacci");
-			Operation fibOp = env.findOperation(Integer.class, "fib", new Object[0]);
+			Operation fibOp = env.findOperation(Integer.class, "fib");
 			assertNotNull(fibOp);
 			CodeBlock cb = fibOp.getBody();
 			CodeBlock nb = new Fibonacci();
@@ -86,16 +66,30 @@ public class FibonacciNativeTest extends TestCase {
 		}
 	}
 
-	public void testJavaFibonacci() {
+	public void testJitFibonacci() {
+		ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		ResourceSet rs = new ResourceSetImpl();
+		ModuleResolver mr = new DefaultModuleResolver(ExecEnvTest.PLUGIN_URI + "/test-data/", rs);
+		env.loadModule(mr, "Fibonacci");
 		for (int i = 0; i < 3; i++) {
 			TimingData td = new TimingData();
-			Fibonacci f = new Fibonacci();
+			td.finishLoading();
+			env.run(td);
+			td.finish();
+			System.out.print("Fibonacci JIT: " + td.toString());
+		}
+	}
+
+	public void testJavaFibonacci() {
+		Fibonacci f = new Fibonacci();
+		for (int i = 0; i < 3; i++) {
+			TimingData td = new TimingData();
 			td.finishLoading();
 			td.finishMatch();
 			td.finishApply();
 			td.finishPostApply();
 			td.finishRecursive();
-			System.out.println(f.fib(30));
+			System.out.println(f.collectFib(1000));
 			td.finish();
 			System.out.print("Fibonacci Java: " + td.toString());
 		}
