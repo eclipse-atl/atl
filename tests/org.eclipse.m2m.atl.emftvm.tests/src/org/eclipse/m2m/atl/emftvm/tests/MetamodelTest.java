@@ -14,6 +14,7 @@ package org.eclipse.m2m.atl.emftvm.tests;
 import junit.textui.TestRunner;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 
 /**
@@ -84,16 +85,17 @@ public class MetamodelTest extends ModelTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Metamodel#findType(java.lang.String) <em>Find Type</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Metamodel#findType(java.lang.String) <em>Find Type</em>}' operation. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Metamodel#findType(java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFindType__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Metamodel metamodel = getFixture();
+		metamodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		assertSame(EmftvmPackage.eINSTANCE.getModule(), metamodel.findType("Module"));
+		assertSame(EmftvmPackage.eINSTANCE.getModule(), metamodel.findType("emftvm::Module"));
 	}
 
 } //MetamodelTest
