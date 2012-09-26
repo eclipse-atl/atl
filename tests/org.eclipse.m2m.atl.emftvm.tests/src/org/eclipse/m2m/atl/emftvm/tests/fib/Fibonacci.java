@@ -69,7 +69,11 @@ public class Fibonacci extends NativeCodeBlock {
 
 	private static Object invoke(final String opname, final Object self, final Object[] args,
 			final StackFrame frame) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		final Operation op = frame.getEnv().findOperation(
+		final Operation op = (args.length == 0) ?
+				frame.getEnv().findOperation(
+				EMFTVMUtil.getArgumentType(self), 
+				opname) :
+				frame.getEnv().findOperation(
 				EMFTVMUtil.getArgumentType(self), 
 				opname, 
 				EMFTVMUtil.getArgumentTypes(args));
@@ -99,6 +103,20 @@ public class Fibonacci extends NativeCodeBlock {
 			return n;
 		} else {
 			return fib(n-1) + fib(n-2);
+		}
+	}
+	
+	/**
+	 * The "collectFib" operation in plain Java.
+	 * @param n
+	 * @return <code>true</code>
+	 */
+	public boolean collectFib(final int n) {
+		final boolean fib = fib(20) == 6765;
+		if (n < 2) {
+			return fib;
+		} else {
+			return fib && collectFib(n - 1);
 		}
 	}
 }
