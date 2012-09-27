@@ -13,8 +13,10 @@ package org.eclipse.m2m.atl.emftvm.tests;
 
 import junit.textui.TestRunner;
 
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.Field;
+import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,9 +43,9 @@ import org.eclipse.m2m.atl.emftvm.Field;
  */
 public class FieldTest extends FeatureTest {
 
+	protected final EmftvmFactory factory = EmftvmFactory.eINSTANCE;
+
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static void main(String[] args) {
@@ -94,94 +96,114 @@ public class FieldTest extends FeatureTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#getStaticValue() <em>Static Value</em>}' feature getter.
-	 * <!-- begin-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#getStaticValue() <em>Static Value</em>}' feature getter. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Field#getStaticValue()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetStaticValue() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Field field = getFixture();
+		assertNull(field.getStaticValue());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#setStaticValue(java.lang.Object) <em>Static Value</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#setStaticValue(java.lang.Object) <em>Static Value</em>}' feature setter. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Field#setStaticValue(java.lang.Object)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetStaticValue() {
-		// TODO: implement this feature setter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Field field = getFixture();
+		field.setStaticValue(field);
+		assertSame(field, field.getStaticValue());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#getValue(java.lang.Object) <em>Get Value</em>}' operation.
-	 * <!-- begin-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#getValue(java.lang.Object) <em>Get Value</em>}' operation. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Field#getValue(java.lang.Object)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetValue__Object() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Field field = getFixture();
+		assertNull(field.getValue(field));
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#setValue(java.lang.Object, java.lang.Object) <em>Set Value</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#setValue(java.lang.Object, java.lang.Object) <em>Set Value</em>}' operation. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Field#setValue(java.lang.Object, java.lang.Object)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetValue__Object_Object() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Field field = getFixture();
+		final Object context = new Object();
+		field.setValue(context, field);
+		assertSame(field, field.getValue(context));
+		assertNull(field.getValue(field));
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#getValue(java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Get Value</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#getValue(java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * <em>Get Value</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Field#getValue(java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetValue__Object_StackFrame() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Field field = getFixture();
+		final Object context = new Object();
+		final StackFrame frame = new StackFrame(factory.createExecEnv(), factory.createCodeBlock());
+		final CodeBlock cb = factory.createCodeBlock();
+		cb.getLocalVariables().add(factory.createLocalVariable());
+		cb.getCode().add(factory.createPusht());
+		field.setInitialiser(cb);
+		assertEquals(Boolean.TRUE, field.getValue(context, frame));
+		// check that value is cached
+		cb.getCode().clear();
+		assertEquals(Boolean.TRUE, field.getValue(context, frame));
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#getStaticValue(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Get Static Value</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#getStaticValue(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * <em>Get Static Value</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Field#getStaticValue(org.eclipse.m2m.atl.emftvm.util.StackFrame)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetStaticValue__StackFrame() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Field field = getFixture();
+		final StackFrame frame = new StackFrame(factory.createExecEnv(), factory.createCodeBlock());
+		final CodeBlock cb = factory.createCodeBlock();
+		cb.getLocalVariables().add(factory.createLocalVariable());
+		cb.getCode().add(factory.createPusht());
+		field.setInitialiser(cb);
+		assertEquals(Boolean.TRUE, field.getStaticValue(frame));
+		// check that value is cached
+		cb.getCode().clear();
+		assertEquals(Boolean.TRUE, field.getStaticValue(frame));
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#clear() <em>Clear</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#clear() <em>Clear</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Field#clear()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testClear() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Field field = getFixture();
+		final Object context = new Object();
+		field.setStaticValue(field);
+		field.setValue(context, field);
+		assertEquals(field, field.getStaticValue());
+		assertEquals(field, field.getValue(context));
+		field.clear();
+		assertNull(field.getStaticValue());
+		assertNull(field.getValue(context));
 	}
 
 } //FieldTest
