@@ -50,29 +50,28 @@ public abstract class TypedElementTest extends NamedElementTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.TypedElement#getEType() <em>EType</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.TypedElement#getEType() <em>EType</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.TypedElement#getEType()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetEType() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final TypedElement typedElement = getFixture();
+		assertNull(typedElement.getEType());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.TypedElement#setEType(org.eclipse.emf.ecore.EClassifier) <em>EType</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.TypedElement#setEType(org.eclipse.emf.ecore.EClassifier) <em>EType</em>}' feature
+	 * setter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.TypedElement#setEType(org.eclipse.emf.ecore.EClassifier)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetEType() {
-		// TODO: implement this feature setter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final TypedElement typedElement = getFixture();
+		typedElement.setEType(typedElement.eClass());
+		assertSame(typedElement.eClass(), typedElement.getEType());
 	}
 
 } //TypedElementTest

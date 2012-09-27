@@ -50,29 +50,28 @@ public abstract class FeatureTest extends TypedElementTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Feature#getEContext() <em>EContext</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Feature#getEContext() <em>EContext</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Feature#getEContext()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetEContext() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Feature feature = getFixture();
+		assertNull(feature.getEContext());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Feature#setEContext(org.eclipse.emf.ecore.EClassifier) <em>EContext</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Feature#setEContext(org.eclipse.emf.ecore.EClassifier) <em>EContext</em>}' feature
+	 * setter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Feature#setEContext(org.eclipse.emf.ecore.EClassifier)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetEContext() {
-		// TODO: implement this feature setter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Feature feature = getFixture();
+		feature.setEContext(feature.eClass());
+		assertSame(feature.eClass(), feature.getEContext());
 	}
 
 } //FeatureTest
