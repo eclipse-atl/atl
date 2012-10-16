@@ -13,9 +13,14 @@
 package org.eclipse.m2m.atl.emftvm.util.tests;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.util.LazyBag;
+import org.eclipse.m2m.atl.emftvm.util.LazySet;
+import org.eclipse.m2m.atl.emftvm.util.NativeCodeBlock;
+import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 
 /**
  * Tests {@link LazyBag}.
@@ -58,8 +63,252 @@ public class LazyBagTest extends LazyCollectionTest {
 		return new LazyBag<T>(null);
 	}
 
-	/*
-	 * TODO all other operations.
+	/**
+	 * Tests {@link LazyBag#collect(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
 	 */
+	public void testCollect() {
+		final LazyBag<String> bag = getTestLazyCollection();
+		final LazyBag<Integer> lengths = bag.collect(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+	
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(((String) frame.getLocal(0)).length());
+				return frame;
+			}
+	
+		});
+		assertEquals(bag.size(), lengths.size());
+		final Iterator<Integer> lengthIt = lengths.iterator();
+		for (String element : bag) {
+			assertEquals(element.length(), lengthIt.next().intValue());
+		}
+		assertFalse(lengthIt.hasNext());
+	
+		final LazyBag<Object> nulls = bag.collect(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+		});
+		assertEquals(bag.size(), nulls.size());
+		final Iterator<Object> nullIt = nulls.iterator();
+		for (@SuppressWarnings("unused")
+		String element : bag) {
+			assertNull(nullIt.next());
+		}
+		assertFalse(nullIt.hasNext());
+	}
+
+	/**
+	 * Tests {@link LazyBag#equals(Object)}.
+	 */
+	public void testEquals() {
+		final LazyBag<String> bag = getTestLazyCollection();
+		assertTrue(bag.equals(bag));
+		assertFalse(bag.equals(this));
+		assertFalse(bag.equals(null));
+		assertFalse(bag.equals(getDataSource()));
+		assertTrue(bag.equals(bag.asBag()));
+		assertFalse(bag.equals(bag.including(null)));
+		assertFalse(bag.equals(bag.excluding(bag.asSequence().first())));
+		assertFalse(bag.equals(bag.excluding(bag.asSequence().last())));
+	}
+
+	/**
+	 * Tests {@link LazyBag#flatten()}.
+	 */
+	public void testFlatten() {
+		final LazyBag<String> bag = getTestLazyCollection();
+		final LazyBag<?> newBag = bag.flatten();
+		assertEquals(bag, newBag);
+	
+		final LazyBag<LazyBag<String>> bagBag = new LazyBag<LazyBag<String>>().including(bag);
+		assertEquals(bag, bagBag.flatten());
+	
+		final LazyBag<LazyBag<LazyBag<String>>> bagBagBag = new LazyBag<LazyBag<LazyBag<String>>>().including(bagBag);
+		assertEquals(bag, bagBagBag.flatten());
+	
+		final LazyBag<LazySet<LazyBag<String>>> bagSetBag = new LazyBag<LazySet<LazyBag<String>>>()
+				.including(new LazySet<LazyBag<String>>().including(bag).including(bag));
+		assertEquals(bag, bagSetBag.flatten());
+	}
+
+	/**
+	 * Tests {@link LazyBag#hashCode()}.
+	 */
+	public void testHashCode() {
+		final LazyBag<String> bag = getTestLazyCollection();
+		assertEquals(bag.asBag().hashCode(), bag.hashCode());
+		assertFalse(getDataSource().hashCode() == bag.hashCode());
+		assertFalse(bag.hashCode() == bag.including("Four").hashCode());
+	}
+
+	/**
+	 * Tests {@link LazyBag#intersection(LazyBag)}.
+	 */
+	public void testIntersection() {
+		final LazyBag<String> bag = getTestLazyCollection();
+		final LazyBag<String> intersection = bag.intersection(bag);
+		assertEquals(bag, intersection);
+		assertEquals(bag.excluding("Three"), bag.intersection(bag.excluding("Three")));
+		assertEquals(new LazyBag<String>(), bag.intersection(new LazyBag<String>()));
+		assertEquals(new LazyBag<String>(), new LazyBag<String>().intersection(bag));
+		final LazyBag<String> otherBag = new LazyBag<String>().including("One").including("Two").including("Three");
+		assertEquals(otherBag, bag.intersection(otherBag));
+		assertEquals(otherBag, otherBag.intersection(bag));
+	}
+
+	/**
+	 * Tests {@link LazyBag#intersection(LazySet)}.
+	 */
+	public void testIntersection_LazySet() {
+		final LazyBag<String> bag = getTestLazyCollection();
+		final LazySet<String> set = bag.asSet();
+		final LazySet<String> intersection = bag.intersection(set);
+		assertEquals(set, intersection);
+		assertEquals(set.excluding("Three"), bag.intersection(set.excluding("Three")));
+		assertEquals(new LazySet<String>(), bag.intersection(new LazySet<String>()));
+		assertEquals(new LazySet<String>(), new LazyBag<String>().intersection(set));
+		final LazySet<String> otherSet = new LazySet<String>().including("One").including("Two").including("Three");
+		assertEquals(otherSet, bag.intersection(otherSet));
+	}
+
+	/**
+	 * Tests {@link LazyBag#reject(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testReject() {
+		final LazyBag<String> bag = getTestLazyCollection();
+		final String element = bag.asSequence().last();
+		final LazyBag<String> rejected = bag.reject(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+	
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(((String) frame.getLocal(0)).equals(element));
+				return frame;
+			}
+	
+		});
+		assertEquals(bag.size() - bag.count(element), rejected.size());
+		assertFalse(rejected.contains(element));
+		assertEquals(bag.excluding(element), rejected);
+	
+		assertEquals(0, bag.reject(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+	
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(true);
+				return frame;
+			}
+	
+		}).size());
+	
+		assertEquals(bag.size(), bag.reject(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+	
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(false);
+				return frame;
+			}
+	
+		}).size());
+	}
+
+	/**
+	 * Tests {@link LazyBag#select(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testSelect() {
+		final LazyBag<String> bag = getTestLazyCollection();
+		final String element = bag.asSequence().last();
+		final LazyBag<String> selected = bag.select(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+	
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(((String) frame.getLocal(0)).equals(element));
+				return frame;
+			}
+	
+		});
+		assertEquals(bag.count(element), selected.size());
+		assertTrue(selected.contains(element));
+		for (String s : selected) {
+			assertEquals(element, s);
+		}
+	
+		assertEquals(0, bag.select(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+	
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(false);
+				return frame;
+			}
+	
+		}).size());
+	
+		assertEquals(bag.size(), bag.select(new NativeCodeBlock() {
+			{
+				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+	
+			@Override
+			public StackFrame execute(final StackFrame frame) {
+				frame.push(true);
+				return frame;
+			}
+	
+		}).size());
+	}
+
+	/**
+	 * Tests {@link LazyBag#union(LazyBag)}.
+	 */
+	public void testUnion() {
+		final LazyBag<String> bag = getTestLazyCollection();
+		final LazyBag<String> union = bag.union(bag);
+		assertEquals(bag.size() * 2, union.size());
+		for (String s : bag) {
+			assertEquals(bag.count(s) * 2, union.count(s));
+		}
+		assertEquals(bag, bag.union(new LazyBag<String>()));
+		assertEquals(bag, new LazyBag<String>().union(bag));
+	}
+
+	/**
+	 * Tests {@link LazyBag#union(LazySet)}.
+	 */
+	public void testUnion_LazySet() {
+		final LazyBag<String> bag = getTestLazyCollection();
+		final LazySet<String> set = bag.asSet();
+		final LazyBag<String> union = bag.union(set);
+		assertEquals(bag.size() + set.size(), union.size());
+		for (String s : bag) {
+			assertEquals(bag.count(s) + 1, union.count(s));
+		}
+		assertEquals(bag, bag.union(new LazySet<String>()));
+	}
 
 }
