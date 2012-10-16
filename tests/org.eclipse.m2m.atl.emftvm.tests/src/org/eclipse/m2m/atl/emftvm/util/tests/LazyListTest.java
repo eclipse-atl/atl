@@ -155,7 +155,7 @@ public class LazyListTest extends LazyCollectionTest {
 						EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 		});
-		assertEquals(list.size(), lengths.size());
+		assertEquals(list.size(), nulls.size());
 		for (int i = 0; i < list.size(); i++) {
 			assertNull(nulls.get(i));
 		}

@@ -382,7 +382,8 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		    return false;
 		}
         try {
-            return containsAll((Collection<?>)o);
+			final Collection<?> other = (Collection<?>) o;
+			return containsAll(other) && other.containsAll(this);
         } catch (ClassCastException unused) {
             return false;
         } catch (NullPointerException unused) {

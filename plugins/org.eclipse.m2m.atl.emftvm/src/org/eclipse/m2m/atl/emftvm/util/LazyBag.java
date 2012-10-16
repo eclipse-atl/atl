@@ -154,9 +154,8 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * where the element occurs as often as in the collection with the least occurrences of the element.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	public class BagIntersectionIterator extends ReadOnlyIterator<E> {
+	public class BagIntersectionIterator extends CachingIterator {
 
-		final Iterator<E> inner = iterator();
 		final Collection<E> s;
 		final Map<E, Integer> sOcc;
 		E next;
@@ -167,7 +166,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * @param s the collection to intersect with this
 		 */
 		public BagIntersectionIterator(final LazyCollection<E> s) {
-			super();
+			super(dataSource.iterator());
 			this.s = s;
 			if (s.occurrences != null) {
 				sOcc = new HashMap<E, Integer>(s.occurrences);
@@ -187,14 +186,26 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		public boolean hasNext() {
+			synchronized (cache) {
+				if (i < cache.size()) {
+					return true;
+				} else if (dataSource == null) {
+					return false;
+				}
+			}
 			if (!nextSet && inner.hasNext()) {
 				next = inner.next(); // support null values for next
 				nextSet = true;
 			}
-			while ((!sOcc.containsKey(next) || sOcc.get(next) == 0) && inner.hasNext()) {
+			while (nextSet && (!sOcc.containsKey(next) || sOcc.get(next) == 0) && inner.hasNext()) {
 				next = inner.next();
 			}
-			return sOcc.containsKey(next) && sOcc.get(next) > 0;
+			final boolean hasNext = nextSet && sOcc.containsKey(next) && sOcc.get(next) > 0;
+			if (!hasNext) {
+				dataSource = null; // cache complete
+				assert i == cache.size();
+			}
+			return hasNext;
 		}
 
 		/**
@@ -211,6 +222,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 			}
 			assert !nextSet && sOcc.containsKey(next) && sOcc.get(next) > 0;
 			sOcc.put(next, sOcc.get(next) - 1);
+			updateCache(next);
 			return next;
 		}
 		
@@ -327,7 +339,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 				if (dataSource == null) {
 					return Collections.unmodifiableCollection(cache).iterator();
 				}
-				return new CachingIterator(new BagIntersectionIterator(bag));
+				return new BagIntersectionIterator(bag);
 			}
 		};
 	}
