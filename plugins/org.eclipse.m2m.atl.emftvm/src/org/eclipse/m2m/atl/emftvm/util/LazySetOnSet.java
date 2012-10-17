@@ -12,6 +12,7 @@
 package org.eclipse.m2m.atl.emftvm.util;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -41,7 +42,10 @@ public class LazySetOnSet<E> extends LazySet<E> {
 	 */
 	@Override
 	public Iterator<E> iterator() {
-		return dataSource.iterator(); // don't cache
+		if (dataSource == null) {
+			return Collections.unmodifiableCollection(cache).iterator();
+		}
+		return Collections.unmodifiableCollection((Collection<E>) dataSource).iterator(); // don't cache
 	}
 
 	/**
@@ -49,6 +53,9 @@ public class LazySetOnSet<E> extends LazySet<E> {
 	 */
 	@Override
 	public boolean contains(final Object o) {
+		if (dataSource == null) {
+			return cache.contains(o);
+		}
 		return ((Collection<?>)dataSource).contains(o);
 	}
 
@@ -57,6 +64,9 @@ public class LazySetOnSet<E> extends LazySet<E> {
 	 */
 	@Override
 	public boolean isEmpty() {
+		if (dataSource == null) {
+			return cache.isEmpty();
+		}
 		return ((Collection<E>)dataSource).isEmpty();
 	}
 
@@ -65,6 +75,9 @@ public class LazySetOnSet<E> extends LazySet<E> {
 	 */
 	@Override
 	public int size() {
+		if (dataSource == null) {
+			return cache.size();
+		}
 		return ((Collection<E>)dataSource).size();
 	}
 
