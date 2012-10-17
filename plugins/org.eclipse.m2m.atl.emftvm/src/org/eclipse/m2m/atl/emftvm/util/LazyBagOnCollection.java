@@ -12,6 +12,7 @@
 package org.eclipse.m2m.atl.emftvm.util;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -39,13 +40,19 @@ public class LazyBagOnCollection<E> extends LazyBag<E> {
 	 * {@inheritDoc}
 	 */
 	public Iterator<E> iterator() {
-		return dataSource.iterator(); // don't cache
+		if (dataSource == null) {
+			return Collections.unmodifiableCollection(cache).iterator();
+		}
+		return Collections.unmodifiableCollection((Collection<E>) dataSource).iterator(); // don't cache
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public boolean contains(final Object o) {
+		if (dataSource == null) {
+			return cache.contains(o);
+		}
 		return ((Collection<?>)dataSource).contains(o);
 	}
 
@@ -53,6 +60,9 @@ public class LazyBagOnCollection<E> extends LazyBag<E> {
 	 * {@inheritDoc}
 	 */
 	public boolean isEmpty() {
+		if (dataSource == null) {
+			return cache.isEmpty();
+		}
 		return ((Collection<E>)dataSource).isEmpty();
 	}
 
@@ -60,6 +70,9 @@ public class LazyBagOnCollection<E> extends LazyBag<E> {
 	 * {@inheritDoc}
 	 */
 	public int size() {
+		if (dataSource == null) {
+			return cache.size();
+		}
 		return ((Collection<E>)dataSource).size();
 	}
 
