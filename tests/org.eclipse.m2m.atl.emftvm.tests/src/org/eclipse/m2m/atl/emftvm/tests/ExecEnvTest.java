@@ -32,6 +32,8 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
@@ -110,6 +112,10 @@ import org.osgi.framework.Bundle;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerInOutModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model) <em>Register In Out Model</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerOutputModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model) <em>Register Output Model</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModel(org.eclipse.emf.ecore.resource.Resource) <em>Get Meta Model</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForSet(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Set</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForSet(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Set</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueXmiIDForSet(org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue Xmi ID For Set</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#setQueue() <em>Set Queue</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -535,6 +541,105 @@ public class ExecEnvTest extends TestCase {
 
 		assertNotNull(mm);
 		assertEquals(metaModel, mm);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForSet(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Set</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueForSet(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated NOT
+	 */
+	public void testQueueForSet__EStructuralFeature_EObject_Object_StackFrame() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.registerInOutModel("IN", inModel);
+		
+		final CodeBlock element = (CodeBlock) inModel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock()).first();
+
+		env.queueForSet(EmftvmPackage.eINSTANCE.getCodeBlock_MaxLocals(), element, 2, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		
+		assertFalse(element.getMaxLocals() == 2);
+		
+		env.setQueue();
+		
+		assertEquals(2, element.getMaxLocals());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForSet(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Set</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueForSet(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated NOT
+	 */
+	public void testQueueForSet__Field_Object_Object_StackFrame() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.registerInOutModel("IN", inModel);
+		
+		// Load module with some fields
+		env.loadModule(new DefaultModuleResolver(PLUGIN_URI + "/test-data/", rs), "TestQuery");
+		
+		final Operation element = (Operation) inModel.allInstancesOf(EmftvmPackage.eINSTANCE.getOperation()).first();
+		final Field field = env.findField(element.eClass(), "testProp");
+
+		env.queueForSet(field, element, Boolean.FALSE, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		
+		assertNull(field.getValue(element));
+		
+		env.setQueue();
+		
+		assertEquals(Boolean.FALSE, field.getValue(element));
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueXmiIDForSet(org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue Xmi ID For Set</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueXmiIDForSet(org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated NOT
+	 */
+	public void testQueueXmiIDForSet__EObject_Object_StackFrame() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+
+		// Load models
+		final Resource inRes = EmftvmPackage.eINSTANCE.eResource();
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.registerInOutModel("IN", inModel);
+		
+		final EObject element = inModel.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).first();
+		final String xmiID = "_a01";
+
+		env.queueXmiIDForSet(element, xmiID, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		
+		assertNull(((XMIResource)inRes).getID(element));
+		
+		env.setQueue();
+		
+		assertEquals(xmiID, ((XMIResource)inRes).getID(element));
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#setQueue() <em>Set Queue</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#setQueue()
+	 * @generated NOT
+	 */
+	public void testSetQueue() {
+		// already tested in testQueueForSet__*
 	}
 
 	/**

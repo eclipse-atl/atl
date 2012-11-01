@@ -34,12 +34,14 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.emf.validation.model.EvaluationMode;
 import org.eclipse.emf.validation.service.IValidator;
 import org.eclipse.emf.validation.service.ModelValidationService;
@@ -99,6 +101,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getTraces <em>Traces</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getUniqueResults <em>Unique Results</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#isJitDisabled <em>Jit Disabled</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getCurrentPhase <em>Current Phase</em>}</li>
  * </ul>
  * </p>
  *
@@ -115,12 +118,17 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		/**
 		 * The element to delete.
 		 */
-		protected EObject element;
+		protected final EObject element;
 
 		/**
 		 * The stack frame context in which to perform the deletion.
 		 */
-		protected StackFrame frame;
+		protected final StackFrame frame;
+		
+		/**
+		 * The program counter value.
+		 */
+		protected final int pc;
 
 		/**
 		 * Creates a new {@link DeletionEntry}.
@@ -131,6 +139,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			super();
 			this.element = element;
 			this.frame = frame;
+			this.pc = frame.getPc();
 		}
 
 		/**
@@ -142,6 +151,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			try {
 				m.deleteElement(element);
 			} catch (Exception e) {
+				frame.setPc(pc);
 				throw new VMException(frame, 
 						String.format(
 								"Error while deleting element %s from %s: %s", 
@@ -152,6 +162,168 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			}
 		}
 
+	}
+	
+	/**
+	 * Holds data for feature/field setting.
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	abstract class SetEntry {
+		
+		/**
+		 * The value to set.
+		 */
+		protected final Object value;
+
+		/**
+		 * The stack frame context in which to perform the set.
+		 */
+		protected final StackFrame frame;
+
+		/**
+		 * The program counter value.
+		 */
+		protected final int pc;
+
+		/**
+		 * Creates a new {@link SetEntry}.
+		 * @param value the value to set
+		 * @param frame the stack frame context in which to perform the set
+		 */
+		public SetEntry(final Object value, final StackFrame frame) {
+			this.value = value;
+			this.frame = frame;
+			this.pc = frame.getPc();
+		}
+
+		/**
+		 * Performs the field/feature set.
+		 */
+		public abstract void set();
+		
+	}
+	
+	/**
+	 * {@link SetEntry} implementation for {@link EStructuralFeature}s.
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	final class FeatureSetEntry extends SetEntry {
+		
+		/**
+		 * The feature to set.
+		 */
+		protected final EStructuralFeature feature;
+		
+		/**
+		 * The object for which to set the feature.
+		 */
+		protected final EObject object;
+		
+		/**
+		 * Creates a new {@link FeatureSetEntry}.
+		 * 
+		 */
+		public FeatureSetEntry(final EStructuralFeature feature, final EObject object, final Object value, final StackFrame frame) {
+			super(value, frame);
+			this.feature = feature;
+			this.object = object;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void set() {
+			try {
+				EMFTVMUtil.set(ExecEnvImpl.this, object, feature, value);
+			} catch (VMException e) {
+				throw e;
+			} catch (Exception e) {
+				frame.setPc(pc);
+				throw new VMException(frame, e);
+			}
+		}
+		
+	}
+
+	/**
+	 * {@link SetEntry} implementation for {@link Field}s.
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	final class FieldSetEntry extends SetEntry {
+		
+		/**
+		 * The field to set.
+		 */
+		protected final Field field;
+		
+		/**
+		 * The object for which to set the field.
+		 */
+		protected final Object object;
+		
+		/**
+		 * Creates a new {@link FieldSetEntry}.
+		 * 
+		 */
+		public FieldSetEntry(final Field field, final Object object, final Object value, final StackFrame frame) {
+			super(value, frame);
+			this.field = field;
+			this.object = object;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void set() {
+			try {
+				field.setValue(object, value);
+			} catch (VMException e) {
+				throw e;
+			} catch (Exception e) {
+				frame.setPc(pc);
+				throw new VMException(frame, e);
+			}
+		}
+		
+	}
+
+	/**
+	 * {@link SetEntry} implementation for setting XMI IDs.
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	final class XMIIDSetEntry extends SetEntry {
+		
+		/**
+		 * The object for which to set the XMI ID.
+		 */
+		protected final EObject object;
+		
+		/**
+		 * Creates a new {@link XMIIDSetEntry}.
+		 * 
+		 */
+		public XMIIDSetEntry(final EObject object, final Object value, final StackFrame frame) {
+			super(value, frame);
+			this.object = object;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void set() {
+			try {
+				final Resource resource = object.eResource();
+				((XMIResource)resource).setID(object, value.toString());
+			} catch (VMException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new VMException(frame, e);
+			}
+		}
+		
 	}
 
 	/**
@@ -253,6 +425,26 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @ordered
 	 */
 	protected boolean jitDisabled = JIT_DISABLED_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getCurrentPhase() <em>Current Phase</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCurrentPhase()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final RuleMode CURRENT_PHASE_EDEFAULT = RuleMode.MANUAL;
+
+	/**
+	 * The cached value of the '{@link #getCurrentPhase() <em>Current Phase</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCurrentPhase()
+	 * @generated
+	 * @ordered
+	 */
+	protected RuleMode currentPhase = CURRENT_PHASE_EDEFAULT;
 
 	/**
 	 * The internal value of the '{@link #getMetaModels() <em>Meta Models</em>}' attribute.
@@ -373,6 +565,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * context in which the deletion takes place.
 	 */
 	protected final Queue<DeletionEntry> deletionQueue = new LinkedList<DeletionEntry>();
+
+	/**
+	 * {@link Queue} of features/fields to be set, along with the {@link StackFrame}
+	 * context in which the set takes place.
+	 */
+	protected final Queue<SetEntry> setQueue = new LinkedList<SetEntry>();
 
 	private CodeBlockJIT cbJit;
 	private boolean ruleStateCompiled;
@@ -565,6 +763,15 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public RuleMode getCurrentPhase() {
+		return currentPhase;
+	}
+
+	/**
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
@@ -650,6 +857,48 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			cacheModels();
 		}
 		return (resource == null) ? null : metaModelOf.get(resource);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void queueForSet(EStructuralFeature feature, EObject object, Object value, StackFrame frame) {
+		setQueue.offer(new FeatureSetEntry(feature, object, value, frame));
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void queueForSet(Field field, Object object, Object value, StackFrame frame) {
+		setQueue.offer(new FieldSetEntry(field, object, value, frame));
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void queueXmiIDForSet(EObject object, Object value, StackFrame frame) {
+		setQueue.offer(new XMIIDSetEntry(object, value, frame));
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void setQueue() {
+		while (!setQueue.isEmpty()) {
+			setQueue.poll().set();
+		}
 	}
 
 	/**
@@ -1531,8 +1780,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			}
 			final StackFrame rootFrame = new StackFrame(this, mainChain.get(mainChain.size() - 1).getBody());
 			// run all automatic rules before main
-			matchAllSingle(rootFrame, timingData); 
-			matchAllRecursive(rootFrame, timingData); 
+			currentPhase = RuleMode.AUTOMATIC_SINGLE;
+			matchAllSingle(rootFrame, timingData);
+			currentPhase = RuleMode.AUTOMATIC_RECURSIVE;
+			matchAllRecursive(rootFrame, timingData);
+			currentPhase = RuleMode.MANUAL;
 			while (mains.hasNext()) {
 				CodeBlock cb = mains.next().getBody();
 				StackFrame rFrame = cb.execute(new StackFrame(this, cb));
@@ -1540,6 +1792,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 					result = rFrame.pop();
 				}
 			}
+			setQueue();
 			deleteQueue(); // process any leftover elements
 			if (monitor != null) {
 				monitor.terminated();
@@ -1551,6 +1804,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			}
 			throw e;
 		} finally {
+			currentPhase = null;
 			this.matches = null;
 			this.traces = null;
 			this.uniqueResults = null;
@@ -1677,11 +1931,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		for (Rule rule : matchedRules) {
 			rule.apply(frame);
 		}
+		setQueue();
 		if (timingData != null) timingData.finishApply();
 		// Run post-apply
 		for (Rule rule : matchedRules) {
 			rule.postApply(frame);
 		}
+		setQueue();
 		deleteQueue();
 		if (timingData != null) timingData.finishPostApply();
 	}
@@ -1878,6 +2134,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				return getUniqueResults();
 			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
 				return isJitDisabled();
+			case EmftvmPackage.EXEC_ENV__CURRENT_PHASE:
+				return getCurrentPhase();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1939,6 +2197,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				return uniqueResults != null;
 			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
 				return jitDisabled != JIT_DISABLED_EDEFAULT;
+			case EmftvmPackage.EXEC_ENV__CURRENT_PHASE:
+				return currentPhase != CURRENT_PHASE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1968,6 +2228,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		result.append(uniqueResults);
 		result.append(", jitDisabled: ");
 		result.append(jitDisabled);
+		result.append(", currentPhase: ");
+		result.append(currentPhase);
 		result.append(')');
 		return result.toString();
 	}

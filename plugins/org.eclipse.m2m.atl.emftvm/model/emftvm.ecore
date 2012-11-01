@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="emftvm"
-    nsURI="http://www.eclipse.org/m2m/atl/2011/EMFTVM" nsPrefix="emftvm">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="emftvm" nsURI="http://www.eclipse.org/m2m/atl/2011/EMFTVM" nsPrefix="emftvm">
   <eClassifiers xsi:type="ecore:EDataType" name="ModuleResolver" instanceClassName="org.eclipse.m2m.atl.emftvm.util.ModuleResolver"/>
   <eClassifiers xsi:type="ecore:EDataType" name="EnumLiteral" instanceClassName="org.eclipse.m2m.atl.emftvm.util.EnumLiteral"/>
   <eClassifiers xsi:type="ecore:EDataType" name="StackFrame" instanceClassName="org.eclipse.m2m.atl.emftvm.util.StackFrame"/>
@@ -234,6 +232,24 @@
     <eOperations name="getMetaModel" eType="#//Metamodel">
       <eParameters name="resource" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EResource"/>
     </eOperations>
+    <eOperations name="queueForSet">
+      <eParameters name="feature" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+      <eParameters name="object" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueForSet">
+      <eParameters name="field" eType="#//Field"/>
+      <eParameters name="object" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueXmiIDForSet">
+      <eParameters name="object" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="setQueue"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="metaModels" lowerBound="1"
         changeable="false" transient="true" defaultValueLiteral="" derived="true">
       <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
@@ -285,6 +301,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="jitDisabled" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
         transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentPhase" eType="#//RuleMode"
+        changeable="false" transient="true" defaultValueLiteral="null"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Model">
     <eOperations name="allInstancesOf">

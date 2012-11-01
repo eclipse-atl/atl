@@ -2559,6 +2559,15 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getExecEnv_CurrentPhase() {
+		return (EAttribute)execEnvEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EAttribute getExecEnv_MetaModels() {
 		return (EAttribute)execEnvEClass.getEStructuralFeatures().get(0);
 	}
@@ -2916,6 +2925,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		createEReference(execEnvEClass, EXEC_ENV__TRACES);
 		createEAttribute(execEnvEClass, EXEC_ENV__UNIQUE_RESULTS);
 		createEAttribute(execEnvEClass, EXEC_ENV__JIT_DISABLED);
+		createEAttribute(execEnvEClass, EXEC_ENV__CURRENT_PHASE);
 
 		modelEClass = createEClass(MODEL);
 		createEAttribute(modelEClass, MODEL__RESOURCE);
@@ -3359,6 +3369,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		g1.getETypeArguments().add(g2);
 		initEAttribute(getExecEnv_UniqueResults(), g1, "uniqueResults", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getExecEnv_JitDisabled(), theEcorePackage.getEBoolean(), "jitDisabled", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExecEnv_CurrentPhase(), this.getRuleMode(), "currentPhase", "null", 0, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		EOperation op = addEOperation(execEnvEClass, this.getModule(), "loadModule", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getModuleResolver(), "resolver", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3478,6 +3489,25 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		op = addEOperation(execEnvEClass, this.getMetamodel(), "getMetaModel", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEResource(), "resource", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, null, "queueForSet", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEStructuralFeature(), "feature", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEObject(), "object", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEJavaObject(), "value", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, null, "queueForSet", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getField(), "field", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEJavaObject(), "object", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEJavaObject(), "value", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(execEnvEClass, null, "queueXmiIDForSet", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEObject(), "object", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEJavaObject(), "value", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(execEnvEClass, null, "setQueue", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getModel_Resource(), theEcorePackage.getEResource(), "resource", null, 1, 1, Model.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);

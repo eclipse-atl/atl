@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="(C) 2011-2012 Dennis Wagelaar, Vrije Universiteit Brussel"
     modelDirectory="/org.eclipse.m2m.atl.emftvm/src" editDirectory="/org.eclipse.m2m.atl.emftvm.edit/src"
     editorDirectory="/org.eclipse.m2m.atl.emftvm.editor/src" modelPluginID="org.eclipse.m2m.atl.emftvm"
@@ -136,6 +135,7 @@
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//ExecEnv/traces"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/uniqueResults"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/jitDisabled"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//ExecEnv/currentPhase"/>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/loadModule">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule/resolver"/>
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule/name"/>
@@ -247,6 +247,24 @@
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/getMetaModel">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/getMetaModel/resource"/>
       </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/queueForSet">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForSet/feature"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForSet/object"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForSet/value"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForSet/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/queueForSet.1">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForSet.1/field"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForSet.1/object"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForSet.1/value"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForSet.1/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/queueXmiIDForSet">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueXmiIDForSet/object"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueXmiIDForSet/value"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueXmiIDForSet/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/setQueue"/>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//Model">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Model/resource"/>

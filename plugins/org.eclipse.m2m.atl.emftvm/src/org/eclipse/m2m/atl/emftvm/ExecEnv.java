@@ -14,6 +14,7 @@ package org.eclipse.m2m.atl.emftvm;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.m2m.atl.emftvm.jit.CodeBlockJIT;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
@@ -42,6 +43,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getTraces <em>Traces</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getUniqueResults <em>Unique Results</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#isJitDisabled <em>Jit Disabled</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getCurrentPhase <em>Current Phase</em>}</li>
  * </ul>
  * </p>
  *
@@ -138,6 +140,24 @@ public interface ExecEnv extends EObject {
 	void setJitDisabled(boolean value);
 
 	/**
+	 * Returns the value of the '<em><b>Current Phase</b></em>' attribute.
+	 * The default value is <code>"null"</code>.
+	 * The literals are from the enumeration {@link org.eclipse.m2m.atl.emftvm.RuleMode}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Current Phase</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Current Phase</em>' attribute.
+	 * @see org.eclipse.m2m.atl.emftvm.RuleMode
+	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv_CurrentPhase()
+	 * @model default="null" transient="true" changeable="false"
+	 * @generated
+	 */
+	RuleMode getCurrentPhase();
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * Returns the {@link VMMonitor} for the currently running VM instance.
@@ -212,6 +232,53 @@ public interface ExecEnv extends EObject {
 	 * @generated
 	 */
 	Metamodel getMetaModel(Resource resource);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Queues the given object and value for setting the given feature.
+	 * @param feature the feature to set
+	 * @param object the object for which to set the feature
+	 * @param value the feature value to set
+	 * @param frame the stack frame context in which to set the feature value
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void queueForSet(EStructuralFeature feature, EObject object, Object value, StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Queues the given object and value for setting the given field.
+	 * @param field the field to set
+	 * @param object the object for which to set the field
+	 * @param value the field value to set
+	 * @param frame the stack frame context in which to set the field value
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void queueForSet(Field field, Object object, Object value, StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Queues the given object and value for setting the XMI ID.
+	 * @param object the object for which to set the field
+	 * @param value the field value to set
+	 * @param frame the stack frame context in which to set the field value
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void queueXmiIDForSet(EObject object, Object value, StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Processes all elements in the "set" queue. Sets all queued features and fields, and clears the queue.
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void setQueue();
 
 	/**
 	 * Returns the value of the '<em><b>Meta Models</b></em>' attribute.

@@ -769,7 +769,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					frame.store(((Store)instr).getCbOffset(), ((Store)instr).getSlot());
 					break;
 				case SET:
-					set(frame.pop(), frame.pop(), ((Set)instr).getFieldname(), env);
+					frame.setPc(pc);
+					set(frame.pop(), frame.pop(), ((Set)instr).getFieldname(), frame);
 					break;
 				case GET:
 					frame.setPc(pc);
@@ -807,6 +808,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 									frame));
 					break;
 				case DELETE:
+					frame.setPc(pc);
 					delete(frame);
 					break;
 				case DUP:
@@ -1649,29 +1651,43 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param v value
 	 * @param o object
 	 * @param propname the property name
-	 * @param env the execution environment
+	 * @param frame the current stack frame
 	 * @throws NoSuchFieldException 
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	private void set(final Object v, final Object o, final String propname, final ExecEnv env) 
+	private void set(final Object v, final Object o, final String propname, final StackFrame frame) 
 	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		final ExecEnv env = frame.getEnv();
 		if (o instanceof EObject) {
 			final EObject eo = (EObject)o;
 			final EClass type = eo.eClass();
+			final boolean queueSet = env.getCurrentPhase() == RuleMode.AUTOMATIC_SINGLE && env.getInoutModelOf(eo) != null;
 			final Field field = findField(env, type, propname);
 			if (field != null) {
-				field.setValue(o, v);
+				if (queueSet) {
+					env.queueForSet(field, o, v, frame);
+				} else {
+					field.setValue(o, v);
+				}
 				return;
 			}
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
 			if (sf != null) {
-				EMFTVMUtil.set(env, eo, sf, v);
+				if (queueSet) {
+					env.queueForSet(sf, eo, v, frame);
+				} else {
+					EMFTVMUtil.set(env, eo, sf, v);
+				}
 				return;
 			}
 			final Resource resource = eo.eResource();
 			if (EMFTVMUtil.XMI_ID_FEATURE.equals(propname) && resource instanceof XMIResource) { //$NON-NLS-1$
-				((XMIResource)resource).setID(eo, v.toString());
+				if (queueSet) {
+					env.queueXmiIDForSet(eo, v, frame);
+				} else {
+					((XMIResource)resource).setID(eo, v.toString());
+				}
 				return;
 			}
 			throw new NoSuchFieldException(String.format("Field %s::%s not found", 

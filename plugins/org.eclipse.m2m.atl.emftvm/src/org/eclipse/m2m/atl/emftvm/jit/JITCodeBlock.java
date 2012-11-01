@@ -119,19 +119,21 @@ public abstract class JITCodeBlock {
 	 * @param o the object to set the value for
 	 * @param v the value to set
 	 * @param cb the original non-JIT'ed code block
-	 * @param env the execution environment
+	 * @param frame the current stack frame
 	 * @param propname the name of the property to set
 	 * @throws NoSuchFieldException 
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
-	protected static void set(final Object o, final Object v, final CodeBlock cb, final ExecEnv env, final String propname) 
+	protected static void set(final Object o, final Object v, final CodeBlock cb, final StackFrame frame, final String propname) 
 	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		final ExecEnv env = frame.getEnv();
 		final Rule rule = cb.getRule();
 		
 		if (o instanceof EObject) {
 			final EObject eo = (EObject)o;
 			final EClass type = eo.eClass();
+			final boolean queueSet = env.getCurrentPhase() == RuleMode.AUTOMATIC_SINGLE && env.getInoutModelOf(eo) != null;
 			Field field = null;
 			if (rule != null) {
 				field = rule.findField(type, propname);
@@ -140,17 +142,29 @@ public abstract class JITCodeBlock {
 				field = env.findField(type, propname);
 			}
 			if (field != null) {
-				field.setValue(o, v);
+				if (queueSet) {
+					env.queueForSet(field, o, v, frame);
+				} else {
+					field.setValue(o, v);
+				}
 				return;
 			}
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
 			if (sf != null) {
-				EMFTVMUtil.set(env, eo, sf, v);
+				if (queueSet) {
+					env.queueForSet(sf, eo, v, frame);
+				} else {
+					EMFTVMUtil.set(env, eo, sf, v);
+				}
 				return;
 			}
 			final Resource resource = eo.eResource();
 			if (EMFTVMUtil.XMI_ID_FEATURE.equals(propname) && resource instanceof XMIResource) { //$NON-NLS-1$
-				((XMIResource)resource).setID(eo, v.toString());
+				if (queueSet) {
+					env.queueXmiIDForSet(eo, v, frame);
+				} else {
+					((XMIResource)resource).setID(eo, v.toString());
+				}
 				return;
 			}
 			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
