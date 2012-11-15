@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -935,7 +935,6 @@ public final class EMFTVMUtil {
 	 * @param args the method arguments
 	 * @return the method result
 	 */
-	//TODO remove
 	public static Object invokeNative(final StackFrame frame, final Object self, 
 			final String opname, final Object[] args) {
 		final Method method = EMFTVMUtil.findNativeMethod(
@@ -944,24 +943,7 @@ public final class EMFTVMUtil {
 				EMFTVMUtil.getArgumentClasses(args), 
 				false);
 		if (method != null) {
-			final StackFrame subFrame = frame.prepareNativeArgs(method, self, args);
-			try {
-				return emf2vm(
-						frame.getEnv(), 
-						self instanceof EObject ? (EObject)self : null, 
-						method.invoke(self, args));
-			} catch (InvocationTargetException e) {
-				final Throwable target = e.getTargetException();
-				if (target instanceof VMException) {
-					throw (VMException)target;
-				} else {
-					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
-				}
-			} catch (VMException e) {
-				throw e;
-			} catch (Exception e) {
-				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
-			}
+			return invokeNative(frame, self, method, args);
 		}
 		throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
 				EMFTVMUtil.getTypeName(frame.getEnv(), getArgumentType(self)), 
@@ -1007,7 +989,6 @@ public final class EMFTVMUtil {
 	 * @param arg the method argument
 	 * @return the method result
 	 */
-	//TODO remove
 	public static Object invokeNative(final StackFrame frame, final Object self, 
 			final String opname, Object arg) {
 		final Method method = EMFTVMUtil.findNativeMethod(
@@ -1016,32 +997,7 @@ public final class EMFTVMUtil {
 				arg == null ? Void.TYPE : arg.getClass(), 
 				false);
 		if (method != null) {
-			StackFrame subFrame = frame.prepareNativeContext(method, self);
-			if (arg instanceof CodeBlock) {
-				if (subFrame == null) {
-					subFrame = new StackFrame(frame, method);
-				}
-				((CodeBlock)arg).setParentFrame(subFrame);
-			} else if (arg instanceof EnumLiteral) {
-				arg = convertEnumLiteral((EnumLiteral)arg, method.getParameterTypes()[0]);
-			}
-			try {
-				return emf2vm(
-						frame.getEnv(), 
-						self instanceof EObject ? (EObject)self : null, 
-						method.invoke(self, arg));
-			} catch (InvocationTargetException e) {
-				final Throwable target = e.getTargetException();
-				if (target instanceof VMException) {
-					throw (VMException)target;
-				} else {
-					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
-				}
-			} catch (VMException e) {
-				throw e;
-			} catch (Exception e) {
-				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
-			}
+			return invokeNative(frame, self, method, arg);
 		}
 		throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
 				EMFTVMUtil.getTypeName(frame.getEnv(), getArgumentType(self)), 
@@ -1094,7 +1050,6 @@ public final class EMFTVMUtil {
 	 * @param opname the method name
 	 * @return the method result
 	 */
-	//TODO remove
 	public static Object invokeNative(final StackFrame frame, final Object self, 
 			final String opname) {
 		final Method method = EMFTVMUtil.findNativeMethod(
@@ -1102,24 +1057,7 @@ public final class EMFTVMUtil {
 				opname, 
 				false);
 		if (method != null) {
-			final StackFrame subFrame = frame.prepareNativeContext(method, self);
-			try {
-				return emf2vm(
-						frame.getEnv(), 
-						self instanceof EObject ? (EObject)self : null, 
-						method.invoke(self));
-			} catch (InvocationTargetException e) {
-				final Throwable target = e.getTargetException();
-				if (target instanceof VMException) {
-					throw (VMException)target;
-				} else {
-					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
-				}
-			} catch (VMException e) {
-				throw e;
-			} catch (Exception e) {
-				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
-			}
+			return invokeNative(frame, self, method);
 		}
 		throw new UnsupportedOperationException(String.format("%s::%s()", 
 				EMFTVMUtil.getTypeName(frame.getEnv(), getArgumentType(self)), 

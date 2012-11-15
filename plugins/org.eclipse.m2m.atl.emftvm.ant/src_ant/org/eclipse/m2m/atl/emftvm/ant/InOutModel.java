@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,50 @@ package org.eclipse.m2m.atl.emftvm.ant;
 
 /**
  * Nested Ant input/output model element.
- * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+ * 
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class InOutModel extends ModelElement {
+
+	private String wspath;
+	private String uri;
+
+	/**
+	 * Sets the output model workspace path.
+	 * 
+	 * @param wspath
+	 *            the path to set
+	 */
+	public void setWspath(String wspath) {
+		this.wspath = wspath;
+	}
+
+	/**
+	 * Returns the output model workspace path.
+	 * 
+	 * @return the path
+	 */
+	public String getWspath() {
+		return wspath;
+	}
+
+	/**
+	 * Sets the model URI.
+	 * 
+	 * @param uri
+	 *            the uri to set
+	 */
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+
+	/**
+	 * Returns the model URI.
+	 * 
+	 * @return the uri
+	 */
+	public String getUri() {
+		return uri;
+	}
 
 }

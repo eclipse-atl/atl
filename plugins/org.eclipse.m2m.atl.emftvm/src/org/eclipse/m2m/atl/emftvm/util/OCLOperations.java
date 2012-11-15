@@ -12,7 +12,6 @@
 package org.eclipse.m2m.atl.emftvm.util;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,7 +24,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
@@ -592,34 +590,8 @@ public final class OCLOperations {
 					public StackFrame execute(final StackFrame frame) {
 						final Object source = frame.getLocal(0, 0);
 						final Object target = frame.getLocal(0, 1);
-						if (source instanceof EObject && source != target) { // different physical objects
-							assert target instanceof EObject;
-							final ExecEnv env = frame.getEnv();
-							for (Model m : env.getInoutModels().values()) {
-								List<EObject> eObjects = new ArrayList<EObject>();
-								for (EObject o : new ResourceIterable(m.getResource())) {
-									eObjects.add(o);
-								}
-								// Prevent ConcurrentModificationException by using eObjects copy
-								for (EObject o : eObjects) {
-									for (EReference ref : o.eClass().getEAllReferences()) {
-										if (ref.isChangeable()) {
-											Object val = o.eGet(ref);
-											if (val instanceof EList<?>) {
-												int index = ((EList<?>)val).indexOf(source);
-												if (index > -1) {
-													EMFTVMUtil.remove(env, o, ref, source);
-													EMFTVMUtil.add(env, o, ref, target, index);
-												}
-											} else {
-												if (val == source) {
-													EMFTVMUtil.set(env, o, ref, target);
-												}
-											}
-										}
-									}
-								}
-							}
+						if (source instanceof EObject && target instanceof EObject && source != target) { // different physical objects
+							frame.getEnv().queueForRemap((EObject) source, (EObject) target, frame);
 						}
 						frame.push(target);
 						return frame;

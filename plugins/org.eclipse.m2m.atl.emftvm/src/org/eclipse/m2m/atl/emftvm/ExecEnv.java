@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -273,12 +273,112 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Queues the given object and value for adding a value to the given feature.
+	 * @param feature the feature to add to
+	 * @param object the object for which to add to the feature
+	 * @param value the feature value to add
+	 * @param index the index at which to add, or <code>-1</code>
+	 * @param frame the stack frame context in which to add to the feature value
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void queueForAdd(EStructuralFeature feature, EObject object, Object value, int index, StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Queues the given object and value for adding a value to the given feature.
+	 * @param field the field to add to
+	 * @param object the object for which to add to the field
+	 * @param value the field value to add
+	 * @param index the index at which to add, or <code>-1</code>
+	 * @param frame the stack frame context in which to add to the field value
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void queueForAdd(Field field, Object object, Object value, int index, StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Queues the given object and value for adding to the XMI ID.
+	 * @param object the object for which to add to the field
+	 * @param value the field value to add
+	 * @param index the index at which to add, or <code>-1</code>
+	 * @param frame the stack frame context in which to add to the field value
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void queueXmiIDForAdd(EObject object, Object value, int index, StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Queues the given object and value for removing a value from the given feature.
+	 * @param feature the feature to remove from
+	 * @param object the object for which to remove from the feature
+	 * @param value the feature value to remove
+	 * @param frame the stack frame context in which to remove from the feature value
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void queueForRemove(EStructuralFeature feature, EObject object, Object value, StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Queues the given object and value for removing a value from the given feature.
+	 * @param field the field to remove from
+	 * @param object the object for which to remove from the field
+	 * @param value the field value to remove
+	 * @param frame the stack frame context in which to remove from the field value
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void queueForRemove(Field field, Object object, Object value, StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Queues the given object and value for removing from the XMI ID.
+	 * @param object the object for which to remove from the field
+	 * @param value the field value to remove
+	 * @param frame the stack frame context in which to remove from the field value
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void queueXmiIDForRemove(EObject object, Object value, StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * Processes all elements in the "set" queue. Sets all queued features and fields, and clears the queue.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
 	void setQueue();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Queues the given source and target value for remapping.
+	 * @param source the source value to remap
+	 * @param target the target value to map to
+	 * @param frame the stack frame context in which to remap
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void queueForRemap(EObject source, EObject target, StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Processes all element in the "remap" queue. Remaps all queued source/target value pairs, and clears the queue.
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void remapQueue();
 
 	/**
 	 * Returns the value of the '<em><b>Meta Models</b></em>' attribute.

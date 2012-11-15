@@ -249,7 +249,50 @@
       <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
       <eParameters name="frame" eType="#//StackFrame"/>
     </eOperations>
+    <eOperations name="queueForAdd">
+      <eParameters name="feature" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+      <eParameters name="object" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="index" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueForAdd">
+      <eParameters name="field" eType="#//Field"/>
+      <eParameters name="object" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="index" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueXmiIDForAdd">
+      <eParameters name="object" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="index" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueForRemove">
+      <eParameters name="feature" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+      <eParameters name="object" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueForRemove">
+      <eParameters name="field" eType="#//Field"/>
+      <eParameters name="object" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueXmiIDForRemove">
+      <eParameters name="object" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
     <eOperations name="setQueue"/>
+    <eOperations name="queueForRemap">
+      <eParameters name="source" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      <eParameters name="target" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="remapQueue"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="metaModels" lowerBound="1"
         changeable="false" transient="true" defaultValueLiteral="" derived="true">
       <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
@@ -386,6 +429,17 @@
       <eParameters name="frame" eType="#//StackFrame"/>
     </eOperations>
     <eOperations name="clear"/>
+    <eOperations name="addValue">
+      <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="index" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="removeValue">
+      <eParameters name="context" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="staticValue" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"
         transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="initialiser" lowerBound="1"

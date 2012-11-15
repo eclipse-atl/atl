@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -119,9 +119,9 @@ public interface Field extends Feature {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Returns the value of this {@link Field} for the given <pre>context</pre> object.
+	 * Returns the value of this {@link Field} for the given <code>context</code> object.
 	 * @param context the context object
-	 * @return the value of this {@link Field} for the given <pre>context</pre> object.
+	 * @return the value of this {@link Field} for the given <code>context</code> object.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
@@ -130,7 +130,7 @@ public interface Field extends Feature {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Sets the value of this {@link Field} for the given <pre>context</pre> object.
+	 * Sets the value of this {@link Field} for the given <code>context</code> object.
 	 * @param context the context object
 	 * @param value the field value to set
 	 * <!-- end-user-doc -->
@@ -141,11 +141,11 @@ public interface Field extends Feature {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Returns the value of this {@link Field} for the given <pre>context</pre> object.
-	 * Evaluates the initial value using <pre>frame</pre> if necessary.
+	 * Returns the value of this {@link Field} for the given <code>context</code> object.
+	 * Evaluates the initial value using <code>frame</code> if necessary.
 	 * @param context the context object
 	 * @param frame the {@link StackFrame} in which to execute the initial value evaluator
-	 * @return the value of this {@link Field} for the given <pre>context</pre> object.
+	 * @return the value of this {@link Field} for the given <code>context</code> object.
 	 * <!-- end-user-doc -->
 	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
@@ -155,7 +155,7 @@ public interface Field extends Feature {
 	/**
 	 * <!-- begin-user-doc -->
 	 * Returns the static value of this {@link Field}.
-	 * Evaluates the initial value using <pre>frame</pre> if necessary.
+	 * Evaluates the initial value using <code>frame</code> if necessary.
 	 * @param frame the {@link StackFrame} in which to execute the initial value evaluator
 	 * @return the static value of this {@link Field}.
 	 * <!-- end-user-doc -->
@@ -172,4 +172,29 @@ public interface Field extends Feature {
 	 * @generated
 	 */
 	void clear();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Adds a value to this {@link Field} for the given <code>context</code> object.
+	 * @param context the context object
+	 * @param value the field value to add
+	 * @param index the index to add the value at, or <code>-1</code>
+	 * @param frame the {@link StackFrame} in which to execute the initial value evaluator
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void addValue(Object context, Object value, int index, StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Removes a value from this {@link Field} for the given <code>context</code> object.
+	 * @param context the context object
+	 * @param value the field value to remove
+	 * @param frame the {@link StackFrame} in which to execute the initial value evaluator
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	void removeValue(Object context, Object value, StackFrame frame);
 } // Field

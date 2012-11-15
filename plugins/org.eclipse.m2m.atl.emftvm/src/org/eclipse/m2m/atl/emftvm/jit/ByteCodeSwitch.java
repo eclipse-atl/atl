@@ -1207,9 +1207,11 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		// [..., o, v]
 		generatePushInt(-1); // [..., o, v, -1]
 		ldc(object.getFieldname()); // [..., o, v, -1, fieldName]
-		aload(2); // env: [..., o, v, -1, fieldName, env]
-		invokeStat(JITCodeBlock.class, "add", Type.VOID_TYPE, // add(o, v, -1, fieldName, env)
-				Object.class, Object.class, Type.INT_TYPE, String.class, ExecEnv.class);
+		aload(0); // this: [..., o, v, -1, fieldName, this]
+		getField(JITCodeBlock.class, "cb", CodeBlock.class); // [..., o, v, -1, fieldName, cb]
+		aload(1); // frame: [..., o, v, -1, fieldName, cb, frame]
+		invokeStat(JITCodeBlock.class, "add", Type.VOID_TYPE, // add(o, v, -1, fieldName, cb, frame)
+				Object.class, Object.class, Type.INT_TYPE, String.class, CodeBlock.class, StackFrame.class);
 		return super.caseAdd(object);
 	}
 
@@ -1220,9 +1222,11 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	public MethodVisitor caseRemove(final Remove object) {
 		// [..., o, v]
 		ldc(object.getFieldname()); // [..., o, v, fieldName]
-		aload(2); // env: [..., o, v, fieldName, env]
-		invokeStat(JITCodeBlock.class, "remove", Type.VOID_TYPE, // remove(o, v, fieldName, env)
-				Object.class, Object.class, String.class, ExecEnv.class);
+		aload(0); // this: [..., o, v, fieldName, this]
+		getField(JITCodeBlock.class, "cb", CodeBlock.class); // [..., o, v, fieldName, cb]
+		aload(1); // frame: [..., o, v, fieldName, cb, frame]
+		invokeStat(JITCodeBlock.class, "remove", Type.VOID_TYPE, // remove(o, v, fieldName, cb, frame)
+				Object.class, Object.class, String.class, CodeBlock.class, StackFrame.class);
 		return super.caseRemove(object);
 	}
 
@@ -1236,9 +1240,10 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		checkcast(Integer.class); // [..., o, v, index]
 		invokeVirt(Integer.class, "intValue", Type.INT_TYPE); // Integer.intValue(): // [..., o, v, index]
 		ldc(object.getFieldname()); // [..., o, v, index, fieldName]
-		aload(2); // env: [..., o, v, index, fieldName, env]
-		invokeStat(JITCodeBlock.class, "add", Type.VOID_TYPE, // add(o, v, index, fieldName, env)
-				Object.class, Object.class, Type.INT_TYPE, String.class, ExecEnv.class);
+		getField(JITCodeBlock.class, "cb", CodeBlock.class); // [..., o, v, index, fieldName, cb]
+		aload(1); // frame: [..., o, v, index, fieldName, cb, frame]
+		invokeStat(JITCodeBlock.class, "add", Type.VOID_TYPE, // add(o, v, index, fieldName, cb, frame)
+				Object.class, Object.class, Type.INT_TYPE, String.class, CodeBlock.class, StackFrame.class);
 		return super.caseInsert(object);
 	}
 

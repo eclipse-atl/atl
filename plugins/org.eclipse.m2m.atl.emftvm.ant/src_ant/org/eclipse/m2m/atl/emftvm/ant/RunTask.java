@@ -183,7 +183,9 @@ public class RunTask extends EMFTVMTask {
 	 */
 	private Model getModel(final ModelElement me) {
 		final Model model = getModel(me.getName());
-		model.setAllowInterModelReferences(me.isAllowInterModelReferences());
+		if (model != null) {
+			model.setAllowInterModelReferences(me.isAllowInterModelReferences());
+		}
 		return model;
 	}
 
@@ -216,8 +218,30 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	private void addInoutModelsToEnv(final ExecEnv env) {
-		for (ModelElement me : getInoutModels()) {
-			env.registerInOutModel(getModelKey(me), getModel(me));
+		final ResourceSet rs = getResourceSet();
+		for (InOutModel m : getInoutModels()) {
+			Model model = getModel(m);
+			if (model == null) {
+				// Create new in/out model
+				String u = m.getUri();
+				URI uri = u == null ? URI.createPlatformResourceURI(m.getWspath(), true) : URI.createURI(u);
+				Resource r = rs.createResource(uri);
+				model = EmftvmFactory.eINSTANCE.createModel();
+				model.setResource(r);
+				model.setAllowInterModelReferences(m.isAllowInterModelReferences());
+				setModel(m.getName(), model);
+			} else {
+				// Use existing in/out model, but override URI if given
+				String u = m.getUri();
+				if (u != null) {
+					model.getResource().setURI(URI.createURI(u));
+				}
+				String wsp = m.getWspath();
+				if (wsp != null) {
+					model.getResource().setURI(URI.createPlatformResourceURI(wsp, true));
+				}
+			}
+			env.registerInOutModel(getModelKey(m), model);
 		}
 	}
 

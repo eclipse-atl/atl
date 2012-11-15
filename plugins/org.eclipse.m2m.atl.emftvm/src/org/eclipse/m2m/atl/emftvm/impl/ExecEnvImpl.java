@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -75,6 +77,7 @@ import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.NativeCodeBlock;
 import org.eclipse.m2m.atl.emftvm.util.NativeTypes;
 import org.eclipse.m2m.atl.emftvm.util.OCLOperations;
+import org.eclipse.m2m.atl.emftvm.util.ResourceIterable;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 import org.eclipse.m2m.atl.emftvm.util.TypeHashMap;
@@ -110,10 +113,56 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 	/**
+	 * Holds data for queued operations.
+	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 */
+	abstract class QueueEntry {
+		
+		/**
+		 * The stack frame context in which to perform the queued operation.
+		 */
+		protected final StackFrame frame;
+
+		/**
+		 * The program counter value.
+		 */
+		protected final int pc;
+
+		/**
+		 * Creates a new {@link QueueEntry}.
+		 * @param frame the stack frame context in which to perform the queued operation
+		 */
+		public QueueEntry(final StackFrame frame) {
+			this.frame = frame;
+			this.pc = frame.getPc();
+		}
+
+		/**
+		 * Processes this queue element.
+		 */
+		public void process() {
+			try {
+				perform();
+			} catch (VMException e) {
+				throw e;
+			} catch (Exception e) {
+				frame.setPc(pc);
+				throw new VMException(frame, e);
+			}
+		}
+
+		/**
+		 * Performs the queued operation.
+		 */
+		protected abstract void perform();
+		
+	}
+	
+	/**
 	 * Hold data for element deletion.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	final class DeletionEntry {
+	final class DeletionEntry extends QueueEntry {
 
 		/**
 		 * The element to delete.
@@ -121,31 +170,20 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		protected final EObject element;
 
 		/**
-		 * The stack frame context in which to perform the deletion.
-		 */
-		protected final StackFrame frame;
-		
-		/**
-		 * The program counter value.
-		 */
-		protected final int pc;
-
-		/**
 		 * Creates a new {@link DeletionEntry}.
 		 * @param element the element to delete
 		 * @param frame the stack frame context in which to perform the deletion
 		 */
 		public DeletionEntry(final EObject element, final StackFrame frame) {
-			super();
+			super(frame);
 			this.element = element;
-			this.frame = frame;
-			this.pc = frame.getPc();
 		}
 
 		/**
-		 * Performs the element deletion.
+		 * {@inheritDoc}
 		 */
-		public void delete() {
+		@Override
+		protected void perform() {
 			assert getInputModelOf(element) == null;
 			final Model m = getModelOf(element);
 			try {
@@ -165,77 +203,59 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 	
 	/**
-	 * Holds data for feature/field setting.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
+	 * Holds data for a queued remap() operation.
+	 * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
 	 */
-	abstract class SetEntry {
-		
-		/**
-		 * The value to set.
-		 */
-		protected final Object value;
+	final class RemapEntry extends QueueEntry {
 
 		/**
-		 * The stack frame context in which to perform the set.
+		 * The source element to remap.
 		 */
-		protected final StackFrame frame;
+		protected final EObject source;
 
 		/**
-		 * The program counter value.
+		 * The target element to map to.
 		 */
-		protected final int pc;
+		protected final EObject target;
 
 		/**
-		 * Creates a new {@link SetEntry}.
-		 * @param value the value to set
-		 * @param frame the stack frame context in which to perform the set
-		 */
-		public SetEntry(final Object value, final StackFrame frame) {
-			this.value = value;
-			this.frame = frame;
-			this.pc = frame.getPc();
-		}
-
-		/**
-		 * Performs the field/feature set.
-		 */
-		public abstract void set();
-		
-	}
-	
-	/**
-	 * {@link SetEntry} implementation for {@link EStructuralFeature}s.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
-	 */
-	final class FeatureSetEntry extends SetEntry {
-		
-		/**
-		 * The feature to set.
-		 */
-		protected final EStructuralFeature feature;
-		
-		/**
-		 * The object for which to set the feature.
-		 */
-		protected final EObject object;
-		
-		/**
-		 * Creates a new {@link FeatureSetEntry}.
+		 * Creates a new {@link RemapEntry}.
 		 * 
+		 * @param source
+		 *            the source element to remap
+		 * @param target
+		 *            the target element to map to
+		 * @param frame
+		 *            the stack frame context in which to perform the set
 		 */
-		public FeatureSetEntry(final EStructuralFeature feature, final EObject object, final Object value, final StackFrame frame) {
-			super(value, frame);
-			this.feature = feature;
-			this.object = object;
+		public RemapEntry(final EObject source, final EObject target, final StackFrame frame) {
+			super(frame);
+			this.source = source;
+			this.target = target;
 		}
 
 		/**
 		 * {@inheritDoc}
+		 * 
+		 * @throws UnsupportedOperationException
 		 */
 		@Override
-		public void set() {
+		protected void perform() {
+			throw new UnsupportedOperationException();
+		}
+
+		/**
+		 * Performs the queued operation for the given <code>ref</code>.
+		 * 
+		 * @param o
+		 *            the object for which to remap <code>ref</code>
+		 * @param ref
+		 *            the {@link EReference} to perform the remap() for
+		 */
+		public void process(final EObject o, final EReference ref) {
 			try {
-				EMFTVMUtil.set(ExecEnvImpl.this, object, feature, value);
+				assert o.eGet(ref) == source;
+				EMFTVMUtil.set(ExecEnvImpl.this, o, ref, target);
 			} catch (VMException e) {
 				throw e;
 			} catch (Exception e) {
@@ -243,42 +263,23 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				throw new VMException(frame, e);
 			}
 		}
-		
-	}
 
-	/**
-	 * {@link SetEntry} implementation for {@link Field}s.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
-	 */
-	final class FieldSetEntry extends SetEntry {
-		
 		/**
-		 * The field to set.
-		 */
-		protected final Field field;
-		
-		/**
-		 * The object for which to set the field.
-		 */
-		protected final Object object;
-		
-		/**
-		 * Creates a new {@link FieldSetEntry}.
+		 * Performs the queued operation for the given <code>ref</code> and <code>index</code>.
 		 * 
+		 * @param o
+		 *            the object for which to remap <code>ref</code>
+		 * @param ref
+		 *            the {@link EReference} to perform the remap() for
+		 * @param index
+		 *            the reference value index at which to remap
 		 */
-		public FieldSetEntry(final Field field, final Object object, final Object value, final StackFrame frame) {
-			super(value, frame);
-			this.field = field;
-			this.object = object;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void set() {
+		public void process(final EObject o, final EReference ref, final int index) {
 			try {
-				field.setValue(object, value);
+				assert o.eGet(ref) instanceof EList<?>;
+				assert ((EList<?>) o.eGet(ref)).get(index) == source;
+				EMFTVMUtil.remove(ExecEnvImpl.this, o, ref, source);
+				EMFTVMUtil.add(ExecEnvImpl.this, o, ref, target, index);
 			} catch (VMException e) {
 				throw e;
 			} catch (Exception e) {
@@ -286,44 +287,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				throw new VMException(frame, e);
 			}
 		}
-		
-	}
 
-	/**
-	 * {@link SetEntry} implementation for setting XMI IDs.
-	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
-	 */
-	final class XMIIDSetEntry extends SetEntry {
-		
-		/**
-		 * The object for which to set the XMI ID.
-		 */
-		protected final EObject object;
-		
-		/**
-		 * Creates a new {@link XMIIDSetEntry}.
-		 * 
-		 */
-		public XMIIDSetEntry(final EObject object, final Object value, final StackFrame frame) {
-			super(value, frame);
-			this.object = object;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void set() {
-			try {
-				final Resource resource = object.eResource();
-				((XMIResource)resource).setID(object, value.toString());
-			} catch (VMException e) {
-				throw e;
-			} catch (Exception e) {
-				throw new VMException(frame, e);
-			}
-		}
-		
 	}
 
 	/**
@@ -570,7 +534,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * {@link Queue} of features/fields to be set, along with the {@link StackFrame}
 	 * context in which the set takes place.
 	 */
-	protected final Queue<SetEntry> setQueue = new LinkedList<SetEntry>();
+	protected final Queue<QueueEntry> setQueue = new LinkedList<QueueEntry>();
+
+	/**
+	 * Queue of source/target values to be remapped, along with the {@link StackFrame} context in which the remapping takes place. Only one
+	 * queue entry per source value to remap is supported.
+	 */
+	protected final Map<EObject, RemapEntry> remapQueue = new HashMap<EObject, RemapEntry>();
 
 	private CodeBlockJIT cbJit;
 	private boolean ruleStateCompiled;
@@ -865,8 +835,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void queueForSet(EStructuralFeature feature, EObject object, Object value, StackFrame frame) {
-		setQueue.offer(new FeatureSetEntry(feature, object, value, frame));
+	public void queueForSet(final EStructuralFeature feature, final EObject object, final Object value, final StackFrame frame) {
+		setQueue.offer(new QueueEntry(frame) {
+			@Override
+			protected void perform() {
+				EMFTVMUtil.set(ExecEnvImpl.this, object, feature, value);
+			}
+		});
 	}
 
 	/**
@@ -875,8 +850,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void queueForSet(Field field, Object object, Object value, StackFrame frame) {
-		setQueue.offer(new FieldSetEntry(field, object, value, frame));
+	public void queueForSet(final Field field, final Object object, final Object value, final StackFrame frame) {
+		setQueue.offer(new QueueEntry(frame) {
+			@Override
+			protected void perform() {
+				field.setValue(object, value);
+			}
+		});
 	}
 
 	/**
@@ -885,8 +865,144 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void queueXmiIDForSet(EObject object, Object value, StackFrame frame) {
-		setQueue.offer(new XMIIDSetEntry(object, value, frame));
+	public void queueXmiIDForSet(final EObject object, final Object value, final StackFrame frame) {
+		setQueue.offer(new QueueEntry(frame) {
+			@Override
+			protected void perform() {
+				final Resource resource = object.eResource();
+				((XMIResource) resource).setID(object, value.toString());
+			}
+		});
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void queueForAdd(final EStructuralFeature feature, final EObject object, final Object value, final int index,
+			final StackFrame frame) {
+		setQueue.offer(new QueueEntry(frame) {
+			@Override
+			protected void perform() {
+				EMFTVMUtil.add(ExecEnvImpl.this, object, feature, value, index);
+			}
+		});
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void queueForAdd(final Field field, final Object object, final Object value, final int index, final StackFrame frame) {
+		setQueue.offer(new QueueEntry(frame) {
+			@Override
+			protected void perform() {
+				if (object instanceof EObject) {
+					final EObject eo = (EObject) object;
+					if (getInputModelOf(eo) != null) {
+						throw new IllegalArgumentException(String.format(
+								"Cannot add to properties of %s, as it is contained in an input model",
+								EMFTVMUtil.toPrettyString(eo, ExecEnvImpl.this)));
+					}
+					if (getOutputModelOf(eo) != null) {
+						throw new IllegalArgumentException(String.format(
+								"Adding to transient field %s of %s, which cannot be read back as %1s is contained in an output model",
+								field.getName(), EMFTVMUtil.toPrettyString(eo, ExecEnvImpl.this)));
+					}
+				}
+				field.addValue(object, value, index, frame);
+			}
+		});
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void queueXmiIDForAdd(final EObject object, final Object value, final int index, final StackFrame frame) {
+		setQueue.offer(new QueueEntry(frame) {
+			@Override
+			protected void perform() {
+				final Resource resource = object.eResource();
+				if (((XMIResource) resource).getID(object) != null) {
+					throw new IllegalArgumentException(String.format("Cannot add %s to field %s::%s: maximum multiplicity of 1 reached",
+							value, EMFTVMUtil.toPrettyString(object, ExecEnvImpl.this), EMFTVMUtil.XMI_ID_FEATURE));
+				}
+				if (index > 0) {
+					throw new IndexOutOfBoundsException(String.valueOf(index));
+				}
+				((XMIResource) resource).setID(object, value.toString());
+			}
+		});
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void queueForRemove(final EStructuralFeature feature, final EObject object, final Object value, final StackFrame frame) {
+		setQueue.offer(new QueueEntry(frame) {
+			@Override
+			protected void perform() {
+				EMFTVMUtil.remove(ExecEnvImpl.this, object, feature, value);
+			}
+		});
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void queueForRemove(final Field field, final Object object, final Object value, final StackFrame frame) {
+		setQueue.offer(new QueueEntry(frame) {
+			@Override
+			protected void perform() {
+				if (object instanceof EObject) {
+					final EObject eo = (EObject) object;
+					if (getInputModelOf(eo) != null) {
+						throw new IllegalArgumentException(String.format(
+								"Cannot remove from properties of %s, as it is contained in an input model",
+								EMFTVMUtil.toPrettyString(eo, ExecEnvImpl.this)));
+					}
+					if (getOutputModelOf(eo) != null) {
+						throw new IllegalArgumentException(String.format(
+								"Removing from transient field %s of %s, which cannot be read back as %1s is contained in an output model",
+								field.getName(), EMFTVMUtil.toPrettyString(eo, ExecEnvImpl.this)));
+					}
+				}
+				field.removeValue(object, value, frame);
+			}
+		});
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void queueXmiIDForRemove(final EObject object, final Object value, final StackFrame frame) {
+		setQueue.offer(new QueueEntry(frame) {
+			@Override
+			protected void perform() {
+				final Resource resource = object.eResource();
+				final XMIResource xmiRes = (XMIResource) resource;
+				final Object xmiID = xmiRes.getID(object);
+				if (xmiID == null ? value == null : xmiID.equals(value)) {
+					xmiRes.setID(object, null);
+				}
+			}
+		});
 	}
 
 	/**
@@ -896,8 +1012,67 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public void setQueue() {
-		while (!setQueue.isEmpty()) {
-			setQueue.poll().set();
+		try {
+			while (!setQueue.isEmpty()) {
+				setQueue.poll().process();
+			}
+		} finally {
+			setQueue.clear();
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void queueForRemap(EObject source, EObject target, StackFrame frame) {
+		if (remapQueue.containsKey(source)) {
+			throw new IllegalArgumentException(String.format("Source element %s already queued for remap",
+					EMFTVMUtil.toPrettyString(source, this)));
+		}
+		remapQueue.put(source, new RemapEntry(source, target, frame));
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void remapQueue() {
+		try {
+			for (Model m : getInoutModels().values()) {
+				List<EObject> eObjects = new ArrayList<EObject>();
+				for (EObject o : new ResourceIterable(m.getResource())) {
+					eObjects.add(o);
+				}
+				// Prevent ConcurrentModificationException by using eObjects copy
+				for (EObject o : eObjects) {
+					for (EReference ref : o.eClass().getEAllReferences()) {
+						// Only change changeable references that are not the reverse of a containment reference
+						if (ref.isChangeable() && !ref.isContainer()) {
+							Object val = o.eGet(ref);
+							if (val instanceof EList<?>) {
+								EList<?> listVal = (EList<?>) val;
+								for (int index = 0; index < listVal.size(); index++) {
+									Object source = listVal.get(index);
+									if (remapQueue.containsKey(source)) {
+										remapQueue.get(source).process(o, ref, index);
+									}
+								}
+							} else {
+								if (remapQueue.containsKey(val)) {
+									remapQueue.get(val).process(o, ref);
+								}
+							}
+						}
+					}
+				}
+			}
+		} finally {
+			remapQueue.clear();
 		}
 	}
 
@@ -1792,8 +1967,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 					result = rFrame.pop();
 				}
 			}
+			// process any leftover queue elements
 			setQueue();
-			deleteQueue(); // process any leftover elements
+			remapQueue();
+			deleteQueue();
 			if (monitor != null) {
 				monitor.terminated();
 			}
@@ -1932,12 +2109,14 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			rule.apply(frame);
 		}
 		setQueue();
+		remapQueue();
 		if (timingData != null) timingData.finishApply();
 		// Run post-apply
 		for (Rule rule : matchedRules) {
 			rule.postApply(frame);
 		}
 		setQueue();
+		remapQueue();
 		deleteQueue();
 		if (timingData != null) timingData.finishPostApply();
 	}
@@ -2058,8 +2237,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public void deleteQueue() {
-		while (!deletionQueue.isEmpty()) {
-			deletionQueue.poll().delete();
+		try {
+			while (!deletionQueue.isEmpty()) {
+				deletionQueue.poll().process();
+			}
+		} finally {
+			deletionQueue.clear();
 		}
 	}
 

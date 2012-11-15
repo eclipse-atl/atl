@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.impl;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -297,6 +299,75 @@ public class FieldImpl extends FeatureImpl implements Field {
 		staticValueInitialised = false;
 		staticValue = null;
 		values.clear();
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@SuppressWarnings("unchecked")
+	public void addValue(final Object context, final Object value, final int index, final StackFrame frame) {
+		final Object currentVal = getValue(context, frame);
+		if (currentVal instanceof Collection<?>) {
+			if (currentVal instanceof List<?>) {
+				if (value instanceof Collection<?>) {
+					if (index > -1) {
+						((List<Object>) currentVal).addAll(index, (Collection<?>) value);
+					} else {
+						((List<Object>) currentVal).addAll((Collection<?>) value);
+					}
+				} else {
+					if (index > -1) {
+						((List<Object>) currentVal).add(index, value);
+					} else {
+						((List<Object>) currentVal).add(value);
+					}
+				}
+			} else {
+				if (index > -1) {
+					throw new IllegalArgumentException(String.format(
+							"Cannot specify index for adding values to unordered collection field %s.%s", context, this));
+				}
+				if (value instanceof Collection<?>) {
+					((Collection<Object>) currentVal).addAll((Collection<?>) value);
+				} else {
+					((Collection<Object>) currentVal).add(value);
+				}
+			}
+		} else {
+			if (currentVal != null) {
+				throw new IllegalArgumentException(String.format("Cannot add more than one value to %s.%s", context, this));
+			}
+			if (index > 0) {
+				throw new IndexOutOfBoundsException(String.valueOf(index));
+			}
+			setValue(context, value);
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@SuppressWarnings("unchecked")
+	public void removeValue(final Object context, final Object value, final StackFrame frame) {
+		final Object currentVal = getValue(context, frame);
+		if (currentVal instanceof Collection<?>) {
+			if (value instanceof Collection<?>) {
+				((Collection<Object>) currentVal).removeAll((Collection<?>) value);
+			} else {
+				((Collection<Object>) currentVal).remove(value);
+			}
+		} else {
+			if (currentVal != null && currentVal.equals(value)) {
+				// Do not actually remove the value, as this triggers the initialiser again on GET
+				setValue(context, null);
+			}
+		}
 	}
 
 	/**

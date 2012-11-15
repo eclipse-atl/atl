@@ -264,7 +264,50 @@
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueXmiIDForSet/value"/>
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueXmiIDForSet/frame"/>
       </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/queueForAdd">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForAdd/feature"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForAdd/object"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForAdd/value"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForAdd/index"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForAdd/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/queueForAdd.1">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForAdd.1/field"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForAdd.1/object"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForAdd.1/value"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForAdd.1/index"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForAdd.1/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/queueXmiIDForAdd">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueXmiIDForAdd/object"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueXmiIDForAdd/value"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueXmiIDForAdd/index"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueXmiIDForAdd/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/queueForRemove">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForRemove/feature"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForRemove/object"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForRemove/value"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForRemove/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/queueForRemove.1">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForRemove.1/field"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForRemove.1/object"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForRemove.1/value"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForRemove.1/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/queueXmiIDForRemove">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueXmiIDForRemove/object"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueXmiIDForRemove/value"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueXmiIDForRemove/frame"/>
+      </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/setQueue"/>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/queueForRemap">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForRemap/source"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForRemap/target"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/queueForRemap/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/remapQueue"/>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//Model">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Model/resource"/>
@@ -328,6 +371,17 @@
         <genParameters ecoreParameter="emftvm.ecore#//Field/getStaticValue/frame"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//Field/clear"/>
+      <genOperations ecoreOperation="emftvm.ecore#//Field/addValue">
+        <genParameters ecoreParameter="emftvm.ecore#//Field/addValue/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Field/addValue/value"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Field/addValue/index"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Field/addValue/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Field/removeValue">
+        <genParameters ecoreParameter="emftvm.ecore#//Field/removeValue/context"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Field/removeValue/value"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Field/removeValue/frame"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//Operation">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Operation/parameters"/>

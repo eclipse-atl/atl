@@ -11,14 +11,18 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
 import org.eclipse.emf.compare.diff.metamodel.DiffModel;
@@ -27,6 +31,7 @@ import org.eclipse.emf.compare.diff.service.DiffService;
 import org.eclipse.emf.compare.match.MatchOptions;
 import org.eclipse.emf.compare.match.metamodel.MatchModel;
 import org.eclipse.emf.compare.match.service.MatchService;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -38,6 +43,8 @@ import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Field;
+import org.eclipse.m2m.atl.emftvm.Instruction;
+import org.eclipse.m2m.atl.emftvm.LocalVariable;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.Module;
@@ -55,6 +62,7 @@ import org.eclipse.m2m.atl.emftvm.util.NativeTypes.NativeType;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 import org.eclipse.m2m.atl.emftvm.util.Types;
+import org.eclipse.m2m.atl.emftvm.util.VMException;
 import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 import org.osgi.framework.Bundle;
 
@@ -115,7 +123,15 @@ import org.osgi.framework.Bundle;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForSet(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Set</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForSet(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Set</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueXmiIDForSet(org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue Xmi ID For Set</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForAdd(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.emf.ecore.EObject, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Add</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForAdd(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Add</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueXmiIDForAdd(org.eclipse.emf.ecore.EObject, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue Xmi ID For Add</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForRemove(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Remove</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForRemove(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Remove</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueXmiIDForRemove(org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue Xmi ID For Remove</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#setQueue() <em>Set Queue</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForRemap(org.eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EObject, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Remap</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#remapQueue() <em>Remap Queue</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -612,9 +628,10 @@ public class ExecEnvTest extends TestCase {
 	 */
 	public void testQueueXmiIDForSet__EObject_Object_StackFrame() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
 
 		// Load models
-		final Resource inRes = EmftvmPackage.eINSTANCE.eResource();
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
 		env.registerInOutModel("IN", inModel);
@@ -632,6 +649,367 @@ public class ExecEnvTest extends TestCase {
 	}
 
 	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForAdd(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.emf.ecore.EObject, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Add</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueForAdd(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.emf.ecore.EObject, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated NOT
+	 */
+	public void testQueueForAdd__EStructuralFeature_EObject_Object_int_StackFrame() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.createResource(URI.createURI("local.xmi"));
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.registerInOutModel("IN", inModel);
+
+		final CodeBlock element = EmftvmFactory.eINSTANCE.createCodeBlock();
+		inRes.getContents().add(element);
+
+		final LocalVariable lv = EmftvmFactory.eINSTANCE.createLocalVariable();
+		env.queueForAdd(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, lv, -1,
+				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		assertFalse(element.getLocalVariables().contains(lv));
+		env.setQueue();
+		assertEquals(0, element.getLocalVariables().indexOf(lv));
+
+		final LocalVariable lv2 = EmftvmFactory.eINSTANCE.createLocalVariable();
+		env.queueForAdd(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, lv2, -1,
+				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		env.setQueue();
+		assertEquals(1, element.getLocalVariables().indexOf(lv2));
+
+		final LocalVariable lv3 = EmftvmFactory.eINSTANCE.createLocalVariable();
+		env.queueForAdd(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, lv3, 0,
+				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		env.setQueue();
+		assertEquals(0, element.getLocalVariables().indexOf(lv3));
+		assertEquals(1, element.getLocalVariables().indexOf(lv));
+		assertEquals(2, element.getLocalVariables().indexOf(lv2));
+
+		final LocalVariable lv4 = EmftvmFactory.eINSTANCE.createLocalVariable();
+		env.queueForAdd(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, lv4, 3,
+				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		env.setQueue();
+		assertEquals(3, element.getLocalVariables().indexOf(lv4));
+
+		env.queueForAdd(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, EmftvmFactory.eINSTANCE.createLocalVariable(),
+				element.getLocalVariables().size() + 1, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		try {
+			env.setQueue();
+			fail("Expected VMException");
+		} catch (VMException e) {
+			// expected
+			assertTrue(e.getCause() instanceof IndexOutOfBoundsException);
+		}
+
+		env.queueForAdd(EmftvmPackage.eINSTANCE.getCodeBlock_MaxLocals(), element, 2, 0,
+				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		try {
+			env.setQueue();
+			fail("Expected VMException");
+		} catch (VMException e) {
+			// expected
+			assertTrue(e.getCause() instanceof IllegalArgumentException);
+		}
+	}
+
+	/**
+	 * Tests the '
+	 * {@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForAdd(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * <em>Queue For Add</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueForAdd(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, int,
+	 *      org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated NOT
+	 */
+	public void testQueueForAdd__Field_Object_Object_int_StackFrame() {
+		{
+			final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+			final ResourceSet rs = new ResourceSetImpl();
+
+			// Load models
+			final Resource portsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true),
+					true);
+			final Metamodel portsModel = EmftvmFactory.eINSTANCE.createMetamodel();
+			portsModel.setResource(portsRes);
+			env.registerMetaModel("Ports", portsModel);
+			final Resource pinsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Pins.ecore", true),
+					true);
+			final Metamodel pinsModel = EmftvmFactory.eINSTANCE.createMetamodel();
+			pinsModel.setResource(pinsRes);
+			env.registerMetaModel("Pins", pinsModel);
+			final Resource inRes = rs.createResource(URI.createURI("local.xmi"));
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+			inModel.setResource(inRes);
+			env.registerInOutModel("IN", inModel);
+			final Resource outRes = rs.createResource(URI.createURI("local2.xmi"));
+			final Model outModel = EmftvmFactory.eINSTANCE.createModel();
+			outModel.setResource(outRes);
+			env.registerInOutModel("OUT", outModel);
+
+			// Load module with some fields
+			env.loadModule(new DefaultModuleResolver(PLUGIN_URI + "/test-data/PortsToPins/", rs), "PortsToPins");
+
+			final EObject element = inModel.newElement((EClass) portsModel.findType("Port"));
+			final Field field = env.findField(element.eClass(), "pins");
+			field.setValue(element, new ArrayList<Object>());
+
+			final EObject pin = outModel.newElement((EClass) pinsModel.findType("Pin"));
+			assertNotNull(pin);
+			env.queueForAdd(field, element, pin, -1, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+			assertTrue(field.getValue(element) instanceof List<?>);
+			assertFalse(((List<?>) field.getValue(element)).contains(pin));
+			env.setQueue();
+			assertTrue(field.getValue(element) instanceof List<?>);
+			assertTrue(((List<?>) field.getValue(element)).contains(pin));
+		}
+
+		{
+			final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+			final ResourceSet rs = new ResourceSetImpl();
+
+			// Load models
+			final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+			inModel.setResource(inRes);
+			env.registerInOutModel("IN", inModel);
+
+			// Load module with some fields
+			env.loadModule(new DefaultModuleResolver(PLUGIN_URI + "/test-data/", rs), "TestQuery");
+
+			final Operation element = (Operation) inModel.allInstancesOf(EmftvmPackage.eINSTANCE.getOperation()).first();
+			final Field field = env.findField(element.eClass(), "testProp");
+
+			env.queueForAdd(field, element, Boolean.FALSE, -1, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+			assertNull(field.getValue(element));
+			try {
+				env.setQueue();
+				fail("Expected VMException");
+			} catch (VMException e) {
+				// expected
+				assertTrue(e.getCause() instanceof IllegalArgumentException);
+				// field has been lazily initialised
+				assertNotNull(field.getValue(element));
+			}
+
+			// force field value to null - lazy initialisation should not happen again
+			field.setValue(element, null);
+			env.queueForAdd(field, element, Boolean.FALSE, -1, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+			assertNull(field.getValue(element));
+			env.setQueue();
+			assertEquals(Boolean.FALSE, field.getValue(element));
+		}
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueXmiIDForAdd(org.eclipse.emf.ecore.EObject, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue Xmi ID For Add</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueXmiIDForAdd(org.eclipse.emf.ecore.EObject, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated NOT
+	 */
+	public void testQueueXmiIDForAdd__EObject_Object_int_StackFrame() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.registerInOutModel("IN", inModel);
+
+		final EObject element = inModel.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).first();
+		final String xmiID = "_a01";
+
+		env.queueXmiIDForAdd(element, xmiID, -1, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+
+		assertNull(((XMIResource) inRes).getID(element));
+
+		env.setQueue();
+
+		assertEquals(xmiID, ((XMIResource) inRes).getID(element));
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForRemove(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Remove</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueForRemove(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated NOT
+	 */
+	public void testQueueForRemove__EStructuralFeature_EObject_Object_StackFrame() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.createResource(URI.createURI("local.xmi"));
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.registerInOutModel("IN", inModel);
+
+		final CodeBlock element = EmftvmFactory.eINSTANCE.createCodeBlock();
+		inRes.getContents().add(element);
+		final LocalVariable lv = EmftvmFactory.eINSTANCE.createLocalVariable();
+		final LocalVariable lv2 = EmftvmFactory.eINSTANCE.createLocalVariable();
+		final LocalVariable lv3 = EmftvmFactory.eINSTANCE.createLocalVariable();
+		final LocalVariable lv4 = EmftvmFactory.eINSTANCE.createLocalVariable();
+		element.getLocalVariables().add(lv);
+		element.getLocalVariables().add(lv2);
+		element.getLocalVariables().add(lv3);
+		element.getLocalVariables().add(lv4);
+
+		env.queueForRemove(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, lv4,
+				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		assertTrue(element.getLocalVariables().contains(lv4));
+		env.setQueue();
+		assertFalse(element.getLocalVariables().contains(lv4));
+
+		env.queueForRemove(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, lv,
+				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		assertTrue(element.getLocalVariables().contains(lv));
+		env.setQueue();
+		assertFalse(element.getLocalVariables().contains(lv));
+		assertEquals(0, element.getLocalVariables().indexOf(lv2));
+		assertEquals(1, element.getLocalVariables().indexOf(lv3));
+
+		env.queueForRemove(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, EmftvmFactory.eINSTANCE.createLocalVariable(),
+				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		final EList<LocalVariable> copy = new BasicEList<LocalVariable>(element.getLocalVariables());
+		env.setQueue();
+		// Nothing should have changed after removing a non-existent element
+		assertEquals(copy, element.getLocalVariables());
+
+		final int origMaxLocals = element.getMaxLocals();
+		element.setMaxLocals(10);
+		env.queueForRemove(EmftvmPackage.eINSTANCE.getCodeBlock_MaxLocals(), element, 10,
+				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+		assertEquals(10, element.getMaxLocals());
+		env.setQueue();
+		assertEquals(origMaxLocals, element.getMaxLocals());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForRemove(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Remove</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueForRemove(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated NOT
+	 */
+	public void testQueueForRemove__Field_Object_Object_StackFrame() {
+		{
+			final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+			final ResourceSet rs = new ResourceSetImpl();
+
+			// Load models
+			final Resource portsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true),
+					true);
+			final Metamodel portsModel = EmftvmFactory.eINSTANCE.createMetamodel();
+			portsModel.setResource(portsRes);
+			env.registerMetaModel("Ports", portsModel);
+			final Resource pinsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Pins.ecore", true),
+					true);
+			final Metamodel pinsModel = EmftvmFactory.eINSTANCE.createMetamodel();
+			pinsModel.setResource(pinsRes);
+			env.registerMetaModel("Pins", pinsModel);
+			final Resource inRes = rs.createResource(URI.createURI("local.xmi"));
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+			inModel.setResource(inRes);
+			env.registerInOutModel("IN", inModel);
+			final Resource outRes = rs.createResource(URI.createURI("local2.xmi"));
+			final Model outModel = EmftvmFactory.eINSTANCE.createModel();
+			outModel.setResource(outRes);
+			env.registerInOutModel("OUT", outModel);
+
+			// Load module with some fields
+			env.loadModule(new DefaultModuleResolver(PLUGIN_URI + "/test-data/PortsToPins/", rs), "PortsToPins");
+
+			final EObject element = inModel.newElement((EClass) portsModel.findType("Port"));
+			final Field field = env.findField(element.eClass(), "pins");
+			field.setValue(element, new ArrayList<Object>());
+
+			final EObject pin = outModel.newElement((EClass) pinsModel.findType("Pin"));
+			assertNotNull(pin);
+			field.addValue(element, pin, -1, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+
+			env.queueForRemove(field, element, pin, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+			assertTrue(field.getValue(element) instanceof List<?>);
+			assertTrue(((List<?>) field.getValue(element)).contains(pin));
+			env.setQueue();
+			assertTrue(field.getValue(element) instanceof List<?>);
+			assertFalse(((List<?>) field.getValue(element)).contains(pin));
+
+			final List<Object> copy = new ArrayList<Object>((List<?>) field.getValue(element));
+			env.queueForRemove(field, element, pin, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+			env.setQueue();
+			assertEquals(copy, field.getValue(element));
+		}
+
+		{
+			final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+			final ResourceSet rs = new ResourceSetImpl();
+
+			// Load models
+			final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+			inModel.setResource(inRes);
+			env.registerInOutModel("IN", inModel);
+
+			// Load module with some fields
+			env.loadModule(new DefaultModuleResolver(PLUGIN_URI + "/test-data/", rs), "TestQuery");
+
+			final Operation element = (Operation) inModel.allInstancesOf(EmftvmPackage.eINSTANCE.getOperation()).first();
+			final Field field = env.findField(element.eClass(), "testProp");
+
+			final Object origVal = field.getValue(element, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+			assertNotNull(origVal);
+			env.queueForRemove(field, element, origVal, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+			assertEquals(origVal, field.getValue(element));
+			env.setQueue();
+			assertNull(field.getValue(element));
+
+			// force field value to null - lazy initialisation should not happen again
+			field.setValue(element, null);
+			env.queueForRemove(field, element, Boolean.FALSE, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+			assertNull(field.getValue(element));
+			env.setQueue();
+			assertNull(field.getValue(element));
+		}
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueXmiIDForRemove(org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue Xmi ID For Remove</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueXmiIDForRemove(org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated NOT
+	 */
+	public void testQueueXmiIDForRemove__EObject_Object_StackFrame() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.registerInOutModel("IN", inModel);
+
+		final EObject element = inModel.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).first();
+		final String xmiID = "_a01";
+		((XMIResource) inRes).setID(element, xmiID);
+
+		env.queueXmiIDForRemove(element, xmiID, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+
+		assertEquals(xmiID, ((XMIResource) inRes).getID(element));
+
+		env.setQueue();
+
+		assertNull(((XMIResource) inRes).getID(element));
+	}
+
+	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#setQueue() <em>Set Queue</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -640,6 +1018,52 @@ public class ExecEnvTest extends TestCase {
 	 */
 	public void testSetQueue() {
 		// already tested in testQueueForSet__*
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForRemap(org.eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EObject, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Remap</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueForRemap(org.eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EObject, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated NOT
+	 */
+	public void testQueueForRemap__EObject_EObject_StackFrame() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.registerInOutModel("IN", inModel);
+
+		final CodeBlock element = (CodeBlock) inModel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock()).first();
+		final EList<Instruction> code = new BasicEList<Instruction>(element.getCode());
+		final EObject container = element.eContainer();
+		final CodeBlock target = EmftvmFactory.eINSTANCE.createCodeBlock();
+		target.getCode().addAll(element.getCode());
+
+		env.queueForRemap(element, target, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
+
+		assertNull(target.eContainer());
+
+		env.remapQueue();
+
+		assertEquals(code, target.getCode());
+		assertEquals(container, target.eContainer());
+		assertTrue(element.getCode().isEmpty());
+		assertNull(element.eContainer());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#remapQueue() <em>Remap Queue</em>}' operation. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#remapQueue()
+	 * @generated NOT
+	 */
+	public void testRemapQueue() {
+		// Already tested in testQueueForRemap__EObject_EObject_StackFrame
 	}
 
 	/**

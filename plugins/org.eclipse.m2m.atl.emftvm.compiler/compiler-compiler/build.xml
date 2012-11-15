@@ -29,14 +29,14 @@
 			<outputmodel name="OCLtoEMFTVM-OUT" as="OUT" wspath="${ant.project.name}/OCLtoEMFTVM-noinline.emftvm"/>
 			<outputmodel name="OCLtoEMFTVM-PBS" as="PBS" wspath="${ant.project.name}/OCLtoEMFTVM-noinline-problems.xmi"/>
 			<outputmodel name="OCLtoEMFTVM-match" as="match" wspath="${ant.project.name}/OCLtoEMFTVM-noinline-match.trace"/>
-			<outputmodel name="OCLtoEMFTVM-trace" as="trace" wspath="${ant.project.name}/OCLtoEMFTVM-noinline.trace"/>
+			<inoutmodel name="OCLtoEMFTVM-trace" as="trace" wspath="${ant.project.name}/OCLtoEMFTVM-noinline.trace"/>
 		</emftvm.run>
 		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="InlineCodeblocks">
 			<metamodel name="ATL"/>
 			<inputmodel name="OCLtoEMFTVM-OUT" as="IN"/>
 			<outputmodel name="OCLtoEMFTVM-INLINED" as="OUT" wspath="${ant.project.name}/OCLtoEMFTVM.emftvm"/>
 			<outputmodel name="OCLtoEMFTVM-INLINED-match" as="match" wspath="${ant.project.name}/OCLtoEMFTVM-match.trace"/>
-			<outputmodel name="OCLtoEMFTVM-INLINED-trace" as="trace" wspath="${ant.project.name}/OCLtoEMFTVM.trace"/>
+			<inoutmodel name="OCLtoEMFTVM-INLINED-trace" as="trace" wspath="${ant.project.name}/OCLtoEMFTVM.trace"/>
 		</emftvm.run>
 	</target>
 
@@ -48,14 +48,14 @@
 			<outputmodel name="ATLtoEMFTVM-OUT" as="OUT" wspath="${ant.project.name}/ATLtoEMFTVM-noinline.emftvm"/>
 			<outputmodel name="ATLtoEMFTVM-PBS" as="PBS" wspath="${ant.project.name}/ATLtoEMFTVM-noinline-problems.xmi"/>
 			<outputmodel name="ATLtoEMFTVM-match" as="match" wspath="${ant.project.name}/ATLtoEMFTVM-noinline-match.trace"/>
-			<outputmodel name="ATLtoEMFTVM-trace" as="trace" wspath="${ant.project.name}/ATLtoEMFTVM-noinline.trace"/>
+			<inoutmodel name="ATLtoEMFTVM-trace" as="trace" wspath="${ant.project.name}/ATLtoEMFTVM-noinline.trace"/>
 		</emftvm.run>
 		<emftvm.run modulepath="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/" module="InlineCodeblocks">
 			<metamodel name="ATL"/>
 			<inputmodel name="ATLtoEMFTVM-OUT" as="IN"/>
 			<outputmodel name="ATLtoEMFTVM-INLINED" as="OUT" wspath="${ant.project.name}/ATLtoEMFTVM.emftvm"/>
 			<outputmodel name="ATLtoEMFTVM-INLINED-match" as="match" wspath="${ant.project.name}/ATLtoEMFTVM-match.trace"/>
-			<outputmodel name="ATLtoEMFTVM-INLINED-trace" as="trace" wspath="${ant.project.name}/ATLtoEMFTVM.trace"/>
+			<inoutmodel name="ATLtoEMFTVM-INLINED-trace" as="trace" wspath="${ant.project.name}/ATLtoEMFTVM.trace"/>
 		</emftvm.run>
 	</target>
 

@@ -37,6 +37,8 @@ import org.eclipse.m2m.atl.emftvm.util.StackFrame;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Field#getValue(java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Get Value</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Field#getStaticValue(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Get Static Value</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Field#clear() <em>Clear</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Field#addValue(java.lang.Object, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Add Value</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Field#removeValue(java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Remove Value</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -204,6 +206,32 @@ public class FieldTest extends FeatureTest {
 		field.clear();
 		assertNull(field.getStaticValue());
 		assertNull(field.getValue(context));
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#addValue(java.lang.Object, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Add Value</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Field#addValue(java.lang.Object, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated
+	 */
+	public void testAddValue__Object_Object_int_StackFrame() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#removeValue(java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Remove Value</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Field#removeValue(java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated
+	 */
+	public void testRemoveValue__Object_Object_StackFrame() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 } //FieldTest

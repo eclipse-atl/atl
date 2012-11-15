@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -140,13 +140,27 @@ public abstract class JITCodeBlock {
 			}
 			if (field == null) {
 				field = env.findField(type, propname);
-			}
-			if (field != null) {
-				if (queueSet) {
-					env.queueForSet(field, o, v, frame);
-				} else {
-					field.setValue(o, v);
+				if (field != null) {
+					if (queueSet) {
+						env.queueForSet(field, o, v, frame);
+					} else {
+						if (env.getInputModelOf(eo) != null) {
+							throw new IllegalArgumentException(
+									String.format("Cannot set properties of %s, as it is contained in an input model",
+											EMFTVMUtil.toPrettyString(eo, env)));
+						}
+						if (env.getOutputModelOf(eo) != null) {
+							throw new IllegalArgumentException(String.format(
+									"Setting transient field %s of %s, which cannot be read back as %1s is contained in an output model",
+									propname, EMFTVMUtil.toPrettyString(eo, env)));
+						}
+						field.setValue(o, v);
+					}
+					return;
 				}
+			} else {
+				// Treat rule fields as local variables
+				field.setValue(o, v);
 				return;
 			}
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
@@ -219,8 +233,15 @@ public abstract class JITCodeBlock {
 			}
 			if (field == null) {
 				field = env.findField(type, propname);
-			}
-			if (field != null) {
+				if (field != null) {
+					if (env.getOutputModelOf(eo) != null) {
+						throw new IllegalArgumentException(String.format(
+								"Cannot read properties of %s, as it is contained in an output model", EMFTVMUtil.toPrettyString(eo, env)));
+					}
+					return field.getValue(o, frame);
+				}
+			} else {
+				// Treat rule fields as local variables
 				return field.getValue(o, frame);
 			}
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
@@ -287,6 +308,10 @@ public abstract class JITCodeBlock {
 			final EClass type = eo.eClass();
 			final Field field = env.findField(type, propname);
 			if (field != null) {
+				if (env.getOutputModelOf(eo) != null) {
+					throw new IllegalArgumentException(String.format("Cannot read properties of %s, as it is contained in an output model",
+							EMFTVMUtil.toPrettyString(eo, env)));
+				}
 				return field.getValue(o, frame);
 			}
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
@@ -399,17 +424,22 @@ public abstract class JITCodeBlock {
 			}
 			if (field == null) {
 				field = env.findField(type, propname);
-			}
-			if (field != null) {
-				return EMFTVMUtil.getTrans(o, field, frame, new LazyList<Object>());
-			} else {
-				final EStructuralFeature sf = type.getEStructuralFeature(propname);
-				if (sf == null) {
-					throw new NoSuchFieldException(String.format("Field %s::%s not found", 
-							EMFTVMUtil.toPrettyString(type, env), propname));
+				if (field != null) {
+					if (env.getOutputModelOf(eo) != null) {
+						throw new IllegalArgumentException(String.format(
+								"Cannot read properties of %s, as it is contained in an output model", EMFTVMUtil.toPrettyString(eo, env)));
+					}
+					return EMFTVMUtil.getTrans(o, field, frame, new LazyList<Object>());
 				}
-				return EMFTVMUtil.getTrans(eo, sf, env, new LazyList<Object>());
+			} else {
+				// Treat rule fields as local variables
+				return EMFTVMUtil.getTrans(o, field, frame, new LazyList<Object>());
 			}
+			final EStructuralFeature sf = type.getEStructuralFeature(propname);
+			if (sf == null) {
+				throw new NoSuchFieldException(String.format("Field %s::%s not found", EMFTVMUtil.toPrettyString(type, env), propname));
+			}
+			return EMFTVMUtil.getTrans(eo, sf, env, new LazyList<Object>());
 		} else {
 			final Class<?> type = o.getClass();
 			Field field = null;
@@ -493,7 +523,15 @@ public abstract class JITCodeBlock {
 		if (!superFs.isEmpty()) {
 			final Object superF = superFs.iterator().next();
 			if (superF instanceof Field) {
-				return ((Field)superF).getValue(o, frame);
+				final Field field = (Field) superF;
+				if (o instanceof EObject) {
+					final EObject eo = (EObject) o;
+					if (field.getRule() == null && env.getOutputModelOf(eo) != null) {
+						throw new IllegalArgumentException(String.format(
+								"Cannot read properties of %s, as it is contained in an output model", EMFTVMUtil.toPrettyString(eo, env)));
+					}
+				}
+				return field.getValue(o, frame);
 			} else if (superF instanceof EStructuralFeature) {
 				return EMFTVMUtil.get(env, (EObject)o, (EStructuralFeature)superF);
 			} else {
@@ -766,79 +804,6 @@ public abstract class JITCodeBlock {
 					EMFTVMUtil.toPrettyString(element, env), env.getModelID(model)));
 		}
 		env.queueForDelete(element, frame);
-	}
-
-	/**
-	 * Implements the INVOKE instruction
-	 * @param self
-	 * @param frame
-	 * @param opname
-	 * @return the invocation result
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 */
-	//TODO remove
-	protected static Object invoke(final Object self, final StackFrame frame, final String opname) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		final Operation op = frame.getEnv().findOperation(
-				EMFTVMUtil.getArgumentType(self), 
-				opname);
-		if (op != null) {
-			final CodeBlock body = op.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, self));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
-		}
-		return EMFTVMUtil.invokeNative(frame, self, opname);
-	}
-
-	/**
-	 * Implements the INVOKE instruction
-	 * @param self
-	 * @param arg
-	 * @param frame
-	 * @param opname
-	 * @return the invocation result
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 */
-	//TODO remove
-	protected static Object invoke(final Object self, final Object arg, final StackFrame frame, final String opname) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		final Operation op = frame.getEnv().findOperation(
-				EMFTVMUtil.getArgumentType(self), 
-				opname, 
-				EMFTVMUtil.getArgumentType(arg));
-		if (op != null) {
-			final CodeBlock body = op.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, self, arg));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
-		}
-		return EMFTVMUtil.invokeNative(frame, self, opname, arg);
-	}
-
-	/**
-	 * Implements the INVOKE instruction
-	 * @param self
-	 * @param args
-	 * @param frame
-	 * @param opname
-	 * @return the invocation result
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 */
-	//TODO remove
-	protected static Object invoke(final Object self, final Object[] args, final StackFrame frame, final String opname) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		final Operation op = frame.getEnv().findOperation(
-				EMFTVMUtil.getArgumentType(self), 
-				opname, 
-				EMFTVMUtil.getArgumentTypes(args));
-		if (op != null) {
-			final CodeBlock body = op.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, self, args));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
-		}
-		return EMFTVMUtil.invokeNative(frame, self, opname, args);
 	}
 
 	/**
@@ -1259,81 +1224,205 @@ public abstract class JITCodeBlock {
 	}
 
 	/**
-	 * Adds <code>v</code> to <code>o.propname</code>.
-	 * Implements the ADD and INSERT instructions.
-	 * @param o object
-	 * @param v value
-	 * @param index the insertion index (-1 for end)
-	 * @param propname the property name
-	 * @param env the execution environment
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * Adds <code>v</code> to <code>o.propname</code>. Implements the ADD and INSERT instructions.
+	 * 
+	 * @param o
+	 *            object
+	 * @param v
+	 *            value
+	 * @param index
+	 *            the insertion index (-1 for end)
+	 * @param propname
+	 *            the property name
+	 * @param cb
+	 *            the original non-JIT'ed code block
+	 * @param frame
+	 *            the current stack frame
+	 * @throws NoSuchFieldException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
-	protected static void add(final Object o, final Object v, final int index, 
-			final String propname, final ExecEnv env) 
+	protected static void add(final Object o, final Object v, final int index, final String propname, final CodeBlock cb,
+			final StackFrame frame)
 	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-		//TODO enable add on fields
+		final ExecEnv env = frame.getEnv();
+		final Rule rule = cb.getRule();
+
 		if (o instanceof EObject) {
 			final EObject eo = (EObject)o;
 			final EClass type = eo.eClass();
+			final boolean queueSet = env.getCurrentPhase() == RuleMode.AUTOMATIC_SINGLE && env.getInoutModelOf(eo) != null;
+			Field field = null;
+			if (rule != null) {
+				field = rule.findField(type, propname);
+			}
+			if (field == null) {
+				field = env.findField(type, propname);
+				if (field != null) {
+					if (queueSet) {
+						env.queueForAdd(field, o, v, index, frame);
+					} else {
+						if (env.getInputModelOf(eo) != null) {
+							throw new IllegalArgumentException(String.format(
+									"Cannot add to properties of %s, as it is contained in an input model",
+									EMFTVMUtil.toPrettyString(eo, env)));
+						}
+						if (env.getOutputModelOf(eo) != null) {
+							throw new IllegalArgumentException(String.format(
+									"Adding to transient field %s of %s, which cannot be read back as %1s is contained in an output model",
+									propname, EMFTVMUtil.toPrettyString(eo, env)));
+						}
+						field.addValue(o, v, index, frame);
+					}
+					return;
+				}
+			} else {
+				// Treat rule fields as local variables
+				field.addValue(o, v, index, frame);
+				return;
+			}
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
 			if (sf != null) {
-				EMFTVMUtil.add(env, eo, sf, v, index);
+				if (queueSet) {
+					env.queueForAdd(sf, eo, v, index, frame);
+				} else {
+					EMFTVMUtil.add(env, eo, sf, v, index);
+				}
 				return;
 			}
 			final Resource resource = eo.eResource();
 			if (EMFTVMUtil.XMI_ID_FEATURE.equals(propname) && resource instanceof XMIResource) { //$NON-NLS-1$
-				if (((XMIResource)resource).getID(eo) != null) {
-					throw new IllegalArgumentException(String.format(
-							"Cannot add %s to field %s::%s: maximum multiplicity of 1 reached", 
-							v, EMFTVMUtil.toPrettyString(eo, env), propname));
+				if (queueSet) {
+					env.queueXmiIDForAdd(eo, v, index, frame);
+				} else {
+					if (((XMIResource) resource).getID(eo) != null) {
+						throw new IllegalArgumentException(String.format(
+								"Cannot add %s to field %s::%s: maximum multiplicity of 1 reached", v, EMFTVMUtil.toPrettyString(eo, env),
+								propname));
+					}
+					if (index > 0) {
+						throw new IndexOutOfBoundsException(String.valueOf(index));
+					}
+					((XMIResource) resource).setID(eo, v.toString());
 				}
-				if (index > 0) {
-					throw new IndexOutOfBoundsException(String.valueOf(index));
-				}
-				((XMIResource)resource).setID(eo, v.toString());
 				return;
 			}
 			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
 					EMFTVMUtil.toPrettyString(type, env), propname));
 		}
+
+		// o is a regular Java object
+		final Class<?> type = o == null ? Void.TYPE : o.getClass();
+		Field field = null;
+		if (rule != null) {
+			field = rule.findField(type, propname);
+		}
+		if (field == null) {
+			field = env.findField(type, propname);
+		}
+		if (field != null) {
+			field.addValue(o, v, index, frame);
+			return;
+		}
+		throw new NoSuchFieldException(String.format("Field %s::%s not found", EMFTVMUtil.toPrettyString(type, env), propname));
 	}
 
 	/**
 	 * Implements the REMOVE instruction.
-	 * @param o object
-	 * @param v value
-	 * @param propname the property name
-	 * @param env the execution environment
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * 
+	 * @param o
+	 *            object
+	 * @param v
+	 *            value
+	 * @param propname
+	 *            the property name
+	 * @param cb
+	 *            the original non-JIT'ed code block
+	 * @param frame
+	 *            the current stack frame
+	 * @throws NoSuchFieldException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
-	protected static void remove(final Object o, final Object v, final String propname, 
-			final ExecEnv env) 
+	protected static void remove(final Object o, final Object v, final String propname, final CodeBlock cb, final StackFrame frame)
 	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-		//TODO enable remove on fields
+		final ExecEnv env = frame.getEnv();
+		final Rule rule = cb.getRule();
+
 		if (o instanceof EObject) {
 			final EObject eo = (EObject)o;
 			final EClass type = eo.eClass();
+			final boolean queueSet = env.getCurrentPhase() == RuleMode.AUTOMATIC_SINGLE && env.getInoutModelOf(eo) != null;
+			Field field = null;
+			if (rule != null) {
+				field = rule.findField(type, propname);
+			}
+			if (field == null) {
+				field = env.findField(type, propname);
+				if (field != null) {
+					if (queueSet) {
+						env.queueForRemove(field, o, v, frame);
+					} else {
+						if (env.getInputModelOf(eo) != null) {
+							throw new IllegalArgumentException(String.format(
+									"Cannot remove from properties of %s, as it is contained in an input model",
+									EMFTVMUtil.toPrettyString(eo, env)));
+						}
+						if (env.getOutputModelOf(eo) != null) {
+							throw new IllegalArgumentException(
+									String.format(
+											"Removing from transient field %s of %s, which cannot be read back as %1s is contained in an output model",
+											propname, EMFTVMUtil.toPrettyString(eo, env)));
+						}
+						field.removeValue(o, v, frame);
+					}
+					return;
+				}
+			} else {
+				// Treat rule fields as local variables
+				field.removeValue(o, v, frame);
+				return;
+			}
 			final EStructuralFeature sf = type.getEStructuralFeature(propname);
 			if (sf != null) {
-				EMFTVMUtil.remove(env, eo, sf, v);
+				if (queueSet) {
+					env.queueForRemove(sf, eo, v, frame);
+				} else {
+					EMFTVMUtil.remove(env, eo, sf, v);
+				}
 				return;
 			}
 			final Resource resource = eo.eResource();
 			if (EMFTVMUtil.XMI_ID_FEATURE.equals(propname) && resource instanceof XMIResource) { //$NON-NLS-1$
-				final XMIResource xmiRes = (XMIResource)resource;
-				final Object xmiID = xmiRes.getID(eo);
-				if (xmiID == null ? v == null : xmiID.equals(v)) {
-					xmiRes.setID(eo, null);
+				if (queueSet) {
+					env.queueXmiIDForRemove(eo, v, frame);
+				} else {
+					final XMIResource xmiRes = (XMIResource) resource;
+					final Object xmiID = xmiRes.getID(eo);
+					if (xmiID == null ? v == null : xmiID.equals(v)) {
+						xmiRes.setID(eo, null);
+					}
 				}
 				return;
 			}
 			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
 					EMFTVMUtil.toPrettyString(type, env), propname));
 		}
+
+		// o is a regular Java object
+		final Class<?> type = o == null ? Void.TYPE : o.getClass();
+		Field field = null;
+		if (rule != null) {
+			field = rule.findField(type, propname);
+		}
+		if (field == null) {
+			field = env.findField(type, propname);
+		}
+		if (field != null) {
+			field.removeValue(o, v, frame);
+			return;
+		}
+		throw new NoSuchFieldException(String.format("Field %s::%s not found", EMFTVMUtil.toPrettyString(type, env), propname));
 	}
 
 	/**
