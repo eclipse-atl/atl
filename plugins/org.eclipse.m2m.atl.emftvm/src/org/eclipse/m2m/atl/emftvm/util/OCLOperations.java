@@ -509,7 +509,7 @@ public final class OCLOperations {
 							return frame;
 						}
 						throw new VMException(frame, String.format(
-								"Cannot set properties for regular objects: %s",
+								"Cannot unset properties for regular objects: %s",
 								object));
 					}
 		});
@@ -1012,6 +1012,18 @@ public final class OCLOperations {
 					public StackFrame execute(final StackFrame frame) {
 						final Class<?> c = (Class<?>)frame.getLocal(0, 0);
 						frame.push(NativeTypes.typeName(c));
+						return frame;
+					}
+		});
+		createOperation(false, "refInvokeStaticOperation", Types.JAVA_CLASS_TYPE, Types.OCL_ANY_TYPE,
+				new String[][][]{{{"opname"}, Types.STRING_TYPE}, {{"arguments"}, Types.SEQUENCE_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public StackFrame execute(final StackFrame frame) {
+						final Class<?> c = (Class<?>)frame.getLocal(0, 0);
+						final String opname = (String)frame.getLocal(0, 1);
+						final List<?> args = (List<?>)frame.getLocal(0, 2);
+						frame.push(EMFTVMUtil.invokeNativeStatic(frame, c, opname, args.toArray()));
 						return frame;
 					}
 		});
