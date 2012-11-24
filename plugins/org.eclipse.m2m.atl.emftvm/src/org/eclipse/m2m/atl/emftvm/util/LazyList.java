@@ -1655,6 +1655,40 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		return this;
 	}
 
+	/**
+	 * Returns the sequence containing all elements of self plus the sequence of <code>first</code> running to <code>last</code> added as
+	 * the last elements.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param first
+	 *            the first object of the range to include
+	 * @param last
+	 *            the last object of the range to include
+	 * @return The sequence containing all elements of self plus the sequence of <code>first</code> running to <code>last</code> added as
+	 *         the last elements
+	 */
+	@SuppressWarnings("unchecked")
+	public LazyList<E> includingRange(final E first, final E last) {
+		if (first instanceof Integer && last instanceof Integer) {
+			final ArrayList<E> range = new ArrayList<E>((Integer) last - (Integer) first + 1);
+			for (Integer index = (Integer) first; index <= (Integer) last; index++) {
+				range.add((E) index);
+			}
+			return union(new LazyListOnList<E>(range));
+		}
+		if (first instanceof Long && last instanceof Long) {
+			final ArrayList<E> range = new ArrayList<E>();
+			for (Long index = (Long) first; index <= (Long) last; index++) {
+				range.add((E) index);
+			}
+			return union(new LazyListOnList<E>(range));
+		}
+		throw new IllegalArgumentException(String.format("includingRange() not supported for arguments of type %s and %s", first.getClass()
+				.getName(), last.getClass().getName()));
+	}
+
 	/* *********************************************************************
 	 * Lazy, higher-order operations                                       *
 	 * *********************************************************************/

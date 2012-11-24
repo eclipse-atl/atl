@@ -597,6 +597,27 @@ public abstract class LazyCollectionTest extends TestCase {
 	}
 
 	/**
+	 * Tests {@link LazyCollection#includingRange(Object, Object)}.
+	 */
+	public void testIncludingRange() {
+		final LazyCollection<String> list = getTestLazyCollection();
+		try {
+			final LazyCollection<String> appended = list.includingRange("One", "Four");
+			fail("Expected IllegalArgumentException, but got " + appended);
+		} catch (IllegalArgumentException e) {
+			// expected
+		}
+		final LazyCollection<Integer> intlist = getEmptyLazyCollection();
+		final LazyCollection<Integer> appended = intlist.includingRange(300, 400);
+		assertEquals(intlist.size() + 400 - 300 + 1, appended.size());
+		assertTrue(appended.contains(300));
+		assertTrue(appended.contains(301));
+		assertTrue(appended.contains(349));
+		assertTrue(appended.contains(399));
+		assertTrue(appended.contains(400));
+	}
+
+	/**
 	 * Tests {@link LazyCollection#isEmpty()}.
 	 */
 	public void testIsEmpty() {

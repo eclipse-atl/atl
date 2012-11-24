@@ -2076,6 +2076,40 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		return this;
 	}
 
+	/**
+	 * Returns the OrderedSet containing all elements of self plus the OrderedSet of <code>first</code> running to <code>last</code> added
+	 * as the last elements.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param first
+	 *            the first object of the range to include
+	 * @param last
+	 *            the last object of the range to include
+	 * @return The OrderedSet containing all elements of self plus the OrderedSet of <code>first</code> running to <code>last</code> added
+	 *         as the last elements
+	 */
+	@SuppressWarnings("unchecked")
+	public LazyOrderedSet<E> includingRange(final E first, final E last) {
+		if (first instanceof Integer && last instanceof Integer) {
+			final ArrayList<E> range = new ArrayList<E>((Integer) last - (Integer) first + 1);
+			for (Integer index = (Integer) first; index <= (Integer) last; index++) {
+				range.add((E) index);
+			}
+			return union(new LazyOrderedSet<E>(range));
+		}
+		if (first instanceof Long && last instanceof Long) {
+			final ArrayList<E> range = new ArrayList<E>();
+			for (Long index = (Long) first; index <= (Long) last; index++) {
+				range.add((E) index);
+			}
+			return union(new LazyOrderedSet<E>(range));
+		}
+		throw new IllegalArgumentException(String.format("includingRange() not supported for arguments of type %s and %s", first.getClass()
+				.getName(), last.getClass().getName()));
+	}
+
 	/* *********************************************************************
 	 * Lazy, higher-order operations                                       *
 	 * *********************************************************************/
