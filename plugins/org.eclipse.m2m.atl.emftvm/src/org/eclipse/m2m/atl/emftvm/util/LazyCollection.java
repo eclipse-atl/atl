@@ -1930,6 +1930,20 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public abstract LazyCollection<E> excluding(final E object);
 
+	/**
+	 * Returns the collection containing all elements of self plus the collection of <code>first</code> running to <code>last</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param first
+	 *            the first object of the range to include
+	 * @param last
+	 *            the last object of the range to include
+	 * @return The collection containing all elements of self plus the collection of <code>first</code> running to <code>last</code>
+	 */
+	public abstract LazyCollection<E> includingRange(final E first, final E last);
+
 	/* *********************************************************************
 	 * Higher-order operations                                             *
 	 * *********************************************************************/
