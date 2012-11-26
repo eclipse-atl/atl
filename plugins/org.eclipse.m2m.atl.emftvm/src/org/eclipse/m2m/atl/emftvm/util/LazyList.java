@@ -1122,8 +1122,304 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	}
 
 	/**
-	 * {@link ListIterator} that returns first the elements of the underlying
-	 * collection, then the elements of the other collection.
+	 * {@link LazyList} that represents a range running from a first to last {@link Integer}.
+	 * 
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	public static class IntegerRangeList extends LazyList<Integer> {
+
+		protected final int first;
+		protected final int last;
+
+		/**
+		 * Creates a new {@link IntegerRangeList}.
+		 * 
+		 * @param first
+		 *            the first object of the range to include
+		 * @param last
+		 *            the last object of the range to include
+		 */
+		public IntegerRangeList(final int first, final int last) {
+			super();
+			if (first > last) {
+				throw new IllegalArgumentException(String.format("The first element of a range (%d) cannot be greater than the last (%d)",
+						first, last));
+			}
+			this.first = first;
+			this.last = last;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		protected void createCache() {
+			// no caching
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Integer first() {
+			return first;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Integer get(int index) {
+			final int element = first + index;
+			if (element > last) {
+				throw new IndexOutOfBoundsException(Integer.toString(index));
+			}
+			return element;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int indexOf(Object o) {
+			if (contains(o)) {
+				return (Integer) o - first;
+			}
+			return -1;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Integer last() {
+			return last;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int lastIndexOf(Object o) {
+			// All elements of a range are unique
+			return indexOf(o);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public ListIterator<Integer> listIterator() {
+			return new IntegerRangeListIterator(first, last);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public ListIterator<Integer> listIterator(int index) {
+			return new IntegerRangeListIterator(first, last, index);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean contains(Object o) {
+			if (o instanceof Integer) {
+				final Integer obj = (Integer) o;
+				return (obj >= first && obj <= last);
+			}
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int count(Integer object) {
+			// All elements of a range are unique
+			return contains(object) ? 1 : 0;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean isEmpty() {
+			// Empty ranges are not allowed
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Iterator<Integer> iterator() {
+			return new IntegerRangeListIterator(first, last);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int size() {
+			return last - first + 1;
+		}
+
+	}
+
+	/**
+	 * {@link LazyList} that represents a range running from a first to last {@link Long}.
+	 * 
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	public static class LongRangeList extends LazyList<Long> {
+
+		protected final long first;
+		protected final long last;
+
+		/**
+		 * Creates a new {@link LongRangeList}.
+		 * 
+		 * @param first
+		 *            the first object of the range to include
+		 * @param last
+		 *            the last object of the range to include
+		 */
+		public LongRangeList(final long first, final long last) {
+			super();
+			if (first > last) {
+				throw new IllegalArgumentException(String.format("The first element of a range (%d) cannot be greater than the last (%d)",
+						first, last));
+			}
+			this.first = first;
+			this.last = last;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		protected void createCache() {
+			// no caching
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Long first() {
+			return first;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Long get(int index) {
+			final long element = first + index;
+			if (element > last) {
+				throw new IndexOutOfBoundsException(Integer.toString(index));
+			}
+			return element;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int indexOf(Object o) {
+			if (contains(o)) {
+				return (int) ((Long) o - first);
+			}
+			return -1;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Long last() {
+			return last;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int lastIndexOf(Object o) {
+			// All elements of a range are unique
+			return indexOf(o);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public ListIterator<Long> listIterator() {
+			return new LongRangeListIterator(first, last);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public ListIterator<Long> listIterator(int index) {
+			return new LongRangeListIterator(first, last, index);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean contains(Object o) {
+			if (o instanceof Integer) {
+				final Integer obj = (Integer) o;
+				return (obj >= first && obj <= last);
+			}
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int count(Long object) {
+			// All elements of a range are unique
+			return contains(object) ? 1 : 0;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean isEmpty() {
+			// Empty ranges are not allowed
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Iterator<Long> iterator() {
+			return new LongRangeListIterator(first, last);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int size() {
+			return (int) (last - first + 1);
+		}
+
+	}
+
+	/**
+	 * {@link ListIterator} that returns first the elements of the underlying collection, then the elements of the other collection.
+	 * 
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class UnionListIterator extends WrappedListIterator {
@@ -1672,18 +1968,10 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	@SuppressWarnings("unchecked")
 	public LazyList<E> includingRange(final E first, final E last) {
 		if (first instanceof Integer && last instanceof Integer) {
-			final ArrayList<E> range = new ArrayList<E>((Integer) last - (Integer) first + 1);
-			for (Integer index = (Integer) first; index <= (Integer) last; index++) {
-				range.add((E) index);
-			}
-			return union(new LazyListOnList<E>(range));
+			return union((LazyList<E>) new IntegerRangeList((Integer) first, (Integer) last));
 		}
 		if (first instanceof Long && last instanceof Long) {
-			final ArrayList<E> range = new ArrayList<E>();
-			for (Long index = (Long) first; index <= (Long) last; index++) {
-				range.add((E) index);
-			}
-			return union(new LazyListOnList<E>(range));
+			return union((LazyList<E>) new LongRangeList((Integer) first, (Integer) last));
 		}
 		throw new IllegalArgumentException(String.format("includingRange() not supported for arguments of type %s and %s", first.getClass()
 				.getName(), last.getClass().getName()));

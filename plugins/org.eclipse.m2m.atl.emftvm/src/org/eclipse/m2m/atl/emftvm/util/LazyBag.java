@@ -150,6 +150,174 @@ public class LazyBag<E> extends LazyCollection<E> {
 	}
 
 	/**
+	 * {@link LazyBag} that represents a range running from a first to last {@link Integer}.
+	 * 
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	public static class IntegerRangeBag extends LazyBag<Integer> {
+
+		protected final int first;
+		protected final int last;
+
+		/**
+		 * Creates a new {@link IntegerRangeBag}.
+		 * 
+		 * @param first
+		 *            the first object of the range to include
+		 * @param last
+		 *            the last object of the range to include
+		 */
+		public IntegerRangeBag(final int first, final int last) {
+			super();
+			if (first > last) {
+				throw new IllegalArgumentException(String.format("The first element of a range (%d) cannot be greater than the last (%d)",
+						first, last));
+			}
+			this.first = first;
+			this.last = last;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		protected void createCache() {
+			// no caching
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean contains(Object o) {
+			if (o instanceof Integer) {
+				final Integer obj = (Integer) o;
+				return (obj >= first && obj <= last);
+			}
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int count(Integer object) {
+			// All elements of a range are unique
+			return contains(object) ? 1 : 0;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean isEmpty() {
+			// Empty ranges are not allowed
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Iterator<Integer> iterator() {
+			return new IntegerRangeListIterator(first, last);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int size() {
+			return last - first + 1;
+		}
+
+	}
+
+	/**
+	 * {@link LazyBag} that represents a range running from a first to last {@link Long}.
+	 * 
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	public static class LongRangeBag extends LazyBag<Long> {
+
+		protected final long first;
+		protected final long last;
+
+		/**
+		 * Creates a new {@link LongRangeBag}.
+		 * 
+		 * @param first
+		 *            the first object of the range to include
+		 * @param last
+		 *            the last object of the range to include
+		 */
+		public LongRangeBag(final long first, final long last) {
+			super();
+			if (first > last) {
+				throw new IllegalArgumentException(String.format("The first element of a range (%d) cannot be greater than the last (%d)",
+						first, last));
+			}
+			this.first = first;
+			this.last = last;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		protected void createCache() {
+			// no caching
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean contains(Object o) {
+			if (o instanceof Integer) {
+				final Integer obj = (Integer) o;
+				return (obj >= first && obj <= last);
+			}
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int count(Long object) {
+			// All elements of a range are unique
+			return contains(object) ? 1 : 0;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean isEmpty() {
+			// Empty ranges are not allowed
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Iterator<Long> iterator() {
+			return new LongRangeListIterator(first, last);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int size() {
+			return (int) (last - first + 1);
+		}
+
+	}
+
+	/**
 	 * {@link ReadOnlyIterator} that returns only elements contained in both underlying collections,
 	 * where the element occurs as often as in the collection with the least occurrences of the element.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
@@ -438,18 +606,10 @@ public class LazyBag<E> extends LazyCollection<E> {
 	@SuppressWarnings("unchecked")
 	public LazyBag<E> includingRange(final E first, final E last) {
 		if (first instanceof Integer && last instanceof Integer) {
-			final ArrayList<E> range = new ArrayList<E>((Integer) last - (Integer) first + 1);
-			for (Integer index = (Integer) first; index <= (Integer) last; index++) {
-				range.add((E) index);
-			}
-			return union(new LazyBagOnCollection<E>(range));
+			return union((LazyBag<E>) new IntegerRangeBag((Integer)first, (Integer)last));
 		}
 		if (first instanceof Long && last instanceof Long) {
-			final ArrayList<E> range = new ArrayList<E>();
-			for (Long index = (Long) first; index <= (Long) last; index++) {
-				range.add((E) index);
-			}
-			return union(new LazyBagOnCollection<E>(range));
+			return union((LazyBag<E>) new LongRangeBag((Long)first, (Long)last));
 		}
 		throw new IllegalArgumentException(String.format("includingRange() not supported for arguments of type %s and %s", first.getClass()
 				.getName(), last.getClass().getName()));

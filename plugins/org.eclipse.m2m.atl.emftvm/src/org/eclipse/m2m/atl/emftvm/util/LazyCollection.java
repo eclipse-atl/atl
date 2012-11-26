@@ -1371,6 +1371,188 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			return (T)function.execute(parentFrame.getSubFrame(function, new Object[]{inner.next()})).pop();
 		}
 	}
+	
+	/**
+	 * {@link ReadOnlyIterator} for {@link Integer} ranges.
+	 * 
+	 * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
+	 */
+	public static class IntegerRangeListIterator extends ReadOnlyListIterator<Integer> {
+
+		protected final int first;
+		protected final int last;
+		protected int index;
+
+		/**
+		 * Creates a new {@link IntegerRangeListIterator}.
+		 * 
+		 * @param first
+		 *            the first element of the range
+		 * @param last
+		 *            the last element of the range
+		 */
+		public IntegerRangeListIterator(int first, int last) {
+			this(first, last, 0);
+		}
+
+		/**
+		 * Creates a new {@link IntegerRangeListIterator}.
+		 * 
+		 * @param first
+		 *            the first element of the range
+		 * @param last
+		 *            the last element of the range
+		 * @param index
+		 *            the starting index of the list iterator
+		 */
+		public IntegerRangeListIterator(int first, int last, int index) {
+			super();
+			if (first > last) {
+				throw new IllegalArgumentException(String.format("The first element of a range (%d) cannot be greater than the last (%d)",
+						first, last));
+			}
+			this.first = first;
+			this.last = last;
+			if (index > last - first + 1) {
+				throw new IndexOutOfBoundsException(Integer.toString(index));
+			}
+			this.index = index;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public boolean hasNext() {
+			return index <= last - first;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Integer next() {
+			return first + index++;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public boolean hasPrevious() {
+			return index > 0;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Integer previous() {
+			return first + --index;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public int nextIndex() {
+			return index;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public int previousIndex() {
+			return index - 1;
+		}
+
+	}
+
+	/**
+	 * {@link ReadOnlyIterator} for {@link Long} ranges.
+	 * 
+	 * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
+	 */
+	public static class LongRangeListIterator extends ReadOnlyListIterator<Long> {
+
+		protected final long first;
+		protected final long last;
+		protected int index;
+
+		/**
+		 * Creates a new {@link LongRangeListIterator}.
+		 * 
+		 * @param first
+		 *            the first element of the range
+		 * @param last
+		 *            the last element of the range
+		 */
+		public LongRangeListIterator(long first, long last) {
+			this(first, last, 0);
+		}
+
+		/**
+		 * Creates a new {@link LongRangeListIterator}.
+		 * 
+		 * @param first
+		 *            the first element of the range
+		 * @param last
+		 *            the last element of the range
+		 * @param index
+		 *            the starting index of the list iterator
+		 */
+		public LongRangeListIterator(long first, long last, int index) {
+			super();
+			if (first > last) {
+				throw new IllegalArgumentException(String.format("The first element of a range (%d) cannot be greater than the last (%d)",
+						first, last));
+			}
+			this.first = first;
+			this.last = last;
+			if (index > last - first + 1) {
+				throw new IndexOutOfBoundsException(Integer.toString(index));
+			}
+			this.index = index;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public boolean hasNext() {
+			return index <= last - first;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Long next() {
+			return first + index++;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public boolean hasPrevious() {
+			return index > 0;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public Long previous() {
+			return first + --index;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public int nextIndex() {
+			return index;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public int previousIndex() {
+			return index - 1;
+		}
+		
+	}
 
 	/**
 	 * List {@link #toString()} evaluation cut-off number.
