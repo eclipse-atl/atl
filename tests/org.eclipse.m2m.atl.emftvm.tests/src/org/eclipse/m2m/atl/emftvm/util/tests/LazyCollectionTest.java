@@ -615,6 +615,13 @@ public abstract class LazyCollectionTest extends TestCase {
 		assertTrue(appended.contains(349));
 		assertTrue(appended.contains(399));
 		assertTrue(appended.contains(400));
+		// Test iterator
+		int index = 0;
+		for (Integer element : appended) {
+			assertEquals(index + 300, element.intValue());
+			index++;
+		}
+		assertEquals(appended.size(), index);
 	}
 
 	/**

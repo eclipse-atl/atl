@@ -19,6 +19,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
+import org.eclipse.m2m.atl.emftvm.util.LazyBag.LongRangeBag;
 
 
 /**
@@ -330,6 +331,174 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	}
 
 	/**
+	 * {@link LazySet} that represents a range running from a first to last {@link Integer}.
+	 * 
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	public static class IntegerRangeSet extends LazySet<Integer> {
+
+		protected final int first;
+		protected final int last;
+
+		/**
+		 * Creates a new {@link IntegerRangeSet}.
+		 * 
+		 * @param first
+		 *            the first object of the range to include
+		 * @param last
+		 *            the last object of the range to include
+		 */
+		public IntegerRangeSet(final int first, final int last) {
+			super();
+			if (first > last) {
+				throw new IllegalArgumentException(String.format("The first element of a range (%d) cannot be greater than the last (%d)",
+						first, last));
+			}
+			this.first = first;
+			this.last = last;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		protected void createCache() {
+			// no caching
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean contains(Object o) {
+			if (o instanceof Integer) {
+				final Integer obj = (Integer) o;
+				return (obj >= first && obj <= last);
+			}
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int count(Integer object) {
+			// All elements of a range are unique
+			return contains(object) ? 1 : 0;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean isEmpty() {
+			// Empty ranges are not allowed
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Iterator<Integer> iterator() {
+			return new IntegerRangeListIterator(first, last);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int size() {
+			return last - first + 1;
+		}
+
+	}
+
+	/**
+	 * {@link LazySet} that represents a range running from a first to last {@link Long}.
+	 * 
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	public static class LongRangeSet extends LazySet<Long> {
+
+		protected final long first;
+		protected final long last;
+
+		/**
+		 * Creates a new {@link LongRangeBag}.
+		 * 
+		 * @param first
+		 *            the first object of the range to include
+		 * @param last
+		 *            the last object of the range to include
+		 */
+		public LongRangeSet(final long first, final long last) {
+			super();
+			if (first > last) {
+				throw new IllegalArgumentException(String.format("The first element of a range (%d) cannot be greater than the last (%d)",
+						first, last));
+			}
+			this.first = first;
+			this.last = last;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		protected void createCache() {
+			// no caching
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean contains(Object o) {
+			if (o instanceof Integer) {
+				final Integer obj = (Integer) o;
+				return (obj >= first && obj <= last);
+			}
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int count(Long object) {
+			// All elements of a range are unique
+			return contains(object) ? 1 : 0;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean isEmpty() {
+			// Empty ranges are not allowed
+			return false;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Iterator<Long> iterator() {
+			return new LongRangeListIterator(first, last);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int size() {
+			return (int) (last - first + 1);
+		}
+
+	}
+
+	/**
 	 * Creates an empty {@link LazySet}.
 	 */
 	public LazySet() {
@@ -578,18 +747,10 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	@SuppressWarnings("unchecked")
 	public LazySet<E> includingRange(final E first, final E last) {
 		if (first instanceof Integer && last instanceof Integer) {
-			final LinkedHashSet<E> range = new LinkedHashSet<E>((Integer) last - (Integer) first + 1);
-			for (Integer index = (Integer) first; index <= (Integer) last; index++) {
-				range.add((E) index);
-			}
-			return union(new LazySetOnSet<E>(range));
+			return union((LazySet<E>) new IntegerRangeSet((Integer)first, (Integer)last));
 		}
 		if (first instanceof Long && last instanceof Long) {
-			final LinkedHashSet<E> range = new LinkedHashSet<E>();
-			for (Long index = (Long) first; index <= (Long) last; index++) {
-				range.add((E) index);
-			}
-			return union(new LazySetOnSet<E>(range));
+			return union((LazySet<E>) new LongRangeSet((Long)first, (Long)last));
 		}
 		throw new IllegalArgumentException(String.format("includingRange() not supported for arguments of type %s and %s", first.getClass()
 				.getName(), last.getClass().getName()));
