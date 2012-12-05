@@ -146,14 +146,22 @@ public class AtlResourceImpl extends ResourceImpl {
 
 	/**
 	 * Registers any dynamic EPackage URIs in <code>res</code>.
-	 * @param res the resource containing the EPackages
+	 * 
+	 * @param res
+	 *            the resource containing the EPackages
+	 * @throws IOException
+	 *             if the nsURIs from EPackages from r are already registered by other EPackages
 	 */
-	protected void registerEPackages(final Resource res) {
+	protected void registerEPackages(final Resource res) throws IOException {
 		final ResourceSet rs = getResourceSet();
 		final Registry r = rs.getPackageRegistry();
 		for (EObject o : res.getContents()) {
 			if (o instanceof EPackage) {
 				EPackage p = (EPackage)o;
+				if (r.containsKey(p.getNsURI()) && r.get(p.getNsURI()) != p) {
+					throw new IOException(String.format("EPackage with URI \"%s\" already registered by another EPackage instance",
+							p.getNsURI()));
+				}
 				r.put(p.getNsURI(), p);
 			}
 		}
