@@ -1,0 +1,5 @@
+bin/
+bin_ant/
+*.class
+*/*/target/
+/target/
