@@ -1,7 +1,7 @@
 -- @atlcompiler emftvm
 -- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
--- @path ATL=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/ATL.ecore
--- @path Problem=/org.eclipse.m2m.atl.emftvm.compiler/metamodels/Problem.ecore
+-- @path ATL=/org.eclipse.m2m.atl.common/src/org/eclipse/m2m/atl/common/resources/ATL.ecore
+-- @path Problem=/org.eclipse.m2m.atl.common/src/org/eclipse/m2m/atl/common/resources/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
 -- $Id: ATLtoEMFTVM.atl,v 1.12 2012/04/08 14:34:47 dwagelaar Exp $
 module ATLtoEMFTVM;

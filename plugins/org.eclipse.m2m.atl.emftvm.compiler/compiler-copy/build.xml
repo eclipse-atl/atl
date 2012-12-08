@@ -12,6 +12,9 @@
 	</target>
 	
 	<target name="loadModels">
+		<!-- The following is an error:
+		<emftvm.loadMetamodel name="ATL" uri="platform:/plugin/org.eclipse.m2m.atl.common/org/eclipse/m2m/atl/common/resources/ATL.ecore"/>
+		-->
 		<emftvm.loadModel name="ATLtoEMFTVM" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLtoEMFTVM.atl"/>
 		<emftvm.loadModel name="EMFTVMCopy" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/EMFTVMCopy.atl"/>
 		<emftvm.loadModel name="ATLCopy" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLCopy.atl"/>

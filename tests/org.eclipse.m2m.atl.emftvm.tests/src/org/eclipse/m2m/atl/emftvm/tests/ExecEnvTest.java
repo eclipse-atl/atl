@@ -142,6 +142,8 @@ public class ExecEnvTest extends TestCase {
 	public static final String PLUGIN_URI = "platform:/plugin/" + PLUGIN_ID;
 	public static final String COMPILER_PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.compiler";
 	public static final String COMPILER_PLUGIN_URI = "platform:/plugin/" + COMPILER_PLUGIN_ID;
+	public static final String COMMON_PLUGIN_ID = "org.eclipse.m2m.atl.common";
+	public static final String COMMON_PLUGIN_URI = "platform:/plugin/" + COMMON_PLUGIN_ID;
 
 	public static final Bundle bundle = Platform.getBundle(PLUGIN_ID);
 
@@ -1410,7 +1412,7 @@ public class ExecEnvTest extends TestCase {
 
 		{
 		final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
-		pbmm.setResource(rs.getResource(URI.createPlatformPluginURI(COMPILER_PLUGIN_ID + "/metamodels/Problem.ecore", true), true));
+		pbmm.setResource(rs.getResource(URI.createPlatformPluginURI(COMMON_PLUGIN_ID + "/org/eclipse/m2m/atl/common/resources/Problem.ecore", true), true));
 		env.registerMetaModel("Problem", pbmm);
 		}
 
