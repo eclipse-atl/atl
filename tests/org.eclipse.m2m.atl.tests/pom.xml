@@ -15,16 +15,24 @@
   <parent>
     <artifactId>m2m.atl-parent</artifactId>
     <groupId>org.eclipse.m2m.atl</groupId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.4.0-SNAPSHOT</version>
      <relativePath>../../releng/org.eclipse.m2m.atl.releng.parent</relativePath>
   </parent>
   <groupId>org.eclipse.m2m.atl</groupId>
   <artifactId>org.eclipse.m2m.atl.tests</artifactId>
-  <version>3.3.0-SNAPSHOT</version>
+  <version>3.4.0-SNAPSHOT</version>
+  	<!-- TODO: reactivate tests
   <packaging>eclipse-test-plugin</packaging>
-  
+  -->
+    <packaging>eclipse-plugin</packaging>
+    
   <build>
     <plugins>
+     <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-source-plugin</artifactId>
+      </plugin>
+  	<!-- TODO: reactivate tests
   	<plugin>
 		<groupId>org.eclipse.tycho</groupId>
 		<artifactId>tycho-surefire-plugin</artifactId>
@@ -44,6 +52,7 @@
 			<argLine>-XX:MaxPermSize=256m</argLine>			
 		</configuration>
 	</plugin>
+	-->
     </plugins>
   </build>
 </project>

@@ -15,12 +15,12 @@
   <parent>
     <artifactId>m2m.atl-parent</artifactId>
     <groupId>org.eclipse.m2m.atl</groupId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.4.0-SNAPSHOT</version>
      <relativePath>../../releng/org.eclipse.m2m.atl.releng.parent</relativePath>
   </parent>
   <groupId>org.eclipse.m2m.atl</groupId>
   <artifactId>org.eclipse.m2m.atl.profiler.core</artifactId>
-  <version>3.3.0-SNAPSHOT</version>
+  <version>3.4.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   
   <build>
