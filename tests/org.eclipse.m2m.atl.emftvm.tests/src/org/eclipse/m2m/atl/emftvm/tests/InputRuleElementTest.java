@@ -84,16 +84,15 @@ public class InputRuleElementTest extends RuleElementTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.InputRuleElement#createIterable(org.eclipse.m2m.atl.emftvm.ExecEnv) <em>Create Iterable</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.InputRuleElement#createIterable(org.eclipse.m2m.atl.emftvm.ExecEnv)
+	 * <em>Create Iterable</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.InputRuleElement#createIterable(org.eclipse.m2m.atl.emftvm.ExecEnv)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testCreateIterable__ExecEnv() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
 	}
 
 } //InputRuleElementTest

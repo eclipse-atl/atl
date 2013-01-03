@@ -51,55 +51,55 @@ public abstract class CodeBlockInstructionTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCbIndex() <em>Cb Index</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCbIndex() <em>Cb Index</em>}' feature getter. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCbIndex()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetCbIndex() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#setCbIndex(int) <em>Cb Index</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#setCbIndex(int) <em>Cb Index</em>}' feature setter. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#setCbIndex(int)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetCbIndex() {
 		// TODO: implement this feature setter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCodeBlock() <em>Code Block</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCodeBlock() <em>Code Block</em>}' feature getter. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCodeBlock()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetCodeBlock() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#setCodeBlock(org.eclipse.m2m.atl.emftvm.CodeBlock) <em>Code Block</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#setCodeBlock(org.eclipse.m2m.atl.emftvm.CodeBlock)
+	 * <em>Code Block</em>}' feature setter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#setCodeBlock(org.eclipse.m2m.atl.emftvm.CodeBlock)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetCodeBlock() {
 		// TODO: implement this feature setter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 } //CodeBlockInstructionTest

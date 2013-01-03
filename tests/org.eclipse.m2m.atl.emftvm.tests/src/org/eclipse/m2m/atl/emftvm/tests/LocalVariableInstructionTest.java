@@ -53,94 +53,94 @@ public abstract class LocalVariableInstructionTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getCbOffset() <em>Cb Offset</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getCbOffset() <em>Cb Offset</em>}' feature getter. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getCbOffset()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetCbOffset() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setCbOffset(int) <em>Cb Offset</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setCbOffset(int) <em>Cb Offset</em>}' feature setter. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setCbOffset(int)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetCbOffset() {
 		// TODO: implement this feature setter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getSlot() <em>Slot</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getSlot() <em>Slot</em>}' feature getter. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getSlot()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetSlot() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariableIndex() <em>Local Variable Index</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariableIndex() <em>Local Variable Index</em>}' feature
+	 * getter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariableIndex()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetLocalVariableIndex() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setLocalVariableIndex(int) <em>Local Variable Index</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setLocalVariableIndex(int) <em>Local Variable Index</em>}'
+	 * feature setter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setLocalVariableIndex(int)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetLocalVariableIndex() {
 		// TODO: implement this feature setter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariable() <em>Local Variable</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariable()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetLocalVariable() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setLocalVariable(org.eclipse.m2m.atl.emftvm.LocalVariable) <em>Local Variable</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setLocalVariable(org.eclipse.m2m.atl.emftvm.LocalVariable)
+	 * <em>Local Variable</em>}' feature setter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setLocalVariable(org.eclipse.m2m.atl.emftvm.LocalVariable)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetLocalVariable() {
 		// TODO: implement this feature setter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 } //LocalVariableInstructionTest

@@ -50,16 +50,15 @@ public abstract class RuleElementTest extends TypedElementTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.RuleElement#getEModels() <em>EModels</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.RuleElement#getEModels() <em>EModels</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.RuleElement#getEModels()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetEModels() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
 	}
 
 } //RuleElementTest

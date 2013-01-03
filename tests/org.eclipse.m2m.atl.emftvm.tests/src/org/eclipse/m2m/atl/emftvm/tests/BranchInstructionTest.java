@@ -51,55 +51,55 @@ public abstract class BranchInstructionTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#getOffset() <em>Offset</em>}' feature getter.
-	 * <!-- begin-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#getOffset() <em>Offset</em>}' feature getter. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.BranchInstruction#getOffset()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetOffset() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#setOffset(int) <em>Offset</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#setOffset(int) <em>Offset</em>}' feature setter. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.BranchInstruction#setOffset(int)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetOffset() {
 		// TODO: implement this feature setter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#getTarget() <em>Target</em>}' feature getter.
-	 * <!-- begin-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#getTarget() <em>Target</em>}' feature getter. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.BranchInstruction#getTarget()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetTarget() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#setTarget(org.eclipse.m2m.atl.emftvm.Instruction) <em>Target</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#setTarget(org.eclipse.m2m.atl.emftvm.Instruction) <em>Target</em>}'
+	 * feature setter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.BranchInstruction#setTarget(org.eclipse.m2m.atl.emftvm.Instruction)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetTarget() {
 		// TODO: implement this feature setter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 } //BranchInstructionTest

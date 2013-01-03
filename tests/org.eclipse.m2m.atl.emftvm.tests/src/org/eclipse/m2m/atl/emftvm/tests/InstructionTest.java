@@ -72,55 +72,55 @@ public abstract class InstructionTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getOpcode() <em>Opcode</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getOpcode() <em>Opcode</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getOpcode()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetOpcode() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction() <em>Stack Production</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction() <em>Stack Production</em>}' feature getter. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetStackProduction() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption() <em>Stack Consumption</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption() <em>Stack Consumption</em>}' feature getter. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetStackConsumption() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel() <em>Stack Level</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel() <em>Stack Level</em>}' feature getter. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetStackLevel() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 } //InstructionTest

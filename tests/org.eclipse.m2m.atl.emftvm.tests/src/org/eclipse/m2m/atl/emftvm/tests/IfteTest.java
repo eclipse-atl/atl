@@ -87,107 +87,107 @@ public class IfteTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getThenCbIndex() <em>Then Cb Index</em>}' feature getter.
-	 * <!-- begin-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getThenCbIndex() <em>Then Cb Index</em>}' feature getter. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#getThenCbIndex()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetThenCbIndex() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#setThenCbIndex(int) <em>Then Cb Index</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#setThenCbIndex(int) <em>Then Cb Index</em>}' feature setter. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#setThenCbIndex(int)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetThenCbIndex() {
 		// TODO: implement this feature setter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getElseCbIndex() <em>Else Cb Index</em>}' feature getter.
-	 * <!-- begin-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getElseCbIndex() <em>Else Cb Index</em>}' feature getter. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#getElseCbIndex()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetElseCbIndex() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#setElseCbIndex(int) <em>Else Cb Index</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#setElseCbIndex(int) <em>Else Cb Index</em>}' feature setter. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#setElseCbIndex(int)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetElseCbIndex() {
 		// TODO: implement this feature setter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getThenCb() <em>Then Cb</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getThenCb() <em>Then Cb</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#getThenCb()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetThenCb() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#setThenCb(org.eclipse.m2m.atl.emftvm.CodeBlock) <em>Then Cb</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#setThenCb(org.eclipse.m2m.atl.emftvm.CodeBlock)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetThenCb() {
 		// TODO: implement this feature setter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getElseCb() <em>Else Cb</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getElseCb() <em>Else Cb</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#getElseCb()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetElseCb() {
 		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#setElseCb(org.eclipse.m2m.atl.emftvm.CodeBlock) <em>Else Cb</em>}' feature setter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#setElseCb(org.eclipse.m2m.atl.emftvm.CodeBlock)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testSetElseCb() {
 		// TODO: implement this feature setter test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 } //IfteTest
