@@ -682,9 +682,63 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	}
 
 	/**
+	 * Returns the collection containing all elements of self plus <code>object</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param object
+	 *            the object to include
+	 * @param index
+	 *            the index at which to insert <code>coll</code> (starting at 1)
+	 * @return The collection containing all elements of self plus <code>object</code>.
+	 */
+	@Override
+	public LazySet<E> including(final E object, final int index) {
+		throw new UnsupportedOperationException("Cannot specify index for adding values to unordered collections");
+	}
+
+	/**
+	 * Returns the collection containing all elements of self plus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to include
+	 * @return The collection containing all elements of self plus <code>coll</code>.
+	 */
+	@Override
+	public LazySet<E> includingAll(final Collection<E> coll) {
+		return union(LazyCollections.asLazySet(coll));
+	}
+
+	/**
+	 * Returns the collection containing all elements of self plus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to include
+	 * @param index
+	 *            the index at which to insert <code>coll</code> (starting at 1)
+	 * @return The collection containing all elements of self plus <code>coll</code>.
+	 * @throws UnsupportedOperationException
+	 */
+	@Override
+	public LazySet<E> includingAll(final Collection<E> coll, final int index) {
+		throw new UnsupportedOperationException("Cannot specify index for adding values to unordered collections");
+	}
+
+	/**
 	 * Returns the set containing all elements of self without <code>object</code>.
-	 * <p><i>Lazy operation.</i></p>
-	 * @param object the object to exclude
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param object
+	 *            the object to exclude
 	 * @return The set containing all elements of self without <code>object</code>.
 	 */
 	public LazySet<E> excluding(final E object) {
@@ -692,9 +746,36 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	}
 
 	/**
+	 * Returns the collection containing all elements of self minus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to exclude
+	 * @return The collection containing all elements of self minus <code>coll</code>.
+	 */
+	@Override
+	public LazySet<E> excludingAll(final Collection<E> coll) {
+		return new LazySet<E>(this) {
+			@Override
+			public Iterator<E> iterator() {
+				if (dataSource == null) {
+					return Collections.unmodifiableCollection(cache).iterator();
+				}
+				return new SubtractionIterator(coll);
+			}
+		};
+	}
+
+	/**
 	 * Returns the set containing all the elements that are in self or <code>s</code>, but not in both.
-	 * <p><i>Lazy operation.</i></p>
-	 * @param s the collection to perform the symmetric difference with
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param s
+	 *            the collection to perform the symmetric difference with
 	 * @return The set containing all the elements that are in self or <code>s</code>, but not in both.
 	 */
 	public LazySet<E> symmetricDifference(final LazySet<E> s) {

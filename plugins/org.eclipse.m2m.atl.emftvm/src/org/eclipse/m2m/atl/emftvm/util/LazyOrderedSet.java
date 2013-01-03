@@ -1984,7 +1984,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p><i>Lazy implementation of {@link List#subList(int, int)}.</i></p>
 	 * {@inheritDoc}
 	 */
-	public List<E> subList(final int fromIndex, final int toIndex) {
+	public LazyOrderedSet<E> subList(final int fromIndex, final int toIndex) {
 		return new SubOrderedSet<E>(fromIndex, toIndex, this);
 	}
 
@@ -2142,9 +2142,32 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	}
 
 	/**
+	 * Returns the ordered set consisting of all elements in self, with all elements in <code>s</code> inserted at <code>index</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param s
+	 *            the ordered set to union with this
+	 * @param index
+	 *            the insertion index (starting at 1)
+	 * @return The ordered set consisting of all elements in self, with all elements in <code>s</code> inserted at <code>index</code>
+	 */
+	public LazyOrderedSet<E> union(final LazyOrderedSet<E> s, final int index) {
+		if (index == 1) {
+			return union(s);
+		}
+		return subSequence(1, index - 1).union(s).union(subSequence(index, size()));
+	}
+
+	/**
 	 * Returns the union of self and <code>s</code>.
-	 * <p><i>Lazy operation.</i></p>
-	 * @param s the collection to union with self
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param s
+	 *            the collection to union with self
 	 * @return The union of self and <code>s</code>.
 	 */
 	public LazySet<E> union(final LazySet<E> s) {
@@ -2270,9 +2293,70 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	}
 
 	/**
+	 * Returns the collection containing all elements of self plus <code>object</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param object
+	 *            the object to include
+	 * @param index
+	 *            the index at which to insert <code>coll</code> (starting at 1)
+	 * @return The collection containing all elements of self plus <code>object</code>.
+	 */
+	@Override
+	public LazyOrderedSet<E> including(final E object, final int index) {
+		if (index > 0) {
+			return insertAt(index, object);
+		} else {
+			return append(object);
+		}
+	}
+
+	/**
+	 * Returns the collection containing all elements of self plus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to include
+	 * @return The collection containing all elements of self plus <code>coll</code>.
+	 */
+	@Override
+	public LazyOrderedSet<E> includingAll(final Collection<E> coll) {
+		return union(LazyCollections.asLazyOrderedSet(coll));
+	}
+
+	/**
+	 * Returns the collection containing all elements of self plus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to include
+	 * @param index
+	 *            the index at which to insert <code>coll</code> (starting at 1)
+	 * @return The collection containing all elements of self plus <code>coll</code>.
+	 */
+	@Override
+	public LazyOrderedSet<E> includingAll(final Collection<E> coll, final int index) {
+		if (index > 0) {
+			return union(LazyCollections.asLazyOrderedSet(coll), index);
+		} else {
+			return union(LazyCollections.asLazyOrderedSet(coll));
+		}
+	}
+
+	/**
 	 * Returns the set containing all elements of self without <code>object</code>.
-	 * <p><i>Lazy operation.</i></p>
-	 * @param object the element to exclude
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param object
+	 *            the element to exclude
 	 * @return The set containing all elements of self without <code>object</code>.
 	 */
 	public LazyOrderedSet<E> excluding(final E object) {
@@ -2280,9 +2364,36 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	}
 
 	/**
+	 * Returns the collection containing all elements of self minus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to exclude
+	 * @return The collection containing all elements of self minus <code>coll</code>.
+	 */
+	@Override
+	public LazyOrderedSet<E> excludingAll(final Collection<E> coll) {
+		return new LazyOrderedSet<E>(this) {
+			@Override
+			public Iterator<E> iterator() {
+				if (dataSource == null) {
+					return Collections.unmodifiableCollection(cache).iterator();
+				}
+				return new SubtractionIterator(coll);
+			}
+		};
+	}
+
+	/**
 	 * Returns the set containing all the elements that are in self or <code>s</code>, but not in both.
-	 * <p><i>Lazy operation.</i></p>
-	 * @param s the collection to perform the symmetric difference with
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param s
+	 *            the collection to perform the symmetric difference with
 	 * @return The set containing all the elements that are in self or <code>s</code>, but not in both.
 	 */
 	public LazyOrderedSet<E> symmetricDifference(final LazyOrderedSet<E> s) {

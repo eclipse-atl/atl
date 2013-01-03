@@ -1075,7 +1075,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		public boolean matchFor(final StackFrame frame, final EObject[] values) {
 			final CodeBlock cb = getMatcher();
 			assert cb != null;
-			if ((Boolean)cb.execute(frame.getSubFrame(cb, values)).pop()) {
+			if ((Boolean) cb.execute(frame.getSubFrame(cb, values))) {
 				return super.matchFor(frame, values);
 			}
 			return false;
@@ -1089,7 +1089,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 				Map<String, EObject> valuesMap, EObject[] values) {
 			final CodeBlock cb = getMatcher();
 			assert cb != null;
-			if ((Boolean)cb.execute(frame.getSubFrame(cb, values)).pop()) {
+			if ((Boolean) cb.execute(frame.getSubFrame(cb, values))) {
 				return super.matchFor(frame, valuesMap, values);
 			}
 			return false;
@@ -1113,19 +1113,25 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 
 		/**
 		 * Applies this rule for the given <code>trace</code>.
-		 * @param frame the stack frame context
-		 * @param trace the trace link to apply the rule for
-		 * @return the stack frame with the application result
+		 * 
+		 * @param frame
+		 *            the stack frame context
+		 * @param trace
+		 *            the trace link to apply the rule for
+		 * @return the application result
 		 */
-		public abstract StackFrame applyFor(StackFrame frame, TraceLink trace);
+		public abstract Object applyFor(StackFrame frame, TraceLink trace);
 
 		/**
 		 * Post-applies this rule for the given <code>trace</code>.
-		 * @param frame the stack frame context
-		 * @param trace the trace link to postApply the rule for
-		 * @return the stack frame with the application result
+		 * 
+		 * @param frame
+		 *            the stack frame context
+		 * @param trace
+		 *            the trace link to postApply the rule for
+		 * @return the application result
 		 */
-		public abstract StackFrame postApplyFor(StackFrame frame, TraceLink trace);
+		public abstract Object postApplyFor(StackFrame frame, TraceLink trace);
 	}
 
 	/**
@@ -1139,7 +1145,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public StackFrame applyFor(final StackFrame frame, final TraceLink trace) {
+		public Object applyFor(final StackFrame frame, final TraceLink trace) {
 			final CodeBlock cb = getApplier();
 			assert cb != null;
 			final Object[] args = createArgs(trace);
@@ -1151,11 +1157,11 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public StackFrame postApplyFor(final StackFrame frame, final TraceLink trace) {
+		public Object postApplyFor(final StackFrame frame, final TraceLink trace) {
 			final CodeBlock cb = getPostApply();
 			assert cb != null;
 			assert applyArgs.containsKey(trace);
-			final StackFrame result = cb.execute(frame.getSubFrame(cb, applyArgs.get(trace)));
+			final Object result = cb.execute(frame.getSubFrame(cb, applyArgs.get(trace)));
 			applyArgs.remove(trace); // will not be used after this
 			return result;
 		}
@@ -1198,7 +1204,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public StackFrame applyFor(final StackFrame frame, final TraceLink trace) {
+		public Object applyFor(final StackFrame frame, final TraceLink trace) {
 			final CodeBlock cb = getApplier();
 			assert cb != null;
 			return cb.execute(frame.getSubFrame(cb, createArgs(trace)));
@@ -1208,7 +1214,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public StackFrame postApplyFor(final StackFrame frame, final TraceLink trace) {
+		public Object postApplyFor(final StackFrame frame, final TraceLink trace) {
 			assert getPostApply() == null;
 			return null; // do nothing
 		}
@@ -1225,7 +1231,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public StackFrame applyFor(final StackFrame frame, final TraceLink trace) {
+		public Object applyFor(final StackFrame frame, final TraceLink trace) {
 			assert getApplier() == null;
 			return null; // do nothing
 		}
@@ -1234,11 +1240,10 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public StackFrame postApplyFor(final StackFrame frame, final TraceLink trace) {
+		public Object postApplyFor(final StackFrame frame, final TraceLink trace) {
 			final CodeBlock cb = getPostApply();
 			assert cb != null;
-			final StackFrame result = cb.execute(frame.getSubFrame(cb, createArgs(trace)));
-			return result;
+			return cb.execute(frame.getSubFrame(cb, createArgs(trace)));
 		}
 	}
 
@@ -2113,7 +2118,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			// Check bound values
 			final CodeBlock binding = re.getBinding();
 			if (binding != null) {
-				final Object bvalue = binding.execute(frame.getSubFrame(binding, values)).pop();
+				final Object bvalue = binding.execute(frame.getSubFrame(binding, values));
 				if (bvalue == null) {
 					return false; // no value, no matches
 				}
@@ -2226,7 +2231,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public StackFrame applyFor(final StackFrame frame, final TraceLink trace) {
+	public Object applyFor(final StackFrame frame, final TraceLink trace) {
 		return applierCbState.applyFor(frame, trace);
 	}
 
@@ -2236,7 +2241,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public StackFrame postApplyFor(final StackFrame frame, final TraceLink trace) {
+	public Object postApplyFor(final StackFrame frame, final TraceLink trace) {
 		return applierCbState.postApplyFor(frame, trace);
 	}
 
@@ -2954,7 +2959,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final InputRuleElement ire = inputs.get(index);
 			final CodeBlock binding = ire.getBinding();
 			if (binding != null) {
-				final Object value = binding.execute(frame.getSubFrame(binding, values)).pop();
+				final Object value = binding.execute(frame.getSubFrame(binding, values));
 				if (value == null) {
 					return false; // no value, no matches
 				}
@@ -3015,7 +3020,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final InputRuleElement ire = inputs.get(index);
 			final CodeBlock binding = ire.getBinding();
 			if (binding != null) {
-				final Object value = binding.execute(frame.getSubFrame(binding, values)).pop();
+				final Object value = binding.execute(frame.getSubFrame(binding, values));
 				if (value == null) {
 					return false; // no value, no matches
 				}
@@ -3217,7 +3222,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final InputRuleElement ire = inputs.get(index);
 			final CodeBlock binding = ire.getBinding();
 			if (binding != null) {
-				final Object value = binding.execute(frame.getSubFrame(binding, values)).pop();
+				final Object value = binding.execute(frame.getSubFrame(binding, values));
 				if (value == null) {
 					return false; // no value, no matches
 				}
@@ -3279,7 +3284,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final InputRuleElement ire = inputs.get(index);
 			final CodeBlock binding = ire.getBinding();
 			if (binding != null) {
-				final Object value = binding.execute(frame.getSubFrame(binding, values)).pop();
+				final Object value = binding.execute(frame.getSubFrame(binding, values));
 				if (value == null) {
 					return false; // no value, no matches
 				}
@@ -3444,18 +3449,30 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @return the rule application result
 	 */
 	private Object applyTo(final StackFrame frame, final TraceLink trace) {
-		StackFrame result = null;
+		Object result = null;
 		for (Rule rule : getAllESuperRules()) {
-			StackFrame applyResult = rule.applyFor(frame, trace);
-			if (applyResult != null) result = applyResult;
-			StackFrame postResult = rule.postApplyFor(frame, trace);
-			if (postResult != null) result = postResult;
+			if (rule.getApplier() != null) {
+				result = rule.applyFor(frame, trace);
+			} else {
+				rule.applyFor(frame, trace);
+			}
+			if (rule.getPostApply() != null) {
+				result = rule.postApplyFor(frame, trace);
+			} else {
+				rule.postApplyFor(frame, trace);
+			}
 		}
-		StackFrame applyResult = applierCbState.applyFor(frame, trace);
-		if (applyResult != null) result = applyResult;
-		StackFrame postResult = applierCbState.postApplyFor(frame, trace);
-		if (postResult != null) result = postResult;
-		return (result == null || result.stackEmpty()) ? null : result.pop();
+		if (getApplier() != null) {
+			result = applierCbState.applyFor(frame, trace);
+		} else {
+			applierCbState.applyFor(frame, trace);
+		}
+		if (getPostApply() != null) {
+			result = applierCbState.postApplyFor(frame, trace);
+		} else {
+			applierCbState.postApplyFor(frame, trace);
+		}
+		return result;
 	}
 
 	/**

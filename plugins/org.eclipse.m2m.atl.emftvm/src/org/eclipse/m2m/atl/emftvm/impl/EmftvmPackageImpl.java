@@ -3744,11 +3744,11 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		op = addEOperation(ruleEClass, theEcorePackage.getEBoolean(), "applyFirst", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = addEOperation(ruleEClass, this.getStackFrame(), "applyFor", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = addEOperation(ruleEClass, theEcorePackage.getEJavaObject(), "applyFor", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theTracePackage.getTraceLink(), "trace", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		op = addEOperation(ruleEClass, this.getStackFrame(), "postApplyFor", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = addEOperation(ruleEClass, theEcorePackage.getEJavaObject(), "postApplyFor", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theTracePackage.getTraceLink(), "trace", 0, 1, IS_UNIQUE, IS_ORDERED);
 
@@ -3806,7 +3806,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEAttribute(getCodeBlock_ParentFrame(), this.getStackFrame(), "parentFrame", null, 0, 1, CodeBlock.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCodeBlock_BindingFor(), this.getInputRuleElement(), this.getInputRuleElement_Binding(), "bindingFor", null, 0, 1, CodeBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		op = addEOperation(codeBlockEClass, this.getStackFrame(), "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
+		op = addEOperation(codeBlockEClass, theEcorePackage.getEJavaObject(), "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(codeBlockEClass, theEcorePackage.getEInt(), "getStackLevel", 0, 1, IS_UNIQUE, IS_ORDERED);

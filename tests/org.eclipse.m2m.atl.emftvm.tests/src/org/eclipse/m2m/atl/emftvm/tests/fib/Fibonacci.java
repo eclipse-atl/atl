@@ -31,7 +31,7 @@ public class Fibonacci extends NativeCodeBlock {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public StackFrame execute(final StackFrame frame) {
+	public Object execute(final StackFrame frame) {
 		final VMMonitor monitor = frame.getEnv().getMonitor();
 		try {
 			if (monitor != null) {
@@ -43,7 +43,7 @@ public class Fibonacci extends NativeCodeBlock {
 				}
 			}
 			if ((Boolean)invoke("<", frame.getLocal(0, 0), new Object[]{2}, frame)) {
-				frame.load(0, 0);
+				return frame.getLocal(0, 0);
 			} else {
 				if (monitor != null) {
 					if (monitor.isTerminated()) {
@@ -53,18 +53,17 @@ public class Fibonacci extends NativeCodeBlock {
 						monitor.step(frame);
 					}
 				}
-				frame.push(invoke("+", 
+				return invoke("+", 
 						invoke("fib", invoke("-", frame.getLocal(0, 0), new Object[]{1}, frame), new Object[0], frame),
 						new Object[] {
 							invoke("fib",	invoke("-", frame.getLocal(0, 0), new Object[]{2}, frame), new Object[0], frame)
-						}, frame));
+						}, frame);
 			}
 		} catch (VMException e) {
 			throw e;
 		} catch (Exception e) {
 			throw new VMException(frame, e);
 		}
-		return frame;
 	}
 
 	private static Object invoke(final String opname, final Object self, final Object[] args,
@@ -79,8 +78,7 @@ public class Fibonacci extends NativeCodeBlock {
 				EMFTVMUtil.getArgumentTypes(args));
 		if (op != null) {
 			final CodeBlock body = op.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, self, args));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
+			return body.execute(frame.getSubFrame(body, self, args));
 		}
 		return EMFTVMUtil.invokeNative(frame, self, opname, args);
 	}

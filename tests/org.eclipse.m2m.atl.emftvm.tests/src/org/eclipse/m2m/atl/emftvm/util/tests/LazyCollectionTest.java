@@ -99,9 +99,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(frame.getLocal(0).equals("Two"));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0).equals("Two");
 			}
 
 		});
@@ -115,9 +114,8 @@ public abstract class LazyCollectionTest extends TestCase {
 				}
 
 				@Override
-				public StackFrame execute(final StackFrame frame) {
-					frame.push(frame.getLocal(0).equals("None"));
-					return frame;
+				public Object execute(final StackFrame frame) {
+					return frame.getLocal(0).equals("None");
 				}
 
 			});
@@ -321,9 +319,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(frame.getLocal(0).equals("One"));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0).equals("One");
 			}
 
 		}));
@@ -334,9 +331,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(!list.contains(frame.getLocal(0)));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return !list.contains(frame.getLocal(0));
 			}
 
 		}));
@@ -347,9 +343,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(true);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return true;
 			}
 
 		}));
@@ -360,9 +355,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(false);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return false;
 			}
 
 		}));
@@ -381,9 +375,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(frame.getLocal(0).equals(frame.getLocal(1)));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0).equals(frame.getLocal(1));
 			}
 
 		}));
@@ -395,9 +388,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(!list.contains(frame.getLocal(0)) || !list.contains(frame.getLocal(1)));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return !list.contains(frame.getLocal(0)) || !list.contains(frame.getLocal(1));
 			}
 
 		}));
@@ -409,9 +401,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(true);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return true;
 			}
 
 		}));
@@ -423,9 +414,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(false);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return false;
 			}
 
 		}));
@@ -443,9 +433,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(frame.getLocal(0).equals("One"));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0).equals("One");
 			}
 
 		}));
@@ -456,9 +445,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(list.contains(frame.getLocal(0)));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return list.contains(frame.getLocal(0));
 			}
 
 		}));
@@ -469,9 +457,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(true);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return true;
 			}
 
 		}));
@@ -482,9 +469,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(false);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return false;
 			}
 
 		}));
@@ -503,9 +489,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(frame.getLocal(0).equals(frame.getLocal(1)));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0).equals(frame.getLocal(1));
 			}
 
 		}));
@@ -517,9 +502,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(list.contains(frame.getLocal(0)) && list.contains(frame.getLocal(1)));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return list.contains(frame.getLocal(0)) && list.contains(frame.getLocal(1));
 			}
 
 		}));
@@ -531,9 +515,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(true);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return true;
 			}
 
 		}));
@@ -545,9 +528,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(false);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return false;
 			}
 
 		}));
@@ -645,9 +627,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(null);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return null;
 			}
 
 		}));
@@ -658,9 +639,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(frame.getLocal(0));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0);
 			}
 
 		}));
@@ -671,9 +651,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(frame.getLocal(0));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0);
 			}
 
 		}));
@@ -692,9 +671,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(((String) frame.getLocal(1)) + ((String) frame.getLocal(0)));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return ((String) frame.getLocal(1)) + ((String) frame.getLocal(0));
 			}
 
 		});
@@ -786,9 +764,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(frame.getLocal(0).equals("One"));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0).equals("One");
 			}
 
 		}));
@@ -799,9 +776,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(!list.contains(frame.getLocal(0)));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return !list.contains(frame.getLocal(0));
 			}
 
 		}));
@@ -812,9 +788,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(true);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return true;
 			}
 
 		}));
@@ -825,9 +800,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(false);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return false;
 			}
 
 		}));

@@ -1300,7 +1300,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		@Override
 		protected final boolean include(E element) {
-			return (Boolean)condition.execute(parentFrame.getSubFrame(condition, new Object[]{next})).pop();
+			return (Boolean) condition.execute(parentFrame.getSubFrame(condition, new Object[] { next }));
 		}
 	}
 
@@ -1325,7 +1325,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		@Override
 		protected final boolean include(E element) {
-			return !(Boolean)condition.execute(parentFrame.getSubFrame(condition, new Object[]{next})).pop();
+			return !(Boolean) condition.execute(parentFrame.getSubFrame(condition, new Object[] { next }));
 		}
 	}
 
@@ -1368,7 +1368,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		@SuppressWarnings("unchecked")
 		public T next() {
-			return (T)function.execute(parentFrame.getSubFrame(function, new Object[]{inner.next()})).pop();
+			return (T) function.execute(parentFrame.getSubFrame(function, new Object[] { inner.next() }));
 		}
 	}
 	
@@ -2098,7 +2098,47 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @param object the object to include
 	 * @return The collection containing all elements of self plus <code>object</code>.
 	 */
-	public abstract LazyCollection<E> including(final E object);
+	public abstract LazyCollection<E> including(E object);
+
+	/**
+	 * Returns the collection containing all elements of self plus <code>object</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param object
+	 *            the object to include
+	 * @param index
+	 *            the index at which to insert <code>coll</code> (starting at 1)
+	 * @return The collection containing all elements of self plus <code>object</code>.
+	 */
+	public abstract LazyCollection<E> including(E object, int index);
+
+	/**
+	 * Returns the collection containing all elements of self plus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to include
+	 * @return The collection containing all elements of self plus <code>coll</code>.
+	 */
+	public abstract LazyCollection<E> includingAll(Collection<E> coll);
+
+	/**
+	 * Returns the collection containing all elements of self plus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to include
+	 * @param index
+	 *            the index at which to insert <code>coll</code> (starting at 1)
+	 * @return The collection containing all elements of self plus <code>coll</code>.
+	 */
+	public abstract LazyCollection<E> includingAll(Collection<E> coll, int index);
 
 	/**
 	 * Returns the collection containing all elements of self apart from all occurrences of <code>object</code>.
@@ -2111,6 +2151,18 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @return The collection containing all elements of self apart from all occurrences of <code>object</code>.
 	 */
 	public abstract LazyCollection<E> excluding(final E object);
+
+	/**
+	 * Returns the collection containing all elements of self minus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to exclude
+	 * @return The collection containing all elements of self minus <code>coll</code>.
+	 */
+	public abstract LazyCollection<E> excludingAll(Collection<E> coll);
 
 	/**
 	 * Returns the collection containing all elements of self plus the collection of <code>first</code> running to <code>last</code>.
@@ -2140,7 +2192,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public boolean forAll(final CodeBlock condition) {
 		final StackFrame frame = condition.getParentFrame();
 		for (E e : this) {
-			if (!(Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e})).pop()) {
+			if (!(Boolean) condition.execute(frame.getSubFrame(condition, new Object[] { e }))) {
 				return false;
 			}
 		}
@@ -2158,7 +2210,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		final StackFrame frame = condition.getParentFrame();
 		for (E e : this) {
 			for (E e2 : this) {
-				if (!(Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e, e2})).pop()) {
+				if (!(Boolean) condition.execute(frame.getSubFrame(condition, new Object[] { e, e2 }))) {
 					return false;
 				}
 			}
@@ -2176,7 +2228,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public boolean exists(final CodeBlock condition) {
 		final StackFrame frame = condition.getParentFrame();
 		for (E e : this) {
-			if ((Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e})).pop()) {
+			if ((Boolean) condition.execute(frame.getSubFrame(condition, new Object[] { e }))) {
 				return true;
 			}
 		}
@@ -2194,7 +2246,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		final StackFrame frame = condition.getParentFrame();
 		for (E e : this) {
 			for (E e2 : this) {
-				if ((Boolean)condition.execute(frame.getSubFrame(condition, new Object[]{e, e2})).pop()) {
+				if ((Boolean) condition.execute(frame.getSubFrame(condition, new Object[] { e, e2 }))) {
 					return true;
 				}
 			}
@@ -2216,7 +2268,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		final StackFrame frame = updater.getParentFrame();
 		T acc = initialValue;
 		for (E e : this) {
-			acc = (T)updater.execute(frame.getSubFrame(updater, new Object[]{e, acc})).pop();
+			acc = (T) updater.execute(frame.getSubFrame(updater, new Object[] { e, acc }));
 		}
 		return acc;
 	}
@@ -2233,7 +2285,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		final StackFrame parentFrame = body.getParentFrame();
 		final Set<Object> values = new HashSet<Object>(size());
 		for (E e : this) {
-			Object value = body.execute(parentFrame.getSubFrame(body, new Object[]{e})).pop();
+			Object value = body.execute(parentFrame.getSubFrame(body, new Object[] { e }));
 			if (values.contains(value)) {
 				return false;
 			}
@@ -2253,7 +2305,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public E any(final CodeBlock body) throws NoSuchElementException {
 		final StackFrame parentFrame = body.getParentFrame();
 		for (E e : this) {
-			if ((Boolean)body.execute(parentFrame.getSubFrame(body, new Object[]{e})).pop()) {
+			if ((Boolean) body.execute(parentFrame.getSubFrame(body, new Object[] { e }))) {
 				return e;
 			}
 		}
@@ -2271,7 +2323,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		boolean result = false;
 		final StackFrame frame = body.getParentFrame();
 		for (E e : this) {
-			if ((Boolean)body.execute(frame.getSubFrame(body, new Object[]{e})).pop()) {
+			if ((Boolean) body.execute(frame.getSubFrame(body, new Object[] { e }))) {
 				if (result) { // only one true value allowed
 					return false;
 				}

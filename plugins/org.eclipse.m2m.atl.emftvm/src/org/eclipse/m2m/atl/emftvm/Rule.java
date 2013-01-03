@@ -613,30 +613,35 @@ public interface Rule extends NamedElement {
 	boolean applyFirst(StackFrame frame);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Applies this rule for the given <code>trace</code>.
-	 * Call {@link #compileState()} before calling this method.
-	 * @param frame the stack frame context
-	 * @param trace the trace link to apply the rule for
-	 * @return the stack frame with the application result
+	 * <!-- begin-user-doc --> 
+	 * Applies this rule for the given <code>trace</code>. Call {@link #compileState()} before calling this method.
+	 * 
+	 * @param frame
+	 *            the stack frame context
+	 * @param trace
+	 *            the trace link to apply the rule for
+	 * @return the application result 
 	 * <!-- end-user-doc -->
-	 * @model dataType="org.eclipse.m2m.atl.emftvm.StackFrame" frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
 	 */
-	StackFrame applyFor(StackFrame frame, TraceLink trace);
+	Object applyFor(StackFrame frame, TraceLink trace);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Post-applies this rule for the given <code>trace</code>.
-	 * Call {@link #compileState()} before calling this method.
-	 * @param frame the stack frame context
-	 * @param trace the trace link to post-apply the rule for
-	 * @return the stack frame with the post-application result
+	 * <!-- begin-user-doc --> 
+	 * Post-applies this rule for the given <code>trace</code>. Call {@link #compileState()} before calling this
+	 * method.
+	 * 
+	 * @param frame
+	 *            the stack frame context
+	 * @param trace
+	 *            the trace link to post-apply the rule for
+	 * @return the post-application result 
 	 * <!-- end-user-doc -->
-	 * @model dataType="org.eclipse.m2m.atl.emftvm.StackFrame" frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
 	 */
-	StackFrame postApplyFor(StackFrame frame, TraceLink trace);
+	Object postApplyFor(StackFrame frame, TraceLink trace);
 
 	/**
 	 * <!-- begin-user-doc -->

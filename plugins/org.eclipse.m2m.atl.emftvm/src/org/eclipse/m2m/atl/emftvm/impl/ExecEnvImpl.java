@@ -557,16 +557,14 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		registerMetaModel(TracePackage.eNAME.toUpperCase(), EMFTVMUtil.getTraceMetamodel());
 		createField("matches", true, Types.EXEC_ENV_TYPE, Types.TRACE_LINK_SET_TYPE, new NativeCodeBlock() {
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(getMatches());
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return getMatches();
 			}
 		});
 		createField("traces", true, Types.EXEC_ENV_TYPE, Types.TRACE_LINK_SET_TYPE, new NativeCodeBlock() {
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(getTraces());
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return getTraces();
 			}
 		});
 		final Module oclModule = OCLOperations.getInstance().getOclModule();
@@ -1962,9 +1960,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			currentPhase = RuleMode.MANUAL;
 			while (mains.hasNext()) {
 				CodeBlock cb = mains.next().getBody();
-				StackFrame rFrame = cb.execute(new StackFrame(this, cb));
-				if (!rFrame.stackEmpty()) {
-					result = rFrame.pop();
+				if (cb.getStackLevel() > 0) {
+					result = cb.execute(new StackFrame(this, cb));
+				} else {
+					cb.execute(new StackFrame(this, cb));
 				}
 			}
 			// process any leftover queue elements

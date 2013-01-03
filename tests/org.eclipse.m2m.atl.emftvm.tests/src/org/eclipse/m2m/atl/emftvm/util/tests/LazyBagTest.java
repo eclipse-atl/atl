@@ -75,9 +75,8 @@ public class LazyBagTest extends LazyCollectionTest {
 			}
 	
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(((String) frame.getLocal(0)).length());
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return ((String) frame.getLocal(0)).length();
 			}
 	
 		});
@@ -190,9 +189,8 @@ public class LazyBagTest extends LazyCollectionTest {
 			}
 	
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(((String) frame.getLocal(0)).equals(element));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return ((String) frame.getLocal(0)).equals(element);
 			}
 	
 		});
@@ -207,9 +205,8 @@ public class LazyBagTest extends LazyCollectionTest {
 			}
 	
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(true);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return true;
 			}
 	
 		}).size());
@@ -221,9 +218,8 @@ public class LazyBagTest extends LazyCollectionTest {
 			}
 	
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(false);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return false;
 			}
 	
 		}).size());
@@ -242,9 +238,8 @@ public class LazyBagTest extends LazyCollectionTest {
 			}
 	
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(((String) frame.getLocal(0)).equals(element));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return ((String) frame.getLocal(0)).equals(element);
 			}
 	
 		});
@@ -261,9 +256,8 @@ public class LazyBagTest extends LazyCollectionTest {
 			}
 	
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(false);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return false;
 			}
 	
 		}).size());
@@ -275,9 +269,8 @@ public class LazyBagTest extends LazyCollectionTest {
 			}
 	
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(true);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return true;
 			}
 	
 		}).size());

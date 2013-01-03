@@ -1706,7 +1706,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 * <p><i>Lazy implementation of {@link List#subList(int, int)}.</i></p>
 	 * {@inheritDoc}
 	 */
-	public List<E> subList(final int fromIndex, final int toIndex) {
+	public LazyList<E> subList(final int fromIndex, final int toIndex) {
 		return new SubList<E>(fromIndex, toIndex, this);
 	}
 
@@ -1838,17 +1838,37 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	}
 
 	/**
-	 * If the element type is not a collection type this results in the same self.
-	 * If the element type is a collection type, the result is the sequence
-	 * containing all the elements of all the elements of self.
-	 * The order of the elements is partial.
-	 * <p><i>Lazy operation.</i></p>
+	 * Returns the sequence consisting of all elements in self, with all elements in <code>s</code> inserted at <code>index</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param s
+	 *            the list to union with this
+	 * @param index
+	 *            the insertion index (starting at 1)
+	 * @return The sequence consisting of all elements in self, with all elements in <code>s</code> inserted at <code>index</code>
+	 */
+	public LazyList<E> union(final LazyList<E> s, final int index) {
+		if (index == 1) {
+			return union(s);
+		}
+		return subSequence(1, index - 1).union(s).union(subSequence(index, size()));
+	}
+
+	/**
+	 * If the element type is not a collection type this results in the same self. If the element type is a collection type, the result is
+	 * the sequence containing all the elements of all the elements of self. The order of the elements is partial.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
 	 * @return <b>if</b> self.type.elementType.oclIsKindOf(CollectionType) <b>then</b><br>
-	 * &nbsp;&nbsp;self-&gt;iterate(c; acc : Sequence() = Sequence{} |<br>
-	 * &nbsp;&nbsp;&nbsp;&nbsp;acc-&gt;union(c-&gt;asSequence() ) )<br>
-	 * <b>else</b><br>
-	 * &nbsp;&nbsp;self<br>
-	 * <b>endif</b>
+	 *         &nbsp;&nbsp;self-&gt;iterate(c; acc : Sequence() = Sequence{} |<br>
+	 *         &nbsp;&nbsp;&nbsp;&nbsp;acc-&gt;union(c-&gt;asSequence() ) )<br>
+	 *         <b>else</b><br>
+	 *         &nbsp;&nbsp;self<br>
+	 *         <b>endif</b>
 	 */
 	public LazyList<?> flatten() {
 		final LazyList<E> inner = this;
@@ -1915,9 +1935,70 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	}
 
 	/**
-	 * Returns the sequence containing all elements of self apart from all occurrences of <code>object</code>. 
-	 * <p><i>Lazy operation.</i></p>
-	 * @param object the object to exclude
+	 * Returns the collection containing all elements of self plus <code>object</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param object
+	 *            the object to include
+	 * @param index
+	 *            the index at which to insert <code>coll</code> (starting at 1)
+	 * @return The collection containing all elements of self plus <code>object</code>.
+	 */
+	@Override
+	public LazyList<E> including(final E object, final int index) {
+		if (index > 0) {
+			return insertAt(index, object);
+		} else {
+			return append(object);
+		}
+	}
+
+	/**
+	 * Returns the collection containing all elements of self plus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to include
+	 * @return The collection containing all elements of self plus <code>coll</code>.
+	 */
+	@Override
+	public LazyList<E> includingAll(final Collection<E> coll) {
+		return union(LazyCollections.asLazyList(coll));
+	}
+
+	/**
+	 * Returns the collection containing all elements of self plus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to include
+	 * @param index
+	 *            the index at which to insert <code>coll</code> (starting at 1)
+	 * @return The collection containing all elements of self plus <code>coll</code>.
+	 */
+	@Override
+	public LazyList<E> includingAll(final Collection<E> coll, final int index) {
+		if (index > 0) {
+			return union(LazyCollections.asLazyList(coll), index);
+		} else {
+			return union(LazyCollections.asLazyList(coll));
+		}
+	}
+
+	/**
+	 * Returns the sequence containing all elements of self apart from all occurrences of <code>object</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param object
+	 *            the object to exclude
 	 * @return The sequence containing all elements of self apart from all occurrences of <code>object</code>.
 	 */
 	public LazyList<E> excluding(final E object) {
@@ -1933,8 +2014,34 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	}
 
 	/**
+	 * Returns the collection containing all elements of self minus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to exclude
+	 * @return The collection containing all elements of self minus <code>coll</code>.
+	 */
+	@Override
+	public LazyList<E> excludingAll(final Collection<E> coll) {
+		return new LazyList<E>(this) {
+			@Override
+			public Iterator<E> iterator() {
+				if (dataSource == null) {
+					return Collections.unmodifiableCollection(cache).iterator();
+				}
+				return new SubtractionIterator(coll);
+			}
+		};
+	}
+
+	/**
 	 * Returns the sequence containing the same elements but with the opposite order.
-	 * <p><i>Lazy operation.</i></p>
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
 	 * @return The sequence containing the same elements but with the opposite order.
 	 */
 	public LazyList<E> reverse() {
@@ -2043,7 +2150,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				if (index < cache.size()) {
 					return ((List<T>)cache).get(index);
 				}
-				return (T)function.execute(parentFrame.getSubFrame(function, new Object[]{inner.get(index)})).pop();
+				return (T) function.execute(parentFrame.getSubFrame(function, new Object[] { inner.get(index) }));
 			}
 			@SuppressWarnings("unchecked")
 			@Override
@@ -2055,7 +2162,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 					}
 					return ((List<T>)cache).get(size - 1);
 				}
-				return (T)function.execute(parentFrame.getSubFrame(function, new Object[]{inner.last()})).pop();
+				return (T) function.execute(parentFrame.getSubFrame(function, new Object[] { inner.last() }));
 			}
 			@Override
 			public int size() {

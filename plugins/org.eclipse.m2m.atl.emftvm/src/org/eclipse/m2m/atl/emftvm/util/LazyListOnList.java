@@ -89,17 +89,6 @@ public class LazyListOnList<E> extends LazyListOnCollection<E> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<E> subList(final int fromIndex, final int toIndex) {
-		if (dataSource == null) {
-			return ((List<E>) cache).subList(fromIndex, toIndex);
-		}
-		return ((List<E>)dataSource).subList(fromIndex, toIndex);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public Object[] toArray() {
 		if (dataSource == null) {
 			return ((List<E>) cache).toArray();

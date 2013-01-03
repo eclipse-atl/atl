@@ -444,12 +444,12 @@ public interface CodeBlock extends EObject {
 	 * <!-- begin-user-doc -->
 	 * Executes the instructions in this {@link CodeBlock}, using the parameters stored in <code>frame</code>.
 	 * @param frame the {@link StackFrame} to use during execution.
-	 * @return the <code>frame</code>, containing any return value on top.
+	 * @return the return value.
 	 * <!-- end-user-doc -->
-	 * @model dataType="org.eclipse.m2m.atl.emftvm.StackFrame" frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
 	 */
-	StackFrame execute(StackFrame frame);
+	Object execute(StackFrame frame);
 
 	/**
 	 * <!-- begin-user-doc -->

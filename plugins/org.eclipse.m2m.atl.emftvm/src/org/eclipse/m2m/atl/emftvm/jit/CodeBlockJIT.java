@@ -151,7 +151,7 @@ public class CodeBlockJIT implements Opcodes {
 		generateExecute(
 				cw.visitMethod(ACC_PUBLIC, 
 						"execute",
-						Type.getMethodDescriptor(Type.getType(StackFrame.class), new Type[]{Type.getType(StackFrame.class)}),
+						Type.getMethodDescriptor(Type.getType(Object.class), new Type[] { Type.getType(StackFrame.class) }),
 						null, 
 						null),
 				cb,
@@ -231,15 +231,6 @@ public class CodeBlockJIT implements Opcodes {
 			// generate instruction-specific code
 			bs.doSwitch(instr);
 		}
-		// Push return value onto StackFrame, if applicable
-		if (cb.getStackLevel() > 0) {
-			execute.visitVarInsn(ALOAD, 1); // frame: [..., retval, frame]
-			execute.visitInsn(SWAP); // [..., frame, retval]
-			execute.visitMethodInsn(INVOKEVIRTUAL, // frame.push(retval)
-					Type.getInternalName(StackFrame.class), 
-					"push", 
-					Type.getMethodDescriptor(Type.VOID_TYPE, new Type[]{Type.getType(Object.class)}));			
-		}
 		execute.visitJumpInsn(GOTO, catchEnd);
 		// catch (VMException e)
 		execute.visitLabel(vmExceptionHandler);
@@ -263,8 +254,10 @@ public class CodeBlockJIT implements Opcodes {
 		execute.visitInsn(ATHROW); // throw vme
 		// Regular method return
 		execute.visitLabel(catchEnd);
-		execute.visitVarInsn(ALOAD, 1); // frame
-		execute.visitInsn(ARETURN); // return frame
+		if (cb.getStackLevel() == 0) {
+			execute.visitInsn(ACONST_NULL); // push null
+		}
+		execute.visitInsn(ARETURN); // return result
 		execute.visitLabel(end);
 		// Create local variable table
 		execute.visitLocalVariable("this", "L" + className + ";", null, start, end, 0);

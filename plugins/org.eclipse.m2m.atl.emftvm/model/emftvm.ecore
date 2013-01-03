@@ -577,11 +577,11 @@
     <eOperations name="applyFirst" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
       <eParameters name="frame" eType="#//StackFrame"/>
     </eOperations>
-    <eOperations name="applyFor" eType="#//StackFrame">
+    <eOperations name="applyFor" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject">
       <eParameters name="frame" eType="#//StackFrame"/>
       <eParameters name="trace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink"/>
     </eOperations>
-    <eOperations name="postApplyFor" eType="#//StackFrame">
+    <eOperations name="postApplyFor" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject">
       <eParameters name="frame" eType="#//StackFrame"/>
       <eParameters name="trace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink"/>
     </eOperations>
@@ -661,7 +661,7 @@
         eOpposite="#//Rule/outputElements"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CodeBlock">
-    <eOperations name="execute" eType="#//StackFrame">
+    <eOperations name="execute" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject">
       <eParameters name="frame" eType="#//StackFrame"/>
     </eOperations>
     <eOperations name="getStackLevel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>

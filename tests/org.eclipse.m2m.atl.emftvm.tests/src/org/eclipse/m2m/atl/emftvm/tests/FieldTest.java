@@ -11,11 +11,18 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import junit.textui.TestRunner;
 
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.Field;
+import org.eclipse.m2m.atl.emftvm.util.LazyBag;
+import org.eclipse.m2m.atl.emftvm.util.LazyList;
+import org.eclipse.m2m.atl.emftvm.util.LazyOrderedSet;
+import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 
 /**
@@ -209,29 +216,98 @@ public class FieldTest extends FeatureTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#addValue(java.lang.Object, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Add Value</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '
+	 * {@link org.eclipse.m2m.atl.emftvm.Field#addValue(java.lang.Object, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * <em>Add Value</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Field#addValue(java.lang.Object, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testAddValue__Object_Object_int_StackFrame() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Field field = getFixture();
+		final Object context = new Object();
+		final StackFrame frame = new StackFrame(factory.createExecEnv(), factory.createCodeBlock());
+		final CodeBlock cb = factory.createCodeBlock();
+		cb.getLocalVariables().add(factory.createLocalVariable());
+		field.setInitialiser(cb);
+
+		field.addValue(context, Boolean.TRUE, -1, frame);
+		assertEquals(Boolean.TRUE, field.getValue(context));
+
+		// Test for collections
+		field.setValue(context, new ArrayList<Object>());
+		field.addValue(context, Boolean.TRUE, 0, frame);
+		assertEquals(Collections.singletonList(Boolean.TRUE), field.getValue(context));
+
+		// Test for lazy collections
+		field.setValue(context, new LazyList<Object>());
+		field.addValue(context, Boolean.TRUE, 0, frame);
+		assertEquals(Collections.singletonList(Boolean.TRUE), field.getValue(context));
+
+		field.setValue(context, new LazyBag<Object>());
+		field.addValue(context, Boolean.TRUE, -1, frame);
+		assertEquals(new LazyBag<Object>().including(Boolean.TRUE), field.getValue(context));
+
+		field.setValue(context, new LazySet<Object>());
+		field.addValue(context, Boolean.TRUE, -1, frame);
+		assertEquals(Collections.singleton(Boolean.TRUE), field.getValue(context));
+
+		field.setValue(context, new LazyOrderedSet<Object>());
+		field.addValue(context, Boolean.TRUE, 0, frame);
+		assertEquals(Collections.singletonList(Boolean.TRUE), field.getValue(context));
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Field#removeValue(java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Remove Value</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '
+	 * {@link org.eclipse.m2m.atl.emftvm.Field#removeValue(java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * <em>Remove Value</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.Field#removeValue(java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testRemoveValue__Object_Object_StackFrame() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		final Field field = getFixture();
+		final Object context = new Object();
+		final StackFrame frame = new StackFrame(factory.createExecEnv(), factory.createCodeBlock());
+		final CodeBlock cb = factory.createCodeBlock();
+		cb.getLocalVariables().add(factory.createLocalVariable());
+		cb.getCode().add(factory.createPusht());
+		field.setInitialiser(cb);
+
+		field.removeValue(context, Boolean.TRUE, frame);
+		assertNull(field.getValue(context));
+
+		// Test for collections
+		field.setValue(context, new ArrayList<Object>());
+		field.addValue(context, Boolean.TRUE, 0, frame);
+		assertEquals(Collections.singletonList(Boolean.TRUE), field.getValue(context));
+		field.removeValue(context, Boolean.TRUE, frame);
+		assertEquals(Collections.emptyList(), field.getValue(context));
+
+		// Test for lazy collections
+		field.setValue(context, new LazyList<Object>());
+		field.addValue(context, Boolean.TRUE, 0, frame);
+		assertEquals(Collections.singletonList(Boolean.TRUE), field.getValue(context));
+		field.removeValue(context, Boolean.TRUE, frame);
+		assertEquals(Collections.emptyList(), field.getValue(context));
+
+		field.setValue(context, new LazyBag<Object>());
+		field.addValue(context, Boolean.TRUE, -1, frame);
+		assertEquals(new LazyBag<Object>().including(Boolean.TRUE), field.getValue(context));
+		field.removeValue(context, Boolean.TRUE, frame);
+		assertEquals(new LazyBag<Object>(), field.getValue(context));
+
+		field.setValue(context, new LazySet<Object>());
+		field.addValue(context, Boolean.TRUE, -1, frame);
+		assertEquals(Collections.singleton(Boolean.TRUE), field.getValue(context));
+		field.removeValue(context, Boolean.TRUE, frame);
+		assertEquals(Collections.emptySet(), field.getValue(context));
+
+		field.setValue(context, new LazyOrderedSet<Object>());
+		field.addValue(context, Boolean.TRUE, 0, frame);
+		assertEquals(Collections.singletonList(Boolean.TRUE), field.getValue(context));
+		field.removeValue(context, Boolean.TRUE, frame);
+		assertEquals(Collections.emptyList(), field.getValue(context));
 	}
 
 } //FieldTest

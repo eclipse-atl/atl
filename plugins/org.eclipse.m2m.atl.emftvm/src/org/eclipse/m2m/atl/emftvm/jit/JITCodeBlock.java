@@ -112,7 +112,7 @@ public abstract class JITCodeBlock {
 	 * @param frame the {@link StackFrame} to use during execution.
 	 * @return the <code>frame</code>, containing any return value on top.
 	 */
-	public abstract StackFrame execute(StackFrame frame);
+	public abstract Object execute(StackFrame frame);
 
 	/**
 	 * Implements the SET instruction.
@@ -840,8 +840,7 @@ public abstract class JITCodeBlock {
 
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, self));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
+			return body.execute(frame.getSubFrame(body, self));
 		}
 
 		final Class<?> ic = context.getInstanceClass();
@@ -871,8 +870,7 @@ public abstract class JITCodeBlock {
 
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, self));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
+			return body.execute(frame.getSubFrame(body, self));
 		}
 
 		return EMFTVMUtil.invokeNativeSuper(frame, context, self, opname);
@@ -913,8 +911,7 @@ public abstract class JITCodeBlock {
 
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, self, arg));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
+			return body.execute(frame.getSubFrame(body, self, arg));
 		}
 
 		final Class<?> ic = context.getInstanceClass();
@@ -946,8 +943,7 @@ public abstract class JITCodeBlock {
 
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, self, arg));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
+			return body.execute(frame.getSubFrame(body, self, arg));
 		}
 
 		return EMFTVMUtil.invokeNativeSuper(frame, context, self, opname, arg);
@@ -988,8 +984,7 @@ public abstract class JITCodeBlock {
 
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, self, args));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
+			return body.execute(frame.getSubFrame(body, self, args));
 		}
 
 		final Class<?> ic = context.getInstanceClass();
@@ -1021,8 +1016,7 @@ public abstract class JITCodeBlock {
 
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, self, args));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
+			return body.execute(frame.getSubFrame(body, self, args));
 		}
 
 		return EMFTVMUtil.invokeNativeSuper(frame, context, self, opname, args);
@@ -1056,8 +1050,7 @@ public abstract class JITCodeBlock {
 				opname);
 		if (op != null) {
 			final CodeBlock body = op.getBody();
-			final StackFrame rFrame = body.execute(new StackFrame(frame, body));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
+			return body.execute(new StackFrame(frame, body));
 		}
 		if (type instanceof Class<?>) {
 			return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname);
@@ -1097,8 +1090,7 @@ public abstract class JITCodeBlock {
 				EMFTVMUtil.getArgumentType(arg));
 		if (op != null) {
 			final CodeBlock body = op.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, arg));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
+			return body.execute(frame.getSubFrame(body, arg));
 		}
 		if (type instanceof Class<?>) {
 			return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname, arg);
@@ -1141,8 +1133,7 @@ public abstract class JITCodeBlock {
 				EMFTVMUtil.getArgumentTypes(args));
 		if (op != null) {
 			final CodeBlock body = op.getBody();
-			final StackFrame rFrame = body.execute(frame.getSubFrame(body, args));
-			return rFrame.stackEmpty() ? null : rFrame.pop();
+			return body.execute(frame.getSubFrame(body, args));
 		}
 		if (type instanceof Class<?>) {
 			return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname, args);

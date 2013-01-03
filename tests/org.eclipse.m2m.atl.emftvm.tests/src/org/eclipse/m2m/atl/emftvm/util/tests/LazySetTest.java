@@ -76,9 +76,8 @@ public class LazySetTest extends LazyCollectionTest {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(((String) frame.getLocal(0)).length());
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return ((String) frame.getLocal(0)).length();
 			}
 
 		});
@@ -190,9 +189,8 @@ public class LazySetTest extends LazyCollectionTest {
 			}
 	
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(null);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return null;
 			}
 	
 		}));
@@ -203,9 +201,8 @@ public class LazySetTest extends LazyCollectionTest {
 			}
 	
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(frame.getLocal(0));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0);
 			}
 	
 		}));
@@ -216,9 +213,8 @@ public class LazySetTest extends LazyCollectionTest {
 			}
 	
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(frame.getLocal(0));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0);
 			}
 	
 		}));
@@ -237,9 +233,8 @@ public class LazySetTest extends LazyCollectionTest {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(((String) frame.getLocal(0)).equals(element));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return ((String) frame.getLocal(0)).equals(element);
 			}
 
 		});
@@ -254,9 +249,8 @@ public class LazySetTest extends LazyCollectionTest {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(true);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return true;
 			}
 
 		}).size());
@@ -268,9 +262,8 @@ public class LazySetTest extends LazyCollectionTest {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(false);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return false;
 			}
 
 		}).size());
@@ -289,9 +282,8 @@ public class LazySetTest extends LazyCollectionTest {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(((String) frame.getLocal(0)).equals(element));
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return ((String) frame.getLocal(0)).equals(element);
 			}
 
 		});
@@ -308,9 +300,8 @@ public class LazySetTest extends LazyCollectionTest {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(false);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return false;
 			}
 
 		}).size());
@@ -322,9 +313,8 @@ public class LazySetTest extends LazyCollectionTest {
 			}
 
 			@Override
-			public StackFrame execute(final StackFrame frame) {
-				frame.push(true);
-				return frame;
+			public Object execute(final StackFrame frame) {
+				return true;
 			}
 
 		}).size());

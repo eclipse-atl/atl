@@ -603,7 +603,6 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			// Labels
 			final Label ifOpNull = new Label();
 			final Label bodyStart = new Label();
-			final Label stackEmpty = new Label();
 			// Bytecode
 			aload(2); // env: [..., env]
 			aload(4); // self: [..., env, self]
@@ -622,15 +621,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			aload(4); // self: [..., body, frame, body, self]
 			invokeVirt(StackFrame.class, "getSubFrame", StackFrame.class,  // frame.getSubFrame(body, self): [..., body, newframe]
 					CodeBlock.class, Object.class);
-			invokeIface(CodeBlock.class, "execute", StackFrame.class, StackFrame.class); // body.execute(newframe): [..., newframe]
-			dup(); // [..., newframe, newframe]
-			invokeVirt(StackFrame.class, "stackEmpty", Type.BOOLEAN_TYPE); // newframe.stackEmpty(): [..., newframe, boolean]
-			ifne(stackEmpty); // jump if stackEmpty == true: [..., newframe]
-			invokeVirt(StackFrame.class, "pop", Object.class); // newframe.pop(): [..., result]
-			goto_(selfEnd); // jump to end
-			label(stackEmpty); // [..., newframe]
-			pop(); // [...]
-			aconst_null(); // [..., null]
+			invokeIface(CodeBlock.class, "execute", Object.class, StackFrame.class); // body.execute(newframe): [..., result]
 			goto_(selfEnd); // jump to end
 			label(ifOpNull); // [..., op]
 			pop(); // [...]
@@ -753,7 +744,6 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			// Labels
 			final Label ifOpNull = new Label();
 			final Label bodyStart = new Label();
-			final Label stackEmpty = new Label();
 			// Bytecode
 			aload(2); // env: [..., env]
 			aload(4); // self: [..., env, self]
@@ -775,15 +765,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			aload(5); // arg: [..., body, frame, body, self, arg]
 			invokeVirt(StackFrame.class, "getSubFrame", StackFrame.class,  // frame.getSubFrame(body, self, arg): [..., body, newframe]
 					CodeBlock.class, Object.class, Object.class);
-			invokeIface(CodeBlock.class, "execute", StackFrame.class, StackFrame.class); // body.execute(newframe): [..., newframe]
-			dup(); // [..., newframe, newframe]
-			invokeVirt(StackFrame.class, "stackEmpty", Type.BOOLEAN_TYPE); // newframe.stackEmpty(): [..., newframe, boolean]
-			ifne(stackEmpty); // jump if stackEmpty == true: [..., newframe]
-			invokeVirt(StackFrame.class, "pop", Object.class); // newframe.pop(): [..., result]
-			goto_(selfEnd); // jump to end
-			label(stackEmpty); // [..., newframe]
-			pop(); // [...]
-			aconst_null(); // [..., null]
+			invokeIface(CodeBlock.class, "execute", Object.class, StackFrame.class); // body.execute(newframe): [..., result]
 			goto_(selfEnd); // jump to end
 			label(ifOpNull); // [..., op]
 			pop(); // [...]
@@ -930,7 +912,6 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			// Labels
 			final Label ifOpNull = new Label();
 			final Label bodyStart = new Label();
-			final Label stackEmpty = new Label();
 			// Bytecode
 			aload(2); // env: [..., env]
 			aload(4); // self: [..., env, self]
@@ -951,15 +932,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			aload(5); // args: [..., body, frame, body, self, args]
 			invokeVirt(StackFrame.class, "getSubFrame", StackFrame.class,  // frame.getSubFrame(body, self, args): [..., body, newframe]
 					CodeBlock.class, Object.class, Object[].class);
-			invokeIface(CodeBlock.class, "execute", StackFrame.class, StackFrame.class); // body.execute(newframe): [..., newframe]
-			dup(); // [..., newframe, newframe]
-			invokeVirt(StackFrame.class, "stackEmpty", Type.BOOLEAN_TYPE); // newframe.stackEmpty(): [..., newframe, boolean]
-			ifne(stackEmpty); // jump if stackEmpty == true: [..., newframe]
-			invokeVirt(StackFrame.class, "pop", Object.class); // newframe.pop(): [..., result]
-			goto_(selfEnd); // jump to end
-			label(stackEmpty); // [..., newframe]
-			pop(); // [...]
-			aconst_null(); // [..., null]
+			invokeIface(CodeBlock.class, "execute", Object.class, StackFrame.class); // body.execute(newframe): [..., result]
 			goto_(selfEnd); // jump to end
 			label(ifOpNull); // [..., op]
 			pop(); // [...]

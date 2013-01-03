@@ -542,9 +542,63 @@ public class LazyBag<E> extends LazyCollection<E> {
 	}
 
 	/**
+	 * Returns the collection containing all elements of self plus <code>object</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param object
+	 *            the object to include
+	 * @param index
+	 *            the index at which to insert <code>coll</code> (starting at 1)
+	 * @return The collection containing all elements of self plus <code>object</code>.
+	 */
+	@Override
+	public LazyBag<E> including(final E object, final int index) {
+		throw new UnsupportedOperationException("Cannot specify index for adding values to unordered collections");
+	}
+
+	/**
+	 * Returns the collection containing all elements of self plus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to include
+	 * @return The collection containing all elements of self plus <code>coll</code>.
+	 */
+	@Override
+	public LazyBag<E> includingAll(final Collection<E> coll) {
+		return union(LazyCollections.asLazyBag(coll));
+	}
+
+	/**
+	 * Returns the collection containing all elements of self plus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to include
+	 * @param index
+	 *            the index at which to insert <code>coll</code> (starting at 1)
+	 * @return The collection containing all elements of self plus <code>coll</code>.
+	 * @throws UnsupportedOperationException
+	 */
+	@Override
+	public LazyBag<E> includingAll(final Collection<E> coll, final int index) {
+		throw new UnsupportedOperationException("Cannot specify index for adding values to unordered collections");
+	}
+
+	/**
 	 * Returns the bag containing all elements of self apart from all occurrences of <code>object</code>.
-	 * <p><i>Lazy operation.</i></p>
-	 * @param object the object to exclude
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param object
+	 *            the object to exclude
 	 * @return The bag containing all elements of self apart from all occurrences of <code>object</code>.
 	 */
 	public LazyBag<E> excluding(final E object) {
@@ -560,17 +614,41 @@ public class LazyBag<E> extends LazyCollection<E> {
 	}
 
 	/**
-	 * If the element type is not a collection type this results in the same self.
-	 * If the element type is a collection type, the result is the sequence
-	 * containing all the elements of all the elements of self.
-	 * The order of the elements is partial.
-	 * <p><i>Lazy operation.</i></p>
+	 * Returns the collection containing all elements of self minus <code>coll</code>.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
+	 * @param coll
+	 *            the collection to exclude
+	 * @return The collection containing all elements of self minus <code>coll</code>.
+	 */
+	@Override
+	public LazyBag<E> excludingAll(final Collection<E> coll) {
+		return new LazyBag<E>(this) {
+			@Override
+			public Iterator<E> iterator() {
+				if (dataSource == null) {
+					return Collections.unmodifiableCollection(cache).iterator();
+				}
+				return new SubtractionIterator(coll);
+			}
+		};
+	}
+
+	/**
+	 * If the element type is not a collection type this results in the same self. If the element type is a collection type, the result is
+	 * the sequence containing all the elements of all the elements of self. The order of the elements is partial.
+	 * <p>
+	 * <i>Lazy operation.</i>
+	 * </p>
+	 * 
 	 * @return <b>if</b> self.type.elementType.oclIsKindOf(CollectionType) <b>then</b><br>
-	 * &nbsp;&nbsp;self-&gt;iterate(c; acc : Bag() = Bag{} |<br>
-	 * &nbsp;&nbsp;&nbsp;&nbsp;acc-&gt;union(c-&gt;asBag() ) )<br>
-	 * <b>else</b><br>
-	 * &nbsp;&nbsp;self<br>
-	 * <b>endif</b>
+	 *         &nbsp;&nbsp;self-&gt;iterate(c; acc : Bag() = Bag{} |<br>
+	 *         &nbsp;&nbsp;&nbsp;&nbsp;acc-&gt;union(c-&gt;asBag() ) )<br>
+	 *         <b>else</b><br>
+	 *         &nbsp;&nbsp;self<br>
+	 *         <b>endif</b>
 	 */
 	public LazyBag<?> flatten() {
 		final LazyBag<E> inner = this;

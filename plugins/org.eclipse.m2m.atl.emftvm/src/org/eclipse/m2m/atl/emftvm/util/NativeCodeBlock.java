@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,8 @@ import org.eclipse.m2m.atl.emftvm.impl.CodeBlockImpl;
 
 /**
  * {@link CodeBlock} with empty native Java body. Returns <code>null</code> by default.
- * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+ * 
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class NativeCodeBlock extends CodeBlockImpl {
 
@@ -31,9 +32,8 @@ public class NativeCodeBlock extends CodeBlockImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public StackFrame execute(final StackFrame frame) {
-		frame.push(null); 
-		return frame;
+	public Object execute(final StackFrame frame) {
+		return null;
 	}
 
 	/**

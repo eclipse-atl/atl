@@ -26,6 +26,7 @@ import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Field;
 import org.eclipse.m2m.atl.emftvm.Rule;
+import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 
@@ -250,7 +251,7 @@ public class FieldImpl extends FeatureImpl implements Field {
 		if (!values.containsKey(context==null ? Void.TYPE : context)) {
 			checkFrame(context, frame);
 			final CodeBlock cb = getInitialiser();
-			setValue(context, cb.execute(frame.getSubFrame(cb, context)).pop());
+			setValue(context, cb.execute(frame.getSubFrame(cb, context)));
 		}
 		return getValue(context);
 	}
@@ -284,7 +285,7 @@ public class FieldImpl extends FeatureImpl implements Field {
 		if (!staticValueInitialised) {
 			checkStaticFrame(frame);
 			final CodeBlock cb = getInitialiser();
-			setStaticValue(cb.execute(new StackFrame(frame, cb)).pop());
+			setStaticValue(cb.execute(new StackFrame(frame, cb)));
 			staticValueInitialised = true;
 		}
 		return getStaticValue();
@@ -312,17 +313,25 @@ public class FieldImpl extends FeatureImpl implements Field {
 		final Object currentVal = getValue(context, frame);
 		if (currentVal instanceof Collection<?>) {
 			if (currentVal instanceof List<?>) {
-				if (value instanceof Collection<?>) {
-					if (index > -1) {
-						((List<Object>) currentVal).addAll(index, (Collection<?>) value);
+				if (currentVal instanceof LazyCollection<?>) {
+					if (value instanceof Collection<?>) {
+						addValue(context, (Collection<Object>) value, index, (LazyCollection<Object>) currentVal);
 					} else {
-						((List<Object>) currentVal).addAll((Collection<?>) value);
+						addValue(context, value, index, (LazyCollection<Object>) currentVal);
 					}
 				} else {
-					if (index > -1) {
-						((List<Object>) currentVal).add(index, value);
+					if (value instanceof Collection<?>) {
+						if (index > -1) {
+							((List<Object>) currentVal).addAll(index, (Collection<?>) value);
+						} else {
+							((List<Object>) currentVal).addAll((Collection<?>) value);
+						}
 					} else {
-						((List<Object>) currentVal).add(value);
+						if (index > -1) {
+							((List<Object>) currentVal).add(index, value);
+						} else {
+							((List<Object>) currentVal).add(value);
+						}
 					}
 				}
 			} else {
@@ -330,10 +339,18 @@ public class FieldImpl extends FeatureImpl implements Field {
 					throw new IllegalArgumentException(String.format(
 							"Cannot specify index for adding values to unordered collection field %s.%s", context, this));
 				}
-				if (value instanceof Collection<?>) {
-					((Collection<Object>) currentVal).addAll((Collection<?>) value);
+				if (currentVal instanceof LazyCollection<?>) {
+					if (value instanceof Collection<?>) {
+						addValue(context, (Collection<Object>) value, (LazyCollection<Object>) currentVal);
+					} else {
+						addValue(context, value, (LazyCollection<Object>) currentVal);
+					}
 				} else {
-					((Collection<Object>) currentVal).add(value);
+					if (value instanceof Collection<?>) {
+						((Collection<Object>) currentVal).addAll((Collection<?>) value);
+					} else {
+						((Collection<Object>) currentVal).add(value);
+					}
 				}
 			}
 		} else {
@@ -347,6 +364,22 @@ public class FieldImpl extends FeatureImpl implements Field {
 		}
 	}
 
+	private <T> void addValue(final Object context, final Collection<T> value, final int index, final LazyCollection<T> currentVal) {
+		setValue(context, currentVal.includingAll(value, index + 1));
+	}
+
+	private <T> void addValue(final Object context, final T value, final int index, final LazyCollection<T> currentVal) {
+		setValue(context, currentVal.including(value, index + 1));
+	}
+
+	private <T> void addValue(final Object context, final Collection<T> value, final LazyCollection<T> currentVal) {
+		setValue(context, currentVal.includingAll(value));
+	}
+
+	private <T> void addValue(final Object context, final T value, final LazyCollection<T> currentVal) {
+		setValue(context, currentVal.including(value));
+	}
+
 	/**
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
@@ -357,10 +390,18 @@ public class FieldImpl extends FeatureImpl implements Field {
 	public void removeValue(final Object context, final Object value, final StackFrame frame) {
 		final Object currentVal = getValue(context, frame);
 		if (currentVal instanceof Collection<?>) {
-			if (value instanceof Collection<?>) {
-				((Collection<Object>) currentVal).removeAll((Collection<?>) value);
+			if (currentVal instanceof LazyCollection<?>) {
+				if (value instanceof Collection<?>) {
+					removeValue(context, (Collection<Object>) value, (LazyCollection<Object>) currentVal);
+				} else {
+					removeValue(context, value, (LazyCollection<Object>) currentVal);
+				}
 			} else {
-				((Collection<Object>) currentVal).remove(value);
+				if (value instanceof Collection<?>) {
+					((Collection<Object>) currentVal).removeAll((Collection<?>) value);
+				} else {
+					((Collection<Object>) currentVal).remove(value);
+				}
 			}
 		} else {
 			if (currentVal != null && currentVal.equals(value)) {
@@ -368,6 +409,14 @@ public class FieldImpl extends FeatureImpl implements Field {
 				setValue(context, null);
 			}
 		}
+	}
+
+	private <T> void removeValue(final Object context, final Collection<T> value, final LazyCollection<T> currentVal) {
+		setValue(context, currentVal.excludingAll(value));
+	}
+
+	private <T> void removeValue(final Object context, final T value, final LazyCollection<T> currentVal) {
+		setValue(context, currentVal.excluding(value));
 	}
 
 	/**
