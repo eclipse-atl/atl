@@ -649,8 +649,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	public TraceLinkSet basicGetMatches() {
 		if (matches == null) {
 			final Map<String, Model> oms = getOutputModels();
+			final Map<String, Model> ioms = getInoutModels();
 			if (oms.containsKey("match")) {
 				matches = (TraceLinkSet)oms.get("match").newElement(TracePackage.eINSTANCE.getTraceLinkSet());
+			} else if (ioms.containsKey("match")) {
+				matches = (TraceLinkSet) ioms.get("match").newElement(TracePackage.eINSTANCE.getTraceLinkSet());
 			} else {
 				matches = TraceFactory.eINSTANCE.createTraceLinkSet();
 			}
@@ -690,8 +693,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	public TraceLinkSet basicGetTraces() {
 		if (traces == null) {
 			final Map<String, Model> oms = getOutputModels();
+			final Map<String, Model> ioms = getInoutModels();
 			if (oms.containsKey("trace")) {
 				traces = (TraceLinkSet)oms.get("trace").newElement(TracePackage.eINSTANCE.getTraceLinkSet());
+			} else if (ioms.containsKey("trace")) {
+				traces = (TraceLinkSet) ioms.get("trace").newElement(TracePackage.eINSTANCE.getTraceLinkSet());
 			} else {
 				traces = TraceFactory.eINSTANCE.createTraceLinkSet();
 			}

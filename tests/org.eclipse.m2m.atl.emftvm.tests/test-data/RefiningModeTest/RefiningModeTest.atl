@@ -7,7 +7,7 @@ module RefiningModeTest;
 create OUT : ECORE, OUTIN : EMFTVM refining IN : TRACE, INOUT : EMFTVM;
 
 rule TracedRuleToEClass {
-	from s : TRACE!TracedRule
+	from s : TRACE!TracedRule in IN
 	to t : ECORE!EClass (
 		name <- s."rule")
 }

@@ -1470,9 +1470,62 @@ public class ExecEnvTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getRules() <em>Get Rules</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData) <em>Run</em>}' operation. <!--
+	 * begin-user-doc --> Refining mode test. <!-- end-user-doc -->
+	 * 
+	 * @throws InterruptedException
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData)
+	 * @generated NOT
+	 */
+	public void testRun__RefiningMode() throws InterruptedException {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		final Resource inRes = rs.getResource(
+				URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/RefiningModeTest/EMFTVMCopy.trace", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.registerInputModel("IN", inModel);
+
+		final Resource inoutRes = rs.getResource(
+				URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/RefiningModeTest/RefiningModeTest.emftvm", true), true);
+		final Model inoutModel = EmftvmFactory.eINSTANCE.createModel();
+		inoutModel.setResource(inoutRes);
+		env.registerInOutModel("INOUT", inoutModel);
+
+		final Resource outRes = rs.createResource(URI.createFileURI("RefiningModeTest.ecore"));
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
+		outModel.setResource(outRes);
+		env.registerOutputModel("OUT", outModel);
+		assertEquals(outModel, env.getOutputModels().get("OUT"));
+
+		// Load and run module
+		{
+			final ModuleResolver mr = new DefaultModuleResolver(PLUGIN_URI + "/test-data/RefiningModeTest/", new ResourceSetImpl());
+			final TimingData td = new TimingData();
+			env.loadModule(mr, "RefiningModeTest");
+			td.finishLoading();
+			env.run(td);
+			td.finish();
+			System.out.print(td.toString());
+		}
+
+		// Load reference models
+		final Resource refInoutRes = rs.getResource(
+				URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/RefiningModeTest/RefiningModeTest-copy.emftvm", true), true);
+		final Resource refOutRes = rs.getResource(
+				URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/RefiningModeTest/RefiningModeTest.ecore", true), true);
+
+		// Compare results
+		assertEquals(refOutRes, outRes);
+		assertEquals(refInoutRes, inoutRes);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getRules() <em>Get Rules</em>}' operation. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getRules()
 	 * @generated NOT
 	 */

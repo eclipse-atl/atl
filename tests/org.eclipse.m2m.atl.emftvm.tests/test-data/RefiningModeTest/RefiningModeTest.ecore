@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore">
+  <ecore:EClass name="Module"/>
+  <ecore:EClass name="MatchedRule"/>
+  <ecore:EClass name="InPattern"/>
+  <ecore:EClass name="OutPattern"/>
+  <ecore:EClass name="SimpleInPatternElement"/>
+  <ecore:EClass name="SimpleOutPatternElement"/>
+  <ecore:EClass name="Binding"/>
+  <ecore:EClass name="VariableExp"/>
+  <ecore:EClass name="NavigationOrAttributeCallExp"/>
+  <ecore:EClass name="OperationCallExp"/>
+  <ecore:EClass name="OclModelElement"/>
+  <ecore:EClass name="OclModel"/>
+</xmi:XMI>

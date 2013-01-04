@@ -943,9 +943,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			// Matches become traces
 			final TracedRule tr = env.getMatches().getLinksByRule(getName(), false);
 			if (tr == null) {
-				throw new VMException(frame, String.format(
-						"Cannot create traces for %s; no matches exist",
-						this));
+				throw new VMException(frame, String.format("Cannot create traces for %s; no matches exist", RuleImpl.this));
 			}
 			// Move traced rule from match model to trace model
 			final TraceLinkSet traces = env.getTraces();
@@ -975,9 +973,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			assert !isAbstract();
 			final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(getName(), false);
 			if (tr == null) {
-				throw new VMException(frame, String.format(
-						"Cannot apply rule %s; no traces exist",
-						this));
+				throw new VMException(frame, String.format("Cannot apply %s; no traces exist", RuleImpl.this));
 			}
 			for (TraceLink trace : tr.getLinks()) {
 				assert !trace.isOverridden();
@@ -996,9 +992,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			assert !isAbstract();
 			final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(getName(), false);
 			if (tr == null) {
-				throw new VMException(frame, String.format(
-						"Cannot post-apply rule %s; no traces exist",
-						this));
+				throw new VMException(frame, String.format("Cannot post-apply %s; no traces exist", RuleImpl.this));
 			}
 			for (TraceLink trace : tr.getLinks()) {
 				assert !trace.isOverridden();
