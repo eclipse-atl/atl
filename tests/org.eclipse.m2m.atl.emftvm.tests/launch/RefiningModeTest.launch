@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.emftvm.launcher.EMFTVMTransformation">
+<stringAttribute key="ATL File Name" value="//org.eclipse.m2m.atl.emftvm.tests/test-data/RefiningModeTest.atl"/>
+<booleanAttribute key="Disable JIT compiler" value="false"/>
+<booleanAttribute key="Display Timing Data" value="true"/>
+<mapAttribute key="Inout Model Options">
+<mapEntry key="INOUT" value="allowIntermodelReferences derivedFile"/>
+</mapAttribute>
+<mapAttribute key="Inout Models">
+<mapEntry key="INOUT" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/RefiningModeTest.emftvm"/>
+</mapAttribute>
+<mapAttribute key="Inout Models Output Locations">
+<mapEntry key="INOUT" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/RefiningModeTest-copy.emftvm"/>
+</mapAttribute>
+<mapAttribute key="Input Model Options"/>
+<mapAttribute key="Input Models">
+<mapEntry key="IN" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/anttest/EMFTVMCopy.trace"/>
+</mapAttribute>
+<mapAttribute key="Metamodel Options"/>
+<mapAttribute key="Metamodels">
+<mapEntry key="ECORE" value="http://www.eclipse.org/emf/2002/Ecore"/>
+<mapEntry key="EMFTVM" value="http://www.eclipse.org/m2m/atl/2011/EMFTVM"/>
+<mapEntry key="TRACE" value="http://www.eclipse.org/m2m/atl/emftvm/2011/Trace"/>
+</mapAttribute>
+<stringAttribute key="Module Name" value="RefiningModeTest"/>
+<stringAttribute key="Module Path" value="/org.eclipse.m2m.atl.emftvm.tests/test-data/"/>
+<mapAttribute key="Output Model Options">
+<mapEntry key="OUT" value="allowIntermodelReferences derivedFile"/>
+</mapAttribute>
+<mapAttribute key="Output Models">
+<mapEntry key="OUT" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/RefiningModeTest.ecore"/>
+</mapAttribute>
+<listAttribute key="Superimpose"/>
+</launchConfiguration>

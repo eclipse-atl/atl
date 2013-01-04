@@ -260,7 +260,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				throw e;
 			} catch (Exception e) {
 				frame.setPc(pc);
-				throw new VMException(frame, e);
+				final ExecEnv env = frame.getEnv();
+				throw new VMException(frame, String.format("Error remapping %s.%s from %s to %s: %s", EMFTVMUtil.toPrettyString(o, env),
+						ref.getName(), EMFTVMUtil.toPrettyString(source, env), EMFTVMUtil.toPrettyString(target, env), e.getMessage()), e);
 			}
 		}
 
@@ -284,7 +286,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				throw e;
 			} catch (Exception e) {
 				frame.setPc(pc);
-				throw new VMException(frame, e);
+				final ExecEnv env = frame.getEnv();
+				throw new VMException(frame, String.format("Error remapping %s.%s from %s to %s: %s", EMFTVMUtil.toPrettyString(o, env),
+						ref.getName(), EMFTVMUtil.toPrettyString(source, env), EMFTVMUtil.toPrettyString(target, env), e.getMessage()), e);
 			}
 		}
 

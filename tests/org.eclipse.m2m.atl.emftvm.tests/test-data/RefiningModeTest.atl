@@ -1,0 +1,32 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+-- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
+-- @nsURI TRACE=http://www.eclipse.org/m2m/atl/emftvm/2011/Trace
+module RefiningModeTest;
+
+create OUT : ECORE, OUTIN : EMFTVM refining IN : TRACE, INOUT : EMFTVM;
+
+rule TracedRuleToEClass {
+	from s : TRACE!TracedRule
+	to t : ECORE!EClass (
+		name <- s."rule")
+}
+
+rule SetToAdd {
+	from s : EMFTVM!"Set"
+	to t : EMFTVM!Add (
+		fieldname <- s.fieldname)
+}
+
+rule RuleAppendedNameAndCopy {
+	from s : EMFTVM!Rule
+	to tcopy : EMFTVM!Rule (
+		"module" <- s."module",
+		name <- s.name + 'Copy'),
+	   t : EMFTVM!Rule mapsTo s (
+		name <- s.name + 'Appended')
+}
+
+rule Delete {
+	from s : EMFTVM!Delete
+}

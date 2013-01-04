@@ -71,6 +71,9 @@ helper context ATL!"OclType" def : modelName : String =
 helper context ATL!OclModelElement def : modelName : String =
 	self.model.name;
 
+helper context ATL!"OclType" def : sameAs(other : ATL!"OclType") : Boolean =
+	self.typeName = other.typeName and self.modelName = other.modelName;
+
 helper context ATL!OclFeatureDefinition def : isAttribute : Boolean =
 	self.feature.oclIsKindOf(ATL!Attribute);
 

@@ -14,46 +14,62 @@ uses OCLtoEMFTVM;
 -- helpers begin
 -- ======================================================================
 
+--- All called rules are considered static. Returns 'true'.
 helper context ATL!CalledRule def : isStatic : String =
 	true;
 
-helper context ATL!OutPatternElement def : outModelName : String =
+--- Returns the model in which the output element will be generated.
+helper context ATL!OutPatternElement def : outModel : ATL!OclModel =
 	if self.model.oclIsUndefined() then
+		let modelName : String = self.type.modelName in
 		self.outPattern."rule"."module".outModels
-		->select(m|self.type.modelName = m.metamodel.name)
-		->first().name
+		->select(m|modelName = m.metamodel.name)
+		->first()
 	else
-		self.model.name
+		self.model
 	endif;
 
+--- Returns the default input element for a matched rule (first element).
 helper context ATL!MatchedRule def : defaultInElement : ATL!InPatternElement =
 	self.inPattern.elements->first();
 
+--- Returns the default input element for a rule ('OclUndefined').
 helper context ATL!Rule def : defaultInElement : ATL!InPatternElement =
 	OclUndefined;
 
+--- Returns the EMFTVM local variable element that represents the given ATL variable expression.
 helper context ATL!VariableExp def : localVariable() : EMFTVM!LocalVariable =
 	let var : ATL!VariableDeclaration = self.referredVariable in
 	if var.isMatchedRuleElement then
+		let realVar : ATL!VariableDeclaration = 
+			if var.isRefiningElement then
+				var.actualSourceElement
+			else
+				var
+			endif
+		in
 		if self.isInApply then
-			thisModule.resolveTemp(var, 'ov')
+			thisModule.resolveTemp(realVar, 'ov')
 		else if self.isInPostApply then
-			thisModule.resolveTemp(var, 'pv')
+			thisModule.resolveTemp(realVar, 'pv')
 		else
-			thisModule.resolveTemp(var, 'lv')
+			thisModule.resolveTemp(realVar, 'lv')
 		endif endif
 	else
 		thisModule.resolveTemp(var, 'lv')
 	endif;
 
+--- Returns 'true' if self is part of a matched rule.
 helper context ATL!VariableDeclaration def : isMatchedRuleElement : Boolean =
 	if self.oclIsKindOf(ATL!PatternElement) or self.oclIsKindOf(ATL!RuleVariableDeclaration) then
 		self.parentRule.oclIsKindOf(ATL!MatchedRule)
 	else false endif;
 
+--- Returns 'true' if self is part of a matched rule.
 helper context ATL!RuleVariableDeclaration def : isMatchedRuleField : Boolean =
 	self.parentRule.oclIsKindOf(ATL!MatchedRule);
 
+--- Returns the containing ATL rule, or self (with error message).
 helper context OclAny def : parentRule : ATL!Rule =
 	let parent : OclAny = self.refImmediateComposite() in
 	if parent.oclIsKindOf(ATL!Rule) then parent
@@ -61,6 +77,7 @@ helper context OclAny def : parentRule : ATL!Rule =
 	else self.debug('parent rule not found for')
 	endif endif;
 
+--- Returns the EMFTVM trace element local variable for the given ATL variable expression.
 helper context ATL!VariableExp def : traceVariable() : EMFTVM!LocalVariable =
 	let var : ATL!VariableDeclaration = self.referredVariable in
 	if var.oclIsKindOf(ATL!RuleVariableDeclaration) then
@@ -76,6 +93,7 @@ helper context ATL!VariableExp def : traceVariable() : EMFTVM!LocalVariable =
 		OclUndefined.debug('Trace local variables can only be retrieved for variable expressions referring to rule variables')
 	endif;
 
+--- Returns 'true' if self is contained in the apply section of a rule.
 helper context OclAny def : isInApply : Boolean =
 	let parent : OclAny = self.refImmediateComposite() in
 	if parent.oclIsUndefined() then false
@@ -84,6 +102,7 @@ helper context OclAny def : isInApply : Boolean =
 	else parent.isInApply
 	endif endif endif;
 
+--- Returns 'true' if self is contained in the postApply section of a rule.
 helper context OclAny def : isInPostApply : Boolean =
 	let parent : OclAny = self.refImmediateComposite() in
 	if parent.oclIsUndefined() then false
@@ -91,6 +110,7 @@ helper context OclAny def : isInPostApply : Boolean =
 	else parent.isInPostApply
 	endif endif;
 
+--- Returns the source code location representing this rule.
 helper context ATL!Rule def : postloc : String =
 	if self.actionBlock.oclIsUndefined() then
 		self.location
@@ -98,9 +118,11 @@ helper context ATL!Rule def : postloc : String =
 		self.actionBlock.location
 	endif;
 
+--- Returns all called rules for this module.
 helper context ATL!Module def : calledRules : Sequence(ATL!CalledRule) =
 	self.elements->select(e|e.oclIsKindOf(ATL!CalledRule));
 
+--- Returns all output pattern elements for this rule.
 helper context ATL!Rule def : outPatternElements : Sequence(ATL!OutPatternElement) =
 	if self.outPattern.oclIsUndefined() then
 		Sequence{}
@@ -108,6 +130,7 @@ helper context ATL!Rule def : outPatternElements : Sequence(ATL!OutPatternElemen
 		self.outPattern.elements
 	endif;
 
+--- Returns the source code location representing the apply section of this rule.
 helper context ATL!Rule def : applyLoc : String =
 	if self.outPattern.oclIsUndefined() then
 		self.location
@@ -115,10 +138,11 @@ helper context ATL!Rule def : applyLoc : String =
 		self.outPattern.location
 	endif;
 
--- Support for multiple rule inheritance, including rules outside same module
+--- Support for multiple rule inheritance, including rules outside same module
 helper context String def : isExtendsAnn : Boolean =
 	self.substring(3).trim().startsWith('@extends');
 
+--- Returns the '@extends' values for a given annotation string.
 helper context String def : extendsAnnValues : Sequence(String) =
 	if self.isExtendsAnn then
 		self.split('@extends')
@@ -127,7 +151,110 @@ helper context String def : extendsAnnValues : Sequence(String) =
 	else
 		Sequence{}
 	endif;
+
+
+--- Returns 'true' if self is an output model that refines an input model in a refining mode module.
+helper context ATL!OclModel def : isRefiningModel : Boolean =
+	let p : OclAny = self.refImmediateComposite() in
+	p.oclIsKindOf(ATL!Module) and p.isRefining and (
+		let outModelsSameType : Sequence(ATL!OclModel) = 
+			p.outModels->select(o | o.metamodel.name = self.metamodel.name) in
+		outModelsSameType->notEmpty() and
+		outModelsSameType->first() = self and
+		p.inModels->exists(i | i.metamodel.name = self.metamodel.name)
+	);
 	
+--- Returns 'true' if self is an input model that is refined by an output model in a refining mode module.
+helper context ATL!OclModel def : isRefinedModel : Boolean =
+	let p : OclAny = self.refImmediateComposite() in
+	p.oclIsKindOf(ATL!Module) and p.isRefining and (
+		let inModelsSameType : Sequence(ATL!OclModel) = 
+			p.inModels->select(i | i.metamodel.name = self.metamodel.name) in
+		inModelsSameType->notEmpty() and
+		inModelsSameType->first() = self and
+		p.outModels->exists(o | o.metamodel.name = self.metamodel.name)
+	);
+	
+--- Returns the input model that self refines, or self.
+helper context ATL!OclModel def : refines : ATL!OclModel =
+	if self.isRefiningModel then
+		let p : OclAny = self.refImmediateComposite() in
+		p.inModels->select(m | m.metamodel.name = self.metamodel.name)->first()
+	else
+		self
+	endif;
+	
+--- Returns the output model that self is refined by, or 'OclUndefined'.
+helper context ATL!OclModel def : refinedBy : ATL!OclModel =
+	if self.isRefinedModel then
+		let p : OclAny = self.refImmediateComposite() in
+		p.outModels->select(m | m.metamodel.name = self.metamodel.name)->first()
+	else
+		OclUndefined
+	endif;
+
+--- Returns 'false'.
+helper context ATL!VariableDeclaration def : isRefiningElement : Boolean =
+	false;
+
+--- Returns 'true' if self is an output element that represents a refined input element.
+helper context ATL!OutPatternElement def : isRefiningElement : Boolean =
+	self.outModel.isRefiningModel and
+	(let inModel : ATL!OclModel = self.outModel.refines in
+	let sourceElement : ATL!InPatternElement = self.actualSourceElement in
+	not sourceElement.oclIsUndefined() and sourceElement.type.sameAs(self.type));
+
+--- Returns 'OclUndefined'.
+helper context ATL!VariableDeclaration def : actualSourceElement : ATL!InPatternElement =
+	OclUndefined;
+
+--- Returns the actual source element for self, which is either 's.sourceElement', or the single input element in case self is the first output element.
+helper context ATL!OutPatternElement def : actualSourceElement : ATL!InPatternElement =
+	if self.sourceElement.oclIsUndefined() then
+		if self.outPattern.elements->first() = self then
+			let rl : ATL!Rule = self.outPattern."rule" in
+			if rl.oclIsKindOf(ATL!MatchedRule) and rl.inPattern.elements->size() = 1 then
+				let sourceElement : ATL!InPatternElement = rl.inPattern.elements->first() in
+				if sourceElement."mapsTo".oclIsUndefined() then
+					sourceElement
+				else -- sourceElement already maps to another target element
+					OclUndefined
+				endif
+			else -- input pattern contains less/more than exactly one element
+				OclUndefined
+			endif
+		else -- self is not the first (default) target element
+			OclUndefined
+		endif
+	else
+		self.sourceElement
+	endif;
+
+--- Returns the actual target element for self, which is either 's.mapsTo', or the first output element in case self is the only input element.
+helper context ATL!InPatternElement def : actualMapsToElement : ATL!OutPatternElement =
+	if self."mapsTo".oclIsUndefined() then
+		if self.inPattern.elements->size() = 1 then
+			let rl : ATL!Rule = self.inPattern."rule" in
+			if not rl.outPattern.oclIsUndefined() and rl.outPattern.elements->notEmpty() then
+				rl.outPattern.elements->first()
+			else -- output pattern is empty
+				OclUndefined
+			endif
+		else -- input pattern contains less/more than exactly one element
+			OclUndefined
+		endif
+	else
+		self."mapsTo"
+	endif;
+
+--- Returns the actual source models for self, which is either 's.models', or the all input/inout models that match the metamodel.
+helper context ATL!InPatternElement def : actualModels : Sequence(ATL!OclModel) =
+	if self.models.notEmpty() then
+		self.models
+	else
+		self.inPattern."rule"."module".inModels->select(m|m.metamodel.name = self.type.modelName)
+	endif;
+
 -- ======================================================================
 -- helpers end
 -- ======================================================================
@@ -172,8 +299,9 @@ rule Query extends Unit {
 rule Module extends Unit {
 	from s : ATL!Module in IN
 	to t : EMFTVM!Module (
-		inputModels <- s.inModels,
-		outputModels <- s.outModels,
+		inputModels <- s.inModels->reject(m | m.isRefinedModel),
+		inoutModels <- s.inModels->select(m | m.isRefinedModel),
+		outputModels <- s.outModels->reject(m | m.isRefiningModel),
 		features <- s.elements->select(e|e.oclIsKindOf(ATL!Helper))->collect(h|h.definition)
 			->union(s.elements->select(e|e.oclIsKindOf(ATL!CalledRule)))
 			->append(main),
@@ -261,15 +389,6 @@ rule ModuleWithEntryAndEndPoint extends Module {
 		severity <- #warning)
 }
 
-rule RefiningModule extends Module {
-	from s : ATL!Module in IN (s.isRefining)
-	to t : EMFTVM!Module,
-	   pb : Problem!Problem (
-	   	severity <- #error,
-		description <- 'EMFTVM does not yet support refining mode',
-		location <- s.location)
-}
-
 rule ModelDeclaration {
 	from s : ATL!OclModel in IN (not s.metamodel.oclIsUndefined())
 	to t : EMFTVM!ModelDeclaration (
@@ -319,12 +438,21 @@ rule InPatternElementWithFilterAndAction {
 
 rule OutPatternElement {
 	from s : ATL!OutPatternElement in IN (
-		not s.outPattern."rule".oclIsKindOf(ATL!CalledRule))
+		not s.outPattern."rule".oclIsKindOf(ATL!CalledRule) and
+		not s.isRefiningElement)
+	using {
+		outModel : ATL!OclModel =
+			if s.outModel.isRefiningModel then
+				s.outModel.refines
+			else
+				s.outModel
+			endif;
+	}
 	to re : EMFTVM!OutputRuleElement (
 		name <- s.varName,
 		type <- s.type.typeName,
 		typeModel <- s.type.modelName,
-		models <- Sequence{s.outModelName}),
+		models <- Sequence{outModel.name}),
 	   ov : EMFTVM!LocalVariable (
 	   	name <- s.varName,
 		type <- s.type.typeName,
@@ -359,7 +487,15 @@ nodefault rule ForEachOutPatternElement {
 	to pb : Problem!Problem (
 		severity <- #error,
 		location <- s.location,
-		description <- 'distinct - foreach output elements not supported in EMFTVM')
+		description <- '"distinct - foreach" output elements not supported in EMFTVM')
+}
+
+nodefault rule DropPattern {
+	from s : ATL!DropPattern in IN
+	to pb : Problem!Problem (
+		severity <- #error,
+		location <- s.location,
+		description <- '"drop" output patterns not supported in EMFTVM - omit the "to" part instead')
 }
 
 rule CalledRuleOutPatternElement {
@@ -381,7 +517,7 @@ rule CalledRuleOutPatternElement {
 	   findtype : EMFTVM!Findtype (											-- [..., type]
 	   	modelname <- s.type.modelName,
 		typename <- s.type.typeName),
-	   new : EMFTVM!New (modelname <- s.outModelName),						-- [..., element]
+	   new : EMFTVM!New (modelname <- s.outModel.name),						-- [..., element]
 	   store : EMFTVM!Store (localVariable <- lv)							-- [...]
 }
 
@@ -476,6 +612,15 @@ rule MatchedRuleVariableDeclaration {
 
 rule MatchedRule {
 	from s : ATL!MatchedRule in IN
+	using {
+		deletedSourceElements : Sequence(ATL!InPatternElement) =
+			s.inPattern.elements->select(e|
+				e.actualModels->forAll(m|m.isRefinedModel) and
+				(e.actualMapsToElement.oclIsUndefined() or
+				not e.actualMapsToElement.isRefiningElement));
+		remappedSourceElements : Sequence(ATL!InPatternElement) =
+			deletedSourceElements->reject(e|e.actualMapsToElement.oclIsUndefined());
+	}
 	to t : EMFTVM!Rule (
 		name <- s.name,
 		"abstract" <- s.isAbstract,
@@ -485,7 +630,7 @@ rule MatchedRule {
 			else
 				Sequence{s.superRule.name}
 			endif,
-		outputElements <- s.outPatternElements,
+		outputElements <- s.outPatternElements->reject(e|e.isRefiningElement),
 		mode <- 
 			if s.oclIsKindOf(ATL!LazyMatchedRule) then
 				#manual
@@ -502,9 +647,11 @@ rule MatchedRule {
 	   	lineNumbers <- Sequence{aln},
 	   	localVariables <- Sequence{a_trace}
 			->union(s.inPattern.elements->collect(e|thisModule.resolveTemp(e, 'ov')))
-			->union(s.outPatternElements->collect(e|thisModule.resolveTemp(e, 'ov'))),
+			->union(s.outPatternElements->reject(e|e.isRefiningElement)->collect(e|thisModule.resolveTemp(e, 'ov'))),
 		nested <- s.variables->collect(v|thisModule.resolveTemp(v, 'cb'))
-			->union(s.outPatternElements->collect(e|e.bindings)->flatten()),
+			->union(s.outPatternElements->collect(e|e.bindings)->flatten())
+			->union(remappedSourceElements->collect(e|thisModule.RemapInPatternElement(e)))
+			->union(deletedSourceElements->collect(e|thisModule.DeleteInPatternElement(e))),
 	   	code <- Sequence{a_invokeAllCbs}),
 	   aln : EMFTVM!LineNumber (
 	   	startLine <- s.applyLoc.startLine,
@@ -575,8 +722,24 @@ rule MatchedRuleWithFilterAndAction {
 	to t : EMFTVM!Rule
 }
 
+nodefault rule RefiningMatchedRule {
+	from s : ATL!MatchedRule (s.isRefining)
+	to pb : Problem!Problem (
+		severity <- #error,
+		location <- s.location,
+		description <- '"refining" rules have no meaning in EMFTVM')
+}
+
 rule Binding {
 	from s : ATL!Binding in IN
+	using {
+		element : ATL!PatternElement =
+			if s.outPatternElement.isRefiningElement then
+				s.outPatternElement.actualSourceElement
+			else
+				s.outPatternElement
+			endif;
+	}
 	to cb : EMFTVM!CodeBlock (
 		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.value},
@@ -590,9 +753,9 @@ rule Binding {
 	   load : EMFTVM!Load (
 	   	localVariable <-													-- [..., lv]
 			if s.parentRule.oclIsKindOf(ATL!MatchedRule) then
-				thisModule.resolveTemp(s.outPatternElement, 'ov')
+				thisModule.resolveTemp(element, 'ov')
 			else
-				thisModule.resolveTemp(s.outPatternElement, 'lv')
+				thisModule.resolveTemp(element, 'lv')
 			endif),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),	-- [..., lv, value]
 	   set : EMFTVM!"Set" (fieldname <- s.propertyName)						-- [...]
@@ -791,4 +954,55 @@ rule ForStat {
 
 -- ======================================================================
 -- matched rules end
+-- ======================================================================
+
+-- ======================================================================
+-- lazy rules begin
+-- ======================================================================
+
+lazy rule DeleteInPatternElement {
+	from s : ATL!InPatternElement
+	to cb : EMFTVM!CodeBlock (
+		lineNumbers <- Sequence{ln},
+		code <- Sequence{load, delete}),
+	   ln : EMFTVM!LineNumber (
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{load, delete}),
+	   load : EMFTVM!Load (															-- [..., source]
+	   	localVariable <- thisModule.resolveTemp(s, 'ov')),
+	   delete : EMFTVM!Delete														-- [...]
+	do {
+		cb;
+	}
+}
+
+lazy rule RemapInPatternElement {
+	from s : ATL!InPatternElement
+	to cb : EMFTVM!CodeBlock (
+		lineNumbers <- Sequence{ln},
+		code <- Sequence{load, load2, invoke, pop}),
+	   ln : EMFTVM!LineNumber (
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{load, load2, invoke, pop}),
+	   load : EMFTVM!Load (															-- [..., source]
+	   	localVariable <- thisModule.resolveTemp(s, 'ov')),
+	   load2 : EMFTVM!Load (														-- [..., source, target]
+	   	localVariable <- thisModule.resolveTemp(s.actualMapsToElement, 'ov')),
+	   invoke : EMFTVM!Invoke (														-- [..., target]
+	   	opname <- 'remap',
+		argcount <- 1),
+	   pop : EMFTVM!Pop																-- [...]
+	do {
+		cb;
+	}
+}
+
+-- ======================================================================
+-- lazy rules end
 -- ======================================================================
