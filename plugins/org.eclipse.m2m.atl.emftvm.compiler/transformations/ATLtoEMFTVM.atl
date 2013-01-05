@@ -613,13 +613,17 @@ rule MatchedRuleVariableDeclaration {
 rule MatchedRule {
 	from s : ATL!MatchedRule in IN
 	using {
+		isDefault : Boolean =
+			not (s.oclIsKindOf(ATL!LazyMatchedRule) or s.isNoDefault);
 		deletedSourceElements : Sequence(ATL!InPatternElement) =
 			s.inPattern.elements->select(e|
+				isDefault and
 				e.actualModels->forAll(m|m.isRefinedModel) and
 				(e.actualMapsToElement.oclIsUndefined() or
 				not e.actualMapsToElement.isRefiningElement));
 		remappedSourceElements : Sequence(ATL!InPatternElement) =
-			deletedSourceElements->reject(e|e.actualMapsToElement.oclIsUndefined());
+			deletedSourceElements->reject(e|
+				e.actualMapsToElement.oclIsUndefined());
 	}
 	to t : EMFTVM!Rule (
 		name <- s.name,
@@ -635,9 +639,9 @@ rule MatchedRule {
 			if s.oclIsKindOf(ATL!LazyMatchedRule) then
 				#manual
 			else
-				#automaticSingle -- TODO support refining rules
+				#automaticSingle
 			endif,
-		default <- not (s.oclIsKindOf(ATL!LazyMatchedRule) or s.isNoDefault),
+		default <- isDefault,
 		"unique" <- (s.oclIsKindOf(ATL!LazyMatchedRule) and	s.isUnique) or s.isNoDefault,
 		distinctElements <- false,
 		inputElements <- s.inPattern.elements,

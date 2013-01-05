@@ -18,6 +18,12 @@ rule SetToAdd {
 		fieldname <- s.fieldname)
 }
 
+unique lazy rule LazyUniqueSetToAdd {
+	from s : EMFTVM!"Set"
+	to t : EMFTVM!Add (
+		fieldname <- s.fieldname)
+}
+
 rule RuleAppendedNameAndCopy {
 	from s : EMFTVM!Rule
 	to tcopy : EMFTVM!Rule (
@@ -28,5 +34,9 @@ rule RuleAppendedNameAndCopy {
 }
 
 rule Delete {
+	from s : EMFTVM!Delete
+}
+
+lazy rule LazyDelete {
 	from s : EMFTVM!Delete
 }
