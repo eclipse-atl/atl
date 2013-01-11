@@ -1,0 +1,5 @@
+-- @atlcompiler emftvm
+query InvokeStaticTest = 
+	"#native"!"java::lang::Long".refInvokeStaticOperation('valueOf', Sequence{'1'})
+	.debug('Long::valueOf(\'1\')');
+

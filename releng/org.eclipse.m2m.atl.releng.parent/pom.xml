@@ -89,6 +89,8 @@
 
 	<module>../../tests/org.eclipse.m2m.atl.tests</module>
 	<module>../../tests/org.eclipse.m2m.atl.tests-feature</module>
+	<module>../../tests/org.eclipse.m2m.atl.emftvm.tests</module>
+	<module>../../tests/org.eclipse.m2m.atl.emftvm.trace.tests</module>
   			
 	<!-- doc/ -->
 

@@ -1386,7 +1386,8 @@ public class ExecEnvTest extends TestCase {
 
 		// Load models
 		{
-		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(COMPILER_PLUGIN_ID + "/transformations/ATLtoEMFTVM.atl", true), true);
+		final Resource inRes = rs.getResource(
+				URI.createURI("../../plugins/" + COMPILER_PLUGIN_ID + "/transformations/ATLtoEMFTVM.atl", true), true);
 		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
 		inModel.setResource(inRes);
 		env.registerInputModel("IN", inModel);
