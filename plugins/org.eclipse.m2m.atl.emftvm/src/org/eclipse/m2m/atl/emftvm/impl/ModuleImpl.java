@@ -470,7 +470,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 
 		StringBuffer result = new StringBuffer();
 		Resource r = eResource();
-		if (r != null) {
+		if (r != null && r.getURI() != null) {
 			String path = r.getURI().toString();
 			result.append(path.substring(0, path.lastIndexOf('/') + 1));
 		}
