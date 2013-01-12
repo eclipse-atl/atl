@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="ASCII"?>
+<My2:TestClass2 xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:My2="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/EcoreCopy/My2.ecore" testAtt="test" testAtt2="testLiteral2"/>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Pins:BlockDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:Pins="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/PortsToPins/Pins.ecore" name="diagram">
+  <blocks name="MainBlock">
+    <pins name="AccPin1"/>
+    <pins name="AccPin2"/>
+    <pins name="GPSOutPin1"/>
+    <pins name="GPSOutPin2"/>
+    <pins name="GPSOutPin3"/>
+    <pins name="GPSOutPin4"/>
+    <pins name="GPSControlPin1"/>
+    <pins name="GPSControlPin2"/>
+  </blocks>
+</Pins:BlockDiagram>
