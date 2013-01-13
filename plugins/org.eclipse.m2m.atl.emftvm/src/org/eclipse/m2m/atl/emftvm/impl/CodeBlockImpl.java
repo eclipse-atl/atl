@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -225,10 +226,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getParentFrame()
-	 * @generated
+	 * @generated NOT
 	 * @ordered
 	 */
-	protected StackFrame parentFrame = PARENT_FRAME_EDEFAULT;
+	protected Map<Thread, StackFrame> parentFrame = Collections.synchronizedMap(new WeakHashMap<Thread, StackFrame>());
 
 	/**
 	 * Singleton instance of the {@link ExecEnv} {@link EClass}.
@@ -647,23 +648,24 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public StackFrame getParentFrame() {
-		return parentFrame;
+		return parentFrame.get(Thread.currentThread());
 	}
 
 	/**
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
-	public void setParentFrame(StackFrame newParentFrame) {
-		StackFrame oldParentFrame = parentFrame;
-		parentFrame = newParentFrame;
+	public void setParentFrame(final StackFrame newParentFrame) {
+		final Thread currentThread = Thread.currentThread();
+		final StackFrame oldParentFrame = parentFrame.get(currentThread);
+		parentFrame.put(currentThread, newParentFrame);
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.CODE_BLOCK__PARENT_FRAME, oldParentFrame, parentFrame));
+			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.CODE_BLOCK__PARENT_FRAME, oldParentFrame, newParentFrame));
 	}
 
 	/**

@@ -1505,6 +1505,19 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	}
 
 	/**
+	 * Clears model references for a {@link Rule}.
+	 * @param rule the {@link Rule} to resolve
+	 */
+	protected void clearRuleModels(final Rule r) {
+		for (RuleElement re : r.getInputElements()) {
+			re.getEModels().clear();
+		}
+		for (OutputRuleElement re : r.getOutputElements()) {
+			re.getEModels().clear();
+		}
+	}
+
+	/**
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
@@ -1997,6 +2010,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			fieldContainer.clear();
 			for (Rule r : getRules()) {
 				r.clearFields();
+				clearRuleModels(r);
 			}
 			assert findStaticField(eClass(), "matches").getStaticValue() == null;
 			assert findStaticField(eClass(), "traces").getStaticValue() == null;

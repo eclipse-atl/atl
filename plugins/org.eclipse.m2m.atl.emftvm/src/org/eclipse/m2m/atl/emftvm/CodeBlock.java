@@ -379,7 +379,7 @@ public interface CodeBlock extends EObject {
 	 * Represents a placeholder for the {@link StackFrame} of the invoking native Java method,
 	 * and allows re-entry into the EMFTVM (with access to lexically scoped local variables, etc.).
 	 * </p><p>
-	 * <b>TODO</b> Storing the stack frame with the code block prohibits concurrent execution of code blocks!
+	 * Stack frames are stored per thread, which enables the concurrent execution of code blocks.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parent Frame</em>' attribute.
@@ -397,7 +397,7 @@ public interface CodeBlock extends EObject {
 	 * Represents a placeholder for the {@link StackFrame} of the invoking native Java method,
 	 * and allows re-entry into the EMFTVM (with access to lexically scoped local variables, etc.).
 	 * </p><p>
-	 * <b>TODO</b> Storing the stack frame with the code block prohibits concurrent execution of code blocks!
+	 * Stack frames are stored per thread, which enables the concurrent execution of code blocks.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Parent Frame</em>' attribute.

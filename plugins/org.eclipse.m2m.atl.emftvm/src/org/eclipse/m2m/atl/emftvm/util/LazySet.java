@@ -850,6 +850,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	public LazySet<E> select(final CodeBlock condition) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = condition.getParentFrame();
+		condition.setParentFrame(null);
 		return new LazySet<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -870,6 +871,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	public LazySet<E> reject(final CodeBlock condition) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = condition.getParentFrame();
+		condition.setParentFrame(null);
 		return new LazySet<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -891,6 +893,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	public <T> LazyBag<T> collect(final CodeBlock function) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = function.getParentFrame();
+		function.setParentFrame(null);
 		final LazySet<E> inner = this;
 		return new LazyBag<T>(new Iterable<T>() {
 			public Iterator<T> iterator() {

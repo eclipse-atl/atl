@@ -706,6 +706,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	public LazyBag<E> select(final CodeBlock condition) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = condition.getParentFrame();
+		condition.setParentFrame(null);
 		return new LazyBag<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -726,6 +727,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	public LazyBag<E> reject(final CodeBlock condition) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = condition.getParentFrame();
+		condition.setParentFrame(null);
 		return new LazyBag<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -747,6 +749,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	public <T> LazyBag<T> collect(final CodeBlock function) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = function.getParentFrame();
+		function.setParentFrame(null);
 		final LazyBag<E> inner = this;
 		return new LazyBag<T>(new Iterable<T>() {
 			public Iterator<T> iterator() {

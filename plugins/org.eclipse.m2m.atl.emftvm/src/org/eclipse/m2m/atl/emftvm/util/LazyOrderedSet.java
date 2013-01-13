@@ -2522,6 +2522,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	public LazyOrderedSet<E> select(final CodeBlock condition) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = condition.getParentFrame();
+		condition.setParentFrame(null);
 		return new LazyOrderedSet<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -2542,6 +2543,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	public LazyOrderedSet<E> reject(final CodeBlock condition) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = condition.getParentFrame();
+		condition.setParentFrame(null);
 		return new LazyOrderedSet<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -2563,6 +2565,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	public <T> LazyList<T> collect(final CodeBlock function) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = function.getParentFrame();
+		function.setParentFrame(null);
 		final LazyOrderedSet<E> inner = this;
 		return new LazyList<T>(new Iterable<T>() {
 			public Iterator<T> iterator() {

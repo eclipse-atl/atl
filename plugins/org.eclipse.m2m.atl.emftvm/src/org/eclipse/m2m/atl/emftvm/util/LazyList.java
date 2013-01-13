@@ -2097,6 +2097,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	public LazyList<E> select(final CodeBlock condition) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = condition.getParentFrame();
+		condition.setParentFrame(null);
 		return new LazyList<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -2117,6 +2118,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	public LazyList<E> reject(final CodeBlock condition) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = condition.getParentFrame();
+		condition.setParentFrame(null);
 		return new LazyList<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -2138,6 +2140,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	public <T> LazyList<T> collect(final CodeBlock function) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = function.getParentFrame();
+		function.setParentFrame(null);
 		final LazyList<E> inner = this;
 		return new LazyList<T>(new Iterable<T>() {
 			public Iterator<T> iterator() {

@@ -2191,6 +2191,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public boolean forAll(final CodeBlock condition) {
 		final StackFrame frame = condition.getParentFrame();
+		condition.setParentFrame(null);
 		for (E e : this) {
 			if (!(Boolean) condition.execute(frame.getSubFrame(condition, new Object[] { e }))) {
 				return false;
@@ -2208,6 +2209,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public boolean forAll2(final CodeBlock condition) {
 		final StackFrame frame = condition.getParentFrame();
+		condition.setParentFrame(null);
 		for (E e : this) {
 			for (E e2 : this) {
 				if (!(Boolean) condition.execute(frame.getSubFrame(condition, new Object[] { e, e2 }))) {
@@ -2227,6 +2229,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public boolean exists(final CodeBlock condition) {
 		final StackFrame frame = condition.getParentFrame();
+		condition.setParentFrame(null);
 		for (E e : this) {
 			if ((Boolean) condition.execute(frame.getSubFrame(condition, new Object[] { e }))) {
 				return true;
@@ -2244,6 +2247,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public boolean exists2(final CodeBlock condition) {
 		final StackFrame frame = condition.getParentFrame();
+		condition.setParentFrame(null);
 		for (E e : this) {
 			for (E e2 : this) {
 				if ((Boolean) condition.execute(frame.getSubFrame(condition, new Object[] { e, e2 }))) {
@@ -2266,6 +2270,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	@SuppressWarnings("unchecked")
 	public <T> T iterate(final T initialValue, final CodeBlock updater) {
 		final StackFrame frame = updater.getParentFrame();
+		updater.setParentFrame(null);
 		T acc = initialValue;
 		for (E e : this) {
 			acc = (T) updater.execute(frame.getSubFrame(updater, new Object[] { e, acc }));
@@ -2283,6 +2288,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public boolean isUnique(final CodeBlock body) {
 		// Parent frame may change after this method returns!
 		final StackFrame parentFrame = body.getParentFrame();
+		body.setParentFrame(null);
 		final Set<Object> values = new HashSet<Object>(size());
 		for (E e : this) {
 			Object value = body.execute(parentFrame.getSubFrame(body, new Object[] { e }));
@@ -2304,6 +2310,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public E any(final CodeBlock body) throws NoSuchElementException {
 		final StackFrame parentFrame = body.getParentFrame();
+		body.setParentFrame(null);
 		for (E e : this) {
 			if ((Boolean) body.execute(parentFrame.getSubFrame(body, new Object[] { e }))) {
 				return e;
@@ -2322,6 +2329,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	public boolean one(final CodeBlock body) {
 		boolean result = false;
 		final StackFrame frame = body.getParentFrame();
+		body.setParentFrame(null);
 		for (E e : this) {
 			if ((Boolean) body.execute(frame.getSubFrame(body, new Object[] { e }))) {
 				if (result) { // only one true value allowed
