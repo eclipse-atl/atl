@@ -149,7 +149,7 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 		final LazyOrderedSet<String> ordSet = getTestLazyCollection();
 		final LazyList<Integer> lengths = ordSet.collect(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -166,7 +166,7 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 
 		final LazyList<Object> nulls = ordSet.collect(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 		});
@@ -401,7 +401,7 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 		final LazyCollection<String> list = getTestLazyCollection();
 		assertFalse(list.isUnique(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 	
@@ -413,7 +413,7 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 		}));
 		assertTrue(list.isUnique(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 	
@@ -425,7 +425,7 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 		}));
 		assertTrue(list.excluding("Three").isUnique(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 	
@@ -631,7 +631,7 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 		final LazyOrderedSet<String> ordSet = getTestLazyCollection();
 		final LazyOrderedSet<String> rejected = ordSet.reject(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -647,7 +647,7 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 
 		assertEquals(0, ordSet.reject(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -660,7 +660,7 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 
 		assertEquals(ordSet.size(), ordSet.reject(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -706,7 +706,7 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 		final LazyOrderedSet<String> ordSet = getTestLazyCollection();
 		final LazyOrderedSet<String> selected = ordSet.select(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -724,7 +724,7 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 
 		assertEquals(0, ordSet.select(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -737,7 +737,7 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 
 		assertEquals(ordSet.size(), ordSet.select(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 

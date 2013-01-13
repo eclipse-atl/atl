@@ -94,7 +94,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final LazyCollection<String> list = getTestLazyCollection();
 		final String any = list.any(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -109,7 +109,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			final String none = list.any(new NativeCodeBlock() {
 				{
-					parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+					setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 					getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 				}
 
@@ -314,7 +314,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final LazyCollection<String> list = getTestLazyCollection();
 		assertTrue(list.exists(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -326,7 +326,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertFalse(list.exists(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -338,7 +338,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertTrue(list.exists(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -350,7 +350,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertFalse(list.exists(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -369,7 +369,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final LazyCollection<String> list = getTestLazyCollection();
 		assertTrue(list.exists2(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
@@ -382,7 +382,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertFalse(list.exists2(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
@@ -395,7 +395,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertTrue(list.exists2(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
@@ -408,7 +408,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertFalse(list.exists2(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
@@ -428,7 +428,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final LazyCollection<String> list = getTestLazyCollection();
 		assertFalse(list.forAll(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -440,7 +440,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertTrue(list.forAll(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -452,7 +452,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertTrue(list.forAll(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -464,7 +464,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertFalse(list.forAll(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -483,7 +483,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final LazyCollection<String> list = getTestLazyCollection();
 		assertFalse(list.forAll2(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
@@ -496,7 +496,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertTrue(list.forAll2(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
@@ -509,7 +509,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertTrue(list.forAll2(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
@@ -522,7 +522,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertFalse(list.forAll2(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
@@ -622,7 +622,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final LazyCollection<String> list = getTestLazyCollection();
 		assertFalse(list.isUnique(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -634,7 +634,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertFalse(list.isUnique(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -646,7 +646,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertTrue(list.excluding("Three").isUnique(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -665,7 +665,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final LazyCollection<String> list = getTestLazyCollection();
 		final String result = list.iterate("", new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
@@ -759,7 +759,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final LazyCollection<String> list = getTestLazyCollection();
 		assertTrue(list.one(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -771,7 +771,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertFalse(list.one(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -783,7 +783,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertFalse(list.one(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
@@ -795,7 +795,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		}));
 		assertFalse(list.one(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 

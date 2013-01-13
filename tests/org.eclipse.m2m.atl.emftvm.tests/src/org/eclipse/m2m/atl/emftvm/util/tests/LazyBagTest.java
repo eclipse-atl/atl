@@ -70,7 +70,7 @@ public class LazyBagTest extends LazyCollectionTest {
 		final LazyBag<String> bag = getTestLazyCollection();
 		final LazyBag<Integer> lengths = bag.collect(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 	
@@ -89,7 +89,7 @@ public class LazyBagTest extends LazyCollectionTest {
 	
 		final LazyBag<Object> nulls = bag.collect(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 		});
@@ -184,7 +184,7 @@ public class LazyBagTest extends LazyCollectionTest {
 		final String element = bag.asSequence().last();
 		final LazyBag<String> rejected = bag.reject(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 	
@@ -200,7 +200,7 @@ public class LazyBagTest extends LazyCollectionTest {
 	
 		assertEquals(0, bag.reject(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 	
@@ -213,7 +213,7 @@ public class LazyBagTest extends LazyCollectionTest {
 	
 		assertEquals(bag.size(), bag.reject(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 	
@@ -233,7 +233,7 @@ public class LazyBagTest extends LazyCollectionTest {
 		final String element = bag.asSequence().last();
 		final LazyBag<String> selected = bag.select(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 	
@@ -251,7 +251,7 @@ public class LazyBagTest extends LazyCollectionTest {
 	
 		assertEquals(0, bag.select(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 	
@@ -264,7 +264,7 @@ public class LazyBagTest extends LazyCollectionTest {
 	
 		assertEquals(bag.size(), bag.select(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this);
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
 				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 	

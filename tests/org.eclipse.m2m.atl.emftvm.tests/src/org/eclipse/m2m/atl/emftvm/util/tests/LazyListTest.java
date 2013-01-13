@@ -129,10 +129,8 @@ public class LazyListTest extends LazyCollectionTest {
 		final LazyList<String> list = getTestLazyCollection();
 		final LazyList<Integer> lengths = list.collect(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
-						.createExecEnv(), this);
-				getLocalVariables().add(
-						EmftvmFactory.eINSTANCE.createLocalVariable());
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
 			@Override
@@ -148,10 +146,8 @@ public class LazyListTest extends LazyCollectionTest {
 
 		final LazyList<Object> nulls = list.collect(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
-						.createExecEnv(), this);
-				getLocalVariables().add(
-						EmftvmFactory.eINSTANCE.createLocalVariable());
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 		});
 		assertEquals(list.size(), nulls.size());
@@ -199,17 +195,14 @@ public class LazyListTest extends LazyCollectionTest {
 		final LazyList<?> newList = list.flatten();
 		assertEquals(list, newList);
 
-		final LazyList<LazyList<String>> listList = new LazyList<LazyList<String>>()
-				.append(list);
+		final LazyList<LazyList<String>> listList = new LazyList<LazyList<String>>().append(list);
 		assertEquals(list, listList.flatten());
 
-		final LazyList<LazyList<LazyList<String>>> listListList = new LazyList<LazyList<LazyList<String>>>()
-				.append(listList);
+		final LazyList<LazyList<LazyList<String>>> listListList = new LazyList<LazyList<LazyList<String>>>().append(listList);
 		assertEquals(list, listListList.flatten());
 
 		final LazyList<LazySet<LazyList<String>>> listSetList = new LazyList<LazySet<LazyList<String>>>()
-				.append(new LazySet<LazyList<String>>().including(list)
-						.including(list));
+				.append(new LazySet<LazyList<String>>().including(list).including(list));
 		assertEquals(list, listSetList.flatten());
 	}
 
@@ -296,15 +289,13 @@ public class LazyListTest extends LazyCollectionTest {
 			assertEquals("Four", inserted.get(0));
 		}
 		{
-			final LazyList<String> inserted = list
-					.insertAt(list.size(), "Four");
+			final LazyList<String> inserted = list.insertAt(list.size(), "Four");
 			assertEquals(list.size() + 1, inserted.size());
 			assertTrue(inserted.contains("Four"));
 			assertEquals("Four", inserted.get(list.size() - 1));
 		}
 		{
-			final LazyList<String> inserted = list.insertAt(list.size() + 1,
-					"Four");
+			final LazyList<String> inserted = list.insertAt(list.size() + 1, "Four");
 			assertEquals(list.size() + 1, inserted.size());
 			assertTrue(inserted.contains("Four"));
 			assertEquals("Four", inserted.get(list.size()));
@@ -447,8 +438,7 @@ public class LazyListTest extends LazyCollectionTest {
 
 		final LazyList<String> list = getTestLazyCollection();
 		final ListIterator<String> listIt = list.listIterator(list.size() - 1);
-		final ListIterator<String> dsIt = getDataSource().listIterator(getDataSource()
-				.size() - 1);
+		final ListIterator<String> dsIt = getDataSource().listIterator(getDataSource().size() - 1);
 		while (dsIt.hasPrevious()) {
 			assertTrue(listIt.hasPrevious());
 			assertEquals(dsIt.previousIndex(), listIt.previousIndex());
@@ -513,10 +503,8 @@ public class LazyListTest extends LazyCollectionTest {
 		final LazyList<String> list = getTestLazyCollection();
 		final LazyList<String> rejected = list.reject(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
-						.createExecEnv(), this);
-				getLocalVariables().add(
-						EmftvmFactory.eINSTANCE.createLocalVariable());
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
 			@Override
@@ -531,10 +519,8 @@ public class LazyListTest extends LazyCollectionTest {
 
 		assertEquals(0, list.reject(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
-						.createExecEnv(), this);
-				getLocalVariables().add(
-						EmftvmFactory.eINSTANCE.createLocalVariable());
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
 			@Override
@@ -546,10 +532,8 @@ public class LazyListTest extends LazyCollectionTest {
 
 		assertEquals(list.size(), list.reject(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
-						.createExecEnv(), this);
-				getLocalVariables().add(
-						EmftvmFactory.eINSTANCE.createLocalVariable());
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
 			@Override
@@ -594,10 +578,8 @@ public class LazyListTest extends LazyCollectionTest {
 		final LazyList<String> list = getTestLazyCollection();
 		final LazyList<String> selected = list.select(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
-						.createExecEnv(), this);
-				getLocalVariables().add(
-						EmftvmFactory.eINSTANCE.createLocalVariable());
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
 			@Override
@@ -614,10 +596,8 @@ public class LazyListTest extends LazyCollectionTest {
 
 		assertEquals(0, list.select(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
-						.createExecEnv(), this);
-				getLocalVariables().add(
-						EmftvmFactory.eINSTANCE.createLocalVariable());
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
 			@Override
@@ -629,10 +609,8 @@ public class LazyListTest extends LazyCollectionTest {
 
 		assertEquals(list.size(), list.select(new NativeCodeBlock() {
 			{
-				parentFrame = new StackFrame(EmftvmFactory.eINSTANCE
-						.createExecEnv(), this);
-				getLocalVariables().add(
-						EmftvmFactory.eINSTANCE.createLocalVariable());
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
 			}
 
 			@Override
