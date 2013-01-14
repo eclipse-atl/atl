@@ -26,8 +26,6 @@ import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -44,9 +42,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMIResource;
-import org.eclipse.emf.validation.model.EvaluationMode;
-import org.eclipse.emf.validation.service.IValidator;
-import org.eclipse.emf.validation.service.ModelValidationService;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
@@ -54,6 +49,7 @@ import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Feature;
 import org.eclipse.m2m.atl.emftvm.Field;
+import org.eclipse.m2m.atl.emftvm.Instruction;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.Module;
@@ -63,6 +59,9 @@ import org.eclipse.m2m.atl.emftvm.Parameter;
 import org.eclipse.m2m.atl.emftvm.Rule;
 import org.eclipse.m2m.atl.emftvm.RuleElement;
 import org.eclipse.m2m.atl.emftvm.RuleMode;
+import org.eclipse.m2m.atl.emftvm.constraints.StackUnderflowValidator;
+import org.eclipse.m2m.atl.emftvm.constraints.ValidCodeBlockStackLevelValidator;
+import org.eclipse.m2m.atl.emftvm.constraints.Validator;
 import org.eclipse.m2m.atl.emftvm.jit.CodeBlockJIT;
 import org.eclipse.m2m.atl.emftvm.trace.TraceFactory;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
@@ -85,7 +84,6 @@ import org.eclipse.m2m.atl.emftvm.util.TypeMap;
 import org.eclipse.m2m.atl.emftvm.util.Types;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
-
 
 /**
  * <!-- begin-user-doc -->
@@ -545,6 +543,16 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * queue entry per source value to remap is supported.
 	 */
 	protected final Map<EObject, RemapEntry> remapQueue = new HashMap<EObject, RemapEntry>();
+	
+	/**
+	 * Code block stack level validator.
+	 */
+	protected final Validator<CodeBlock> cbStackValidator = new ValidCodeBlockStackLevelValidator();
+
+	/**
+	 * Instruction stack level validator.
+	 */
+	protected final Validator<Instruction> instrStackValidator = new StackUnderflowValidator();
 
 	private CodeBlockJIT cbJit;
 	private boolean ruleStateCompiled;
@@ -1162,12 +1170,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			}
 			final Module module = resolver.resolveModule(name);
 			if (module.eResource() != null) { // skip built-in native modules
-				final Model mmodel = EmftvmFactory.eINSTANCE.createModel();
-				mmodel.setResource(module.eResource());
-				final IValidator<EObject> validator = ModelValidationService.getInstance().newValidator(EvaluationMode.BATCH);
-				final IStatus results = validator.validate(mmodel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock()));
-				if (!results.isOK()) {
-					throw new CoreException(results);
+				final Object invalidObject = validate(module);
+				if (invalidObject != null) {
+					throw new VMException(null, String.format("Byte code validation of %s failed", invalidObject));
 				}
 			}
 			internalModules.put(name, module);
@@ -1189,6 +1194,28 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 					"Error during module loading: %s", 
 					e.getMessage()), e);
 		}
+	}
+	
+	/**
+	 * Validates the bytecode of <code>module</code>.
+	 * @param module the module to validate
+	 * @return <code>null</code> if <code>module</code> is valid, otherwise the first invalid object
+	 */
+	private Object validate(Module module) {
+		final Model mmodel = EmftvmFactory.eINSTANCE.createModel();
+		mmodel.setResource(module.eResource());
+		for (EObject eObject : mmodel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
+			CodeBlock cb = (CodeBlock) eObject;
+			if (!cbStackValidator.validate(cb)) {
+				return cb;
+			}
+			for (Instruction i : cb.getCode()) {
+				if (!instrStackValidator.validate(i)) {
+					return i;
+				}
+			}
+		}
+		return null;
 	}
 
 	/**

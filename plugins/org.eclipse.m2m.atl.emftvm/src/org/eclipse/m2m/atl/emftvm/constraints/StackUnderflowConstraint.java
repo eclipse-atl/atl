@@ -21,6 +21,8 @@ import org.eclipse.m2m.atl.emftvm.Instruction;
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class StackUnderflowConstraint extends AbstractModelConstraint {
+	
+	protected final Validator<Instruction> validator = new StackUnderflowValidator();
 
 	/**
 	 * {@inheritDoc}
@@ -30,7 +32,7 @@ public class StackUnderflowConstraint extends AbstractModelConstraint {
 		final EObject tgt = ctx.getTarget();
 		if (tgt instanceof Instruction) {
 			final Instruction i = (Instruction)tgt;
-			if (i.getStackLevel() < 0) {
+			if (!validator.validate(i)) {
 				return ctx.createFailureStatus(i.getOwningBlock(), i, i.getStackLevel());
 			}
 		}

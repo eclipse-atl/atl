@@ -29,10 +29,6 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
@@ -88,6 +84,11 @@ public final class EMFTVMUtil {
 	 * Name if the XMI ID feature for {@link EObject}s contained in {@link XMIResource}s.
 	 */
 	public static final String XMI_ID_FEATURE = "__xmiID__";
+	
+	/**
+	 * Implementation class name for {@link WorkspaceUtil}.
+	 */
+	private static final String WORKSPACE_UTIL_IMPL = "org.eclipse.m2m.atl.emftvm.util.WorkspaceUtilImpl";
 
 	/**
 	 * Cache used to store native Java methods.
@@ -1681,21 +1682,21 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
 	 */
 	public static File getFile(final String path) {
-		String newPath = path;
-		if (Platform.isRunning()) {
-			IPath location = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path)).getLocation();
-			if (location != null) {
-				newPath = location.toString();
-			} else {
-				ATLLogger.info(String.format(
-						"Could not find a workspace location for %s; falling back to native java.io.File path resolution", 
-						path));
+		try {
+			final WorkspaceUtil wsUtil = (WorkspaceUtil) Class.forName(WORKSPACE_UTIL_IMPL).newInstance();
+			final String wsPath = wsUtil.getWorkspaceLocation(path);
+			if (wsPath != null) {
+				return new File(wsPath);
 			}
-		} else {
-			ATLLogger.info(
-					"Could not find workspace root; falling back to native java.io.File path resolution");
+		} catch (InstantiationException e) {
+			ATLLogger.fine(e.getMessage());
+		} catch (IllegalAccessException e) {
+			ATLLogger.fine(e.getMessage());
+		} catch (ClassNotFoundException e) {
+			ATLLogger.fine(e.getMessage());
 		}
-		return new File(newPath);
+		ATLLogger.info("Could not find workspace root; falling back to native java.io.File path resolution");
+		return new File(path);
 	}
 	
 	/**
