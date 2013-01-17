@@ -224,6 +224,15 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Removes all registered input, in/out, and output models from this {@link ExecEnv}.
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	void clearModels();
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * Returns the {@link Metamodel} for the given <code>resource</code>, or <code>null</code>.
 	 * @param resource the EMF {@link Resource} of the {@link Metamodel}
 	 * @return the {@link Metamodel}

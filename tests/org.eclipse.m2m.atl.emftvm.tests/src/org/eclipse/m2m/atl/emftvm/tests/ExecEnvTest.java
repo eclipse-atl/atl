@@ -119,6 +119,7 @@ import org.osgi.framework.Bundle;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerInputModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model) <em>Register Input Model</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerInOutModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model) <em>Register In Out Model</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#registerOutputModel(java.lang.String, org.eclipse.m2m.atl.emftvm.Model) <em>Register Output Model</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#clearModels() <em>Clear Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModel(org.eclipse.emf.ecore.resource.Resource) <em>Get Meta Model</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForSet(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.emf.ecore.EObject, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Set</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForSet(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Queue For Set</em>}</li>
@@ -525,6 +526,45 @@ public class ExecEnvTest extends TestCase {
 	 * @generated NOT
 	 */
 	public void testRegisterOutputModel__String_Model() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load and register input model
+		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+		inModel.setResource(inRes);
+		env.registerInputModel("IN", inModel);
+		assertTrue(env.getInputModels().containsKey("IN"));
+		assertEquals(inModel, env.getInputModels().get("IN"));
+		// Load and register in/out model
+		final Resource inOutRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
+		final Model inOutModel = EmftvmFactory.eINSTANCE.createModel();
+		inOutModel.setResource(inOutRes);
+		env.registerInOutModel("INOUT", inOutModel);
+		assertTrue(env.getInoutModels().containsKey("INOUT"));
+		assertEquals(inOutModel, env.getInoutModels().get("INOUT"));
+		// Create and register output model
+		final Resource outRes = rs.createResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/out.xmi", true));
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
+		outModel.setResource(outRes);
+		env.registerOutputModel("OUT", outModel);
+		assertTrue(env.getOutputModels().containsKey("OUT"));
+		assertEquals(outModel, env.getOutputModels().get("OUT"));
+		
+		env.clearModels();
+		assertFalse(env.getInputModels().containsKey("IN"));
+		assertFalse(env.getInoutModels().containsKey("INOUT"));
+		assertFalse(env.getOutputModels().containsKey("OUT"));
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#clearModels() <em>Clear Models</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#clearModels()
+	 * @generated NOT
+	 */
+	public void testClearModels() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ResourceSet rs = new ResourceSetImpl();
 

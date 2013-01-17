@@ -838,6 +838,19 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	public void clearModels() {
+		internalInputModels.clear();
+		internalInoutModels.clear();
+		internalOutputModels.clear();
+		clearModelCaches();
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
 	public Metamodel getMetaModel(final Resource resource) {
 		if (!modelCacheInit) {
 			cacheModels();

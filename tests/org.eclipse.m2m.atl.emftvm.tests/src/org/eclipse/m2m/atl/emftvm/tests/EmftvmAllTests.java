@@ -15,6 +15,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.eclipse.m2m.atl.emftvm.util.tests.ExecEnvPoolTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyBagTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyListOnCollectionTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyListOnListTest;
@@ -54,6 +55,7 @@ public class EmftvmAllTests extends TestSuite {
 		suite.addTestSuite(LazyBagTest.class);
 		suite.addTestSuite(LazySetTest.class);
 		suite.addTestSuite(LazyOrderedSetTest.class);
+		suite.addTestSuite(ExecEnvPoolTest.class);
 		return suite;
 	}
 

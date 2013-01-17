@@ -3487,6 +3487,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getModel(), "model", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		addEOperation(execEnvEClass, null, "clearModels", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		op = addEOperation(execEnvEClass, this.getMetamodel(), "getMetaModel", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEResource(), "resource", 0, 1, IS_UNIQUE, IS_ORDERED);
 

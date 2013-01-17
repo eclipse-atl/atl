@@ -229,6 +229,7 @@
       <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
       <eParameters name="model" eType="#//Model"/>
     </eOperations>
+    <eOperations name="clearModels"/>
     <eOperations name="getMetaModel" eType="#//Metamodel">
       <eParameters name="resource" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EResource"/>
     </eOperations>
