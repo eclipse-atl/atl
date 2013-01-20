@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
@@ -138,7 +139,7 @@ import org.osgi.framework.Bundle;
  * @generated
  */
 public class ExecEnvTest extends TestCase {
-
+	
 	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.tests";
 	public static final String PLUGIN_URI = "platform:/plugin/" + PLUGIN_ID;
 	public static final String COMPILER_PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.compiler";
@@ -147,6 +148,8 @@ public class ExecEnvTest extends TestCase {
 	public static final String COMMON_PLUGIN_URI = "platform:/plugin/" + COMMON_PLUGIN_ID;
 
 	public static final Bundle bundle = Platform.getBundle(PLUGIN_ID);
+
+	private static final Logger LOG = Logger.getLogger(ExecEnvTest.class.getName());
 
 	/**
 	 * The fixture for this Exec Env test case.
@@ -1465,7 +1468,7 @@ public class ExecEnvTest extends TestCase {
 		td.finishLoading();
 		env.run(td);
 		td.finish();
-		System.out.print(td.toString());
+		LOG.info("ExecEnvText#testRun__TimingData " + td.toString());
 		}
 
 		// Create another output model, and run the transformation again
@@ -1486,7 +1489,7 @@ public class ExecEnvTest extends TestCase {
 		td2.finishLoading();
 		env.run(td2);
 		td2.finish();
-		System.out.print(td2.toString());
+		LOG.info("ExecEnvText#testRun__TimingData 2nd run " + td2.toString());
 		}
 		
 		// Compare results
@@ -1502,7 +1505,7 @@ public class ExecEnvTest extends TestCase {
 		td2.finishLoading();
 		env.run(td2);
 		td2.finish();
-		System.out.print(td2.toString());
+		LOG.info("ExecEnvText#testRun__TimingData 3rd run " + td2.toString());
 		}
 		
 		// Compare results
@@ -1549,7 +1552,7 @@ public class ExecEnvTest extends TestCase {
 			td.finishLoading();
 			env.run(td);
 			td.finish();
-			System.out.print(td.toString());
+			LOG.info("ExecEnvText#testRun__RefiningMode " + td.toString());
 		}
 
 		// Load reference models

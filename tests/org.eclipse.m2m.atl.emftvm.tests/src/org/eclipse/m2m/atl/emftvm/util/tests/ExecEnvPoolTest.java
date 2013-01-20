@@ -155,13 +155,13 @@ public class ExecEnvPoolTest extends TestCase {
 					td.finishLoading();
 					env.run(td);
 					td.finish();
-					LOG.info(td.toString());
+					LOG.fine(String.format("ExecEnvPoolTest#testEcoreCopyPerformance test %d %s", testNr, td));
 					timings.add(td.getFinished());
 
 					pool.returnExecEnv(env);
 					final Runtime runtime = Runtime.getRuntime();
-					LOG.info(String.format("Heap space used for test %d: %d MB", testNr, (runtime.totalMemory() - runtime.freeMemory())
-							/ (1024 * 1024)));
+					LOG.fine(String.format("ExecEnvPoolTest#testEcoreCopyPerformance Heap space used for test %d: %d MB", testNr,
+							(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
 				}
 			});
 		}
@@ -169,7 +169,7 @@ public class ExecEnvPoolTest extends TestCase {
 		execSvc.shutdown();
 		final boolean finished = execSvc.awaitTermination(1, TimeUnit.MINUTES);
 		if (!finished) {
-			System.out.println(String.format("Timed out; %d runs completed", timings.size()));
+			LOG.info(String.format("ExecEnvPoolTest#testEcoreCopyPerformance Timed out; %d runs completed", timings.size()));
 		}
 
 		long avg = 0L;
@@ -180,11 +180,11 @@ public class ExecEnvPoolTest extends TestCase {
 			max = Math.max(max, timing);
 			min = Math.min(min, timing);
 		}
-		System.out.println(String.format("Average time: %f msec\nMax time: %f msec\nMin time: %f msec", avg / 1E6, max / 1E6, min / 1E6));
-		System.out.println(String.format("Transactions per second: %f on %d threads", 1E9 * threadCount / avg, threadCount));
 		final Runtime runtime = Runtime.getRuntime();
-		System.out.println(String.format("Heap space used: %d MB on %d threads", (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024),
-				threadCount));
+		LOG.info(String
+				.format("ExecEnvPoolTest#testEcoreCopyPerformance\n\tAverage time: %f msec\n\tMax time: %f msec\n\tMin time: %f msec\n\tTransactions per second: %f on %d threads\n\tHeap space used: %d MB on %d threads",
+						avg / 1E6, max / 1E6, min / 1E6, 1E9 * threadCount / avg, threadCount,
+						(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024), threadCount));
 	}
 
 }
