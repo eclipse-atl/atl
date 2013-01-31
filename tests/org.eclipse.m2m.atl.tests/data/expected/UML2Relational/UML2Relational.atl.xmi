@@ -9,9 +9,9 @@
     <metamodel href="new-model#/0"/>
   </outModels>
   <elements xsi:type="atl:Helper" location="11:1-12:80">
-    <commentsBefore>-------------------------------------------------------------------------------------------</commentsBefore>
-    <commentsBefore>-- HELPERS --------------------------------------------------------------------------------</commentsBefore>
-    <commentsBefore>-------------------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- HELPERS -------------------------------------------------------------</commentsBefore>
+    <commentsBefore>------------------------------------------------------------------------</commentsBefore>
     <definition location="11:8-12:79">
       <feature xsi:type="ocl:Operation" location="11:33-12:79" name="hasStereotype">
         <parameters location="11:47-11:66" varName="stereotype" variableExp="//@elements.0/@definition/@feature/@body/@arguments.0">
@@ -41,9 +41,9 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="14:1-18:8">
-    <commentsAfter>-------------------------------------------------------------------------------------------</commentsAfter>
-    <commentsAfter>-- RULES ----------------------------------------------------------------------------------</commentsAfter>
-    <commentsAfter>-------------------------------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>------------------------------------------------------------------------</commentsAfter>
+    <commentsAfter>-- RULES ---------------------------------------------------------------</commentsAfter>
+    <commentsAfter>------------------------------------------------------------------------</commentsAfter>
     <definition location="14:8-18:7">
       <feature xsi:type="ocl:Operation" location="14:30-18:7" name="computeType">
         <returnType xsi:type="ocl:OclModelElement" location="14:46-14:61" name="Type">
@@ -81,9 +81,9 @@
     </definition>
   </elements>
   <elements xsi:type="atl:MatchedRule" location="24:1-38:2" name="Model2Database">
-    <commentsBefore>-------------------------------------------------------------------------------------------</commentsBefore>
-    <commentsBefore>-- RULES ----------------------------------------------------------------------------------</commentsBefore>
-    <commentsBefore>-------------------------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>------------------------------------------------------------------------</commentsBefore>
+    <commentsBefore>-- RULES ---------------------------------------------------------------</commentsBefore>
+    <commentsBefore>------------------------------------------------------------------------</commentsBefore>
     <outPattern location="29:2-37:4">
       <elements xsi:type="atl:SimpleOutPatternElement" location="30:3-33:4" varName="out">
         <type xsi:type="ocl:OclModelElement" location="30:9-30:28" name="Database">

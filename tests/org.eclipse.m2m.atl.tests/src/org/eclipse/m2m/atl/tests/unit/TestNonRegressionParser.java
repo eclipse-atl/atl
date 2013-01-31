@@ -57,11 +57,13 @@ public class TestNonRegressionParser extends TestNonRegression {
 		}
 		try {
 			EObject result = AtlParser.getDefault().parse(new FileInputStream(transfoPath));
+			String serialized = ModelUtils.serialize(result);
+			serialized = serialized.replaceAll("\r\n","\n");
 			if (new File(expectedPath).exists()) {
-				assertEquals(FileUtils.readFileAsString(new File(expectedPath)), ModelUtils.serialize(result));
+				assertEquals(FileUtils.readFileAsString(new File(expectedPath)), serialized);
 			} else {
 				FileWriter fw = new FileWriter(expectedPath);
-				fw.write(ModelUtils.serialize(result));
+				fw.write(serialized);
 				fw.close();
 			}
 		} catch (Exception e) {

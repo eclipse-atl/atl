@@ -105,7 +105,7 @@ helper context Sildex!Block def: getBlockClassIncluded(): String =
 helper context Sildex!Connection def: getConnectionNamePort(): String =
 	self.Start.port.name;
 
---Un élément model se transforme en System que si la class est "Model" et
+--Un Ã©lÃ©ment model se transforme en System que si la class est "Model" et
 --qu'il n'est pas contenu par un model de class "Automate" ?????.
 helper context Sildex!Model def: model2systemTransf(): Boolean =
 	self.Class.value = thisModule.model and if self.firstModel() then
@@ -117,7 +117,7 @@ helper context Sildex!Model def: model2systemTransf(): Boolean =
 helper context Sildex!Model def: firstModel(): Boolean =
 	self.Package.Model -> asSequence() -> first().id = self.id;
 
---Un élément connection se transforme en flow (quelque soit le type)
+--Un Ã©lÃ©ment connection se transforme en flow (quelque soit le type)
 --uniquement s'il n'est pas contenu par un model de class "Automaton"
 helper context Sildex!Connection def: connection2FlowTransf(): Boolean =
 	self.Model.Class.value <> thisModule.automaton;
@@ -146,30 +146,30 @@ helper context Sildex!Port def: port2InControlPortTransf(): Boolean =
 helper context Sildex!Port def: port2OutControlPortTransf(): Boolean =
 	self.Direction.value = #"out" and self.Type.value = thisModule.event;
 
---Un élément model se transforme en objet Automaton si la class de model
+--Un Ã©lÃ©ment model se transforme en objet Automaton si la class de model
 --est "Automaton".
 helper context Sildex!Model def: model2automatonTransf(): Boolean =
 	self.Class.value = thisModule.automaton;
 
---Un élément model se transforme en objet InitialState si l'élément block
---qui référence le model est dans un model de class "Automaton" et que
---l'attribut IsInitial du modelRef du block est mis à "true".
+--Un Ã©lÃ©ment model se transforme en objet InitialState si l'Ã©lÃ©ment block
+--qui rÃ©fÃ©rence le model est dans un model de class "Automaton" et que
+--l'attribut IsInitial du modelRef du block est mis Ã  "true".
 helper context Sildex!Model def: model2initalstateTransf(): Boolean =
 	not (self.Package.Model -> select(x | x.model2automatonTransf() and not (x.Block ->
 			select(z | z.Modelref.ref = self) -> select(z | z.Class.value = 'State' and
 			not z.Modelref.IsInitial.oclIsUndefined()) -> select(z | z.Modelref.IsInitial.
 			value = 'true') -> isEmpty())) -> isEmpty());
 
---Un élément model se transforme en objet State si l'élément block qui
---référence le model est dans un model de class "Automaton" et s'il n'est
+--Un Ã©lÃ©ment model se transforme en objet State si l'Ã©lÃ©ment block qui
+--rÃ©fÃ©rence le model est dans un model de class "Automaton" et s'il n'est
 --ni MacroState, ni InitialState (dans la garde, tester les conditions
 --inverses pour s'assurer de l'exclusion des cas).
 helper context Sildex!Model def: model2stateTransf(): Boolean =
 	not(self.Package.Model -> select(x | x.model2automatonTransf() and not (x.Block ->
 			select(y | y.Modelref.ref.id = self.id) -> isEmpty())) -> isEmpty());
 
---Un élément model se transforme en objet MacroState si l'élément block
---qui référence le model est dans un model de class "Automaton" et que
+--Un Ã©lÃ©ment model se transforme en objet MacroState si l'Ã©lÃ©ment block
+--qui rÃ©fÃ©rence le model est dans un model de class "Automaton" et que
 --le block "contient grahiquement" un autre block (position du block contenu dans le
 		-- rectangle que forme le block/macrostate)
 helper context Sildex!Model def: model2macrostateTransf(): Boolean =
@@ -206,7 +206,7 @@ helper context Sildex!Model def: container(): Sildex!Model =
 				self) -> isEmpty())) -> asSequence() -> first()
 	endif;
 
---Un élément connection se transforme en objet Transition s'il est contenu
+--Un Ã©lÃ©ment connection se transforme en objet Transition s'il est contenu
 --dans un model dont la class est "Automaton".
 helper context Sildex!Connection def: connection2transitionTransf(): Boolean =
 	self.Model.Class.value = thisModule.automaton;

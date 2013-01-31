@@ -1,94 +1,99 @@
 -- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
 -- @path Relational=/org.eclipse.m2m.atl.tests/data/inputs/Relational2UML/relational.ecore
 
+
 module Relational2UML2;
-create OUT : UML from IN : Relational, PRO : UML;
+create OUT: UML from IN: Relational, PRO: UML;
 
--------------------------------------------------------------------------------------------
--- HELPERS --------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------
+----------------------------------------------------------------------
+-- HELPERS -----------------------------------------------------------
+----------------------------------------------------------------------
 
-helper def : stringType : UML!PrimitiveType = OclUndefined;
-helper def : integerType : UML!PrimitiveType = OclUndefined;
+helper def: stringType: UML!PrimitiveType =
+	OclUndefined;
 
-helper context Relational!Column def : computeType() : UML!PrimitiveType =
+helper def: integerType: UML!PrimitiveType =
+	OclUndefined;
+
+helper context Relational!Column def: computeType(): UML!PrimitiveType =
 	if self.type = #VARCHAR then
 		thisModule.stringType
-	else 
-		if self.type = #NUMERIC then 
+	else
+		if self.type = #NUMERIC then
 			thisModule.integerType
 		else
-		    thisModule.integerType
+			thisModule.integerType
 		endif
-	endif;	
+	endif;
 
-helper def : getStereotype(name : String) : UML!Stereotype =
-    UML!Stereotype.allInstancesFrom('PRO')->select(p | p.name = name)->first();
-    
--------------------------------------------------------------------------------------------
--- RULES ----------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------
+helper def: getStereotype(name: String): UML!Stereotype =
+	UML!Stereotype.allInstancesFrom('PRO') -> select(p | p.name = name) -> first();
 
+----------------------------------------------------------------------
+-- RULES -------------------------------------------------------------
+----------------------------------------------------------------------
 rule Database2Model {
 	from
-		d : Relational!Database
+		d: Relational!Database
 	to
-		out : UML!Model (
+		out: UML!Model (
 			name <- d.name,
-			packagedElement <- Sequence{d.ownedSchemas,integer,string} -> flatten()
+			packagedElement <- Sequence{d.ownedSchemas,
+							integer,
+							string} -> flatten()
 		),
-		integer : UML!PrimitiveType (
+		integer: UML!PrimitiveType (
 			name <- 'Integer'
 		),
-		string : UML!PrimitiveType (
+		string: UML!PrimitiveType (
 			name <- 'String'
 		)
 	do {
 		thisModule.stringType <- string;
 	    thisModule.integerType <- integer;
 
-	    out.applyProfile(UML!Profile.allInstancesFrom('PRO')->select(p | p.name = 'relational')->first());
+	    out.applyProfile(UML!Profile.allInstancesFrom('PRO') -> select(p | p.name =
+			'relational') -> first());
 	    out.applyStereotype(thisModule.getStereotype('Database'));	
 	}
-}  
+}
 
 rule Schema2Package {
 	from
-		s : Relational!Schema 
+		s: Relational!Schema
 	to
-		out : UML!Package (
+		out: UML!Package (
 			name <- s.name,
 			packagedElement <- s.ownedTables
 		)
 	do {
-	  out.applyStereotype(thisModule.getStereotype('Schema'));
+		out.applyStereotype(thisModule.getStereotype('Schema')); 
 	}
 }
-         
+
 rule Table2Class {
 	from
-		t : Relational!Table
+		t: Relational!Table
 	to
-		out : UML!Class (
+		out: UML!Class (
 			name <- t.name,
 			ownedAttribute <- t.ownedColumns
 		)
 	do {
-	   out.applyStereotype(thisModule.getStereotype('Table'));
+		out.applyStereotype(thisModule.getStereotype('Table')); 
 	}
 }
 
-
 rule Column2Property {
 	from
-		p : Relational!Column
+		p: Relational!Column
 	to
-		out : UML!Property (
+		out: UML!Property (
 			name <- p.name,
 			isUnique <- p.isUnique,
 			type <- p.computeType()
 		)
 	do {
-	   out.applyStereotype(thisModule.getStereotype('Column'));
+		out.applyStereotype(thisModule.getStereotype('Column')); 
 	}
 }
