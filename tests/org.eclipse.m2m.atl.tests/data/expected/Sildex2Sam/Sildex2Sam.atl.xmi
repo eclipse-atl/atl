@@ -386,7 +386,7 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="59:1-60:23">
-    <commentsAfter>--Un &#xe9;l&#xe9;ment model se transforme en System que si la class est &quot;Model&quot; et </commentsAfter>
+    <commentsAfter>--Un element model se transforme en System que si la class est &quot;Model&quot; et </commentsAfter>
     <commentsAfter>--qu'il n'est pas contenu par un model de class &quot;Automate&quot; ?????.</commentsAfter>
     <definition location="59:8-60:22">
       <feature xsi:type="ocl:Operation" location="59:40-60:22" name="getConnectionNamePort">
@@ -409,7 +409,7 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="64:1-69:8">
-    <commentsBefore>--Un &#xe9;l&#xe9;ment model se transforme en System que si la class est &quot;Model&quot; et </commentsBefore>
+    <commentsBefore>--Un element model se transforme en System que si la class est &quot;Model&quot; et </commentsBefore>
     <commentsBefore>--qu'il n'est pas contenu par un model de class &quot;Automate&quot; ?????.</commentsBefore>
     <definition location="64:8-69:7">
       <feature xsi:type="ocl:Operation" location="64:34-69:7" name="model2systemTransf">
@@ -463,7 +463,7 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="71:1-72:57">
-    <commentsAfter>--Un &#xe9;l&#xe9;ment connection se transforme en flow (quelque soit le type) </commentsAfter>
+    <commentsAfter>--Un element connection se transforme en flow (quelque soit le type) </commentsAfter>
     <commentsAfter>--uniquement s'il n'est pas contenu par un model de class &quot;Automaton&quot;</commentsAfter>
     <definition location="71:8-72:56">
       <feature xsi:type="ocl:Operation" location="71:35-72:56" name="firstModel">
@@ -497,7 +497,7 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="76:1-77:49">
-    <commentsBefore>--Un &#xe9;l&#xe9;ment connection se transforme en flow (quelque soit le type) </commentsBefore>
+    <commentsBefore>--Un element connection se transforme en flow (quelque soit le type) </commentsBefore>
     <commentsBefore>--uniquement s'il n'est pas contenu par un model de class &quot;Automaton&quot;</commentsBefore>
     <commentsAfter>--Transf. Connection to DataFlow</commentsAfter>
     <definition location="76:8-77:48">
@@ -713,7 +713,7 @@
   </elements>
   <elements xsi:type="atl:Helper" location="100:1-101:71">
     <commentsBefore>--Transf. Port to OutControlPort</commentsBefore>
-    <commentsAfter>--Un &#xe9;l&#xe9;ment model se transforme en objet Automaton si la class de model </commentsAfter>
+    <commentsAfter>--Un element model se transforme en objet Automaton si la class de model </commentsAfter>
     <commentsAfter>--est &quot;Automaton&quot;.</commentsAfter>
     <definition location="100:8-101:70">
       <feature xsi:type="ocl:Operation" location="100:34-101:70" name="port2OutControlPortTransf">
@@ -753,11 +753,11 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="105:1-106:42">
-    <commentsBefore>--Un &#xe9;l&#xe9;ment model se transforme en objet Automaton si la class de model </commentsBefore>
+    <commentsBefore>--Un element model se transforme en objet Automaton si la class de model </commentsBefore>
     <commentsBefore>--est &quot;Automaton&quot;.</commentsBefore>
-    <commentsAfter>--Un &#xe9;l&#xe9;ment model se transforme en objet InitialState si l'&#xe9;l&#xe9;ment block </commentsAfter>
-    <commentsAfter>--qui r&#xe9;f&#xe9;rence le model est dans un model de class &quot;Automaton&quot; et que </commentsAfter>
-    <commentsAfter>--l'attribut IsInitial du modelRef du block est mis &#xe0; &quot;true&quot;.</commentsAfter>
+    <commentsAfter>--Un element model se transforme en objet InitialState si l'element block </commentsAfter>
+    <commentsAfter>--qui reference le model est dans un model de class &quot;Automaton&quot; et que </commentsAfter>
+    <commentsAfter>--l'attribut IsInitial du modelRef du block est mis a &quot;true&quot;.</commentsAfter>
     <definition location="105:8-106:41">
       <feature xsi:type="ocl:Operation" location="105:34-106:41" name="model2automatonTransf">
         <returnType xsi:type="ocl:BooleanType" location="105:60-105:67"/>
@@ -784,11 +784,11 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="111:1-113:207">
-    <commentsBefore>--Un &#xe9;l&#xe9;ment model se transforme en objet InitialState si l'&#xe9;l&#xe9;ment block </commentsBefore>
-    <commentsBefore>--qui r&#xe9;f&#xe9;rence le model est dans un model de class &quot;Automaton&quot; et que </commentsBefore>
-    <commentsBefore>--l'attribut IsInitial du modelRef du block est mis &#xe0; &quot;true&quot;.</commentsBefore>
-    <commentsAfter>--Un &#xe9;l&#xe9;ment model se transforme en objet State si l'&#xe9;l&#xe9;ment block qui </commentsAfter>
-    <commentsAfter>--r&#xe9;f&#xe9;rence le model est dans un model de class &quot;Automaton&quot; et s'il n'est </commentsAfter>
+    <commentsBefore>--Un element model se transforme en objet InitialState si l'element block </commentsBefore>
+    <commentsBefore>--qui reference le model est dans un model de class &quot;Automaton&quot; et que </commentsBefore>
+    <commentsBefore>--l'attribut IsInitial du modelRef du block est mis a &quot;true&quot;.</commentsBefore>
+    <commentsAfter>--Un element model se transforme en objet State si l'element block qui </commentsAfter>
+    <commentsAfter>--reference le model est dans un model de class &quot;Automaton&quot; et s'il n'est </commentsAfter>
     <commentsAfter>--ni MacroState, ni InitialState (dans la garde, tester les conditions </commentsAfter>
     <commentsAfter>--inverses pour s'assurer de l'exclusion des cas).</commentsAfter>
     <definition location="111:8-113:206">
@@ -877,12 +877,12 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="119:1-120:144">
-    <commentsBefore>--Un &#xe9;l&#xe9;ment model se transforme en objet State si l'&#xe9;l&#xe9;ment block qui </commentsBefore>
-    <commentsBefore>--r&#xe9;f&#xe9;rence le model est dans un model de class &quot;Automaton&quot; et s'il n'est </commentsBefore>
+    <commentsBefore>--Un element model se transforme en objet State si l'element block qui </commentsBefore>
+    <commentsBefore>--reference le model est dans un model de class &quot;Automaton&quot; et s'il n'est </commentsBefore>
     <commentsBefore>--ni MacroState, ni InitialState (dans la garde, tester les conditions </commentsBefore>
     <commentsBefore>--inverses pour s'assurer de l'exclusion des cas).</commentsBefore>
-    <commentsAfter>--Un &#xe9;l&#xe9;ment model se transforme en objet MacroState si l'&#xe9;l&#xe9;ment block </commentsAfter>
-    <commentsAfter>--qui r&#xe9;f&#xe9;rence le model est dans un model de class &quot;Automaton&quot; et que</commentsAfter>
+    <commentsAfter>--Un element model se transforme en objet MacroState si l'element block </commentsAfter>
+    <commentsAfter>--qui reference le model est dans un model de class &quot;Automaton&quot; et que</commentsAfter>
     <commentsAfter>--le block &quot;contient grahiquement&quot; un autre block (position du block contenu dans le rectangle que forme le block/macrostate)</commentsAfter>
     <definition location="119:8-120:143">
       <feature xsi:type="ocl:Operation" location="119:34-120:143" name="model2stateTransf">
@@ -939,8 +939,8 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="125:1-129:44">
-    <commentsBefore>--Un &#xe9;l&#xe9;ment model se transforme en objet MacroState si l'&#xe9;l&#xe9;ment block </commentsBefore>
-    <commentsBefore>--qui r&#xe9;f&#xe9;rence le model est dans un model de class &quot;Automaton&quot; et que</commentsBefore>
+    <commentsBefore>--Un element model se transforme en objet MacroState si l'element block </commentsBefore>
+    <commentsBefore>--qui reference le model est dans un model de class &quot;Automaton&quot; et que</commentsBefore>
     <commentsBefore>--le block &quot;contient grahiquement&quot; un autre block (position du block contenu dans le rectangle que forme le block/macrostate)</commentsBefore>
     <commentsAfter>-- Helper indicating if the state corresponding to the model is included in a macro state or not</commentsAfter>
     <definition location="125:8-129:43">
@@ -1201,7 +1201,7 @@
   </elements>
   <elements xsi:type="atl:Helper" location="143:1-149:8">
     <commentsBefore>-- This helper retrieves the model containing the block  referencing current model</commentsBefore>
-    <commentsAfter>--Un &#xe9;l&#xe9;ment connection se transforme en objet Transition s'il est contenu </commentsAfter>
+    <commentsAfter>--Un element connection se transforme en objet Transition s'il est contenu </commentsAfter>
     <commentsAfter>--dans un model dont la class est &quot;Automaton&quot;.</commentsAfter>
     <definition location="143:8-149:7">
       <feature xsi:type="ocl:Operation" location="143:35-149:7" name="container">
@@ -1262,7 +1262,7 @@
     </definition>
   </elements>
   <elements xsi:type="atl:Helper" location="153:1-154:48">
-    <commentsBefore>--Un &#xe9;l&#xe9;ment connection se transforme en objet Transition s'il est contenu </commentsBefore>
+    <commentsBefore>--Un element connection se transforme en objet Transition s'il est contenu </commentsBefore>
     <commentsBefore>--dans un model dont la class est &quot;Automaton&quot;.</commentsBefore>
     <definition location="153:8-154:47">
       <feature xsi:type="ocl:Operation" location="153:39-154:47" name="connection2transitionTransf">
