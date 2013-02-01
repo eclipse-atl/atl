@@ -24,7 +24,7 @@ Require-Bundle: org.eclipse.emf.compare.match;bundle-version="[1.2.0,1.4.0)",
  org.eclipse.m2m.atl.engine.emfvm.launch,
  org.eclipse.m2m.atl.core.ui.vm,
  org.eclipse.uml2.uml,
- org.eclipse.emf.compare
+ org.eclipse.emf.compare;bundle-version="[1.2.0,1.4.0)"
 Bundle-Activator: org.eclipse.m2m.atl.tests.AtlTestPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
