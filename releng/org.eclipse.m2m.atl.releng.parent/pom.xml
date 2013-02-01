@@ -248,9 +248,6 @@
 				<repository><id>releasetrain</id><layout>p2</layout>
 					<url>http://download.eclipse.org/releases/kepler</url>
 				</repository>
-				<repository><id>antlr</id><layout>p2</layout>
-          			<url>http://archive.eclipse.org/tools/orbit/downloads/drops/R20100519200754/repository</url>
-        		</repository>
         		<repository><id>orbit</id><layout>p2</layout>
 			 	    <url>http://download.eclipse.org/tools/orbit/downloads/drops/updateSite</url>
         		</repository>
