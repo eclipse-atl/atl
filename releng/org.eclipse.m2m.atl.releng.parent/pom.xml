@@ -241,15 +241,12 @@
 	<profiles>
 		<profile>
 			<id>kepler</id>
-			<properties>
-				<platform-version>[4.0,5.0)</platform-version>
-			</properties>
 			<repositories>
 				<repository><id>releasetrain</id><layout>p2</layout>
 					<url>http://download.eclipse.org/releases/kepler</url>
 				</repository>
         		<repository><id>orbit</id><layout>p2</layout>
-			 	    <url>http://download.eclipse.org/tools/orbit/downloads/drops/updateSite</url>
+			 	    <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</url>
         		</repository>
         		<repository><id>emf compare 1.2 (test purpose only)</id><layout>p2</layout>
 			 	    <url>http://download.eclipse.org/modeling/emf/compare/updates/releases/1.2</url>
