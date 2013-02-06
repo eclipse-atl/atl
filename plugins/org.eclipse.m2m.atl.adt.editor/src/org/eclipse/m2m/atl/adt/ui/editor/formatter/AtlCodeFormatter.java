@@ -734,8 +734,8 @@ public class AtlCodeFormatter {
 						|| child.getType() == FormattedObject.TYPE_LIBRARY || isRuleType(child.getType())) {
 					EObject previousElt = modelAnalyser.getPreviousElement(child.getEObject());
 					if (previousElt != null
-							&& FormattedObject.typeOf(previousElt) == FormattedObject.TYPE_HELPER
-							|| isRuleType(FormattedObject.typeOf(previousElt))) {
+							&& (FormattedObject.typeOf(previousElt) == FormattedObject.TYPE_HELPER
+							|| isRuleType(FormattedObject.typeOf(previousElt)))) {
 						int[] offsets = getElementOffset(child.getEObject());
 						int[] offsetsPreviousElt = getElementOffset(previousElt);
 						String trimedString = parentText.substring(offsetsPreviousElt[1], offsets[0]);
@@ -1169,15 +1169,15 @@ public class AtlCodeFormatter {
 
 	private String formatLibrary(FormattedObject parent) {
 		String text = parent.getText();
-		String regex = "\\s*library\\s+(\\w+)\\s*;\\s*"; //$NON-NLS-1$
+		String regex = "\\s*library\\s+(\\w+)\\s*;\\s*"; //$NON-NLS-1$ //$NON-NLS-2$
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(text);
 		while (m.find()) {
-			text = "\n\nlibrary " + m.group(1) + preferences.getEndingSemicolon() + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
+			text = m.replaceAll("\n\nlibrary " + m.group(1) + preferences.getEndingSemicolon() + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return text;
 	}
-
+	
 	private String formatQuery(FormattedObject parent) {
 		String text = parent.getText();
 		String regex = "\\s*query\\s+(\\w+)\\s*\\=\\s*(" + FormattedObject.RPLCMT_RGX + ")\\s*;\\s*"; //$NON-NLS-1$ //$NON-NLS-2$
