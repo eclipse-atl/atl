@@ -629,7 +629,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			localVariable("body", CodeBlock.class, bodyStart, ifOpNull, 5);
 		}
 		// Generate native method invocation code here
-		final Method method = object.getNativeMethod();
+		final Method method = findRootMethod(object.getNativeMethod());
 		if (method != null) { // native method recorded - try first
 			// Labels
 			final Label subframeStart = new Label();
@@ -773,7 +773,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			localVariable("body", CodeBlock.class, bodyStart, ifOpNull, 6);
 		}
 		// Generate native method invocation code here
-		final Method method = object.getNativeMethod();
+		final Method method = findRootMethod(object.getNativeMethod());
 		if (method != null) { // native method recorded - try first
 			// Labels
 			final Label subframeStart = new Label();
@@ -889,6 +889,11 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		}
 	}
 
+	/**
+	 * Generates bytecode for an INVOKE with <code>argcount</code> arguments.
+	 * @param object the INVOKE instruction
+	 * @param argcount the number of arguments
+	 */
 	private void generateInvokeN(final Invoke object, final int argcount) {
 		// [..., self, args]
 		final boolean hasOp = jit.getEnv().hasOperation(object.getOpname(), object.getArgcount());
@@ -950,6 +955,42 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		// Local variables
 		localVariable("self", Object.class, selfStart, selfEnd, 4);
 		localVariable("args", Object[].class, selfStart, selfEnd, 5);
+	}
+	
+	/**
+	 * Finds the root {@link Class} in which <code>method</code> was declared.
+	 * @param method the method for which to find the root {@link Class}
+	 * @return the root {@link Class} in which <code>method</code> was declared
+	 */
+	private Method findRootMethod(Method method) {
+		if (method == null) {
+			return null;
+		}
+		Class<?> dc = method.getDeclaringClass();
+		while ((dc = dc.getSuperclass()) != null) {
+			try {
+				method = dc.getDeclaredMethod(method.getName(), method.getParameterTypes());
+			} catch (SecurityException e) {
+				break;
+			} catch (NoSuchMethodException e) {
+				break;
+			}
+		}
+		Class<?>[] dis = dc.getInterfaces();
+		while (dis.length > 0) {
+			Class<?>[] newDis = new Class<?>[0];
+			for (Class<?> di : dis) {
+				try {
+					method = di.getDeclaredMethod(method.getName(), method.getParameterTypes());
+					newDis = di.getInterfaces();
+					break; // skip sibling interfaces
+				} catch (SecurityException e) {
+				} catch (NoSuchMethodException e) {
+				}
+			}
+			dis = newDis;
+		}
+		return method;
 	}
 
 	/**
