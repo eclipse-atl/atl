@@ -994,12 +994,16 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 
 		final CodeBlockJIT jc = env.getJITCompiler();
-		if (jc != null && runcount > JIT_THRESHOLD && getJITCodeBlock() == null) { // JIT everything that runs more than JIT_THRESHOLD
-			try {
-				setJITCodeBlock(jc.jit(this));
-			} catch (Exception e) {
-				frame.setPc(pc);
-				throw new VMException(frame, e);
+		if (jc != null && runcount > JIT_THRESHOLD) { // JIT everything that runs more than JIT_THRESHOLD
+			synchronized (this) {
+				if (getJITCodeBlock() == null) {
+					try {
+						setJITCodeBlock(jc.jit(this));
+					} catch (Exception e) {
+						frame.setPc(pc);
+						throw new VMException(frame, e);
+					}
+				}
 			}
 		}
 

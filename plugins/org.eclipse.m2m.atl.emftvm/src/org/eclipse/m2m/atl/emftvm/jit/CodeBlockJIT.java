@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2013 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,9 +70,12 @@ public class CodeBlockJIT implements Opcodes {
 						p.mkdirs();
 						final File f = new File(p, name.substring(name.lastIndexOf('.') + 1) + ".class");
 						f.createNewFile();
-						FileOutputStream fos = new FileOutputStream(f);
-						fos.write(b);
-						fos.close();
+						final FileOutputStream fos = new FileOutputStream(f);
+						try {
+							fos.write(b);
+						} finally {
+							fos.close();
+						}
 						ATLLogger.info(String.format("Wrote JIT-ed code block %s to %s", 
 								codeBlocks.get(name), f.getAbsolutePath()));
 					} catch (IOException e) {
@@ -88,7 +92,7 @@ public class CodeBlockJIT implements Opcodes {
 	/**
 	 * {@link Map} of class names to input {@link CodeBlock}s for the JIT.
 	 */
-	protected final Map<String, CodeBlock> codeBlocks = new HashMap<String, CodeBlock>();
+	protected final Map<String, CodeBlock> codeBlocks = Collections.synchronizedMap(new HashMap<String, CodeBlock>());
 	/**
 	 * Internal {@link ClassLoader} instance for loading the generated classes.
 	 */
@@ -119,15 +123,22 @@ public class CodeBlockJIT implements Opcodes {
 	 * @throws InvocationTargetException
 	 * @throws NoSuchMethodException
 	 */
-	//TODO use thread and queue
-	public synchronized JITCodeBlock jit(final CodeBlock cb) throws ClassNotFoundException,
+	public JITCodeBlock jit(final CodeBlock cb) throws ClassNotFoundException,
 			IllegalArgumentException, SecurityException,
 			InstantiationException, IllegalAccessException,
 			InvocationTargetException, NoSuchMethodException {
-		final String className = BASE_PACKAGE + ".CB" + counter++;
+		final String className = getNextClassName();
 		codeBlocks.put(className, cb);
 		return (JITCodeBlock)classLoader.findClass(className)
 				.getConstructor(CodeBlock.class).newInstance(cb);
+	}
+	
+	/**
+	 * Returns the next class name to use for JIT output.
+	 * @return the next class name to use for JIT output
+	 */
+	protected synchronized String getNextClassName() {
+		return BASE_PACKAGE + ".CB" + counter++;
 	}
 
 	/**
@@ -222,7 +233,7 @@ public class CodeBlockJIT implements Opcodes {
 		execute.visitLabel(tryStart);
 		final ByteCodeSwitch bs = new ByteCodeSwitch(this, execute, ls);
 		final EList<Instruction> code = cb.getCode();
-		final boolean hasMonitor = env.getMonitor() != null;
+		final boolean hasMonitor = getEnv().getMonitor() != null;
 		for (Instruction instr : code) {
 			if (hasMonitor) {
 				// do checkMonitor() before each instruction
