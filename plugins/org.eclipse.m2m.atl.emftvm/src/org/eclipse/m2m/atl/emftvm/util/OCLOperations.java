@@ -12,6 +12,8 @@
 package org.eclipse.m2m.atl.emftvm.util;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1510,6 +1512,17 @@ public final class OCLOperations {
 						}
 					}
 		});
+		createOperation(false, "toDate", Types.STRING_TYPE, Types.OCL_ANY_TYPE, new String[][][] { { { "format" }, Types.STRING_TYPE } },
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						try {
+							return new SimpleDateFormat((String) frame.getLocal(1)).parse((String) frame.getLocal(0));
+						} catch (ParseException e) {
+							throw new VMException(frame, e);
+						}
+					}
+				});
 	}
 
 	/**

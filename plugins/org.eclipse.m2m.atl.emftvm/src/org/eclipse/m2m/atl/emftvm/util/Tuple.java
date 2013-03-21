@@ -11,8 +11,12 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.util;
 
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Reflective, immutable implementation of OCL Tuples.
@@ -85,5 +89,93 @@ public final class Tuple {
 	 */
 	public Map<String, Object> asMap() {
 		return values;
+	}
+
+	/**
+	 * Returns a {@link Date} instance using the fields of this tuple. Supported fields: timezone, language, country, variant, year, month,
+	 * day_of_month, day_of_week, day_of_week_in_month, day_of_year, era, hour, hour_of_day, minute, second, millisecond, am_pm,
+	 * week_of_month, week_of_year.
+	 * 
+	 * @return a {@link Date} instance using the fields of this tuple
+	 * @see Calendar
+	 */
+	public Date toDate() {
+		TimeZone tz = null;
+		if (values.containsKey("timezone")) {
+			tz = TimeZone.getTimeZone((String) values.get("timezone"));
+		}
+
+		Locale locale = null;
+		if (values.containsKey("language")) {
+			if (values.containsKey("country")) {
+				if (values.containsKey("variant")) {
+					locale = new Locale((String) values.get("language"), (String) values.get("country"), (String) values.get("variant"));
+				} else {
+					locale = new Locale((String) values.get("language"), (String) values.get("country"));
+				}
+			} else {
+				locale = new Locale((String) values.get("language"));
+			}
+		}
+
+		final Calendar cal;
+		if (locale != null && tz != null) {
+			cal = Calendar.getInstance(tz, locale);
+		} else if (locale != null) {
+			cal = Calendar.getInstance(locale);
+		} else if (tz != null) {
+			cal = Calendar.getInstance(tz);
+		} else {
+			cal = Calendar.getInstance();
+		}
+		
+		cal.setTimeInMillis(0);
+		if (values.containsKey("year")) {
+			cal.set(Calendar.YEAR, (Integer) values.get("year"));
+		}
+		if (values.containsKey("month")) {
+			cal.set(Calendar.MONTH, (Integer) values.get("month"));
+		}
+		if (values.containsKey("day_of_month")) {
+			cal.set(Calendar.DAY_OF_MONTH, (Integer) values.get("day_of_month"));
+		}
+		if (values.containsKey("day_of_week")) {
+			cal.set(Calendar.DAY_OF_WEEK, (Integer) values.get("day_of_week"));
+		}
+		if (values.containsKey("day_of_week_in_month")) {
+			cal.set(Calendar.DAY_OF_WEEK_IN_MONTH, (Integer) values.get("day_of_week_in_month"));
+		}
+		if (values.containsKey("day_of_year")) {
+			cal.set(Calendar.DAY_OF_YEAR, (Integer) values.get("day_of_year"));
+		}
+		if (values.containsKey("era")) {
+			cal.set(Calendar.ERA, (Integer) values.get("era"));
+		}
+		if (values.containsKey("hour")) {
+			cal.set(Calendar.HOUR, (Integer) values.get("hour"));
+		}
+		if (values.containsKey("hour_of_day")) {
+			cal.set(Calendar.HOUR_OF_DAY, (Integer) values.get("hour_of_day"));
+		}
+		if (values.containsKey("minute")) {
+			cal.set(Calendar.MINUTE, (Integer) values.get("minute"));
+		}
+		if (values.containsKey("second")) {
+			cal.set(Calendar.SECOND, (Integer) values.get("second"));
+		}
+		if (values.containsKey("millisecond")) {
+			cal.set(Calendar.MILLISECOND, (Integer) values.get("millisecond"));
+		}
+		if (values.containsKey("am_pm")) {
+			cal.set(Calendar.AM_PM, (Integer) values.get("am_pm"));
+		}
+		if (values.containsKey("week_of_month")) {
+			cal.set(Calendar.WEEK_OF_MONTH, (Integer) values.get("week_of_month"));
+		}
+		if (values.containsKey("week_of_year")) {
+			cal.set(Calendar.WEEK_OF_YEAR, (Integer) values.get("week_of_year"));
+		}
+		
+		return cal.getTime();
 	}
 }

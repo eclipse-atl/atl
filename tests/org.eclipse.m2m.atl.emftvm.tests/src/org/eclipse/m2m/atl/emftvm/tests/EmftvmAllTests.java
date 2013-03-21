@@ -22,6 +22,8 @@ import org.eclipse.m2m.atl.emftvm.util.tests.LazyListOnListTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyListTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyOrderedSetTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazySetTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.OCLOperationsTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.TupleTest;
 
 /**
  * <!-- begin-user-doc -->
@@ -56,6 +58,8 @@ public class EmftvmAllTests extends TestSuite {
 		suite.addTestSuite(LazySetTest.class);
 		suite.addTestSuite(LazyOrderedSetTest.class);
 		suite.addTestSuite(ExecEnvPoolTest.class);
+		suite.addTestSuite(OCLOperationsTest.class);
+		suite.addTestSuite(TupleTest.class);
 		return suite;
 	}
 
