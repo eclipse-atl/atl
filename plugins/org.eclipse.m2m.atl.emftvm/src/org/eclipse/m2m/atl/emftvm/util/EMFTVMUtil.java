@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -1527,6 +1528,61 @@ public final class EMFTVMUtil {
 	
 		cacheMethod(context, sig, ret);
 	
+		return ret;
+	}
+
+	/**
+	 * Looks for a native Java constructor.
+	 * 
+	 * @param context
+	 *            The class of the method
+	 * @param argumentTypes
+	 *            The types of all arguments
+	 * @return the constructor if found, <code>null</code> otherwise
+	 * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
+	 */
+	public static Constructor<?> findConstructor(final Class<?> context, final Class<?>[] argTypes) {
+		if (context == Void.TYPE) {
+			return null; // Java methods cannot be invoked on null, or defined on Void
+		}
+
+		Constructor<?> ret = null;
+
+		final Constructor<?>[] constructors = context.getConstructors();
+		CONSTRUCTOR:
+		for (int i = 0; i < constructors.length; i++) {
+			Constructor<?> constructor = constructors[i];
+			Class<?>[] pts = constructor.getParameterTypes();
+			if (pts.length == argTypes.length) {
+				boolean ok = true;
+				for (int j = 0; (j < pts.length) && ok; j++) {
+					if (argTypes[j] == EnumLiteral.class && Enumerator.class.isAssignableFrom(pts[j])) {
+						continue;
+					}
+					if (!pts[j].isAssignableFrom(argTypes[j])) {
+						if (pts[j] == boolean.class)
+							ok = argTypes[j] == Boolean.class;
+						else if (pts[j] == int.class)
+							ok = argTypes[j] == Integer.class;
+						else if (pts[j] == char.class)
+							ok = argTypes[j] == Character.class;
+						else if (pts[j] == long.class)
+							ok = argTypes[j] == Long.class;
+						else if (pts[j] == float.class)
+							ok = argTypes[j] == Float.class;
+						else if (pts[j] == double.class)
+							ok = argTypes[j] == Double.class;
+						else
+							ok = argTypes[j] == Void.TYPE; // any type
+					}
+				}
+				if (ok) {
+					ret = constructor;
+					break CONSTRUCTOR;
+				}
+			}
+		}
+
 		return ret;
 	}
 

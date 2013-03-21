@@ -20,6 +20,7 @@ import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.Feature;
 import org.eclipse.m2m.atl.emftvm.Operation;
 import org.eclipse.m2m.atl.emftvm.Parameter;
+import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.OCLOperations;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.Types;
@@ -30,6 +31,19 @@ import org.eclipse.m2m.atl.emftvm.util.Types;
  * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class OCLOperationsTest extends TestCase {
+
+	/**
+	 * Tests Class::refNewInstance(args : Sequence)
+	 */
+	public void testClassRefNewInstance() {
+		final Operation refNewInstance = findOperation("refNewInstance", Types.JAVA_CLASS_TYPE, new String[][] { Types.SEQUENCE_TYPE }, false);
+		assertNotNull(refNewInstance);
+		final StackFrame frame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), refNewInstance.getBody());
+		final long currentTimeMillis = System.currentTimeMillis();
+		frame.setLocals(new Object[] { Date.class, new LazyList<Object>().append(currentTimeMillis) });
+		final Date date = (Date) refNewInstance.getBody().execute(frame);
+		assertEquals(currentTimeMillis, date.getTime());
+	}
 
 	/**
 	 * Tests String::toDate(format : String)

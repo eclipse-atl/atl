@@ -12,6 +12,8 @@
 package org.eclipse.m2m.atl.emftvm.util;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -952,6 +954,33 @@ public final class OCLOperations {
 						final List<?> args = (List<?>)frame.getLocal(0, 2);
 						return EMFTVMUtil.invokeNativeStatic(frame, c, opname, args.toArray());
 					}
+		});
+		createOperation(false, "refNewInstance", Types.JAVA_CLASS_TYPE, Types.OCL_ANY_TYPE, new String[][][] { { { "arguments" },
+				Types.SEQUENCE_TYPE } }, new NativeCodeBlock() {
+			@Override
+			public Object execute(final StackFrame frame) {
+				final Class<?> c = (Class<?>) frame.getLocal(0, 0);
+				final Object[] args = ((List<?>) frame.getLocal(0, 1)).toArray();
+				final Constructor<?> constructor = EMFTVMUtil.findConstructor(c, EMFTVMUtil.getArgumentClasses(args));
+				if (constructor != null) {
+					try {
+						return EMFTVMUtil.emf2vm(frame.getEnv(), null, constructor.newInstance(args));
+					} catch (InvocationTargetException e) {
+						final Throwable target = e.getTargetException();
+						if (target instanceof VMException) {
+							throw (VMException) target;
+						} else {
+							throw new VMException(frame, target);
+						}
+					} catch (VMException e) {
+						throw e;
+					} catch (Exception e) {
+						throw new VMException(frame, e);
+					}
+				}
+				throw new UnsupportedOperationException(String.format("%s::<init>(%s)", EMFTVMUtil.getTypeName(frame.getEnv(), c),
+						EMFTVMUtil.getTypeNames(frame.getEnv(), EMFTVMUtil.getArgumentTypes(args))));
+			}
 		});
 		/////////////////////////////////////////////////////////////////////
 		// Real
