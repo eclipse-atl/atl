@@ -20,10 +20,6 @@ import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
-import org.eclipse.m2m.atl.emftvm.Feature;
-import org.eclipse.m2m.atl.emftvm.Operation;
-import org.eclipse.m2m.atl.emftvm.Parameter;
-import org.eclipse.m2m.atl.emftvm.util.OCLOperations;
 import org.eclipse.m2m.atl.emftvm.util.Tuple;
 
 /**
@@ -34,7 +30,7 @@ import org.eclipse.m2m.atl.emftvm.util.Tuple;
 public class TupleTest extends TestCase {
 
 	/**
-	 * Tests String::toDate(format : String)
+	 * Tests String::toDate(format : String) : Date.
 	 */
 	public void testToDate() {
 		final Map<String, Object> values = new HashMap<String, Object>();
@@ -60,40 +56,27 @@ public class TupleTest extends TestCase {
 	}
 
 	/**
-	 * Finds the {@link Operation} with the given details.
-	 * 
-	 * @param name
-	 *            the operation name
-	 * @param context
-	 *            the context model and type
-	 * @param parameters
-	 *            the array of parameter models and types
-	 * @param isStatic
-	 *            whether the operation is static
-	 * @return the {@link Operation} with the given details or <code>null</code> if not found
+	 * Tests Tuple::fromCalendar(cal : Calendar) : Tuple.
 	 */
-	protected Operation findOperation(final String name, final String[] context, final String[][] parameters, final boolean isStatic) {
-		final OCLOperations oclOps = OCLOperations.getInstance();
-		for (Feature f : oclOps.getOclModule().getFeatures()) {
-			if (f instanceof Operation) {
-				Operation op = (Operation) f;
-				if (op.getName().equals(name) && op.isStatic() == isStatic && op.getContextModel().equals(context[0])
-						&& op.getContext().equals(context[1]) && op.getParameters().size() == parameters.length) {
-					boolean parMatch = true;
-					for (int i = 0; i < op.getParameters().size(); i++) {
-						Parameter p = op.getParameters().get(i);
-						if (!p.getTypeModel().equals(parameters[i][0]) || !p.getType().equals(parameters[i][1])) {
-							parMatch = false;
-							break;
-						}
-					}
-					if (parMatch) {
-						return op;
-					}
-				}
-			}
-		}
-		return null;
+	public void testFromCalendar() {
+		final Calendar cal = Calendar.getInstance();
+		final Tuple tuple = Tuple.fromCalendar(cal);
+		assertEquals(tuple.get("timezone"), cal.getTimeZone().getID());
+		assertEquals(tuple.get("year"), cal.get(Calendar.YEAR));
+		assertEquals(tuple.get("month"), cal.get(Calendar.MONTH));
+		assertEquals(tuple.get("day_of_month"), cal.get(Calendar.DAY_OF_MONTH));
+		assertEquals(tuple.get("day_of_week"), cal.get(Calendar.DAY_OF_WEEK));
+		assertEquals(tuple.get("day_of_week_in_month"), cal.get(Calendar.DAY_OF_WEEK_IN_MONTH));
+		assertEquals(tuple.get("day_of_year"), cal.get(Calendar.DAY_OF_YEAR));
+		assertEquals(tuple.get("era"), cal.get(Calendar.ERA));
+		assertEquals(tuple.get("hour"), cal.get(Calendar.HOUR));
+		assertEquals(tuple.get("hour_of_day"), cal.get(Calendar.HOUR_OF_DAY));
+		assertEquals(tuple.get("minute"), cal.get(Calendar.MINUTE));
+		assertEquals(tuple.get("second"), cal.get(Calendar.SECOND));
+		assertEquals(tuple.get("millisecond"), cal.get(Calendar.MILLISECOND));
+		assertEquals(tuple.get("am_pm"), cal.get(Calendar.AM_PM));
+		assertEquals(tuple.get("week_of_month"), cal.get(Calendar.WEEK_OF_MONTH));
+		assertEquals(tuple.get("week_of_year"), cal.get(Calendar.WEEK_OF_YEAR));
 	}
 
 }

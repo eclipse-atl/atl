@@ -16,13 +16,16 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -1541,7 +1544,8 @@ public final class OCLOperations {
 						}
 					}
 		});
-		createOperation(false, "toDate", Types.STRING_TYPE, Types.OCL_ANY_TYPE, new String[][][] { { { "format" }, Types.STRING_TYPE } },
+		createOperation(false, "toDate", Types.STRING_TYPE, Types.JAVA_DATE_TYPE, 
+				new String[][][]{{{"format"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -1550,6 +1554,36 @@ public final class OCLOperations {
 						} catch (ParseException e) {
 							throw new VMException(frame, e);
 						}
+					}
+				});
+		/////////////////////////////////////////////////////////////////////
+		// Date
+		/////////////////////////////////////////////////////////////////////
+		createOperation(false, "toString", Types.JAVA_DATE_TYPE, Types.STRING_TYPE, 
+				new String[][][]{{{"format" }, Types.STRING_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						return new SimpleDateFormat((String) frame.getLocal(1)).format((Date) frame.getLocal(0));
+					}
+				});
+		createOperation(false, "toTuple", Types.JAVA_DATE_TYPE, Types.TUPLE_TYPE, new String[][][]{},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						final Calendar cal = Calendar.getInstance();
+						cal.setTime((Date) frame.getLocal(0));
+						return Tuple.fromCalendar(cal);
+					}
+				});
+		createOperation(false, "toTuple", Types.JAVA_DATE_TYPE, Types.TUPLE_TYPE, 
+				new String[][][]{{{"timezone"}, Types.STRING_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone((String) frame.getLocal(1)));
+						cal.setTime((Date) frame.getLocal(0));
+						return Tuple.fromCalendar(cal);
 					}
 				});
 	}

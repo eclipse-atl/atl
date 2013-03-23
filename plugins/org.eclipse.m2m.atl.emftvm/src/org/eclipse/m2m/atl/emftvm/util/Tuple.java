@@ -14,23 +14,56 @@ package org.eclipse.m2m.atl.emftvm.util;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
 /**
  * Reflective, immutable implementation of OCL Tuples.
+ * 
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public final class Tuple {
 
 	/**
 	 * Creates a new {@link Tuple} from <code>map</code>.
-	 * @param map the {@link Map} with tuple data
+	 * 
+	 * @param map
+	 *            the {@link Map} with tuple data
 	 * @return a new {@link Tuple} from <code>map</code>
 	 */
 	public static Tuple fromMap(final Map<String, Object> map) {
 		return new Tuple(map);
+	}
+
+	/**
+	 * Returns a new {@link Tuple} from <code>cal</code>. Supported fields: timezone, year, month, day_of_month, day_of_week, day_of_week_in_month,
+	 * day_of_year, era, hour, hour_of_day, minute, second, millisecond, am_pm, week_of_month, week_of_year.
+	 * 
+	 * @param cal
+	 *            the input {@link Calendar}
+	 * @return a new {@link Tuple} from <code>cal</code>
+	 */
+	public static Tuple fromCalendar(final Calendar cal) {
+		final Map<String, Object> values = new HashMap<String, Object>();
+		values.put("timezone", cal.getTimeZone().getID());
+		values.put("year", cal.get(Calendar.YEAR));
+		values.put("month", cal.get(Calendar.MONTH));
+		values.put("day_of_month", cal.get(Calendar.DAY_OF_MONTH));
+		values.put("day_of_week", cal.get(Calendar.DAY_OF_WEEK));
+		values.put("day_of_week_in_month", cal.get(Calendar.DAY_OF_WEEK_IN_MONTH));
+		values.put("day_of_year", cal.get(Calendar.DAY_OF_YEAR));
+		values.put("era", cal.get(Calendar.ERA));
+		values.put("hour", cal.get(Calendar.HOUR));
+		values.put("hour_of_day", cal.get(Calendar.HOUR_OF_DAY));
+		values.put("minute", cal.get(Calendar.MINUTE));
+		values.put("second", cal.get(Calendar.SECOND));
+		values.put("millisecond", cal.get(Calendar.MILLISECOND));
+		values.put("am_pm", cal.get(Calendar.AM_PM));
+		values.put("week_of_month", cal.get(Calendar.WEEK_OF_MONTH));
+		values.put("week_of_year", cal.get(Calendar.WEEK_OF_YEAR));
+		return new Tuple(values);
 	}
 
 	private final Map<String, Object> values;
@@ -44,7 +77,9 @@ public final class Tuple {
 
 	/**
 	 * Creates a new {@link Tuple} initialized with the given <code>map</code>.
-	 * @param map the map with tuple key-value pairs
+	 * 
+	 * @param map
+	 *            the map with tuple key-value pairs
 	 */
 	public Tuple(Map<String, Object> map) {
 		values = Collections.unmodifiableMap(map);
@@ -52,7 +87,9 @@ public final class Tuple {
 
 	/**
 	 * Returns the value for <code>name</code>.
-	 * @param name the element name
+	 * 
+	 * @param name
+	 *            the element name
 	 * @return the value for <code>name</code>
 	 */
 	public Object get(Object name) {
@@ -72,7 +109,7 @@ public final class Tuple {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		return (o instanceof Tuple) ? values.equals(((Tuple)o).values) : false;
+		return (o instanceof Tuple) ? values.equals(((Tuple) o).values) : false;
 	}
 
 	/**
@@ -85,6 +122,7 @@ public final class Tuple {
 
 	/**
 	 * Returns this {@link Tuple}'s value map.
+	 * 
 	 * @return this {@link Tuple}'s value map
 	 */
 	public Map<String, Object> asMap() {
@@ -128,7 +166,7 @@ public final class Tuple {
 		} else {
 			cal = Calendar.getInstance();
 		}
-		
+
 		cal.setTimeInMillis(0);
 		if (values.containsKey("year")) {
 			cal.set(Calendar.YEAR, (Integer) values.get("year"));
@@ -175,7 +213,7 @@ public final class Tuple {
 		if (values.containsKey("week_of_year")) {
 			cal.set(Calendar.WEEK_OF_YEAR, (Integer) values.get("week_of_year"));
 		}
-		
+
 		return cal.getTime();
 	}
 }
