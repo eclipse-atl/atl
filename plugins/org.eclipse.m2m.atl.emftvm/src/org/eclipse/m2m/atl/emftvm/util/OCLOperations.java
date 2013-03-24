@@ -1556,15 +1556,37 @@ public final class OCLOperations {
 						}
 					}
 				});
+		createOperation(false, "toDate", Types.STRING_TYPE, Types.JAVA_DATE_TYPE, 
+				new String[][][]{{{"format"}, Types.STRING_TYPE}, {{"locale"}, Types.STRING_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						try {
+							return new SimpleDateFormat((String) frame.getLocal(1), EMFTVMUtil.getLocale((String) frame.getLocal(2)))
+									.parse((String) frame.getLocal(0));
+						} catch (ParseException e) {
+							throw new VMException(frame, e);
+						}
+					}
+				});
 		/////////////////////////////////////////////////////////////////////
 		// Date
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "toString", Types.JAVA_DATE_TYPE, Types.STRING_TYPE, 
-				new String[][][]{{{"format" }, Types.STRING_TYPE}},
+				new String[][][]{{{"format"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return new SimpleDateFormat((String) frame.getLocal(1)).format((Date) frame.getLocal(0));
+					}
+				});
+		createOperation(false, "toString", Types.JAVA_DATE_TYPE, Types.STRING_TYPE, 
+				new String[][][]{{{"format"}, Types.STRING_TYPE}, {{"locale"}, Types.STRING_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						return new SimpleDateFormat((String) frame.getLocal(1), EMFTVMUtil.getLocale((String) frame.getLocal(2)))
+								.format((Date) frame.getLocal(0));
 					}
 				});
 		createOperation(false, "toTuple", Types.JAVA_DATE_TYPE, Types.TUPLE_TYPE, new String[][][]{},

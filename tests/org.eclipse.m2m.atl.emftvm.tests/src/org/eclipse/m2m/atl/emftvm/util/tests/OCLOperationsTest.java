@@ -71,6 +71,26 @@ public class OCLOperationsTest extends TestCase {
 	}
 
 	/**
+	 * Tests String::toDate(format : String, locale : String).
+	 */
+	public void testStringToDate_Format_Locale() {
+		final Operation toDate = findOperation("toDate", Types.STRING_TYPE, new String[][] { Types.STRING_TYPE, Types.STRING_TYPE }, false);
+		assertNotNull(toDate);
+		final StackFrame frame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), toDate.getBody());
+		frame.setLocals(new Object[] { "3 maart 2013 13:25", "d MMMMM yyyy HH:mm", "nl_BE" });
+		final Date date = (Date) toDate.getBody().execute(frame);
+		final Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		assertEquals(2013, cal.get(Calendar.YEAR));
+		assertEquals(Calendar.MARCH, cal.get(Calendar.MONTH));
+		assertEquals(3, cal.get(Calendar.DAY_OF_MONTH));
+		assertEquals(13, cal.get(Calendar.HOUR_OF_DAY));
+		assertEquals(25, cal.get(Calendar.MINUTE));
+		assertEquals(0, cal.get(Calendar.SECOND));
+		assertEquals(0, cal.get(Calendar.MILLISECOND));
+	}
+
+	/**
 	 * Tests Date::toString(format : String).
 	 * 
 	 * @throws ParseException
@@ -83,6 +103,22 @@ public class OCLOperationsTest extends TestCase {
 		frame.setLocals(new Object[] { date, "dd/MM/yyyy HH:mm" });
 		final String dateString = (String) toString.getBody().execute(frame);
 		assertEquals("03/03/2013 13:25", dateString);
+	}
+
+	/**
+	 * Tests Date::toString(format : String, locale : String).
+	 * 
+	 * @throws ParseException
+	 */
+	public void testDateToString_Format_Locale() throws ParseException {
+		final Date date = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse("03/03/2013 13:25");
+		final Operation toString = findOperation("toString", Types.JAVA_DATE_TYPE, new String[][] { Types.STRING_TYPE, Types.STRING_TYPE },
+				false);
+		assertNotNull(toString);
+		final StackFrame frame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), toString.getBody());
+		frame.setLocals(new Object[] { date, "d MMMMM yyyy HH:mm", "nl_BE" });
+		final String dateString = (String) toString.getBody().execute(frame);
+		assertEquals("3 maart 2013 13:25", dateString);
 	}
 
 	/**

@@ -35,7 +35,7 @@ public class TupleTest extends TestCase {
 	public void testToDate() {
 		final Map<String, Object> values = new HashMap<String, Object>();
 		values.put("timezone", "CET");
-		values.put("language", "NL");
+		values.put("language", "nl");
 		values.put("country", "BE");
 		values.put("year", Integer.valueOf(2013));
 		values.put("month", Integer.valueOf(Calendar.MARCH));
@@ -44,7 +44,7 @@ public class TupleTest extends TestCase {
 		values.put("minute", Integer.valueOf(25));
 		final Tuple tuple = new Tuple(values);
 		final Date date = tuple.toDate();
-		final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("CET"), new Locale("NL", "BE"));
+		final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("CET"), new Locale("nl", "BE"));
 		cal.setTime(date);
 		assertEquals(2013, cal.get(Calendar.YEAR));
 		assertEquals(Calendar.MARCH, cal.get(Calendar.MONTH));

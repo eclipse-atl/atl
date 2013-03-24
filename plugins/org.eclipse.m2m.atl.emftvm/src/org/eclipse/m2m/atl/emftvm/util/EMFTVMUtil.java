@@ -26,7 +26,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.WeakHashMap;
 import java.util.regex.Pattern;
 
@@ -1905,8 +1907,7 @@ public final class EMFTVMUtil {
 	 * @throws IllegalArgumentException 
 	 */
 	@SuppressWarnings("unchecked")
-	public
-	static LazyList<Object> getTrans(final Object object, 
+	public static LazyList<Object> getTrans(final Object object, 
 			final java.lang.reflect.Field field, 
 			final LazyList<Object> result) throws IllegalArgumentException, IllegalAccessException {
 		if (!field.getDeclaringClass().isAssignableFrom(object.getClass())) {
@@ -1973,6 +1974,25 @@ public final class EMFTVMUtil {
 			}
 		}
 		return literal;
+	}
+
+	/**
+	 * Returns the {@link Locale} for the given <code>locale</code> string.
+	 * @param locale the locale string (e.g. "nl_BE", "es_ES_Traditional_WIN")
+	 * @return the {@link Locale} for the given <code>locale</code> string
+	 */
+	public static Locale getLocale(final String locale) {
+		final StringTokenizer st = new StringTokenizer(locale, "_");
+		final String language = st.nextToken();
+		if (st.hasMoreTokens()) {
+			final String country = st.nextToken();
+			if (st.hasMoreTokens()) {
+				final String variant = st.nextToken("\n");
+				return new Locale(language, country, variant);
+			}
+			return new Locale(language, country);
+		}
+		return new Locale(language);
 	}
 
 }

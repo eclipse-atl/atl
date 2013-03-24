@@ -130,7 +130,7 @@ public final class Tuple {
 	}
 
 	/**
-	 * Returns a {@link Date} instance using the fields of this tuple. Supported fields: timezone, language, country, variant, year, month,
+	 * Returns a {@link Date} instance using the fields of this tuple. Supported fields: timezone, locale, year, month,
 	 * day_of_month, day_of_week, day_of_week_in_month, day_of_year, era, hour, hour_of_day, minute, second, millisecond, am_pm,
 	 * week_of_month, week_of_year.
 	 * 
@@ -144,16 +144,8 @@ public final class Tuple {
 		}
 
 		Locale locale = null;
-		if (values.containsKey("language")) {
-			if (values.containsKey("country")) {
-				if (values.containsKey("variant")) {
-					locale = new Locale((String) values.get("language"), (String) values.get("country"), (String) values.get("variant"));
-				} else {
-					locale = new Locale((String) values.get("language"), (String) values.get("country"));
-				}
-			} else {
-				locale = new Locale((String) values.get("language"));
-			}
+		if (values.containsKey("locale")) {
+			locale = EMFTVMUtil.getLocale((String) values.get("locale"));
 		}
 
 		final Calendar cal;
