@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2013 Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.eclipse.emf.common.util.Enumerator;
 
@@ -52,9 +51,11 @@ public class EnumConversionList extends LazyList<Object> {
 
 	/**
 	 * Creates a new {@link EnumConversionList} around <code>dataSource</code>.
-	 * @param dataSource the list to wrap
+	 * 
+	 * @param dataSource
+	 *            the collection to wrap
 	 */
-	public EnumConversionList(List<Object> dataSource) {
+	public EnumConversionList(Collection<Object> dataSource) {
 		super(dataSource);
 	}
 
@@ -93,32 +94,6 @@ public class EnumConversionList extends LazyList<Object> {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Object get(final int index) {
-		if (index < cache.size()) {
-			return ((List<Object>)cache).get(index);
-		}
-		return convert(((List<Object>)dataSource).get(index));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Object last() {
-		final int size = size();
-		if (size < 1) {
-			throw new NoSuchElementException();
-		}
-		if (dataSource == null) {
-			return ((List<Object>)cache).get(size - 1);
-		}
-		return convert(((List<Object>)dataSource).get(size - 1));
-	}
-
-	/**
 	 * Forces cache completion.
 	 * @return this list
 	 */
@@ -129,7 +104,7 @@ public class EnumConversionList extends LazyList<Object> {
 				for (Object o : dataSource) {
 					cache.add(convert(o));
 				}
-				assert cache.size() == ((List<?>)dataSource).size();
+				assert cache.size() == ((Collection<?>) dataSource).size();
 				dataSource = null;
 			}
 		}
@@ -145,7 +120,7 @@ public class EnumConversionList extends LazyList<Object> {
 			this.cache = Collections.emptyList(); // dataSource == null; cache complete
 			this.occurrences = Collections.emptyMap();
 		} else {
-			this.cache = new ArrayList<Object>(((List<Object>)dataSource).size());
+			this.cache = new ArrayList<Object>(((Collection<Object>) dataSource).size());
 		}
 		assert this.cache instanceof List<?>;
 	}

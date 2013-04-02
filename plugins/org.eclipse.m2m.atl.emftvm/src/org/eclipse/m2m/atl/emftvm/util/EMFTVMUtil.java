@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.WeakHashMap;
 import java.util.regex.Pattern;
@@ -361,10 +362,15 @@ public final class EMFTVMUtil {
 		if (sf instanceof EReference) {
 			// EReferences need only EList conversion, notably not EnumLiteral conversion
 			final Object value = eo.eGet(sf);
-			if (value instanceof EList<?>) {
-				return new LazyListOnList<Object>((EList<Object>)value);
+			if (value instanceof Collection<?>) {
+				if (value instanceof List<?>) {
+					return new LazyListOnList<Object>((List<Object>) value);
+				} else if (value instanceof Set<?>) {
+					return new LazySetOnSet<Object>((Set<Object>) value);
+				} else {
+					return new LazyListOnCollection<Object>((Collection<Object>) value);
+				}
 			}
-			assert !(value instanceof Collection<?>); // All EMF collections should be ELists
 			return value;
 		} else {
 			return emf2vm(env, eo, eo.eGet(sf));
@@ -382,17 +388,33 @@ public final class EMFTVMUtil {
 	public static Object emf2vm(final ExecEnv env, final EObject eo, final Object value) {
 		if (value instanceof Enumerator) {
 			return new EnumLiteral(value.toString());
-		} else if (value instanceof EList<?>) {
-			if (eo != null && env.getInoutModelOf(eo) != null) {
-				//Copy list for inout models
-				return new EnumConversionList((EList<Object>)value).cache();
+		} else if (value instanceof Collection<?>) {
+			if (value instanceof List<?>) {
+				if (eo != null && env.getInoutModelOf(eo) != null) {
+					// Copy list for inout models
+					return new EnumConversionListOnList((List<Object>) value).cache();
+				} else {
+					return new EnumConversionListOnList((List<Object>) value);
+				}
+			} else if (value instanceof Set<?>) {
+				if (eo != null && env.getInoutModelOf(eo) != null) {
+					// Copy list for inout models
+					return new EnumConversionList((Set<Object>) value).cache().asSet();
+				} else {
+					return new EnumConversionList((Set<Object>) value).asSet();
+				}
 			} else {
-				return new EnumConversionList((EList<Object>)value);
+				if (eo != null && env.getInoutModelOf(eo) != null) {
+					// Copy list for inout models
+					return new EnumConversionList((Collection<Object>) value).cache();
+				} else {
+					return new EnumConversionList((Collection<Object>) value);
+				}
 			}
 		} else if (value != null && value.getClass().isArray()) {
 			return new LazyListOnList<Object>(Arrays.asList((Object[])value));
 		}
-		assert eo == null || !(value instanceof Collection<?>); // All EMF collections should be ELists
+		assert eo == null || !(value instanceof Collection<?>);
 		return value;
 	}
 
@@ -560,13 +582,12 @@ public final class EMFTVMUtil {
 	 * @param eo
 	 * @param sf
 	 * @param value
-	 * @param index the insertion index (-1 for end)
 	 */
 	@SuppressWarnings("unchecked")
 	private static void setMany(final ExecEnv env, final EObject eo, 
 			final EStructuralFeature sf, final Collection<?> value) {
 		assert sf.isMany();
-		final EList<Object> values = (EList<Object>)eo.eGet(sf);
+		final Collection<Object> values = (Collection<Object>) eo.eGet(sf);
 		if (!values.isEmpty()) {
 			if (sf instanceof EReference) {
 				final List<Object> vCopy = new ArrayList<Object>(values);
@@ -594,7 +615,7 @@ public final class EMFTVMUtil {
 			final EStructuralFeature sf, final Object value, final int index) {
 		assert sf.isMany();
 		final EClassifier sfType = sf.getEType();
-		final EList<Object> values = (EList<Object>)eo.eGet(sf); // All EMF collections are ELists
+		final Collection<Object> values = (Collection<Object>) eo.eGet(sf); // All EMF collections are ELists
 		if (sfType instanceof EEnum) {
 			addEnumValue((EEnum)sfType, values, value, index);
 		} else if (sf instanceof EReference) {
@@ -602,7 +623,7 @@ public final class EMFTVMUtil {
 			addRefValue(env, ref, eo, values, (EObject)value, index, 
 					isAllowInterModelReferences(env, eo));
 		} else if (index > -1) {
-			values.add(index, value);
+			((List<Object>) values).add(index, value);
 		} else {
 			values.add(value);
 		}
@@ -622,7 +643,7 @@ public final class EMFTVMUtil {
 			final EStructuralFeature sf, final Collection<?> value, final int index) {
 		assert sf.isMany();
 		final EClassifier sfType = sf.getEType();
-		final EList<Object> values = (EList<Object>)eo.eGet(sf);
+		final Collection<Object> values = (Collection<Object>) eo.eGet(sf);
 		if (sfType instanceof EEnum) {
 			final EEnum eEnum = (EEnum)sfType;
 			if (index > -1) {
@@ -650,7 +671,7 @@ public final class EMFTVMUtil {
 				}
 			}
 		} else if (index > -1) {
-			values.addAll(index, value);
+			((List<Object>) values).addAll(index, value);
 		} else {
 			values.addAll(value);
 		}
@@ -720,7 +741,7 @@ public final class EMFTVMUtil {
 	 * @param index the insertion index (-1 for end)
 	 */
 	private static void addEnumValue(final EEnum eEnum, 
-			final EList<Object> values, final Object v, final int index) {
+			final Collection<Object> values, final Object v, final int index) {
 		final Object v2;
 		if (v instanceof EnumLiteral) {
 			v2 = ((EnumLiteral)v).getEnumerator(eEnum);
@@ -728,7 +749,7 @@ public final class EMFTVMUtil {
 			v2 = v;
 		}
 		if (index > -1) {
-			values.add(index, v2);
+			((List<Object>) values).add(index, v2);
 		} else {
 			values.add(v2);
 		}
@@ -762,13 +783,13 @@ public final class EMFTVMUtil {
 	 * @param allowInterModelReferences
 	 */
 	private static void addRefValue(final ExecEnv env, final EReference ref, final EObject eo,
-			final EList<Object> values, final EObject v, final int index,
+			final Collection<Object> values, final EObject v, final int index,
 			final boolean allowInterModelReferences) {
 		assert eo.eResource() != null;
 		assert v.eResource() != null;
 		if (checkValue(env, eo, ref, v, allowInterModelReferences)) {
 			if (index > -1) {
-				values.add(index, v);
+				((List<Object>) values).add(index, v);
 			} else {
 				values.add(v);
 			}
@@ -787,7 +808,7 @@ public final class EMFTVMUtil {
 	 * @param v
 	 */
 	private static void removeRefValue(final EReference ref, final EObject eo,
-			final EList<Object> values, final EObject v) {
+			final Collection<Object> values, final EObject v) {
 		assert eo.eResource() != null;
 		assert v.eResource() != null;
 		if (values.remove(v)) {

@@ -12,26 +12,16 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
-import org.eclipse.emf.compare.diff.metamodel.DiffModel;
-import org.eclipse.emf.compare.diff.metamodel.ReferenceOrderChange;
-import org.eclipse.emf.compare.diff.service.DiffService;
-import org.eclipse.emf.compare.match.MatchOptions;
-import org.eclipse.emf.compare.match.metamodel.MatchModel;
-import org.eclipse.emf.compare.match.service.MatchService;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -138,7 +128,7 @@ import org.osgi.framework.Bundle;
  * </p>
  * @generated
  */
-public class ExecEnvTest extends TestCase {
+public class ExecEnvTest extends EMFTVMTest {
 	
 	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.tests";
 	public static final String PLUGIN_URI = "platform:/plugin/" + PLUGIN_ID;
@@ -166,30 +156,6 @@ public class ExecEnvTest extends TestCase {
 	 */
 	public static void main(String[] args) {
 		TestRunner.run(ExecEnvTest.class);
-	}
-
-	/**
-	 * Asserts that leftResource and rightResource are equal. Uses EMF Compare.
-	 * @param leftObject
-	 * @param rightObject
-	 * @throws InterruptedException 
-	 */
-	public static void assertEquals(Resource leftResource, Resource rightResource)
-	throws InterruptedException {
-		final Map<String, Object> options = new HashMap<String, Object>();
-		options.put(MatchOptions.OPTION_IGNORE_XMI_ID, Boolean.TRUE);
-		final MatchModel match = MatchService.doResourceMatch(leftResource, rightResource, options);
-		assertTrue(match.getUnmatchedElements().isEmpty());
-		if (!leftResource.getContents().isEmpty()) {
-			assertFalse(match.getMatchedElements().isEmpty());
-		}
-		final DiffModel diff = DiffService.doDiff(match);
-		assertTrue(diff.getOwnedElements().size() == 1);
-		for (Iterator<EObject> allContents = diff.eAllContents(); allContents.hasNext();) {
-			EObject de = allContents.next();
-			//allow only certain kinds of diff elements
-			assertTrue(de instanceof DiffGroup || de instanceof ReferenceOrderChange);
-		}
 	}
 
 	/**
@@ -1419,11 +1385,10 @@ public class ExecEnvTest extends TestCase {
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData) <em>Run</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData)
 	 * @generated NOT
 	 */
-	public void testRun__TimingData() throws InterruptedException {
+	public void testRun__TimingData() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ResourceSet rs = new ResourceSetImpl();
 
@@ -1517,11 +1482,10 @@ public class ExecEnvTest extends TestCase {
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData) <em>Run</em>}' operation. <!--
 	 * begin-user-doc --> Refining mode test. <!-- end-user-doc -->
 	 * 
-	 * @throws InterruptedException
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData)
 	 * @generated NOT
 	 */
-	public void testRun__RefiningMode() throws InterruptedException {
+	public void testRun__RefiningMode() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ResourceSet rs = new ResourceSetImpl();
 

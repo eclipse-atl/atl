@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.m2m.atl.emftvm.tests/src" modelPluginID="org.eclipse.m2m.atl.emftvm.tests"
+    modelName="Pojo" suppressInterfaces="true" importerID="org.eclipse.emf.importer.ecore"
+    bundleManifest="false" suppressNotification="true" complianceLevel="5.0" copyrightFields="false"
+    publicConstructors="true" language="">
+  <foreignModel>pojo.ecore</foreignModel>
+  <genPackages prefix="Pojo" basePackage="org.eclipse.m2m.atl.emftvm.tests" disposableProviderFactory="true"
+      ecorePackage="pojo.ecore#/">
+    <genClasses ecoreClass="pojo.ecore#//PojoA">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference pojo.ecore#//PojoA/bSet"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference pojo.ecore#//PojoA/bList"/>
+    </genClasses>
+    <genClasses ecoreClass="pojo.ecore#//PojoB"/>
+  </genPackages>
+</genmodel:GenModel>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="pojo" nsURI="http://www.eclipse.org/m2m/atl/emftvm/test/POJO/2013"
+    nsPrefix="pojo">
+  <eClassifiers xsi:type="ecore:EClass" name="PojoA">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bSet" ordered="false" upperBound="-1"
+        eType="#//PojoB"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bList" upperBound="-1"
+        eType="#//PojoB"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PojoB">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nameSet" ordered="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumList" upperBound="-1"
+        eType="#//TestEnum"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="TestEnum">
+    <eLiterals name="optionA"/>
+    <eLiterals name="optionB" value="1"/>
+  </eClassifiers>
+</ecore:EPackage>

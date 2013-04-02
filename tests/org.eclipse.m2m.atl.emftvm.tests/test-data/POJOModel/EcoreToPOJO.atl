@@ -1,0 +1,20 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+-- @path POJO=/org.eclipse.m2m.atl.emftvm.tests/test-data/POJOModel/pojo.ecore
+module EcoreToPOJO;
+
+create OUT : POJO from IN : ECORE;
+
+rule EClassToPojoA {
+	from s : ECORE!EClass
+	to t : POJO!PojoA (
+		bList <- s.eStructuralFeatures.debug('eStructuralFeatures to List'),
+		bSet <- s.eStructuralFeatures.debug('eStructuralFeatures to Set'))
+}
+
+rule EFeatureToPojoB {
+	from s : ECORE!EStructuralFeature
+	to t : POJO!PojoB (
+		nameSet <- Set{s.name},
+		enumList <- Sequence{#optionA, #optionB})
+}

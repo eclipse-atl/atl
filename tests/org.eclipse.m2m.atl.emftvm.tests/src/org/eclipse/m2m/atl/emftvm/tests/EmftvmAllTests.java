@@ -15,6 +15,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.eclipse.m2m.atl.emftvm.tests.pojo.PojoModelTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.ExecEnvPoolTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyBagTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyListOnCollectionTest;
@@ -60,6 +61,7 @@ public class EmftvmAllTests extends TestSuite {
 		suite.addTestSuite(ExecEnvPoolTest.class);
 		suite.addTestSuite(OCLOperationsTest.class);
 		suite.addTestSuite(TupleTest.class);
+		suite.addTestSuite(PojoModelTest.class);
 		return suite;
 	}
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:pojo="http://www.eclipse.org/m2m/atl/emftvm/test/POJO/2013">
+  <pojo:PojoA bSet="/2 /3" bList="/2 /3"/>
+  <pojo:PojoA bSet="/4 /5" bList="/4 /5"/>
+  <pojo:PojoB>
+    <nameSet>bSet</nameSet>
+    <enumList>optionA</enumList>
+    <enumList>optionB</enumList>
+  </pojo:PojoB>
+  <pojo:PojoB>
+    <nameSet>bList</nameSet>
+    <enumList>optionA</enumList>
+    <enumList>optionB</enumList>
+  </pojo:PojoB>
+  <pojo:PojoB>
+    <nameSet>nameSet</nameSet>
+    <enumList>optionA</enumList>
+    <enumList>optionB</enumList>
+  </pojo:PojoB>
+  <pojo:PojoB>
+    <nameSet>enumList</nameSet>
+    <enumList>optionA</enumList>
+    <enumList>optionB</enumList>
+  </pojo:PojoB>
+</xmi:XMI>
