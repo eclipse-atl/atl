@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.URI;
@@ -28,6 +29,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
@@ -101,7 +103,6 @@ public class PerformanceTest extends EMFTVMTest {
 		options.put("allowInterModelReferences", true);
 
 		for (int i = 0; i < TEST_COUNT; i++) {
-
 			final TimingData td = new TimingData();
 			final ILauncher launcher = CoreService.getLauncher("EMF-specific VM");
 			launcher.initialize(Collections.<String, Object> emptyMap());
@@ -134,6 +135,64 @@ public class PerformanceTest extends EMFTVMTest {
 		}
 
 		processTimings("PerformanceTest#testEMFVM_EcoreCopy", timings, 1);
+	}
+
+	/**
+	 * Tests Regular VM performance of <code>EcoreCopyASM.atl</code>.
+	 * 
+	 * @throws ATLCoreException
+	 * @throws IOException
+	 */
+	public void testRegularVM_EcoreCopy() throws ATLCoreException, IOException {
+		final SortedSet<Long> timings = new TreeSet<Long>();
+		final Map<String, Object> options = new HashMap<String, Object>();
+		options.put("allowInterModelReferences", true);
+		final Map<String, Object> inOptions = new HashMap<String, Object>();
+		inOptions.put("modelName", "IN");
+		inOptions.put("path", EMFTVM_PLUGIN_URI + "/model/emftvm.ecore");
+		inOptions.put("newModel", "false");
+		final Map<String, Object> outOptions = new HashMap<String, Object>();
+		outOptions.put("modelName", "OUT");
+		outOptions.put("path", "out.ecore");
+		outOptions.put("newModel", "true");
+
+		final Level logLevel = ATLLogger.getLogger().getLevel();
+		ATLLogger.getLogger().setLevel(Level.SEVERE);
+
+		for (int i = 0; i < TEST_COUNT; i++) {
+			final TimingData td = new TimingData();
+			final ILauncher launcher = CoreService.getLauncher("Regular VM");
+			launcher.initialize(Collections.<String, Object> emptyMap());
+			final ModelFactory mf = CoreService.getModelFactory(launcher.getDefaultModelFactoryName());
+			final IReferenceModel ecore = mf.getMetametamodel();
+			final IInjector injector = CoreService.getInjector(mf.getDefaultInjectorName());
+			final IModel in = mf.newModel(ecore, inOptions);
+			injector.inject(in, EMFTVM_PLUGIN_URI + "/model/emftvm.ecore");
+			final IModel out = mf.newModel(ecore, outOptions);
+			out.setIsTarget(true);
+
+			launcher.addInModel(ecore, "ECORE", "ECORE");
+			launcher.addInModel(in, "IN", "ECORE");
+			launcher.addOutModel(out, "OUT", "ECORE");
+			final InputStream is = bundle.getResource("/test-data/EcoreCopy/EcoreCopyASM.asm").openStream();
+			try {
+				final Object module = launcher.loadModule(is);
+				td.finishLoading();
+				launcher.launch(ILauncher.RUN_MODE, null, options, module);
+			} finally {
+				is.close();
+			}
+			td.finish();
+			LOG.fine(String.format("PerformanceTest#testRegularVM_EcoreCopy test %d %s", i, td));
+			timings.add(td.getFinished());
+
+			final Runtime runtime = Runtime.getRuntime();
+			LOG.fine(String.format("PerformanceTest#testRegularVM_EcoreCopy Heap space used for test %d: %d MB", i,
+					(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
+		}
+
+		ATLLogger.getLogger().setLevel(logLevel);
+		processTimings("PerformanceTest#testRegularVM_EcoreCopy", timings, 1);
 	}
 
 	/**
