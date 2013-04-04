@@ -17,6 +17,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
 import org.eclipse.emf.compare.diff.metamodel.DiffModel;
 import org.eclipse.emf.compare.diff.metamodel.ReferenceOrderChange;
@@ -26,6 +27,7 @@ import org.eclipse.emf.compare.match.metamodel.MatchModel;
 import org.eclipse.emf.compare.match.service.MatchService;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.osgi.framework.Bundle;
 
 /**
  * Abstract unit test base class for EMFTVM.
@@ -33,6 +35,17 @@ import org.eclipse.emf.ecore.resource.Resource;
  * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public abstract class EMFTVMTest extends TestCase {
+
+	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.tests";
+	public static final String PLUGIN_URI = "platform:/plugin/" + PLUGIN_ID;
+	public static final String EMFTVM_PLUGIN_ID = "org.eclipse.m2m.atl.emftvm";
+	public static final String EMFTVM_PLUGIN_URI = "platform:/plugin/" + EMFTVM_PLUGIN_ID;
+	public static final String COMPILER_PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.compiler";
+	public static final String COMPILER_PLUGIN_URI = "platform:/plugin/" + COMPILER_PLUGIN_ID;
+	public static final String COMMON_PLUGIN_ID = "org.eclipse.m2m.atl.common";
+	public static final String COMMON_PLUGIN_URI = "platform:/plugin/" + COMMON_PLUGIN_ID;
+
+	public static final Bundle bundle = Platform.getBundle(PLUGIN_ID);
 
 	/**
 	 * Asserts that leftResource and rightResource are equal. Uses EMF Compare.

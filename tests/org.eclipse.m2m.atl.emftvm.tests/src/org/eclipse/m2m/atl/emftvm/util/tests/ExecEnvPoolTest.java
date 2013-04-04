@@ -19,8 +19,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import junit.framework.TestCase;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -28,6 +26,7 @@ import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.tests.EMFTVMTest;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolverFactory;
 import org.eclipse.m2m.atl.emftvm.util.ExecEnvPool;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
@@ -39,10 +38,7 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
  * 
  * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
-public class ExecEnvPoolTest extends TestCase {
-
-	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.tests";
-	public static final String EMFTVM_PLUGIN_ID = "org.eclipse.m2m.atl.emftvm";
+public class ExecEnvPoolTest extends EMFTVMTest {
 
 	public static final int TEST_COUNT = 1000;
 
@@ -130,8 +126,7 @@ public class ExecEnvPoolTest extends TestCase {
 		final ExecEnvPool pool = new ExecEnvPool();
 		final ExecutorService execSvc = Executors.newFixedThreadPool(threadCount);
 
-		final ModuleResolverFactory mrf = new DefaultModuleResolverFactory(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/EcoreCopy/",
-				true).toString());
+		final ModuleResolverFactory mrf = new DefaultModuleResolverFactory(PLUGIN_URI + "/test-data/EcoreCopy/");
 		pool.setModuleResolverFactory(mrf);
 		pool.loadModule("EcoreCopy");
 

@@ -33,7 +33,7 @@ public class FibonacciNativeTest extends TestCase {
 		ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		env.setJitDisabled(true);
 		ResourceSet rs = new ResourceSetImpl();
-		ModuleResolver mr = new DefaultModuleResolver(ExecEnvTest.PLUGIN_URI + "/test-data/", rs);
+		ModuleResolver mr = new DefaultModuleResolver(EMFTVMTest.PLUGIN_URI + "/test-data/", rs);
 		env.loadModule(mr, "Fibonacci");
 		for (int i = 0; i < 3; i++) {
 			TimingData td = new TimingData();
@@ -48,7 +48,7 @@ public class FibonacciNativeTest extends TestCase {
 		ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		env.setJitDisabled(true);
 		ResourceSet rs = new ResourceSetImpl();
-		ModuleResolver mr = new DefaultModuleResolver(ExecEnvTest.PLUGIN_URI + "/test-data/", rs);
+		ModuleResolver mr = new DefaultModuleResolver(EMFTVMTest.PLUGIN_URI + "/test-data/", rs);
 		env.loadModule(mr, "Fibonacci");
 		for (int i = 0; i < 3; i++) {
 			TimingData td = new TimingData();
@@ -69,7 +69,7 @@ public class FibonacciNativeTest extends TestCase {
 	public void testJitFibonacci() {
 		ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		ResourceSet rs = new ResourceSetImpl();
-		ModuleResolver mr = new DefaultModuleResolver(ExecEnvTest.PLUGIN_URI + "/test-data/", rs);
+		ModuleResolver mr = new DefaultModuleResolver(EMFTVMTest.PLUGIN_URI + "/test-data/", rs);
 		env.loadModule(mr, "Fibonacci");
 		for (int i = 0; i < 3; i++) {
 			TimingData td = new TimingData();

@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 
 import junit.textui.TestRunner;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -55,7 +54,6 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 import org.eclipse.m2m.atl.emftvm.util.Types;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
-import org.osgi.framework.Bundle;
 
 
 /**
@@ -130,15 +128,6 @@ import org.osgi.framework.Bundle;
  */
 public class ExecEnvTest extends EMFTVMTest {
 	
-	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.tests";
-	public static final String PLUGIN_URI = "platform:/plugin/" + PLUGIN_ID;
-	public static final String COMPILER_PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.compiler";
-	public static final String COMPILER_PLUGIN_URI = "platform:/plugin/" + COMPILER_PLUGIN_ID;
-	public static final String COMMON_PLUGIN_ID = "org.eclipse.m2m.atl.common";
-	public static final String COMMON_PLUGIN_URI = "platform:/plugin/" + COMMON_PLUGIN_ID;
-
-	public static final Bundle bundle = Platform.getBundle(PLUGIN_ID);
-
 	private static final Logger LOG = Logger.getLogger(ExecEnvTest.class.getName());
 
 	/**

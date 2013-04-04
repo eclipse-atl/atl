@@ -41,9 +41,6 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
  */
 public class PojoModelTest extends EMFTVMTest {
 
-	public static final String PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.tests";
-	public static final String EMFTVM_PLUGIN_ID = "org.eclipse.m2m.atl.emftvm";
-
 	private static final Logger LOG = Logger.getLogger(PojoModelTest.class.getName());
 
 	private Metamodel pojo;
