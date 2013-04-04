@@ -13,16 +13,21 @@ package org.eclipse.m2m.atl.emftvm.tests.performance;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IInjector;
 import org.eclipse.m2m.atl.core.IModel;
@@ -51,15 +56,16 @@ public class PerformanceTest extends EMFTVMTest {
 
 	/**
 	 * Tests EMFTVM performance of <code>EcoreCopy.atl</code>.
+	 * 
+	 * @throws IOException
 	 */
-	public void testEMFTVM_EcoreCopy() {
-		final List<Long> timings = new ArrayList<Long>();
+	public void testEMFTVM_EcoreCopy() throws IOException {
+		final SortedSet<Long> timings = new TreeSet<Long>();
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ModuleResolver mr = new DefaultModuleResolver(PLUGIN_URI + "/test-data/EcoreCopy/", new ResourceSetImpl());
 		env.loadModule(mr, "EcoreCopy");
 
 		for (int i = 0; i < TEST_COUNT; i++) {
-
 			final TimingData td = new TimingData();
 			final ResourceSet rs = new ResourceSetImpl();
 			final Model in = EmftvmFactory.eINSTANCE.createModel();
@@ -80,28 +86,17 @@ public class PerformanceTest extends EMFTVMTest {
 					(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
 		}
 
-		long avg = 0L;
-		long max = 0L;
-		long min = Long.MAX_VALUE;
-		for (long timing : timings) {
-			avg += timing / timings.size();
-			max = Math.max(max, timing);
-			min = Math.min(min, timing);
-		}
-		final Runtime runtime = Runtime.getRuntime();
-		LOG.info(String
-				.format("PerformanceTest#testEMFTVM_EcoreCopy\n\tAverage time: %f msec\n\tMax time: %f msec\n\tMin time: %f msec\n\tTransactions per second: %f\n\tHeap space used: %d MB",
-						avg / 1E6, max / 1E6, min / 1E6, 1E9 / avg, (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
+		processTimings("PerformanceTest#testEMFTVM_EcoreCopy", timings, 1);
 	}
 
 	/**
-	 * Tests EMFVM performance of <code>EcoreCopy.atl</code>.
+	 * Tests EMFVM performance of <code>EcoreCopyASM.atl</code>.
 	 * 
 	 * @throws ATLCoreException
 	 * @throws IOException
 	 */
 	public void testEMFVM_EcoreCopy() throws ATLCoreException, IOException {
-		final List<Long> timings = new ArrayList<Long>();
+		final SortedSet<Long> timings = new TreeSet<Long>();
 		final Map<String, Object> options = new HashMap<String, Object>();
 		options.put("allowInterModelReferences", true);
 
@@ -138,18 +133,36 @@ public class PerformanceTest extends EMFTVMTest {
 					(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
 		}
 
-		long avg = 0L;
-		long max = 0L;
-		long min = Long.MAX_VALUE;
-		for (long timing : timings) {
-			avg += timing / timings.size();
-			max = Math.max(max, timing);
-			min = Math.min(min, timing);
+		processTimings("PerformanceTest#testEMFVM_EcoreCopy", timings, 1);
+	}
+
+	/**
+	 * Tests {@link EcoreUtil} {@link Copier} performance.
+	 */
+	public void testEcoreUtil_EcoreCopy() {
+		final SortedSet<Long> timings = new TreeSet<Long>();
+
+		for (int i = 0; i < TEST_COUNT; i++) {
+			final TimingData td = new TimingData();
+			final ResourceSet rs = new ResourceSetImpl();
+			final Resource in = rs.getResource(URI.createPlatformPluginURI(EMFTVM_PLUGIN_ID + "/model/emftvm.ecore", true), true);
+			final Resource out = rs.createResource(URI.createURI("out.ecore"));
+			td.finishLoading();
+
+			final Copier copier = new Copier();
+			final Collection<EObject> copies = copier.copyAll(in.getContents());
+			copier.copyReferences();
+			out.getContents().addAll(copies);
+			td.finish();
+			LOG.fine(String.format("PerformanceTest#testEcoreUtil_EcoreCopy test %d %s", i, td));
+			timings.add(td.getFinished());
+
+			final Runtime runtime = Runtime.getRuntime();
+			LOG.fine(String.format("PerformanceTest#testEcoreUtil_EcoreCopy Heap space used for test %d: %d MB", i,
+					(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
 		}
-		final Runtime runtime = Runtime.getRuntime();
-		LOG.info(String
-				.format("PerformanceTest#testEMFVM_EcoreCopy\n\tAverage time: %f msec\n\tMax time: %f msec\n\tMin time: %f msec\n\tTransactions per second: %f\n\tHeap space used: %d MB",
-						avg / 1E6, max / 1E6, min / 1E6, 1E9 / avg, (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
+
+		processTimings("PerformanceTest#testEcoreUtil_EcoreCopy", timings, 1);
 	}
 
 }

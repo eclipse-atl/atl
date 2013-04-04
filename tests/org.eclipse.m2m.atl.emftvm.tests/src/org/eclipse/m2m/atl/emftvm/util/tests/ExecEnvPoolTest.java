@@ -11,9 +11,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.util.tests;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -120,7 +120,7 @@ public class ExecEnvPoolTest extends EMFTVMTest {
 	 * @throws InterruptedException
 	 */
 	public void testEcoreCopyPerformance() throws InterruptedException {
-		final List<Long> timings = Collections.synchronizedList(new ArrayList<Long>());
+		final SortedSet<Long> timings = Collections.synchronizedSortedSet(new TreeSet<Long>());
 		final int threadCount = Runtime.getRuntime().availableProcessors();
 
 		final ExecEnvPool pool = new ExecEnvPool();
@@ -167,19 +167,7 @@ public class ExecEnvPoolTest extends EMFTVMTest {
 			LOG.info(String.format("ExecEnvPoolTest#testEcoreCopyPerformance Timed out; %d runs completed", timings.size()));
 		}
 
-		long avg = 0L;
-		long max = 0L;
-		long min = Long.MAX_VALUE;
-		for (long timing : timings) {
-			avg += timing / timings.size();
-			max = Math.max(max, timing);
-			min = Math.min(min, timing);
-		}
-		final Runtime runtime = Runtime.getRuntime();
-		LOG.info(String
-				.format("ExecEnvPoolTest#testEcoreCopyPerformance\n\tAverage time: %f msec\n\tMax time: %f msec\n\tMin time: %f msec\n\tTransactions per second: %f on %d threads\n\tHeap space used: %d MB on %d threads",
-						avg / 1E6, max / 1E6, min / 1E6, 1E9 * threadCount / avg, threadCount,
-						(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024), threadCount));
+		processTimings("ExecEnvPoolTest#testEcoreCopyPerformance", timings, threadCount);
 	}
 
 }
