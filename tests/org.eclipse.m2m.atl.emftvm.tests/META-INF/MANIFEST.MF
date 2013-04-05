@@ -23,5 +23,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.compare;bundle-version="[1.2.0,1.4.0)",
  org.eclipse.m2m.atl.emftvm.compiler,
  org.eclipse.m2m.atl.core,
- org.eclipse.m2m.atl.common
+ org.eclipse.m2m.atl.common,
+ org.eclipse.m2m.atl.engine.vm,
+ org.eclipse.m2m.atl.engine.emfvm
 Bundle-ActivationPolicy: lazy
