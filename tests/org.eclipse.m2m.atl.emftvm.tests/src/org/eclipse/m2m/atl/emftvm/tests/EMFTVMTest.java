@@ -85,13 +85,16 @@ public abstract class EMFTVMTest extends TestCase {
 	 *            the log message prefix string
 	 * @param timings
 	 *            the timings to process
+	 * @param pureTimings
+	 *            the pure runtime timings (without loading time)
 	 * @param threadCount
 	 *            the number of threads used for testing
 	 */
-	public static void processTimings(final String prefix, final SortedSet<Long> timings, final int threadCount) {
+	public static void processTimings(final String prefix, final SortedSet<Long> timings, final SortedSet<Long> pureTimings,
+			final int threadCount) {
 		long median = -1L;
-		long firstquartile = -1L;
-		long thirdquartile = -1L;
+		long firstQuartile = -1L;
+		long thirdQuartile = -1L;
 		long max = 0L;
 		long min = Long.MAX_VALUE;
 		int i = 0;
@@ -99,33 +102,53 @@ public abstract class EMFTVMTest extends TestCase {
 			max = Math.max(max, timing);
 			min = Math.min(min, timing);
 			i++;
-			if (firstquartile < 0L && i >= timings.size() / 4) {
-				firstquartile = timing;
+			if (firstQuartile < 0L && i >= timings.size() / 4) {
+				firstQuartile = timing;
 			}
 			if (median < 0L && i >= timings.size() / 2) {
 				median = timing;
 			}
-			if (thirdquartile < 0L && i >= timings.size() * 3 / 4) {
-				thirdquartile = timing;
+			if (thirdQuartile < 0L && i >= timings.size() * 3 / 4) {
+				thirdQuartile = timing;
+			}
+		}
+		long pureMedian = -1L;
+		long pureFirstQuartile = -1L;
+		long pureThirdQuartile = -1L;
+		long pureMax = 0L;
+		long pureMin = Long.MAX_VALUE;
+		i = 0;
+		for (long timing : pureTimings) {
+			pureMax = Math.max(pureMax, timing);
+			pureMin = Math.min(pureMin, timing);
+			i++;
+			if (pureFirstQuartile < 0L && i >= pureTimings.size() / 4) {
+				pureFirstQuartile = timing;
+			}
+			if (pureMedian < 0L && i >= pureTimings.size() / 2) {
+				pureMedian = timing;
+			}
+			if (pureThirdQuartile < 0L && i >= pureTimings.size() * 3 / 4) {
+				pureThirdQuartile = timing;
 			}
 		}
 		final Runtime runtime = Runtime.getRuntime();
 		LOG.info(String.format(
-				new StringBuilder("%s\n")
-						.append("\tMinimum time:\t%f\tmsec\n")
-						.append("\tFirst quartile:\t%f\tmsec\n")
-						.append("\tMedian time:\t%f\tmsec\n")
-						.append("\tThird quartile:\t%f\tmsec\n")
-						.append("\tMaximum time:\t%f\tmsec\n")
+				new StringBuilder("%s\n\tDuration (msec)\tOverall runtime\tPure runtime (without loading)\n")
+						.append("\tMinimum time:\t%f\t%f\n")
+						.append("\tFirst quartile:\t%f\t%f\n")
+						.append("\tMedian time:\t%f\t%f\n")
+						.append("\tThird quartile:\t%f\t%f\n")
+						.append("\tMaximum time:\t%f\t%f\n")
 						.append("\tTransactions per second (median):\t%f\ton\t%d\tthread(s)\n")
 						.append("\tHeap space used:\t%d\tMB")
 						.toString(), 
 						prefix, 
-						min / 1E6, 
-						firstquartile / 1E6, 
-						median / 1E6, 
-						thirdquartile / 1E6, 
-						max / 1E6, 
+						min / 1E6, pureMin / 1E6,
+						firstQuartile / 1E6, pureFirstQuartile / 1E6,
+						median / 1E6, pureMedian / 1E6,
+						thirdQuartile / 1E6, pureThirdQuartile / 1E6,
+						max / 1E6, pureMax / 1E6,
 						1E9 * threadCount / median, 
 						threadCount, 
 						(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));

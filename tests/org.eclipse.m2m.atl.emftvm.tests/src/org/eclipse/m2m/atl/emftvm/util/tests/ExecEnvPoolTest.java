@@ -121,6 +121,7 @@ public class ExecEnvPoolTest extends EMFTVMTest {
 	 */
 	public void testEcoreCopyPerformance() throws InterruptedException {
 		final SortedSet<Long> timings = Collections.synchronizedSortedSet(new TreeSet<Long>());
+		final SortedSet<Long> pureTimings = Collections.synchronizedSortedSet(new TreeSet<Long>());
 		final int threadCount = Runtime.getRuntime().availableProcessors();
 
 		final ExecEnvPool pool = new ExecEnvPool();
@@ -152,6 +153,7 @@ public class ExecEnvPoolTest extends EMFTVMTest {
 					td.finish();
 					LOG.fine(String.format("ExecEnvPoolTest#testEcoreCopyPerformance test %d %s", testNr, td));
 					timings.add(td.getFinished());
+					pureTimings.add(td.getFinished() - td.getFinishedLoading());
 
 					pool.returnExecEnv(env);
 					final Runtime runtime = Runtime.getRuntime();
@@ -167,7 +169,7 @@ public class ExecEnvPoolTest extends EMFTVMTest {
 			LOG.info(String.format("ExecEnvPoolTest#testEcoreCopyPerformance Timed out; %d runs completed", timings.size()));
 		}
 
-		processTimings("ExecEnvPoolTest#testEcoreCopyPerformance", timings, threadCount);
+		processTimings("ExecEnvPoolTest#testEcoreCopyPerformance", timings, pureTimings, threadCount);
 	}
 
 }

@@ -83,6 +83,7 @@ public class PerformanceTest extends EMFTVMTest {
 	 */
 	public void testEMFTVM_EcoreCopy() throws IOException {
 		final SortedSet<Long> timings = new TreeSet<Long>();
+		final SortedSet<Long> pureTimings = new TreeSet<Long>();
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ModuleResolver mr = new DefaultModuleResolver(PLUGIN_URI + "/test-data/EcoreCopy/", new ResourceSetImpl());
 		env.loadModule(mr, "EcoreCopy");
@@ -102,13 +103,14 @@ public class PerformanceTest extends EMFTVMTest {
 			td.finish();
 			LOG.fine(String.format("PerformanceTest#testEMFTVM_EcoreCopy test %d %s", i, td));
 			timings.add(td.getFinished());
+			pureTimings.add(td.getFinished() - td.getFinishedLoading());
 
 			final Runtime runtime = Runtime.getRuntime();
 			LOG.fine(String.format("PerformanceTest#testEMFTVM_EcoreCopy Heap space used for test %d: %d MB", i,
 					(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
 		}
 
-		processTimings("PerformanceTest#testEMFTVM_EcoreCopy", timings, 1);
+		processTimings("PerformanceTest#testEMFTVM_EcoreCopy", timings, pureTimings, 1);
 	}
 
 	/**
@@ -119,6 +121,7 @@ public class PerformanceTest extends EMFTVMTest {
 	 */
 	public void testEMFVM_EcoreCopy() throws ATLCoreException, IOException {
 		final SortedSet<Long> timings = new TreeSet<Long>();
+		final SortedSet<Long> pureTimings = new TreeSet<Long>();
 		final Map<String, Object> options = new HashMap<String, Object>();
 		options.put("allowInterModelReferences", true);
 
@@ -148,13 +151,14 @@ public class PerformanceTest extends EMFTVMTest {
 			td.finish();
 			LOG.fine(String.format("PerformanceTest#testEMFVM_EcoreCopy test %d %s", i, td));
 			timings.add(td.getFinished());
+			pureTimings.add(td.getFinished() - td.getFinishedLoading());
 
 			final Runtime runtime = Runtime.getRuntime();
 			LOG.fine(String.format("PerformanceTest#testEMFVM_EcoreCopy Heap space used for test %d: %d MB", i,
 					(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
 		}
 
-		processTimings("PerformanceTest#testEMFVM_EcoreCopy", timings, 1);
+		processTimings("PerformanceTest#testEMFVM_EcoreCopy", timings, pureTimings, 1);
 	}
 
 	/**
@@ -165,6 +169,7 @@ public class PerformanceTest extends EMFTVMTest {
 	 */
 	public void testRegularVM_EcoreCopy() throws ATLCoreException, IOException {
 		final SortedSet<Long> timings = new TreeSet<Long>();
+		final SortedSet<Long> pureTimings = new TreeSet<Long>();
 		final Map<String, Object> options = new HashMap<String, Object>();
 		options.put("allowInterModelReferences", true);
 		final Map<String, Object> inOptions = new HashMap<String, Object>();
@@ -205,6 +210,7 @@ public class PerformanceTest extends EMFTVMTest {
 			td.finish();
 			LOG.fine(String.format("PerformanceTest#testRegularVM_EcoreCopy test %d %s", i, td));
 			timings.add(td.getFinished());
+			pureTimings.add(td.getFinished() - td.getFinishedLoading());
 
 			final Runtime runtime = Runtime.getRuntime();
 			LOG.fine(String.format("PerformanceTest#testRegularVM_EcoreCopy Heap space used for test %d: %d MB", i,
@@ -212,7 +218,7 @@ public class PerformanceTest extends EMFTVMTest {
 		}
 
 		ATLLogger.getLogger().setLevel(logLevel);
-		processTimings("PerformanceTest#testRegularVM_EcoreCopy", timings, 1);
+		processTimings("PerformanceTest#testRegularVM_EcoreCopy", timings, pureTimings, 1);
 	}
 
 	/**
@@ -220,6 +226,7 @@ public class PerformanceTest extends EMFTVMTest {
 	 */
 	public void testEcoreUtil_EcoreCopy() {
 		final SortedSet<Long> timings = new TreeSet<Long>();
+		final SortedSet<Long> pureTimings = new TreeSet<Long>();
 
 		for (int i = 0; i < TEST_COUNT; i++) {
 			final TimingData td = new TimingData();
@@ -235,13 +242,14 @@ public class PerformanceTest extends EMFTVMTest {
 			td.finish();
 			LOG.fine(String.format("PerformanceTest#testEcoreUtil_EcoreCopy test %d %s", i, td));
 			timings.add(td.getFinished());
+			pureTimings.add(td.getFinished() - td.getFinishedLoading());
 
 			final Runtime runtime = Runtime.getRuntime();
 			LOG.fine(String.format("PerformanceTest#testEcoreUtil_EcoreCopy Heap space used for test %d: %d MB", i,
 					(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
 		}
 
-		processTimings("PerformanceTest#testEcoreUtil_EcoreCopy", timings, 1);
+		processTimings("PerformanceTest#testEcoreUtil_EcoreCopy", timings, pureTimings, 1);
 	}
 
 }
