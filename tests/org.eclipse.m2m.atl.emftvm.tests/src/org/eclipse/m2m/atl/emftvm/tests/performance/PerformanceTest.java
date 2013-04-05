@@ -58,7 +58,7 @@ import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
  */
 public class PerformanceTest extends EMFTVMTest {
 
-	public static final int TEST_COUNT = 1000;
+	public static final int TEST_COUNT = 500;
 
 	private static final Logger LOG = Logger.getLogger(PerformanceTest.class.getName());
 
@@ -82,11 +82,45 @@ public class PerformanceTest extends EMFTVMTest {
 	 * @throws IOException
 	 */
 	public void testEMFTVM_EcoreCopy() throws IOException {
-		final SortedSet<Long> timings = new TreeSet<Long>();
-		final SortedSet<Long> pureTimings = new TreeSet<Long>();
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		runTestEMFTVM_EcoreCopy(env, "PerformanceTest#testEMFTVM_EcoreCopy");
+	}
+
+	/**
+	 * Tests EMFTVM performance of <code>EcoreCopy.atl</code> without JIT.
+	 * 
+	 * @throws IOException
+	 */
+	public void testEMFTVM_NoJIT_EcoreCopy() throws IOException {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		env.setJitDisabled(true);
+		runTestEMFTVM_EcoreCopy(env, "PerformanceTest#testEMFTVM_NoJIT_EcoreCopy");
+	}
+
+	/**
+	 * Runs the EMFTVM performance test of <code>EcoreCopy.atl</code>.
+	 * 
+	 * @throws IOException
+	 */
+	protected void runTestEMFTVM_EcoreCopy(final ExecEnv env, final String prefix) throws IOException {
 		final ModuleResolver mr = new DefaultModuleResolver(PLUGIN_URI + "/test-data/EcoreCopy/", new ResourceSetImpl());
 		env.loadModule(mr, "EcoreCopy");
+
+		// JIT warmup
+		for (int i = 0; i < TEST_COUNT / 10; i++) {
+			final ResourceSet rs = new ResourceSetImpl();
+			final Model in = EmftvmFactory.eINSTANCE.createModel();
+			in.setResource(rs.getResource(URI.createPlatformPluginURI(EMFTVM_PLUGIN_ID + "/model/emftvm.ecore", true), true));
+			final Model out = EmftvmFactory.eINSTANCE.createModel();
+			out.setResource(rs.createResource(URI.createURI("out.ecore")));
+
+			env.registerInputModel("IN", in);
+			env.registerOutputModel("OUT", out);
+			env.run(null);
+		}
+
+		final SortedSet<Long> timings = new TreeSet<Long>();
+		final SortedSet<Long> pureTimings = new TreeSet<Long>();
 
 		for (int i = 0; i < TEST_COUNT; i++) {
 			final TimingData td = new TimingData();
@@ -101,16 +135,16 @@ public class PerformanceTest extends EMFTVMTest {
 			td.finishLoading();
 			env.run(td);
 			td.finish();
-			LOG.fine(String.format("PerformanceTest#testEMFTVM_EcoreCopy test %d %s", i, td));
+			LOG.fine(String.format("%s test %d %s", prefix, i, td));
 			timings.add(td.getFinished());
 			pureTimings.add(td.getFinished() - td.getFinishedLoading());
 
 			final Runtime runtime = Runtime.getRuntime();
-			LOG.fine(String.format("PerformanceTest#testEMFTVM_EcoreCopy Heap space used for test %d: %d MB", i,
+			LOG.fine(String.format("%s Heap space used for test %d: %d MB", prefix, i,
 					(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
 		}
 
-		processTimings("PerformanceTest#testEMFTVM_EcoreCopy", timings, pureTimings, 1);
+		processTimings(prefix, timings, pureTimings, 1);
 	}
 
 	/**
@@ -120,45 +154,7 @@ public class PerformanceTest extends EMFTVMTest {
 	 * @throws IOException
 	 */
 	public void testEMFVM_EcoreCopy() throws ATLCoreException, IOException {
-		final SortedSet<Long> timings = new TreeSet<Long>();
-		final SortedSet<Long> pureTimings = new TreeSet<Long>();
-		final Map<String, Object> options = new HashMap<String, Object>();
-		options.put("allowInterModelReferences", true);
-
-		for (int i = 0; i < TEST_COUNT; i++) {
-			final TimingData td = new TimingData();
-			final ILauncher launcher = CoreService.getLauncher("EMF-specific VM");
-			launcher.initialize(Collections.<String, Object> emptyMap());
-			final ModelFactory mf = CoreService.getModelFactory(launcher.getDefaultModelFactoryName());
-			final IReferenceModel ecore = mf.getMetametamodel();
-			final IInjector injector = CoreService.getInjector(mf.getDefaultInjectorName());
-			final IModel in = mf.newModel(ecore);
-			injector.inject(in, EMFTVM_PLUGIN_URI + "/model/emftvm.ecore");
-			final IModel out = mf.newModel(ecore);
-			out.setIsTarget(true);
-
-			launcher.addInModel(ecore, "ECORE", "ECORE");
-			launcher.addInModel(in, "IN", "ECORE");
-			launcher.addOutModel(out, "OUT", "ECORE");
-			final InputStream is = bundle.getResource("/test-data/EcoreCopy/EcoreCopyASM.asm").openStream();
-			try {
-				final Object module = launcher.loadModule(is);
-				td.finishLoading();
-				launcher.launch(ILauncher.RUN_MODE, null, options, module);
-			} finally {
-				is.close();
-			}
-			td.finish();
-			LOG.fine(String.format("PerformanceTest#testEMFVM_EcoreCopy test %d %s", i, td));
-			timings.add(td.getFinished());
-			pureTimings.add(td.getFinished() - td.getFinishedLoading());
-
-			final Runtime runtime = Runtime.getRuntime();
-			LOG.fine(String.format("PerformanceTest#testEMFVM_EcoreCopy Heap space used for test %d: %d MB", i,
-					(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
-		}
-
-		processTimings("PerformanceTest#testEMFVM_EcoreCopy", timings, pureTimings, 1);
+		runTestATLVM_EcoreCopy("EMF-specific VM", "PerformanceTest#testEMFVM_EcoreCopy");
 	}
 
 	/**
@@ -168,8 +164,19 @@ public class PerformanceTest extends EMFTVMTest {
 	 * @throws IOException
 	 */
 	public void testRegularVM_EcoreCopy() throws ATLCoreException, IOException {
-		final SortedSet<Long> timings = new TreeSet<Long>();
-		final SortedSet<Long> pureTimings = new TreeSet<Long>();
+		runTestATLVM_EcoreCopy("Regular VM", "PerformanceTest#testRegularVM_EcoreCopy");
+	}
+
+	/**
+	 * Tests Regular VM performance of <code>EcoreCopyASM.atl</code>.
+	 * 
+	 * @throws ATLCoreException
+	 * @throws IOException
+	 */
+	protected void runTestATLVM_EcoreCopy(final String vmName, final String prefix) throws ATLCoreException, IOException {
+		final Level logLevel = ATLLogger.getLogger().getLevel();
+		ATLLogger.getLogger().setLevel(Level.SEVERE);
+
 		final Map<String, Object> options = new HashMap<String, Object>();
 		options.put("allowInterModelReferences", true);
 		final Map<String, Object> inOptions = new HashMap<String, Object>();
@@ -181,12 +188,36 @@ public class PerformanceTest extends EMFTVMTest {
 		outOptions.put("path", "out.ecore");
 		outOptions.put("newModel", "true");
 
-		final Level logLevel = ATLLogger.getLogger().getLevel();
-		ATLLogger.getLogger().setLevel(Level.SEVERE);
+		// JIT warmup
+		for (int i = 0; i < TEST_COUNT / 10; i++) {
+			final ILauncher launcher = CoreService.getLauncher(vmName);
+			launcher.initialize(Collections.<String, Object> emptyMap());
+			final ModelFactory mf = CoreService.getModelFactory(launcher.getDefaultModelFactoryName());
+			final IReferenceModel ecore = mf.getMetametamodel();
+			final IInjector injector = CoreService.getInjector(mf.getDefaultInjectorName());
+			final IModel in = mf.newModel(ecore, inOptions);
+			injector.inject(in, EMFTVM_PLUGIN_URI + "/model/emftvm.ecore");
+			final IModel out = mf.newModel(ecore, outOptions);
+			out.setIsTarget(true);
+
+			launcher.addInModel(ecore, "ECORE", "ECORE");
+			launcher.addInModel(in, "IN", "ECORE");
+			launcher.addOutModel(out, "OUT", "ECORE");
+			final InputStream is = bundle.getResource("/test-data/EcoreCopy/EcoreCopyASM.asm").openStream();
+			try {
+				final Object module = launcher.loadModule(is);
+				launcher.launch(ILauncher.RUN_MODE, null, options, module);
+			} finally {
+				is.close();
+			}
+		}
+
+		final SortedSet<Long> timings = new TreeSet<Long>();
+		final SortedSet<Long> pureTimings = new TreeSet<Long>();
 
 		for (int i = 0; i < TEST_COUNT; i++) {
 			final TimingData td = new TimingData();
-			final ILauncher launcher = CoreService.getLauncher("Regular VM");
+			final ILauncher launcher = CoreService.getLauncher(vmName);
 			launcher.initialize(Collections.<String, Object> emptyMap());
 			final ModelFactory mf = CoreService.getModelFactory(launcher.getDefaultModelFactoryName());
 			final IReferenceModel ecore = mf.getMetametamodel();
@@ -208,23 +239,37 @@ public class PerformanceTest extends EMFTVMTest {
 				is.close();
 			}
 			td.finish();
-			LOG.fine(String.format("PerformanceTest#testRegularVM_EcoreCopy test %d %s", i, td));
+			LOG.fine(String.format("%s test %d %s", prefix, i, td));
 			timings.add(td.getFinished());
 			pureTimings.add(td.getFinished() - td.getFinishedLoading());
 
 			final Runtime runtime = Runtime.getRuntime();
-			LOG.fine(String.format("PerformanceTest#testRegularVM_EcoreCopy Heap space used for test %d: %d MB", i,
+			LOG.fine(String.format("%s Heap space used for test %d: %d MB", prefix, i,
 					(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
 		}
 
 		ATLLogger.getLogger().setLevel(logLevel);
-		processTimings("PerformanceTest#testRegularVM_EcoreCopy", timings, pureTimings, 1);
+		processTimings(prefix, timings, pureTimings, 1);
 	}
 
 	/**
 	 * Tests {@link EcoreUtil} {@link Copier} performance.
 	 */
 	public void testEcoreUtil_EcoreCopy() {
+		final String prefix = "PerformanceTest#testEcoreUtil_EcoreCopy";
+
+		// JIT warmup
+		for (int i = 0; i < TEST_COUNT / 10; i++) {
+			final ResourceSet rs = new ResourceSetImpl();
+			final Resource in = rs.getResource(URI.createPlatformPluginURI(EMFTVM_PLUGIN_ID + "/model/emftvm.ecore", true), true);
+			final Resource out = rs.createResource(URI.createURI("out.ecore"));
+
+			final Copier copier = new Copier();
+			final Collection<EObject> copies = copier.copyAll(in.getContents());
+			copier.copyReferences();
+			out.getContents().addAll(copies);
+		}
+
 		final SortedSet<Long> timings = new TreeSet<Long>();
 		final SortedSet<Long> pureTimings = new TreeSet<Long>();
 
@@ -240,16 +285,16 @@ public class PerformanceTest extends EMFTVMTest {
 			copier.copyReferences();
 			out.getContents().addAll(copies);
 			td.finish();
-			LOG.fine(String.format("PerformanceTest#testEcoreUtil_EcoreCopy test %d %s", i, td));
+			LOG.fine(String.format("%s test %d %s", prefix, i, td));
 			timings.add(td.getFinished());
 			pureTimings.add(td.getFinished() - td.getFinishedLoading());
 
 			final Runtime runtime = Runtime.getRuntime();
-			LOG.fine(String.format("PerformanceTest#testEcoreUtil_EcoreCopy Heap space used for test %d: %d MB", i,
+			LOG.fine(String.format("%s Heap space used for test %d: %d MB", prefix, i,
 					(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
 		}
 
-		processTimings("PerformanceTest#testEcoreUtil_EcoreCopy", timings, pureTimings, 1);
+		processTimings(prefix, timings, pureTimings, 1);
 	}
 
 }
