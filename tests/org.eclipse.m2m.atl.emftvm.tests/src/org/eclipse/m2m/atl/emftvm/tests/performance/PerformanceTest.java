@@ -37,6 +37,11 @@ import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.core.ModelFactory;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
 import org.eclipse.m2m.atl.core.service.CoreService;
+import org.eclipse.m2m.atl.core.ui.vm.RegularVMLauncher;
+import org.eclipse.m2m.atl.core.ui.vm.asm.ASMExtractor;
+import org.eclipse.m2m.atl.core.ui.vm.asm.ASMFactory;
+import org.eclipse.m2m.atl.core.ui.vm.asm.ASMInjector;
+import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Model;
@@ -44,6 +49,7 @@ import org.eclipse.m2m.atl.emftvm.tests.EMFTVMTest;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
+import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
 
 /**
  * EMFTVM performance test suite.
@@ -55,6 +61,20 @@ public class PerformanceTest extends EMFTVMTest {
 	public static final int TEST_COUNT = 1000;
 
 	private static final Logger LOG = Logger.getLogger(PerformanceTest.class.getName());
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+
+		AtlModelHandler.registerDefaultHandler("EMF", new AtlEMFModelHandler()); //$NON-NLS-1$
+		CoreService.registerLauncher("Regular VM", RegularVMLauncher.class); //$NON-NLS-1$
+		CoreService.registerFactory("ASM", ASMFactory.class); //$NON-NLS-1$
+		CoreService.registerExtractor("ASM", ASMExtractor.class); //$NON-NLS-1$
+		CoreService.registerInjector("ASM", ASMInjector.class); //$NON-NLS-1$
+	}
 
 	/**
 	 * Tests EMFTVM performance of <code>EcoreCopy.atl</code>.

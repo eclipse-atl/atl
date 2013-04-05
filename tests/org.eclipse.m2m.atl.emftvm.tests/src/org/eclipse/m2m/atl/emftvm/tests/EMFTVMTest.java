@@ -110,10 +110,25 @@ public abstract class EMFTVMTest extends TestCase {
 			}
 		}
 		final Runtime runtime = Runtime.getRuntime();
-		LOG.info(String
-				.format("%s\n\tMax time: %f msec\n\tThird quartile: %f msec\n\tMedian: %f msec\n\tFirst quartile: %f msec\n\tMin time: %f msec\n\tTransactions per second (median): %f on %d thread(s)\n\tHeap space used: %d MB",
-						prefix, max / 1E6, thirdquartile / 1E6, median / 1E6, firstquartile / 1E6, min / 1E6, 1E9 * threadCount / median,
-						threadCount, (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
+		LOG.info(String.format(
+				new StringBuilder("%s\n")
+						.append("\tMinimum time:\t%f\tmsec\n")
+						.append("\tFirst quartile:\t%f\tmsec\n")
+						.append("\tMedian time:\t%f\tmsec\n")
+						.append("\tThird quartile:\t%f\tmsec\n")
+						.append("\tMaximum time:\t%f\tmsec\n")
+						.append("\tTransactions per second (median):\t%f\ton\t%d\tthread(s)\n")
+						.append("\tHeap space used:\t%d\tMB")
+						.toString(), 
+						prefix, 
+						min / 1E6, 
+						firstquartile / 1E6, 
+						median / 1E6, 
+						thirdquartile / 1E6, 
+						max / 1E6, 
+						1E9 * threadCount / median, 
+						threadCount, 
+						(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
 	}
 
 	/**
