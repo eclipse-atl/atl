@@ -311,8 +311,10 @@ public abstract class LocalVariableInstructionImpl extends InstructionImpl imple
 	public void setLocalVariable(LocalVariable newLocalVariable) {
 		LocalVariable oldLocalVariable = localVariable;
 		localVariable = newLocalVariable;
-		cbOffset = CB_OFFSET_EDEFAULT;
-		localVariableIndex = LOCAL_VARIABLE_INDEX_EDEFAULT;
+		if (localVariable != null) {
+			cbOffset = CB_OFFSET_EDEFAULT;
+			localVariableIndex = LOCAL_VARIABLE_INDEX_EDEFAULT;
+		}
 		slot = SLOT_EDEFAULT;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.LOCAL_VARIABLE_INSTRUCTION__LOCAL_VARIABLE, oldLocalVariable, localVariable));
