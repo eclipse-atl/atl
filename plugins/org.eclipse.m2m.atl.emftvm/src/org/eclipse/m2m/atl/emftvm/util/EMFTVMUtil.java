@@ -443,9 +443,9 @@ public final class EMFTVMUtil {
 						"Cannot assign %s to multi-valued field %s::%s",
 						value, sf.getEContainingClass().getName(), sf.getName()));
 			}
-			EMFTVMUtil.setMany(env, eo, sf, (Collection<?>)value);
+			setMany(env, eo, sf, (Collection<?>) value);
 		} else {
-			EMFTVMUtil.setSingle(env, eo, sf, value, -1);
+			setSingle(env, eo, sf, value, -1);
 		}
 		assert eo.eResource() != null;
 	}
@@ -505,7 +505,6 @@ public final class EMFTVMUtil {
 					"Cannot remove properties of %s, as it is contained in an input model",
 					toPrettyString(eo, env)));
 		}
-		final EClassifier sfType = sf.getEType();
 		if (sf.isMany()) {
 			if (value instanceof Collection<?>) {
 				EMFTVMUtil.removeMany(env, eo, sf, (Collection<?>)value);
@@ -514,6 +513,7 @@ public final class EMFTVMUtil {
 			}
 		} else {
 			final Object oldValue = eo.eGet(sf);
+			final EClassifier sfType = sf.getEType();
 			if (sfType instanceof EEnum && value instanceof EnumLiteral) {
 				final EEnum eEnum = (EEnum)sfType;
 				if (oldValue != null && oldValue.equals(((EnumLiteral)value).getEnumerator(eEnum))) {
@@ -543,18 +543,9 @@ public final class EMFTVMUtil {
 		if (index > 0) {
 			throw new IndexOutOfBoundsException(String.valueOf(index));
 		}
-		final EClassifier sfType = sf.getEType();
-		final boolean allowInterModelReferences = isAllowInterModelReferences(env, eo);
-		if (sfType instanceof EEnum) {
-			final EEnum eEnum = (EEnum)sfType;
-			if (value instanceof EnumLiteral) {
-				eo.eSet(sf, ((EnumLiteral)value).getEnumerator(eEnum));
-			} else {
-				eo.eSet(sf, value);
-			}
-		} else if (sf instanceof EReference) {
+		if (sf instanceof EReference) {
 			final EReference ref = (EReference)sf;
-			if (checkValue(env, eo, ref, value, allowInterModelReferences)) {
+			if (checkValue(env, eo, ref, value, isAllowInterModelReferences(env, eo))) {
 				final EObject oldValue = (EObject)eo.eGet(sf);
 				assert eo.eResource() != null;
 				assert value == null || ((EObject)value).eResource() != null;
@@ -571,7 +562,17 @@ public final class EMFTVMUtil {
 				assert oldValue == null || oldValue.eResource() != null;
 			}
 		} else {
-			eo.eSet(sf, value);
+			final EClassifier sfType = sf.getEType();
+			if (sfType instanceof EEnum) {
+				final EEnum eEnum = (EEnum) sfType;
+				if (value instanceof EnumLiteral) {
+					eo.eSet(sf, ((EnumLiteral) value).getEnumerator(eEnum));
+				} else {
+					eo.eSet(sf, value);
+				}
+			} else {
+				eo.eSet(sf, value);
+			}
 		}
 	}
 
@@ -614,18 +615,20 @@ public final class EMFTVMUtil {
 	private static void addMany(final ExecEnv env, final EObject eo, 
 			final EStructuralFeature sf, final Object value, final int index) {
 		assert sf.isMany();
-		final EClassifier sfType = sf.getEType();
 		final Collection<Object> values = (Collection<Object>) eo.eGet(sf); // All EMF collections are ELists
-		if (sfType instanceof EEnum) {
-			addEnumValue((EEnum)sfType, values, value, index);
-		} else if (sf instanceof EReference) {
+		if (sf instanceof EReference) {
 			final EReference ref = (EReference)sf;
 			addRefValue(env, ref, eo, values, (EObject)value, index, 
 					isAllowInterModelReferences(env, eo));
-		} else if (index > -1) {
-			((List<Object>) values).add(index, value);
 		} else {
-			values.add(value);
+			final EClassifier sfType = sf.getEType();
+			if (sfType instanceof EEnum) {
+				addEnumValue((EEnum) sfType, values, value, index);
+			} else if (index > -1) {
+				((List<Object>) values).add(index, value);
+			} else {
+				values.add(value);
+			}
 		}
 	}
 
@@ -642,21 +645,8 @@ public final class EMFTVMUtil {
 	private static void addMany(final ExecEnv env, final EObject eo, 
 			final EStructuralFeature sf, final Collection<?> value, final int index) {
 		assert sf.isMany();
-		final EClassifier sfType = sf.getEType();
 		final Collection<Object> values = (Collection<Object>) eo.eGet(sf);
-		if (sfType instanceof EEnum) {
-			final EEnum eEnum = (EEnum)sfType;
-			if (index > -1) {
-				int currentIndex = index;
-				for (Object v : value) {
-					addEnumValue(eEnum, values, v, currentIndex++);
-				}
-			} else {
-				for (Object v : value) {
-					addEnumValue(eEnum, values, v, -1);
-				}
-			}
-		} else if (sf instanceof EReference) {
+		if (sf instanceof EReference) {
 			final EReference ref = (EReference)sf;
 			final boolean allowInterModelReferences = isAllowInterModelReferences(env, eo);
 			final Collection<?> srcValues = ref.isContainment() ? new ArrayList<Object>(value) : value;
@@ -670,10 +660,25 @@ public final class EMFTVMUtil {
 					addRefValue(env, ref, eo, values, (EObject)v, -1, allowInterModelReferences);
 				}
 			}
-		} else if (index > -1) {
-			((List<Object>) values).addAll(index, value);
 		} else {
-			values.addAll(value);
+			final EClassifier sfType = sf.getEType();
+			if (sfType instanceof EEnum) {
+				final EEnum eEnum = (EEnum) sfType;
+				if (index > -1) {
+					int currentIndex = index;
+					for (Object v : value) {
+						addEnumValue(eEnum, values, v, currentIndex++);
+					}
+				} else {
+					for (Object v : value) {
+						addEnumValue(eEnum, values, v, -1);
+					}
+				}
+			} else if (index > -1) {
+				((List<Object>) values).addAll(index, value);
+			} else {
+				values.addAll(value);
+			}
 		}
 	}
 
@@ -689,16 +694,18 @@ public final class EMFTVMUtil {
 	private static void removeMany(final ExecEnv env, final EObject eo, 
 			final EStructuralFeature sf, final Object value) {
 		assert sf.isMany();
-		final EClassifier sfType = sf.getEType();
 		final EList<Object> values = (EList<Object>)eo.eGet(sf);
-		if (sfType instanceof EEnum) {
-			final EEnum eEnum = (EEnum)sfType;
-			removeEnumValue(eEnum, values, value);
-		} else if (sf instanceof EReference) {
+		if (sf instanceof EReference) {
 			final EReference ref = (EReference)sf;
 			removeRefValue(ref, eo, values, (EObject)value);
 		} else {
-			values.remove(value);
+			final EClassifier sfType = sf.getEType();
+			if (sfType instanceof EEnum) {
+				final EEnum eEnum = (EEnum) sfType;
+				removeEnumValue(eEnum, values, value);
+			} else {
+				values.remove(value);
+			}
 		}
 	}
 
@@ -714,21 +721,23 @@ public final class EMFTVMUtil {
 	private static void removeMany(final ExecEnv env, final EObject eo, 
 			final EStructuralFeature sf, final Collection<?> value) {
 		assert sf.isMany();
-		final EClassifier sfType = sf.getEType();
 		final EList<Object> values = (EList<Object>)eo.eGet(sf);
-		if (sfType instanceof EEnum) {
-			final EEnum eEnum = (EEnum)sfType;
-			for (Object v : value) {
-				removeEnumValue(eEnum, values, v);
-			}
-		} else if (sf instanceof EReference) {
+		if (sf instanceof EReference) {
 			final EReference ref = (EReference)sf;
 			final Collection<?> srcValues = ref.isContainment() ? new ArrayList<Object>(value) : value;
 			for (Object v : srcValues) {
 				removeRefValue(ref, eo, values, (EObject)v);
 			}
 		} else {
-			values.removeAll(value);
+			final EClassifier sfType = sf.getEType();
+			if (sfType instanceof EEnum) {
+				final EEnum eEnum = (EEnum) sfType;
+				for (Object v : value) {
+					removeEnumValue(eEnum, values, v);
+				}
+			} else {
+				values.removeAll(value);
+			}
 		}
 	}
 
