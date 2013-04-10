@@ -6,8 +6,8 @@
     modelName="Trace" editPluginClass="org.eclipse.m2m.atl.emftvm.trace.provider.TraceEditPlugin"
     editorPluginClass="org.eclipse.m2m.atl.emftvm.trace.presentation.TraceEditorPlugin"
     testSuiteClass="org.eclipse.m2m.atl.emftvm.trace.tests.TraceAllTests" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="6.0" copyrightFields="false" editPluginID="org.eclipse.m2m.atl.emftvm.trace.edit"
-    editorPluginID="org.eclipse.m2m.atl.emftvm.trace.editor" runtimeVersion="2.6">
+    complianceLevel="5.0" copyrightFields="false" editPluginID="org.eclipse.m2m.atl.emftvm.trace.edit"
+    editorPluginID="org.eclipse.m2m.atl.emftvm.trace.editor" runtimeVersion="2.4">
   <foreignModel>trace.ecore</foreignModel>
   <genPackages prefix="Trace" basePackage="org.eclipse.m2m.atl.emftvm" disposableProviderFactory="true"
       ecorePackage="trace.ecore#/">
