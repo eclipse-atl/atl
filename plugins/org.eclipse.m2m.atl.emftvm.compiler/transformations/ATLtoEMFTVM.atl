@@ -806,24 +806,35 @@ rule NonLastExpressionStat extends ExpressionStat {
 	   pop : EMFTVM!Pop														-- [...]
 }
 
-rule BindingStat {
-	from s : ATL!BindingStat in IN
+abstract rule BindingStat {
+	from s : ATL!BindingStat in IN (
+		s.source.oclIsKindOf(ATL!NavigationOrAttributeCallExp))
 	to cb : EMFTVM!CodeBlock (
 		lineNumbers <- Sequence{ln},
-		nested <- Sequence{s.source, s.value},
-		code <- Sequence{invokeCb, invokeCb2, set}),
+		nested <- Sequence{s.source.source, s.value},
+		code <- Sequence{invokeCb, invokeCb2}),
 	   ln : EMFTVM!LineNumber (
 	   	startLine <- s.location.startLine,
 		startColumn <- s.location.startColumn,
 		endLine <- s.location.endLine,
 		endColumn <- s.location.endColumn,
 		instructions <- Sequence{invokeCb, invokeCb2, set}),
-	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [..., source]
+	   invokeCb : EMFTVM!InvokeCb (											-- [..., source]
+	   	codeBlock <- s.source.source, argcount <- 0),
 	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),	-- [..., source, value]
-	   set : EMFTVM!"Set" (fieldname <- s.propertyName)						-- [...]
+	   set : EMFTVM!FieldInstruction (fieldname <- s.source.name)			-- [...]
 }
 
-rule ResolvingBindingStat extends BindingStat {
+rule BindingStatAttribute extends BindingStat {
+	from s : ATL!BindingStat in IN (not s.source.isStatic)
+	to cb : EMFTVM!CodeBlock,
+	   ln : EMFTVM!LineNumber,
+	   invokeCb : EMFTVM!InvokeCb,											-- [..., source]
+	   invokeCb2 : EMFTVM!InvokeCb,											-- [..., source, value]
+	   set : EMFTVM!"Set"													-- [...]
+}
+
+rule ResolvingBindingStatAttribute extends BindingStatAttribute {
 	from s : ATL!BindingStat in IN (not s.isAssignment)
 	to cb : EMFTVM!CodeBlock (
 		code <- Sequence{invokeCb, invokeCb2, invoke, set}),
@@ -833,6 +844,27 @@ rule ResolvingBindingStat extends BindingStat {
 	   invokeCb2 : EMFTVM!InvokeCb,											-- [..., source, value]
 	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [..., source, rvalue]
 	   set : EMFTVM!"Set"													-- [...]
+}
+
+rule BindingStatStaticAttribute extends BindingStat {
+	from s : ATL!BindingStat in IN (s.source.isStatic)
+	to cb : EMFTVM!CodeBlock,
+	   ln : EMFTVM!LineNumber,
+	   invokeCb : EMFTVM!InvokeCb,											-- [..., source]
+	   invokeCb2 : EMFTVM!InvokeCb,											-- [..., source, value]
+	   set : EMFTVM!SetStatic												-- [...]
+}
+
+rule ResolvingBindingStatStaticAttribute extends BindingStatStaticAttribute {
+	from s : ATL!BindingStat in IN (not s.isAssignment)
+	to cb : EMFTVM!CodeBlock (
+		code <- Sequence{invokeCb, invokeCb2, invoke, set}),
+	   ln : EMFTVM!LineNumber (
+		instructions <- Sequence{invokeCb, invokeCb2, invoke, set}),
+	   invokeCb : EMFTVM!InvokeCb,											-- [..., source]
+	   invokeCb2 : EMFTVM!InvokeCb,											-- [..., source, value]
+	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [..., source, rvalue]
+	   set : EMFTVM!SetStatic												-- [...]
 }
 
 abstract rule IfStat {

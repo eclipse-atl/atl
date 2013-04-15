@@ -321,7 +321,8 @@ abstract rule OclExpression {
 rule NavigationOrAttributeCallExp extends OclExpression {
 	from s : ATL!NavigationOrAttributeCallExp in IN (
 		not s.source.oclIsKindOf(ATL!SuperExp) and
-		not s.isStatic)
+		not s.isStatic and
+		not s.refImmediateComposite().oclIsKindOf(ATL!BindingStat))
 	to cb : EMFTVM!CodeBlock (
 		nested <- Sequence{s.source},
 		code <- Sequence{invokeCb, get}),
@@ -333,7 +334,8 @@ rule NavigationOrAttributeCallExp extends OclExpression {
 
 rule StaticNavigationOrAttributeCallExp extends OclExpression {
 	from s : ATL!NavigationOrAttributeCallExp in IN (
-		s.isStatic)
+		s.isStatic and
+		not s.refImmediateComposite().oclIsKindOf(ATL!BindingStat))
 	to cb : EMFTVM!CodeBlock (
 		nested <- Sequence{s.source},
 		code <- Sequence{invokeCb, getStatic}),

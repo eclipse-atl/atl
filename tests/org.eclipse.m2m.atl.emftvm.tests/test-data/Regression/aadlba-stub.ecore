@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="aadlba" nsURI="platform:/plugin/org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/aadlba-stub.ecore"
+    nsPrefix="aadlba">
+  <eClassifiers xsi:type="ecore:EClass" name="PackageSection"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ModelUnit"/>
+</ecore:EPackage>

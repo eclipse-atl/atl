@@ -1,0 +1,28 @@
+-- @atlcompiler emftvm
+module Bug405673;
+
+create OUT : AADLBA from IN : AADLBA;
+
+helper def : counter : Integer = 0;
+
+rule addImportedUnit(packageImg: AADLBA!PackageSection,	model: String,	importedPackage:String) {
+  using
+  {
+    unit: AADLBA!ModelUnit = AADLBA!ModelUnit->allInstancesFrom(model)->any(e|e.name = importedPackage);
+    isNotYetImported: Boolean =  AADLBA!ModelUnit->allInstancesFrom('OUT')->any(e|e.name = importedPackage).oclIsUndefined();
+  }
+  do
+  {
+    if(isNotYetImported)
+    {
+      packageImg.importedUnit <- packageImg.importedUnit->including(unit);
+    }
+  }
+}
+
+endpoint rule incCounter() {
+	do {
+		thisModule.counter <- thisModule.counter + 1;
+		thisModule.counter.debug('counter');
+	}
+}

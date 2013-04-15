@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -41,6 +42,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
@@ -1182,12 +1184,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				return internalModules.get(name);
 			}
 			final Module module = resolver.resolveModule(name);
-			if (module.eResource() != null) { // skip built-in native modules
-				final Object invalidObject = validate(module);
-				if (invalidObject != null) {
-					throw new VMException(null, String.format("Byte code validation of %s failed", invalidObject));
-				}
-			}
 			internalModules.put(name, module);
 			resolveImports(module, resolver);
 			for (Feature f : module.getFeatures()) {
@@ -1199,6 +1195,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			// Re-resolve all super-rules, because they may have been redefined
 			for (Rule r : getRules()) {
 				resolveSuperRules(r);
+			}
+			if (module.eResource() != null) { // skip built-in native modules
+				final Object invalidObject = validate(module);
+				if (invalidObject != null) {
+					throw new VMException(null, String.format("Byte code validation of %s failed", invalidObject));
+				}
 			}
 			loadedModules.add(name);
 			return module;
@@ -1215,6 +1217,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @return <code>null</code> if <code>module</code> is valid, otherwise the first invalid object
 	 */
 	private Object validate(Module module) {
+		final Diagnostic diag = Diagnostician.INSTANCE.validate(module);
+		if (diag.getSeverity() != Diagnostic.OK) {
+			return diag;
+		}
 		final Model mmodel = EmftvmFactory.eINSTANCE.createModel();
 		mmodel.setResource(module.eResource());
 		for (EObject eObject : mmodel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
@@ -1522,7 +1528,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		for (OutputRuleElement re : r.getOutputElements()) {
 			resolveRuleElementModels(re, outModels);
 		}
-		r.compileIterables(this);
+		if (r.getMode() != RuleMode.MANUAL) {
+			r.compileIterables(this);
+		}
 	}
 
 	/**
