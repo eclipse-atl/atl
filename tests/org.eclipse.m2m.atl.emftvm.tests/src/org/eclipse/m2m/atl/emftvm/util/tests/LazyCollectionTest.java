@@ -106,23 +106,19 @@ public abstract class LazyCollectionTest extends TestCase {
 		});
 		assertEquals("Two", any);
 
-		try {
-			final String none = list.any(new NativeCodeBlock() {
-				{
-					setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
-					getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
-				}
+		final String none = list.any(new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
 
-				@Override
-				public Object execute(final StackFrame frame) {
-					return frame.getLocal(0).equals("None");
-				}
+			@Override
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0).equals("None");
+			}
 
-			});
-			fail("Expected NoSuchElementException, but got \"" + none + "\"");
-		} catch (NoSuchElementException e) {
-			// expected
-		}
+		});
+		assertNull(none);
 	}
 
 	/**

@@ -2316,7 +2316,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 				return e;
 			}
 		}
-		throw new NoSuchElementException();
+		return null;
 	}
 
 	/**
