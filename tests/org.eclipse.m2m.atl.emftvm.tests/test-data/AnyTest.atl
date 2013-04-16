@@ -1,0 +1,2 @@
+-- @atlcompiler emftvm
+query AnyTest = Sequence{}->any(e|false).debug('AnyTest');
