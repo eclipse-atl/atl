@@ -4,4 +4,5 @@
     nsPrefix="aadlba">
   <eClassifiers xsi:type="ecore:EClass" name="PackageSection"/>
   <eClassifiers xsi:type="ecore:EClass" name="ModelUnit"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SubprogramCall"/>
 </ecore:EPackage>

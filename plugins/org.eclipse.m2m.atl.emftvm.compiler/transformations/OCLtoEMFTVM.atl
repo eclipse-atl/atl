@@ -322,7 +322,7 @@ rule NavigationOrAttributeCallExp extends OclExpression {
 	from s : ATL!NavigationOrAttributeCallExp in IN (
 		not s.source.oclIsKindOf(ATL!SuperExp) and
 		not s.isStatic and
-		not s.refImmediateComposite().oclIsKindOf(ATL!BindingStat))
+		not (s.refImmediateComposite().oclIsKindOf(ATL!BindingStat) and s.refImmediateComposite().source = s))
 	to cb : EMFTVM!CodeBlock (
 		nested <- Sequence{s.source},
 		code <- Sequence{invokeCb, get}),

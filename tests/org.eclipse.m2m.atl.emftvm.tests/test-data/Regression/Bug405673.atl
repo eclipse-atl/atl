@@ -20,6 +20,17 @@ rule addImportedUnit(packageImg: AADLBA!PackageSection,	model: String,	importedP
   }
 }
 
+rule SubprogramCall (s : AADLBA!SubprogramCall) {
+    to
+        s2 : AADLBA!SubprogramCall (
+            name <- s.name
+        )
+    do
+    {
+        s2.calledSubprogram <- s.calledSubprogram;
+    }
+}
+
 endpoint rule incCounter() {
 	do {
 		thisModule.counter <- thisModule.counter + 1;
