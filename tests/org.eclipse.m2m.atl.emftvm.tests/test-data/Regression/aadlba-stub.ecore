@@ -5,4 +5,16 @@
   <eClassifiers xsi:type="ecore:EClass" name="PackageSection"/>
   <eClassifiers xsi:type="ecore:EClass" name="ModelUnit"/>
   <eClassifiers xsi:type="ecore:EClass" name="SubprogramCall"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ConnectionInstance">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subcomponentType" ordered="false"
+        eType="#//ProcessImplementation" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataSubcomponent">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProcessImplementation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownedDataSubcomponent"
+        upperBound="-1" eType="#//DataSubcomponent" containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>

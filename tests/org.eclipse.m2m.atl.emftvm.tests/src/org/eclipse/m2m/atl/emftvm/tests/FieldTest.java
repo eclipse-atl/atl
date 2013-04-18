@@ -127,6 +127,14 @@ public class FieldTest extends FeatureTest {
 		final Field field = getFixture();
 		field.setStaticValue(field);
 		assertSame(field, field.getStaticValue());
+
+		// Test Bug # 405673
+		final StackFrame frame = new StackFrame(factory.createExecEnv(), factory.createCodeBlock());
+		final CodeBlock cb = factory.createCodeBlock();
+		cb.getLocalVariables().add(factory.createLocalVariable());
+		cb.getCode().add(factory.createPusht());
+		field.setInitialiser(cb);
+		assertEquals(field, field.getStaticValue(frame));
 	}
 
 	/**

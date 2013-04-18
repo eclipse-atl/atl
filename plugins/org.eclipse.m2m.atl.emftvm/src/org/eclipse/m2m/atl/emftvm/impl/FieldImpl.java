@@ -125,11 +125,12 @@ public class FieldImpl extends FeatureImpl implements Field {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public void setStaticValue(Object newStaticValue) {
 		Object oldStaticValue = staticValue;
 		staticValue = newStaticValue;
+		staticValueInitialised = true;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.FIELD__STATIC_VALUE, oldStaticValue, staticValue));
 	}

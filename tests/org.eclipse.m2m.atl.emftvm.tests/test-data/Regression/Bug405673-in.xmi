@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="ASCII"?>
-<aadlba:PackageSection xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<xmi:XMI xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:aadlba="platform:/plugin/org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/aadlba-stub.ecore"
-    xsi:schemaLocation="platform:/plugin/org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/aadlba-stub.ecore aadlba-stub.ecore"/>
+    xsi:schemaLocation="platform:/plugin/org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/aadlba-stub.ecore aadlba-stub.ecore">
+  <aadlba:PackageSection/>
+  <aadlba:ConnectionInstance
+      name="connectionName">
+    <subcomponentType/>
+  </aadlba:ConnectionInstance>
+</xmi:XMI>

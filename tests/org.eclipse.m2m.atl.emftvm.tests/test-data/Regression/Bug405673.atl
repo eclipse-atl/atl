@@ -1,7 +1,10 @@
 -- @atlcompiler emftvm
+-- @path AADLBA=/org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/aadlba-stub.ecore
 module Bug405673;
 
 create OUT : AADLBA from IN : AADLBA;
+
+helper def: process_sourceImplImg: AADLBA!ProcessImplementation = OclUndefined;
 
 helper def : counter : Integer = 0;
 
@@ -29,6 +32,27 @@ rule SubprogramCall (s : AADLBA!SubprogramCall) {
     {
         s2.calledSubprogram <- s.calledSubprogram;
     }
+}
+
+rule intraProcess_PortConnection_Instance
+{
+	from
+		cnxInst: AADLBA!ConnectionInstance
+	to
+		d: AADLBA!DataSubcomponent (name<-cnxInst.name)
+	do
+	{
+		thisModule.process_sourceImplImg <- cnxInst.subcomponentType.debug('Retreived Process Implementation');
+		if(not thisModule.process_sourceImplImg.debug('@@@').ownedDataSubcomponent->exists(e|e.name=d.name))
+		{
+			-- This is the wrong programming model for ATL; 
+			-- ProcessImplementation::ownedDataSubcomponent should be assigned in its own rule:
+			-- Example: procImpl.ownedDataSubcomponent <- AADLBA!ConnectionInstance.allInstances()
+			-- 				->select(ci | ci = AADLBA!ConnectionInstance.allInstances()
+			-- 					->select(ci2 | ci2.name = ci.name)->first())
+			thisModule.process_sourceImplImg.ownedDataSubcomponent.including(d); -- cannot use add()
+		}		
+	}
 }
 
 endpoint rule incCounter() {
