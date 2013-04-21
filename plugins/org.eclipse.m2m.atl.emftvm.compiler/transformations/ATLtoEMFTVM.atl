@@ -703,7 +703,7 @@ rule MatchedRuleWithAction extends MatchedRule {
 	   p : EMFTVM!CodeBlock (
 	   	localVariables <- Sequence{p_trace}
 			->union(s.inPattern.elements->collect(e|thisModule.resolveTemp(e, 'pv')))
-			->union(s.outPatternElements->collect(e|thisModule.resolveTemp(e, 'pv'))),
+			->union(s.outPatternElements->reject(e|e.isRefiningElement)->collect(e|thisModule.resolveTemp(e, 'pv'))),
 	   	lineNumbers <- Sequence{pln},
 	   	nested <- s.actionBlock.statements,
 		code <- Sequence{p_invokeAllCbs}),

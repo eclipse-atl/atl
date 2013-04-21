@@ -1,0 +1,18 @@
+-- @atlcompiler emftvm
+-- @path MM=/org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/Bug406100.ecore
+module Bug406100;
+create OUT: MM refining IN: MM;
+
+rule initSequenceTest {
+	from
+		input_element: MM!Elt
+	to
+		e: MM!Elt (
+			f <- Sequence{1,2}
+		)
+	do
+	{
+		e.f <- e.f -> including(3).debug('RIGHT');
+		e.f.debug('RESULT');
+	}
+}

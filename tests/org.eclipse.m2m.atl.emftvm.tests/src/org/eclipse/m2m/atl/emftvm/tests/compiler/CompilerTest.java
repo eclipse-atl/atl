@@ -58,6 +58,14 @@ public class CompilerTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=406100">Bug # 406100</a>.
+	 */
+	public void testBug406100() {
+		final Model outModel = compile(URI.createURI("test-data/Regression/Bug406100.atl", true));
+		assertEquals(null, validate(outModel));
+	}
+
+	/**
 	 * Compiles the given ATL module.
 	 * 
 	 * @param moduleURI
