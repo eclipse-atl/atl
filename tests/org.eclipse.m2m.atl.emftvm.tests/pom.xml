@@ -42,6 +42,7 @@
 			<useUIThread>false</useUIThread>
 			<argLine>-Xmx512m</argLine>
 			<argLine>-XX:MaxPermSize=256m</argLine>			
+			<argLine>-ea</argLine>
 		</configuration>
 	  </plugin>
     </plugins>
