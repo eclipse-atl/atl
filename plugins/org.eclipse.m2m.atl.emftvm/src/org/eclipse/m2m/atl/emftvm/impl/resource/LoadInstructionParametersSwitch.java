@@ -125,6 +125,7 @@ public class LoadInstructionParametersSwitch extends EmftvmSwitch<Instruction> {
 		try {
 			object.setCbOffset(inputStream.readInt());
 			object.setLocalVariableIndex(inputStream.readInt());
+			object.getLocalVariable(); // force initialisation
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
