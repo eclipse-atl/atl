@@ -669,6 +669,8 @@ public class ExecEnvTest extends EMFTVMTest {
 		inRes.getContents().add(element);
 
 		final LocalVariable lv = EmftvmFactory.eINSTANCE.createLocalVariable();
+		inRes.getContents().add(lv);
+
 		env.queueForAdd(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, lv, -1,
 				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
 		assertFalse(element.getLocalVariables().contains(lv));
@@ -676,12 +678,16 @@ public class ExecEnvTest extends EMFTVMTest {
 		assertEquals(0, element.getLocalVariables().indexOf(lv));
 
 		final LocalVariable lv2 = EmftvmFactory.eINSTANCE.createLocalVariable();
+		inRes.getContents().add(lv2);
+
 		env.queueForAdd(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, lv2, -1,
 				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
 		env.setQueue();
 		assertEquals(1, element.getLocalVariables().indexOf(lv2));
 
 		final LocalVariable lv3 = EmftvmFactory.eINSTANCE.createLocalVariable();
+		inRes.getContents().add(lv3);
+
 		env.queueForAdd(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, lv3, 0,
 				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
 		env.setQueue();
@@ -690,12 +696,17 @@ public class ExecEnvTest extends EMFTVMTest {
 		assertEquals(2, element.getLocalVariables().indexOf(lv2));
 
 		final LocalVariable lv4 = EmftvmFactory.eINSTANCE.createLocalVariable();
+		inRes.getContents().add(lv4);
+
 		env.queueForAdd(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, lv4, 3,
 				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
 		env.setQueue();
 		assertEquals(3, element.getLocalVariables().indexOf(lv4));
 
-		env.queueForAdd(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, EmftvmFactory.eINSTANCE.createLocalVariable(),
+		final LocalVariable lv5 = EmftvmFactory.eINSTANCE.createLocalVariable();
+		inRes.getContents().add(lv5);
+
+		env.queueForAdd(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, lv5,
 				element.getLocalVariables().size() + 1, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
 		try {
 			env.setQueue();
@@ -875,7 +886,10 @@ public class ExecEnvTest extends EMFTVMTest {
 		assertEquals(0, element.getLocalVariables().indexOf(lv2));
 		assertEquals(1, element.getLocalVariables().indexOf(lv3));
 
-		env.queueForRemove(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, EmftvmFactory.eINSTANCE.createLocalVariable(),
+		final LocalVariable lv5 = EmftvmFactory.eINSTANCE.createLocalVariable();
+		inRes.getContents().add(lv5);
+
+		env.queueForRemove(EmftvmPackage.eINSTANCE.getCodeBlock_LocalVariables(), element, lv4,
 				new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
 		final EList<LocalVariable> copy = new BasicEList<LocalVariable>(element.getLocalVariables());
 		env.setQueue();
@@ -1042,6 +1056,7 @@ public class ExecEnvTest extends EMFTVMTest {
 		final EObject container = element.eContainer();
 		final CodeBlock target = EmftvmFactory.eINSTANCE.createCodeBlock();
 		target.getCode().addAll(element.getCode());
+		inRes.getContents().add(target);
 
 		env.queueForRemap(element, target, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
 
