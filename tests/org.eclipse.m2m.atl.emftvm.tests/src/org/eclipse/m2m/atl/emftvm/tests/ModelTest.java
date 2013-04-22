@@ -171,9 +171,18 @@ public class ModelTest extends TestCase {
 		final Resource res = new ResourceImpl();
 		model.setResource(res);
 		final EObject module = model.newElement(EmftvmPackage.eINSTANCE.getModule());
+
 		assertTrue(module instanceof Module);
 		assertEquals(1, model.allInstancesOf(EmftvmPackage.eINSTANCE.getModule()).size());
 		assertEquals(module, model.allInstancesOf(EmftvmPackage.eINSTANCE.getModule()).first());
+		assertEquals(1, model.allInstancesOf(EmftvmPackage.eINSTANCE.getNamedElement()).size());
+
+		final EObject module2 = model.newElement(EmftvmPackage.eINSTANCE.getModule());
+
+		assertTrue(module2 instanceof Module);
+		assertEquals(2, model.allInstancesOf(EmftvmPackage.eINSTANCE.getModule()).size());
+		assertEquals(2, model.allInstancesOf(EmftvmPackage.eINSTANCE.getNamedElement()).size());
+		assertEquals(module2, model.allInstancesOf(EmftvmPackage.eINSTANCE.getModule()).get(1));
 	}
 
 	/**
@@ -188,14 +197,26 @@ public class ModelTest extends TestCase {
 		final Resource res = new ResourceImpl();
 		final EPackage container = EcoreFactory.eINSTANCE.createEPackage();
 		final EClass object = EcoreFactory.eINSTANCE.createEClass();
+		final EClass object2 = EcoreFactory.eINSTANCE.createEClass();
 		container.getEClassifiers().add(object);
+		container.getEClassifiers().add(object2);
 		res.getContents().add(container);
 		model.setResource(res);
+
+		assertEquals(1, model.allInstancesOf(EcorePackage.eINSTANCE.getEPackage()).size());
+		assertEquals(2, model.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).size());
+		assertEquals(3, model.allInstancesOf(EcorePackage.eINSTANCE.getENamedElement()).size());
 		assertEquals(container, model.allInstancesOf(EcorePackage.eINSTANCE.getEPackage()).first());
 		assertEquals(object, model.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).first());
+		assertEquals(object2, model.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).get(1));
+
 		model.deleteElement(container);
+
 		assertTrue(model.allInstancesOf(EcorePackage.eINSTANCE.getEPackage()).isEmpty());
+		assertEquals(2, model.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).size());
 		assertEquals(object, model.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).first());
+		assertEquals(object2, model.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).get(1));
+		assertEquals(2, model.allInstancesOf(EcorePackage.eINSTANCE.getENamedElement()).size());
 	}
 
 } //ModelTest

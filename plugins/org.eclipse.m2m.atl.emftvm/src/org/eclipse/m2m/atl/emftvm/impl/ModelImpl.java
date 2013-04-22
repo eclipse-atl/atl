@@ -304,22 +304,35 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
-	public EObject newElement(EClass type) {
+	public EObject newElement(final EClass type) {
 		final EObject instance = type.getEPackage().getEFactoryInstance().create(type);
 		getResource().getContents().add(instance);
 		assert instance.eResource() == getResource();
-		if (allInstancesMap.containsKey(type)) {
-			allInstancesMap.get(type).add(instance);
-		}
+		addElement(instance, type);
 		return instance;
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
-	 * <!-- end-user-doc -->
+	 * Adds <code>element</code> to the "allInstances" list for the given type and all its supertypes.
+	 * 
+	 * @param element
+	 *            the element to add
+	 * @param type
+	 *            the current type
 	 */
-	public void deleteElement(EObject element) {
+	private void addElement(final EObject element, final EClass type) {
+		if (allInstancesMap.containsKey(type)) {
+			allInstancesMap.get(type).add(element);
+		}
+		for (EClass superType : type.getESuperTypes()) {
+			addElement(element, superType);
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc. --> {@inheritDoc} <!-- end-user-doc -->
+	 */
+	public void deleteElement(final EObject element) {
 		assert getResource() == element.eResource();
 		final EList<EObject> resContents = getResource().getContents();
 		EcoreUtil.delete(element);
@@ -328,9 +341,23 @@ public class ModelImpl extends EObjectImpl implements Model {
 			// adding children to a container removes them from their previous container
 			resContents.add(child); 
 		}
-		final EClass type = element.eClass();
+		deleteElement(element, element.eClass());
+	}
+
+	/**
+	 * Deletes <code>element</code> from the "allInstances" list for the given type and all its supertypes.
+	 * 
+	 * @param element
+	 *            the element to delete
+	 * @param type
+	 *            the current type
+	 */
+	private void deleteElement(final EObject element, final EClass type) {
 		if (allInstancesMap.containsKey(type)) {
 			allInstancesMap.get(type).remove(element);
+		}
+		for (EClass superType : type.getESuperTypes()) {
+			deleteElement(element, superType);
 		}
 	}
 
