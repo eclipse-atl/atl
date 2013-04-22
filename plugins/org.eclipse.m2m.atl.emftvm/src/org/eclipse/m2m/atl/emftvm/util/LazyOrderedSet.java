@@ -1106,7 +1106,6 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 					}
 				}
 				final boolean hasNext = nextSet && !(object == null ? next == null : object.equals(next));
-				assert !hasNext || inner.hasNext();
 				if (!hasNext && !excludedIndexSet) {
 					excludedIndex = -1;
 					excludedIndexSet = true;
