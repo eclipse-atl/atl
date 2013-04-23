@@ -11,13 +11,10 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.ant;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EPackage.Registry;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 
 /**
  * Loads a {@link Metamodel}.
@@ -40,23 +37,7 @@ public class LoadMetamodelTask extends LoadModelTask {
 	@Override
 	protected void innerExecute() throws Exception {
 		super.innerExecute();
-		registerEPackages();
-	}
-
-	/**
-	 * Registers any dynamic EPackage URIs.
-	 */
-	private void registerEPackages() {
-		final ResourceSet rs = getResourceSet();
-		final Registry r = rs.getPackageRegistry();
-		final Metamodel mm = getMetamodel(getName());
-		assert mm != null;
-		for (EObject o : mm.getResource().getContents()) {
-			if (o instanceof EPackage) {
-				EPackage p = (EPackage)o;
-				r.put(p.getNsURI(), p);
-			}
-		}
+		EMFTVMUtil.registerEPackages(getResourceSet());
 	}
 
 }

@@ -45,11 +45,11 @@ import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.launcher.debug.NetworkDebugger;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
+import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
-
 
 /**
  * Launches EMFTVM transformation modules.
@@ -134,6 +134,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		final Map<String, String> metamodelLocations = configuration.getAttribute(EMFTVMLaunchConstants.METAMODELS, Collections.emptyMap());
 		final Map<String, String> metamodelOptions = configuration.getAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, Collections.emptyMap());
 		loadFileMetaModels(rs, metamodelLocations, metamodelOptions, env);
+		EMFTVMUtil.registerEPackages(rs);
 		
 		final Map<String, String> inputModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODELS, Collections.emptyMap());
 		final Map<String, String> inputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, Collections.emptyMap());
@@ -203,7 +204,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 			}
 		}
 	}
-	
+
 	/**
 	 * Loads all metamodels that don't have a file or platform URI from <code>modelLocations</code> into <code>env</code>.
 	 * @param rs the resource set to use

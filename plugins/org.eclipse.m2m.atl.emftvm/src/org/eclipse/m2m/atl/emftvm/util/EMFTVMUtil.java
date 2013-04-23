@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -39,9 +40,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
@@ -2023,6 +2027,29 @@ public final class EMFTVMUtil {
 			return new Locale(language, country);
 		}
 		return new Locale(language);
+	}
+
+	/**
+	 * Registers all {@link EPackage} nsURIs in <code>rs</code> in the local <code>rs</code> {@link EPackage.Registry}.
+	 * Sets the {@link EPackage} nsURI to the {@link EPackage} name if not set.
+	 * @param rs the {@link ResourceSet}
+	 */
+	public static void registerEPackages(final ResourceSet rs) {
+		final EPackage.Registry registry = rs.getPackageRegistry();
+		for (Iterator<Object> i = EcoreUtil.getAllContents(rs, true); i.hasNext();) {
+			Object object = i.next();
+			if (object instanceof EPackage) {
+				EPackage p = (EPackage) object;
+				// force existence of nsURI
+				String nsURI = p.getNsURI();
+				if (nsURI == null) {
+					nsURI = p.getName();
+					p.setNsURI(nsURI);
+				}
+				// overwrite with current value to prevent aliasing problems
+				registry.put(nsURI, p);
+			}
+		}
 	}
 
 }
