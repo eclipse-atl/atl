@@ -2349,7 +2349,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
 					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)), 
 					opname, 
-					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentTypes(args))));
+					EMFTVMUtil.getTypeNames(frame.getEnv(), EMFTVMUtil.getArgumentTypes(args))));
 		}
 	}
 
