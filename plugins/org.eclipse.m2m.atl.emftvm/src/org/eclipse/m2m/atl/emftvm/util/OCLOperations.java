@@ -237,6 +237,26 @@ public final class OCLOperations {
 		// OclAny
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "debug", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
+				new String[][][]{}, 
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						final Object object = frame.getLocal(0, 0);
+						final StringBuffer buf = new StringBuffer();
+						if (object instanceof String) {
+							buf.append('\'');
+							buf.append((String)object);
+							buf.append('\'');
+						} else if (object instanceof LazyCollection<?>) {
+							buf.append(((LazyCollection<?>)object).asString());
+						} else {
+							buf.append(object);
+						}
+						ATLLogger.info(buf.toString());
+						return object;
+					}
+		});
+		createOperation(false, "debug", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
 				new String[][][]{{{"message"}, Types.STRING_TYPE}}, 
 				new NativeCodeBlock() {
 					@Override

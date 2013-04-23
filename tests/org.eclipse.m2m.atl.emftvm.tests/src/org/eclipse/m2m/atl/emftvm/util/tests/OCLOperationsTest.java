@@ -37,6 +37,32 @@ import org.eclipse.m2m.atl.emftvm.util.Types;
 public class OCLOperationsTest extends TestCase {
 
 	/**
+	 * Tests OclAny::debug().
+	 */
+	public void testOclAnyDebug() {
+		final Operation debug = findOperation("debug", Types.OCL_ANY_TYPE, new String[][] {}, false);
+		assertNotNull(debug);
+		final StackFrame frame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), debug.getBody());
+		final Object object = new Object();
+		frame.setLocals(new Object[] { object });
+		final Object result = debug.getBody().execute(frame);
+		assertSame(object, result);
+	}
+
+	/**
+	 * Tests OclAny::debug(message : String).
+	 */
+	public void testOclAnyDebug_String() {
+		final Operation debug = findOperation("debug", Types.OCL_ANY_TYPE, new String[][] { Types.STRING_TYPE }, false);
+		assertNotNull(debug);
+		final StackFrame frame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), debug.getBody());
+		final Object object = new Object();
+		frame.setLocals(new Object[] { object, "message" });
+		final Object result = debug.getBody().execute(frame);
+		assertSame(object, result);
+	}
+
+	/**
 	 * Tests Class::refNewInstance(args : Sequence).
 	 */
 	public void testClassRefNewInstance() {
