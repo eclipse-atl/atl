@@ -1,0 +1,16 @@
+-- @atlcompiler emftvm
+module CorilusXMLToEMRS;
+
+create OUT : EMRS refining IN : CORILUS, EXISTING : EMRS;
+
+rule createDefaultSubContact(c : CORILUS!Contact, d : OclAny) {
+	to 
+		t : EMRS!SubContact(
+			actionDate <- ad,
+			contact <- c
+		), 
+		ad : EMRS!MaskedDate(
+			date <- d
+		)
+	do { t; }
+}

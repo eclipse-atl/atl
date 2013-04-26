@@ -335,7 +335,7 @@ rule NavigationOrAttributeCallExp extends OclExpression {
 rule StaticNavigationOrAttributeCallExp extends OclExpression {
 	from s : ATL!NavigationOrAttributeCallExp in IN (
 		s.isStatic and
-		not s.refImmediateComposite().oclIsKindOf(ATL!BindingStat))
+		not (s.refImmediateComposite().oclIsKindOf(ATL!BindingStat) and s.refImmediateComposite().source = s))
 	to cb : EMFTVM!CodeBlock (
 		nested <- Sequence{s.source},
 		code <- Sequence{invokeCb, getStatic}),
@@ -529,7 +529,8 @@ rule LetVariable {
 abstract rule VariableExp extends OclExpression {
 	from s : ATL!VariableExp in IN (
 		s.referredVariable.varName <> 'thisModule' and
-		not s.referredVariable.isMatchedRuleField)
+		not s.referredVariable.isMatchedRuleField and
+		not (s.refImmediateComposite().oclIsKindOf(ATL!BindingStat) and s.refImmediateComposite().source = s))
 	to cb : EMFTVM!CodeBlock (
 		code <- Sequence{load}),
 	   ln : EMFTVM!LineNumber (
@@ -576,7 +577,8 @@ rule ThisModuleVariableExp extends OclExpression {
 
 rule RuleVariableExp extends OclExpression {
 	from s : ATL!VariableExp in IN (
-		s.referredVariable.isMatchedRuleField)
+		s.referredVariable.isMatchedRuleField and
+		not (s.refImmediateComposite().oclIsKindOf(ATL!BindingStat) and s.refImmediateComposite().source = s))
 	to cb : EMFTVM!CodeBlock (
 		code <- Sequence{load, get}),
 	   ln : EMFTVM!LineNumber (

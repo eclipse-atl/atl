@@ -361,16 +361,16 @@ helper context ATL!OclExpression
 -- provided by its recursive call on the computed container.
 -- Finally, if this container is not an OclExpression, the root composite has
 -- been reached (Binding/InPattern/Operation/Query/Attribute) and is returned.
--- CONTEXT:	ATL!OclExpression
--- RETURN:	ATL!Element
-helper context ATL!OclExpression def: getRootComposite() : OclAny =
+-- CONTEXT:	ATL!LocatedElement
+-- RETURN:	OclAny
+helper context ATL!LocatedElement def: getRootComposite() : OclAny =
 	let container : OclAny = self.refImmediateComposite()
 	in
 	if container.oclIsUndefined()
 	then
 		OclUndefined
 	else
-		if container.oclIsKindOf(ATL!OclExpression)
+		if container.oclIsKindOf(ATL!OclExpression) or container.oclIsKindOf(ATL!Statement)
 		then
 			container.getRootComposite()
 		else
@@ -630,7 +630,8 @@ nodefault rule NoSelfVariableInRule {
 				(
 					let rComp : OclAny = s.getRootComposite() in
 					rComp.oclIsTypeOf(ATL!Binding) or
-					rComp.oclIsTypeOf(ATL!InPattern)
+					rComp.oclIsTypeOf(ATL!InPattern) or
+					rComp.oclIsTypeOf(ATL!ActionBlock)
 				)
 			endif
 		)
@@ -839,15 +840,20 @@ nodefault rule OutputElementUsesOutputMetamodel {
 		)
 }
 
-nodefault rule BindingStatAssignsToNavigationOrAttributeCallExp {
+nodefault rule BindingStatAssignsToNavigationOrAttributeCallExpOrVariable {
 	from s : ATL!BindingStat (
-			not s.source.oclIsKindOf(ATL!NavigationOrAttributeCallExp) or
-			s.source.source.oclIsKindOf(ATL!SuperExp)
+			(
+				not s.source.oclIsKindOf(ATL!NavigationOrAttributeCallExp)
+			) and (
+				not s.source.oclIsKindOf(ATL!VariableExp) or
+				s.source.referredVariable.varName = 'self' or
+				s.source.referredVariable.varName = 'thisModule'
+			)
 		)
 	to
 		t : Problem!Problem (
 			severity <- #error,
 			location <- s.location,
-			description <- 'Can only assign to model element features or helper attributes'
+			description <- 'Can only assign to model element features, helper attributes, or local variables'
 		)
 }

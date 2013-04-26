@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests.compiler;
 
+import java.util.List;
+
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -25,6 +27,7 @@ import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Instruction;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.New;
 import org.eclipse.m2m.atl.emftvm.constraints.StackUnderflowValidator;
 import org.eclipse.m2m.atl.emftvm.constraints.ValidCodeBlockStackLevelValidator;
 import org.eclipse.m2m.atl.emftvm.constraints.Validator;
@@ -50,6 +53,14 @@ public class CompilerTest extends EMFTVMTest {
 	protected final Validator<Instruction> instrStackValidator = new StackUnderflowValidator();
 
 	/**
+	 * Tests compilation of 'BindingStatTest.atl'.
+	 */
+	public void testBindingStat() {
+		final Model outModel = compile(URI.createURI("test-data/BindingStatTest.atl", true));
+		assertEquals(null, validate(outModel));
+	}
+
+	/**
 	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=405673">Bug # 405673</a>.
 	 */
 	public void testBug405673() {
@@ -63,6 +74,20 @@ public class CompilerTest extends EMFTVMTest {
 	public void testBug406100() {
 		final Model outModel = compile(URI.createURI("test-data/Regression/Bug406100.atl", true));
 		assertEquals(null, validate(outModel));
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=406100">Bug # 406662</a>.
+	 */
+	public void testBug406662() {
+		final Model outModel = compile(URI.createURI("test-data/Regression/Bug406662.atl", true));
+		assertEquals(null, validate(outModel));
+		final List<EObject> news = outModel.allInstancesOf(EmftvmPackage.eINSTANCE.getNew());
+		assertFalse(news.isEmpty());
+		for (EObject object : news) {
+			New new_ = (New) object;
+			assertEquals("EXISTING", new_.getModelname());
+		}
 	}
 
 	/**

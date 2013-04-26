@@ -1,0 +1,26 @@
+-- @atlcompiler emftvm
+module BindingStatTest;
+
+create OUT : MM from IN : MM;
+
+helper def : property : String = OclUndefined;
+
+endpoint rule BindingStat() {
+	using {
+		ruleField : String = OclUndefined;
+	}
+	to t : MM!EClass
+	do {
+		ruleField <:= 'value';
+		ruleField <- 'value';
+		for (e in Sequence{'first', 'second'}) {
+			e <:= e + 'append';
+			e <- e;
+			e.debug('e');
+		}
+		thisModule.property <:= 'value';
+		thisModule.property <:= thisModule.property;
+		thisModule.property <- thisModule.property;
+		thisModule.property.debug('property');
+	}
+}

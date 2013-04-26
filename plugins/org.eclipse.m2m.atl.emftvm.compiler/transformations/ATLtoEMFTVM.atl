@@ -501,6 +501,14 @@ nodefault rule DropPattern {
 rule CalledRuleOutPatternElement {
 	from s : ATL!OutPatternElement in IN (
 		s.outPattern."rule".oclIsKindOf(ATL!CalledRule))
+	using {
+		outModel : ATL!OclModel =
+			if s.outModel.isRefiningModel then
+				s.outModel.refines
+			else
+				s.outModel
+			endif;
+	}
 	to cb : EMFTVM!CodeBlock (
 		lineNumbers <- Sequence{ln},
 		code <- Sequence{findtype, new, store}),
@@ -517,7 +525,7 @@ rule CalledRuleOutPatternElement {
 	   findtype : EMFTVM!Findtype (											-- [..., type]
 	   	modelname <- s.type.modelName,
 		typename <- s.type.typeName),
-	   new : EMFTVM!New (modelname <- s.outModel.name),						-- [..., element]
+	   new : EMFTVM!New (modelname <- outModel.name),						-- [..., element]
 	   store : EMFTVM!Store (localVariable <- lv)							-- [...]
 }
 
@@ -812,7 +820,7 @@ abstract rule BindingStat {
 	to cb : EMFTVM!CodeBlock (
 		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.source.source, s.value},
-		code <- Sequence{invokeCb, invokeCb2}),
+		code <- Sequence{invokeCb, invokeCb2, set}),
 	   ln : EMFTVM!LineNumber (
 	   	startLine <- s.location.startLine,
 		startColumn <- s.location.startColumn,
@@ -865,6 +873,67 @@ rule ResolvingBindingStatStaticAttribute extends BindingStatStaticAttribute {
 	   invokeCb2 : EMFTVM!InvokeCb,											-- [..., source, value]
 	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [..., source, rvalue]
 	   set : EMFTVM!SetStatic												-- [...]
+}
+
+rule BindingStatVariable {
+	from s : ATL!BindingStat in IN (
+		s.source.oclIsKindOf(ATL!VariableExp) and
+		s.source.referredVariable.varName <> 'thisModule' and
+		not s.source.referredVariable.isMatchedRuleField)
+	to cb : EMFTVM!CodeBlock (
+		lineNumbers <- Sequence{ln},
+		nested <- Sequence{s.value},
+		code <- Sequence{invokeCb, store}),
+	   ln : EMFTVM!LineNumber (
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb, store}),
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),	-- [..., value]
+	   store : EMFTVM!Store (localVariable <- s.source.referredVariable)	-- [...]
+}
+
+rule ResolvingBindingStatVariable extends BindingStatVariable {
+	from s : ATL!BindingStat in IN (not s.isAssignment)
+	to cb : EMFTVM!CodeBlock (
+		code <- Sequence{invokeCb, invoke, store}),
+	   ln : EMFTVM!LineNumber (
+		instructions <- Sequence{invokeCb, invoke, store}),
+	   invokeCb : EMFTVM!InvokeCb,											-- [..., value]
+	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [..., rvalue]
+	   store : EMFTVM!Store													-- [...]
+}
+
+rule BindingStatRuleField {
+	from s : ATL!BindingStat in IN (
+		s.source.oclIsKindOf(ATL!VariableExp) and
+		s.source.referredVariable.isMatchedRuleField)
+	to cb : EMFTVM!CodeBlock (
+		lineNumbers <- Sequence{ln},
+		nested <- Sequence{s.value},
+		code <- Sequence{load, invokeCb, set}),
+	   ln : EMFTVM!LineNumber (
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{load, invokeCb, set}),
+	   load : EMFTVM!Load (localVariable <- s.source.traceVariable()),		-- [..., trace]
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),	-- [..., trace, value]
+	   set : EMFTVM!"Set" (fieldname <- s.source.referredVariable.varName)	-- [...]
+}
+
+rule ResolvingBindingStatRuleField extends BindingStatRuleField {
+	from s : ATL!BindingStat in IN (not s.isAssignment)
+	to cb : EMFTVM!CodeBlock (
+		code <- Sequence{load, invokeCb, invoke, set}),
+	   ln : EMFTVM!LineNumber (
+		instructions <- Sequence{load, invokeCb, invoke, set}),
+	   load : EMFTVM!Load,													-- [..., trace]
+	   invokeCb : EMFTVM!InvokeCb,											-- [..., trace, value]
+	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [..., trace, rvalue]
+	   set : EMFTVM!"Set"													-- [...]
 }
 
 abstract rule IfStat {
