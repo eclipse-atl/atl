@@ -250,7 +250,7 @@ public final class OCLOperations {
 						} else if (object instanceof LazyCollection<?>) {
 							buf.append(((LazyCollection<?>)object).asString());
 						} else {
-							buf.append(object);
+							buf.append(EMFTVMUtil.toPrettyString(object, frame.getEnv()));
 						}
 						ATLLogger.info(buf.toString());
 						return object;
@@ -271,7 +271,7 @@ public final class OCLOperations {
 						} else if (object instanceof LazyCollection<?>) {
 							buf.append(((LazyCollection<?>)object).asString());
 						} else {
-							buf.append(object);
+							buf.append(EMFTVMUtil.toPrettyString(object, frame.getEnv()));
 						}
 						ATLLogger.info(buf.toString());
 						return object;

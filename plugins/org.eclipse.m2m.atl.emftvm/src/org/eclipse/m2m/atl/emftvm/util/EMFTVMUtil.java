@@ -287,7 +287,7 @@ public final class EMFTVMUtil {
 		} else if (object != null) {
 			return object.toString();
 		} else {
-			return "null";
+			return "OclUndefined";
 		}
 	}
 
