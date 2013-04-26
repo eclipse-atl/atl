@@ -124,7 +124,7 @@ public interface Rule extends NamedElement {
 	 * @return the value of the '<em>Input Elements</em>' containment reference list.
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getRule_InputElements()
 	 * @see org.eclipse.m2m.atl.emftvm.InputRuleElement#getInputFor
-	 * @model opposite="inputFor" containment="true" required="true"
+	 * @model opposite="inputFor" containment="true"
 	 * @generated
 	 */
 	EList<InputRuleElement> getInputElements();

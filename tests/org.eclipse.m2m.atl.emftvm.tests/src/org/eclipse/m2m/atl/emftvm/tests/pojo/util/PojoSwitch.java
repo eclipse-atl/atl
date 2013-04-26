@@ -4,10 +4,10 @@ package org.eclipse.m2m.atl.emftvm.tests.pojo.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
-
-import org.eclipse.m2m.atl.emftvm.tests.pojo.*;
+import org.eclipse.m2m.atl.emftvm.tests.pojo.PojoA;
+import org.eclipse.m2m.atl.emftvm.tests.pojo.PojoB;
+import org.eclipse.m2m.atl.emftvm.tests.pojo.PojoPackage;
 
 /**
  * <!-- begin-user-doc -->

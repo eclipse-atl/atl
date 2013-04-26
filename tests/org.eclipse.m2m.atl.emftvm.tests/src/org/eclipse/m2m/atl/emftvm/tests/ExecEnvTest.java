@@ -124,7 +124,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#remapQueue() <em>Remap Queue</em>}</li>
  * </ul>
  * </p>
- * @generated
+ * @generated NOT
  */
 public class ExecEnvTest extends EMFTVMTest {
 	

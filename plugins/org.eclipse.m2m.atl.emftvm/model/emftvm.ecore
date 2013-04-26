@@ -605,8 +605,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//Module"
         eOpposite="#//Module/rules"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mode" lowerBound="1" eType="#//RuleMode"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="inputElements" lowerBound="1"
-        upperBound="-1" eType="#//InputRuleElement" containment="true" eOpposite="#//InputRuleElement/inputFor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputElements" upperBound="-1"
+        eType="#//InputRuleElement" containment="true" eOpposite="#//InputRuleElement/inputFor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="outputElements" upperBound="-1"
         eType="#//OutputRuleElement" containment="true" eOpposite="#//OutputRuleElement/outputFor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eSuperRules" upperBound="-1"
