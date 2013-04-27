@@ -3344,7 +3344,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			valuesArray[i++] = values.get(re.getName());
 			// null values allowed, as long as they are later filled in by bound elements
 			assert re.getBinding() != null || valuesArray[i - 1] != null;
-			assert valuesArray[i - 1] == null || re.getEType().isInstance(valuesArray[i - 1]);
 		}
 		return valuesArray;
 	}
