@@ -2316,7 +2316,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					arg == null ? Void.TYPE : arg.getClass(), 
 					false);
 			if (method1 != null) {
-				instr.setNativeMethod(method1); // record invoked method for JIT compiler
+				// Only record new method if it is more general than the existing method
+				final Method oldMethod = instr.getNativeMethod();
+				if (oldMethod == null || method1.getDeclaringClass().isAssignableFrom(oldMethod.getDeclaringClass())) {
+					instr.setNativeMethod(method1); // record invoked method for JIT compiler
+				}
 				return EMFTVMUtil.invokeNative(frame, o, method1, arg);
 			}
 			throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
@@ -2343,7 +2347,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					EMFTVMUtil.getArgumentClasses(args), 
 					false);
 			if (methodn != null) {
-				instr.setNativeMethod(methodn); // record invoked method for JIT compiler
+				// Only record new method if it is more general than the existing method
+				final Method oldMethod = instr.getNativeMethod();
+				if (oldMethod == null || methodn.getDeclaringClass().isAssignableFrom(oldMethod.getDeclaringClass())) {
+					instr.setNativeMethod(methodn); // record invoked method for JIT compiler
+				}
 				return EMFTVMUtil.invokeNative(frame, o, methodn, args);
 			}
 			throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
