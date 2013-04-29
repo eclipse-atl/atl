@@ -393,7 +393,10 @@ public final class EMFTVMUtil {
 		if (value instanceof Enumerator) {
 			return new EnumLiteral(value.toString());
 		} else if (value instanceof Collection<?>) {
-			if (value instanceof List<?>) {
+			if (value instanceof LazyCollection<?>) {
+				// Internal collection types don't need conversion
+				return value;
+			} else if (value instanceof List<?>) {
 				if (eo != null && env.getInoutModelOf(eo) != null) {
 					// Copy list for inout models
 					return new EnumConversionListOnList((List<Object>) value).cache();
