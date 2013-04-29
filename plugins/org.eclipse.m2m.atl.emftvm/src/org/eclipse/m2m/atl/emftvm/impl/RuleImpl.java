@@ -3343,7 +3343,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		for (InputRuleElement re : allInput) {
 			valuesArray[i++] = values.get(re.getName());
 			// null values allowed, as long as they are later filled in by bound elements
-			assert re.getBinding() != null || valuesArray[i - 1] != null;
+			assert getMode() == RuleMode.MANUAL || re.getBinding() != null || valuesArray[i - 1] != null;
+			assert getMode() == RuleMode.MANUAL || valuesArray[i - 1] == null || re.getEType().isInstance(valuesArray[i - 1]);
 		}
 		return valuesArray;
 	}
