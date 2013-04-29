@@ -3361,7 +3361,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		int i = 0;
 		for (RuleElement re : allInput) {
 			valuesMap.put(re.getName(), values[i++]);
-			assert values[i - 1] != null;
+			assert getMode() == RuleMode.MANUAL || values[i - 1] != null;
 		}
 		return valuesMap;
 	}
