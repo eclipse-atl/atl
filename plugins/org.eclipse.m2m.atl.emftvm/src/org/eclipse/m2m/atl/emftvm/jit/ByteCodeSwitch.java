@@ -84,9 +84,12 @@ import org.eclipse.m2m.atl.emftvm.Xor;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch;
 import org.eclipse.m2m.atl.emftvm.util.EnumConversionList;
+import org.eclipse.m2m.atl.emftvm.util.EnumConversionListOnList;
 import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
+import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.LazyListOnList;
+import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.NativeTypes;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
@@ -1992,19 +1995,55 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			dup_x1(); // [..., enum, String, enum]
 			swap(); // [..., enum, enum, Stringl]
 			invokeCons(EnumLiteral.class, String.class); // enum.<init>(String): [..., enum]
-		} else if (EList.class.isAssignableFrom(cls)) {
-			new_(EnumConversionList.class); // new EnumConversionList: [..., val, enumlist]
-			dup_x1(); // [..., enumlist, val, enumlist]
-			swap(); // [..., enumlist, enumlist, val]
-			invokeCons(EnumConversionList.class, List.class); // enumlist.<init>(val): [..., enumlist]
-			if (EObject.class.isAssignableFrom(selfCls)) {
-				final Label ifModelNull = new Label();
-				aload(2); // env: [..., enumlist, env]
-				aload(4); // self: [..., enumlist, env, self]
-				invokeIface(ExecEnv.class, "getInoutModelOf", Model.class, EObject.class); // env.getInoutModelOf(self): [..., enumlist, model]
-				ifnull(ifModelNull); // jump if model == null: [..., enumlist]
-				invokeVirt(EnumConversionList.class, "cache", EnumConversionList.class); // enumlist.cache(): [..., enumlist] 
-				label(ifModelNull); // [..., enumlist]
+		} else if (Collection.class.isAssignableFrom(cls)) {
+			if (LazyCollection.class.isAssignableFrom(cls)) {
+				// no conversion required
+			} else if (List.class.isAssignableFrom(cls)) {
+				new_(EnumConversionListOnList.class); // new EnumConversionList: [..., val, enumlist]
+				dup_x1(); // [..., enumlist, val, enumlist]
+				swap(); // [..., enumlist, enumlist, val]
+				invokeCons(EnumConversionListOnList.class, List.class); // enumlist.<init>(val): [..., enumlist]
+				if (EObject.class.isAssignableFrom(selfCls)) {
+					final Label ifModelNull = new Label();
+					aload(2); // env: [..., enumlist, env]
+					aload(4); // self: [..., enumlist, env, self]
+					invokeIface(ExecEnv.class, "getInoutModelOf", Model.class, EObject.class); // env.getInoutModelOf(self): [..., enumlist,
+																								// model]
+					ifnull(ifModelNull); // jump if model == null: [..., enumlist]
+					invokeVirt(EnumConversionList.class, "cache", EnumConversionList.class); // enumlist.cache(): [..., enumlist]
+					label(ifModelNull); // [..., enumlist]
+				}
+			} else if (Set.class.isAssignableFrom(cls)) {
+				new_(EnumConversionList.class); // new EnumConversionList: [..., val, enumlist]
+				dup_x1(); // [..., enumlist, val, enumlist]
+				swap(); // [..., enumlist, enumlist, val]
+				invokeCons(EnumConversionList.class, Collection.class); // enumlist.<init>(val): [..., enumlist]
+				if (EObject.class.isAssignableFrom(selfCls)) {
+					final Label ifModelNull = new Label();
+					aload(2); // env: [..., enumlist, env]
+					aload(4); // self: [..., enumlist, env, self]
+					invokeIface(ExecEnv.class, "getInoutModelOf", Model.class, EObject.class); // env.getInoutModelOf(self): [..., enumlist,
+																								// model]
+					ifnull(ifModelNull); // jump if model == null: [..., enumlist]
+					invokeVirt(EnumConversionList.class, "cache", EnumConversionList.class); // enumlist.cache(): [..., enumlist]
+					label(ifModelNull); // [..., enumlist]
+				}
+				invokeVirt(LazyCollection.class, "asSet", LazySet.class); // enumlist.asSet(): [..., enumset]
+			} else {
+				new_(EnumConversionList.class); // new EnumConversionList: [..., val, enumlist]
+				dup_x1(); // [..., enumlist, val, enumlist]
+				swap(); // [..., enumlist, enumlist, val]
+				invokeCons(EnumConversionList.class, Collection.class); // enumlist.<init>(val): [..., enumlist]
+				if (EObject.class.isAssignableFrom(selfCls)) {
+					final Label ifModelNull = new Label();
+					aload(2); // env: [..., enumlist, env]
+					aload(4); // self: [..., enumlist, env, self]
+					invokeIface(ExecEnv.class, "getInoutModelOf", Model.class, EObject.class); // env.getInoutModelOf(self): [..., enumlist,
+																								// model]
+					ifnull(ifModelNull); // jump if model == null: [..., enumlist]
+					invokeVirt(EnumConversionList.class, "cache", EnumConversionList.class); // enumlist.cache(): [..., enumlist]
+					label(ifModelNull); // [..., enumlist]
+				}
 			}
 		} else if (cls.isArray()) {
 			final Class<?> cType = cls.getComponentType();
