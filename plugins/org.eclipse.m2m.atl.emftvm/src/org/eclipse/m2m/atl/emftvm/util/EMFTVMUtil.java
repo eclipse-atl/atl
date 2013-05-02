@@ -406,9 +406,9 @@ public final class EMFTVMUtil {
 			} else if (value instanceof Set<?>) {
 				if (eo != null && env.getInoutModelOf(eo) != null) {
 					// Copy list for inout models
-					return new EnumConversionList((Set<Object>) value).cache().asSet();
+					return new EnumConversionSetOnSet((Set<Object>) value).cache();
 				} else {
-					return new EnumConversionList((Set<Object>) value).asSet();
+					return new EnumConversionSetOnSet((Set<Object>) value);
 				}
 			} else {
 				if (eo != null && env.getInoutModelOf(eo) != null) {

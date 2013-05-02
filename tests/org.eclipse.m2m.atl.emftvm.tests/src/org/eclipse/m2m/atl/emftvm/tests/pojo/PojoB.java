@@ -29,6 +29,7 @@ public class PojoB extends EObjectImpl {
 
 	private Set<String> nameSet;
 	private List<TestEnum> enumList;
+	private Set<TestEnum> enumSet;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -76,6 +77,24 @@ public class PojoB extends EObjectImpl {
 	}
 
 	/**
+	 * @return the enumSet
+	 */
+	public Set<TestEnum> getEnumSet() {
+		if (enumSet == null) {
+			enumSet = new HashSet<TestEnum>();
+		}
+		return enumSet;
+	}
+
+	/**
+	 * @param enumSet
+	 *            the enumSet to set
+	 */
+	public void setEnumSet(Set<TestEnum> enumSet) {
+		this.enumSet = enumSet;
+	}
+
+	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -96,6 +115,8 @@ public class PojoB extends EObjectImpl {
 				return getNameSet();
 			case PojoPackage.POJO_B__ENUM_LIST:
 				return getEnumList();
+			case PojoPackage.POJO_B__ENUM_SET:
+				return getEnumSet();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -117,6 +138,10 @@ public class PojoB extends EObjectImpl {
 				getEnumList().clear();
 				getEnumList().addAll((Collection<? extends TestEnum>)newValue);
 				return;
+			case PojoPackage.POJO_B__ENUM_SET:
+				getEnumSet().clear();
+				getEnumSet().addAll((Collection<? extends TestEnum>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -135,6 +160,9 @@ public class PojoB extends EObjectImpl {
 			case PojoPackage.POJO_B__ENUM_LIST:
 				getEnumList().clear();
 				return;
+			case PojoPackage.POJO_B__ENUM_SET:
+				getEnumSet().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -151,6 +179,8 @@ public class PojoB extends EObjectImpl {
 				return nameSet != null && !nameSet.isEmpty();
 			case PojoPackage.POJO_B__ENUM_LIST:
 				return enumList != null && !enumList.isEmpty();
+			case PojoPackage.POJO_B__ENUM_SET:
+				return enumSet != null && !enumSet.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -169,6 +199,8 @@ public class PojoB extends EObjectImpl {
 		result.append(nameSet);
 		result.append(", enumList: ");
 		result.append(enumList);
+		result.append(", enumSet: ");
+		result.append(enumSet);
 		result.append(')');
 		return result.toString();
 	}

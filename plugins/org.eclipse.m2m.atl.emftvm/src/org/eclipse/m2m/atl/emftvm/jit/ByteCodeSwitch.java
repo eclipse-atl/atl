@@ -85,6 +85,7 @@ import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.EmftvmSwitch;
 import org.eclipse.m2m.atl.emftvm.util.EnumConversionList;
 import org.eclipse.m2m.atl.emftvm.util.EnumConversionListOnList;
+import org.eclipse.m2m.atl.emftvm.util.EnumConversionSetOnSet;
 import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
@@ -2014,19 +2015,18 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 					label(ifModelNull); // [..., enumlist]
 				}
 			} else if (Set.class.isAssignableFrom(cls)) {
-				new_(EnumConversionList.class); // new EnumConversionList: [..., val, enumlist]
-				dup_x1(); // [..., enumlist, val, enumlist]
-				swap(); // [..., enumlist, enumlist, val]
-				invokeCons(EnumConversionList.class, Collection.class); // enumlist.<init>(val): [..., enumlist]
+				new_(EnumConversionSetOnSet.class); // new EnumConversionSetOnSet: [..., val, enumset]
+				dup_x1(); // [..., enumset, val, enumset]
+				swap(); // [..., enumset, enumset, val]
+				invokeCons(EnumConversionSetOnSet.class, Set.class); // enumset.<init>(val): [..., enumset]
 				if (EObject.class.isAssignableFrom(selfCls)) {
 					final Label ifModelNull = new Label();
-					aload(2); // env: [..., enumlist, env]
-					aload(4); // self: [..., enumlist, env, self]
-					invokeIface(ExecEnv.class, "getInoutModelOf", Model.class, EObject.class); // env.getInoutModelOf(self): [..., enumlist,
-																								// model]
+					aload(2); // env: [..., enumset, env]
+					aload(4); // self: [..., enumset, env, self]
+					invokeIface(ExecEnv.class, "getInoutModelOf", Model.class, EObject.class); // env.getInoutModelOf(self): [..., enumset, model]
 					ifnull(ifModelNull); // jump if model == null: [..., enumlist]
-					invokeVirt(EnumConversionList.class, "cache", EnumConversionList.class); // enumlist.cache(): [..., enumlist]
-					label(ifModelNull); // [..., enumlist]
+					invokeVirt(EnumConversionSetOnSet.class, "cache", EnumConversionSetOnSet.class); // enumlist.cache(): [..., enumset]
+					label(ifModelNull); // [..., enumset]
 				}
 				invokeVirt(LazyCollection.class, "asSet", LazySet.class); // enumlist.asSet(): [..., enumset]
 			} else {

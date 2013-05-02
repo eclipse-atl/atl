@@ -6,6 +6,8 @@
     <nameSet>bSet</nameSet>
     <enumList>optionA</enumList>
     <enumList>optionB</enumList>
+    <enumSet>optionA</enumSet>
+    <enumSet>optionB</enumSet>
   </pojo:PojoB>
   <pojo:PojoB>
     <nameSet>bList</nameSet>

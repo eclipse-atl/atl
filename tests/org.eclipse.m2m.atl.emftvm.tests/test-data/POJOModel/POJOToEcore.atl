@@ -5,6 +5,14 @@ module POJOToEcore;
 
 create OUT : ECORE from IN : POJO;
 
+helper context Collection(OclAny) def : anyToString() : String =
+	let value : OclAny = self->any(n | true) in
+	if value.oclIsUndefined() then
+		'OclUndefined'
+	else
+		value.toString()
+	endif;
+
 rule EClassToPojoA {
 	from s : POJO!PojoA
 	to t : ECORE!EClass (
@@ -16,5 +24,8 @@ rule EClassToPojoA {
 rule EFeatureToPojoB {
 	from s : POJO!PojoB
 	to t : ECORE!EAttribute (
-		name <- s.nameSet->any(n | true))
+		name <- 
+			s.nameSet->any(n | true) + 
+			s.enumList.debug('enumList : ' + s.enumList.oclType().toString())->anyToString() + 
+			s.enumSet.debug('enumSet : ' + s.enumSet.oclType().toString())->anyToString())
 }

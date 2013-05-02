@@ -132,13 +132,22 @@ public class PojoPackage extends EPackageImpl {
 	public static final int POJO_B__ENUM_LIST = 1;
 
 	/**
+	 * The feature id for the '<em><b>Enum Set</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int POJO_B__ENUM_SET = 2;
+
+	/**
 	 * The number of structural features of the '<em>B</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POJO_B_FEATURE_COUNT = 2;
+	public static final int POJO_B_FEATURE_COUNT = 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.tests.pojo.TestEnum <em>Test Enum</em>}' enum.
@@ -312,6 +321,20 @@ public class PojoPackage extends EPackageImpl {
 
 
 	/**
+	 * Returns the meta object for the attribute list '{@link org.eclipse.m2m.atl.emftvm.tests.pojo.PojoB#getEnumSet <em>Enum Set</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Enum Set</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.tests.pojo.PojoB#getEnumSet()
+	 * @see #getPojoB()
+	 * @generated
+	 */
+	public EAttribute getPojoB_EnumSet() {
+		return (EAttribute)pojoBEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.m2m.atl.emftvm.tests.pojo.TestEnum <em>Test Enum</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -361,6 +384,7 @@ public class PojoPackage extends EPackageImpl {
 		pojoBEClass = createEClass(POJO_B);
 		createEAttribute(pojoBEClass, POJO_B__NAME_SET);
 		createEAttribute(pojoBEClass, POJO_B__ENUM_LIST);
+		createEAttribute(pojoBEClass, POJO_B__ENUM_SET);
 
 		// Create enums
 		testEnumEEnum = createEEnum(TEST_ENUM);
@@ -403,6 +427,7 @@ public class PojoPackage extends EPackageImpl {
 		initEClass(pojoBEClass, PojoB.class, "PojoB", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPojoB_NameSet(), ecorePackage.getEString(), "nameSet", null, 0, -1, PojoB.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getPojoB_EnumList(), this.getTestEnum(), "enumList", null, 0, -1, PojoB.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPojoB_EnumSet(), this.getTestEnum(), "enumSet", null, 0, -1, PojoB.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(testEnumEEnum, TestEnum.class, "TestEnum");
@@ -477,6 +502,14 @@ public class PojoPackage extends EPackageImpl {
 		 * @generated
 		 */
 		public static final EAttribute POJO_B__ENUM_LIST = eINSTANCE.getPojoB_EnumList();
+
+		/**
+		 * The meta object literal for the '<em><b>Enum Set</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute POJO_B__ENUM_SET = eINSTANCE.getPojoB_EnumSet();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.tests.pojo.TestEnum <em>Test Enum</em>}' enum.

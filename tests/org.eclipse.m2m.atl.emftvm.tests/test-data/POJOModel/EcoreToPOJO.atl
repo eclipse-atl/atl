@@ -16,5 +16,6 @@ rule EFeatureToPojoB {
 	from s : ECORE!EStructuralFeature
 	to t : POJO!PojoB (
 		nameSet <- Set{s.name},
-		enumList <- Sequence{#optionA, #optionB})
+		enumList <- Sequence{#optionA, #optionB},
+		enumSet <- Set{#optionA, #optionA, #optionB})
 }

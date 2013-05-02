@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.emftvm.tests.pojo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -88,7 +89,7 @@ public class PojoModelTest extends EMFTVMTest {
 		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 		eClass.setName("PojoA");
 		final EAttribute eAttribute = EcoreFactory.eINSTANCE.createEAttribute();
-		eAttribute.setName("PojoB");
+		eAttribute.setName("PojoBEnumLiteral(optionA)OclUndefined");
 		eClass.getEStructuralFeatures().add(eAttribute);
 		final Resource res = new ResourceImpl(URI.createURI("in.ecore"));
 		res.getContents().add(eClass);
@@ -143,11 +144,16 @@ public class PojoModelTest extends EMFTVMTest {
 		assertEquals(ref.getContents().size(), out.getResource().getContents().size());
 		assertEquals(1, ((PojoA) out.getResource().getContents().get(0)).getBList().size());
 		assertEquals(1, ((PojoA) out.getResource().getContents().get(0)).getBSet().size());
-		assertEquals(Collections.singleton("PojoB"), ((PojoA) out.getResource().getContents().get(0)).getBList().get(0).getNameSet());
+		assertEquals(Collections.singleton("PojoBEnumLiteral(optionA)OclUndefined"), ((PojoA) out.getResource().getContents().get(0))
+				.getBList().get(0).getNameSet());
 		final List<TestEnum> enumList = new ArrayList<TestEnum>();
 		enumList.add(TestEnum.OPTION_A);
 		enumList.add(TestEnum.OPTION_B);
 		assertEquals(enumList, ((PojoA) out.getResource().getContents().get(0)).getBList().get(0).getEnumList());
+		final Set<TestEnum> enumSet = new HashSet<TestEnum>();
+		enumSet.add(TestEnum.OPTION_A);
+		enumSet.add(TestEnum.OPTION_B);
+		assertEquals(enumSet, ((PojoA) out.getResource().getContents().get(0)).getBList().get(0).getEnumSet());
 	}
 
 }

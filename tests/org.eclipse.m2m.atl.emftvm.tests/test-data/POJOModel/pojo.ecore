@@ -13,6 +13,8 @@
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumList" upperBound="-1"
         eType="#//TestEnum"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumSet" ordered="false"
+        upperBound="-1" eType="#//TestEnum"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="TestEnum">
     <eLiterals name="optionA"/>
