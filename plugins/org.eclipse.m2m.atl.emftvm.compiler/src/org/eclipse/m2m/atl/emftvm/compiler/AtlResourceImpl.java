@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.compiler;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -23,6 +25,7 @@ import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.emf.EMFModel;
 import org.eclipse.m2m.atl.core.emf.EMFModelFactory;
@@ -100,11 +103,14 @@ public class AtlResourceImpl extends ResourceImpl {
 	protected final AtlParser parser = AtlParser.getDefault();
 	protected final EMFModelWrapper modelWrapper = new EMFModelWrapper();
 
+	private byte[] rawContent;
+
 	/**
 	 * Creates a new {@link AtlResourceImpl}.
 	 */
 	public AtlResourceImpl() {
 		super();
+		setTrackingModification(true);
 	}
 
 	/**
@@ -113,6 +119,26 @@ public class AtlResourceImpl extends ResourceImpl {
 	 */
 	public AtlResourceImpl(URI uri) {
 		super(uri);
+		setTrackingModification(true);
+	}
+
+	/**
+	 * Returns the raw concrete syntax for this resource.
+	 * 
+	 * @return the rawContent
+	 */
+	protected byte[] getRawContent() {
+		return rawContent;
+	}
+
+	/**
+	 * Sets the raw concrete syntax for this resource.
+	 * 
+	 * @param rawContent
+	 *            the rawContent to set
+	 */
+	protected void setRawContent(byte[] rawContent) {
+		this.rawContent = rawContent;
 	}
 
 	/**
@@ -121,9 +147,16 @@ public class AtlResourceImpl extends ResourceImpl {
 	 * @param options options passed to the ATL parser
 	 */
 	@Override
-	protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
+	protected void doLoad(final InputStream inputStream, final Map<?, ?> options) throws IOException {
 		try {
-			parser.inject(modelWrapper, inputStream, options);
+			final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			final byte[] buf = new byte[1024];
+			int read;
+			while ((read = inputStream.read(buf)) > 0) {
+				bos.write(buf, 0, read);
+			}
+			setRawContent(bos.toByteArray());
+			parser.inject(modelWrapper, new ByteArrayInputStream(getRawContent()), options);
 			registerEPackages(modelWrapper.getReferenceModel().getResource());
 		} catch (ATLCoreException e) {
 			throw new ATLIOException(e);
@@ -136,11 +169,18 @@ public class AtlResourceImpl extends ResourceImpl {
 	 * @param options the options passed to the ATL extractor
 	 */
 	@Override
-	protected void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
-		try {
-			parser.extract(modelWrapper, outputStream, options);
-		} catch (ATLCoreException e) {
-			throw new ATLIOException(e);
+	protected void doSave(final OutputStream outputStream, final Map<?, ?> options) throws IOException {
+		final byte[] rawContent = getRawContent();
+		if (!isModified() && rawContent != null) {
+			ATLLogger.fine("Content not modified - saving original content.");
+			outputStream.write(rawContent);
+			outputStream.close();
+		} else {
+			try {
+				parser.extract(modelWrapper, outputStream, options);
+			} catch (ATLCoreException e) {
+				throw new ATLIOException(e);
+			}
 		}
 	}
 
