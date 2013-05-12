@@ -43,7 +43,7 @@ public class AtlResourceTest extends TestCase {
 	 * @throws IOException
 	 */
 	public void testLoadInputStreamMapOfQQ() throws IOException {
-		final AtlResourceImpl atlResourceImpl = createAtlResource();
+		final AtlResourceImpl atlResourceImpl = createAtlResource("/test-data/AnyTest.atl");
 		assertTrue(atlResourceImpl.isTrackingModification());
 		assertTrue(atlResourceImpl.getContents().isEmpty());
 
@@ -56,6 +56,8 @@ public class AtlResourceTest extends TestCase {
 
 		assertFalse(atlResourceImpl.getContents().isEmpty());
 		assertFalse(atlResourceImpl.isModified());
+		assertTrue(atlResourceImpl.getErrors().isEmpty());
+		assertTrue(atlResourceImpl.getWarnings().isEmpty());
 
 		final EObject query = atlResourceImpl.getContents().get(0);
 		final EStructuralFeature name = query.eClass().getEStructuralFeature("name");
@@ -64,12 +66,33 @@ public class AtlResourceTest extends TestCase {
 	}
 
 	/**
+	 * Test method for {@link AtlResourceImpl#load(java.io.InputStream, java.util.Map)} with bad input.
+	 * 
+	 * @throws IOException
+	 */
+	public void testLoadInputStreamMapOfQQ_Bad() throws IOException {
+		final AtlResourceImpl atlResourceImpl = createAtlResource("/test-data/build.xml");
+		assertTrue(atlResourceImpl.isTrackingModification());
+		assertTrue(atlResourceImpl.getContents().isEmpty());
+
+		final InputStream inputStream = AtlResourceTest.class.getResourceAsStream("/test-data/build.xml");
+		try {
+			atlResourceImpl.load(inputStream, Collections.emptyMap());
+		} finally {
+			inputStream.close();
+		}
+
+		ATLLogger.info(atlResourceImpl.getErrors().toString());
+		assertFalse(atlResourceImpl.getErrors().isEmpty());
+	}
+
+	/**
 	 * Test method for {@link AtlResourceImpl#load(java.io.InputStream, java.util.Map)}.
 	 * 
 	 * @throws IOException
 	 */
 	public void testSaveOutputStreamMapOfQQ() throws IOException {
-		final AtlResourceImpl atlResourceImpl = createAtlResource();
+		final AtlResourceImpl atlResourceImpl = createAtlResource("/test-data/AnyTest.atl");
 		assertTrue(atlResourceImpl.isTrackingModification());
 		assertTrue(atlResourceImpl.getContents().isEmpty());
 
@@ -118,9 +141,9 @@ public class AtlResourceTest extends TestCase {
 	 * 
 	 * @return a new {@link AtlResourceImpl}
 	 */
-	protected AtlResourceImpl createAtlResource() {
+	protected AtlResourceImpl createAtlResource(final String uri) {
 		final ResourceSet rs = new ResourceSetImpl();
-		final AtlResourceImpl resource = (AtlResourceImpl) atlResourceFactory.createResource(URI.createURI("AtlResourceTest.atl"));
+		final AtlResourceImpl resource = (AtlResourceImpl) atlResourceFactory.createResource(URI.createURI(uri));
 		rs.getResources().add(resource);
 		return resource;
 	}

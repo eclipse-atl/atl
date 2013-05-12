@@ -25,6 +25,8 @@
 
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.emf.ecore" version="2.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.ecore.xmi" version="2.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.atl.common" version="3.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.emf.validation" version="1.4.0" match="greaterOrEqual"/>
@@ -47,8 +49,7 @@
       <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.atl.adt.ui" version="3.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.atl.debug.core" version="3.1.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.ecore" version="2.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.ecore.xmi" version="2.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.atl.dsls" version="3.1.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

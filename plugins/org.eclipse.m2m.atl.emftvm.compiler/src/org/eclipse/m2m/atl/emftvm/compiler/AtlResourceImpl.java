@@ -16,8 +16,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -27,9 +31,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.ATLCoreException;
+import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.emf.EMFModel;
 import org.eclipse.m2m.atl.core.emf.EMFModelFactory;
 import org.eclipse.m2m.atl.core.emf.EMFReferenceModel;
+import org.eclipse.m2m.atl.dsls.core.EMFTCSInjector;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
@@ -102,6 +108,7 @@ public class AtlResourceImpl extends ResourceImpl {
 
 	protected final AtlParser parser = AtlParser.getDefault();
 	protected final EMFModelWrapper modelWrapper = new EMFModelWrapper();
+	protected final EMFModelFactory modelFactory = new EMFModelFactory();
 
 	private byte[] rawContent;
 
@@ -148,19 +155,78 @@ public class AtlResourceImpl extends ResourceImpl {
 	 */
 	@Override
 	protected void doLoad(final InputStream inputStream, final Map<?, ?> options) throws IOException {
-		try {
-			final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			final byte[] buf = new byte[1024];
-			int read;
-			while ((read = inputStream.read(buf)) > 0) {
-				bos.write(buf, 0, read);
-			}
-			setRawContent(bos.toByteArray());
-			parser.inject(modelWrapper, new ByteArrayInputStream(getRawContent()), options);
-			registerEPackages(modelWrapper.getReferenceModel().getResource());
-		} catch (ATLCoreException e) {
-			throw new ATLIOException(e);
+		// Cache original input
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		final byte[] buf = new byte[1024];
+		int read;
+		while ((read = inputStream.read(buf)) > 0) {
+			bos.write(buf, 0, read);
 		}
+		setRawContent(bos.toByteArray());
+		// Parse model
+		final EMFTCSInjector ebnfi = new EMFTCSInjector();
+		final IModel pbs = modelFactory.newModel(parser.getProblemMetamodel());
+		final Map<Object, Object> params = new HashMap<Object, Object>();
+		params.put("name", "ATL");
+		params.put("problems", pbs);
+		if (options != null) {
+			params.putAll(options);
+		}
+		ebnfi.inject(modelWrapper, new ByteArrayInputStream(getRawContent()), params);
+		// Report problems
+		int nbErrors = 0;
+		for (Iterator<? extends Object> i = pbs.getElementsByType(parser.getProblemMetamodel().getMetaElementByName("Problem")).iterator(); i
+				.hasNext();) {
+			final EObject ame = (EObject) i.next();
+			final Enumerator severity = (Enumerator) ame.eGet(ame.eClass().getEStructuralFeature("severity"));
+			List<Diagnostic> list = null;
+			if (severity.getName().equals("error")) {
+				list = getErrors();
+				nbErrors++;
+			} else if (severity.getName().equals("warning")) {
+				list = getWarnings();
+			}
+			if (list != null) {
+				final String message = (String) ame.eGet(ame.eClass().getEStructuralFeature("description")); //$NON-NLS-1$
+				final String location = (String) ame.eGet(ame.eClass().getEStructuralFeature("location")); //$NON-NLS-1$
+				final String parts[] = location.split("-")[0].split(":");
+				final int line = Integer.parseInt(parts[0]);
+				final int column = Integer.parseInt(parts[1]);
+				list.add(new Diagnostic() {
+					public int getColumn() {
+						return column;
+					}
+
+					public int getLine() {
+						return line;
+					}
+
+					public String getLocation() {
+						return getURI().toString();
+					}
+
+					public String getMessage() {
+						return message;
+					}
+
+					@Override
+					public String toString() {
+						final StringBuffer buf = new StringBuffer(getMessage());
+						buf.append(" (");
+						buf.append(getLocation());
+						buf.append(':');
+						buf.append(getLine());
+						buf.append(')');
+						return buf.toString();
+					}
+				});
+			}
+		}
+		if (nbErrors == 0) {
+			getWarnings().clear(); // because the EMF editor fails when there are warnings
+		}
+
+		registerEPackages(modelWrapper.getReferenceModel().getResource());
 	}
 
 	/**
