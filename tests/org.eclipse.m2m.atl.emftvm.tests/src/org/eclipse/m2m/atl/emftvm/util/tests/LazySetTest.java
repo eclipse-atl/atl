@@ -148,6 +148,15 @@ public class LazySetTest extends LazyCollectionTest {
 	}
 
 	/**
+	 * Tests {@link LazySet#asString()}.
+	 */
+	public void testAsString() {
+		final LazyCollection<String> list = getTestLazyCollection();
+		assertEquals(getDataSource().toString().replace("[", "Set{'").replace(", ", "', '").replace("]", "'}"),
+				list.asString(EmftvmFactory.eINSTANCE.createExecEnv()));
+	}
+
+	/**
 	 * Tests {@link LazySet#intersection(LazySet)}.
 	 */
 	public void testIntersection() {

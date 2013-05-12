@@ -284,6 +284,8 @@ public final class EMFTVMUtil {
 			return buf.toString();
 		} else if (object instanceof Class<?>) {
 			return ((Class<?>) object).getName();
+		} else if (object instanceof String) {
+			return new StringBuffer().append('\'').append(object.toString()).append('\'').toString();
 		} else if (object != null) {
 			return object.toString();
 		} else {

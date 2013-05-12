@@ -18,6 +18,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.NativeCodeBlock;
@@ -235,6 +236,15 @@ public class LazyListTest extends LazyCollectionTest {
 		assertEquals(getDataSource().hashCode(), list.hashCode());
 		assertFalse(list.hashCode() == list.append("Four").hashCode());
 		assertFalse(list.hashCode() == list.append(null).hashCode());
+	}
+
+	/**
+	 * Tests {@link LazyList#asString()}.
+	 */
+	public void testAsString() {
+		final LazyCollection<String> list = getTestLazyCollection();
+		assertEquals(getDataSource().toString().replace("[", "Sequence{'").replace(", ", "', '").replace("]", "'}"),
+				list.asString(EmftvmFactory.eINSTANCE.createExecEnv()));
 	}
 
 	/**

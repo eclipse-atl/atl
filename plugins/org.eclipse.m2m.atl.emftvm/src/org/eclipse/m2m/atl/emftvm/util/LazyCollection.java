@@ -23,6 +23,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
+import org.eclipse.m2m.atl.emftvm.ExecEnv;
 
 
 /**
@@ -1795,7 +1796,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	@Override
 	public String toString() {
 		try {
-			return asString();
+			return appendElements(new StringBuffer().append('['), null).append(']').toString();
 		} catch (VMException e) {
 			final StringBuffer stackTrace = new StringBuffer();
 			stackTrace.append(e.getClass().getName());
@@ -1814,14 +1815,26 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
-	 * Evaluates the collection as a String.
-	 * Throws a {@link RuntimeException} if this {@link LazyCollection} cannot be evaluated.
+	 * Evaluates the collection as an OCL String.
+	 * 
+	 * @param env
+	 *            the execution environment
 	 * @return the String representation of this {@link LazyCollection}.
+	 * @throws {@link RuntimeException} if this {@link LazyCollection} cannot be evaluated.
 	 */
-	public String asString() {
+	public abstract String asString(ExecEnv env);
+
+	/**
+	 * Appends the elements of this collection to <code>buf</code>.
+	 * 
+	 * @param buf
+	 *            the {@link StringBuffer} to add the elements' string representation to
+	 * @param env
+	 *            the execution environment
+	 * @return buf
+	 */
+	protected StringBuffer appendElements(final StringBuffer buf, final ExecEnv env) {
 		int index = 0;
-		final StringBuffer buf = new StringBuffer();
-		buf.append('[');
 		for (E e : this) {
 			if (index > CUT_OFF) {
 				buf.append(", ...");
@@ -1830,10 +1843,9 @@ public abstract class LazyCollection<E> implements Collection<E> {
 			if (index++ > 0) {
 				buf.append(", ");
 			}
-			buf.append(EMFTVMUtil.toPrettyString(e, null));
+			buf.append(env == null ? e.toString() : EMFTVMUtil.toPrettyString(e, env));
 		}
-		buf.append(']');
-		return buf.toString();
+		return buf;
 	}
 
 	/**

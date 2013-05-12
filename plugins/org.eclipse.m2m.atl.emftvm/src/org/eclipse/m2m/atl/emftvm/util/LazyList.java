@@ -20,6 +20,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
+import org.eclipse.m2m.atl.emftvm.ExecEnv;
 
 
 /**
@@ -1745,9 +1746,17 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	}
 
 	/**
-	 * Returns the <code>i</code>-th element of this list.
-	 * List index starts at 1.
-	 * @param i the element index
+	 * {@inheritDoc}
+	 */
+	public String asString(final ExecEnv env) {
+		return appendElements(new StringBuffer("Sequence{"), env).append('}').toString();
+	}
+
+	/**
+	 * Returns the <code>i</code>-th element of this list. List index starts at 1.
+	 * 
+	 * @param i
+	 *            the element index
 	 * @return The <code>i</code>-th element of this list.
 	 */
 	public E at(final int i) {

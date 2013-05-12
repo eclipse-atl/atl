@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.util.LazyBag;
+import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.NativeCodeBlock;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
@@ -144,6 +145,15 @@ public class LazyBagTest extends LazyCollectionTest {
 		assertEquals(bag.asBag().hashCode(), bag.hashCode());
 		assertFalse(getDataSource().hashCode() == bag.hashCode());
 		assertFalse(bag.hashCode() == bag.including("Four").hashCode());
+	}
+
+	/**
+	 * Tests {@link LazyBag#asString()}.
+	 */
+	public void testAsString() {
+		final LazyCollection<String> bag = getTestLazyCollection();
+		assertEquals(getDataSource().toString().replace("[", "Bag{'").replace(", ", "', '").replace("]", "'}"),
+				bag.asString(EmftvmFactory.eINSTANCE.createExecEnv()));
 	}
 
 	/**

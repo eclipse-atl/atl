@@ -69,12 +69,13 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 	}
 
 	/**
-	 * Tests {@link LazyCollection#asString()}.
+	 * Tests {@link LazyOrderedSet#asString()}.
 	 */
-	@Override
 	public void testAsString() {
 		final LazyCollection<String> list = getTestLazyCollection();
-		assertEquals(new LinkedHashSet<String>(getDataSource()).toString(), list.asString());
+		assertEquals(
+				new LinkedHashSet<String>(getDataSource()).toString().replace("[", "OrderedSet{'").replace(", ", "', '").replace("]", "'}"),
+				list.asString(EmftvmFactory.eINSTANCE.createExecEnv()));
 	}
 
 	/**

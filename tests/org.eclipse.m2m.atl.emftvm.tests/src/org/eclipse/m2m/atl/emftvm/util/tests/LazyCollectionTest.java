@@ -170,14 +170,6 @@ public abstract class LazyCollectionTest extends TestCase {
 	}
 
 	/**
-	 * Tests {@link LazyCollection#asString()}.
-	 */
-	public void testAsString() {
-		final LazyCollection<String> list = getTestLazyCollection();
-		assertEquals(getDataSource().toString(), list.asString());
-	}
-
-	/**
 	 * Tests {@link LazyCollection#clear()}.
 	 */
 	public void testClear() {

@@ -248,7 +248,7 @@ public final class OCLOperations {
 							buf.append((String)object);
 							buf.append('\'');
 						} else if (object instanceof LazyCollection<?>) {
-							buf.append(((LazyCollection<?>)object).asString());
+							buf.append(((LazyCollection<?>)object).asString(frame.getEnv()));
 						} else {
 							buf.append(EMFTVMUtil.toPrettyString(object, frame.getEnv()));
 						}
@@ -269,7 +269,7 @@ public final class OCLOperations {
 							buf.append((String)object);
 							buf.append('\'');
 						} else if (object instanceof LazyCollection<?>) {
-							buf.append(((LazyCollection<?>)object).asString());
+							buf.append(((LazyCollection<?>) object).asString(frame.getEnv()));
 						} else {
 							buf.append(EMFTVMUtil.toPrettyString(object, frame.getEnv()));
 						}
@@ -613,7 +613,7 @@ public final class OCLOperations {
 					@Override
 					public Object execute(final StackFrame frame) {
 						final LazyCollection<Object> coll = (LazyCollection<Object>)frame.getLocal(0, 0);
-						return coll.asString();
+						return coll.asString(frame.getEnv());
 					}
 		});
 		/////////////////////////////////////////////////////////////////////

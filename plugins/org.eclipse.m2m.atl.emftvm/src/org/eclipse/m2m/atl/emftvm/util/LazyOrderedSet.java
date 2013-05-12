@@ -21,6 +21,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
+import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.util.LazyList.LongRangeList;
 
 /**
@@ -2029,9 +2030,18 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public String asString(final ExecEnv env) {
+		return appendElements(new StringBuffer("OrderedSet{"), env).append('}').toString();
+	}
+
+	/**
 	 * Returns the number of occurrences of <code>object</code> in self.<br>
 	 * <code>post: result &lt;= 1</code>
-	 * @param o the object to count
+	 * 
+	 * @param o
+	 *            the object to count
 	 * @return The number of occurrences of <code>object</code> in self.
 	 */
 	public int count(final E o) {

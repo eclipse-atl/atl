@@ -1,0 +1,2 @@
+-- @atlcompiler emftvm
+query ToStringTest = Sequence{1, 2, 'three'}.debug('ToStringTest').toString();

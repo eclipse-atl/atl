@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
+import org.eclipse.m2m.atl.emftvm.ExecEnv;
 
 
 /**
@@ -466,6 +467,13 @@ public class LazyBag<E> extends LazyCollection<E> {
             }
 		}
 		return hashCode;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public String asString(final ExecEnv env) {
+		return appendElements(new StringBuffer("Bag{"), env).append('}').toString();
 	}
 
 	/* *********************************************************************
