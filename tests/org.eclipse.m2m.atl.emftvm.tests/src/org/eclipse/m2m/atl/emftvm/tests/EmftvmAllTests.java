@@ -17,6 +17,7 @@ import junit.textui.TestRunner;
 
 import org.eclipse.m2m.atl.emftvm.tests.compiler.AtlResourceTest;
 import org.eclipse.m2m.atl.emftvm.tests.compiler.CompilerTest;
+import org.eclipse.m2m.atl.emftvm.tests.integration.IntegrationTest;
 import org.eclipse.m2m.atl.emftvm.tests.performance.PerformanceTest;
 import org.eclipse.m2m.atl.emftvm.tests.pojo.PojoModelTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.ExecEnvPoolTest;
@@ -67,6 +68,7 @@ public class EmftvmAllTests extends TestSuite {
 		suite.addTestSuite(PojoModelTest.class);
 		suite.addTestSuite(CompilerTest.class);
 		suite.addTestSuite(AtlResourceTest.class);
+		suite.addTestSuite(IntegrationTest.class);
 		suite.addTestSuite(PerformanceTest.class);
 		return suite;
 	}

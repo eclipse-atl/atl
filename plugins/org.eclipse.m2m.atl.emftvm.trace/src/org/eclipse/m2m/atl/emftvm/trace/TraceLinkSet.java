@@ -92,14 +92,20 @@ public interface TraceLinkSet extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the default {@link SourceElement} for the given source object.
+	 * @param sourceElement the source object that the {@link SourceElement} points to
+	 * @return the default {@link SourceElement} for the given source object
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
-	SourceElement getDefaultSourceElement(EObject sourceElement);
+	SourceElement getDefaultSourceElement(Object sourceElement);
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Returns the default {@link SourceElementList} for the given source objects.
+	 * @param sourceElements the source objects that the {@link SourceElementList} elements point to
+	 * @return the default {@link SourceElementList} for the given source objects
 	 * <!-- end-user-doc -->
 	 * @model sourceElementsDataType="org.eclipse.m2m.atl.emftvm.trace.JavaList<?>" sourceElementsMany="false"
 	 * @generated

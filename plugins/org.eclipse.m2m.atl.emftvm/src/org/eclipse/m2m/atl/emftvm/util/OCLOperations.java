@@ -75,20 +75,18 @@ public final class OCLOperations {
 			@Override
 			public Object next() {
 				Object next = inner.next();
-				if (next instanceof EObject) {
-					final SourceElement se = tls.getDefaultSourceElement((EObject)next);
-					if (se != null) {
-						final EList<TargetElement> seMapsTo = se.getMapsTo();
-						if (!seMapsTo.isEmpty()) {
-							assert seMapsTo.get(0).getObject().eResource() != null;
-							next = seMapsTo.get(0).getObject();
-						} else {
-							for (TargetElement te : se.getSourceOf().getTargetElements()) {
-								if (te.getMapsTo().isEmpty()) { // default mapping
-									assert te.getObject().eResource() != null;
-									next = te.getObject();
-									break;
-								}
+				final SourceElement se = tls.getDefaultSourceElement(next);
+				if (se != null) {
+					final EList<TargetElement> seMapsTo = se.getMapsTo();
+					if (!seMapsTo.isEmpty()) {
+						assert seMapsTo.get(0).getObject().eResource() != null;
+						next = seMapsTo.get(0).getObject();
+					} else {
+						for (TargetElement te : se.getSourceOf().getTargetElements()) {
+							if (te.getMapsTo().isEmpty()) { // default mapping
+								assert te.getObject().eResource() != null;
+								next = te.getObject();
+								break;
 							}
 						}
 					}
@@ -150,20 +148,18 @@ public final class OCLOperations {
 			@Override
 			public Object next() {
 				Object next = inner.next();
-				if (next instanceof EObject) {
-					final SourceElement se = tr.getUniqueSourceElement((EObject)next);
-					if (se != null) {
-						final EList<TargetElement> seMapsTo = se.getMapsTo();
-						if (!seMapsTo.isEmpty()) {
-							assert seMapsTo.get(0).getObject().eResource() != null;
-							next = seMapsTo.get(0).getObject();
-						} else {
-							for (TargetElement te : se.getSourceOf().getTargetElements()) {
-								if (te.getMapsTo().isEmpty()) { // default mapping
-									assert te.getObject().eResource() != null;
-									next = te.getObject();
-									break;
-								}
+				final SourceElement se = tr.getUniqueSourceElement(next);
+				if (se != null) {
+					final EList<TargetElement> seMapsTo = se.getMapsTo();
+					if (!seMapsTo.isEmpty()) {
+						assert seMapsTo.get(0).getObject().eResource() != null;
+						next = seMapsTo.get(0).getObject();
+					} else {
+						for (TargetElement te : se.getSourceOf().getTargetElements()) {
+							if (te.getMapsTo().isEmpty()) { // default mapping
+								assert te.getObject().eResource() != null;
+								next = te.getObject();
+								break;
 							}
 						}
 					}
@@ -540,8 +536,33 @@ public final class OCLOperations {
 					@Override
 					public Object execute(final StackFrame frame) {
 						final Object object = frame.getLocal(0, 0);
-						if (object instanceof EObject) {
-							final SourceElement se = frame.getEnv().getTraces().getDefaultSourceElement((EObject)object);
+						final SourceElement se = frame.getEnv().getTraces().getDefaultSourceElement(object);
+						if (se != null) {
+							final EList<TargetElement> seMapsTo = se.getMapsTo();
+							if (!seMapsTo.isEmpty()) {
+								assert seMapsTo.get(0).getObject().eResource() != null;
+								return seMapsTo.get(0).getObject();
+							}
+							for (TargetElement te : se.getSourceOf().getTargetElements()) {
+								if (te.getMapsTo().isEmpty()) { // default mapping
+									assert te.getObject().eResource() != null;
+									return te.getObject();
+								}
+							}
+						}
+						return object;
+					}
+		});
+		createOperation(false, "resolve", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
+				new String[][][]{{{"rule"}, Types.STRING_TYPE}}, 
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						final Object object = frame.getLocal(0, 0);
+						final String rule = (String) frame.getLocal(0, 1);
+						final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(rule, false);
+						if (tr != null) {
+							final SourceElement se = tr.getUniqueSourceElement(object);
 							if (se != null) {
 								final EList<TargetElement> seMapsTo = se.getMapsTo();
 								if (!seMapsTo.isEmpty()) {
@@ -556,38 +577,7 @@ public final class OCLOperations {
 								}
 							}
 						}
-				return object;
-
-					}
-		});
-		createOperation(false, "resolve", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{{{"rule"}, Types.STRING_TYPE}}, 
-				new NativeCodeBlock() {
-					@Override
-					public Object execute(final StackFrame frame) {
-						final Object object = frame.getLocal(0, 0);
-						if (object instanceof EObject) {
-							final String rule = (String)frame.getLocal(0, 1);
-							final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(rule, false);
-							if (tr != null) {
-								final SourceElement se = tr.getUniqueSourceElement((EObject)object);
-								if (se != null) {
-									final EList<TargetElement> seMapsTo = se.getMapsTo();
-									if (!seMapsTo.isEmpty()) {
-										assert seMapsTo.get(0).getObject().eResource() != null;
-										return seMapsTo.get(0).getObject();
-									}
-									for (TargetElement te : se.getSourceOf().getTargetElements()) {
-										if (te.getMapsTo().isEmpty()) { // default mapping
-											assert te.getObject().eResource() != null;
-											return te.getObject();
-										}
-									}
-								}
-							}
-						}
 						return object;
-
 					}
 		});
 		createOperation(false, "remap", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE, 
@@ -750,19 +740,19 @@ public final class OCLOperations {
 					public Object execute(final StackFrame frame) {
 						final Object object = frame.getLocal(0, 0);
 						final String name = (String)frame.getLocal(0, 1);
-						if (object instanceof EObject) {
-							final SourceElement se = frame.getEnv().getTraces().getDefaultSourceElement((EObject)object);
-							if (se != null) {
-								final TargetElement te = se.getSourceOf().getTargetElement(name);
-								if (te != null) {
-									return te.getObject();
-								}
-							}
-						} else if (object instanceof List<?>) {
+						if (object instanceof List<?>) {
 							final SourceElementList sel = frame.getEnv().getTraces().getDefaultSourceElements((List<?>)object);
 							if (sel != null) {
 								assert !sel.getSourceElements().isEmpty();
 								final TargetElement te = sel.getSourceElements().get(0).getSourceOf().getTargetElement(name);
+								if (te != null) {
+									return te.getObject();
+								}
+							}
+						} else {
+							final SourceElement se = frame.getEnv().getTraces().getDefaultSourceElement(object);
+							if (se != null) {
+								final TargetElement te = se.getSourceOf().getTargetElement(name);
 								if (te != null) {
 									return te.getObject();
 								}
@@ -783,24 +773,24 @@ public final class OCLOperations {
 						final Object object = frame.getLocal(0, 0);
 						final String rule = (String)frame.getLocal(0, 1);
 						final String name = (String)frame.getLocal(0, 2);
-						if (object instanceof EObject) {
-							final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(rule, false);
-							if (tr != null) {
-								final SourceElement se = tr.getUniqueSourceElement((EObject)object);
-								if (se != null) {
-									final TargetElement te = se.getSourceOf().getTargetElement(name);
-									if (te != null) {
-										return te.getObject();
-									}
-								}
-							}
-						} else if (object instanceof List<?>) {
+						if (object instanceof List<?>) {
 							final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(rule, false);
 							if (tr != null) {
 								final SourceElementList sel = tr.getUniqueSourceElements((List<?>)object);
 								if (sel != null) {
 									assert !sel.getSourceElements().isEmpty();
 									final TargetElement te = sel.getSourceElements().get(0).getSourceOf().getTargetElement(name);
+									if (te != null) {
+										return te.getObject();
+									}
+								}
+							}
+						} else {
+							final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(rule, false);
+							if (tr != null) {
+								final SourceElement se = tr.getUniqueSourceElement(object);
+								if (se != null) {
+									final TargetElement te = se.getSourceOf().getTargetElement(name);
 									if (te != null) {
 										return te.getObject();
 									}

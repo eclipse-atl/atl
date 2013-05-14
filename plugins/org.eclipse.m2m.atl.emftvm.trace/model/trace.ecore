@@ -4,7 +4,7 @@
     nsPrefix="trace">
   <eClassifiers xsi:type="ecore:EClass" name="TraceLinkSet">
     <eOperations name="getDefaultSourceElement" eType="#//SourceElement">
-      <eParameters name="sourceElement" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eParameters name="sourceElement" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eOperations>
     <eOperations name="getDefaultSourceElements" eType="#//SourceElementList">
       <eParameters name="sourceElements">
@@ -27,7 +27,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TracedRule">
     <eOperations name="getUniqueSourceElement" eType="#//SourceElement">
-      <eParameters name="sourceElement" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eParameters name="sourceElement" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eOperations>
     <eOperations name="getUniqueSourceElements" eType="#//SourceElementList">
       <eParameters name="sourceElements">
@@ -66,6 +66,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="TraceElement" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="runtimeObject" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
+        transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SourceElement" eSuperTypes="#//TraceElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="sourceOf" eType="#//TraceLink"
@@ -84,7 +86,7 @@
         eType="#//SourceElement" eOpposite="#//SourceElement/mapsTo"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SourceElementList">
-    <eOperations name="getSourceObjects" lowerBound="2" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eOperations name="getSourceObjects" lowerBound="2" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sourceElements" lowerBound="2"
         upperBound="-1" eType="#//SourceElement"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="defaultFor" eType="#//TraceLinkSet"

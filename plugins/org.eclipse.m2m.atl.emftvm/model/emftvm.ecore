@@ -551,14 +551,14 @@
     </eOperations>
     <eOperations name="matchManual" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject">
       <eParameters name="frame" eType="#//StackFrame"/>
-      <eParameters name="values" eType="#//EObjectArray"/>
+      <eParameters name="values" eType="#//EJavaObjectArray"/>
     </eOperations>
     <eOperations name="matchOne" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
       <eParameters name="frame" eType="#//StackFrame"/>
       <eParameters name="valuesMap">
         <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
           <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-          <eTypeArguments eClassifier="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+          <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
         </eGenericType>
       </eParameters>
     </eOperations>

@@ -259,13 +259,22 @@ public interface TracePackage extends EPackage {
 	int TRACE_ELEMENT__OBJECT = 1;
 
 	/**
+	 * The feature id for the '<em><b>Runtime Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TRACE_ELEMENT__RUNTIME_OBJECT = 2;
+
+	/**
 	 * The number of structural features of the '<em>Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TRACE_ELEMENT_FEATURE_COUNT = 2;
+	int TRACE_ELEMENT_FEATURE_COUNT = 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementImpl <em>Source Element</em>}' class.
@@ -294,6 +303,15 @@ public interface TracePackage extends EPackage {
 	 * @ordered
 	 */
 	int SOURCE_ELEMENT__OBJECT = TRACE_ELEMENT__OBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Runtime Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SOURCE_ELEMENT__RUNTIME_OBJECT = TRACE_ELEMENT__RUNTIME_OBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Source Of</b></em>' container reference.
@@ -367,6 +385,15 @@ public interface TracePackage extends EPackage {
 	 * @ordered
 	 */
 	int TARGET_ELEMENT__OBJECT = TRACE_ELEMENT__OBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Runtime Object</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TARGET_ELEMENT__RUNTIME_OBJECT = TRACE_ELEMENT__RUNTIME_OBJECT;
 
 	/**
 	 * The feature id for the '<em><b>Target Of</b></em>' container reference.
@@ -647,6 +674,17 @@ public interface TracePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getTraceElement_Object();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.m2m.atl.emftvm.trace.TraceElement#getRuntimeObject <em>Runtime Object</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Runtime Object</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.trace.TraceElement#getRuntimeObject()
+	 * @see #getTraceElement()
+	 * @generated
+	 */
+	EAttribute getTraceElement_RuntimeObject();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement <em>Source Element</em>}'.
@@ -961,6 +999,14 @@ public interface TracePackage extends EPackage {
 		 * @generated
 		 */
 		EReference TRACE_ELEMENT__OBJECT = eINSTANCE.getTraceElement_Object();
+
+		/**
+		 * The meta object literal for the '<em><b>Runtime Object</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TRACE_ELEMENT__RUNTIME_OBJECT = eINSTANCE.getTraceElement_RuntimeObject();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementImpl <em>Source Element</em>}' class.

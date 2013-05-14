@@ -21,7 +21,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
@@ -108,12 +107,12 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	/**
 	 * Lookup table of referred objects to {@link SourceElement}s.
 	 */
-	protected final Map<EObject, SourceElement> uniqueSourceObjects = new HashMap<EObject, SourceElement>();
+	protected final Map<Object, SourceElement> uniqueSourceObjects = new HashMap<Object, SourceElement>();
 
 	/**
 	 * Lookup table of referred objects to {@link SourceElementList}s.
 	 */
-	protected final Map<List<EObject>, SourceElementList> uniqueSourceObjectLists = new HashMap<List<EObject>, SourceElementList>();
+	protected final Map<List<Object>, SourceElementList> uniqueSourceObjectLists = new HashMap<List<Object>, SourceElementList>();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -237,7 +236,7 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public SourceElement getUniqueSourceElement(EObject sourceElement) {
+	public SourceElement getUniqueSourceElement(Object sourceElement) {
 		return uniqueSourceObjects.get(sourceElement);
 	}
 
@@ -485,7 +484,7 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	 * @param se
 	 */
 	private void uniqueSourceElementAdded(final SourceElement se) {
-		final EObject object = se.getObject();
+		final Object object = se.getRuntimeObject();
 		if (uniqueSourceObjects.containsKey(object)) {
 			final SourceElement eSe = uniqueSourceObjects.get(object);
 			throw new IllegalArgumentException(String.format(
@@ -501,7 +500,7 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	 * @param se
 	 */
 	private void uniqueSourceElementRemoved(final SourceElement se) {
-		uniqueSourceObjects.remove(se.getObject());
+		uniqueSourceObjects.remove(se.getRuntimeObject());
 	}
 
 	/**
@@ -509,7 +508,7 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	 * @param sel
 	 */
 	private void uniqueSourceElementListAdded(final SourceElementList sel) {
-		final List<EObject> objects = sel.getSourceObjects();
+		final List<Object> objects = sel.getSourceObjects();
 		if (uniqueSourceObjectLists.containsKey(objects)) {
 			assert !sel.getSourceElements().isEmpty();
 			final TracedRule selRule = sel.getSourceElements().get(0).getSourceOf().getRule();

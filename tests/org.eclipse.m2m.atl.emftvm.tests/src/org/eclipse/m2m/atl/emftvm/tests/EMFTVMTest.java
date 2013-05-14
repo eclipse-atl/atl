@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
 import org.eclipse.emf.compare.diff.metamodel.DiffModel;
 import org.eclipse.emf.compare.diff.metamodel.ReferenceOrderChange;
@@ -29,6 +30,12 @@ import org.eclipse.emf.compare.match.metamodel.MatchModel;
 import org.eclipse.emf.compare.match.service.MatchService;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
+import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.osgi.framework.Bundle;
 
 /**
@@ -169,6 +176,45 @@ public abstract class EMFTVMTest extends TestCase {
 	 */
 	public EMFTVMTest(String name) {
 		super(name);
+	}
+
+	/**
+	 * Loads a {@link Model} instance for the given file name.
+	 * 
+	 * @param rs
+	 *            the {@link ResourceSet} to use for loading
+	 * @param file
+	 *            the file name relative to {@value #PLUGIN_URI}.
+	 * @return the {@link Model} instance for the given file name
+	 */
+	public Model loadTestModel(final ResourceSet rs, final String file) {
+		final Model model = EmftvmFactory.eINSTANCE.createModel();
+		model.setResource(rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + file, true), true));
+		return model;
+	}
+
+	/**
+	 * Creates a new {@link Model} instance for the given file name.
+	 * 
+	 * @param rs
+	 *            the {@link ResourceSet} to use for creating
+	 * @param file
+	 *            the file name relative to {@value #PLUGIN_URI}.
+	 * @return the {@link Model} instance for the given file name
+	 */
+	public Model createTestModel(final ResourceSet rs, final String file) {
+		final Model model = EmftvmFactory.eINSTANCE.createModel();
+		model.setResource(rs.createResource(URI.createPlatformPluginURI(PLUGIN_ID + file, true)));
+		return model;
+	}
+
+	/**
+	 * Creates a new {@link ModuleResolver} for testing. Uses {@value #PLUGIN_URI} + "/test-data/" as module path.
+	 * 
+	 * @return a new {@link ModuleResolver} for testing
+	 */
+	public ModuleResolver createTestModuleResolver() {
+		return new DefaultModuleResolver(PLUGIN_URI + "/test-data/", new ResourceSetImpl());
 	}
 
 }

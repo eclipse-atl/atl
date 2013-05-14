@@ -60,6 +60,7 @@ public class TraceElementItemProvider
 
 			addNamePropertyDescriptor(object);
 			addObjectPropertyDescriptor(object);
+			addRuntimeObjectPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -109,6 +110,28 @@ public class TraceElementItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Runtime Object feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addRuntimeObjectPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TraceElement_runtimeObject_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TraceElement_runtimeObject_feature", "_UI_TraceElement_type"),
+				 TracePackage.Literals.TRACE_ELEMENT__RUNTIME_OBJECT,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -135,6 +158,7 @@ public class TraceElementItemProvider
 
 		switch (notification.getFeatureID(TraceElement.class)) {
 			case TracePackage.TRACE_ELEMENT__NAME:
+			case TracePackage.TRACE_ELEMENT__RUNTIME_OBJECT:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

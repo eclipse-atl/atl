@@ -152,7 +152,7 @@ public interface TracedRule extends EObject {
 	 * @model
 	 * @generated
 	 */
-	SourceElement getUniqueSourceElement(EObject sourceElement);
+	SourceElement getUniqueSourceElement(Object sourceElement);
 
 	/**
 	 * <!-- begin-user-doc -->

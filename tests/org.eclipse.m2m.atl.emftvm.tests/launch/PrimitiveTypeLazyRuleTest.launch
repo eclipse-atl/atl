@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.emftvm.launcher.EMFTVMTransformation">
+<stringAttribute key="ATL File Name" value="//org.eclipse.m2m.atl.emftvm.tests/test-data/PrimitiveTypeLazyRuleTest.atl"/>
+<booleanAttribute key="Disable JIT compiler" value="false"/>
+<booleanAttribute key="Display Timing Data" value="true"/>
+<mapAttribute key="Inout Model Options">
+<mapEntry key="trace" value="createNewModel derivedFile"/>
+</mapAttribute>
+<mapAttribute key="Inout Models">
+<mapEntry key="trace" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/PrimitiveTypeLazyRuleTest-trace.xmi"/>
+</mapAttribute>
+<mapAttribute key="Inout Models Output Locations">
+<mapEntry key="trace" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/PrimitiveTypeLazyRuleTest-trace.xmi"/>
+</mapAttribute>
+<mapAttribute key="Input Model Options"/>
+<mapAttribute key="Input Models">
+<mapEntry key="IN" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/EcoreCopy/My.ecore"/>
+</mapAttribute>
+<mapAttribute key="Metamodel Options">
+<mapEntry key="ECORE" value="isMetametamodel"/>
+</mapAttribute>
+<mapAttribute key="Metamodels">
+<mapEntry key="ECORE" value=""/>
+</mapAttribute>
+<stringAttribute key="Module Name" value="PrimitiveTypeLazyRuleTest"/>
+<stringAttribute key="Module Path" value="/org.eclipse.m2m.atl.emftvm.tests/test-data/"/>
+<mapAttribute key="Output Model Options">
+<mapEntry key="OUT" value="derivedFile"/>
+</mapAttribute>
+<mapAttribute key="Output Models">
+<mapEntry key="OUT" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/PrimitiveTypeLazyRuleTest-out.ecore"/>
+</mapAttribute>
+<listAttribute key="Superimpose">
+<listEntry value="//org.eclipse.m2m.atl.emftvm.tests/test-data/lib/Assert.asm"/>
+</listAttribute>
+</launchConfiguration>

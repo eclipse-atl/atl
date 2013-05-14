@@ -19,7 +19,6 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
@@ -61,7 +60,7 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 	/**
 	 * Cached list of source element objects.
 	 */
-	protected final EList<EObject> sourceObjects = new BasicEList<EObject>();
+	protected final EList<Object> sourceObjects = new BasicEList<Object>();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -181,7 +180,7 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public EList<EObject> getSourceObjects() {
+	public EList<Object> getSourceObjects() {
 		return ECollections.unmodifiableEList(sourceObjects);
 	}
 
@@ -361,7 +360,7 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 	 * @param se
 	 */
 	private void sourceElementAdded(final SourceElement se) {
-		sourceObjects.add(se.getObject());
+		sourceObjects.add(se.getRuntimeObject());
 	}
 
 	/**
@@ -369,7 +368,7 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 	 * @param se
 	 */
 	private void sourceElementRemoved(final SourceElement se) {
-		sourceObjects.remove(se.getObject());
+		sourceObjects.remove(se.getRuntimeObject());
 	}
 
 	/**

@@ -31,6 +31,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.TraceElementImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.TraceElementImpl#getObject <em>Object</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.TraceElementImpl#getRuntimeObject <em>Runtime Object</em>}</li>
  * </ul>
  * </p>
  *
@@ -66,6 +67,26 @@ public abstract class TraceElementImpl extends EObjectImpl implements TraceEleme
 	 * @ordered
 	 */
 	protected EObject object;
+
+	/**
+	 * The default value of the '{@link #getRuntimeObject() <em>Runtime Object</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRuntimeObject()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Object RUNTIME_OBJECT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getRuntimeObject() <em>Runtime Object</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRuntimeObject()
+	 * @generated
+	 * @ordered
+	 */
+	protected Object runtimeObject = RUNTIME_OBJECT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -136,13 +157,40 @@ public abstract class TraceElementImpl extends EObjectImpl implements TraceEleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public void setObject(EObject newObject) {
 		EObject oldObject = object;
 		object = newObject;
+		if (oldObject != newObject) {
+			setRuntimeObject(newObject);
+		}
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, TracePackage.TRACE_ELEMENT__OBJECT, oldObject, object));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Object getRuntimeObject() {
+		return runtimeObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public void setRuntimeObject(Object newRuntimeObject) {
+		Object oldRuntimeObject = runtimeObject;
+		runtimeObject = newRuntimeObject;
+		if (oldRuntimeObject != newRuntimeObject && newRuntimeObject instanceof EObject) {
+			setObject((EObject) newRuntimeObject);
+		}
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TracePackage.TRACE_ELEMENT__RUNTIME_OBJECT, oldRuntimeObject, runtimeObject));
 	}
 
 	/**
@@ -158,6 +206,8 @@ public abstract class TraceElementImpl extends EObjectImpl implements TraceEleme
 			case TracePackage.TRACE_ELEMENT__OBJECT:
 				if (resolve) return getObject();
 				return basicGetObject();
+			case TracePackage.TRACE_ELEMENT__RUNTIME_OBJECT:
+				return getRuntimeObject();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -175,6 +225,9 @@ public abstract class TraceElementImpl extends EObjectImpl implements TraceEleme
 				return;
 			case TracePackage.TRACE_ELEMENT__OBJECT:
 				setObject((EObject)newValue);
+				return;
+			case TracePackage.TRACE_ELEMENT__RUNTIME_OBJECT:
+				setRuntimeObject(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -194,6 +247,9 @@ public abstract class TraceElementImpl extends EObjectImpl implements TraceEleme
 			case TracePackage.TRACE_ELEMENT__OBJECT:
 				setObject((EObject)null);
 				return;
+			case TracePackage.TRACE_ELEMENT__RUNTIME_OBJECT:
+				setRuntimeObject(RUNTIME_OBJECT_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -210,6 +266,8 @@ public abstract class TraceElementImpl extends EObjectImpl implements TraceEleme
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case TracePackage.TRACE_ELEMENT__OBJECT:
 				return object != null;
+			case TracePackage.TRACE_ELEMENT__RUNTIME_OBJECT:
+				return RUNTIME_OBJECT_EDEFAULT == null ? runtimeObject != null : !RUNTIME_OBJECT_EDEFAULT.equals(runtimeObject);
 		}
 		return super.eIsSet(featureID);
 	}

@@ -90,7 +90,7 @@ public class TraceLinkSetImpl extends EObjectImpl implements TraceLinkSet {
 	/**
 	 * Lookup table of referred objects to {@link SourceElementList}s.
 	 */
-	protected final Map<List<EObject>, SourceElementList> defaultSourceObjectLists = new HashMap<List<EObject>, SourceElementList>();
+	protected final Map<List<Object>, SourceElementList> defaultSourceObjectLists = new HashMap<List<Object>, SourceElementList>();
 
 	/**
 	 * Lookup table of traced rules by name.
@@ -153,16 +153,18 @@ public class TraceLinkSetImpl extends EObjectImpl implements TraceLinkSet {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public SourceElement getDefaultSourceElement(final EObject sourceElement) {
+	public SourceElement getDefaultSourceElement(final Object sourceElement) {
 		return defaultSourceObjects.get(sourceElement);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -471,7 +473,7 @@ public class TraceLinkSetImpl extends EObjectImpl implements TraceLinkSet {
 	 * @param sel
 	 */
 	private void defaultSourceElementListAdded(final SourceElementList sel) {
-		final List<EObject> objects = sel.getSourceObjects();
+		final List<Object> objects = sel.getSourceObjects();
 		if (defaultSourceObjectLists.containsKey(objects)) {
 			assert !sel.getSourceElements().isEmpty();
 			final TracedRule selRule = sel.getSourceElements().get(0).getSourceOf().getRule();

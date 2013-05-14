@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ASCII"?>
+<trace:TraceLinkSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:trace="http://www.eclipse.org/m2m/atl/emftvm/2011/Trace" defaultSourceElements="//@rules.0/@links.0/@sourceElements.0">
+  <rules rule="EPackage">
+    <links>
+      <sourceElements name="s" defaultFor="/">
+        <object href="EcoreCopy/My.ecore#/"/>
+      </sourceElements>
+      <targetElements name="t">
+        <object href="PrimitiveTypeLazyRuleTest-out.ecore#/"/>
+      </targetElements>
+    </links>
+  </rules>
+  <rules rule="CartesianEClass">
+    <links>
+      <sourceElements name="s">
+        <object href="EcoreCopy/My.ecore#//TestClass"/>
+      </sourceElements>
+      <sourceElements name="name"/>
+      <targetElements name="t">
+        <object href="PrimitiveTypeLazyRuleTest-out.ecore#//TestClass_testAtt"/>
+      </targetElements>
+    </links>
+    <links>
+      <sourceElements name="s">
+        <object href="EcoreCopy/My.ecore#//TestClass"/>
+      </sourceElements>
+      <sourceElements name="name"/>
+      <targetElements name="t">
+        <object href="PrimitiveTypeLazyRuleTest-out.ecore#//TestClass_testAtt2"/>
+      </targetElements>
+    </links>
+    <uniqueSourceElementLists sourceElements="//@rules.1/@links.0/@sourceElements.0 //@rules.1/@links.0/@sourceElements.1"/>
+    <uniqueSourceElementLists sourceElements="//@rules.1/@links.1/@sourceElements.0 //@rules.1/@links.1/@sourceElements.1"/>
+  </rules>
+</trace:TraceLinkSet>

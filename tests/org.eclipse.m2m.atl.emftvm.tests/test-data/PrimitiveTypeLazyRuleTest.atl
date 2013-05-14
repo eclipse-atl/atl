@@ -1,0 +1,39 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module PrimitiveTypeLazyRuleTest;
+
+create OUT : ECORE from IN : ECORE;
+
+uses "lib::Assert";
+
+rule EPackage {
+	from s : ECORE!EPackage
+	to t : ECORE!EPackage (
+		name <- s.name,
+		eClassifiers <- s.eClassifiers
+			->select(c | c.oclIsKindOf(ECORE!EClass))
+			->collect(c | c.eStructuralFeatures
+				->collect(f | thisModule.CartesianEClass(c, f.name)))
+			->flatten())
+	do {
+		s.eClassifiers
+			->select(c | c.oclIsKindOf(ECORE!EClass))
+			->collect(c | 
+				c.eStructuralFeatures->collect(f |
+					thisModule.assertNotOclUndefined(
+						thisModule.resolveTemp(Sequence{c, f.name}, 'CartesianEClass', 't')
+					)
+				)
+			);
+	}
+}
+
+unique lazy rule CartesianEClass {
+	from s : ECORE!EClass,
+		 name : String
+	to t : ECORE!EClass (
+		name <- s.name + '_' + name)
+	do {
+		t;
+	}
+}

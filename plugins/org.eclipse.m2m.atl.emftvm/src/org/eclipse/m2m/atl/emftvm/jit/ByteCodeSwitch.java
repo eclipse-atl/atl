@@ -1195,7 +1195,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			aload(1); // frame: [..., array, frame]
 			ldc(object.getRulename()); // [..., array, frame, rulename]
 			invokeStat(JITCodeBlock.class, "matchOne", Object.class, // matchOne(array, frame, rulename)
-					EObject[].class, StackFrame.class, String.class);
+					Object[].class, StackFrame.class, String.class);
 			break;	
 		}
 		return super.caseMatch(object);

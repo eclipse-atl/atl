@@ -1,0 +1,9 @@
+-- @atlcompiler emftvm
+library "lib::Assert";
+
+--- Asserts that 'value' is not OclUndefined. Returns 'value'.
+helper def : assertNotOclUndefined(value : OclAny) : OclAny =
+	let void : OclAny = 
+		"#native"!"org::junit::Assert".refInvokeStaticOperation('assertNotNull', Sequence{value})
+	in
+		value;

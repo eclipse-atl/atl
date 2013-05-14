@@ -34,7 +34,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet#getDefaultSourceElement(org.eclipse.emf.ecore.EObject) <em>Get Default Source Element</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet#getDefaultSourceElement(java.lang.Object) <em>Get Default Source Element</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet#getDefaultSourceElements(java.util.List) <em>Get Default Source Elements</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet#getLinksByRule(java.lang.String, boolean) <em>Get Links By Rule</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet#clear() <em>Clear</em>}</li>

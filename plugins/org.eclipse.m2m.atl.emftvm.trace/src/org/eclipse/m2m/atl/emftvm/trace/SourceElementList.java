@@ -112,6 +112,6 @@ public interface SourceElementList extends EObject {
 	 * @model kind="operation" lower="2"
 	 * @generated
 	 */
-	EList<EObject> getSourceObjects();
+	EList<Object> getSourceObjects();
 
 } // SourceElementList

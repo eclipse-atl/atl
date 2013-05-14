@@ -14,7 +14,6 @@ package org.eclipse.m2m.atl.emftvm;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
 import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
@@ -533,7 +532,7 @@ public interface Rule extends NamedElement {
 	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame" valuesDataType="org.eclipse.m2m.atl.emftvm.EObjectArray"
 	 * @generated
 	 */
-	Object matchManual(StackFrame frame, EObject[] values);
+	Object matchManual(StackFrame frame, Object[] values);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -546,7 +545,7 @@ public interface Rule extends NamedElement {
 	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
 	 */
-	boolean matchOne(StackFrame frame, Map<String, EObject> valuesMap);
+	boolean matchOne(StackFrame frame, Map<String, Object> valuesMap);
 
 	/**
 	 * <!-- begin-user-doc -->

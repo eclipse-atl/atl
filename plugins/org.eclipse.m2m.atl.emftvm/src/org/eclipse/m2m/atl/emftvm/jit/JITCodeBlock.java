@@ -53,7 +53,7 @@ public abstract class JITCodeBlock {
 	 */
 	protected static final EClass EXEC_ENV = EmftvmPackage.eINSTANCE.getExecEnv();
 
-	private static final EObject[] EEMPTY = new EObject[0];
+	private static final Object[] EMPTY = new Object[0];
 
 	/**
 	 * The {@link CodeBlock} that this {@link JITCodeBlock} represents.
@@ -1080,14 +1080,11 @@ public abstract class JITCodeBlock {
 		if (type == env.eClass()) { // Lazy and called rule invocations are indistinguishable from static operations in ATL
 			final Rule rule = env.findRule(opname);
 			if (rule != null && rule.getMode() == RuleMode.MANUAL) {
-				return matchOne(new EObject[]{(EObject)arg}, rule, frame);
+				return matchOne(new Object[] { arg }, rule, frame);
 			}
 		}
 
-		final Operation op = frame.getEnv().findStaticOperation(
-				type, 
-				opname, 
-				EMFTVMUtil.getArgumentType(arg));
+		final Operation op = frame.getEnv().findStaticOperation(type, opname, EMFTVMUtil.getArgumentType(arg));
 		if (op != null) {
 			final CodeBlock body = op.getBody();
 			return body.execute(frame.getSubFrame(body, arg));
@@ -1121,16 +1118,11 @@ public abstract class JITCodeBlock {
 		if (type == env.eClass()) { // Lazy and called rule invocations are indistinguishable from static operations in ATL
 			final Rule rule = env.findRule(opname);
 			if (rule != null && rule.getMode() == RuleMode.MANUAL) {
-				final EObject[] eargs = new EObject[args.length];
-				System.arraycopy(args, 0, eargs, 0, args.length);
-				return matchOne(eargs, rule, frame);
+				return matchOne(args, rule, frame);
 			}
 		}
 
-		final Operation op = frame.getEnv().findStaticOperation(
-				type, 
-				opname, 
-				EMFTVMUtil.getArgumentTypes(args));
+		final Operation op = frame.getEnv().findStaticOperation(type, opname, EMFTVMUtil.getArgumentTypes(args));
 		if (op != null) {
 			final CodeBlock body = op.getBody();
 			return body.execute(frame.getSubFrame(body, args));
@@ -1150,7 +1142,7 @@ public abstract class JITCodeBlock {
 	 * @param rule the rule
 	 * @param frame the current stack frame
 	 */
-	protected static Object matchOne(final EObject[] args, final Rule rule, final StackFrame frame) {
+	protected static Object matchOne(final Object[] args, final Rule rule, final StackFrame frame) {
 		final int argcount = args.length;
 		if (argcount != rule.getInputElements().size()) {
 			throw new VMException(frame, String.format(
@@ -1171,7 +1163,7 @@ public abstract class JITCodeBlock {
 					"Rule %s has different amount of input elements than expected: %d instead of %d",
 					rule.getName(), rule.getInputElements().size(), 0));
 		}
-		return rule.matchManual(frame, EEMPTY);
+		return rule.matchManual(frame, EMPTY);
 	}
 
 	/**
@@ -1180,7 +1172,7 @@ public abstract class JITCodeBlock {
 	 * @param frame the current stack frame
 	 * @param rulename the rule name
 	 */
-	protected static Object matchOne(final EObject[] args, final StackFrame frame, final String rulename) {
+	protected static Object matchOne(final Object[] args, final StackFrame frame, final String rulename) {
 		final ExecEnv env = frame.getEnv();
 		final Rule rule = env.findRule(rulename);
 		if (rule == null) {
@@ -1211,7 +1203,7 @@ public abstract class JITCodeBlock {
 					"Rule %s has different amount of input elements than expected: %d instead of %d",
 					rule.getName(), rule.getInputElements().size(), 0));
 		}
-		return rule.matchManual(frame, EEMPTY);
+		return rule.matchManual(frame, EMPTY);
 	}
 
 	/**

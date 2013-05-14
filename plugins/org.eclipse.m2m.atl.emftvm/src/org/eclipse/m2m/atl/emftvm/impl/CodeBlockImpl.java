@@ -237,7 +237,6 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	protected static final EClass EXEC_ENV = EmftvmPackage.eINSTANCE.getExecEnv();
 
 	private static final Object[] EMPTY = new Object[0];
-	private static final EObject[] EEMPTY = new EObject[0];
 	private static final int JIT_THRESHOLD = 100; // require > JIT_THRESHOLD runs before JIT-ing
 
 	private boolean ruleSet;
@@ -2393,9 +2392,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				}
 			}
 
-			op = env.findStaticOperation(
-					type, 
-					opname);
+			op = env.findStaticOperation(type, opname);
 			if (op != null) {
 				final CodeBlock body = op.getBody();
 				return body.execute(new StackFrame(frame, body)); // no need to copy arguments
@@ -2419,14 +2416,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			if (type == env.eClass()) { // Lazy and called rule invocations are indistinguishable from static operations in ATL
 				final Rule rule = env.findRule(opname);
 				if (rule != null && rule.getMode() == RuleMode.MANUAL) {
-					return matchOne(frame, rule, new EObject[]{(EObject)arg});
+					return matchOne(frame, rule, new Object[] { arg });
 				}
 			}
 
-			op = env.findStaticOperation(
-					type, 
-					opname, 
-					EMFTVMUtil.getArgumentType(arg));
+			op = env.findStaticOperation(type, opname, EMFTVMUtil.getArgumentType(arg));
 			if (op != null) {
 				final CodeBlock body = op.getBody();
 				return body.execute(frame.getSubFrame(body, arg));
@@ -2451,17 +2445,12 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			if (type == env.eClass()) { // Lazy and called rule invocations are indistinguishable from static operations in ATL
 				final Rule rule = env.findRule(opname);
 				if (rule != null && rule.getMode() == RuleMode.MANUAL) {
-					EObject[] eargs = new EObject[argcount];
-					System.arraycopy(args, 0, eargs, 0, argcount);
-					return matchOne(frame, rule, eargs);
+					return matchOne(frame, rule, args);
 				}
 			}
 
 			//TODO treat context type as a regular argument (cf. Java's Method.invoke())
-			op = env.findStaticOperation(
-					type, 
-					opname, 
-					EMFTVMUtil.getArgumentTypes(args));
+			op = env.findStaticOperation(type, opname, EMFTVMUtil.getArgumentTypes(args));
 			if (op != null) {
 				final CodeBlock body = op.getBody();
 				return body.execute(frame.getSubFrame(body, args));
@@ -2642,7 +2631,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param rule the rule
 	 * @param args the rule arguments
 	 */
-	private static Object matchOne(final StackFrame frame, final Rule rule, final EObject[] args) {
+	private static Object matchOne(final StackFrame frame, final Rule rule, final Object[] args) {
 		final int argcount = args.length;
 		if (argcount != rule.getInputElements().size()) {
 			throw new VMException(frame, String.format(
@@ -2663,7 +2652,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					"Rule %s has different amount of input elements than expected: %d instead of %d",
 					rule.getName(), rule.getInputElements().size(), 0));
 		}
-		return rule.matchManual(frame, EEMPTY);
+		return rule.matchManual(frame, EMPTY);
 	}
 
 	/**
