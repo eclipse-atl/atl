@@ -27,6 +27,7 @@ import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Instruction;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.New;
 import org.eclipse.m2m.atl.emftvm.constraints.StackUnderflowValidator;
 import org.eclipse.m2m.atl.emftvm.constraints.ValidCodeBlockStackLevelValidator;
@@ -91,6 +92,56 @@ public class CompilerTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests the compilation output for "ATLtoEMFTVM.atl".
+	 */
+	public void testATLtoEMFTVM() {
+		runCompilerModuleTest("ATLtoEMFTVM");
+	}
+
+	/**
+	 * Tests the compilation output for "OCLtoEMFTVM.atl".
+	 */
+	public void testOCLtoEMFTVM() {
+		runCompilerModuleTest("OCLtoEMFTVM");
+	}
+
+	/**
+	 * Tests the compilation output for "InlineCodeblocks.atl".
+	 */
+	public void testInlineCodeblocks() {
+		runCompilerModuleTest("InlineCodeblocks");
+	}
+
+	/**
+	 * Tests the compilation output for "ATLWFR.atl".
+	 */
+	public void testATLWFR() {
+		runCompilerModuleTest("ATLWFR");
+	}
+
+	/**
+	 * Tests the compilation output for "EMFTVMCopy.atl".
+	 */
+	public void testEMFTVMCopy() {
+		runCompilerModuleTest("EMFTVMCopy");
+	}
+
+	/**
+	 * Tests the compilation of a compiler module.
+	 * 
+	 * @param compilerModule
+	 *            the compiler module name
+	 */
+	protected void runCompilerModuleTest(final String compilerModule) {
+		final Model outModel = compile(URI
+				.createPlatformPluginURI(COMPILER_PLUGIN_ID + "/transformations/" + compilerModule + ".atl", true));
+		assertEquals(null, validate(outModel));
+		final Resource refModel = new ResourceSetImpl().getResource(
+				URI.createPlatformPluginURI(COMPILER_PLUGIN_ID + "/transformations/" + compilerModule + ".emftvm", true), true);
+		assertEquals(refModel, outModel.getResource());
+	}
+
+	/**
 	 * Compiles the given ATL module.
 	 * 
 	 * @param moduleURI
@@ -109,7 +160,7 @@ public class CompilerTest extends EMFTVMTest {
 			env.registerInputModel("IN", inModel);
 		}
 
-		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
+		final Resource outRes = rs.createResource(URI.createFileURI("out.emftvm"));
 		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
 		outModel.setResource(outRes);
 		env.registerOutputModel("OUT", outModel);
@@ -136,16 +187,18 @@ public class CompilerTest extends EMFTVMTest {
 
 		// Load and run module
 		{
-			final ModuleResolver mr = new DefaultModuleResolver(COMPILER_PLUGIN_URI + "/transformations/", rs);
+			final ModuleResolver mr = new DefaultModuleResolver(COMPILER_PLUGIN_URI + "/transformations/", new ResourceSetImpl());
 			env.loadModule(mr, "ATLtoEMFTVM");
 			env.run(null);
 			assertTrue(pbsRes.getContents().isEmpty());
+			assertEquals(1, outRes.getContents().size());
+			assertTrue(outRes.getContents().get(0) instanceof Module);
 		}
 
 		final ExecEnv env2 = EmftvmFactory.eINSTANCE.createExecEnv();
 		env2.registerInputModel("IN", outModel);
 
-		final Resource outRes2 = rs.createResource(URI.createFileURI("out.xmi"));
+		final Resource outRes2 = rs.createResource(URI.createFileURI("out.emftvm"));
 		final Model outModel2 = EmftvmFactory.eINSTANCE.createModel();
 		outModel2.setResource(outRes2);
 		env2.registerOutputModel("OUT", outModel2);
@@ -159,10 +212,17 @@ public class CompilerTest extends EMFTVMTest {
 
 		// Load and run module
 		{
-			final ModuleResolver mr = new DefaultModuleResolver(COMPILER_PLUGIN_URI + "/transformations/", rs);
+			final ModuleResolver mr = new DefaultModuleResolver(COMPILER_PLUGIN_URI + "/transformations/", new ResourceSetImpl());
 			env2.loadModule(mr, "InlineCodeblocks");
 			env2.run(null);
 			assertTrue(pbsRes2.getContents().isEmpty());
+			assertEquals(1, outRes2.getContents().size());
+			assertTrue(outRes2.getContents().get(0) instanceof Module);
+		}
+
+		// CodeBlocks passed into a native operation have their parentFrame property set - clear this property:
+		for (EObject cb : outModel2.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
+			((CodeBlock) cb).setParentFrame(null);
 		}
 
 		return outModel2;

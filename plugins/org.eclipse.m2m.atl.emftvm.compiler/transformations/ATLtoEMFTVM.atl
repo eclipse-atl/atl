@@ -390,7 +390,7 @@ rule ModuleWithEntryAndEndPoint extends Module {
 }
 
 rule ModelDeclaration {
-	from s : ATL!OclModel in IN (not s.metamodel.oclIsUndefined())
+	from s : ATL!OclModel in IN (not s.metamodel.oclIsUndefined() and not s.isRefiningModel)
 	to t : EMFTVM!ModelDeclaration (
 		modelName <- s.name,
 		metaModelName <- s.metamodel.name)

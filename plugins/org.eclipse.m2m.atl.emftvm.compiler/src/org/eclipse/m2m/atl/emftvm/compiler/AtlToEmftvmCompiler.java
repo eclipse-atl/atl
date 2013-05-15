@@ -43,8 +43,9 @@ import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
-import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
-import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
+import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolverFactory;
+import org.eclipse.m2m.atl.emftvm.util.ExecEnvPool;
+import org.eclipse.m2m.atl.emftvm.util.ModuleResolverFactory;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 import org.eclipse.m2m.atl.engine.ProblemConverter;
 import org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler;
@@ -59,18 +60,36 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
 public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 
 	protected final ResourceSet rs = new ResourceSetImpl();
-	protected final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
 	protected final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
-	protected final ModuleResolver mr = new DefaultModuleResolver(
-			"platform:/plugin/" + EmftvmCompilerPlugin.PLUGIN_ID + "/transformations/", rs);
+	protected final ExecEnvPool atlWfrPool = new ExecEnvPool();
+	protected final ExecEnvPool atlToEmftvmPool = new ExecEnvPool();
+	protected final ExecEnvPool inlineCodeblocksPool = new ExecEnvPool();
 
 	/**
 	 * Creates a new {@link AtlToEmftvmCompiler}.
 	 */
 	public AtlToEmftvmCompiler() {
 		super();
+
+		final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
 		atlmm.setResource(((EMFReferenceModel)AtlParser.getDefault().getAtlMetamodel()).getResource());
 		pbmm.setResource(((EMFReferenceModel)AtlParser.getDefault().getProblemMetamodel()).getResource());
+		final ModuleResolverFactory mrf = new DefaultModuleResolverFactory("platform:/plugin/" + EmftvmCompilerPlugin.PLUGIN_ID
+				+ "/transformations/");
+
+		atlWfrPool.setModuleResolverFactory(mrf);
+		atlWfrPool.registerMetaModel("ATL", atlmm);
+		atlWfrPool.registerMetaModel("Problem", pbmm);
+		atlWfrPool.loadModule("ATLWFR");
+
+		atlToEmftvmPool.setModuleResolverFactory(mrf);
+		atlToEmftvmPool.registerMetaModel("ATL", atlmm);
+		atlToEmftvmPool.registerMetaModel("Problem", pbmm);
+		atlToEmftvmPool.loadModule("ATLtoEMFTVM");
+
+		inlineCodeblocksPool.setModuleResolverFactory(mrf);
+		inlineCodeblocksPool.registerMetaModel("Problem", pbmm);
+		inlineCodeblocksPool.loadModule("InlineCodeblocks");
 	}
 
 	/**
@@ -169,31 +188,24 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		final Model emftvmmi = EmftvmFactory.eINSTANCE.createModel();
 		emftvmmi.setResource(ri);
 		
+		final ExecEnv atlWfrEnv = atlWfrPool.getExecEnv();
+		final ExecEnv atlToEmftvmEnv = atlToEmftvmPool.getExecEnv();
+		final ExecEnv inlineCodeblocksEnv = inlineCodeblocksPool.getExecEnv();
 		try {
-			ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
-			env.registerMetaModel("ATL", atlmm);
-			env.registerMetaModel("Problem", pbmm);
-			env.registerInputModel("IN", atlm);
-			env.registerOutputModel("OUT", pbm);
-			env.loadModule(mr, "ATLWFR");
-			env.run(null);
+			atlWfrEnv.registerInputModel("IN", atlm);
+			atlWfrEnv.registerOutputModel("OUT", pbm);
+			atlWfrEnv.run(null);
 			
 			if (getProblems(pbm, pbs) == 0) {
-				env = EmftvmFactory.eINSTANCE.createExecEnv();
-				env.registerMetaModel("ATL", atlmm);
-				env.registerMetaModel("Problem", pbmm);
-				env.registerInputModel("IN", atlm);
-				env.registerOutputModel("OUT", emftvmm);
-				env.registerOutputModel("PBS", pbm);
-				env.loadModule(mr, "ATLtoEMFTVM");
-				env.run(null);
+				atlToEmftvmEnv.registerInputModel("IN", atlm);
+				atlToEmftvmEnv.registerOutputModel("OUT", emftvmm);
+				atlToEmftvmEnv.registerOutputModel("PBS", pbm);
+				atlToEmftvmEnv.run(null);
 				
 				if (getProblems(pbm, pbs) == 0) {
-					env = EmftvmFactory.eINSTANCE.createExecEnv();
-					env.registerInputModel("IN", emftvmm);
-					env.registerOutputModel("OUT", emftvmmi);
-					env.loadModule(mr, "InlineCodeblocks");
-					env.run(null);
+					inlineCodeblocksEnv.registerInputModel("IN", emftvmm);
+					inlineCodeblocksEnv.registerOutputModel("OUT", emftvmmi);
+					inlineCodeblocksEnv.run(null);
 					
 					ri.save(outputStream, Collections.emptyMap());
 				}
@@ -205,6 +217,9 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			EmftvmCompilerPlugin.log(e);
 		} finally {
+			atlWfrPool.returnExecEnv(atlWfrEnv);
+			atlToEmftvmPool.returnExecEnv(atlToEmftvmEnv);
+			inlineCodeblocksPool.returnExecEnv(inlineCodeblocksEnv);
 			rs.getResources().remove(pr); // unload
 			rs.getResources().remove(r); // unload
 			rs.getResources().remove(ri); // unload
