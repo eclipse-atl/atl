@@ -685,9 +685,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			final Class<?> rt = method.getReturnType();
 			// Box primitive return values
 			generateBoxing(rt, dc); // [..., result]
-			if (!dc.equals(Object.class)) {
-				goto_(selfEnd); // jump over catch block: [..., result]
-			}
+			goto_(selfEnd); // jump over catch block: [..., result]
 			// catch (VMException e)
 			label(vmExceptionHandler); // [..., e]
 			astore(6); // e: [...]
@@ -856,9 +854,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			final Class<?> rt = method.getReturnType();
 			// Box primitive return values
 			generateBoxing(rt, dc); // [..., result]
-			if (!dc.equals(Object.class) || !pc.equals(Object.class)) {
-				goto_(selfEnd); // jump over catch block: [..., result]
-			}
+			goto_(selfEnd); // jump over catch block: [..., result]
 			// catch (VMException e)
 			label(vmExceptionHandler); // [..., e]
 			astore(7); // e: [...]
@@ -991,6 +987,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			return null;
 		}
 		Class<?> dc = method.getDeclaringClass();
+		Class<?>[] dis = dc.getInterfaces();
 		while ((dc = dc.getSuperclass()) != null) {
 			try {
 				method = dc.getDeclaredMethod(method.getName(), method.getParameterTypes());
@@ -999,8 +996,8 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			} catch (NoSuchMethodException e) {
 				break;
 			}
+			dis = dc.getInterfaces();
 		}
-		Class<?>[] dis = dc.getInterfaces();
 		while (dis.length > 0) {
 			Class<?>[] newDis = new Class<?>[0];
 			for (Class<?> di : dis) {
