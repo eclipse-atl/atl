@@ -1165,7 +1165,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public synchronized Module loadModule(final ModuleResolver resolver, final String name) {
+	public Module loadModule(final ModuleResolver resolver, final String name) {
 		return loadModule(resolver, name, true);
 	}
 	
@@ -1175,7 +1175,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Module loadModule(final ModuleResolver resolver, final String name, final boolean validate) {
+	public synchronized Module loadModule(final ModuleResolver resolver, final String name, final boolean validate) {
 		resetJITCompiler();
 		if (isRuleStateCompiled()) {
 			for (Rule r : getRules()) {
