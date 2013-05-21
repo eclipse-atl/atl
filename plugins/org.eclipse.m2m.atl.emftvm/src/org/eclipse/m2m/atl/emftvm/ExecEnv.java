@@ -469,6 +469,21 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Loads the module with the given <code>name</code> and its imports
+	 * closure into this {@link ExecEnv} using the <code>resolver</code>,
+	 * and registers its contents for execution.
+	 * @param resolver the module file resolver
+	 * @param name the module name
+	 * @param validate if <code>true</code>, validates the loaded bytecode
+	 * @return the loaded module
+	 * <!-- end-user-doc -->
+	 * @model resolverDataType="org.eclipse.m2m.atl.emftvm.ModuleResolver"
+	 * @generated
+	 */
+	Module loadModule(ModuleResolver resolver, String name, boolean validate);
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * Finds an {@link Operation} registered within this {@link ExecEnv}.
 	 * @param context the context type of the operation
 	 * @param name the operation name

@@ -1166,6 +1166,16 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public synchronized Module loadModule(final ModuleResolver resolver, final String name) {
+		return loadModule(resolver, name, true);
+	}
+	
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Module loadModule(final ModuleResolver resolver, final String name, final boolean validate) {
 		resetJITCompiler();
 		if (isRuleStateCompiled()) {
 			for (Rule r : getRules()) {
@@ -1185,7 +1195,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			}
 			final Module module = resolver.resolveModule(name);
 			internalModules.put(name, module);
-			resolveImports(module, resolver);
+			resolveImports(module, resolver, validate);
 			for (Feature f : module.getFeatures()) {
 				registerFeature(f);
 			}
@@ -1196,7 +1206,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			for (Rule r : getRules()) {
 				resolveSuperRules(r);
 			}
-			if (module.eResource() != null) { // skip built-in native modules
+			if (validate && module.eResource() != null) { // skip built-in native modules
 				final Object invalidObject = validate(module);
 				if (invalidObject != null) {
 					throw new VMException(null, String.format("Byte code validation of %s failed", invalidObject));
@@ -1210,13 +1220,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 					e.getMessage()), e);
 		}
 	}
-	
+
 	/**
 	 * Validates the bytecode of <code>module</code>.
 	 * @param module the module to validate
 	 * @return <code>null</code> if <code>module</code> is valid, otherwise the first invalid object
 	 */
-	private Object validate(Module module) {
+	private Object validate(final Module module) {
 		final Diagnostic diag = Diagnostician.INSTANCE.validate(module);
 		if (diag.getSeverity() != Diagnostic.OK) {
 			return diag;
@@ -1241,11 +1251,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * Resolves the imports list of module.
 	 * @param module
 	 * @param resolver
+	 * @param validate
 	 */
-	private void resolveImports(final Module module, final ModuleResolver resolver) {
+	private void resolveImports(final Module module, final ModuleResolver resolver, final boolean validate) {
 		final EList<Module> eImports = module.getEImports();
 		for (String imp : module.getImports()) {
-			Module impModule = loadModule(resolver, imp);
+			Module impModule = loadModule(resolver, imp, validate);
 			eImports.add(impModule);
 		}
 	}

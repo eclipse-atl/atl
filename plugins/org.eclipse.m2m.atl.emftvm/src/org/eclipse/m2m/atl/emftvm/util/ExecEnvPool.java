@@ -78,6 +78,7 @@ public class ExecEnvPool {
 	 * @return the first available {@link ExecEnv} instance from this pool
 	 */
 	public synchronized ExecEnv getExecEnv() {
+		final boolean validate = !isFrozen(); // Only validate bytecode for first time load
 		setFrozen(true);
 		final Queue<SoftReference<ExecEnv>> freePool = getFreePool();
 		ExecEnv execEnv = null;
@@ -97,7 +98,7 @@ public class ExecEnvPool {
 				}
 				final ModuleResolver moduleResolver = moduleResolverFactory.createModuleResolver();
 				for (String module : getModules()) {
-					execEnv.loadModule(moduleResolver, module);
+					execEnv.loadModule(moduleResolver, module, validate);
 				}
 			}
 			getPool().add(new SoftReference<ExecEnv>(execEnv));
@@ -148,7 +149,7 @@ public class ExecEnvPool {
 	 * 
 	 * @return whether this {@link ExecEnvPool} has been frozen, i.e. no new metamodels or modules can be loaded
 	 */
-	public boolean isFrozen() {
+	public synchronized boolean isFrozen() {
 		return frozen;
 	}
 

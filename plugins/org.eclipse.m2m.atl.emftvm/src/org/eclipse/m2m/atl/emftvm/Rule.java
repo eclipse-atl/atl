@@ -529,7 +529,7 @@ public interface Rule extends NamedElement {
 	 * @return the rule application result, or <code>null</code> if the rule did not match
 	 * @throws VMException if this is not a {@link RuleMode#MANUAL} rule
 	 * <!-- end-user-doc -->
-	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame" valuesDataType="org.eclipse.m2m.atl.emftvm.EObjectArray"
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame" valuesDataType="org.eclipse.m2m.atl.emftvm.EJavaObjectArray"
 	 * @generated
 	 */
 	Object matchManual(StackFrame frame, Object[] values);
