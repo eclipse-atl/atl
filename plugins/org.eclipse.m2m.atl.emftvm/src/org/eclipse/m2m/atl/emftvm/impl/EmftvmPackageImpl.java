@@ -3659,7 +3659,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEAttribute(getInstruction_Opcode(), this.getOpcode(), "opcode", "", 1, 1, Instruction.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getInstruction_StackProduction(), theEcorePackage.getEInt(), "stackProduction", "0", 1, 1, Instruction.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getInstruction_StackConsumption(), theEcorePackage.getEInt(), "stackConsumption", "0", 1, 1, Instruction.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		initEAttribute(getInstruction_StackLevel(), theEcorePackage.getEInt(), "stackLevel", "0", 1, 1, Instruction.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getInstruction_StackLevel(), theEcorePackage.getEInt(), "stackLevel", "0", 1, 1, Instruction.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEReference(getInstruction_LineNumber(), this.getLineNumber(), this.getLineNumber_Instructions(), "lineNumber", null, 0, 1, Instruction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(lineNumberEClass, LineNumber.class, "LineNumber", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

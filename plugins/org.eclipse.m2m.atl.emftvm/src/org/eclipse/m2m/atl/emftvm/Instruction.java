@@ -125,7 +125,7 @@ public interface Instruction extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Stack Level</em>' attribute.
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInstruction_StackLevel()
-	 * @model default="0" required="true" transient="true" changeable="false" volatile="true" derived="true"
+	 * @model default="0" required="true" transient="true" changeable="false" derived="true"
 	 * @generated
 	 */
 	int getStackLevel();

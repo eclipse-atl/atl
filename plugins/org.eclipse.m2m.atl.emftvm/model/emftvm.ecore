@@ -486,8 +486,7 @@
         changeable="false" transient="true" defaultValueLiteral="0" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="stackLevel" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
-        changeable="false" volatile="true" transient="true" defaultValueLiteral="0"
-        derived="true"/>
+        changeable="false" transient="true" defaultValueLiteral="0" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="lineNumber" eType="#//LineNumber"
         eOpposite="#//LineNumber/instructions"/>
   </eClassifiers>

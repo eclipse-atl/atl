@@ -261,7 +261,7 @@ public class RuleTest extends NamedElementTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#matchManual(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.lang.Object[])
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testMatchManual__StackFrame_Object() {
 		// TODO: implement this operation test method

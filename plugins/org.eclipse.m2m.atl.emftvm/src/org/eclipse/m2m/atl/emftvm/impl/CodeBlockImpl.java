@@ -1491,6 +1491,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		switch (notification.getFeatureID(null)) {
 		case EmftvmPackage.CODE_BLOCK__CODE:
 			codeChanged();
+			for (Instruction i : getCode()) {
+				i.eNotify(notification);
+			}
 			break;
 		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
 			localVariablesChanged();

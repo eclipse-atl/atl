@@ -111,6 +111,16 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	 */
 	protected static final int STACK_LEVEL_EDEFAULT = 0;
 	/**
+	 * The cached value of the '{@link #getStackLevel() <em>Stack Level</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStackLevel()
+	 * @generated
+	 * @ordered
+	 */
+	protected int stackLevel = STACK_LEVEL_EDEFAULT;
+	protected boolean stackLevelSet;
+	/**
 	 * The cached value of the '{@link #getLineNumber() <em>Line Number</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -223,23 +233,26 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	 * @generated NOT
 	 */
 	public int getStackLevel() {
-		int stackLevelChange = getStackProduction() - getStackConsumption();
-		final CodeBlock cb = getOwningBlock();
-		if (cb != null) {
-			int prevStackLevel = 0;
-			final EList<Instruction> code = cb.getCode();
-			final int index = code.indexOf(this);
-			final EList<Instruction> nlp = cb.getNonLoopingPredecessors(this);
-			for (Instruction pred : nlp) {
-				// ITERATE only gives correct stack production/consumption in combination
-				// with its ENDITERATE companion, so ignore jumps from ITERATE
-				if (!(pred instanceof Iterate) || code.indexOf(pred) == index - 1) {
-					prevStackLevel = Math.max(prevStackLevel, pred.getStackLevel());
+		if (!stackLevelSet) {
+			stackLevel = getStackProduction() - getStackConsumption();
+			final CodeBlock cb = getOwningBlock();
+			if (cb != null) {
+				int prevStackLevel = 0;
+				final EList<Instruction> code = cb.getCode();
+				final int index = code.indexOf(this);
+				final EList<Instruction> nlp = cb.getNonLoopingPredecessors(this);
+				for (Instruction pred : nlp) {
+					// ITERATE only gives correct stack production/consumption in combination
+					// with its ENDITERATE companion, so ignore jumps from ITERATE
+					if (!(pred instanceof Iterate) || code.indexOf(pred) == index - 1) {
+						prevStackLevel = Math.max(prevStackLevel, pred.getStackLevel());
+					}
 				}
+				stackLevel += prevStackLevel;
 			}
-			stackLevelChange += prevStackLevel;
+			stackLevelSet = true;
 		}
-		return stackLevelChange;
+		return stackLevel;
 	}
 
 	/**
@@ -441,7 +454,7 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 			case EmftvmPackage.INSTRUCTION__STACK_CONSUMPTION:
 				return stackConsumption != STACK_CONSUMPTION_EDEFAULT;
 			case EmftvmPackage.INSTRUCTION__STACK_LEVEL:
-				return getStackLevel() != STACK_LEVEL_EDEFAULT;
+				return stackLevel != STACK_LEVEL_EDEFAULT;
 			case EmftvmPackage.INSTRUCTION__LINE_NUMBER:
 				return lineNumber != null;
 		}
@@ -449,9 +462,21 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
-	 * <!-- end-user-doc -->
+	 */
+	@Override
+	public void eNotify(Notification notification) {
+		super.eNotify(notification);
+		switch (notification.getFeatureID(null)) {
+		case EmftvmPackage.CODE_BLOCK__CODE:
+			stackLevelSet = false;
+			break;
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc. --> {@inheritDoc} <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@Override
