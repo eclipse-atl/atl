@@ -1410,12 +1410,12 @@ public final class EMFTVMUtil {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 	
-		final int sig = getMethodSignature(opname, argTypes, isStatic);
+		final Integer sig = getMethodSignature(opname, argTypes, isStatic);
 		Method ret = findCachedMethod(context, sig);
-		if (ret != null) {
+		if (ret != null || hasCachedMethod(context, sig)) {
 			return ret;
 		}
-	
+
 		final Method[] methods = context.getDeclaredMethods();
 		METHODS:
 		for (int i = 0; i < methods.length; i++) {
@@ -1479,12 +1479,12 @@ public final class EMFTVMUtil {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 	
-		final int sig = getMethodSignature(opname, argType, isStatic);
+		final Integer sig = getMethodSignature(opname, argType, isStatic);
 		Method ret = findCachedMethod(context, sig);
-		if (ret != null) {
+		if (ret != null || hasCachedMethod(context, sig)) {
 			return ret;
 		}
-	
+
 		final Method[] methods = context.getDeclaredMethods();
 		METHODS:
 		for (int i = 0; i < methods.length; i++) {
@@ -1545,12 +1545,12 @@ public final class EMFTVMUtil {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 	
-		final int sig = getMethodSignature(opname, isStatic);
+		final Integer sig = getMethodSignature(opname, isStatic);
 		Method ret = findCachedMethod(context, sig);
-		if (ret != null) {
+		if (ret != null || hasCachedMethod(context, sig)) {
 			return ret;
 		}
-	
+
 		final Method[] methods = context.getDeclaredMethods();
 		METHODS:
 		for (int i = 0; i < methods.length; i++) {
@@ -1628,6 +1628,20 @@ public final class EMFTVMUtil {
 	}
 
 	/**
+	 * Returns <code>true</code> if the method cache contains the given caller and signature.
+	 * 
+	 * @param caller
+	 *            The class of the method
+	 * @param signature
+	 *            The method signature
+	 * @return <code>true</code> if the method cache contains the given caller and signature
+	 */
+	private static boolean hasCachedMethod(final Class<?> caller, final Integer signature) {
+		final Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);
+		return (sigMap != null) && sigMap.containsKey(signature);
+	}
+
+	/**
 	 * Find a method in the cache.
 	 * 
 	 * @param caller
@@ -1640,13 +1654,9 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static Method findCachedMethod(final Class<?> caller, final int signature) {
-		Method ret = null;
-		Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);
-		if (sigMap != null) {
-			ret = sigMap.get(signature);
-		}
-		return ret;
+	private static Method findCachedMethod(final Class<?> caller, final Integer signature) {
+		final Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);
+		return (sigMap != null) ? sigMap.get(signature) : null;
 	}
 
 	/**
@@ -1663,7 +1673,7 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static void cacheMethod(final Class<?> caller, final int signature, 
+	private static void cacheMethod(final Class<?> caller, final Integer signature, 
 			final Method method) {
 		synchronized (METHOD_CACHE) {
 			Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);
