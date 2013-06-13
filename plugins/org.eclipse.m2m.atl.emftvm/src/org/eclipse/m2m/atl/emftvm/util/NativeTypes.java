@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 
+import org.eclipse.emf.common.util.Enumerator;
+
 /**
  * Contains a registry of native type names and their Java class implementations,
  * and provides methods to instantiate native types.
@@ -67,12 +69,21 @@ public final class NativeTypes {
 
 	private static final Map<String, NativeType> typeNames = new HashMap<String, NativeType>();
 	private static final TypeMap<Class<?>, NativeType> types = new TypeHashMap<Class<?>, NativeType>();
+	private static final Map<Class<?>, Class<?>> primitiveTypes = new HashMap<Class<?>, Class<?>>();
 
 	static {
 		for (NativeType type : NativeType.values()) {
 			typeNames.put(type.getName(), type);
 			types.put(type.getType(), type);
 		}
+		primitiveTypes.put(Boolean.TYPE, Boolean.class);
+		primitiveTypes.put(Byte.TYPE, Byte.class);
+		primitiveTypes.put(Character.TYPE, Character.class);
+		primitiveTypes.put(Short.TYPE, Short.class);
+		primitiveTypes.put(Integer.TYPE, Integer.class);
+		primitiveTypes.put(Long.TYPE, Long.class);
+		primitiveTypes.put(Float.TYPE, Float.class);
+		primitiveTypes.put(Double.TYPE, Double.class);
 	}
 
 	/**
@@ -166,12 +177,24 @@ public final class NativeTypes {
 	 * @param type the type
 	 * @return the name of <code>type</code>
 	 */
-	public static String typeName(Class<?> type) {
+	public static String typeName(final Class<?> type) {
 		final Object key = types.findKey(type);
 		if (key != null) {
 			return types.get(key).getName();
 		}
 		return type.getName();
+	}
+
+	/**
+	 * Returns the boxed EMFTVM type for the given type.
+	 * 
+	 * @param type
+	 *            the Java type for which to return the boxed type
+	 * @return the boxed EMFTVM type for the given type
+	 */
+	public static Class<?> boxedType(final Class<?> type) {
+		return Enumerator.class.isAssignableFrom(type) ? EnumLiteral.class : (primitiveTypes.containsKey(type) ? primitiveTypes.get(type)
+				: type);
 	}
 
 }

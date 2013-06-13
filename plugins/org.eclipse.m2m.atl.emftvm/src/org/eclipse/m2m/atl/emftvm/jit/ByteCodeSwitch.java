@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2013 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -600,29 +600,44 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		// Labels
 		final Label selfStart = new Label();
 		final Label selfEnd = new Label();
+		// Local variable indexes
+		final int selfIdx = 4;
+		final int methodIdx = 5;
+		final int bodyIdx = 6;
+		final int subframeIdx = hasOp ? 6 : 5;
+		final int vmExceptionIdx = subframeIdx + 1;
+		final int exceptionIdx = vmExceptionIdx;
 		// Bytecode
 		label(selfStart);
-		astore(4); // self: [...]
+		astore(selfIdx); // self: [...]
 		if (hasOp) { // Generate Operation invocation code
 			// Labels
 			final Label ifOpNull = new Label();
 			final Label bodyStart = new Label();
 			// Bytecode
 			aload(2); // env: [..., env]
-			aload(4); // self: [..., env, self]
+			aload(selfIdx); // self: [..., env, self]
 			invokeStat(EMFTVMUtil.class, "getArgumentType", Object.class, Object.class); // EMFTVMUtil.getArgumentType(self): [..., env, context]
 			ldc(object.getOpname()); // [..., env, context, opname]
 			invokeIface(ExecEnv.class, "findOperation", Operation.class,  // env.findOperation(context, opname): [..., op]
 					Object.class, String.class);
 			dup(); // [..., op, op]
+			aload(selfIdx); // self: [..., op, op, self]
+			ldc(object.getOpname()); // opname: [..., op, op, self, opname]
+			invokeStat(EMFTVMUtil.class, "findNativeMethod", Method.class,  // EMFTVMUtil.findNativeMethod(op, self, opname): [..., op, method]
+					Operation.class, Object.class, String.class);
+			astore(methodIdx); // method: [..., op]
+			aload(methodIdx); // method; [..., op, method]
+			ifnonnull(ifOpNull); // jump if method != null: [..., op]
+			dup(); // [..., op, op]
 			ifnull(ifOpNull); // jump if op == null: [..., op]
 			invokeIface(Operation.class, "getBody", CodeBlock.class); // op.getBody(): [..., body]
 			label(bodyStart);
-			astore(5); // body: [...]
-			aload(5); // body: [..., body]
+			astore(bodyIdx); // body: [...]
+			aload(bodyIdx); // body: [..., body]
 			aload(1); // frame: [..., body, frame]
-			aload(5); // body: [..., body, frame, body]
-			aload(4); // self: [..., body, frame, body, self]
+			aload(bodyIdx); // body: [..., body, frame, body]
+			aload(selfIdx); // self: [..., body, frame, body, self]
 			invokeVirt(StackFrame.class, "getSubFrame", StackFrame.class,  // frame.getSubFrame(body, self): [..., body, newframe]
 					CodeBlock.class, Object.class);
 			invokeIface(CodeBlock.class, "execute", Object.class, StackFrame.class); // body.execute(newframe): [..., result]
@@ -630,7 +645,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			label(ifOpNull); // [..., op]
 			pop(); // [...]
 			// Local variables
-			localVariable("body", CodeBlock.class, bodyStart, ifOpNull, 5);
+			localVariable("body", CodeBlock.class, bodyStart, ifOpNull, bodyIdx);
 		}
 		// Generate native method invocation code here
 		final Method method = findRootMethod(object.getNativeMethod());
@@ -648,11 +663,11 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			// Bytecode
 			label(subframeStart);
 			aconst_null(); // [..., null]
-			astore(5); // subframe: [...]
+			astore(subframeIdx); // subframe: [...]
 			// Check context type (no need to unbox)
 			final Class<?> dc = method.getDeclaringClass();
 			if (!dc.equals(Object.class)) {
-				aload(4); // self: [..., self]
+				aload(selfIdx); // self: [..., self]
 				instanceof_(dc); // [..., boolean]
 				ifeq(tryEnd); // jump if context type does not match: [...]
 			}
@@ -664,15 +679,15 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			} else {
 				opcode = INVOKEVIRTUAL;
 			}
-			aload(4); // self: [..., self]
+			aload(selfIdx); // self: [..., self]
 			if (!dc.equals(Object.class)) {
 				checkcast(dc); // [..., self]
 				// Prepare self code block with subframe
 				if (CodeBlock.class.isAssignableFrom(dc)) {
 					generateSubFrame(method.toString()); // [..., self, subframe]
-					astore(5); // subframe: [..., self]
+					astore(subframeIdx); // subframe: [..., self]
 					dup(); // [..., self, self]
-					aload(5); // subframe: [..., self, self, subframe]
+					aload(subframeIdx); // subframe: [..., self, self, subframe]
 					invokeIface(CodeBlock.class, "setParentFrame", Type.VOID_TYPE,  // self.setParentFrame(subframe): [..., self]
 							StackFrame.class);
 				}
@@ -688,21 +703,21 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			goto_(selfEnd); // jump over catch block: [..., result]
 			// catch (VMException e)
 			label(vmExceptionHandler); // [..., e]
-			astore(6); // e: [...]
-			aload(6); // e: [..., e]
+			astore(vmExceptionIdx); // e: [...]
+			aload(vmExceptionIdx); // e: [..., e]
 			athrow(); // throw e
 			// catch (Exception e)
 			label(exceptionHandler); // [..., e]
-			astore(6); // e
+			astore(exceptionIdx); // e
 			new_(VMException.class); // new VMException(): [..., vme]
 			dup(); // [..., vme, vme]
-			aload(5); // subframe: [..., vme, vme, subframe]
+			aload(subframeIdx); // subframe: [..., vme, vme, subframe]
 			dup(); // [..., vme, vme, subframe, subframe]
 			ifnonnull(subframeNonNull); // jump if subframe != null: [..., vme, vme, subframe]
 			pop(); // [..., vme, vme]
 			generateSubFrame(method.toString()); // [..., vme, vme, subframe]
 			label(subframeNonNull); // [..., vme, vme, subframe]
-			aload(6); // e: [..., vme, vme, subframe, e]
+			aload(exceptionIdx); // e: [..., vme, vme, subframe, e]
 			invokeCons(VMException.class, StackFrame.class, Throwable.class); // new VMException(subframe, e): [vme, ...]
 			athrow(); // throw vme
 			// end of try-catch
@@ -712,27 +727,45 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 				ldc("JIT miss for " + method.toString()); // [..., msg]
 				invokeStat(ATLLogger.class, "info", Type.VOID_TYPE, String.class); // ATLLogger.info(msg): [...]
 				aload(1); // frame: [..., frame]
-				aload(4); // self: [..., frame, self]
+				aload(selfIdx); // self: [..., frame, self]
 				ldc(object.getOpname()); // opname: [..., frame, self, opname]
-				invokeStat(EMFTVMUtil.class, "invokeNative", Object.class,  // EMFTVMUtil.invokeNative(frame, self, opname): [..., result]
-						StackFrame.class, Object.class, String.class);
+				if (hasOp) {
+					aload(methodIdx); // method; [..., frame, self, opname, method]
+					invokeStat(JITCodeBlock.class, "invokeNative", Object.class, // JITCodeBlock.invokeNative(frame, self, opname, method): [..., result]
+							StackFrame.class, Object.class, String.class, Method.class);
+				} else {
+					invokeStat(EMFTVMUtil.class, "invokeNative", Object.class, // EMFTVMUtil.invokeNative(frame, self, opname): [..., result]
+							StackFrame.class, Object.class, String.class);
+				}
 			}
 			// end of instructions
 			label(selfEnd); // [..., result]
 			// Local variables
-			localVariable("self", Object.class, selfStart, selfEnd, 4);
-			localVariable("subframe", StackFrame.class, subframeStart, selfEnd, 5);
-			localVariable("e", VMException.class, vmExceptionHandler, exceptionHandler, 6);
-			localVariable("e", Exception.class, exceptionHandler, selfEnd, 6);
+			localVariable("self", Object.class, selfStart, selfEnd, selfIdx);
+			if (hasOp) {
+				localVariable("method", Method.class, selfStart, selfEnd, methodIdx);
+			}
+			localVariable("subframe", StackFrame.class, subframeStart, selfEnd, subframeIdx);
+			localVariable("e", VMException.class, vmExceptionHandler, exceptionHandler, vmExceptionIdx);
+			localVariable("e", Exception.class, exceptionHandler, selfEnd, exceptionIdx);
 		} else {
 			aload(1); // frame: [..., frame]
-			aload(4); // self: [..., frame, self]
+			aload(selfIdx); // self: [..., frame, self]
 			ldc(object.getOpname()); // opname: [..., frame, self, opname]
-			invokeStat(EMFTVMUtil.class, "invokeNative", Object.class,  // EMFTVMUtil.invokeNative(frame, self, opname): [..., result]
-					StackFrame.class, Object.class, String.class);
+			if (hasOp) {
+				aload(methodIdx); // method; [..., frame, self, opname, method]
+				invokeStat(JITCodeBlock.class, "invokeNative", Object.class, // JITCodeBlock.invokeNative(frame, self, opname, method): [..., result]
+						StackFrame.class, Object.class, String.class, Method.class);
+			} else {
+				invokeStat(EMFTVMUtil.class, "invokeNative", Object.class, // EMFTVMUtil.invokeNative(frame, self, opname): [..., result]
+						StackFrame.class, Object.class, String.class);
+			}
 			label(selfEnd); // [..., result]
 			// Local variables
-			localVariable("self", Object.class, selfStart, selfEnd, 4);
+			localVariable("self", Object.class, selfStart, selfEnd, selfIdx);
+			if (hasOp) {
+				localVariable("method", Method.class, selfStart, selfEnd, methodIdx);
+			}
 		}
 	}
 
@@ -746,33 +779,50 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		// Labels
 		final Label selfStart = new Label();
 		final Label selfEnd = new Label();
+		// Local variable indexes
+		final int selfIdx = 4;
+		final int argIdx = 5;
+		final int methodIdx = 6;
+		final int bodyIdx = 7;
+		final int subframeIdx = hasOp ? 7 : 6;
+		final int vmExceptionIdx = subframeIdx + 1;
+		final int exceptionIdx = vmExceptionIdx;
 		// Bytecode
 		label(selfStart);
-		astore(5); // arg: [..., self]
-		astore(4); // self: [...]
+		astore(argIdx); // arg: [..., self]
+		astore(selfIdx); // self: [...]
 		if (hasOp) { // Generate Operation invocation code
 			// Labels
 			final Label ifOpNull = new Label();
 			final Label bodyStart = new Label();
 			// Bytecode
 			aload(2); // env: [..., env]
-			aload(4); // self: [..., env, self]
+			aload(selfIdx); // self: [..., env, self]
 			invokeStat(EMFTVMUtil.class, "getArgumentType", Object.class, Object.class); // EMFTVMUtil.getArgumentType(self): [..., env, context]
 			ldc(object.getOpname()); // [..., env, context, opname]
-			aload(5); // arg: [..., env, context, opname, arg]
+			aload(argIdx); // arg: [..., env, context, opname, arg]
 			invokeStat(EMFTVMUtil.class, "getArgumentType", Object.class, Object.class); // EMFTVMUtil.getArgumentType(arg): [..., env, context, opname, argtype]
 			invokeIface(ExecEnv.class, "findOperation", Operation.class,  // env.findOperation(context, opname, argtype): [..., op]
 					Object.class, String.class, Object.class);
 			dup(); // [..., op, op]
+			aload(selfIdx); // self: [..., op, op, self]
+			ldc(object.getOpname()); // opname: [..., op, op, self, opname]
+			aload(argIdx); // arg: [..., op, op, self, opname, arg]
+			invokeStat(EMFTVMUtil.class, "findNativeMethod", Method.class,  // EMFTVMUtil.findNativeMethod(op, self, opname, arg): [..., op, method]
+					Operation.class, Object.class, String.class, Object.class);
+			astore(methodIdx); // method: [..., op]
+			aload(methodIdx); // method; [..., op, method]
+			ifnonnull(ifOpNull); // jump if method != null: [..., op]
+			dup(); // [..., op, op]
 			ifnull(ifOpNull); // jump if op == null: [..., op]
 			invokeIface(Operation.class, "getBody", CodeBlock.class); // op.getBody(): [..., body]
 			label(bodyStart);
-			astore(6); // body: [...]
-			aload(6); // body: [..., body]
+			astore(bodyIdx); // body: [...]
+			aload(bodyIdx); // body: [..., body]
 			aload(1); // frame: [..., body, frame]
-			aload(6); // body: [..., body, frame, body]
-			aload(4); // self: [..., body, frame, body, self]
-			aload(5); // arg: [..., body, frame, body, self, arg]
+			aload(bodyIdx); // body: [..., body, frame, body]
+			aload(selfIdx); // self: [..., body, frame, body, self]
+			aload(argIdx); // arg: [..., body, frame, body, self, arg]
 			invokeVirt(StackFrame.class, "getSubFrame", StackFrame.class,  // frame.getSubFrame(body, self, arg): [..., body, newframe]
 					CodeBlock.class, Object.class, Object.class);
 			invokeIface(CodeBlock.class, "execute", Object.class, StackFrame.class); // body.execute(newframe): [..., result]
@@ -780,7 +830,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			label(ifOpNull); // [..., op]
 			pop(); // [...]
 			// Local variables
-			localVariable("body", CodeBlock.class, bodyStart, ifOpNull, 6);
+			localVariable("body", CodeBlock.class, bodyStart, ifOpNull, bodyIdx);
 		}
 		// Generate native method invocation code here
 		final Method method = findRootMethod(object.getNativeMethod());
@@ -798,17 +848,17 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			// Bytecode
 			label(subframeStart);
 			aconst_null(); // [..., null]
-			astore(6); // subframe: [...]
+			astore(subframeIdx); // subframe: [...]
 			// Check context type (no need to unbox)
 			final Class<?> dc = method.getDeclaringClass();
 			if (!dc.equals(Object.class)) {
-				aload(4); // self: [..., self]
+				aload(selfIdx); // self: [..., self]
 				instanceof_(dc); // [..., boolean]
 				ifeq(tryEnd); // jump if context type does not match: [...]
 			}
 			final Class<?> pc = method.getParameterTypes()[0];
 			if (!pc.equals(Object.class)) {
-				aload(5); // arg: [..., arg]
+				aload(argIdx); // arg: [..., arg]
 				instanceof_(boxed(pc)); // [..., boolean]
 				ifeq(tryEnd); // jump if arg type does not match: [...]
 			}
@@ -823,26 +873,26 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			// Prepare subframe
 			if (CodeBlock.class.isAssignableFrom(dc) || CodeBlock.class.isAssignableFrom(pc)) {
 				generateSubFrame(method.toString()); // [..., subframe]
-				astore(6); // subframe: [...]
+				astore(subframeIdx); // subframe: [...]
 			}
-			aload(4); // self: [..., self]
+			aload(selfIdx); // self: [..., self]
 			if (!dc.equals(Object.class)) {
 				checkcast(dc); // [..., self]
 				// Prepare self code block with subframe
 				if (CodeBlock.class.isAssignableFrom(dc)) {
 					dup(); // [..., self, self]
-					aload(6); // subframe: [..., self, self, subframe]
+					aload(subframeIdx); // subframe: [..., self, self, subframe]
 					invokeIface(CodeBlock.class, "setParentFrame", Type.VOID_TYPE, StackFrame.class); // self.setParentFrame(subframe): [..., self]
 				}
 			}
-			aload(5); // arg: [..., self, arg]
+			aload(argIdx); // arg: [..., self, arg]
 			// Method parameter unboxing
 			if (!pc.equals(Object.class)) {
 				generateUnboxing(pc); // [..., self, arg]
 				// Prepare self code block with subframe
 				if (CodeBlock.class.isAssignableFrom(pc)) {
 					dup(); // [..., self, arg, arg]
-					aload(6); // subframe: [..., self, arg, arg, subframe]
+					aload(subframeIdx); // subframe: [..., self, arg, arg, subframe]
 					invokeIface(CodeBlock.class, "setParentFrame", Type.VOID_TYPE, StackFrame.class); // arg.setParentFrame(subframe): [..., self, arg]
 				}
 			}
@@ -857,21 +907,21 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			goto_(selfEnd); // jump over catch block: [..., result]
 			// catch (VMException e)
 			label(vmExceptionHandler); // [..., e]
-			astore(7); // e: [...]
-			aload(7); // e: [..., e]
+			astore(vmExceptionIdx); // e: [...]
+			aload(vmExceptionIdx); // e: [..., e]
 			athrow(); // throw e
 			// catch (Exception e)
 			label(exceptionHandler); // [..., e]
-			astore(7); // e
+			astore(exceptionIdx); // e
 			new_(VMException.class); // new VMException(): [..., vme]
 			dup(); // [..., vme, vme]
-			aload(6); // subframe: [..., vme, vme, subframe]
+			aload(subframeIdx); // subframe: [..., vme, vme, subframe]
 			dup(); // [..., vme, vme, subframe, subframe]
 			ifnonnull(subframeNonNull); // jump if subframe != null: [..., vme, vme, subframe]
 			pop(); // [..., vme, vme]
 			generateSubFrame(method.toString()); // [..., vme, vme, subframe]
 			label(subframeNonNull); // [..., vme, vme, subframe]
-			aload(7); // e: [..., vme, vme, subframe, e]
+			aload(exceptionIdx); // e: [..., vme, vme, subframe, e]
 			invokeCons(VMException.class, StackFrame.class, Throwable.class); // vme.<init>(subframe, e): [..., vme]
 			athrow(); // throw vme
 			// end of try-catch
@@ -881,31 +931,49 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 				ldc("JIT miss for " + method.toString()); // [..., msg]
 				invokeStat(ATLLogger.class, "info", Type.VOID_TYPE, String.class); // ATLLogger.info(msg): [...]
 				aload(1); // frame: [..., frame]
-				aload(4); // self: [..., frame, self]
+				aload(selfIdx); // self: [..., frame, self]
 				ldc(object.getOpname()); // opname: [..., frame, self, opname]
-				aload(5); // arg: [..., frame, self, opname, arg]
-				invokeStat(EMFTVMUtil.class, "invokeNative", Object.class,  // EMFTVMUtil.invokeNative(frame, self, opname, arg): [..., result]
-						StackFrame.class, Object.class, String.class, Object.class);
+				aload(argIdx); // arg: [..., frame, self, opname, arg]
+				if (hasOp) {
+					aload(methodIdx); // method; [..., frame, self, opname, method]
+					invokeStat(JITCodeBlock.class, "invokeNative", Object.class, // JITCodeBlock.invokeNative(frame, self, opname, arg, method): [..., result]
+							StackFrame.class, Object.class, String.class, Object.class, Method.class);
+				} else {
+					invokeStat(EMFTVMUtil.class, "invokeNative", Object.class,  // EMFTVMUtil.invokeNative(frame, self, opname, arg): [..., result]
+							StackFrame.class, Object.class, String.class, Object.class);
+				}
 			}
 			// end of instructions
 			label(selfEnd); // [..., result]
 			// Local variables
-			localVariable("self", Object.class, selfStart, selfEnd, 4);
-			localVariable("arg", Object.class, selfStart, selfEnd, 5);
-			localVariable("subframe", StackFrame.class, subframeStart, selfEnd, 6);
-			localVariable("e", VMException.class, vmExceptionHandler, exceptionHandler, 7);
-			localVariable("e", Exception.class, exceptionHandler, selfEnd, 7);
+			localVariable("self", Object.class, selfStart, selfEnd, selfIdx);
+			localVariable("arg", Object.class, selfStart, selfEnd, argIdx);
+			if (hasOp) {
+				localVariable("method", Method.class, selfStart, selfEnd, methodIdx);
+			}
+			localVariable("subframe", StackFrame.class, subframeStart, selfEnd, subframeIdx);
+			localVariable("e", VMException.class, vmExceptionHandler, exceptionHandler, vmExceptionIdx);
+			localVariable("e", Exception.class, exceptionHandler, selfEnd, exceptionIdx);
 		} else {
 			aload(1); // frame: [..., frame]
-			aload(4); // self: [..., frame, self]
+			aload(selfIdx); // self: [..., frame, self]
 			ldc(object.getOpname()); // opname: [..., frame, self, opname]
-			aload(5); // arg: [..., frame, self, opname, arg]
-			invokeStat(EMFTVMUtil.class, "invokeNative", Object.class,  // EMFTVMUtil.invokeNative(frame, self, opname, arg): [..., result]
-					StackFrame.class, Object.class, String.class, Object.class);
+			aload(argIdx); // arg: [..., frame, self, opname, arg]
+			if (hasOp) {
+				aload(methodIdx); // method; [..., frame, self, opname, arg, method]
+				invokeStat(JITCodeBlock.class, "invokeNative", Object.class, // JITCodeBlock.invokeNative(frame, self, opname, arg, method): [..., result]
+						StackFrame.class, Object.class, String.class, Object.class, Method.class);
+			} else {
+				invokeStat(EMFTVMUtil.class, "invokeNative", Object.class,  // EMFTVMUtil.invokeNative(frame, self, opname, arg): [..., result]
+						StackFrame.class, Object.class, String.class, Object.class);
+			}
 			label(selfEnd); // [..., result]
 			// Local variables
-			localVariable("self", Object.class, selfStart, selfEnd, 4);
-			localVariable("arg", Object.class, selfStart, selfEnd, 5);
+			localVariable("self", Object.class, selfStart, selfEnd, selfIdx);
+			localVariable("arg", Object.class, selfStart, selfEnd, argIdx);
+			if (hasOp) {
+				localVariable("method", Method.class, selfStart, selfEnd, methodIdx);
+			}
 		}
 	}
 
@@ -920,6 +988,11 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		// Labels
 		final Label selfStart = new Label();
 		final Label selfEnd = new Label();
+		// Local variable indexes
+		final int selfIdx = 4;
+		final int argsIdx = 5;
+		final int methodIdx = 6;
+		final int bodyIdx = 7;
 		// Bytecode
 		generatePushInt(argcount); // [..., self, args, argcount]
 		anewarray(Object.class); // new Object[argcount]: [..., self, args, array]
@@ -931,30 +1004,39 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			aastore(); // store: [..., self, args, array]
 		} // no more args: [..., self, array]
 		label(selfStart);
-		astore(5); // args: [..., self]
-		astore(4); // self: [...]
+		astore(argsIdx); // args: [..., self]
+		astore(selfIdx); // self: [...]
 		if (hasOp) { // Generate Operation invocation code
 			// Labels
 			final Label ifOpNull = new Label();
 			final Label bodyStart = new Label();
 			// Bytecode
 			aload(2); // env: [..., env]
-			aload(4); // self: [..., env, self]
+			aload(selfIdx); // self: [..., env, self]
 			invokeStat(EMFTVMUtil.class, "getArgumentType", Object.class, Object.class); // EMFTVMUtil.getArgumentType(self): [..., env, context]
 			ldc(object.getOpname()); // [..., env, context, opname]
-			aload(5); // args: [..., env, context, opname, args]
+			aload(argsIdx); // args: [..., env, context, opname, args]
 			invokeStat(EMFTVMUtil.class, "getArgumentTypes", Object[].class, Object[].class); // EMFTVMUtil.getArgumentTypes(args): [..., env, context, opname, argtypes]
 			invokeIface(ExecEnv.class, "findOperation", Operation.class, Object.class, String.class, Object[].class); // env.findOperation(context, opname, argtypes): [..., op]
+			dup(); // [..., op, op]
+			aload(selfIdx); // self: [..., op, op, self]
+			ldc(object.getOpname()); // opname: [..., op, op, self, opname]
+			aload(argsIdx); // args: [..., op, op, self, opname, args]
+			invokeStat(EMFTVMUtil.class, "findNativeMethod", Method.class,  // EMFTVMUtil.findNativeMethod(op, self, opname, args): [..., op, method]
+					Operation.class, Object.class, String.class, Object[].class);
+			astore(methodIdx); // method: [..., op]
+			aload(methodIdx); // method; [..., op, method]
+			ifnonnull(ifOpNull); // jump if method != null: [..., op]
 			dup(); // [..., op, op]
 			ifnull(ifOpNull); // jump if op == null: [..., op]
 			invokeIface(Operation.class, "getBody", CodeBlock.class); // op.getBody(): [..., body]
 			label(bodyStart);
-			astore(6); // body: [...]
-			aload(6); // body: [..., body]
+			astore(bodyIdx); // body: [...]
+			aload(bodyIdx); // body: [..., body]
 			aload(1); // frame: [..., body, frame]
-			aload(6); // body: [..., body, frame, body]
-			aload(4); // self: [..., body, frame, body, self]
-			aload(5); // args: [..., body, frame, body, self, args]
+			aload(bodyIdx); // body: [..., body, frame, body]
+			aload(selfIdx); // self: [..., body, frame, body, self]
+			aload(argsIdx); // args: [..., body, frame, body, self, args]
 			invokeVirt(StackFrame.class, "getSubFrame", StackFrame.class,  // frame.getSubFrame(body, self, args): [..., body, newframe]
 					CodeBlock.class, Object.class, Object[].class);
 			invokeIface(CodeBlock.class, "execute", Object.class, StackFrame.class); // body.execute(newframe): [..., result]
@@ -962,19 +1044,28 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			label(ifOpNull); // [..., op]
 			pop(); // [...]
 			// Local variables
-			localVariable("body", CodeBlock.class, bodyStart, ifOpNull, 6);
+			localVariable("body", CodeBlock.class, bodyStart, ifOpNull, bodyIdx);
 		}
 		// Generate native method invocation code here
 		aload(1); // frame: [..., frame]
-		aload(4); // self: [..., frame, self]
+		aload(selfIdx); // self: [..., frame, self]
 		ldc(object.getOpname()); // opname: [..., frame, self, opname]
-		aload(5); // args: [..., frame, self, opname, args]
-		invokeStat(EMFTVMUtil.class, "invokeNative", Object.class,  // EMFTVMUtil.invokeNative(frame, self, opname, args): [..., result]
-				StackFrame.class, Object.class, String.class, Object[].class);
+		aload(argsIdx); // args: [..., frame, self, opname, args]
+		if (hasOp) {
+			aload(methodIdx); // method; [..., frame, self, opname, args, method]
+			invokeStat(JITCodeBlock.class, "invokeNative", Object.class, // JITCodeBlock.invokeNative(frame, self, opname, args, method): [..., result]
+					StackFrame.class, Object.class, String.class, Object[].class, Method.class);
+		} else {
+			invokeStat(EMFTVMUtil.class, "invokeNative", Object.class,  // EMFTVMUtil.invokeNative(frame, self, opname, args): [..., result]
+					StackFrame.class, Object.class, String.class, Object[].class);
+		}
 		label(selfEnd); // [..., result]
 		// Local variables
-		localVariable("self", Object.class, selfStart, selfEnd, 4);
-		localVariable("args", Object[].class, selfStart, selfEnd, 5);
+		localVariable("self", Object.class, selfStart, selfEnd, selfIdx);
+		localVariable("args", Object[].class, selfStart, selfEnd, argsIdx);
+		if (hasOp) {
+			localVariable("method", Method.class, selfStart, selfEnd, methodIdx);
+		}
 	}
 	
 	/**

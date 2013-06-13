@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.emftvm.jit;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -807,9 +808,81 @@ public abstract class JITCodeBlock {
 	}
 
 	/**
-	 * Implements the INVOKE_SUPER instruction
+	 * Invokes native Java <code>method</code> on <code>self</code> without arguments.
+	 * 
+	 * @param frame
+	 *            the current stack frame
 	 * @param self
-	 * @param context the context type for "super"
+	 *            the object on which to invoke the method
+	 * @param opname
+	 *            the method name
+	 * @param method
+	 *            the method
+	 * @return the method result
+	 */
+	protected static Object invokeNative(final StackFrame frame, final Object self, final String opname, final Method method) {
+		if (method != null) {
+			return EMFTVMUtil.invokeNative(frame, self, method);
+		}
+		throw new UnsupportedOperationException(String.format("%s::%s()",
+				EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(self)),
+				opname));
+	}
+
+	/**
+	 * Invokes native Java <code>method</code> on <code>self</code> with argument <code>arg</code>.
+	 * 
+	 * @param frame
+	 *            the current stack frame
+	 * @param self
+	 *            the object on which to invoke the method
+	 * @param opname
+	 *            the method name
+	 * @param arg
+	 *            the method argument
+	 * @param method
+	 *            the method
+	 * @return the method result
+	 */
+	protected static Object invokeNative(final StackFrame frame, final Object self, final String opname, final Object arg,
+			final Method method) {
+		if (method != null) {
+			return EMFTVMUtil.invokeNative(frame, self, method, arg);
+		}
+		throw new UnsupportedOperationException(String.format("%s::%s(%s)",
+				EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(self)),
+				opname, EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(arg))));
+	}
+
+	/**
+	 * Invokes native Java <code>method</code> on <code>self</code> with arguments <code>args</code>.
+	 * 
+	 * @param frame
+	 *            the current stack frame
+	 * @param self
+	 *            the object on which to invoke the method
+	 * @param opname
+	 *            the method name
+	 * @param args
+	 *            the method arguments
+	 * @return the method result
+	 */
+	protected static Object invokeNative(final StackFrame frame, final Object self, final String opname, final Object[] args,
+			final Method method) {
+		if (method != null) {
+			return EMFTVMUtil.invokeNative(frame, self, method, args);
+		}
+		throw new UnsupportedOperationException(String.format("%s::%s(%s)",
+				EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(self)), opname,
+				EMFTVMUtil.getTypeNames(frame.getEnv(), EMFTVMUtil.getArgumentTypes(args))));
+	}
+
+	/**
+	 * Implements the INVOKE_SUPER instruction
+	 * 
+	 * @param self
+	 * @param context
+	 *            the context type for "super"
 	 * @param frame
 	 * @param opname
 	 * @return the invocation result

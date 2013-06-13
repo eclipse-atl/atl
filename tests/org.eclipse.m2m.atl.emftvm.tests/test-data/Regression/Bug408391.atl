@@ -1,0 +1,24 @@
+-- @atlcompiler emftvm
+query "Regression::Bug408391" = thisModule.testInvoke0()
+	->union(thisModule.testInvoke1())
+	->union(thisModule.testInvokeN());
+
+helper def : testInvoke0() : Sequence(OclAny) =
+	Sequence{'Bogus', Tuple{day_of_month = 1, month = 0, year = 1999}}->collect(e | e.toDate()).debug('testInvoke0');
+
+helper def : testInvoke1() : Sequence(OclAny) =
+	Sequence{'String', Map{('Bogus', 'Bogus')}}->collect(e | e.charAt(0)).debug('testInvoke1');
+
+helper def : testInvokeN() : Sequence(OclAny) =
+	Sequence{'String1,String2,String3', 35}->collect(e | e.split(',', 2)).debug('testInvokeN');
+
+helper context OclAny def : toDate() : "#native"!"java::util::Date" =
+	let cal : "#native"!"java::util::Calendar" = "#native"!"java::util::Calendar".refInvokeStaticOperation('getInstance', Sequence{}) in
+	let bogus : OclAny = cal.clear() in
+	cal.getTime();
+
+helper context OclAny def : charAt(index : Integer) : String =
+	'0';
+
+helper context OclAny def : split(regex : String, limit : Integer) : String =
+	'N';

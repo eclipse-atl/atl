@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011-2012 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2013 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -286,6 +286,8 @@ public final class EMFTVMUtil {
 			return ((Class<?>) object).getName();
 		} else if (object instanceof String) {
 			return new StringBuffer().append('\'').append(object.toString()).append('\'').toString();
+		} else if (object instanceof LazyCollection<?>) {
+			return ((LazyCollection<?>) object).asString(env);
 		} else if (object != null) {
 			return object.toString();
 		} else {
@@ -1025,7 +1027,7 @@ public final class EMFTVMUtil {
 	}
 
 	/**
-	 * Invokes native Java method <code>opname</code> on <code>self</code> with arguments <code>args</code>.
+	 * Invokes native Java method <code>opname</code> on <code>self</code> with argument <code>arg</code>.
 	 * @param frame the current stack frame
 	 * @param self the object on which to invoke the method
 	 * @param opname the method name
@@ -1033,7 +1035,7 @@ public final class EMFTVMUtil {
 	 * @return the method result
 	 */
 	public static Object invokeNative(final StackFrame frame, final Object self, 
-			final String opname, Object arg) {
+			final String opname, final Object arg) {
 		final Method method = EMFTVMUtil.findNativeMethod(
 				self == null? Void.TYPE : self.getClass(), 
 				opname, 
@@ -1049,7 +1051,7 @@ public final class EMFTVMUtil {
 	}
 
 	/**
-	 * Invokes native Java <code>method</code> on <code>self</code> with arguments <code>args</code>.
+	 * Invokes native Java <code>method</code> on <code>self</code> with argument <code>arg</code>.
 	 * @param frame the current stack frame
 	 * @param self the object on which to invoke the method
 	 * @param method the method
@@ -1410,12 +1412,12 @@ public final class EMFTVMUtil {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 	
-		final int sig = getMethodSignature(opname, argTypes, isStatic);
+		final Integer sig = getMethodSignature(opname, argTypes, isStatic);
 		Method ret = findCachedMethod(context, sig);
-		if (ret != null) {
+		if (ret != null || hasCachedMethod(context, sig)) {
 			return ret;
 		}
-	
+
 		final Method[] methods = context.getDeclaredMethods();
 		METHODS:
 		for (int i = 0; i < methods.length; i++) {
@@ -1479,12 +1481,12 @@ public final class EMFTVMUtil {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 	
-		final int sig = getMethodSignature(opname, argType, isStatic);
+		final Integer sig = getMethodSignature(opname, argType, isStatic);
 		Method ret = findCachedMethod(context, sig);
-		if (ret != null) {
+		if (ret != null || hasCachedMethod(context, sig)) {
 			return ret;
 		}
-	
+
 		final Method[] methods = context.getDeclaredMethods();
 		METHODS:
 		for (int i = 0; i < methods.length; i++) {
@@ -1545,12 +1547,12 @@ public final class EMFTVMUtil {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 	
-		final int sig = getMethodSignature(opname, isStatic);
+		final Integer sig = getMethodSignature(opname, isStatic);
 		Method ret = findCachedMethod(context, sig);
-		if (ret != null) {
+		if (ret != null || hasCachedMethod(context, sig)) {
 			return ret;
 		}
-	
+
 		final Method[] methods = context.getDeclaredMethods();
 		METHODS:
 		for (int i = 0; i < methods.length; i++) {
@@ -1570,6 +1572,102 @@ public final class EMFTVMUtil {
 		cacheMethod(context, sig, ret);
 	
 		return ret;
+	}
+
+	/**
+	 * Looks for a native Java method without arguments.
+	 * 
+	 * @param op
+	 *            the previously found EMFTVM {@link Operation}
+	 * @param self
+	 *            the object on which to invoke the method
+	 * @param name
+	 *            the method name
+	 * @return the method if found and more specific than <code>op</code>, <code>null</code> otherwise
+	 */
+	public static Method findNativeMethod(final Operation op, final Object self, final String opname) {
+		final Method method = findNativeMethod(self == null ? Void.TYPE : self.getClass(), opname, false);
+		if (op != null && method != null) {
+			final Class<?> opCtx = op.getEContext().getInstanceClass();
+			if (opCtx == null || NativeTypes.boxedType(method.getDeclaringClass()).isAssignableFrom(opCtx)) {
+				return null;
+			}
+		}
+		return method;
+	}
+
+	/**
+	 * Looks for a native Java method with one argument.
+	 * 
+	 * @param op
+	 *            the previously found EMFTVM {@link Operation}
+	 * @param self
+	 *            the object on which to invoke the method
+	 * @param name
+	 *            the method name
+	 * @param arg
+	 *            the method argument
+	 * @return the method if found and more specific than <code>op</code>, <code>null</code> otherwise
+	 */
+	public static Method findNativeMethod(final Operation op, final Object self, final String opname, final Object arg) {
+		final Method method = findNativeMethod(self == null ? Void.TYPE : self.getClass(), opname,
+				arg == null ? Void.TYPE : arg.getClass(), false);
+		if (op != null && method != null) {
+			final Class<?> opCtx = op.getEContext().getInstanceClass();
+			final Class<?> methCtx = NativeTypes.boxedType(method.getDeclaringClass());
+			if (opCtx == null) {
+				return null;
+			}
+			if (methCtx.isAssignableFrom(opCtx)) {
+				if (!methCtx.equals(opCtx)) {
+					return null;
+				}
+				final Class<?> opArgType = op.getParameters().get(0).getEType().getInstanceClass();
+				if (opArgType == null || NativeTypes.boxedType(method.getParameterTypes()[0]).isAssignableFrom(opArgType)) {
+					return null;
+				}
+			}
+		}
+		return method;
+	}
+
+	/**
+	 * Looks for a native Java method with multiple arguments.
+	 * 
+	 * @param op
+	 *            the previously found EMFTVM {@link Operation}
+	 * @param self
+	 *            the object on which to invoke the method
+	 * @param name
+	 *            the method name
+	 * @param args
+	 *            the method arguments
+	 * @return the method if found and more specific than <code>op</code>, <code>null</code> otherwise
+	 */
+	public static Method findNativeMethod(final Operation op, final Object self, final String opname, final Object[] args) {
+		final Method method = findNativeMethod(self == null ? Void.TYPE : self.getClass(), opname,
+				getArgumentClasses(args), false);
+		if (op != null && method != null) {
+			Class<?> opCtx = op.getEContext().getInstanceClass();
+			Class<?> methCtx = NativeTypes.boxedType(method.getDeclaringClass());
+			if (opCtx == null) {
+				return null;
+			}
+			final int len = args.length;
+			int i = -1;
+			while (methCtx.isAssignableFrom(opCtx)) {
+				i++;
+				if (!methCtx.equals(opCtx) || i == len) {
+					return null;
+				}
+				opCtx = op.getParameters().get(i).getEType().getInstanceClass();
+				if (opCtx == null) {
+					return null;
+				}
+				methCtx = NativeTypes.boxedType(method.getParameterTypes()[i]);
+			}
+		}
+		return method;
 	}
 
 	/**
@@ -1628,6 +1726,20 @@ public final class EMFTVMUtil {
 	}
 
 	/**
+	 * Returns <code>true</code> if the method cache contains the given caller and signature.
+	 * 
+	 * @param caller
+	 *            The class of the method
+	 * @param signature
+	 *            The method signature
+	 * @return <code>true</code> if the method cache contains the given caller and signature
+	 */
+	private static boolean hasCachedMethod(final Class<?> caller, final Integer signature) {
+		final Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);
+		return (sigMap != null) && sigMap.containsKey(signature);
+	}
+
+	/**
 	 * Find a method in the cache.
 	 * 
 	 * @param caller
@@ -1640,13 +1752,9 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static Method findCachedMethod(final Class<?> caller, final int signature) {
-		Method ret = null;
-		Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);
-		if (sigMap != null) {
-			ret = sigMap.get(signature);
-		}
-		return ret;
+	private static Method findCachedMethod(final Class<?> caller, final Integer signature) {
+		final Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);
+		return (sigMap != null) ? sigMap.get(signature) : null;
 	}
 
 	/**
@@ -1663,7 +1771,7 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static void cacheMethod(final Class<?> caller, final int signature, 
+	private static void cacheMethod(final Class<?> caller, final Integer signature, 
 			final Method method) {
 		synchronized (METHOD_CACHE) {
 			Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);

@@ -2275,6 +2275,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final int argcount = instr.getArgcount(); 
 		final Object o;
 		final Operation op;
+		final Method method;
 		switch (argcount) {
 		case 0:
 			// Use Java's left-to-right evaluation semantics:
@@ -2283,11 +2284,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			op = frame.getEnv().findOperation(
 					EMFTVMUtil.getArgumentType(o),
 					opname);
-			if (op != null) {
-				final CodeBlock body = op.getBody();
-				return body.execute(frame.getSubFrame(body, o));
-			}
-			final Method method = EMFTVMUtil.findNativeMethod(o == null? Void.TYPE : o.getClass(), opname, false);
+			method = EMFTVMUtil.findNativeMethod(op, o, opname);
 			if (method != null) {
 				// Only record new method if it is more general than the existing method
 				final Method oldMethod = instr.getNativeMethod();
@@ -2295,6 +2292,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					instr.setNativeMethod(method); // record invoked method for JIT compiler
 				}
 				return EMFTVMUtil.invokeNative(frame, o, method);
+			}
+			if (op != null) {
+				final CodeBlock body = op.getBody();
+				return body.execute(frame.getSubFrame(body, o));
 			}
 			throw new UnsupportedOperationException(String.format("%s::%s()", 
 					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)), 
@@ -2308,22 +2309,18 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					EMFTVMUtil.getArgumentType(o),
 					opname, 
 					EMFTVMUtil.getArgumentType(arg));
+			method = EMFTVMUtil.findNativeMethod(op, o, opname, arg);
+			if (method != null) {
+				// Only record new method if it is more general than the existing method
+				final Method oldMethod = instr.getNativeMethod();
+				if (oldMethod == null || method.getDeclaringClass().isAssignableFrom(oldMethod.getDeclaringClass())) {
+					instr.setNativeMethod(method); // record invoked method for JIT compiler
+				}
+				return EMFTVMUtil.invokeNative(frame, o, method, arg);
+			}
 			if (op != null) {
 				final CodeBlock body = op.getBody();
 				return body.execute(frame.getSubFrame(body, o, arg));
-			}
-			final Method method1 = EMFTVMUtil.findNativeMethod(
-					o == null ? Void.TYPE : o.getClass(),
-					opname, 
-					arg == null ? Void.TYPE : arg.getClass(), 
-					false);
-			if (method1 != null) {
-				// Only record new method if it is more general than the existing method
-				final Method oldMethod = instr.getNativeMethod();
-				if (oldMethod == null || method1.getDeclaringClass().isAssignableFrom(oldMethod.getDeclaringClass())) {
-					instr.setNativeMethod(method1); // record invoked method for JIT compiler
-				}
-				return EMFTVMUtil.invokeNative(frame, o, method1, arg);
 			}
 			throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
 					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)), 
@@ -2339,22 +2336,18 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					EMFTVMUtil.getArgumentType(o),
 					opname, 
 					EMFTVMUtil.getArgumentTypes(args));
+			method = EMFTVMUtil.findNativeMethod(op, o, opname, args);
+			if (method != null) {
+				// Only record new method if it is more general than the existing method
+				final Method oldMethod = instr.getNativeMethod();
+				if (oldMethod == null || method.getDeclaringClass().isAssignableFrom(oldMethod.getDeclaringClass())) {
+					instr.setNativeMethod(method); // record invoked method for JIT compiler
+				}
+				return EMFTVMUtil.invokeNative(frame, o, method, args);
+			}
 			if (op != null) {
 				final CodeBlock body = op.getBody();
 				return body.execute(frame.getSubFrame(body, o, args));
-			}
-			final Method methodn = EMFTVMUtil.findNativeMethod(
-					o == null? Void.TYPE : o.getClass(), 
-					opname, 
-					EMFTVMUtil.getArgumentClasses(args), 
-					false);
-			if (methodn != null) {
-				// Only record new method if it is more general than the existing method
-				final Method oldMethod = instr.getNativeMethod();
-				if (oldMethod == null || methodn.getDeclaringClass().isAssignableFrom(oldMethod.getDeclaringClass())) {
-					instr.setNativeMethod(methodn); // record invoked method for JIT compiler
-				}
-				return EMFTVMUtil.invokeNative(frame, o, methodn, args);
 			}
 			throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
 					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)), 
