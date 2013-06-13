@@ -159,7 +159,7 @@ public final class Tuple {
 			cal = Calendar.getInstance();
 		}
 
-		cal.setTimeInMillis(0);
+		cal.clear();
 		if (values.containsKey("year")) {
 			cal.set(Calendar.YEAR, (Integer) values.get("year"));
 		}
