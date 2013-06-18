@@ -267,7 +267,13 @@ abstract rule Unit {
 	from s : ATL!Unit in IN
 	to t : EMFTVM!Module (
 		name <- s.name,
-		sourceName <- s.name + '.atl',
+		sourceName <-
+			let index : Integer = s.name.lastIndexOf('::') in
+			if index > 0 then
+				s.name.substring(index + 2, s.name.size()) + '.atl'
+			else
+				s.name + '.atl'
+			endif,
 		imports <- s.libraries->collect(l|l.name),
 		features <- Sequence{main}),
 	   main : EMFTVM!Operation (
