@@ -370,7 +370,9 @@ helper context ATL!LocatedElement def: getRootComposite() : OclAny =
 	then
 		OclUndefined
 	else
-		if container.oclIsKindOf(ATL!OclExpression) or container.oclIsKindOf(ATL!Statement)
+		if container.oclIsKindOf(ATL!OclExpression) or 
+			container.oclIsKindOf(ATL!Statement) or 
+			container.oclIsKindOf(ATL!VariableDeclaration)
 		then
 			container.getRootComposite()
 		else
