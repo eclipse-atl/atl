@@ -7,9 +7,15 @@
 <mapAttribute key="Inout Models"/>
 <mapAttribute key="Inout Models Output Locations"/>
 <mapAttribute key="Input Model Options"/>
-<mapAttribute key="Input Models"/>
-<mapAttribute key="Metamodel Options"/>
-<mapAttribute key="Metamodels"/>
+<mapAttribute key="Input Models">
+<mapEntry key="IN" value="http://www.eclipse.org/m2m/atl/2011/EMFTVM"/>
+</mapAttribute>
+<mapAttribute key="Metamodel Options">
+<mapEntry key="ECORE" value="isMetametamodel"/>
+</mapAttribute>
+<mapAttribute key="Metamodels">
+<mapEntry key="ECORE" value=""/>
+</mapAttribute>
 <stringAttribute key="Module Name" value="Regression::Bug408391"/>
 <stringAttribute key="Module Path" value="/org.eclipse.m2m.atl.emftvm.tests/test-data/"/>
 <mapAttribute key="Output Model Options"/>

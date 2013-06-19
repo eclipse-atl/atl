@@ -2483,11 +2483,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 
 		final java.util.Set<Operation> ops = new LinkedHashSet<Operation>();
+		final Class<?> ic = context.getInstanceClass();
 		final List<?> superTypes;
 		if (context instanceof EClass) {
 			superTypes = ((EClass)context).getESuperTypes();
 		} else {
-			final Class<?> ic = context.getInstanceClass();
 			if (ic == null) {
 				throw new IllegalArgumentException(String.format("Primitive EMF type without instance class %s", context));
 			}
@@ -2497,7 +2497,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final ExecEnv env = frame.getEnv();
 		Operation superOp = null;
 		final Object o;
-		final Class<?> ic;
+		final Method method;
 
 		switch (argcount) {
 		case 0:
@@ -2520,14 +2520,13 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				superOp = ops.iterator().next();
 			}
 
+			method = EMFTVMUtil.findNativeSuperMethod(superOp, ic, opname);
+			if (method != null) {
+				return EMFTVMUtil.invokeNative(frame, o, method);
+			}
 			if (superOp != null) {
 				final CodeBlock body = superOp.getBody();
 				return body.execute(frame.getSubFrame(body, o));
-			}
-
-			ic = context.getInstanceClass();
-			if (ic != null) {
-				return EMFTVMUtil.invokeNativeSuper(frame, ic, o, opname);
 			}
 
 			throw new UnsupportedOperationException(String.format("super %s::%s()", 
@@ -2554,14 +2553,13 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				superOp = ops.iterator().next();
 			}
 
+			method = EMFTVMUtil.findNativeSuperMethod(superOp, ic, opname, arg);
+			if (method != null) {
+				return EMFTVMUtil.invokeNative(frame, o, method, arg);
+			}
 			if (superOp != null) {
 				final CodeBlock body = superOp.getBody();
 				return body.execute(frame.getSubFrame(body, o, arg));
-			}
-
-			ic = context.getInstanceClass();
-			if (ic != null) {
-				return EMFTVMUtil.invokeNativeSuper(frame, ic, o, opname, arg);
 			}
 
 			throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
@@ -2589,14 +2587,13 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				superOp = ops.iterator().next();
 			}
 
+			method = EMFTVMUtil.findNativeSuperMethod(superOp, ic, opname, args);
+			if (method != null) {
+				return EMFTVMUtil.invokeNative(frame, o, method, args);
+			}
 			if (superOp != null) {
 				final CodeBlock body = superOp.getBody();
 				return body.execute(frame.getSubFrame(body, o, args));
-			}
-
-			ic = context.getInstanceClass();
-			if (ic != null) {
-				return EMFTVMUtil.invokeNativeSuper(frame, ic, o, opname, args);
 			}
 
 			throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 

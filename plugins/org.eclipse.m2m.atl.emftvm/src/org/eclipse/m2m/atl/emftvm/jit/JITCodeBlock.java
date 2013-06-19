@@ -911,14 +911,13 @@ public abstract class JITCodeBlock {
 			superOp = ops.iterator().next();
 		}
 
+		final Method method = EMFTVMUtil.findNativeSuperMethod(superOp, context.getInstanceClass(), opname);
+		if (method != null) {
+			return EMFTVMUtil.invokeNative(frame, self, method);
+		}
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
 			return body.execute(frame.getSubFrame(body, self));
-		}
-
-		final Class<?> ic = context.getInstanceClass();
-		if (ic != null) {
-			return EMFTVMUtil.invokeNativeSuper(frame, ic, self, opname);
 		}
 
 		throw new UnsupportedOperationException(String.format("super %s::%s()", 
@@ -941,12 +940,18 @@ public abstract class JITCodeBlock {
 		final ExecEnv env = frame.getEnv();
 		final Operation superOp =  env.findOperation(context.getSuperclass(), opname);
 
+		final Method method = EMFTVMUtil.findNativeSuperMethod(superOp, context, opname);
+		if (method != null) {
+			return EMFTVMUtil.invokeNative(frame, self, method);
+		}
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
 			return body.execute(frame.getSubFrame(body, self));
 		}
 
-		return EMFTVMUtil.invokeNativeSuper(frame, context, self, opname);
+		throw new UnsupportedOperationException(String.format("super %s::%s()", 
+				EMFTVMUtil.getTypeName(env, context), 
+				opname));
 	}
 
 	/**
@@ -982,14 +987,13 @@ public abstract class JITCodeBlock {
 			superOp = ops.iterator().next();
 		}
 
+		final Method method = EMFTVMUtil.findNativeSuperMethod(superOp, context.getInstanceClass(), opname, arg);
+		if (method != null) {
+			return EMFTVMUtil.invokeNative(frame, self, method, arg);
+		}
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
 			return body.execute(frame.getSubFrame(body, self, arg));
-		}
-
-		final Class<?> ic = context.getInstanceClass();
-		if (ic != null) {
-			return EMFTVMUtil.invokeNativeSuper(frame, ic, self, opname, arg);
 		}
 
 		throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
@@ -1014,12 +1018,19 @@ public abstract class JITCodeBlock {
 		final ExecEnv env = frame.getEnv();
 		final Operation superOp = env.findOperation(context.getSuperclass(), opname, EMFTVMUtil.getArgumentType(arg));
 
+		final Method method = EMFTVMUtil.findNativeSuperMethod(superOp, context, opname, arg);
+		if (method != null) {
+			return EMFTVMUtil.invokeNative(frame, self, method, arg);
+		}
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
 			return body.execute(frame.getSubFrame(body, self, arg));
 		}
 
-		return EMFTVMUtil.invokeNativeSuper(frame, context, self, opname, arg);
+		throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
+				EMFTVMUtil.getTypeName(env, context), 
+				opname, 
+				EMFTVMUtil.getTypeName(env, EMFTVMUtil.getArgumentType(arg))));
 	}
 
 	/**
@@ -1055,14 +1066,13 @@ public abstract class JITCodeBlock {
 			superOp = ops.iterator().next();
 		}
 
+		final Method method = EMFTVMUtil.findNativeSuperMethod(superOp, context.getInstanceClass(), opname, args);
+		if (method != null) {
+			return EMFTVMUtil.invokeNative(frame, self, method, args);
+		}
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
 			return body.execute(frame.getSubFrame(body, self, args));
-		}
-
-		final Class<?> ic = context.getInstanceClass();
-		if (ic != null) {
-			return EMFTVMUtil.invokeNativeSuper(frame, ic, self, opname, args);
 		}
 
 		throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
@@ -1087,12 +1097,19 @@ public abstract class JITCodeBlock {
 		final ExecEnv env = frame.getEnv();
 		final Operation superOp = env.findOperation(context.getSuperclass(), opname, EMFTVMUtil.getArgumentTypes(args));
 
+		final Method method = EMFTVMUtil.findNativeSuperMethod(superOp, context, opname, args);
+		if (method != null) {
+			return EMFTVMUtil.invokeNative(frame, self, method, args);
+		}
 		if (superOp != null) {
 			final CodeBlock body = superOp.getBody();
 			return body.execute(frame.getSubFrame(body, self, args));
 		}
 
-		return EMFTVMUtil.invokeNativeSuper(frame, context, self, opname, args);
+		throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
+				EMFTVMUtil.getTypeName(env, context), 
+				opname, 
+				EMFTVMUtil.getTypeNames(env, EMFTVMUtil.getArgumentTypes(args))));
 	}
 
 	/**

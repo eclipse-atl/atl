@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.tests.EMFTVMTest;
@@ -60,6 +61,9 @@ public class IntegrationTest extends EMFTVMTest {
 	public void testBug408391() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final TimingData td = new TimingData();
+		final Model model = EmftvmFactory.eINSTANCE.createModel();
+		model.setResource(EmftvmPackage.eINSTANCE.eResource());
+		env.registerInputModel("IN", model);
 		env.loadModule(createTestModuleResolver(), "Regression::Bug408391");
 		td.finishLoading();
 		final Object result = env.run(td);
@@ -75,6 +79,9 @@ public class IntegrationTest extends EMFTVMTest {
 		expected = expected.append(cal.getTime());
 		expected = expected.append(Character.valueOf('S')).append("0");
 		expected = expected.append(Arrays.asList("String1,String2,String3".split(",", 2))).append("N");
+		expected = expected.append(-1).append(100000);
+		expected = expected.append(false).append(true);
+		expected = expected.append("Bogus").append(new LazyList<String>().append("firstsecond").append("firstsecond"));
 
 		assertEquals(expected, result);
 

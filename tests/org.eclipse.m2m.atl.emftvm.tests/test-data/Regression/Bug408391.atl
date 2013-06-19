@@ -1,7 +1,11 @@
 -- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
 query "Regression::Bug408391" = thisModule.testInvoke0()
 	->union(thisModule.testInvoke1())
-	->union(thisModule.testInvokeN());
+	->union(thisModule.testInvokeN())
+	->union(thisModule.testInvokeSuper0())
+	->union(thisModule.testInvokeSuper1())
+	->union(thisModule.testInvokeSuperN());
 
 helper def : testInvoke0() : Sequence(OclAny) =
 	Sequence{'Bogus', Tuple{day_of_month = 1, month = 0, year = 1999}}->collect(e | e.toDate()).debug('testInvoke0');
@@ -11,6 +15,15 @@ helper def : testInvoke1() : Sequence(OclAny) =
 
 helper def : testInvokeN() : Sequence(OclAny) =
 	Sequence{'String1,String2,String3', 35}->collect(e | e.split(',', 2)).debug('testInvokeN');
+
+helper def : testInvokeSuper0() : Sequence(OclAny) =
+	Sequence{'Bogus', ECORE!EClass.allInstances()->first()}->collect(e | e.getClassifierID()).debug('testInvokeSuper0');
+
+helper def : testInvokeSuper1() : Sequence(OclAny) =
+	Sequence{'Bogus', ECORE!EClass.allInstances()->first().eClass()}->collect(e | e.isInstance(ECORE!EClass.allInstances()->first())).debug('testInvokeSuper1');
+
+helper def : testInvokeSuperN() : Sequence(OclAny) =
+	Sequence{'Bogus', Sequence{'first', 'second'}}->collect(e | e->iterate(s; acc : String = '' | acc + s.toString())).debug('testInvokeSuperN');
 
 helper context OclAny def : toDate() : "#native"!"java::util::Date" =
 	let cal : "#native"!"java::util::Calendar" = "#native"!"java::util::Calendar".refInvokeStaticOperation('getInstance', Sequence{}) in
@@ -22,3 +35,22 @@ helper context OclAny def : charAt(index : Integer) : String =
 
 helper context OclAny def : split(regex : String, limit : Integer) : String =
 	'N';
+
+helper context OclAny def : getClassifierID() : Integer =
+	0-1;
+
+helper context ECORE!EClass def : getClassifierID() : Integer =
+	100000 + super.getClassifierID().debug('super.getClassifierID()');
+
+helper context OclAny def : isInstance(object : OclAny) : Boolean =
+	false;
+
+helper context ECORE!EClass def : isInstance(object : OclAny) : Boolean =
+	super.isInstance(object).debug('super.isInstance()');
+
+helper context OclAny def : "iterate"(initialValue : OclAny, cb : OclAny) : OclAny =
+	self;
+
+helper context Sequence(OclAny) def : "iterate"(initialValue : OclAny, cb : "#native"!"org::eclipse::m2m::atl::emftvm::CodeBlock") : Sequence(OclAny) =
+	let superIncl : OclAny = super.iterate(initialValue, cb).debug('super.iterate()') in
+	Sequence{superIncl, superIncl};
