@@ -15,12 +15,14 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.logging.Level;
 
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
+import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.tests.EMFTVMTest;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
@@ -96,6 +98,28 @@ public class IntegrationTest extends EMFTVMTest {
 		final Object jitResult = env.run(td);
 
 		assertEquals(expected, jitResult);
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=411230">Bug # 411230</a>.
+	 */
+	public void testBug411230() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel();
+		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		final Model model = loadTestModel(rs, "/test-data/EcoreCopy/My.ecore");
+		env.registerMetaModel("E", metamodel);
+		env.registerInOutModel("IN", model);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug411230");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug411230-out.ecore");
+		assertEquals(refOut.getResource(), model.getResource());
 	}
 
 }

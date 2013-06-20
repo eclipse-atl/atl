@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -396,16 +397,32 @@ public final class EMFTVMUtil {
 		if (sf instanceof EReference) {
 			// EReferences need only EList conversion, notably not EnumLiteral conversion
 			final Object value = eo.eGet(sf);
-			if (value instanceof Collection<?>) {
-				if (value instanceof List<?>) {
+			if (!(value instanceof Collection<?>) || (value instanceof LazyCollection<?>)) {
+				// Simple values and internal collection types don't need conversion
+				return value;
+			}
+			if (value instanceof List<?>) {
+				if (eo != null && env.getInoutModelOf(eo) != null) {
+					// Copy list for inout models
+					return new LazyListOnList<Object>(new ArrayList<Object>((List<Object>) value));
+				} else {
 					return new LazyListOnList<Object>((List<Object>) value);
-				} else if (value instanceof Set<?>) {
+				}
+			} else if (value instanceof Set<?>) {
+				if (eo != null && env.getInoutModelOf(eo) != null) {
+					// Copy list for inout models
+					return new LazySetOnSet<Object>(new LinkedHashSet<Object>((Set<Object>) value));
+				} else {
 					return new LazySetOnSet<Object>((Set<Object>) value);
+				}
+			} else {
+				if (eo != null && env.getInoutModelOf(eo) != null) {
+					// Copy list for inout models
+					return new LazyListOnCollection<Object>(new ArrayList<Object>((Collection<Object>) value));
 				} else {
 					return new LazyListOnCollection<Object>((Collection<Object>) value);
 				}
 			}
-			return value;
 		} else {
 			return emf2vm(env, eo, eo.eGet(sf));
 		}

@@ -1,0 +1,30 @@
+-- @atlcompiler emftvm
+-- @nsURI E=http://www.eclipse.org/emf/2002/Ecore
+module "Regression::Bug411230";
+create OUT : E refining IN : E;
+
+rule package {
+from
+  p : E!EPackage
+to
+  out : E!EPackage
+  (
+    eClassifiers <- p.eClassifiers->including(c)
+  ),
+  c : E!EClass
+  (
+    name <- 'c1'
+  )
+  do {
+  	p.eClassifiers.debug('post');
+  }
+}
+
+rule class {
+  from
+    c : E!EClass
+  to
+    out : E!EClass
+    (
+    )
+}

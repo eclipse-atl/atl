@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.emftvm.launcher.EMFTVMTransformation">
+<stringAttribute key="ATL File Name" value="//org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/Bug411230.atl"/>
+<booleanAttribute key="Disable JIT compiler" value="false"/>
+<booleanAttribute key="Display Timing Data" value="true"/>
+<mapAttribute key="Inout Model Options">
+<mapEntry key="IN" value="derivedFile allowIntermodelReferences"/>
+</mapAttribute>
+<mapAttribute key="Inout Models">
+<mapEntry key="IN" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/EcoreCopy/My.ecore"/>
+</mapAttribute>
+<mapAttribute key="Inout Models Output Locations">
+<mapEntry key="IN" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/Bug411230-out.ecore"/>
+</mapAttribute>
+<mapAttribute key="Input Model Options"/>
+<mapAttribute key="Input Models"/>
+<mapAttribute key="Metamodel Options">
+<mapEntry key="E" value="isMetametamodel"/>
+</mapAttribute>
+<mapAttribute key="Metamodels">
+<mapEntry key="E" value=""/>
+</mapAttribute>
+<stringAttribute key="Module Name" value="Regression::Bug411230"/>
+<stringAttribute key="Module Path" value="/org.eclipse.m2m.atl.emftvm.tests/test-data/"/>
+<mapAttribute key="Output Model Options"/>
+<mapAttribute key="Output Models"/>
+<listAttribute key="Superimpose"/>
+</launchConfiguration>
