@@ -25,7 +25,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
@@ -330,12 +329,16 @@ public class ModelImpl extends EObjectImpl implements Model {
 	}
 
 	/**
-	 * <!-- begin-user-doc. --> {@inheritDoc} <!-- end-user-doc -->
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
 	 */
 	public void deleteElement(final EObject element) {
 		assert getResource() == element.eResource();
 		final EList<EObject> resContents = getResource().getContents();
-		EcoreUtil.delete(element);
+		if (!resContents.remove(element)) {
+			throw new IllegalArgumentException(String.format("Element %s not contained as a root element in this model", element));
+		}
 		for (EObject child : new ArrayList<EObject>(element.eContents())) {
 			assert child.eResource() == null;
 			// adding children to a container removes them from their previous container

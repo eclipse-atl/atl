@@ -1658,29 +1658,24 @@ public class ExecEnvTest extends EMFTVMTest {
 		final ResourceSet rs = new ResourceSetImpl();
 
 		// Load models
-		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
-		env.registerInputModel("IN", inModel);
-
-		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
-		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-		outModel.setResource(outRes);
-		env.registerOutputModel("OUT", outModel);
+		final Resource inOutRes = rs.createResource(URI.createFileURI("out.xmi"));
+		final Model inOutModel = EmftvmFactory.eINSTANCE.createModel();
+		inOutModel.setResource(inOutRes);
+		env.registerInOutModel("INOUT", inOutModel);
 		
 		// Create output element
-		final EObject element = outModel.newElement(EmftvmPackage.eINSTANCE.getModule());
+		final EObject element = inOutModel.newElement(EmftvmPackage.eINSTANCE.getModule());
 		
-		assertFalse(outRes.getContents().isEmpty());
-		assertEquals(element, outRes.getContents().get(0));
+		assertFalse(inOutRes.getContents().isEmpty());
+		assertEquals(element, inOutRes.getContents().get(0));
 		
 		env.queueForDelete(element, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
 		
-		assertFalse(outRes.getContents().isEmpty());
+		assertFalse(inOutRes.getContents().isEmpty());
 		
 		env.deleteQueue();
 		
-		assertTrue(outRes.getContents().isEmpty());
+		assertTrue(inOutRes.getContents().isEmpty());
 	}
 
 	/**

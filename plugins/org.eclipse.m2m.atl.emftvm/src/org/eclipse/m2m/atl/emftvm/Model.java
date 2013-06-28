@@ -90,9 +90,9 @@ public interface Model extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Returns all instances of the given <pre>type</pre>.
+	 * Returns all instances of the given <code>type</code>.
 	 * @param type the metaclass for which to find the instances
-	 * @return all instances of the given <pre>type</pre>.
+	 * @return all instances of the given <code>type</code>.
 	 * <!-- end-user-doc -->
 	 * @model dataType="org.eclipse.m2m.atl.emftvm.LazyList<org.eclipse.emf.ecore.EObject>"
 	 * @generated
@@ -112,7 +112,7 @@ public interface Model extends EObject {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Deletes <pre>element</pre> from this {@link Model}.
+	 * Deletes a root element from this {@link Model}.
 	 * @param element the model element to delete
 	 * <!-- end-user-doc -->
 	 * @model

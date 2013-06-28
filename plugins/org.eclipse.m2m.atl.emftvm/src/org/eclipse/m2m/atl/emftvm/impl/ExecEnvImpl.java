@@ -181,22 +181,51 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 		/**
 		 * {@inheritDoc}
+		 * 
+		 * @throws UnsupportedOperationException
 		 */
 		@Override
 		protected void perform() {
-			assert getInputModelOf(element) == null;
-			final Model m = getModelOf(element);
+			throw new UnsupportedOperationException();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * Performs the actual deletion of the element from its model.
+		 */
+		@Override
+		public void process() {
+			final Model m = getInoutModelOf(element);
 			try {
 				m.deleteElement(element);
 			} catch (Exception e) {
 				frame.setPc(pc);
-				throw new VMException(frame, 
-						String.format(
-								"Error while deleting element %s from %s: %s", 
-								EMFTVMUtil.toPrettyString(element, ExecEnvImpl.this), 
-								getModelID(m),
-								e.getLocalizedMessage()),
-						e);
+				throw new VMException(frame, String.format("Error while deleting element %s from %s: %s",
+						EMFTVMUtil.toPrettyString(element, ExecEnvImpl.this), getModelID(m), e.getLocalizedMessage()), e);
+			}
+		}
+
+		/**
+		 * Performs the queued operation for the given <code>ref</code>.
+		 * 
+		 * @param o
+		 *            the object for which to delete from <code>ref</code>
+		 * @param ref
+		 *            the {@link EReference} to perform the delete() for
+		 */
+		public void process(final EObject o, final EReference ref) {
+			try {
+				assert ref.isMany() || o.eGet(ref) == element;
+				assert !ref.isMany() || ((Collection<?>) o.eGet(ref)).contains(element);
+				EMFTVMUtil.remove(ExecEnvImpl.this, o, ref, element);
+			} catch (VMException e) {
+				throw e;
+			} catch (Exception e) {
+				frame.setPc(pc);
+				final ExecEnv env = frame.getEnv();
+				throw new VMException(frame, String.format("Error deleting %s.%s from %s: %s", EMFTVMUtil.toPrettyString(o, env),
+						ref.getName(), EMFTVMUtil.toPrettyString(element, env), e.getMessage()), e);
 			}
 		}
 
@@ -278,8 +307,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		 */
 		public void process(final EObject o, final EReference ref, final int index) {
 			try {
-				assert o.eGet(ref) instanceof EList<?>;
-				assert ((EList<?>) o.eGet(ref)).get(index) == source;
+				assert o.eGet(ref) instanceof Collection<?>;
+				assert ((Collection<?>) o.eGet(ref)).contains(source);
+				assert index < 0 || ((List<?>) o.eGet(ref)).get(index) == source;
 				EMFTVMUtil.remove(ExecEnvImpl.this, o, ref, source);
 				EMFTVMUtil.add(ExecEnvImpl.this, o, ref, target, index);
 			} catch (VMException e) {
@@ -529,10 +559,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	protected VMMonitor monitor;
 
 	/**
-	 * {@link Queue} of elements to be deleted, along with the {@link StackFrame}
-	 * context in which the deletion takes place.
+	 * Queue of elements to be deleted, along with the {@link StackFrame} context in which the deletion takes place.
 	 */
-	protected final Queue<DeletionEntry> deletionQueue = new LinkedList<DeletionEntry>();
+	protected final Map<EObject, DeletionEntry> deletionQueue = new HashMap<EObject, DeletionEntry>();
 
 	/**
 	 * {@link Queue} of features/fields to be set, along with the {@link StackFrame}
@@ -1085,12 +1114,24 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 						// Only change changeable references that are not the reverse of a containment reference
 						if (ref.isChangeable() && !ref.isContainer()) {
 							Object val = o.eGet(ref);
-							if (val instanceof EList<?>) {
-								EList<?> listVal = (EList<?>) val;
-								for (int index = 0; index < listVal.size(); index++) {
-									Object source = listVal.get(index);
-									if (remapQueue.containsKey(source)) {
-										remapQueue.get(source).process(o, ref, index);
+							if (val instanceof Collection<?>) {
+								if (val instanceof List<?>) {
+									List<?> listVal = (List<?>) val;
+									for (int index = 0; index < listVal.size(); index++) {
+										Object source = listVal.get(index);
+										if (remapQueue.containsKey(source)) {
+											remapQueue.get(source).process(o, ref, index);
+										}
+									}
+								} else {
+									List<RemapEntry> remapEntries = new ArrayList<RemapEntry>();
+									for (Object source : (Collection<?>) val) {
+										if (remapQueue.containsKey(source)) {
+											remapEntries.add(remapQueue.get(source));
+										}
+									}
+									for (RemapEntry remapEntry : remapEntries) {
+										remapEntry.process(o, ref, -1);
 									}
 								}
 							} else {
@@ -2309,7 +2350,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public void queueForDelete(final EObject element, final StackFrame frame) {
-		deletionQueue.offer(new DeletionEntry(element, frame));
+		deletionQueue.put(element, new DeletionEntry(element, frame));
 	}
 
 	/**
@@ -2320,8 +2361,40 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	public void deleteQueue() {
 		try {
-			while (!deletionQueue.isEmpty()) {
-				deletionQueue.poll().process();
+			// Delete cross-references for all entries
+			for (Model m : getInoutModels().values()) {
+				List<EObject> eObjects = new ArrayList<EObject>();
+				for (EObject o : new ResourceIterable(m.getResource())) {
+					eObjects.add(o);
+				}
+				// Prevent ConcurrentModificationException by using eObjects copy
+				for (EObject o : eObjects) {
+					for (EReference ref : o.eClass().getEAllReferences()) {
+						// Only change changeable references that are not the reverse of a containment reference
+						if (ref.isChangeable() && !ref.isContainer()) {
+							Object val = o.eGet(ref);
+							if (val instanceof Collection<?>) {
+								List<DeletionEntry> deletionEntries = new ArrayList<DeletionEntry>();
+								for (Object source : (Collection<?>) val) {
+									if (deletionQueue.containsKey(source)) {
+										deletionEntries.add(deletionQueue.get(source));
+									}
+								}
+								for (DeletionEntry deletionEntry : deletionEntries) {
+									deletionEntry.process(o, ref);
+								}
+							} else {
+								if (deletionQueue.containsKey(val)) {
+									deletionQueue.get(val).process(o, ref);
+								}
+							}
+						}
+					}
+				}
+			}
+			// Delete entries from their models
+			for (DeletionEntry deletionEntry : deletionQueue.values()) {
+				deletionEntry.process();
 			}
 		} finally {
 			deletionQueue.clear();
