@@ -1102,6 +1102,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public void remapQueue() {
+		if (remapQueue.isEmpty()) {
+			return;
+		}
 		try {
 			for (Model m : getInoutModels().values()) {
 				List<EObject> eObjects = new ArrayList<EObject>();
@@ -2360,6 +2363,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	public void deleteQueue() {
+		if (deletionQueue.isEmpty()) {
+			return;
+		}
 		try {
 			// Delete cross-references for all entries
 			for (Model m : getInoutModels().values()) {
