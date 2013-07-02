@@ -156,4 +156,26 @@ public class PojoModelTest extends EMFTVMTest {
 		assertEquals(enumSet, ((PojoA) out.getResource().getContents().get(0)).getBList().get(0).getEnumSet());
 	}
 
+	/**
+	 * Test method for <code>POJOToPOJO.atl</code>.
+	 */
+	public void testPOJOToPOJO() {
+		final Model in = EmftvmFactory.eINSTANCE.createModel();
+		in.setResource(createPojoModel());
+
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		env.registerMetaModel("POJO", pojo);
+		env.registerInOutModel("IN", in);
+		final TimingData td = new TimingData();
+		env.loadModule(moduleResolver, "POJOToPOJO");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+		LOG.info("PojoModelTest#testPOJOToPOJO " + td.toString());
+
+		assertEquals(1, in.getResource().getContents().size());
+		assertEquals(1, ((PojoB) in.getResource().getContents().get(0)).getNameSet().size());
+		assertEquals(Collections.singleton("PojoB"), ((PojoB) in.getResource().getContents().get(0)).getNameSet());
+	}
+
 }

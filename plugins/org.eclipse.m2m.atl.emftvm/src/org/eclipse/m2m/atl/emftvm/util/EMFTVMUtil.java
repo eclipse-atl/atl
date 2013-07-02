@@ -747,7 +747,7 @@ public final class EMFTVMUtil {
 	@SuppressWarnings("unchecked")
 	private static void removeMany(final ExecEnv env, final EObject eo, final EStructuralFeature sf, final Object value) {
 		assert sf.isMany();
-		final EList<Object> values = (EList<Object>) eo.eGet(sf);
+		final Collection<Object> values = (Collection<Object>) eo.eGet(sf);
 		if (sf instanceof EReference) {
 			final EReference ref = (EReference) sf;
 			removeRefValue(ref, eo, values, (EObject) value);
@@ -773,7 +773,7 @@ public final class EMFTVMUtil {
 	@SuppressWarnings("unchecked")
 	private static void removeMany(final ExecEnv env, final EObject eo, final EStructuralFeature sf, final Collection<?> value) {
 		assert sf.isMany();
-		final EList<Object> values = (EList<Object>) eo.eGet(sf);
+		final Collection<Object> values = (Collection<Object>) eo.eGet(sf);
 		if (sf instanceof EReference) {
 			final EReference ref = (EReference) sf;
 			final Collection<?> srcValues = ref.isContainment() ? new ArrayList<Object>(value) : value;
@@ -825,7 +825,7 @@ public final class EMFTVMUtil {
 	 * @param values
 	 * @param v
 	 */
-	private static void removeEnumValue(final EEnum eEnum, final EList<Object> values, final Object v) {
+	private static void removeEnumValue(final EEnum eEnum, final Collection<Object> values, final Object v) {
 		if (v instanceof EnumLiteral) {
 			values.remove(((EnumLiteral) v).getEnumerator(eEnum));
 		} else {

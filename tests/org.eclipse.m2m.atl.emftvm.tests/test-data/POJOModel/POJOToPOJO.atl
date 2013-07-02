@@ -1,0 +1,17 @@
+-- @atlcompiler emftvm
+-- @path POJO=/org.eclipse.m2m.atl.emftvm.tests/test-data/POJOModel/pojo.ecore
+module POJOToPOJO;
+
+create OUT : POJO refining IN : POJO;
+
+-- Tests delete
+rule DeletePojoB {
+	from s : POJO!PojoB
+}
+
+-- Tests remap
+rule PojoAToPojoB {
+	from s : POJO!PojoA
+	to t : POJO!PojoB (
+		nameSet <- s.bSet->collect(b | b.nameSet)->flatten())
+}
