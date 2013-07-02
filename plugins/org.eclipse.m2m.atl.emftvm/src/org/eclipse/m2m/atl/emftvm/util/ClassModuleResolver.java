@@ -48,6 +48,9 @@ public class ClassModuleResolver implements ModuleResolver {
 		final Resource moduleRes = new EMFTVMResourceImpl();
 		final String moduleFile = module.replaceAll("::", "/") + ".emftvm";
 		final URL moduleUrl = clazz.getResource(moduleFile);
+		if (moduleUrl == null) {
+			throw new ModuleNotFoundException("Cannot find: [" + moduleFile + "]");
+		}
 		try {
 			final InputStream inputStream = moduleUrl.openStream();
 			if (inputStream == null) {
