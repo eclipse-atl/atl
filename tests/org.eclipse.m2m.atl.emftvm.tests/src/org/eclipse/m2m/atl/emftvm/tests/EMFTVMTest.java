@@ -11,9 +11,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.SortedSet;
 import java.util.logging.Logger;
 
@@ -21,20 +20,24 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
-import org.eclipse.emf.compare.diff.metamodel.DiffModel;
-import org.eclipse.emf.compare.diff.metamodel.ReferenceOrderChange;
-import org.eclipse.emf.compare.diff.service.DiffService;
-import org.eclipse.emf.compare.match.MatchOptions;
-import org.eclipse.emf.compare.match.metamodel.MatchModel;
-import org.eclipse.emf.compare.match.service.MatchService;
+import org.eclipse.emf.compare.Comparison;
+import org.eclipse.emf.compare.Diff;
+import org.eclipse.emf.compare.DifferenceKind;
+import org.eclipse.emf.compare.ReferenceChange;
+import org.eclipse.emf.compare.diff.DefaultDiffEngine;
+import org.eclipse.emf.compare.diff.DiffBuilder;
+import org.eclipse.emf.compare.match.DefaultMatchEngine;
+import org.eclipse.emf.compare.scope.DefaultComparisonScope;
+import org.eclipse.emf.compare.utils.UseIdentifiers;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
+import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.osgi.framework.Bundle;
 
@@ -65,24 +68,71 @@ public abstract class EMFTVMTest extends TestCase {
 	 * @param rightObject
 	 */
 	public static void assertEquals(Resource leftResource, Resource rightResource) {
-		final Map<String, Object> options = new HashMap<String, Object>();
-		options.put(MatchOptions.OPTION_IGNORE_XMI_ID, Boolean.TRUE);
-		try {
-			final MatchModel match = MatchService.doResourceMatch(leftResource, rightResource, options);
-			assertTrue("Unmatched elements not empty: " + match.getUnmatchedElements(), match.getUnmatchedElements().isEmpty());
-			if (!leftResource.getContents().isEmpty()) {
-				assertFalse(match.getMatchedElements().isEmpty());
-			}
-			final DiffModel diff = DiffService.doDiff(match);
-			assertTrue("Diff model has != 1 elements: " + diff.getOwnedElements(), diff.getOwnedElements().size() == 1);
-			for (Iterator<EObject> allContents = diff.eAllContents(); allContents.hasNext();) {
-				EObject de = allContents.next();
-				// allow only certain kinds of diff elements
-				assertTrue("Difference found: " + de, de instanceof DiffGroup || de instanceof ReferenceOrderChange);
-			}
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
+		final DefaultComparisonScope scope = new DefaultComparisonScope(leftResource, rightResource, null);
+		final Comparison match = DefaultMatchEngine.create(UseIdentifiers.NEVER).match(scope, null);
+		if (!leftResource.getContents().isEmpty()) {
+			assertFalse("Match model is empty: " + match.getMatches(), match.getMatches().isEmpty());
 		}
+		new DefaultDiffEngine(new DiffBuilder()).diff(match, null);
+		for (Diff diff : match.getDifferences()) {
+			// allow only certain kinds of diff elements
+			if (diff instanceof ReferenceChange && ((ReferenceChange) diff).getKind() == DifferenceKind.CHANGE) {
+				assertEquals(diff.getMatch().getLeft(), diff.getMatch().getRight(), ((ReferenceChange) diff).getReference());
+			} else {
+				fail("Difference found: " + diff);
+			}
+		}
+	}
+
+	/**
+	 * Asserts that <code>left.ref</code> and <code>right.ref</code> point to equal values.
+	 * 
+	 * @param left
+	 *            the left-hand object to compare
+	 * @param right
+	 *            the right-hand object to compare
+	 * @param ref
+	 *            the {@link EReference} of which to compare the values
+	 */
+	public static void assertEquals(final EObject left, final EObject right, final EReference ref) {
+		if (ref.isMany()) {
+			final Collection<?> leftValue = (Collection<?>) left.eGet(ref);
+			final Collection<?> rightValue = (Collection<?>) right.eGet(ref);
+			final String errorMsg = String.format("Different value found on %s.%s (%s) and %s.%s (%s)",
+					EMFTVMUtil.toPrettyString(left, null), ref.getName(), EMFTVMUtil.toPrettyString(leftValue, null),
+					EMFTVMUtil.toPrettyString(right, null), ref.getName(), EMFTVMUtil.toPrettyString(rightValue, null));
+			
+			assertEquals(errorMsg, leftValue.size(), rightValue.size());
+			final Iterator<?> leftVs = leftValue.iterator();
+			final Iterator<?> rightVs = rightValue.iterator();
+			while (leftVs.hasNext()) {
+				// Reference to same object by URI - only target objects are different instances
+				assertSameURI(errorMsg, (EObject) leftVs.next(), (EObject) rightVs.next());
+			}
+		} else {
+			final EObject leftValue = (EObject) left.eGet(ref);
+			final EObject rightValue = (EObject) right.eGet(ref);
+			final String errorMsg = String.format("Different value found on %s.%s (%s) and %s.%s (%s)",
+					EMFTVMUtil.toPrettyString(left, null), ref.getName(), EMFTVMUtil.toPrettyString(leftValue, null),
+					EMFTVMUtil.toPrettyString(right, null), ref.getName(), EMFTVMUtil.toPrettyString(rightValue, null));
+			// Reference to same object by URI - only target objects are different instances
+			assertSameURI(errorMsg, leftValue, rightValue);
+		}
+	}
+
+	/**
+	 * Asserts that <code>leftValue</code> and <code>rightValue</code> have the same EMF URI.
+	 * 
+	 * @param errorMsg
+	 *            the error message to display on assertion failure
+	 * @param leftValue
+	 *            the left-hand value to compare
+	 * @param rightValue
+	 *            the right-hand value to compare
+	 */
+	private static void assertSameURI(final String errorMsg, final EObject leftValue, final EObject rightValue) {
+		assertEquals(errorMsg, leftValue.eResource().getURI(), rightValue.eResource().getURI());
+		assertEquals(errorMsg, leftValue.eResource().getURIFragment(leftValue), rightValue.eResource().getURIFragment(rightValue));
 	}
 
 	/**
@@ -142,23 +192,12 @@ public abstract class EMFTVMTest extends TestCase {
 		final Runtime runtime = Runtime.getRuntime();
 		LOG.info(String.format(
 				new StringBuilder("%s\n\tDuration (msec)\tOverall runtime\tPure runtime (without loading)\n")
-						.append("\tMinimum time:\t%f\t%f\n")
-						.append("\tFirst quartile:\t%f\t%f\n")
-						.append("\tMedian time:\t%f\t%f\n")
-						.append("\tThird quartile:\t%f\t%f\n")
-						.append("\tMaximum time:\t%f\t%f\n")
-						.append("\tTransactions per second (median):\t%f\ton\t%d\tthread(s)\n")
-						.append("\tHeap space used:\t%d\tMB")
-						.toString(), 
-						prefix, 
-						min / 1E6, pureMin / 1E6,
-						firstQuartile / 1E6, pureFirstQuartile / 1E6,
-						median / 1E6, pureMedian / 1E6,
-						thirdQuartile / 1E6, pureThirdQuartile / 1E6,
-						max / 1E6, pureMax / 1E6,
-						1E9 * threadCount / median, 
-						threadCount, 
-						(runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
+						.append("\tMinimum time:\t%f\t%f\n").append("\tFirst quartile:\t%f\t%f\n").append("\tMedian time:\t%f\t%f\n")
+						.append("\tThird quartile:\t%f\t%f\n").append("\tMaximum time:\t%f\t%f\n")
+						.append("\tTransactions per second (median):\t%f\ton\t%d\tthread(s)\n").append("\tHeap space used:\t%d\tMB")
+						.toString(), prefix, min / 1E6, pureMin / 1E6, firstQuartile / 1E6, pureFirstQuartile / 1E6, median / 1E6,
+				pureMedian / 1E6, thirdQuartile / 1E6, pureThirdQuartile / 1E6, max / 1E6, pureMax / 1E6, 1E9 * threadCount / median,
+				threadCount, (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024)));
 	}
 
 	/**

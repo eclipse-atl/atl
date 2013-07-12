@@ -51,6 +51,7 @@ public class IntegrationTest extends EMFTVMTest {
 		ATLLogger.info("Finished PrimitiveTypeLazyRuleTest:\n" + td.toString());
 
 		final ResourceSet refRs = new ResourceSetImpl();
+		loadTestModel(refRs, "/test-data/EcoreCopy/My.ecore");
 		final Model refOut = loadTestModel(refRs, "/test-data/PrimitiveTypeLazyRuleTest-out.ecore");
 		final Model refTrace = loadTestModel(refRs, "/test-data/PrimitiveTypeLazyRuleTest-trace.xmi");
 		assertEquals(refOut.getResource(), env.getOutputModels().get("OUT").getResource());
