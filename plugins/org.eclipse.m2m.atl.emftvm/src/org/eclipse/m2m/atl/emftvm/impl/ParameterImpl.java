@@ -67,7 +67,7 @@ public class ParameterImpl extends TypedElementImpl implements Parameter {
 	 */
 	public Operation getOperation() {
 		if (eContainerFeatureID() != EmftvmPackage.PARAMETER__OPERATION) return null;
-		return (Operation)eContainer();
+		return (Operation)eInternalContainer();
 	}
 
 	/**

@@ -55,6 +55,7 @@ import org.eclipse.m2m.atl.emftvm.Rule;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#resetState() <em>Reset State</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#compileIterables(org.eclipse.m2m.atl.emftvm.ExecEnv) <em>Compile Iterables</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#clearFields() <em>Clear Fields</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#findInputElement(java.lang.String) <em>Find Input Element</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -454,6 +455,18 @@ public class RuleTest extends NamedElementTest {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#findInputElement(java.lang.String) <em>Find Input Element</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#findInputElement(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testFindInputElement__String() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
 	}
 
 } //RuleTest

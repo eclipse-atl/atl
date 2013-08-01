@@ -96,7 +96,7 @@ public class OutputRuleElementImpl extends RuleElementImpl implements OutputRule
 	 */
 	public Rule getOutputFor() {
 		if (eContainerFeatureID() != EmftvmPackage.OUTPUT_RULE_ELEMENT__OUTPUT_FOR) return null;
-		return (Rule)eContainer();
+		return (Rule)eInternalContainer();
 	}
 
 	/**

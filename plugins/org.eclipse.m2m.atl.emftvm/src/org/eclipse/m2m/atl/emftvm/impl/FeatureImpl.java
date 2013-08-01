@@ -397,7 +397,7 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	 */
 	public Module getModule() {
 		if (eContainerFeatureID() != EmftvmPackage.FEATURE__MODULE) return null;
-		return (Module)eContainer();
+		return (Module)eInternalContainer();
 	}
 
 	/**

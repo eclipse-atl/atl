@@ -110,13 +110,13 @@ public class TracedRuleTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElement(org.eclipse.emf.ecore.EObject) <em>Get Unique Source Element</em>}' operation.
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElement(java.lang.Object) <em>Get Unique Source Element</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElement(org.eclipse.emf.ecore.EObject)
+	 * @see org.eclipse.m2m.atl.emftvm.trace.TracedRule#getUniqueSourceElement(java.lang.Object)
 	 * @generated NOT
 	 */
-	public void testGetUniqueSourceElement__EObject() {
+	public void testGetUniqueSourceElement__Object() {
 		final EObject se1Object = EcoreFactory.eINSTANCE.createEObject();
 		
 		final TraceLink link = TraceFactory.eINSTANCE.createTraceLink();

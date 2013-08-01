@@ -706,4 +706,17 @@ public interface Rule extends NamedElement {
 	 */
 	void clearFields();
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * Finds the {@link InputRuleElement} with the given name within the rule inheritance hierarchy depth-first.
+	 * 
+	 * @param name
+	 *            the input element name
+	 * @return the {@link InputRuleElement} with the given name or <code>null</code>
+	 * <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	InputRuleElement findInputElement(String name);
+
 } // Rule

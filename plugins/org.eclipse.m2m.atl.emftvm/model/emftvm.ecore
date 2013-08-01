@@ -351,7 +351,7 @@
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
         transient="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentPhase" eType="#//RuleMode"
-        changeable="false" transient="true" defaultValueLiteral="null"/>
+        changeable="false" transient="true" defaultValueLiteral="manual"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Model">
     <eOperations name="allInstancesOf">
@@ -476,7 +476,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="owningBlock" lowerBound="1"
         eType="#//CodeBlock" eOpposite="#//CodeBlock/code"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="opcode" lowerBound="1"
-        eType="#//Opcode" changeable="false" transient="true" defaultValueLiteral=""
+        eType="#//Opcode" changeable="false" transient="true" defaultValueLiteral="PUSH"
         derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="stackProduction" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"
@@ -606,6 +606,9 @@
       <eParameters name="env" eType="#//ExecEnv"/>
     </eOperations>
     <eOperations name="clearFields"/>
+    <eOperations name="findInputElement" eType="#//InputRuleElement">
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//Module"
         eOpposite="#//Module/rules"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mode" lowerBound="1" eType="#//RuleMode"/>
@@ -658,6 +661,8 @@
         containment="true" eOpposite="#//CodeBlock/bindingFor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="inputFor" eType="#//Rule"
         eOpposite="#//Rule/inputElements"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapsToSelf" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OutputRuleElement" eSuperTypes="#//RuleElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapsTo" upperBound="-1"

@@ -1895,13 +1895,22 @@ public interface EmftvmPackage extends EPackage {
 	int INPUT_RULE_ELEMENT__INPUT_FOR = RULE_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Maps To Self</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INPUT_RULE_ELEMENT__MAPS_TO_SELF = RULE_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Input Rule Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INPUT_RULE_ELEMENT_FEATURE_COUNT = RULE_ELEMENT_FEATURE_COUNT + 2;
+	int INPUT_RULE_ELEMENT_FEATURE_COUNT = RULE_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.impl.OutputRuleElementImpl <em>Output Rule Element</em>}' class.
@@ -8917,6 +8926,17 @@ public interface EmftvmPackage extends EPackage {
 	EReference getInputRuleElement_InputFor();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.m2m.atl.emftvm.InputRuleElement#isMapsToSelf <em>Maps To Self</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Maps To Self</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.InputRuleElement#isMapsToSelf()
+	 * @see #getInputRuleElement()
+	 * @generated
+	 */
+	EAttribute getInputRuleElement_MapsToSelf();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.OutputRuleElement <em>Output Rule Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -10943,6 +10963,14 @@ public interface EmftvmPackage extends EPackage {
 		 * @generated
 		 */
 		EReference INPUT_RULE_ELEMENT__INPUT_FOR = eINSTANCE.getInputRuleElement_InputFor();
+
+		/**
+		 * The meta object literal for the '<em><b>Maps To Self</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute INPUT_RULE_ELEMENT__MAPS_TO_SELF = eINSTANCE.getInputRuleElement_MapsToSelf();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.OutputRuleElementImpl <em>Output Rule Element</em>}' class.

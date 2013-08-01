@@ -200,9 +200,17 @@ helper context ATL!VariableDeclaration def : isRefiningElement : Boolean =
 --- Returns 'true' if self is an output element that represents a refined input element.
 helper context ATL!OutPatternElement def : isRefiningElement : Boolean =
 	self.outModel.isRefiningModel and
-	(let inModel : ATL!OclModel = self.outModel.refines in
-	let sourceElement : ATL!InPatternElement = self.actualSourceElement in
+	(let sourceElement : ATL!InPatternElement = self.actualSourceElement in
 	not sourceElement.oclIsUndefined() and sourceElement.type.sameAs(self.type));
+
+--- Returns 'true' if self has an output element that represents a refinement of this input element.
+helper context ATL!InPatternElement def : hasRefiningElement : Boolean =
+	not self.inPattern."rule".outPattern.oclIsUndefined() and
+	self.inPattern."rule".outPattern.elements->exists(outElement |
+		outElement.outModel.isRefiningModel and
+		self = outElement.actualSourceElement and 
+		self.type.sameAs(outElement.type)
+	);
 
 --- Returns 'OclUndefined'.
 helper context ATL!VariableDeclaration def : actualSourceElement : ATL!InPatternElement =
@@ -408,6 +416,7 @@ rule InPatternElement {
 		name <- s.varName,
 		type <- s.type.typeName,
 		typeModel <- s.type.modelName,
+		mapsToSelf <- s.hasRefiningElement,
 		models <- s.models->collect(m|m.name)),
 	   ov : EMFTVM!LocalVariable (
 	   	name <- s.varName,

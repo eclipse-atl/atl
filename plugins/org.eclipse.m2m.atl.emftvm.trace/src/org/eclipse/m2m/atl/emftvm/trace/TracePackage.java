@@ -350,13 +350,22 @@ public interface TracePackage extends EPackage {
 	int SOURCE_ELEMENT__UNIQUE_FOR = TRACE_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Maps To Self</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SOURCE_ELEMENT__MAPS_TO_SELF = TRACE_ELEMENT_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Source Element</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SOURCE_ELEMENT_FEATURE_COUNT = TRACE_ELEMENT_FEATURE_COUNT + 4;
+	int SOURCE_ELEMENT_FEATURE_COUNT = TRACE_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.m2m.atl.emftvm.trace.impl.TargetElementImpl <em>Target Element</em>}' class.
@@ -741,6 +750,17 @@ public interface TracePackage extends EPackage {
 	EReference getSourceElement_UniqueFor();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#isMapsToSelf <em>Maps To Self</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Maps To Self</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.trace.SourceElement#isMapsToSelf()
+	 * @see #getSourceElement()
+	 * @generated
+	 */
+	EAttribute getSourceElement_MapsToSelf();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.trace.TargetElement <em>Target Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1049,6 +1069,14 @@ public interface TracePackage extends EPackage {
 		 * @generated
 		 */
 		EReference SOURCE_ELEMENT__UNIQUE_FOR = eINSTANCE.getSourceElement_UniqueFor();
+
+		/**
+		 * The meta object literal for the '<em><b>Maps To Self</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SOURCE_ELEMENT__MAPS_TO_SELF = eINSTANCE.getSourceElement_MapsToSelf();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.trace.impl.TargetElementImpl <em>Target Element</em>}' class.

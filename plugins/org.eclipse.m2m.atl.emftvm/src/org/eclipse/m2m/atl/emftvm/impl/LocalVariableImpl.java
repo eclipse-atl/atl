@@ -581,7 +581,7 @@ public class LocalVariableImpl extends TypedElementImpl implements LocalVariable
 	 */
 	public CodeBlock getOwningBlock() {
 		if (eContainerFeatureID() != EmftvmPackage.LOCAL_VARIABLE__OWNING_BLOCK) return null;
-		return (CodeBlock)eContainer();
+		return (CodeBlock)eInternalContainer();
 	}
 
 	/**

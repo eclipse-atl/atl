@@ -140,6 +140,11 @@
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule/resolver"/>
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule/name"/>
       </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/loadModule.1">
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule.1/resolver"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule.1/name"/>
+        <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/loadModule.1/validate"/>
+      </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//ExecEnv/findOperation">
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation/context"/>
         <genParameters ecoreParameter="emftvm.ecore#//ExecEnv/findOperation/name"/>
@@ -519,6 +524,7 @@
     <genClasses ecoreClass="emftvm.ecore#//InputRuleElement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//InputRuleElement/binding"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//InputRuleElement/inputFor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//InputRuleElement/mapsToSelf"/>
       <genOperations ecoreOperation="emftvm.ecore#//InputRuleElement/createIterable">
         <genParameters ecoreParameter="emftvm.ecore#//InputRuleElement/createIterable/env"/>
       </genOperations>

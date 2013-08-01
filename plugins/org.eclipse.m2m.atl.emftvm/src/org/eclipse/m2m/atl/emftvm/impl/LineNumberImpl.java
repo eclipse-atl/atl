@@ -336,7 +336,7 @@ public class LineNumberImpl extends EObjectImpl implements LineNumber {
 	 */
 	public CodeBlock getOwningBlock() {
 		if (eContainerFeatureID() != EmftvmPackage.LINE_NUMBER__OWNING_BLOCK) return null;
-		return (CodeBlock)eContainer();
+		return (CodeBlock)eInternalContainer();
 	}
 
 	/**

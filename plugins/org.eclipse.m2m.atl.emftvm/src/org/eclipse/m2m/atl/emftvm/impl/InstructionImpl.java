@@ -160,7 +160,7 @@ public abstract class InstructionImpl extends EObjectImpl implements Instruction
 	 */
 	public CodeBlock getOwningBlock() {
 		if (eContainerFeatureID() != EmftvmPackage.INSTRUCTION__OWNING_BLOCK) return null;
-		return (CodeBlock)eContainer();
+		return (CodeBlock)eInternalContainer();
 	}
 
 	/**

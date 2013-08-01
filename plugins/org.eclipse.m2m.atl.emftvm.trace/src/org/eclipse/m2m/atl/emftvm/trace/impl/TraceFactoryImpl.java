@@ -45,7 +45,7 @@ public class TraceFactoryImpl extends EFactoryImpl implements TraceFactory {
 	 */
 	public static TraceFactory init() {
 		try {
-			TraceFactory theTraceFactory = (TraceFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.eclipse.org/m2m/atl/emftvm/2011/Trace"); 
+			TraceFactory theTraceFactory = (TraceFactory)EPackage.Registry.INSTANCE.getEFactory(TracePackage.eNS_URI);
 			if (theTraceFactory != null) {
 				return theTraceFactory;
 			}

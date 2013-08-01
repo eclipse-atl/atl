@@ -155,7 +155,7 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	 */
 	public Module getInputModelFor() {
 		if (eContainerFeatureID() != EmftvmPackage.MODEL_DECLARATION__INPUT_MODEL_FOR) return null;
-		return (Module)eContainer();
+		return (Module)eInternalContainer();
 	}
 
 	/**
@@ -199,7 +199,7 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	 */
 	public Module getInoutModelFor() {
 		if (eContainerFeatureID() != EmftvmPackage.MODEL_DECLARATION__INOUT_MODEL_FOR) return null;
-		return (Module)eContainer();
+		return (Module)eInternalContainer();
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	 */
 	public Module getOutputModelFor() {
 		if (eContainerFeatureID() != EmftvmPackage.MODEL_DECLARATION__OUTPUT_MODEL_FOR) return null;
-		return (Module)eContainer();
+		return (Module)eInternalContainer();
 	}
 
 	/**

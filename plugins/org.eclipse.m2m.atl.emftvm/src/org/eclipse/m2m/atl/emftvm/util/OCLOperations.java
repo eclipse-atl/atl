@@ -76,7 +76,7 @@ public final class OCLOperations {
 			public Object next() {
 				Object next = inner.next();
 				final SourceElement se = tls.getDefaultSourceElement(next);
-				if (se != null) {
+				if (se != null && !se.isMapsToSelf()) {
 					final EList<TargetElement> seMapsTo = se.getMapsTo();
 					if (!seMapsTo.isEmpty()) {
 						assert seMapsTo.get(0).getObject().eResource() != null;
@@ -149,7 +149,7 @@ public final class OCLOperations {
 			public Object next() {
 				Object next = inner.next();
 				final SourceElement se = tr.getUniqueSourceElement(next);
-				if (se != null) {
+				if (se != null && !se.isMapsToSelf()) {
 					final EList<TargetElement> seMapsTo = se.getMapsTo();
 					if (!seMapsTo.isEmpty()) {
 						assert seMapsTo.get(0).getObject().eResource() != null;
@@ -537,7 +537,7 @@ public final class OCLOperations {
 					public Object execute(final StackFrame frame) {
 						final Object object = frame.getLocal(0, 0);
 						final SourceElement se = frame.getEnv().getTraces().getDefaultSourceElement(object);
-						if (se != null) {
+						if (se != null && !se.isMapsToSelf()) {
 							final EList<TargetElement> seMapsTo = se.getMapsTo();
 							if (!seMapsTo.isEmpty()) {
 								assert seMapsTo.get(0).getObject().eResource() != null;
@@ -563,7 +563,7 @@ public final class OCLOperations {
 						final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(rule, false);
 						if (tr != null) {
 							final SourceElement se = tr.getUniqueSourceElement(object);
-							if (se != null) {
+							if (se != null && !se.isMapsToSelf()) {
 								final EList<TargetElement> seMapsTo = se.getMapsTo();
 								if (!seMapsTo.isEmpty()) {
 									assert seMapsTo.get(0).getObject().eResource() != null;

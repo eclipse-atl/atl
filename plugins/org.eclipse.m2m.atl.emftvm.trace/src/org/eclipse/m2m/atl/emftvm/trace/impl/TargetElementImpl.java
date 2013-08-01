@@ -80,7 +80,7 @@ public class TargetElementImpl extends TraceElementImpl implements TargetElement
 	 */
 	public TraceLink getTargetOf() {
 		if (eContainerFeatureID() != TracePackage.TARGET_ELEMENT__TARGET_OF) return null;
-		return (TraceLink)eContainer();
+		return (TraceLink)eInternalContainer();
 	}
 
 	/**

@@ -126,7 +126,7 @@ public class TraceLinkImpl extends EObjectImpl implements TraceLink {
 	 */
 	public TracedRule getRule() {
 		if (eContainerFeatureID() != TracePackage.TRACE_LINK__RULE) return null;
-		return (TracedRule)eContainer();
+		return (TracedRule)eInternalContainer();
 	}
 
 	/**

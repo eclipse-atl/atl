@@ -66,7 +66,7 @@ public interface Instruction extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Opcode</b></em>' attribute.
-	 * The default value is <code>""</code>.
+	 * The default value is <code>"PUSH"</code>.
 	 * The literals are from the enumeration {@link org.eclipse.m2m.atl.emftvm.Opcode}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -77,7 +77,7 @@ public interface Instruction extends EObject {
 	 * @return the value of the '<em>Opcode</em>' attribute.
 	 * @see org.eclipse.m2m.atl.emftvm.Opcode
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInstruction_Opcode()
-	 * @model default="" required="true" transient="true" changeable="false" derived="true"
+	 * @model default="PUSH" required="true" transient="true" changeable="false" derived="true"
 	 * @generated
 	 */
 	Opcode getOpcode();

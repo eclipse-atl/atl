@@ -1,0 +1,23 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module "Regression::Bug413110";
+
+create OUT : ECORE refining IN : ECORE;
+
+rule EPackage {
+	from s : ECORE!EPackage
+	to t : ECORE!EPackage (
+		eClassifiers <- s.eClassifiers->union(
+			s.eClassifiers
+				->select(c | c.oclIsKindOf(ECORE!EClass))
+				->collect(c | thisModule.resolveTemp(c, 't2'))
+			)
+		)
+}
+
+rule EClass {
+	from s : ECORE!EClass
+	to t : ECORE!EClass,
+	   t2 : ECORE!EClass (
+	   	name <- s.name + '2')
+}

@@ -42,6 +42,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementImpl#getMapsTo <em>Maps To</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementImpl#getDefaultFor <em>Default For</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementImpl#getUniqueFor <em>Unique For</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.impl.SourceElementImpl#isMapsToSelf <em>Maps To Self</em>}</li>
  * </ul>
  * </p>
  *
@@ -80,6 +81,26 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 	protected TracedRule uniqueFor;
 
 	/**
+	 * The default value of the '{@link #isMapsToSelf() <em>Maps To Self</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMapsToSelf()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MAPS_TO_SELF_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMapsToSelf() <em>Maps To Self</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMapsToSelf()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean mapsToSelf = MAPS_TO_SELF_EDEFAULT;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -105,7 +126,7 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 	 */
 	public TraceLink getSourceOf() {
 		if (eContainerFeatureID() != TracePackage.SOURCE_ELEMENT__SOURCE_OF) return null;
-		return (TraceLink)eContainer();
+		return (TraceLink)eInternalContainer();
 	}
 
 	/**
@@ -276,6 +297,27 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isMapsToSelf() {
+		return mapsToSelf;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMapsToSelf(boolean newMapsToSelf) {
+		boolean oldMapsToSelf = mapsToSelf;
+		mapsToSelf = newMapsToSelf;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TracePackage.SOURCE_ELEMENT__MAPS_TO_SELF, oldMapsToSelf, mapsToSelf));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -350,6 +392,8 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 			case TracePackage.SOURCE_ELEMENT__UNIQUE_FOR:
 				if (resolve) return getUniqueFor();
 				return basicGetUniqueFor();
+			case TracePackage.SOURCE_ELEMENT__MAPS_TO_SELF:
+				return isMapsToSelf();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -376,6 +420,9 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 			case TracePackage.SOURCE_ELEMENT__UNIQUE_FOR:
 				setUniqueFor((TracedRule)newValue);
 				return;
+			case TracePackage.SOURCE_ELEMENT__MAPS_TO_SELF:
+				setMapsToSelf((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -400,6 +447,9 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 			case TracePackage.SOURCE_ELEMENT__UNIQUE_FOR:
 				setUniqueFor((TracedRule)null);
 				return;
+			case TracePackage.SOURCE_ELEMENT__MAPS_TO_SELF:
+				setMapsToSelf(MAPS_TO_SELF_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -420,6 +470,8 @@ public class SourceElementImpl extends TraceElementImpl implements SourceElement
 				return defaultFor != null;
 			case TracePackage.SOURCE_ELEMENT__UNIQUE_FOR:
 				return uniqueFor != null;
+			case TracePackage.SOURCE_ELEMENT__MAPS_TO_SELF:
+				return mapsToSelf != MAPS_TO_SELF_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

@@ -1,0 +1,28 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module "Regression::Bug413110Inheritance";
+
+create OUT : ECORE refining IN : ECORE;
+
+rule EPackage {
+	from s : ECORE!EPackage
+	to t : ECORE!EPackage (
+		eClassifiers <- s.eClassifiers->union(
+			s.eClassifiers
+				->select(c | c.oclIsKindOf(ECORE!EClassifier))
+				->collect(c | thisModule.resolveTemp(Sequence{c, s}, 't2'))
+			)
+		)
+}
+
+abstract rule EClassifier {
+	from s : ECORE!EClassifier
+	to t : ECORE!EClassifier,
+	   t2 : ECORE!EClass (
+	   	name <- s.name + '2')
+}
+
+rule EClassifierPackage extends EClassifier {
+	from s1 : ECORE!EPackage
+	to t1 : ECORE!EPackage
+}

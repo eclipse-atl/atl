@@ -126,6 +126,7 @@ rule InputRuleElement {
         name <- s.name,
         type <- s.type,
         typeModel <- s.typeModel,
+		mapsToSelf <- s.mapsToSelf,
         models <- s.models,
 		binding <- s.binding)
 }

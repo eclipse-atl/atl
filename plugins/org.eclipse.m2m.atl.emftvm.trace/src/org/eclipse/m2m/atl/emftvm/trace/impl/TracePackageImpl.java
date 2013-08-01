@@ -377,6 +377,15 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getSourceElement_MapsToSelf() {
+		return (EAttribute)sourceElementEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getTargetElement() {
 		return targetElementEClass;
 	}
@@ -500,6 +509,7 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 		createEReference(sourceElementEClass, SOURCE_ELEMENT__MAPS_TO);
 		createEReference(sourceElementEClass, SOURCE_ELEMENT__DEFAULT_FOR);
 		createEReference(sourceElementEClass, SOURCE_ELEMENT__UNIQUE_FOR);
+		createEAttribute(sourceElementEClass, SOURCE_ELEMENT__MAPS_TO_SELF);
 
 		targetElementEClass = createEClass(TARGET_ELEMENT);
 		createEReference(targetElementEClass, TARGET_ELEMENT__TARGET_OF);
@@ -606,6 +616,7 @@ public class TracePackageImpl extends EPackageImpl implements TracePackage {
 		initEReference(getSourceElement_MapsTo(), this.getTargetElement(), this.getTargetElement_MapsTo(), "mapsTo", null, 0, -1, SourceElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getSourceElement_DefaultFor(), this.getTraceLinkSet(), this.getTraceLinkSet_DefaultSourceElements(), "defaultFor", null, 0, 1, SourceElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getSourceElement_UniqueFor(), this.getTracedRule(), this.getTracedRule_UniqueSourceElements(), "uniqueFor", null, 0, 1, SourceElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSourceElement_MapsToSelf(), ecorePackage.getEBoolean(), "mapsToSelf", null, 1, 1, SourceElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(targetElementEClass, TargetElement.class, "TargetElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTargetElement_TargetOf(), this.getTraceLink(), this.getTraceLink_TargetElements(), "targetOf", null, 0, 1, TargetElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

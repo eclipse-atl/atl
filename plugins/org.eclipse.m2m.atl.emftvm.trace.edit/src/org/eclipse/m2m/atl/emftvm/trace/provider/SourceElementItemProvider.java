@@ -16,6 +16,8 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.m2m.atl.emftvm.trace.SourceElement;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 
@@ -57,6 +59,7 @@ public class SourceElementItemProvider
 			addMapsToPropertyDescriptor(object);
 			addDefaultForPropertyDescriptor(object);
 			addUniqueForPropertyDescriptor(object);
+			addMapsToSelfPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -128,6 +131,28 @@ public class SourceElementItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Maps To Self feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addMapsToSelfPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_SourceElement_mapsToSelf_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_SourceElement_mapsToSelf_feature", "_UI_SourceElement_type"),
+				 TracePackage.Literals.SOURCE_ELEMENT__MAPS_TO_SELF,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This returns SourceElement.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -162,6 +187,12 @@ public class SourceElementItemProvider
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
+
+		switch (notification.getFeatureID(SourceElement.class)) {
+			case TracePackage.SOURCE_ELEMENT__MAPS_TO_SELF:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
 		super.notifyChanged(notification);
 	}
 

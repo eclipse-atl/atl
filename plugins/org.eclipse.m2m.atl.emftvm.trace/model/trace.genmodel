@@ -59,12 +59,14 @@
     <genClasses image="false" ecoreClass="trace.ecore#//TraceElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute trace.ecore#//TraceElement/name"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//TraceElement/object"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute trace.ecore#//TraceElement/runtimeObject"/>
     </genClasses>
     <genClasses ecoreClass="trace.ecore#//SourceElement">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference trace.ecore#//SourceElement/sourceOf"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//SourceElement/mapsTo"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//SourceElement/defaultFor"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference trace.ecore#//SourceElement/uniqueFor"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute trace.ecore#//SourceElement/mapsToSelf"/>
     </genClasses>
     <genClasses ecoreClass="trace.ecore#//TargetElement">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference trace.ecore#//TargetElement/targetOf"/>

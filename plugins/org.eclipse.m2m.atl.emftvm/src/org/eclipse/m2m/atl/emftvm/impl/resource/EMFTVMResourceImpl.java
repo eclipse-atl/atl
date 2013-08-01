@@ -52,10 +52,30 @@ import org.eclipse.m2m.atl.emftvm.TypedElement;
 public class EMFTVMResourceImpl extends ResourceImpl {
 
 	/**
-	  * Magic header: "ETVM".
-	  * http://www.asciitable.com/
-	  */
-	public static final int MAGIC = 0x4554564D;
+	 * Legacy magic header: "ETVM".
+	 * 
+	 * @see <a href="http://www.asciitable.com/">http://www.asciitable.com/</a>
+	 */
+	public static final int MAGIC_LEGACY = 0x4554564D;
+
+	/**
+	 * Magic header part 1: "EMFT".
+	 * 
+	 * @see <a href="http://www.asciitable.com/">http://www.asciitable.com/</a>
+	 */
+	public static final int MAGIC_00 = 0x454D4654;
+
+	/**
+	 * Magic header part 2: "VM..".
+	 * 
+	 * @see <a href="http://www.asciitable.com/">http://www.asciitable.com/</a>
+	 */
+	public static final int MAGIC_01 = 0x564D0000;
+
+	/**
+	 * Current - and highest supported - bytecode format version.
+	 */
+	public static final int BYTECODE_VERSION = 1;
 
 	/** Default trace mode value. */
 	public static final int TRACE_MODE_DEFAULT = 1;
@@ -66,6 +86,8 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 	 * EMFTVM bytecode model element factory.
 	 */
 	protected static final EmftvmFactory FACTORY = EmftvmFactory.eINSTANCE;
+
+	private int bytecodeVersion;
 
 	/**
 	 * Creates a new {@link EMFTVMResourceImpl}.
@@ -83,15 +105,47 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 	}
 
 	/**
+	 * Returns the bytecode format version of the loaded file.
+	 * 
+	 * @return the bytecodeVersion
+	 */
+	public int getBytecodeVersion() {
+		return bytecodeVersion;
+	}
+
+	/**
+	 * Sets the bytecode format version of the loaded file.
+	 * 
+	 * @param bytecodeVersion
+	 *            the bytecodeVersion to set
+	 */
+	protected void setBytecodeVersion(int bytecodeVersion) {
+		this.bytecodeVersion = bytecodeVersion;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void doLoad(InputStream inputStream, Map<?, ?> options)
 			throws IOException {
 		final DataInputStream in = new DataInputStream(inputStream);
-		final int magic = in.readInt();
-		if (magic != MAGIC) {
-			throw new IOException("Wrong magic");
+		final int magic_00 = in.readInt();
+		if (magic_00 == MAGIC_LEGACY) {
+			setBytecodeVersion(0);
+		} else {
+			if (magic_00 != MAGIC_00) {
+				throw new IOException("Wrong magic");
+			}
+			final int magic_01 = in.readInt();
+			if ((magic_01 & 0xFFFF0000) != MAGIC_01) {
+				throw new IOException("Wrong magic");
+			}
+			final int version = magic_01 & 0x0000FFFF;
+			if (version > BYTECODE_VERSION) {
+				throw new IOException("Unsupported bytecode version: " + version);
+			}
+			setBytecodeVersion(version);
 		}
 		final ConstantPool constants = new ConstantPool();
 		constants.read(in);
@@ -99,7 +153,7 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 		getContents().add(module);
 	}
 
-	private static Module readModule(final DataInputStream in, 
+	private Module readModule(final DataInputStream in,
 			final ConstantPool constants) throws IOException {
 		final Module module = FACTORY.createModule();
 		module.setName((String)constants.get(in.readInt()));
@@ -302,7 +356,7 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 		}
 	}
 
-	private static void readRules(final DataInputStream in, 
+	private void readRules(final DataInputStream in,
 			final ConstantPool constants, final EList<Rule> rules) throws IOException {
 		final int rtsize = in.readInt();
 		for (int i = 0; i < rtsize; i++) {
@@ -340,13 +394,16 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 		}
 	}
 
-	private static void readInputRuleElements(final DataInputStream in, 
+	private void readInputRuleElements(final DataInputStream in,
 			final ConstantPool constants, final EList<InputRuleElement> elements) throws IOException {
 		final int esize = in.readInt();
 		for (int i = 0; i < esize; i++) {
 			InputRuleElement ire = FACTORY.createInputRuleElement();
 			elements.add(ire);
 			readTypedElement(in, constants, ire);
+			if (getBytecodeVersion() >= 1) {
+				ire.setMapsToSelf(in.readInt() > 0);
+			}
 			int iemsize = in.readInt();
 			final EList<String> models = ire.getModels();
 			for (int j = 0; j < iemsize; j++) {
@@ -404,7 +461,8 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 	protected void doSave(OutputStream outputStream, Map<?, ?> options)
 			throws IOException {
 		final DataOutputStream out = new DataOutputStream(outputStream);
-		out.writeInt(MAGIC);
+		out.writeInt(MAGIC_00);
+		out.writeInt(MAGIC_01 + BYTECODE_VERSION);
 		final Module module = findModule();
 		final ConstantPool constants = new ConstantPool();
 		constants.createConstants(module);
@@ -643,6 +701,7 @@ public class EMFTVMResourceImpl extends ResourceImpl {
 		out.writeInt(elements.size());
 		for (InputRuleElement ire : elements) {
 			writeTypedElement(out, constants, ire);
+			out.writeInt(ire.isMapsToSelf() ? 1 : 0);
 			final EList<String> models = ire.getModels();
 			out.writeInt(models.size());
 			for (String model : models) {

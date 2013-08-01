@@ -38,6 +38,7 @@ import org.eclipse.m2m.atl.emftvm.util.LazyList;
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InputRuleElementImpl#getBinding <em>Binding</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InputRuleElementImpl#getInputFor <em>Input For</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InputRuleElementImpl#isMapsToSelf <em>Maps To Self</em>}</li>
  * </ul>
  * </p>
  *
@@ -53,6 +54,25 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	 * @ordered
 	 */
 	protected CodeBlock binding;
+
+	/**
+	 * The default value of the '{@link #isMapsToSelf() <em>Maps To Self</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMapsToSelf()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MAPS_TO_SELF_EDEFAULT = false;
+	/**
+	 * The cached value of the '{@link #isMapsToSelf() <em>Maps To Self</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMapsToSelf()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean mapsToSelf = MAPS_TO_SELF_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -130,7 +150,7 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 	 */
 	public Rule getInputFor() {
 		if (eContainerFeatureID() != EmftvmPackage.INPUT_RULE_ELEMENT__INPUT_FOR) return null;
-		return (Rule)eContainer();
+		return (Rule)eInternalContainer();
 	}
 
 	/**
@@ -164,6 +184,27 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.INPUT_RULE_ELEMENT__INPUT_FOR, newInputFor, newInputFor));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isMapsToSelf() {
+		return mapsToSelf;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMapsToSelf(boolean newMapsToSelf) {
+		boolean oldMapsToSelf = mapsToSelf;
+		mapsToSelf = newMapsToSelf;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.INPUT_RULE_ELEMENT__MAPS_TO_SELF, oldMapsToSelf, mapsToSelf));
 	}
 
 	/**
@@ -250,6 +291,8 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 				return getBinding();
 			case EmftvmPackage.INPUT_RULE_ELEMENT__INPUT_FOR:
 				return getInputFor();
+			case EmftvmPackage.INPUT_RULE_ELEMENT__MAPS_TO_SELF:
+				return isMapsToSelf();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -268,6 +311,9 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 				return;
 			case EmftvmPackage.INPUT_RULE_ELEMENT__INPUT_FOR:
 				setInputFor((Rule)newValue);
+				return;
+			case EmftvmPackage.INPUT_RULE_ELEMENT__MAPS_TO_SELF:
+				setMapsToSelf((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -288,6 +334,9 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 			case EmftvmPackage.INPUT_RULE_ELEMENT__INPUT_FOR:
 				setInputFor((Rule)null);
 				return;
+			case EmftvmPackage.INPUT_RULE_ELEMENT__MAPS_TO_SELF:
+				setMapsToSelf(MAPS_TO_SELF_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -305,8 +354,26 @@ public class InputRuleElementImpl extends RuleElementImpl implements InputRuleEl
 				return binding != null;
 			case EmftvmPackage.INPUT_RULE_ELEMENT__INPUT_FOR:
 				return getInputFor() != null;
+			case EmftvmPackage.INPUT_RULE_ELEMENT__MAPS_TO_SELF:
+				return mapsToSelf != MAPS_TO_SELF_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (mapsToSelf: ");
+		result.append(mapsToSelf);
+		result.append(')');
+		return result.toString();
 	}
 
 } //InputRuleElementImpl

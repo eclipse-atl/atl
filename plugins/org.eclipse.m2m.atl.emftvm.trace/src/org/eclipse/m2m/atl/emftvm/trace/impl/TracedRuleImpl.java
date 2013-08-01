@@ -173,7 +173,7 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	 */
 	public TraceLinkSet getLinkSet() {
 		if (eContainerFeatureID() != TracePackage.TRACED_RULE__LINK_SET) return null;
-		return (TraceLinkSet)eContainer();
+		return (TraceLinkSet)eInternalContainer();
 	}
 
 	/**

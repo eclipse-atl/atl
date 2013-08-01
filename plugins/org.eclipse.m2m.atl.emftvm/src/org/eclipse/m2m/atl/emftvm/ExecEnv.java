@@ -141,7 +141,7 @@ public interface ExecEnv extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Current Phase</b></em>' attribute.
-	 * The default value is <code>"null"</code>.
+	 * The default value is <code>"manual"</code>.
 	 * The literals are from the enumeration {@link org.eclipse.m2m.atl.emftvm.RuleMode}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -152,7 +152,7 @@ public interface ExecEnv extends EObject {
 	 * @return the value of the '<em>Current Phase</em>' attribute.
 	 * @see org.eclipse.m2m.atl.emftvm.RuleMode
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv_CurrentPhase()
-	 * @model default="null" transient="true" changeable="false"
+	 * @model default="manual" transient="true" changeable="false"
 	 * @generated
 	 */
 	RuleMode getCurrentPhase();

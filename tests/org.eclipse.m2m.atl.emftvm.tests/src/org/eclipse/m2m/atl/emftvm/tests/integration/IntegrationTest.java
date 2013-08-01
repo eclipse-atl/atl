@@ -123,4 +123,48 @@ public class IntegrationTest extends EMFTVMTest {
 		assertEquals(refOut.getResource(), model.getResource());
 	}
 
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=413110">Bug # 413110</a>.
+	 */
+	public void testBug413110() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel();
+		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		final Model model = loadTestModel(rs, "/test-data/EcoreCopy/My.ecore");
+		env.registerMetaModel("ECORE", metamodel);
+		env.registerInOutModel("IN", model);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug413110");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug413110-out.ecore");
+		assertEquals(refOut.getResource(), model.getResource());
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=413110">Bug # 413110</a> for rule inheritance.
+	 */
+	public void testBug413110Inheritance() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel();
+		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		final Model model = loadTestModel(rs, "/test-data/EcoreCopy/My.ecore");
+		env.registerMetaModel("ECORE", metamodel);
+		env.registerInOutModel("IN", model);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug413110Inheritance");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug413110Inheritance-out.ecore");
+		assertEquals(refOut.getResource(), model.getResource());
+	}
+
 }

@@ -189,7 +189,7 @@ public class FieldImpl extends FeatureImpl implements Field {
 	 */
 	public Rule getRule() {
 		if (eContainerFeatureID() != EmftvmPackage.FIELD__RULE) return null;
-		return (Rule)eContainer();
+		return (Rule)eInternalContainer();
 	}
 
 	/**

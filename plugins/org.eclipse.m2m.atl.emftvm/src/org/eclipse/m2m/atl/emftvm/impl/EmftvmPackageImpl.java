@@ -2685,6 +2685,15 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getInputRuleElement_MapsToSelf() {
+		return (EAttribute)inputRuleElementEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getOutputRuleElement() {
 		return outputRuleElementEClass;
 	}
@@ -3030,6 +3039,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		inputRuleElementEClass = createEClass(INPUT_RULE_ELEMENT);
 		createEReference(inputRuleElementEClass, INPUT_RULE_ELEMENT__BINDING);
 		createEReference(inputRuleElementEClass, INPUT_RULE_ELEMENT__INPUT_FOR);
+		createEAttribute(inputRuleElementEClass, INPUT_RULE_ELEMENT__MAPS_TO_SELF);
 
 		outputRuleElementEClass = createEClass(OUTPUT_RULE_ELEMENT);
 		createEReference(outputRuleElementEClass, OUTPUT_RULE_ELEMENT__MAPS_TO);
@@ -3369,7 +3379,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		g1.getETypeArguments().add(g2);
 		initEAttribute(getExecEnv_UniqueResults(), g1, "uniqueResults", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getExecEnv_JitDisabled(), theEcorePackage.getEBoolean(), "jitDisabled", null, 1, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getExecEnv_CurrentPhase(), this.getRuleMode(), "currentPhase", "null", 0, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExecEnv_CurrentPhase(), this.getRuleMode(), "currentPhase", "manual", 0, 1, ExecEnv.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		EOperation op = addEOperation(execEnvEClass, this.getModule(), "loadModule", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getModuleResolver(), "resolver", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3656,7 +3666,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		initEClass(instructionEClass, Instruction.class, "Instruction", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getInstruction_OwningBlock(), this.getCodeBlock(), this.getCodeBlock_Code(), "owningBlock", null, 1, 1, Instruction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getInstruction_Opcode(), this.getOpcode(), "opcode", "", 1, 1, Instruction.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getInstruction_Opcode(), this.getOpcode(), "opcode", "PUSH", 1, 1, Instruction.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getInstruction_StackProduction(), theEcorePackage.getEInt(), "stackProduction", "0", 1, 1, Instruction.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getInstruction_StackConsumption(), theEcorePackage.getEInt(), "stackConsumption", "0", 1, 1, Instruction.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getInstruction_StackLevel(), theEcorePackage.getEInt(), "stackLevel", "0", 1, 1, Instruction.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -3778,6 +3788,9 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		addEOperation(ruleEClass, null, "clearFields", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		op = addEOperation(ruleEClass, this.getInputRuleElement(), "findInputElement", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(ruleElementEClass, RuleElement.class, "RuleElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRuleElement_Models(), theEcorePackage.getEString(), "models", null, 0, -1, RuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getRuleElement_EModels(), this.getModel(), null, "eModels", null, 0, -1, RuleElement.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
@@ -3785,6 +3798,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEClass(inputRuleElementEClass, InputRuleElement.class, "InputRuleElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getInputRuleElement_Binding(), this.getCodeBlock(), this.getCodeBlock_BindingFor(), "binding", null, 0, 1, InputRuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getInputRuleElement_InputFor(), this.getRule(), this.getRule_InputElements(), "inputFor", null, 0, 1, InputRuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getInputRuleElement_MapsToSelf(), theEcorePackage.getEBoolean(), "mapsToSelf", null, 1, 1, InputRuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(inputRuleElementEClass, null, "createIterable", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getExecEnv(), "env", 0, 1, IS_UNIQUE, IS_ORDERED);

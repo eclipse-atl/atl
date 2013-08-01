@@ -26,6 +26,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#getMapsTo <em>Maps To</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#getDefaultFor <em>Default For</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#getUniqueFor <em>Unique For</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#isMapsToSelf <em>Maps To Self</em>}</li>
  * </ul>
  * </p>
  *
@@ -135,5 +136,31 @@ public interface SourceElement extends TraceElement {
 	 * @generated
 	 */
 	void setUniqueFor(TracedRule value);
+
+	/**
+	 * Returns the value of the '<em><b>Maps To Self</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Maps To Self</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Maps To Self</em>' attribute.
+	 * @see #setMapsToSelf(boolean)
+	 * @see org.eclipse.m2m.atl.emftvm.trace.TracePackage#getSourceElement_MapsToSelf()
+	 * @model required="true"
+	 * @generated
+	 */
+	boolean isMapsToSelf();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.trace.SourceElement#isMapsToSelf <em>Maps To Self</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Maps To Self</em>' attribute.
+	 * @see #isMapsToSelf()
+	 * @generated
+	 */
+	void setMapsToSelf(boolean value);
 
 } // SourceElement

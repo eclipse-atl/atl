@@ -78,6 +78,8 @@
         eOpposite="#//TraceLinkSet/defaultSourceElements"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueFor" eType="#//TracedRule"
         eOpposite="#//TracedRule/uniqueSourceElements"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapsToSelf" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TargetElement" eSuperTypes="#//TraceElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetOf" eType="#//TraceLink"

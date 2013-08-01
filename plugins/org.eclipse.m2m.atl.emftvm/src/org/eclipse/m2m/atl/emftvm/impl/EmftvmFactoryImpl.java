@@ -129,7 +129,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 */
 	public static EmftvmFactory init() {
 		try {
-			EmftvmFactory theEmftvmFactory = (EmftvmFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.eclipse.org/m2m/atl/2011/EMFTVM"); 
+			EmftvmFactory theEmftvmFactory = (EmftvmFactory)EPackage.Registry.INSTANCE.getEFactory(EmftvmPackage.eNS_URI);
 			if (theEmftvmFactory != null) {
 				return theEmftvmFactory;
 			}

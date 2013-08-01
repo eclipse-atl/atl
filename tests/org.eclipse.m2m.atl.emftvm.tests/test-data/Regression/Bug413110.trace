@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ASCII"?>
+<trace:TraceLinkSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:trace="http://www.eclipse.org/m2m/atl/emftvm/2011/Trace" defaultSourceElements="//@rules.0/@links.0/@sourceElements.0 //@rules.1/@links.0/@sourceElements.0">
+  <rules rule="EPackage">
+    <links>
+      <sourceElements name="s" defaultFor="/">
+        <object href="Bug413110-out.ecore#/"/>
+      </sourceElements>
+    </links>
+  </rules>
+  <rules rule="EClass">
+    <links>
+      <sourceElements name="s" defaultFor="/">
+        <object href="Bug413110-out.ecore#//TestClass"/>
+      </sourceElements>
+      <targetElements name="t2">
+        <object href="Bug413110-out.ecore#//TestClass2"/>
+      </targetElements>
+    </links>
+  </rules>
+</trace:TraceLinkSet>

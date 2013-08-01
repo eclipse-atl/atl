@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ASCII"?>
+<trace:TraceLinkSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:trace="http://www.eclipse.org/m2m/atl/emftvm/2011/Trace" defaultSourceElements="//@rules.0/@links.0/@sourceElements.0">
+  <rules rule="EPackage">
+    <links>
+      <sourceElements name="s" defaultFor="/" mapsToSelf="true">
+        <object href="Bug413110Inheritance-out.ecore#/"/>
+      </sourceElements>
+    </links>
+  </rules>
+  <rules rule="EClassifierPackage">
+    <links>
+      <sourceElements name="s" mapsToSelf="true">
+        <object href="Bug413110Inheritance-out.ecore#//TestClass"/>
+      </sourceElements>
+      <sourceElements name="s1" mapsToSelf="true">
+        <object href="Bug413110Inheritance-out.ecore#/"/>
+      </sourceElements>
+      <targetElements name="t2">
+        <object href="Bug413110Inheritance-out.ecore#//TestClass2"/>
+      </targetElements>
+    </links>
+    <links>
+      <sourceElements name="s" mapsToSelf="true">
+        <object href="Bug413110Inheritance-out.ecore#//TestEnum"/>
+      </sourceElements>
+      <sourceElements name="s1" mapsToSelf="true">
+        <object href="Bug413110Inheritance-out.ecore#/"/>
+      </sourceElements>
+      <targetElements name="t2">
+        <object href="Bug413110Inheritance-out.ecore#//TestEnum2"/>
+      </targetElements>
+    </links>
+  </rules>
+  <defaultSourceElementLists sourceElements="//@rules.1/@links.0/@sourceElements.0 //@rules.1/@links.0/@sourceElements.1"/>
+  <defaultSourceElementLists sourceElements="//@rules.1/@links.1/@sourceElements.0 //@rules.1/@links.1/@sourceElements.1"/>
+</trace:TraceLinkSet>

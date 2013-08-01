@@ -374,7 +374,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	public Rule getMatcherFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__MATCHER_FOR) return null;
-		return (Rule)eContainer();
+		return (Rule)eInternalContainer();
 	}
 
 	/**
@@ -418,7 +418,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	public Rule getApplierFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__APPLIER_FOR) return null;
-		return (Rule)eContainer();
+		return (Rule)eInternalContainer();
 	}
 
 	/**
@@ -462,7 +462,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	public Rule getPostApplyFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR) return null;
-		return (Rule)eContainer();
+		return (Rule)eInternalContainer();
 	}
 
 	/**
@@ -506,7 +506,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	public Operation getBodyFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__BODY_FOR) return null;
-		return (Operation)eContainer();
+		return (Operation)eInternalContainer();
 	}
 
 	/**
@@ -550,7 +550,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	public Field getInitialiserFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__INITIALISER_FOR) return null;
-		return (Field)eContainer();
+		return (Field)eInternalContainer();
 	}
 
 	/**
@@ -607,7 +607,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	public CodeBlock getNestedFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__NESTED_FOR) return null;
-		return (CodeBlock)eContainer();
+		return (CodeBlock)eInternalContainer();
 	}
 
 	/**
@@ -675,7 +675,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	public InputRuleElement getBindingFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__BINDING_FOR) return null;
-		return (InputRuleElement)eContainer();
+		return (InputRuleElement)eInternalContainer();
 	}
 
 	/**

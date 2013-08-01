@@ -100,7 +100,7 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 	 */
 	public TraceLinkSet getDefaultFor() {
 		if (eContainerFeatureID() != TracePackage.SOURCE_ELEMENT_LIST__DEFAULT_FOR) return null;
-		return (TraceLinkSet)eContainer();
+		return (TraceLinkSet)eInternalContainer();
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class SourceElementListImpl extends EObjectImpl implements SourceElementL
 	 */
 	public TracedRule getUniqueFor() {
 		if (eContainerFeatureID() != TracePackage.SOURCE_ELEMENT_LIST__UNIQUE_FOR) return null;
-		return (TracedRule)eContainer();
+		return (TracedRule)eInternalContainer();
 	}
 
 	/**

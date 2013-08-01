@@ -114,13 +114,13 @@ public class TraceLinkSetTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet#getDefaultSourceElement(org.eclipse.emf.ecore.EObject) <em>Get Default Source Element</em>}' operation.
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet#getDefaultSourceElement(java.lang.Object) <em>Get Default Source Element</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet#getDefaultSourceElement(org.eclipse.emf.ecore.EObject)
+	 * @see org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet#getDefaultSourceElement(java.lang.Object)
 	 * @generated NOT
 	 */
-	public void testGetDefaultSourceElement__EObject() {
+	public void testGetDefaultSourceElement__Object() {
 		final EObject se1Object = EcoreFactory.eINSTANCE.createEObject();
 		
 		final TraceLink link = TraceFactory.eINSTANCE.createTraceLink();

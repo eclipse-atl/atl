@@ -1022,10 +1022,11 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final TraceLink match = TraceFactory.eINSTANCE.createTraceLink();
 			final EList<SourceElement> ses = match.getSourceElements();
 			int i = 0;
-			for (RuleElement re : getInputElements()) {
+			for (InputRuleElement re : getInputElements()) {
 				SourceElement se = TraceFactory.eINSTANCE.createSourceElement();
 				se.setName(re.getName());
 				se.setRuntimeObject(values[i++]);
+				se.setMapsToSelf(re.isMapsToSelf());
 				ses.add(se);
 			}
 			frame.getEnv().getMatches().getLinksByRule(getName(), true).getLinks().add(match);
@@ -1049,6 +1050,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 				SourceElement se = TraceFactory.eINSTANCE.createSourceElement();
 				se.setName(v.getKey());
 				se.setRuntimeObject(v.getValue());
+				InputRuleElement re = findInputElement(v.getKey());
+				se.setMapsToSelf(re == null ? false : re.isMapsToSelf());
 				ses.add(se);
 			}
 			frame.getEnv().getMatches().getLinksByRule(getName(), true).getLinks().add(match);
@@ -1596,7 +1599,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	public Module getModule() {
 		if (eContainerFeatureID() != EmftvmPackage.RULE__MODULE) return null;
-		return (Module)eContainer();
+		return (Module)eInternalContainer();
 	}
 
 	/**
@@ -2323,6 +2326,26 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	public void clearFields() {
 		fieldContainer.clear();
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public InputRuleElement findInputElement(final String name) {
+		for (InputRuleElement ire : getInputElements()) {
+			if (name.equals(ire.getName())) {
+				return ire;
+			}
+		}
+		InputRuleElement ire = null;
+		final Iterator<Rule> superRules = getESuperRules().iterator();
+		while (ire == null && superRules.hasNext()) {
+			ire = superRules.next().findInputElement(name);
+		}
+		return ire;
 	}
 
 	/**
