@@ -24,5 +24,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2m.atl.core,
  org.eclipse.m2m.atl.common,
  org.eclipse.m2m.atl.drivers.emf4atl,
- org.eclipse.m2m.atl.core.ui.vm
+ org.eclipse.m2m.atl.core.ui.vm,
+ org.eclipse.m2m.atl.engine
 Bundle-ActivationPolicy: lazy

@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
+import org.eclipse.m2m.atl.core.emf.EMFReferenceModel;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
@@ -34,7 +35,9 @@ import org.eclipse.m2m.atl.emftvm.constraints.ValidCodeBlockStackLevelValidator;
 import org.eclipse.m2m.atl.emftvm.constraints.Validator;
 import org.eclipse.m2m.atl.emftvm.tests.EMFTVMTest;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
+import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
+import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
  * Tests the ATL-to-EMFTVM compiler.
@@ -97,8 +100,11 @@ public class CompilerTest extends EMFTVMTest {
 	public void testBug419433() {
 		final Model outModel = compile(URI.createURI("test-data/Regression/Bug419433.atl", true));
 		assertEquals(null, validate(outModel));
+		final Model outModel2 = atlwfr(URI.createURI("test-data/Regression/Bug419433-2.atl", true));
+		final Resource pbs = outModel2.getResource();
+		assertEquals(4, pbs.getContents().size());
 	}
-	
+
 	/**
 	 * Tests the compilation output for "ATLtoEMFTVM.atl".
 	 */
@@ -157,6 +163,8 @@ public class CompilerTest extends EMFTVMTest {
 	 * @return the compiled module
 	 */
 	protected Model compile(final URI moduleURI) {
+		assertTrue(atlwfr(moduleURI).getResource().getContents().isEmpty());
+
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ResourceSet rs = new ResourceSetImpl();
 
@@ -188,10 +196,11 @@ public class CompilerTest extends EMFTVMTest {
 
 		{
 			final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
-			pbmm.setResource(rs.getResource(
-					URI.createPlatformPluginURI(COMMON_PLUGIN_ID + "/org/eclipse/m2m/atl/common/resources/Problem.ecore", true), true));
+			pbmm.setResource(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
 			env.registerMetaModel("Problem", pbmm);
 		}
+
+		EMFTVMUtil.registerEPackages(rs);
 
 		// Load and run module
 		{
@@ -262,6 +271,55 @@ public class CompilerTest extends EMFTVMTest {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Checks the given ATL module against the ATL well-formedness rules.
+	 * 
+	 * @param moduleURI
+	 *            the module URI
+	 * @return the problems model
+	 */
+	protected Model atlwfr(final URI moduleURI) {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		// Load models
+		{
+			final Resource inRes = rs.getResource(moduleURI, true);
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
+			inModel.setResource(inRes);
+			env.registerInputModel("IN", inModel);
+		}
+
+		final Resource pbsRes = rs.createResource(URI.createFileURI("pbs.xmi"));
+		final Model pbsModel = EmftvmFactory.eINSTANCE.createModel();
+		pbsModel.setResource(pbsRes);
+		env.registerOutputModel("OUT", pbsModel);
+		assertEquals(pbsModel, env.getOutputModels().get("OUT"));
+
+		{
+			final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
+			atlmm.setResource(rs.getResource(URI.createURI("http://www.eclipse.org/gmt/2005/ATL"), true));
+			env.registerMetaModel("ATL", atlmm);
+		}
+
+		{
+			final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
+			pbmm.setResource(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
+			env.registerMetaModel("Problem", pbmm);
+		}
+
+		EMFTVMUtil.registerEPackages(rs);
+
+		// Load and run module
+		{
+			final ModuleResolver mr = new DefaultModuleResolver(COMPILER_PLUGIN_URI + "/transformations/", new ResourceSetImpl());
+			env.loadModule(mr, "ATLWFR");
+			env.run(null);
+		}
+
+		return pbsModel;
 	}
 
 }

@@ -1,0 +1,15 @@
+-- @atlcompiler emftvm
+library "Regression::Bug419433-2";
+
+helper context CORILUS!Link def : linkID(entity : OclAny) : String =
+	OclUndefined;
+
+helper context CORILUS!Link def : linkID(entity : OclAny) : String =
+	OclUndefined;
+
+helper context CORILUS!Link def : linkID(risk : CORILUS!Risk) : String =
+	self.riskID;
+
+helper context CORILUS!Link def : linkID(risk : CORILUS!Risk) : String =
+	self.riskID;
+
