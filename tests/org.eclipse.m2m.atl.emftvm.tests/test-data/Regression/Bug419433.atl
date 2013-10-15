@@ -1,0 +1,12 @@
+-- @atlcompiler emftvm
+library "Regression::Bug419433";
+
+helper context CORILUS!Link def : linkID(risk : CORILUS!Risk) : String =
+	self.riskID;
+
+helper context CORILUS!Link def : linkID(entity : CORILUS!Allergy) : String =
+	self.allergyID;
+
+helper context CORILUS!Link def : linkID(entity : CORILUS!Intolerance) : String =
+	self.intoleranceID;
+

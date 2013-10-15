@@ -406,6 +406,19 @@ helper context ATL!OclModel def: equals(o : OclAny) : Boolean =
 helper context ATL!OclModel def: equals(o : ATL!OclModel) : Boolean =
 	self.name = o.name;
 
+--- Returns 'true' if all types in the sequence are equal to the types in 'os'.
+helper context Sequence(ATL!"OclType") def: allTypesEquals(os : Sequence(ATL!"OclType")) : Boolean =
+	if self->isEmpty() then
+		os->isEmpty()
+	else if os->isEmpty() then
+		self->isEmpty()
+	else
+		let s : ATL!"OclType" = self->first() in
+		let o : ATL!"OclType" = os->first() in
+		s.equals(o) and
+		self->subSequence(2, self->size()).allTypesEquals(os->subSequence(2, os->size()))
+	endif endif;
+
 -------------------------------------------------------------------------------
 -- RULES ----------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -502,9 +515,9 @@ nodefault rule HelperSignatureIsUnique {
 									then
 										if s.definition.feature.parameters.size() = e.definition.feature.parameters.size()
 										then
-										   s.definition.feature.parameters -> collect(param | param.type.oclType()) -> flatten() -> includesAll(
-										   e.definition.feature.parameters -> collect(param | param.type.oclType()) -> flatten()
-										   )
+											s.definition.feature.parameters -> collect(param | param.type) -> allTypesEquals(
+												e.definition.feature.parameters -> collect(param | param.type)
+											)
 										else
 											false
 										endif
