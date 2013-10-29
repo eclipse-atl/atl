@@ -293,6 +293,7 @@ acg ATL startsWith Unit {
 						new
 						call 'QJ.first():J' -- traceElement, OclUndefined
 						set 'sourceElement' -- Unset sourceElement reference to avoid problems when serializing the refining trace
+						goto endDeleteLoop
 					noDelete:
 											-- traceElement
 						pop
