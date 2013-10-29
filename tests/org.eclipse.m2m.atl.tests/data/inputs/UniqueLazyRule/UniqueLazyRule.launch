@@ -27,9 +27,6 @@
 <listAttribute key="Superimpose"/>
 <booleanAttribute key="continueAfterError" value="false"/>
 <booleanAttribute key="disableAttributeHelperCache" value="false"/>
-<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
-<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
-</listAttribute>
 <booleanAttribute key="printExecutionTime" value="false"/>
 <booleanAttribute key="profile" value="false"/>
 <booleanAttribute key="showSummary" value="false"/>
