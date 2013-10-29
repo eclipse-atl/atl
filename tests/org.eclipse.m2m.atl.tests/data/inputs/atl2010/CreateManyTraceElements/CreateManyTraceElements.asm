@@ -404,12 +404,13 @@
 			<new/>
 			<call arg="81"/>
 			<set arg="19"/>
+			<pop/>
 			<enditerate/>
 		</code>
 		<linenumbertable>
 		</linenumbertable>
 		<localvariabletable>
-			<lve slot="0" name="26" begin="0" end="59"/>
+			<lve slot="0" name="26" begin="0" end="60"/>
 		</localvariabletable>
 	</operation>
 	<operation name="82">
