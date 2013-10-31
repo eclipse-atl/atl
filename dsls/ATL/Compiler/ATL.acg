@@ -157,6 +157,45 @@ acg ATL startsWith Unit {
 			call 'NTransientLink;.getNamedTargetFromSource(JS):J'
 		}
 		operation
+				context 'J'
+				name '__applyReverseBinding' {
+			param 'propertyName' : 'S'
+			param 'target' : 'J'
+
+			load 'target'
+			getasm
+			get 'col'
+			call 'J.oclIsKindOf(J):B'
+			if col
+				-- not col
+				if(self.isRefining) {
+					load 'target'					-- tgtTraceElement
+					call 'J.__asElement():J'	-- tgtTraceElement
+					load 'propertyName'			-- tgtTraceElement, propertyName
+					load 'self'					-- tgtTraceElement, propertyName, traceElement
+						-- tgtTraceElement, propertyName, traceElement 
+					call 'MRefiningTrace!Element;.setProperty(SJ):V'
+				} else {
+					getasm						-- thisModule
+					load 'target'				-- thisModule, target
+					call 'A.__resolve__(J):J'	-- resolvedTarget
+					load 'propertyName'			-- resolvedTarget, propertyName
+					load 'self'					-- resolvedTarget, propertyName, self
+					pcall 'J.refSetValue(SJ):J'
+				}
+				goto end
+		  col:
+				load 'target'
+				iterate
+					load 'self'
+					swap
+					load 'propertyName'
+					swap
+					pcall 'J.__applyReverseBinding(SJ):V'
+				enditerate
+		  end:
+		}
+		operation
 				context 'A'
 				name '__matcher__' {
 			foreach(r in self.elements->select(e | (e isa MatchedRule) and (not (e isa LazyMatchedRule)))->select(e | e.superRule.oclIsUndefined())) {
@@ -411,12 +450,18 @@ acg ATL startsWith Unit {
 					context 'J'
 					name '__asElement' {
 				-- TODO: use a Map as cache
-					push 'Element'
-					push 'RefiningTrace'
-					new
-					dup
-					load 'self'
-					set 'sourceElement'
+				push 'Element'
+				push 'RefiningTrace'
+				new
+				dup
+				load 'self'
+				set 'sourceElement'
+			}
+			-- may notably be called from __applyReverseBinding if target has already been resolved (e.g., using resolveTemp)
+			operation
+					context 'MRefiningTrace!Element;'
+					name '__asElement' {
+				load 'self'
 			}
 			operation
 					context 'MRefiningTrace!CollectionVal;'
@@ -869,7 +914,7 @@ acg ATL startsWith Unit {
 				new
 			}
 		}
-		analyze self mode matchReverseBindings
+
 		pcall 'NTransientLink;.addTargetElement(SJ):V'
 	}
 
@@ -891,31 +936,42 @@ acg ATL startsWith Unit {
 		load self.outPattern.rule.inPatternElements().first()
 		set 'sourceElement'
 
-		analyze self mode matchReverseBindings
-
 		pcall 'NTransientLink;.addTargetElement(SJ):V'
 	}
+
+	function SimpleOutPatternElement::superElement() =
+		if self.outPattern.rule isa MatchedRule then
+			let superRule = self.outPattern.rule.superRule in
+			if superRule.oclIsUndefined() then
+				OclUndefined
+			else
+				superRule.mostConcreteOutPatternElements()->select(e | e.varName = self.varName).first()
+			endif
+		else
+			OclUndefined
+		endif;
+
+	function SimpleOutPatternElement::allReverseBindings() =
+		let superElement = self.superElement() in
+		if superElement.oclIsUndefined() then
+			Sequence {}
+		else
+			superElement.allReverseBindings()
+		endif.union(self.reverseBindings);
 
 	-- We create a normal template instead of a code template because this template will be
 	-- called from another code template matching the same model element. If this were
 	-- a code template an error will be raised when the vm tries to remove the entrance
 	-- for this code template (it is registered twice, but as it is a map is has no effect
 	-- so we can not remove twice)
-	SimpleOutPatternElement mode matchReverseBindings {	
-		foreach(rb in self.reverseBindings) {
-			dup		-- transientLink, varName, element, element
+	SimpleOutPatternElement mode applyReverseBindings {	-- element -> element
+		foreach(rb in self.allReverseBindings()) {
 			if(rb isa NavigationOrAttributeCallExp) {
-				analyze rb.source	-- transientLink, varName, element, element, value
-				if(self.isRefiningMode) {
-					call 'J.__asElement():J'	-- transientLink, varName, traceElement, traceElement, valueTraceElement
-					swap						-- transientLink, varName, traceElement, valueTraceElement, traceElement
-					push rb.name	-- transientLink, varName, traceElement, valueTraceElement, traceElement, propertyName
-					swap			-- transientLink, varName, traceElement, valueTraceElement, propertyName, traceElement
-					call 'MRefiningTrace!Element;.setProperty(SJ):V'
-				} else {
-					swap			-- transientLink, varName, element, value, element
-					set rb.name		-- transientLink, varName, element
-				}
+				dup					-- element, element
+				push rb.name
+				analyze rb.source	-- element, element, propertyName, value
+				pcall 'J.__applyReverseBinding(SJ):V'
+									-- element
 			} else {
 				report error 'only navigations are allowed in reversebindings' 
 			}
@@ -957,7 +1013,8 @@ acg ATL startsWith Unit {
 		endif;
 
 	code SimpleOutPatternElement mode apply {
-		load self.actualDeclaration()
+		load self.actualDeclaration()	-- element
+		analyze self mode applyReverseBindings
 		if(self.isRefiningMode) {
 			analyze self.allBindings() mode refining
 		} else {
