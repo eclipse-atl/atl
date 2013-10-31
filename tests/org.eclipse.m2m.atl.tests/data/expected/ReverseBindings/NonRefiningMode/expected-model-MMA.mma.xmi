@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<MMA:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:MMA="MMA">
+  <children xsi:type="MMA:A" name="a1"/>
+  <children xsi:type="MMA:A" name="a12"/>
+  <children xsi:type="MMA:A" name="a2" targets="//@children.14 //@children.15"/>
+  <children xsi:type="MMA:A" name="a22"/>
+  <children xsi:type="MMA:A" name="A1" sources="//@children.6"/>
+  <children xsi:type="MMA:A" name="A12" sources="//@children.6"/>
+  <children xsi:type="MMA:A" name="A2" targets="//@children.4 //@children.5 //@children.14 //@children.15"/>
+  <children xsi:type="MMA:A" name="A22"/>
+  <children xsi:type="MMA:B" name="b1" targets="//@children.12 //@children.13 //@children.14 //@children.15"/>
+  <children xsi:type="MMA:B" name="b12"/>
+  <children xsi:type="MMA:B" name="b2"/>
+  <children xsi:type="MMA:B" name="b22"/>
+  <children xsi:type="MMA:B" name="B1" sources="//@children.8"/>
+  <children xsi:type="MMA:B" name="B12" sources="//@children.8"/>
+  <children xsi:type="MMA:B" name="B2" sources="//@children.2 //@children.6 //@children.8"/>
+  <children xsi:type="MMA:B" name="B22" sources="//@children.2 //@children.6 //@children.8"/>
+</MMA:Root>
