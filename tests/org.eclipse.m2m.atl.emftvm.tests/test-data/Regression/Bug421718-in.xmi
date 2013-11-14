@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ASCII"?>
+<bug421718:Test xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:bug421718="platform:/plugin/org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/Bug421718.ecore"
+    xsi:schemaLocation="platform:/plugin/org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/Bug421718.ecore Bug421718.ecore" byteArray="12345"/>

@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
@@ -228,6 +229,21 @@ public abstract class EMFTVMTest extends TestCase {
 	 */
 	public Model loadTestModel(final ResourceSet rs, final String file) {
 		final Model model = EmftvmFactory.eINSTANCE.createModel();
+		model.setResource(rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + file, true), true));
+		return model;
+	}
+
+	/**
+	 * Loads a {@link Metamodel} instance for the given file name.
+	 * 
+	 * @param rs
+	 *            the {@link ResourceSet} to use for loading
+	 * @param file
+	 *            the file name relative to {@value #PLUGIN_URI}.
+	 * @return the {@link Metamodel} instance for the given file name
+	 */
+	public Metamodel loadTestMetamodel(final ResourceSet rs, final String file) {
+		final Metamodel model = EmftvmFactory.eINSTANCE.createMetamodel();
 		model.setResource(rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + file, true), true));
 		return model;
 	}

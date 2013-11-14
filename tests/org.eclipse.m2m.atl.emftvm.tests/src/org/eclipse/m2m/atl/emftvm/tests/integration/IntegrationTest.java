@@ -166,5 +166,26 @@ public class IntegrationTest extends EMFTVMTest {
 		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug413110Inheritance-out.ecore");
 		assertEquals(refOut.getResource(), model.getResource());
 	}
+	
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=421718">Bug # 421718</a>.
+	 */
+	public void testBug421718() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel metamodel = loadTestMetamodel(rs, "/test-data/Regression/Bug421718.ecore");
+		final Model in = loadTestModel(rs, "/test-data/Regression/Bug421718-in.xmi");
+		final Model out = createTestModel(rs, "/test-data/Regression/Bug421718-out.xmi");
+		env.registerMetaModel("MM", metamodel);
+		env.registerInputModel("IN", in);
+		env.registerOutputModel("OUT", out);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug421718");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		assertEquals(in.getResource(), out.getResource());
+	}
 
 }

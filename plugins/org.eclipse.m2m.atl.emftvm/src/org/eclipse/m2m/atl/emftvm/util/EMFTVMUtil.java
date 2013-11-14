@@ -470,7 +470,11 @@ public final class EMFTVMUtil {
 				}
 			}
 		} else if (value != null && value.getClass().isArray()) {
-			return new LazyListOnList<Object>(Arrays.asList((Object[]) value));
+			if (Object.class.isAssignableFrom(value.getClass().getComponentType())) {
+				return new LazyListOnList<Object>(Arrays.asList((Object[]) value));
+			} else {
+				return value; // do wrap primitive type arrays
+			}
 		}
 		assert eo == null || !(value instanceof Collection<?>);
 		return value;
