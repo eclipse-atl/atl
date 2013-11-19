@@ -27,8 +27,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
-import org.eclipse.emf.compare.diff.metamodel.DiffModel;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.core.ATLCoreException;
@@ -173,12 +171,8 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			}
 			String expectedPath = outputPath.replaceFirst("inputs", "expected"); //$NON-NLS-1$ //$NON-NLS-2$
 			try {
-				final DiffModel diff = ModelUtils.compareModels(new File(outputPath), new File(expectedPath),
-						true, true);
-				assertEquals(0, ((DiffGroup)diff.getOwnedElements().get(0)).getSubchanges());
+				ModelUtils.assertEquals(new File(outputPath), new File(expectedPath), true);
 			} catch (IOException ex) {
-				fail(ex.getMessage());
-			} catch (InterruptedException ex) {
 				fail(ex.getMessage());
 			}
 		}

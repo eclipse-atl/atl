@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,13 +22,21 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import junit.framework.TestCase;
+
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.compare.diff.metamodel.DiffModel;
-import org.eclipse.emf.compare.diff.service.DiffService;
-import org.eclipse.emf.compare.match.metamodel.MatchModel;
-import org.eclipse.emf.compare.match.service.MatchService;
+import org.eclipse.emf.compare.Comparison;
+import org.eclipse.emf.compare.Diff;
+import org.eclipse.emf.compare.DifferenceKind;
+import org.eclipse.emf.compare.ReferenceChange;
+import org.eclipse.emf.compare.diff.DefaultDiffEngine;
+import org.eclipse.emf.compare.diff.DiffBuilder;
+import org.eclipse.emf.compare.match.DefaultMatchEngine;
+import org.eclipse.emf.compare.scope.DefaultComparisonScope;
+import org.eclipse.emf.compare.utils.UseIdentifiers;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -36,13 +45,15 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 
 /**
  * Utility class for models.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
-public final class ModelUtils {
+public final class ModelUtils extends TestCase {
 	/** Constant for the file encoding system property. */
 	private static final String ENCODING_PROPERTY = "file.encoding"; //$NON-NLS-1$
 
@@ -191,53 +202,102 @@ public final class ModelUtils {
 	}
 
 	/**
-	 * Compare two ecore files as models.
+	 * Asserts that leftResource and rightResource are equal. Uses EMF Compare.
 	 * 
 	 * @param leftUri
 	 *            the left file uri
 	 * @param rightUri
 	 *            the right file uri
-	 * @param ignoreIds
-	 *            if <code>true</code>, ignore xmi ids
 	 * @param delete
 	 *            if <code>true</code>, delete the right file after comparison
 	 * @throws IOException
-	 * @throws InterruptedException
 	 */
-	public static DiffModel compareModels(File leftUri, File rightUri, boolean ignoreIds, boolean delete)
-			throws IOException, InterruptedException {
-		Resource leftModel = load(leftUri);
-		Resource rightModel = load(rightUri);
-		final DiffModel res = compareModels(leftModel, rightModel, ignoreIds);
-		if (delete) {
-			leftUri.delete();
+	public static void assertEquals(File leftUri, File rightUri, boolean delete) throws IOException {
+		final Resource leftModel = load(leftUri);
+		final Resource rightModel = load(rightUri);
+		try {
+			assertEquals(leftModel, rightModel);
+		} finally {
+			if (delete) {
+				leftUri.delete();
+			}
 		}
-		return res;
 	}
 
 	/**
-	 * Compare two ecore files as models.
+	 * Asserts that leftResource and rightResource are equal. Uses EMF Compare.
 	 * 
-	 * @param leftModel
-	 *            the left model
-	 * @param rightModel
-	 *            the right model
-	 * @param ignoreIds
-	 *            if <code>true</code>, ignore xmi ids
-	 * @param delete
-	 *            if <code>true</code>, delete the right file after comparison
-	 * @throws IOException
-	 * @throws InterruptedException
+	 * @param leftResource
+	 *            the left-hand resource to compare
+	 * @param rightResource
+	 *            the right-hand resource to compare
 	 */
-	public static DiffModel compareModels(Resource leftModel, Resource rightModel, boolean ignoreIds)
-			throws IOException, InterruptedException {
-
-		Map<String, Object> options = new HashMap<String, Object>();
-		if (ignoreIds) {
-			options.put("match.ignore.xmi.id", Boolean.TRUE); //$NON-NLS-1$
+	public static void assertEquals(Resource leftResource, Resource rightResource) {
+		final DefaultComparisonScope scope = new DefaultComparisonScope(leftResource, rightResource, null);
+		final Comparison match = DefaultMatchEngine.create(UseIdentifiers.NEVER).match(scope, null);
+		if (!leftResource.getContents().isEmpty()) {
+			assertFalse("Match model is empty: " + match.getMatches(), match.getMatches().isEmpty());
 		}
-		final MatchModel inputMatch = MatchService.doResourceMatch(leftModel, rightModel, options);
-		return DiffService.doDiff(inputMatch);
+		new DefaultDiffEngine(new DiffBuilder()).diff(match, null);
+		for (Diff diff : match.getDifferences()) {
+			// allow only certain kinds of diff elements
+			if (diff instanceof ReferenceChange && ((ReferenceChange) diff).getKind() == DifferenceKind.CHANGE) {
+				assertEquals(diff.getMatch().getLeft(), diff.getMatch().getRight(), ((ReferenceChange) diff).getReference());
+			} else {
+				fail("Difference found: " + diff);
+			}
+		}
+	}
+
+	/**
+	 * Asserts that <code>left.ref</code> and <code>right.ref</code> point to equal values.
+	 * 
+	 * @param left
+	 *            the left-hand object to compare
+	 * @param right
+	 *            the right-hand object to compare
+	 * @param ref
+	 *            the {@link EReference} of which to compare the values
+	 */
+	public static void assertEquals(final EObject left, final EObject right, final EReference ref) {
+		if (ref.isMany()) {
+			final Collection<?> leftValue = (Collection<?>) left.eGet(ref);
+			final Collection<?> rightValue = (Collection<?>) right.eGet(ref);
+			final String errorMsg = String.format("Different value found on %s.%s (%s) and %s.%s (%s)",
+					EMFTVMUtil.toPrettyString(left, null), ref.getName(), EMFTVMUtil.toPrettyString(leftValue, null),
+					EMFTVMUtil.toPrettyString(right, null), ref.getName(), EMFTVMUtil.toPrettyString(rightValue, null));
+			
+			assertEquals(errorMsg, leftValue.size(), rightValue.size());
+			final Iterator<?> leftVs = leftValue.iterator();
+			final Iterator<?> rightVs = rightValue.iterator();
+			while (leftVs.hasNext()) {
+				// Reference to same object by URI - only target objects are different instances
+				assertSameURI(errorMsg, (EObject) leftVs.next(), (EObject) rightVs.next());
+			}
+		} else {
+			final EObject leftValue = (EObject) left.eGet(ref);
+			final EObject rightValue = (EObject) right.eGet(ref);
+			final String errorMsg = String.format("Different value found on %s.%s (%s) and %s.%s (%s)",
+					EMFTVMUtil.toPrettyString(left, null), ref.getName(), EMFTVMUtil.toPrettyString(leftValue, null),
+					EMFTVMUtil.toPrettyString(right, null), ref.getName(), EMFTVMUtil.toPrettyString(rightValue, null));
+			// Reference to same object by URI - only target objects are different instances
+			assertSameURI(errorMsg, leftValue, rightValue);
+		}
+	}
+
+	/**
+	 * Asserts that <code>leftValue</code> and <code>rightValue</code> have the same EMF URI.
+	 * 
+	 * @param errorMsg
+	 *            the error message to display on assertion failure
+	 * @param leftValue
+	 *            the left-hand value to compare
+	 * @param rightValue
+	 *            the right-hand value to compare
+	 */
+	private static void assertSameURI(final String errorMsg, final EObject leftValue, final EObject rightValue) {
+		assertEquals(errorMsg, leftValue.eResource().getURI(), rightValue.eResource().getURI());
+		assertEquals(errorMsg, leftValue.eResource().getURIFragment(leftValue), rightValue.eResource().getURIFragment(rightValue));
 	}
 
 }
