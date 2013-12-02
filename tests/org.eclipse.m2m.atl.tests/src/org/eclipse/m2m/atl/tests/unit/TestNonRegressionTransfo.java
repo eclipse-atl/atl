@@ -137,7 +137,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			pureExecutionTime = launch();
 			long endTime = System.currentTimeMillis();
 			executionTime = (endTime - startTime) / 1000.;
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			fail(directory.getName() + ": " + e.getMessage(), e); //$NON-NLS-1$
 		}
 		info(directory.getName() + ": " + executionTime + "s (pure execution: " + pureExecutionTime + "s)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -172,8 +172,8 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			String expectedPath = outputPath.replaceFirst("inputs", "expected"); //$NON-NLS-1$ //$NON-NLS-2$
 			try {
 				ModelUtils.assertEquals(new File(outputPath), new File(expectedPath), true);
-			} catch (IOException ex) {
-				fail(ex.getMessage());
+			} catch (Throwable ex) {
+				fail("Model comparison failed for " + directory.getPath() + " : " + ex.getMessage(), ex);
 			}
 		}
 		totalTime += executionTime;
