@@ -2162,7 +2162,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 				if (index < cache.size()) {
 					return ((List<T>)cache).get(index);
 				}
-				return (T) function.execute(parentFrame.getSubFrame(function, new Object[] { inner.get(index) }));
+				return (T) function.execute(parentFrame.getSubFrame(function, inner.get(index)));
 			}
 			@SuppressWarnings("unchecked")
 			@Override
@@ -2174,7 +2174,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 					}
 					return ((List<T>)cache).get(size - 1);
 				}
-				return (T) function.execute(parentFrame.getSubFrame(function, new Object[] { inner.last() }));
+				return (T) function.execute(parentFrame.getSubFrame(function, inner.last()));
 			}
 			@Override
 			public int size() {

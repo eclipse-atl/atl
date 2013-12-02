@@ -1369,7 +1369,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		@SuppressWarnings("unchecked")
 		public T next() {
-			return (T) function.execute(parentFrame.getSubFrame(function, new Object[] { inner.next() }));
+			return (T) function.execute(parentFrame.getSubFrame(function, inner.next()));
 		}
 	}
 	
