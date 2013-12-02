@@ -660,6 +660,33 @@ nodefault rule NoSelfVariableInRule {
 		)
 }
 
+-- Rule 'NoSelfVariableInRule'
+-- This rule generates an 'error' Problem for each 'self' variable expression
+-- that is contained by a helper without context declaration.
+nodefault rule NoSelfVariableInContextlessHelper {
+	from
+		s : ATL!VariableExp (
+			if s.referredVariable.oclIsUndefined()
+			then
+				false
+			else
+				s.referredVariable.varName = 'self' and 
+				(
+					let rComp : OclAny = s.getRootComposite() in
+					rComp.oclIsKindOf(ATL!OclFeature) and
+					rComp.definition.context_.debug('helper context').oclIsUndefined()
+				)
+			endif
+		)
+	to
+		t : Problem!Problem (
+			severity <- #error,
+			location <- s.location,
+			description <-
+				'Use of the \'self\' variable prohibited in helpers without context declaration'
+		)
+}
+
 -- Rule 'NoResolveTempInSourcePattern'
 -- This rule generates an 'error' Problem for each call of the
 -- 'thisModule.resolveTemp()' operation within a source pattern of a rule.
@@ -839,6 +866,20 @@ nodefault rule NoSuperOutsideHelper {
 			severity <- #error,
 			location <- s.location,
 			description <- 'Cannot access "super" outside operations or attributes'
+		)
+}
+
+nodefault rule NoSuperInContextlessHelper {
+	from s : ATL!SuperExp (
+			let rComp : OclAny = s.getRootComposite() in
+			rComp.oclIsKindOf(ATL!OclFeature) and
+			rComp.definition.context_.oclIsUndefined()
+		)
+	to
+		t : Problem!Problem (
+			severity <- #error,
+			location <- s.location,
+			description <- 'Cannot access "super" from a helper without context declaration'
 		)
 }
 

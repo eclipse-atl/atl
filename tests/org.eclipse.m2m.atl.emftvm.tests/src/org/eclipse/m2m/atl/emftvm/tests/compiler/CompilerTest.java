@@ -106,6 +106,15 @@ public class CompilerTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=422408">Bug # 419433</a>.
+	 */
+	public void testBug422408() {
+		final Model outModel = atlwfr(URI.createURI("test-data/Regression/Bug422408.atl", true));
+		final Resource pbs = outModel.getResource();
+		assertEquals(3, pbs.getContents().size());
+	}
+
+	/**
 	 * Tests the compilation output for "ATLtoEMFTVM.atl".
 	 */
 	public void testATLtoEMFTVM() {
