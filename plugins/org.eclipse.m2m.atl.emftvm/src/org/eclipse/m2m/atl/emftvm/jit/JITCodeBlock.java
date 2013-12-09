@@ -41,6 +41,7 @@ import org.eclipse.m2m.atl.emftvm.util.LazyListOnList;
 import org.eclipse.m2m.atl.emftvm.util.LazySetOnSet;
 import org.eclipse.m2m.atl.emftvm.util.NativeTypes;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
+import org.eclipse.m2m.atl.emftvm.util.Tuple;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 
 /**
@@ -269,6 +270,11 @@ public abstract class JITCodeBlock {
 		if (field != null) {
 			return field.getValue(o, frame);
 		}
+
+		if (o instanceof Tuple && ((Tuple) o).asMap().containsKey(propname)) {
+			return ((Tuple) o).get(propname);
+		}
+
 		try {
 			final java.lang.reflect.Field f = type.getField(propname);
 			final Object result = f.get(o);
@@ -333,6 +339,11 @@ public abstract class JITCodeBlock {
 		if (field != null) {
 			return field.getValue(o, frame);
 		}
+
+		if (o instanceof Tuple && ((Tuple) o).asMap().containsKey(propname)) {
+			return ((Tuple) o).get(propname);
+		}
+
 		try {
 			final java.lang.reflect.Field f = type.getField(propname);
 			final Object result = f.get(o);
@@ -378,6 +389,8 @@ public abstract class JITCodeBlock {
 			}
 			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
 					EMFTVMUtil.toPrettyString(type, env), propname));
+		} else if (o instanceof Tuple && ((Tuple) o).asMap().containsKey(propname)) {
+			return ((Tuple) o).get(propname);
 		}
 
 		// o is a regular Java object

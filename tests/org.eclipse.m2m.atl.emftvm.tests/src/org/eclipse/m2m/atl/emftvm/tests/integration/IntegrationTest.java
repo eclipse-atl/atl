@@ -188,4 +188,18 @@ public class IntegrationTest extends EMFTVMTest {
 		assertEquals(in.getResource(), out.getResource());
 	}
 
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=423281">Bug # 423281</a>.
+	 */
+	public void testBug423281TupleAccess() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.loadModule(createTestModuleResolver(), "Regression::Bug423281TupleAccess");
+		td.finishLoading();
+		final Object result = env.run(td);
+		td.finish();
+
+		assertEquals("one", result);
+	}
+
 }

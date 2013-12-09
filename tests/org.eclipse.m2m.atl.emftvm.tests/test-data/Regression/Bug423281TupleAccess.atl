@@ -1,0 +1,4 @@
+-- @atlcompiler emftvm
+query "Regression::Bug423281TupleAccess" = thisModule.tuple.a.debug('Bug423281TupleAccess');
+
+uses MapTupleTest;
