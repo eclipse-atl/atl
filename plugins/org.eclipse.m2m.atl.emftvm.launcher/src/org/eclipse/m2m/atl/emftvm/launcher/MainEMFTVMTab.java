@@ -1154,10 +1154,10 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 		final Map<?, ?> inoutOut = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_OUT_MODELS, Collections.EMPTY_MAP);
 		final Map<?, ?> output = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODELS, Collections.EMPTY_MAP);
 
-		metamodelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, Collections.emptyMap()));
-		inputModelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, Collections.emptyMap()));
-		inoutModelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, Collections.emptyMap()));
-		outputModelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, Collections.emptyMap()));
+		metamodelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, Collections.EMPTY_MAP));
+		inputModelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, Collections.EMPTY_MAP));
+		inoutModelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, Collections.EMPTY_MAP));
+		outputModelOptions.putAll(configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, Collections.EMPTY_MAP));
 
 		for (Entry<?,?> entry : meta.entrySet()) {
 			String name = (String)entry.getKey();
