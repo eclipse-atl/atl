@@ -674,7 +674,7 @@ nodefault rule NoSelfVariableInContextlessHelper {
 				(
 					let rComp : OclAny = s.getRootComposite() in
 					rComp.oclIsKindOf(ATL!OclFeature) and
-					rComp.definition.context_.debug('helper context').oclIsUndefined()
+					rComp.definition.context_.oclIsUndefined()
 				)
 			endif
 		)
