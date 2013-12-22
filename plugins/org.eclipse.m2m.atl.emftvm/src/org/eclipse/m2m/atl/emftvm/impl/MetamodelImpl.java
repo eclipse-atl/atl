@@ -137,7 +137,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	 */
 	private static void registerTypeChain(
 			final Map<String, EClassifier> types, 
-			final EList<EObject> objects,
+			final EList<? extends EObject> objects,
 			final String ns, 
 			final Set<Object> ignore,
 			final Set<String> ambiguousTypes) {
@@ -150,7 +150,9 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 				}
 				registerTypeChain(types, o.eContents(), pname, ignore, ambiguousTypes);
 				break;
-			case EcorePackage.ECLASSIFIER: //TODO Report EMF BUG: only EClass instances are returned!
+			// Fix for bug # 423597: switch on all concrete EClassifier sub-types
+			case EcorePackage.EDATA_TYPE:
+			case EcorePackage.EENUM:
 			case EcorePackage.ECLASS:
 				registerTypeChain(types, (EClassifier)o, ns, ignore, ambiguousTypes);
 				break;
