@@ -11,10 +11,16 @@ helper context String def : opcodeTest : EMFTVM!Opcode =
 		#SET
 	endif;
 
+helper context EMFTVM!Opcode def : passthrough : EMFTVM!Opcode =
+	self;
+
+helper context EMFTVM!Opcode def : passthrough(arg : EMFTVM!Opcode) : EMFTVM!Opcode =
+	self;
+
 lazy rule OpcodeToOperation {
 	from s : String
 	to t : EMFTVM!Operation (
-		name <- s.opcodeTest.getName()
+		name <- s.opcodeTest.passthrough.passthrough(#INVOKE).getName()
 	)
 	do {
 		t;

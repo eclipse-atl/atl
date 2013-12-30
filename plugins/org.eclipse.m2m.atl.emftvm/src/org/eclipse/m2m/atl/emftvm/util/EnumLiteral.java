@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2013 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,11 +49,8 @@ public final class EnumLiteral implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		StringBuffer buf = new StringBuffer();
-		buf.append(getClass().getSimpleName());
-		buf.append('(');
+		StringBuffer buf = new StringBuffer("#");
 		buf.append(getName());
-		buf.append(')');
 		return buf.toString();
 	}
 
