@@ -223,4 +223,21 @@ public class IntegrationTest extends EMFTVMTest {
 		assertEquals(refOut.getResource(), out.getResource());
 	}
 
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=424513">Bug # 424513</a>.
+	 */
+	public void testBug424513() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel mm = loadTestMetamodel(rs, "/test-data/Regression/Bug424513.ecore");
+		env.registerMetaModel("MM", mm);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug424513");
+		td.finishLoading();
+		final Object result = env.run(td);
+		td.finish();
+
+		assertEquals(Boolean.FALSE, result);
+	}
+
 }
