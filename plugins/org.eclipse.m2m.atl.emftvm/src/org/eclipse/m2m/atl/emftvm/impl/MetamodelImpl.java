@@ -89,7 +89,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 			throw new IllegalArgumentException(String.format("Type %s not found in metamodel %s", typeName, this));
 		}
 		if (ambiguousTypes.contains(typeName)) {
-			ATLLogger.warning(String.format("Metamodel contains more than one type with name %s", typeName));
+			ATLLogger.warning(String.format("Metamodel %s contains more than one type with name %s", this, typeName));
 		}
 		return type;
 	}
