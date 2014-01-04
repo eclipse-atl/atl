@@ -164,7 +164,7 @@ public class ExecEnvPoolTest extends EMFTVMTest {
 		}
 
 		execSvc.shutdown();
-		final boolean finished = execSvc.awaitTermination(1, TimeUnit.MINUTES);
+		final boolean finished = execSvc.awaitTermination(60, TimeUnit.SECONDS);
 		if (!finished) {
 			LOG.info(String.format("ExecEnvPoolTest#testEcoreCopyPerformance Timed out; %d runs completed", timings.size()));
 		}
