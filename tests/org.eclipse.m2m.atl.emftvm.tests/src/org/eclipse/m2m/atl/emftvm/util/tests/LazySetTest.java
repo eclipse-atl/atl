@@ -444,7 +444,7 @@ public class LazySetTest extends LazyCollectionTest {
 		sortedSet2.last(); // force eval
 		final long lazyEnd2 = System.nanoTime();
 		assertEquals(new LazyOrderedSet<Object>(expected2), sortedSet2);
-		ATLLogger.info(String.format("Collections.sort() : %d ms, LazyOrderedSet.sortedBy() : %d ms", (refEnd2 - refStart2) / 1000000L, (lazyEnd2 - refEnd2) / 1000000L)); 
+		ATLLogger.info(String.format("Collections.sort() : %d ms, LazySet.sortedBy() : %d ms", (refEnd2 - refStart2) / 1000000L, (lazyEnd2 - refEnd2) / 1000000L)); 
 	}
 
 }
