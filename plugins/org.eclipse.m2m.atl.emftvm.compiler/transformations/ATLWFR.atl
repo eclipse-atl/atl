@@ -913,3 +913,17 @@ nodefault rule BindingStatAssignsToNavigationOrAttributeCallExpOrVariable {
 			description <- 'Can only assign to model element features, helper attributes, or local variables'
 		)
 }
+
+nodefault rule RefiningRuleInRegularMode {
+	from
+		s : ATL!MatchedRule (
+			s.isRefining and
+			not s."module".isRefining
+		)
+	to
+		t : Problem!Problem (
+			severity <- #error,
+			location <- s.location,
+			description <- 'Refining rules are only allowed in refining mode'
+		) 
+}

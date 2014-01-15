@@ -200,13 +200,16 @@ helper context ATL!VariableDeclaration def : isRefiningElement : Boolean =
 --- Returns 'true' if self is an output element that represents a refined input element.
 helper context ATL!OutPatternElement def : isRefiningElement : Boolean =
 	self.outModel.isRefiningModel and
+	self.outPattern."rule".isRefiningRule and
 	(let sourceElement : ATL!InPatternElement = self.actualSourceElement in
 	not sourceElement.oclIsUndefined() and sourceElement.type.sameAs(self.type));
 
 --- Returns 'true' if self has an output element that represents a refinement of this input element.
 helper context ATL!InPatternElement def : hasRefiningElement : Boolean =
-	not self.inPattern."rule".outPattern.oclIsUndefined() and
-	self.inPattern."rule".outPattern.elements->exists(outElement |
+	let r : ATL!Rule = self.inPattern."rule" in
+	r.isRefiningRule and
+	not r.outPattern.oclIsUndefined() and
+	r.outPattern.elements->exists(outElement |
 		outElement.outModel.isRefiningModel and
 		self = outElement.actualSourceElement and 
 		self.type.sameAs(outElement.type)
@@ -262,6 +265,26 @@ helper context ATL!InPatternElement def : actualModels : Sequence(ATL!OclModel) 
 	else
 		self.inPattern."rule"."module".inModels->select(m|m.metamodel.name = self.type.modelName)
 	endif;
+
+--- Returns 'true' if this rule generates default traces.
+helper context ATL!MatchedRule def : isDefault : Boolean =
+	not self.isNoDefault;
+
+--- Returns 'true' if this rule generates default traces.
+helper context ATL!LazyMatchedRule def : isDefault : Boolean =
+	false;
+
+--- Returns 'true' if this rule behaves as a refining rule.
+helper context ATL!Rule def : isRefiningRule : Boolean =
+	false;
+
+--- Returns 'true' if this rule behaves as a refining rule.
+helper context ATL!MatchedRule def : isRefiningRule : Boolean =
+	self.isDefault;
+
+--- Returns 'true' if this rule behaves as a refining rule.
+helper context ATL!LazyMatchedRule def : isRefiningRule : Boolean =
+	self.isRefining;
 
 -- ======================================================================
 -- helpers end
@@ -453,8 +476,9 @@ rule InPatternElementWithFilterAndAction {
 
 rule OutPatternElement {
 	from s : ATL!OutPatternElement in IN (
-		not s.outPattern."rule".oclIsKindOf(ATL!CalledRule) and
-		not s.isRefiningElement)
+		let r : ATL!Rule = s.outPattern."rule" in
+		r.oclIsKindOf(ATL!MatchedRule) and
+		not ((r.isDefault or r.isRefining) and s.isRefiningElement))
 	using {
 		outModel : ATL!OclModel =
 			if s.outModel.isRefiningModel then
@@ -636,11 +660,9 @@ rule MatchedRuleVariableDeclaration {
 rule MatchedRule {
 	from s : ATL!MatchedRule in IN
 	using {
-		isDefault : Boolean =
-			not (s.oclIsKindOf(ATL!LazyMatchedRule) or s.isNoDefault);
 		deletedSourceElements : Sequence(ATL!InPatternElement) =
 			s.inPattern.elements->select(e|
-				isDefault and
+				(s.isDefault or s.isRefining) and
 				e.actualModels->forAll(m|m.isRefinedModel) and
 				(e.actualMapsToElement.oclIsUndefined() or
 				not e.actualMapsToElement.isRefiningElement));
@@ -657,14 +679,19 @@ rule MatchedRule {
 			else
 				Sequence{s.superRule.name}
 			endif,
-		outputElements <- s.outPatternElements->reject(e|e.isRefiningElement),
+		outputElements <-
+			if s.isDefault or s.isRefining then
+				s.outPatternElements->reject(e|e.isRefiningElement)
+			else
+				s.outPatternElements
+			endif,
 		mode <- 
 			if s.oclIsKindOf(ATL!LazyMatchedRule) then
 				#manual
 			else
 				#automaticSingle
 			endif,
-		default <- isDefault,
+		default <- s.isDefault,
 		"unique" <- (s.oclIsKindOf(ATL!LazyMatchedRule) and	s.isUnique) or s.isNoDefault,
 		distinctElements <- false,
 		inputElements <- s.inPattern.elements,
@@ -750,11 +777,11 @@ rule MatchedRuleWithFilterAndAction {
 }
 
 nodefault rule RefiningMatchedRule {
-	from s : ATL!MatchedRule (s.isRefining)
+	from s : ATL!MatchedRule (s.isRefining and not s.oclIsKindOf(ATL!LazyMatchedRule))
 	to pb : Problem!Problem (
-		severity <- #error,
+		severity <- #warning,
 		location <- s.location,
-		description <- '"refining" rules have no meaning in EMFTVM')
+		description <- 'all matched rules are "refining" in refining mode')
 }
 
 rule Binding {

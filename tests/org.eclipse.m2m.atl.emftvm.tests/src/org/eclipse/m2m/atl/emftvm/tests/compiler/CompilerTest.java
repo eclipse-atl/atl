@@ -106,12 +106,23 @@ public class CompilerTest extends EMFTVMTest {
 	}
 
 	/**
-	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=422408">Bug # 419433</a>.
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=422408">Bug # 422408</a>.
 	 */
 	public void testBug422408() {
 		final Model outModel = atlwfr(URI.createURI("test-data/Regression/Bug422408.atl", true));
 		final Resource pbs = outModel.getResource();
 		assertEquals(3, pbs.getContents().size());
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=425492">Bug # 425492</a>.
+	 */
+	public void testBug425492() {
+		final Model outModel = compile(URI.createURI("test-data/Regression/Bug425492.atl", true));
+		assertEquals(null, validate(outModel));
+
+		final Model refModel = loadTestModel(new ResourceSetImpl(), "/test-data/Regression/Bug425492.emftvm");
+		assertEquals(refModel.getResource(), outModel.getResource());
 	}
 
 	/**

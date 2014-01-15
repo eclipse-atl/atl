@@ -240,4 +240,23 @@ public class IntegrationTest extends EMFTVMTest {
 		assertEquals(Boolean.FALSE, result);
 	}
 
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=425492">Bug # 425492</a>.
+	 */
+	public void testBug425492() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Model in = loadTestModel(rs, "/test-data/Regression/Bug425492.ecore");
+		env.registerInOutModel("IN", in);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug425492");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug425492-out.ecore");
+		assertEquals(refOut.getResource(), in.getResource());
+	}
+
 }
