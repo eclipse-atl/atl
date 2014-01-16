@@ -1,0 +1,3 @@
+-- @atlcompiler emftvm
+query "Regression::Bug425904" = (not Sequence{}->includingRange(1, 1000)->exists(i | 
+	'test'.getBytes().oclIsKindOf(Sequence(OclAny)))).debug('AllByteArray');

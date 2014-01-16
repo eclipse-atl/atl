@@ -2135,20 +2135,22 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			}
 		} else if (cls.isArray()) {
 			final Class<?> cType = cls.getComponentType();
-			// Array of cType
-			final Label ifNull = new Label();
-			dup(); // [..., array, array]
-			ifnull(ifNull); // jump if array == null: [..., array]
 			if (Object.class.isAssignableFrom(cType)) {
-				invokeStat(Arrays.class, "asList", List.class, Object[].class); // Arrays.asList(array): [..., list]
-			} else {
-				invokeStat(JITCodeBlock.class, "asList", List.class, cls); // JITCodeBlock.asList(array): [..., list]
-			}
-			new_(LazyListOnList.class); // new LazyListOnList: [..., list, lazylist]
-			dup_x1(); // [..., lazylist, list, lazylist]
-			swap(); // [..., lazylist, lazylist, list]
-			invokeCons(LazyListOnList.class, List.class); // lazylist.<init>(list): [..., lazylist]
-			label(ifNull);
+				// Array of cType
+				final Label ifNull = new Label();
+				dup(); // [..., array, array]
+				ifnull(ifNull); // jump if array == null: [..., array]
+				if (Object.class.isAssignableFrom(cType)) {
+					invokeStat(Arrays.class, "asList", List.class, Object[].class); // Arrays.asList(array): [..., list]
+				} else {
+					invokeStat(JITCodeBlock.class, "asList", List.class, cls); // JITCodeBlock.asList(array): [..., list]
+				}
+				new_(LazyListOnList.class); // new LazyListOnList: [..., list, lazylist]
+				dup_x1(); // [..., lazylist, list, lazylist]
+				swap(); // [..., lazylist, lazylist, list]
+				invokeCons(LazyListOnList.class, List.class); // lazylist.<init>(list): [..., lazylist]
+				label(ifNull);
+			} // don't wrap primitive type arrays
 		}
 		// [..., Object]
 	}

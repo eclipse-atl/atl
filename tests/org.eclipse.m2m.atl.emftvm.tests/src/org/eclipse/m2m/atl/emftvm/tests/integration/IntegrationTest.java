@@ -259,4 +259,18 @@ public class IntegrationTest extends EMFTVMTest {
 		assertEquals(refOut.getResource(), in.getResource());
 	}
 
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=425904">Bug # 425904</a>.
+	 */
+	public void testBug425904() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.loadModule(createTestModuleResolver(), "Regression::Bug425904");
+		td.finishLoading();
+		final Object result = env.run(td);
+		td.finish();
+
+		assertEquals(Boolean.TRUE, result);
+	}
+
 }
