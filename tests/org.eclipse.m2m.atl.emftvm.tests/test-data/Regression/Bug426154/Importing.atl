@@ -1,0 +1,23 @@
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+-- @nsURI TR=http://www.eclipse.org/m2m/atl/emftvm/2011/Trace
+-- @atlcompiler emftvm
+
+module "Regression::Bug426154::Importing";
+create OUT: ECORE, trace: TR from IN: ECORE;
+
+uses "Regression::Bug426154::Imported";
+
+-- @extends Annotate
+rule CreatePackage {
+	from
+		src: ECORE!EPackage (
+			src.refImmediateComposite().oclIsUndefined()
+		)
+	to
+		tgt: ECORE!EPackage (
+			name <- 'hello'
+		)
+	do {
+		tgt.debug(); 
+	}
+}

@@ -1221,12 +1221,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	public synchronized Module loadModule(final ModuleResolver resolver, final String name, final boolean validate) {
 		resetJITCompiler();
-		if (isRuleStateCompiled()) {
-			for (Rule r : getRules()) {
-				r.resetState();
-			}
-		}
-		setRuleStateCompiled(false);
 		try {
 			//detect cyclic imports w.r.t. redefinition
 			if (internalModules.containsKey(name)) {
@@ -1256,6 +1250,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 					throw new VMException(null, String.format("Byte code validation of %s failed", invalidObject));
 				}
 			}
+			// Bug 426154: validation triggers partial rule state compilation, so always reset:
+			for (Rule r : getRules()) {
+				r.resetState();
+			}
+			setRuleStateCompiled(false);
 			loadedModules.add(name);
 			return module;
 		} catch (Exception e) {

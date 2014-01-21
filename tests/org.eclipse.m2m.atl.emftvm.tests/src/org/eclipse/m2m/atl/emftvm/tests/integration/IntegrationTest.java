@@ -25,6 +25,7 @@ import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.tests.EMFTVMTest;
+import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 
@@ -271,6 +272,35 @@ public class IntegrationTest extends EMFTVMTest {
 		td.finish();
 
 		assertEquals(Boolean.TRUE, result);
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=426154">Bug # 426154</a>.
+	 */
+	public void testBug426154() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel tr = EmftvmFactory.eINSTANCE.createMetamodel();
+		tr.setResource(TracePackage.eINSTANCE.eResource());
+		final Model in = EmftvmFactory.eINSTANCE.createModel();
+		in.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model trace = createTestModel(rs, "/test-data/Regression/Bug426154/Bug426154.trace");
+		final Model out = createTestModel(rs, "/test-data/Regression/Bug426154/Bug426154-out.ecore");
+		env.registerMetaModel("TR", tr);
+		env.registerInOutModel("IN", in);
+		env.registerOutputModel("trace", trace);
+		env.registerOutputModel("OUT", out);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug426154::Importing");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refTrace = loadTestModel(refRs, "/test-data/Regression/Bug426154/Bug426154.trace");
+		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug426154/Bug426154-out.ecore");
+		assertEquals(refTrace.getResource(), trace.getResource());
+		assertEquals(refOut.getResource(), out.getResource());
 	}
 
 }

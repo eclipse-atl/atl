@@ -1,0 +1,18 @@
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+-- @nsURI TR=http://www.eclipse.org/m2m/atl/emftvm/2011/Trace
+-- @atlcompiler emftvm
+
+module "Regression::Bug426154::Imported";
+create OUT: ECORE, trace: TR from IN: ECORE;
+
+abstract rule Annotate {
+	from
+		src: ECORE!EModelElement
+	to
+		tgt: ECORE!EModelElement (
+			eAnnotations <- Sequence{annotation}
+		),
+		annotation: ECORE!EAnnotation (
+			source <- 'foo'
+		)
+}
