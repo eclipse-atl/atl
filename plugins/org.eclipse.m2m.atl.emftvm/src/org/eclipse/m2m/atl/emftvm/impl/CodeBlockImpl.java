@@ -1000,6 +1000,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					} catch (Exception e) {
 						frame.setPc(pc);
 						throw new VMException(frame, e);
+					} catch (VerifyError e) {
+						frame.setPc(pc);
+						throw new VMException(frame, e);
 					}
 				}
 			}
