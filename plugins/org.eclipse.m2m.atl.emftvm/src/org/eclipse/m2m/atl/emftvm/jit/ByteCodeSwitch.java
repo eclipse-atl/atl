@@ -11,6 +11,7 @@
 package org.eclipse.m2m.atl.emftvm.jit;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -1077,11 +1078,17 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		if (method == null) {
 			return null;
 		}
+		final int methodModifiers = getRelevantModifiers(method);
 		Class<?> dc = method.getDeclaringClass();
 		Class<?>[] dis = dc.getInterfaces();
 		while ((dc = dc.getSuperclass()) != null) {
 			try {
-				method = dc.getDeclaredMethod(method.getName(), method.getParameterTypes());
+				Method superMethod = dc.getDeclaredMethod(method.getName(), method.getParameterTypes());
+				if (getRelevantModifiers(superMethod) == methodModifiers) {
+					method = superMethod;
+				} else {
+					break;
+				}
 			} catch (SecurityException e) {
 				break;
 			} catch (NoSuchMethodException e) {
@@ -1103,6 +1110,16 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			dis = newDis;
 		}
 		return method;
+	}
+
+	/**
+	 * Returns the relevant modifiers (visibility and static) for the given method.
+	 * @param method the method for which to return the modifiers
+	 * @return the relevant modifiers (visibility and static) for the given method
+	 */
+	private int getRelevantModifiers(final Method method) {
+		final int methodModifiers = method.getModifiers();
+		return methodModifiers & (Modifier.PRIVATE + Modifier.PROTECTED + Modifier.PUBLIC + Modifier.STATIC);
 	}
 
 	/**

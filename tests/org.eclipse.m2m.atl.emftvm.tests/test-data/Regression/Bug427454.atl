@@ -1,0 +1,10 @@
+-- @atlcompiler emftvm
+query "Regression::Bug427454" = Sequence{}->includingRange(1, 1000)->iterate(e; acc : OclAny = OclUndefined |
+		e.test()
+	);
+
+helper context Integer def : test() : OclAny =
+	let object : OclAny = 
+		"#native"!"java::util::GregorianCalendar".newInstance()
+	in
+		object.clone();
