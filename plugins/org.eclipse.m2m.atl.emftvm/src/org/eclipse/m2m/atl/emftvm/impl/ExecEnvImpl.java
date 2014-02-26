@@ -1507,6 +1507,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 		for (OutputRuleElement re : r.getOutputElements()) {
 			resolveRuleElement(re);
+			if (!r.isAbstract()) {
+				EClassifier eType = re.getEType();
+				if (eType instanceof EClass && ((EClass)eType).isAbstract()) {
+					throw new VMException(null, String.format("Non-abstract %s cannot have output elements of an abstract type: \"%s\"", r, re));
+				}
+			}
 		}
 
 		for (Field field : r.getFields()) {

@@ -1,0 +1,12 @@
+-- @atlcompiler emftvm
+-- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
+-- Tests error on non-abstract rule with output element of an abstract type
+module AbstractTargetClass;
+create OUT: EMFTVM from IN: EMFTVM;
+
+rule Instruction {
+	from
+		s: EMFTVM!Instruction
+	to
+		t: EMFTVM!Instruction
+}
