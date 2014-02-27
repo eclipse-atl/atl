@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011-2013 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2014 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -226,10 +226,20 @@ public class CodeBlockJIT implements Opcodes {
 		execute.visitVarInsn(ALOAD, 2); // env
 		execute.visitMethodInsn(INVOKEINTERFACE, Type.getInternalName(ExecEnv.class), "getMonitor", Type.getMethodDescriptor(Type.getType(VMMonitor.class), new Type[0]));
 		execute.visitVarInsn(ASTORE, 3); // monitor
+		final boolean hasMonitor = getEnv().getMonitor() != null;
+		if (hasMonitor) {
+			execute.visitVarInsn(ALOAD, 3); // monitor: [..., monitor]
+			execute.visitVarInsn(ALOAD, 1); // frame: [..., monitor, frame]
+			execute.visitMethodInsn(INVOKEINTERFACE, // monitor.enter(frame): [...]
+					Type.getInternalName(VMMonitor.class), 
+					"enter", 
+					Type.getMethodDescriptor(Type.VOID_TYPE, new Type[]{
+							Type.getType(StackFrame.class)
+					}));
+		}
 		execute.visitLabel(tryStart);
 		final ByteCodeSwitch bs = new ByteCodeSwitch(this, execute, ls);
 		final EList<Instruction> code = cb.getCode();
-		final boolean hasMonitor = getEnv().getMonitor() != null;
 		for (Instruction instr : code) {
 			if (hasMonitor) {
 				// do checkMonitor() before each instruction
@@ -261,6 +271,16 @@ public class CodeBlockJIT implements Opcodes {
 		execute.visitInsn(ATHROW); // throw vme
 		// Regular method return
 		execute.visitLabel(catchEnd);
+		if (hasMonitor) {
+			execute.visitVarInsn(ALOAD, 3); // monitor: [..., monitor]
+			execute.visitVarInsn(ALOAD, 1); // frame: [..., monitor, frame]
+			execute.visitMethodInsn(INVOKEINTERFACE, // monitor.leave(frame): [...]
+					Type.getInternalName(VMMonitor.class), 
+					"leave", 
+					Type.getMethodDescriptor(Type.VOID_TYPE, new Type[]{
+							Type.getType(StackFrame.class)
+					}));
+		}
 		if (cb.getStackLevel() == 0) {
 			execute.visitInsn(ACONST_NULL); // push null
 		}
