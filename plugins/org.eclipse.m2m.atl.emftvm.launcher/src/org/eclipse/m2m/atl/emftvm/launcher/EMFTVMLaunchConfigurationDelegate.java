@@ -44,6 +44,7 @@ import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.launcher.debug.NetworkDebugger;
+import org.eclipse.m2m.atl.emftvm.launcher.profiler.ProfilingLaunchAdapter;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
@@ -122,6 +123,8 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		final VMMonitor vmmon; // Create monitor/debugger before any exceptions can be thrown
 		if (ILaunchManager.DEBUG_MODE.equals(mode)) {
 			vmmon = new NetworkDebugger(launch, getPort(launch), true);
+		} else if (configuration.getAttribute(EMFTVMLaunchConstants.PROFILE, false)) {
+			vmmon = new ProfilingLaunchAdapter(launch);
 		} else {
 			vmmon = new LaunchAdapter(launch);
 		}

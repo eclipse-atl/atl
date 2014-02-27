@@ -9,7 +9,7 @@
  *     Dennis Wagelaar - initial API and
  *         implementation and/or initial documentation
  *******************************************************************************/
-package org.eclipse.m2m.atl.emftvm.launcher.profiler;
+package org.eclipse.m2m.atl.emftvm.profiler;
 
 /**
  * Stopwatch utility class.
@@ -66,6 +66,14 @@ public class StopWatch {
 	 */
 	public long getDuration() {
 		return duration;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "StopWatch [isStarted()=" + isStarted() + ", getDuration()=" + getDuration() + "]";
 	}
 
 }

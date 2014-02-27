@@ -12,6 +12,8 @@ Export-Package: org.eclipse.m2m.atl.emftvm,
  org.eclipse.m2m.atl.emftvm.constraints,
  org.eclipse.m2m.atl.emftvm.impl,
  org.eclipse.m2m.atl.emftvm.impl.resource,
+ org.eclipse.m2m.atl.emftvm.jit,
+ org.eclipse.m2m.atl.emftvm.profiler,
  org.eclipse.m2m.atl.emftvm.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport;bundle-version="2.4.0",

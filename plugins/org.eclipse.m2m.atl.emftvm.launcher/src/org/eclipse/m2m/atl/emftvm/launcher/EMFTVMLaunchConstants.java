@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2014 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,8 @@ public interface EMFTVMLaunchConstants {
 	String DISPLAY_TIMING = "Display Timing Data"; //$NON-NLS-1$
 	/** Disable JIT compiler. */
 	String DISABLE_JIT = "Disable JIT compiler"; //$NON-NLS-1$
+	/** Display Profiling Data. */
+	String PROFILE = "Display Profiling Data"; //$NON-NLS-1$
 	/** Metamodel Options. */
 	String METAMODEL_OPTIONS = "Metamodel Options"; //$NON-NLS-1$
 	/** Input Model Options. */
