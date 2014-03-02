@@ -1,0 +1,46 @@
+Contributing to ATL - A Model Transformation Technology
+=======================================================
+
+Thanks for your interest in this project.
+
+Project description:
+--------------------
+
+ATL (ATL Transformation Language) is a model transformation language and toolkit. In the field of Model-Driven Engineering (MDE), ATL provides ways to produce a set of target models from a set of source models. Developed on top of the Eclipse platform, the ATL Integrated Environnement (IDE) provides a number of standard development tools (syntax highlighting, debugger, etc.) that aims to ease development of ATL transformations.
+
+- https://projects.eclipse.org/projects/modeling.mmt.atl
+
+Developer resources:
+--------------------
+
+Information regarding source code management, builds, coding standards, and more.
+
+- https://projects.eclipse.org/projects/modeling.mmt.atl/developer
+
+Contributor License Agreement:
+------------------------------
+
+Before your contribution can be accepted by the project, you need to create and electronically sign the Eclipse Foundation Contributor License Agreement (CLA).
+
+- http://www.eclipse.org/legal/CLA.php
+
+Contact:
+--------
+
+Contact the project developers via the project's "dev" list.
+
+- https://dev.eclipse.org/mailman/listinfo/m2m-atl-dev
+
+Search for bugs:
+----------------
+
+This project uses Bugzilla to track ongoing development and issues.
+
+- https://bugs.eclipse.org/bugs/buglist.cgi?product=MMT.ATL
+
+Create a new bug:
+-----------------
+
+Be sure to search for existing bugs before you create another one. Remember that contributions are always welcome!
+
+- https://bugs.eclipse.org/bugs/enter_bug.cgi?product=MMT.ATL
