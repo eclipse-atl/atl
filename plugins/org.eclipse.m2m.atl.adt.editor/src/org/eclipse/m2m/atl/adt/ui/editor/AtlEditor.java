@@ -1329,11 +1329,11 @@ public class AtlEditor extends TextEditor {
 	 * @return the IResource associated to <code>AtlEditor</code> or <code>null</code> if none
 	 */
 	public IResource getUnderlyingResource() {
-		IFileEditorInput input = (IFileEditorInput)getEditorInput();
-		if (input == null)
-			return null;
-
-		return input.getFile();
+		IEditorInput input = getEditorInput();
+		if (input instanceof IFileEditorInput) {
+			return ((IFileEditorInput)input).getFile();
+		}
+		return null;
 	}
 
 	public ISourceViewer getViewer() {
