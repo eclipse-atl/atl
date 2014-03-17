@@ -927,3 +927,17 @@ nodefault rule RefiningRuleInRegularMode {
 			description <- 'Refining rules are only allowed in refining mode'
 		) 
 }
+
+nodefault rule NoOutPatternElementReferenceInInPattern {
+	from
+		s : ATL!VariableExp (
+			s.referredVariable.oclIsKindOf(ATL!OutPatternElement) and
+			s.getRootComposite().oclIsKindOf(ATL!InPattern)
+		)
+	to
+		t : Problem!Problem (
+			severity <- #error,
+			location <- s.location,
+			description <- 'Cannot refer to target element \'' + s.referredVariable.varName + '\' in a \'from\' clause'
+		) 
+}

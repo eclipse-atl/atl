@@ -124,6 +124,16 @@ public class CompilerTest extends EMFTVMTest {
 		final Model refModel = loadTestModel(new ResourceSetImpl(), "/test-data/Regression/Bug425492.emftvm");
 		assertEquals(refModel.getResource(), outModel.getResource());
 	}
+	
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=429745">Bug # 429745</a>: 
+	 * EMFTVM compiler crashes on reference to target element in rule "from" clause.
+	 */
+	public void testBug429745() {
+		final Model outModel = atlwfr(URI.createURI("test-data/Regression/Bug429745.atl", true));
+		final Resource pbs = outModel.getResource();
+		assertEquals(1, pbs.getContents().size());
+	}
 
 	/**
 	 * Tests the compilation output for "ATLtoEMFTVM.atl".
