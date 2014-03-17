@@ -313,10 +313,24 @@ public class IntegrationTest extends EMFTVMTest {
 		td.finishLoading();
 		final Object result = env.run(td);
 		td.finish();
-		
+
 		// Transformation should not crash
 
 		assertNotNull(result);
+	}
+
+	/**
+	 * Tests "ToStringTest.atl".
+	 */
+	public void testToString() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.loadModule(createTestModuleResolver(), "ToStringTest");
+		td.finishLoading();
+		final Object result = env.run(td);
+		td.finish();
+
+		assertEquals("Sequence{1, 2, 'three', 'OclUndefined'}", result);
 	}
 
 }
