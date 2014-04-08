@@ -705,7 +705,21 @@ rule MatchedRule {
 		nested <- s.variables->collect(v|thisModule.resolveTemp(v, 'cb'))
 			->union(s.outPatternElements->collect(e|e.bindings)->flatten())
 			->union(remappedSourceElements->collect(e|thisModule.RemapInPatternElement(e)))
-			->union(deletedSourceElements->collect(e|thisModule.DeleteInPatternElement(e))),
+			->union(deletedSourceElements->collect(e|thisModule.DeleteInPatternElement(e)))
+			->union(
+				if not s.oclIsKindOf(ATL!LazyMatchedRule) or s.outPatternElements->isEmpty() then
+					Sequence{}
+				else
+					let e : ATL!OutPatternElement = s.outPatternElements->first() in
+					Sequence{thisModule.LoadPatternElement(
+						if e.isRefiningElement then
+							e.actualSourceElement
+						else
+							e
+						endif
+					)}
+				endif
+			),
 	   	code <- Sequence{a_invokeAllCbs}),
 	   aln : EMFTVM!LineNumber (
 	   	startLine <- s.applyLoc.startLine,
@@ -1145,6 +1159,24 @@ lazy rule RemapInPatternElement {
 	   	opname <- 'remap',
 		argcount <- 1),
 	   pop : EMFTVM!Pop																-- [...]
+	do {
+		cb;
+	}
+}
+
+lazy rule LoadPatternElement {
+	from s : ATL!PatternElement
+	to cb : EMFTVM!CodeBlock (
+		lineNumbers <- Sequence{ln},
+		code <- Sequence{load}),
+	   ln : EMFTVM!LineNumber (
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{load}),
+	   load : EMFTVM!Load (															-- [..., source]
+	   	localVariable <- thisModule.resolveTemp(s, 'ov'))
 	do {
 		cb;
 	}

@@ -113,8 +113,8 @@ public abstract class EMFTVMTest extends TestCase {
 				assertSameURI(errorMsg, (EObject) leftVs.next(), (EObject) rightVs.next());
 			}
 		} else {
-			final EObject leftValue = (EObject) left.eGet(ref);
-			final EObject rightValue = (EObject) right.eGet(ref);
+			final EObject leftValue = left == null ? null : (EObject) left.eGet(ref);
+			final EObject rightValue = right == null ? null : (EObject) right.eGet(ref);
 			final String errorMsg = String.format("Different value found on %s.%s (%s) and %s.%s (%s)",
 					EMFTVMUtil.toPrettyString(left, null), ref.getName(), EMFTVMUtil.toPrettyString(leftValue, null),
 					EMFTVMUtil.toPrettyString(right, null), ref.getName(), EMFTVMUtil.toPrettyString(rightValue, null));
@@ -134,8 +134,10 @@ public abstract class EMFTVMTest extends TestCase {
 	 *            the right-hand value to compare
 	 */
 	private static void assertSameURI(final String errorMsg, final EObject leftValue, final EObject rightValue) {
-		assertEquals(errorMsg, leftValue.eResource().getURI(), rightValue.eResource().getURI());
-		assertEquals(errorMsg, leftValue.eResource().getURIFragment(leftValue), rightValue.eResource().getURIFragment(rightValue));
+		assertEquals(errorMsg, leftValue == null ? null : leftValue.eResource().getURI(), 
+				rightValue == null ? null : rightValue.eResource().getURI());
+		assertEquals(errorMsg, leftValue == null ? null : leftValue.eResource().getURIFragment(leftValue), 
+				rightValue == null ? null : rightValue.eResource().getURIFragment(rightValue));
 	}
 
 	/**

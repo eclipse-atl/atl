@@ -39,4 +39,5 @@
   <features xsi:type="emftvm:Operation" name="SET"/>
   <features xsi:type="emftvm:Operation" name="SET"/>
   <features xsi:type="emftvm:Operation" name="SET"/>
+  <features xsi:type="emftvm:Operation" name="SET"/>
 </emftvm:Module>
