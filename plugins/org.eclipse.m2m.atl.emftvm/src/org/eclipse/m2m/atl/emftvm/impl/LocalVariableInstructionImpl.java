@@ -411,6 +411,20 @@ public abstract class LocalVariableInstructionImpl extends InstructionImpl imple
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void eNotify(Notification notification) {
+		super.eNotify(notification);
+		switch (notification.getFeatureID(null)) {
+		case EmftvmPackage.CODE_BLOCK__CODE:
+			setCbOffset(CB_OFFSET_EDEFAULT);
+			setLocalVariableIndex(LOCAL_VARIABLE_INDEX_EDEFAULT);
+			break;
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 

@@ -187,10 +187,6 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		final Model emftvmm = EmftvmFactory.eINSTANCE.createModel();
 		emftvmm.setResource(r);
 
-		final Resource ri = rs.createResource(URI.createFileURI("inlined.emftvm"), "org.eclipse.m2m.atl.emftvm");
-		final Model emftvmmi = EmftvmFactory.eINSTANCE.createModel();
-		emftvmmi.setResource(ri);
-
 		final ExecEnv atlWfrEnv = atlWfrPool.getExecEnv();
 		final ExecEnv atlToEmftvmEnv = atlToEmftvmPool.getExecEnv();
 		final ExecEnv inlineCodeblocksEnv = inlineCodeblocksPool.getExecEnv();
@@ -206,11 +202,10 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 				atlToEmftvmEnv.run(null);
 
 				if (getProblems(pbm, pbs) == 0) {
-					inlineCodeblocksEnv.registerInputModel("IN", emftvmm);
-					inlineCodeblocksEnv.registerOutputModel("OUT", emftvmmi);
+					inlineCodeblocksEnv.registerInOutModel("IN", emftvmm);
 					inlineCodeblocksEnv.run(null);
 
-					ri.save(outputStream, Collections.emptyMap());
+					r.save(outputStream, Collections.emptyMap());
 				}
 			}
 		} catch (VMException e) {
@@ -225,7 +220,6 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 			inlineCodeblocksPool.returnExecEnv(inlineCodeblocksEnv);
 			rs.getResources().remove(pr); // unload
 			rs.getResources().remove(r); // unload
-			rs.getResources().remove(ri); // unload
 		}
 
 		return pbs.toArray(new EObject[pbs.size()]);

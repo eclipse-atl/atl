@@ -1113,6 +1113,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				}
 				// Prevent ConcurrentModificationException by using eObjects copy
 				for (EObject o : eObjects) {
+					// Skip remapping on objects queued for deletion
+					if (deletionQueue.containsKey(o)) {
+						continue;
+					}
 					for (EReference ref : o.eClass().getEAllReferences()) {
 						// Only change changeable references that are not the reverse of a containment reference
 						if (ref.isChangeable() && !ref.isContainer()) {
