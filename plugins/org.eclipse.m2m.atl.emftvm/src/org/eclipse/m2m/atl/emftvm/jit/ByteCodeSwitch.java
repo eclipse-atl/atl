@@ -15,6 +15,7 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -151,6 +152,10 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	 * Whether or not the current execution environment has a monitor attached.
 	 */
 	protected final boolean hasMonitor;
+	/**
+	 * Set of instructions to skip while generating bytecode.
+	 */
+	protected final java.util.Set<Instruction> skipInstructions = new HashSet<Instruction>();
 
 	/**
 	 * Creates a new {@link ByteCodeSwitch}.
@@ -385,7 +390,15 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		if (EMFTVMUtil.NATIVE.equals(object.getModelname())) {
 			try {
 				final Class<?> type = NativeTypes.findType(object.getTypename());
-				ldc(Type.getType(type)); // [..., type]
+				final Instruction nextInstr = nextInstruction(object);
+				if (nextInstr instanceof New) {
+					new_(type);
+					dup();
+					invokeSpec(type, "<init>", Void.TYPE);
+					skipInstructions.add(nextInstr);
+				} else {
+					ldc(Type.getType(type)); // [..., type]
+				}
 				return super.caseFindtype(object);
 			} catch (ClassNotFoundException e) {
 				// fall back - will generate same exception anyway
@@ -416,16 +429,18 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	 */
 	@Override
 	public MethodVisitor caseNew(final New object) {
-		// [..., type]
-		final String modelName = object.getModelname();
-		if (modelName == null) {
-			aconst_null(); // [..., type, null]
-		} else {
-			ldc(object.getModelname()) ; // [..., type, modelname]
+		if (!skipInstructions.contains(object)) {
+			// [..., type]
+			final String modelName = object.getModelname();
+			if (modelName == null) {
+				aconst_null(); // [..., type, null]
+			} else {
+				ldc(object.getModelname()) ; // [..., type, modelname]
+			}
+			aload(2); // env: [..., type, modelname, env]
+			invokeStat(JITCodeBlock.class, "newInstance", Object.class,  // newInstance(type, modelname, env): [..., object]
+					Object.class, String.class, ExecEnv.class);
 		}
-		aload(2); // env: [..., type, modelname, env]
-		invokeStat(JITCodeBlock.class, "newInstance", Object.class,  // newInstance(type, modelname, env): [..., object]
-				Object.class, String.class, ExecEnv.class);
 		return super.caseNew(object);
 	}
 
@@ -2431,6 +2446,20 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	protected void tryCatchBlock(final Label start, final Label end, 
 			final Label handler, final Class<?> type) {
 		mv.visitTryCatchBlock(start, end, handler, Type.getInternalName(type));
+	}
+	
+	/**
+	 * Returns the next instruction for the given instruction, or <code>null</code>.
+	 * @param instruction the instruction
+	 * @return the next instruction for the given instruction, or <code>null</code>
+	 */
+	protected Instruction nextInstruction(final Instruction instruction) {
+		final List<Instruction> code = instruction.getOwningBlock().getCode();
+		final int index = code.indexOf(instruction);
+		if (index < code.size() - 1) {
+			return code.get(index + 1);
+		}
+		return null;
 	}
 
 }
