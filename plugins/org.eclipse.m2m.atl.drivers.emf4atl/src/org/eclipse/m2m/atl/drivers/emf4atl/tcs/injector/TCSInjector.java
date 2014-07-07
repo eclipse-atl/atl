@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2004, 2008 INRIA.
+ * Copyright (c) 2004, 2008, 2014 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     INRIA - initial API and implementation
+ *     Dennis Wagelaar
  *
  * $Id: TCSInjector.java,v 1.1 2009/04/21 14:11:03 wpiers Exp $
  */
@@ -14,6 +15,8 @@ package org.eclipse.m2m.atl.drivers.emf4atl.tcs.injector;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +29,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
 /**
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class TCSInjector implements Injector {
 	
@@ -58,6 +62,15 @@ public class TCSInjector implements Injector {
 	 * @see org.eclipse.m2m.atl.engine.injectors.Injector#inject(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.InputStream, java.util.Map)
 	 */
 	public ASMModelElement inject(ASMModel target, InputStream source, Map params) throws IOException {
+		return inject(target, new InputStreamReader(source), params);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.m2m.atl.engine.injectors.Injector#inject(org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel, java.io.Reader, java.util.Map)
+	 */
+	public ASMModelElement inject(ASMModel target, Reader source, Map params) throws IOException {
 		this.targetModelAdapter = new ASMModelAdapter(target);
 		
 		ASMModel problems = (ASMModel)params.get("problems");

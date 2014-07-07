@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.tests.unit;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
 				is = atlUrl.openStream();
 				try {
-					AtlCompiler.compile(is, outName);
+					AtlCompiler.compile(new InputStreamReader(is), outName);
 				} catch (CompilerNotFoundException e) {
 					fail("Compiler not found", e); //$NON-NLS-1$
 				}

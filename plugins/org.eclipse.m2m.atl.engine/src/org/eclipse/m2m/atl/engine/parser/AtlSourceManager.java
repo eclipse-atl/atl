@@ -390,25 +390,41 @@ public final class AtlSourceManager {
 			int length = buffer.length;
 			BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer,
 					0, length)));
-			while (reader.ready()) {
-				String line = reader.readLine();
-				// code begins, checking stops.
-				if (line == null || line.startsWith("library") //$NON-NLS-1$
-						|| line.startsWith("module") || line.startsWith("query")) { //$NON-NLS-1$ //$NON-NLS-2$
-					break;
-				} else {
-					if (line.trim().startsWith("-- @" + tag)) { //$NON-NLS-1$
-						line = line.replaceFirst("^\\p{Space}*--\\p{Space}*@" //$NON-NLS-1$
-								+ tag + "\\p{Space}+([^\\p{Space}]*)\\p{Space}*$", "$1"); //$NON-NLS-1$ //$NON-NLS-2$
-						res.add(line);
-					}
-				}
-			}
+			res = getTaggedInformations(reader, tag);
 			reader.close();
 		} catch (IOException e) {
 			// TODO apply marker on the file
 			// Exceptions are detected by the compiler
 			// AtlUIPlugin.log(e);
+		}
+		return res;
+	}
+
+	/**
+	 * Returns the list of tagged informations (header).
+	 * 
+	 * @param reader
+	 *            the input
+	 * @param tag
+	 *            the tag to search
+	 * @return the tagged information
+	 * @throws IOException 
+	 */
+	public static List getTaggedInformations(BufferedReader reader, String tag) throws IOException {
+		final List res = new ArrayList();
+		while (reader.ready()) {
+			String line = reader.readLine();
+			// code begins, checking stops.
+			if (line == null || line.startsWith("library") //$NON-NLS-1$
+					|| line.startsWith("module") || line.startsWith("query")) { //$NON-NLS-1$ //$NON-NLS-2$
+				break;
+			} else {
+				if (line.trim().startsWith("-- @" + tag)) { //$NON-NLS-1$
+					line = line.replaceFirst("^\\p{Space}*--\\p{Space}*@" //$NON-NLS-1$
+							+ tag + "\\p{Space}+([^\\p{Space}]*)\\p{Space}*$", "$1"); //$NON-NLS-1$ //$NON-NLS-2$
+					res.add(line);
+				}
+			}
 		}
 		return res;
 	}

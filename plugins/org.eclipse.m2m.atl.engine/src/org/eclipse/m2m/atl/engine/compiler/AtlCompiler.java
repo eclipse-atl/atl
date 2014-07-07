@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 INRIA.
+ * Copyright (c) 2004, 2014 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,13 +8,16 @@
  * Contributors:
  *    Frederic Jouault (INRIA) - initial API and implementation
  *    Matthias Bohlen - refactorings for ease of use and elimination of duplicate code
+ *    Dennis Wagelaar
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.compiler;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -38,6 +41,7 @@ import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
  * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:mbohlen@mbohlen.de">Matthias Bohlen</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public final class AtlCompiler {
 
@@ -121,7 +125,7 @@ public final class AtlCompiler {
 	 *            The IFile to which the ATL compiled program will be saved.
 	 * @return the problems which occured during compilation
 	 */
-	public static EObject[] compile(InputStream in, IFile out) throws IOException {
+	public static EObject[] compile(Reader in, IFile out) throws IOException {
 		EObject[] ret = compile(in, out.getLocation().toString());
 		try {
 			out.refreshLocal(0, null);
@@ -140,16 +144,16 @@ public final class AtlCompiler {
 	 *            The output file name
 	 * @return the problems which occurred during compilation
 	 */
-	public static EObject[] compile(InputStream in, String outputFileName) throws IOException {
+	public static EObject[] compile(Reader in, String outputFileName) throws IOException {
 		EObject[] ret = null;
 		String atlcompiler = null;
-		InputStream newIn = in;
-		// The BufferedInputStream is required to reset the stream before actually compiling
-		newIn = new BufferedInputStream(newIn, MAX_LINE_LENGTH);
+		// The BufferedReader is required to reset the stream before actually compiling
+		final BufferedReader newIn = new BufferedReader(in, MAX_LINE_LENGTH);
 		newIn.mark(MAX_LINE_LENGTH);
-		byte[] buffer = new byte[MAX_LINE_LENGTH];
+		char[] buffer = new char[MAX_LINE_LENGTH];
 		newIn.read(buffer);
-		atlcompiler = AtlSourceManager.getCompilerName(AtlSourceManager.getTaggedInformations(buffer,
+		newIn.reset();
+		atlcompiler = AtlSourceManager.getCompilerName(AtlSourceManager.getTaggedInformations(newIn,
 				AtlSourceManager.COMPILER_TAG));
 		newIn.reset();
 

@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.engine.injectors.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,6 +28,7 @@ import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModelElement;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMOclAny;
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMString;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -90,6 +92,12 @@ public class XMLInjector extends DefaultHandler implements Injector {
 		return root;
 	}
 	
+	public ASMModelElement inject(ASMModel target, Reader source, Map params) throws IOException {
+		keepWhitespace = !("false".equals(params.get("keepWhitespace")));
+		performImportation(null, target, new InputSource(source), null);
+		return root;
+	}
+	
 	/* Old Injector interface. */
 	
 	public String getPrefix() {
@@ -99,6 +107,19 @@ public class XMLInjector extends DefaultHandler implements Injector {
 	public void performImportation(ASMModel format, ASMModel extent, InputStream in, String other) throws IOException {
 		this.extent = extent;
 
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		try {
+			errors = 0;
+			SAXParser saxParser = factory.newSAXParser();
+			saxParser.parse(in, new ProtectedHandler(this));
+		} catch (Throwable err) {
+			ATLLogger.log(Level.SEVERE, err.getLocalizedMessage(), err);
+		}
+	}
+	
+	private void performImportation(ASMModel format, ASMModel extent, InputSource in, String other) {
+		this.extent = extent;
+		
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		try {
 			errors = 0;

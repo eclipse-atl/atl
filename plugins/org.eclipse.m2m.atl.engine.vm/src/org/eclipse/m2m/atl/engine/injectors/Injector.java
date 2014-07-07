@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 INRIA.
+ * Copyright (c) 2004, 2014 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,11 +7,13 @@
  *
  * Contributors:
  * 	   Frederic Jouault (INRIA) - initial API and implementation
+ * 	   Dennis Wagelaar
  *******************************************************************************/
 package org.eclipse.m2m.atl.engine.injectors;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.Map;
 
 import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
@@ -46,6 +48,20 @@ public interface Injector {
 	 */
 	ASMModelElement inject(ASMModel target, InputStream source, Map params) throws IOException;
 
+	/**
+	 * Performs the injection.
+	 * 
+	 * @param target
+	 *            The target model to populate.
+	 * @param source
+	 *            The source Reader. Alternative source kinds can be passed in params.
+	 * @param params
+	 *            A Map of additional parameters. The key is the name.
+	 * @return The root element of the populated model if it exists, any element else.
+	 * @throws IOException
+	 */
+	ASMModelElement inject(ASMModel target, Reader source, Map params) throws IOException;
+	
 	/* Old Injector interface. */
 	/**
 	 * @deprecated This information should be in the megamodel.

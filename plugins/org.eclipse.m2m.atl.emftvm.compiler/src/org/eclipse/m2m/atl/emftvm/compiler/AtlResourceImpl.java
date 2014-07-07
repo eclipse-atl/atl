@@ -15,12 +15,20 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -172,7 +180,8 @@ public class AtlResourceImpl extends ResourceImpl {
 		if (options != null) {
 			params.putAll(options);
 		}
-		ebnfi.inject(modelWrapper, new ByteArrayInputStream(getRawContent()), params);
+		final Reader reader = new InputStreamReader(new ByteArrayInputStream(getRawContent()), getCharset());
+		ebnfi.inject(modelWrapper, reader, params);
 		// Report problems
 		int nbErrors = 0;
 		for (Iterator<? extends Object> i = pbs.getElementsByType(parser.getProblemMetamodel().getMetaElementByName("Problem")).iterator(); i
@@ -271,6 +280,27 @@ public class AtlResourceImpl extends ResourceImpl {
 				r.put(p.getNsURI(), p);
 			}
 		}
+	}
+	
+	/**
+	 * Returns the {@link Charset} to use for the current {@link URI}.
+	 * @return the {@link Charset} to use for the current {@link URI}
+	 * @throws IOException 
+	 */
+	protected Charset getCharset() throws IOException {
+		final URI uri = getURI();
+		if (uri != null && uri.isPlatformResource()) {
+			final IWorkspaceRoot wr = ResourcesPlugin.getWorkspace().getRoot();
+			final IResource r = wr.findMember(uri.toPlatformString(true));
+			if (r instanceof IFile) {
+				try {
+					return Charset.forName(((IFile)r).getCharset());
+				} catch (CoreException e) {
+					throw new IOException(e);
+				}
+			}
+		}
+		return Charset.defaultCharset();
 	}
 
 }

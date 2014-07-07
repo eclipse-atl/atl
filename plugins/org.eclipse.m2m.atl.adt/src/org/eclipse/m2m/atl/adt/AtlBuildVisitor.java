@@ -13,6 +13,8 @@ package org.eclipse.m2m.atl.adt;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -112,7 +114,8 @@ public class AtlBuildVisitor implements IResourceVisitor {
 			IFile out = resource.getParent().getFile(new Path(outName));
 			InputStream is = ((IFile)resource).getContents();
 			try {
-				EObject[] pbms = AtlCompiler.compile(is, out);
+				Reader r = new InputStreamReader(is, ((IFile)resource).getCharset());
+				EObject[] pbms = AtlCompiler.compile(r, out);
 				markerMaker.resetPbmMarkers(resource, pbms);
 				IFile asmFile = getAsmFile(resource);
 				if (asmFile.exists()) {

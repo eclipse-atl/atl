@@ -11,8 +11,15 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests.compiler;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -133,6 +140,32 @@ public class CompilerTest extends EMFTVMTest {
 		final Model outModel = atlwfr(URI.createURI("test-data/Regression/Bug429745.atl", true));
 		final Resource pbs = outModel.getResource();
 		assertEquals(1, pbs.getContents().size());
+	}
+
+	/**
+	 * Tests detection of character set encoding by the compiler.
+	 * @throws CoreException 
+	 * @throws IOException 
+	 */
+	public void testCharEncoding() throws CoreException, IOException {
+		final IWorkspaceRoot wr = ResourcesPlugin.getWorkspace().getRoot();
+		final IProject project = wr.getProject("testCharEncoding");
+		project.create(null);
+		project.open(null);
+		final IFile file = project.getFile("CharEncodingTest.atl");
+		final InputStream inputStream = CompilerTest.class.getResourceAsStream("/test-data/CharEncodingTest.atl");
+		try {
+			file.create(inputStream, true, null);
+			file.setCharset("UTF-8", null);
+		} finally {
+			inputStream.close();
+		}
+
+		final Model outModel = compile(URI.createPlatformResourceURI("/testCharEncoding/CharEncodingTest.atl", true));
+		assertEquals(null, validate(outModel));
+
+		final Model refModel = loadTestModel(new ResourceSetImpl(), "/test-data/CharEncodingTest.emftvm");
+		assertEquals(refModel.getResource(), outModel.getResource());
 	}
 
 	/**

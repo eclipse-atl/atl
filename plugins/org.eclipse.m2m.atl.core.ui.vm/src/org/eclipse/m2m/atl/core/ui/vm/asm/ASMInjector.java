@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.Map;
 
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -75,6 +76,17 @@ public class ASMInjector implements IInjector {
 		} catch (IOException e) {
 			throw new ATLCoreException(e.getLocalizedMessage(), e);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.io.Reader,
+	 *      java.util.Map)
+	 */
+	public void inject(IModel targetModel, Reader source, Map<String, Object> options)
+			throws ATLCoreException {
+		throw new UnsupportedOperationException();
 	}
 
 	private void inject(IModel targetModel, String source, String modelName) throws ATLCoreException {

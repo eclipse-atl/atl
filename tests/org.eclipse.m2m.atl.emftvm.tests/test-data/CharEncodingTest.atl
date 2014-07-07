@@ -1,0 +1,2 @@
+-- @atlcompiler emftvm
+query CharEncodingTest = 'séparé ou marié?'.debug('CharEncodingTest');

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008 INRIA.
+ * Copyright (c) 2008, 2014 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,13 +7,14 @@
  * 
  * Contributors:
  *     INRIA - initial API and implementation
+ *     Dennis Wagelaar
  *
  * $Id: ParserLauncher.java,v 1.1 2009/04/21 14:12:27 wpiers Exp $
  */
 package org.eclipse.m2m.atl.dsls.tcs.injector;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,7 +29,7 @@ import org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.ParserWrapper;
  * 
  * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
- *
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class ParserLauncher {
 
@@ -37,7 +38,7 @@ public class ParserLauncher {
 	private List refSettings;
 	private ParserWrapper parserWrapper;
 
-	public Object parse(ModelAdapter target, InputStream in, Map arguments) throws IOException {
+	public Object parse(ModelAdapter target, Reader in, Map arguments) throws IOException {
 		Object ret = null;
 
 		refSettings = new ArrayList();
