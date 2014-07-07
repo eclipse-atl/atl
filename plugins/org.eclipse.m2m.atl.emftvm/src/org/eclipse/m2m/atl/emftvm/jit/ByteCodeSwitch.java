@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011-2013 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2014 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -92,7 +92,6 @@ import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.LazyListOnList;
-import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.NativeTypes;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
@@ -2134,11 +2133,11 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 					invokeVirt(EnumConversionList.class, "cache", EnumConversionList.class); // enumlist.cache(): [..., enumlist]
 					label(ifModelNull); // [..., enumlist]
 				}
-			} else if (Set.class.isAssignableFrom(cls)) {
+			} else if (java.util.Set.class.isAssignableFrom(cls)) {
 				new_(EnumConversionSetOnSet.class); // new EnumConversionSetOnSet: [..., val, enumset]
 				dup_x1(); // [..., enumset, val, enumset]
 				swap(); // [..., enumset, enumset, val]
-				invokeCons(EnumConversionSetOnSet.class, Set.class); // enumset.<init>(val): [..., enumset]
+				invokeCons(EnumConversionSetOnSet.class, java.util.Set.class); // enumset.<init>(val): [..., enumset]
 				if (EObject.class.isAssignableFrom(selfCls)) {
 					final Label ifModelNull = new Label();
 					aload(2); // env: [..., enumset, env]
@@ -2148,7 +2147,6 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 					invokeVirt(EnumConversionSetOnSet.class, "cache", EnumConversionSetOnSet.class); // enumlist.cache(): [..., enumset]
 					label(ifModelNull); // [..., enumset]
 				}
-				invokeVirt(LazyCollection.class, "asSet", LazySet.class); // enumlist.asSet(): [..., enumset]
 			} else {
 				new_(EnumConversionList.class); // new EnumConversionList: [..., val, enumlist]
 				dup_x1(); // [..., enumlist, val, enumlist]
