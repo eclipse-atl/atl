@@ -296,7 +296,7 @@ public class AtlResourceImpl extends ResourceImpl {
 				try {
 					return Charset.forName(((IFile)r).getCharset());
 				} catch (CoreException e) {
-					throw new IOException(e);
+					throw new ATLIOException(e);
 				}
 			}
 		}

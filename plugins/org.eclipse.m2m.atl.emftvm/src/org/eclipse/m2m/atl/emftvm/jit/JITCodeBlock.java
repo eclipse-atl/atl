@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011-2012 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2014 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@ package org.eclipse.m2m.atl.emftvm.jit;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -1509,110 +1508,6 @@ public abstract class JITCodeBlock {
 			return;
 		}
 		throw new NoSuchFieldException(String.format("Field %s::%s not found", EMFTVMUtil.toPrettyString(type, env), propname));
-	}
-
-	/**
-	 * Converts <code>array</code> to a {@link List}.
-	 * @param array the array to convert
-	 * @return the {@link List} containing the <code>array</code> values
-	 */
-	protected static List<Boolean> asList(boolean[] array) {
-		final List<Boolean> list = new ArrayList<Boolean>(array.length);
-		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
-		}
-		return list;
-	}
-
-	/**
-	 * Converts <code>array</code> to a {@link List}.
-	 * @param array the array to convert
-	 * @return the {@link List} containing the <code>array</code> values
-	 */
-	protected static List<Character> asList(char[] array) {
-		final List<Character> list = new ArrayList<Character>(array.length);
-		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
-		}
-		return list;
-	}
-
-	/**
-	 * Converts <code>array</code> to a {@link List}.
-	 * @param array the array to convert
-	 * @return the {@link List} containing the <code>array</code> values
-	 */
-	protected static List<Byte> asList(byte[] array) {
-		final List<Byte> list = new ArrayList<Byte>(array.length);
-		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
-		}
-		return list;
-	}
-
-	/**
-	 * Converts <code>array</code> to a {@link List}.
-	 * @param array the array to convert
-	 * @return the {@link List} containing the <code>array</code> values
-	 */
-	protected static List<Short> asList(short[] array) {
-		final List<Short> list = new ArrayList<Short>(array.length);
-		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
-		}
-		return list;
-	}
-
-	/**
-	 * Converts <code>array</code> to a {@link List}.
-	 * @param array the array to convert
-	 * @return the {@link List} containing the <code>array</code> values
-	 */
-	protected static List<Integer> asList(int[] array) {
-		final List<Integer> list = new ArrayList<Integer>(array.length);
-		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
-		}
-		return list;
-	}
-
-	/**
-	 * Converts <code>array</code> to a {@link List}.
-	 * @param array the array to convert
-	 * @return the {@link List} containing the <code>array</code> values
-	 */
-	protected static List<Long> asList(long[] array) {
-		final List<Long> list = new ArrayList<Long>(array.length);
-		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
-		}
-		return list;
-	}
-
-	/**
-	 * Converts <code>array</code> to a {@link List}.
-	 * @param array the array to convert
-	 * @return the {@link List} containing the <code>array</code> values
-	 */
-	protected static List<Float> asList(float[] array) {
-		final List<Float> list = new ArrayList<Float>(array.length);
-		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
-		}
-		return list;
-	}
-
-	/**
-	 * Converts <code>array</code> to a {@link List}.
-	 * @param array the array to convert
-	 * @return the {@link List} containing the <code>array</code> values
-	 */
-	protected static List<Double> asList(double[] array) {
-		final List<Double> list = new ArrayList<Double>(array.length);
-		for (int i = 0; i < array.length; i++) {
-			list.add(array[i]);
-		}
-		return list;
 	}
 
 }

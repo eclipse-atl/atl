@@ -18,7 +18,7 @@ import junit.textui.TestRunner;
 import org.eclipse.m2m.atl.emftvm.tests.compiler.AtlResourceTest;
 import org.eclipse.m2m.atl.emftvm.tests.compiler.CompilerTest;
 import org.eclipse.m2m.atl.emftvm.tests.integration.IntegrationTest;
-import org.eclipse.m2m.atl.emftvm.tests.performance.PerformanceTest;
+import org.eclipse.m2m.atl.emftvm.tests.performance.EcoreCopyPerformanceTest;
 import org.eclipse.m2m.atl.emftvm.tests.pojo.PojoModelTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.ExecEnvPoolTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyBagOnCollectionTest;
@@ -73,7 +73,7 @@ public class EmftvmAllTests extends TestSuite {
 		suite.addTestSuite(CompilerTest.class);
 		suite.addTestSuite(AtlResourceTest.class);
 		suite.addTestSuite(IntegrationTest.class);
-		suite.addTestSuite(PerformanceTest.class);
+		suite.addTestSuite(EcoreCopyPerformanceTest.class);
 		return suite;
 	}
 
