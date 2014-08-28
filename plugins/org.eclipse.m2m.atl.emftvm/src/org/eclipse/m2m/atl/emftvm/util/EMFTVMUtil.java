@@ -324,16 +324,16 @@ public final class EMFTVMUtil {
 	 * @return the string representation of <code>object</code>.
 	 */
 	public static String toPrettyString(final Object object, final ExecEnv env) {
-		if (object instanceof EClass) {
+		if (object instanceof EClassifier) {
 			final StringBuffer sb = new StringBuffer();
 			if (env != null) {
-				final Model model = env.getModelOf((EClass) object);
+				final Model model = env.getModelOf((EClassifier) object);
 				if (model != null) {
 					sb.append(env.getModelID(model));
 					sb.append('!');
 				}
 			}
-			sb.append(((EClass) object).getName());
+			sb.append(((EClassifier) object).getName());
 			return sb.toString();
 		} else if (object instanceof EObject) { // EObjects have a notoriously bad toString()
 			final StringBuffer buf = new StringBuffer();
