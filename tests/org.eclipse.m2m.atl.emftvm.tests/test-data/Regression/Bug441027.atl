@@ -1,0 +1,24 @@
+-- @atlcompiler emftvm
+-- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
+module "Regression::Bug441027";
+
+create OUT : EMFTVM from IN : EMFTVM;
+
+lazy rule OpcodeToOperation {
+	from s : EMFTVM!Opcode
+	to t : EMFTVM!Operation (
+		name <- s.getName()
+	)
+	do {
+		t;
+	}
+}
+
+endpoint rule Module() {
+	to t : EMFTVM!Module (
+		features <- EMFTVM!Instruction.allInstancesFrom('IN')
+			->collect(i | 
+				thisModule.OpcodeToOperation(i.opcode.debug('opcode'))
+			)
+	)
+}

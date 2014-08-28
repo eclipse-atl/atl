@@ -320,6 +320,27 @@ public class IntegrationTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=441027">Bug # 441027</a>.
+	 */
+	public void testBug441027() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Model in = loadTestModel(rs, "/test-data/Regression/Bug441027.emftvm");
+		final Model out = createTestModel(rs, "/test-data/Regression/Bug441027-out.xmi");
+		env.registerInputModel("IN", in);
+		env.registerOutputModel("OUT", out);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug441027");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug441027-out.xmi");
+		assertEquals(refOut.getResource(), out.getResource());
+	}
+
+	/**
 	 * Tests "ToStringTest.atl".
 	 */
 	public void testToString() {
