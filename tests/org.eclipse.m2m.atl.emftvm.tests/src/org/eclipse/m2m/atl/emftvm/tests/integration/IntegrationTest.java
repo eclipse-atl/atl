@@ -341,6 +341,25 @@ public class IntegrationTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=454382">Bug # 454382</a>.
+	 */
+	public void testBug454382() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.loadModule(createTestModuleResolver(), "Regression::Bug454382");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		// Test should finish in under a second (and print no "JIT miss" messages)
+		assertTrue(
+				String.format(
+						"Expected Regression::Bug454382 to complete in < 1 sec. but was %f sec.",
+						td.getFinished() / ((double) 1E9)),
+				td.getFinished() < 1E9);
+	}
+
+	/**
 	 * Tests "ToStringTest.atl".
 	 */
 	public void testToString() {

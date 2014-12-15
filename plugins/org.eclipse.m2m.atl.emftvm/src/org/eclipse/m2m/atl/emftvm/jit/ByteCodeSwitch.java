@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -1094,7 +1095,8 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		}
 		final int methodModifiers = getRelevantModifiers(method);
 		Class<?> dc = method.getDeclaringClass();
-		Class<?>[] dis = dc.getInterfaces();
+		java.util.Set<Class<?>> dis = new LinkedHashSet<Class<?>>(
+				Arrays.asList(dc.getInterfaces()));
 		while ((dc = dc.getSuperclass()) != null) {
 			try {
 				Method superMethod = dc.getDeclaredMethod(method.getName(), method.getParameterTypes());
@@ -1104,23 +1106,24 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 					break;
 				}
 			} catch (SecurityException e) {
-				break;
 			} catch (NoSuchMethodException e) {
-				break;
 			}
-			dis = dc.getInterfaces();
+			dis.addAll(Arrays.asList(dc.getInterfaces()));
 		}
-		while (dis.length > 0) {
-			Class<?>[] newDis = new Class<?>[0];
+		while (!dis.isEmpty()) {
+			java.util.Set<Class<?>> newDis = new LinkedHashSet<Class<?>>();
 			for (Class<?> di : dis) {
 				try {
-					method = di.getDeclaredMethod(method.getName(), method.getParameterTypes());
-					newDis = di.getInterfaces();
-					break; // skip sibling interfaces
+					// Only replace by method declared in a super-interface
+					if (di.isAssignableFrom(method.getDeclaringClass())) {
+						method = di.getDeclaredMethod(method.getName(), method.getParameterTypes());
+					}
 				} catch (SecurityException e) {
 				} catch (NoSuchMethodException e) {
 				}
+				newDis.addAll(Arrays.asList(di.getInterfaces()));
 			}
+			newDis.removeAll(dis);
 			dis = newDis;
 		}
 		return method;
