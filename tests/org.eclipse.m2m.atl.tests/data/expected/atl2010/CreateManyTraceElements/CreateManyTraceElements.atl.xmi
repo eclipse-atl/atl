@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ASCII"?>
+<atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="3:1-13:2" name="CreateManyTraceElements" isRefining="true">
+  <commentsBefore>-- @atlcompiler atl2010</commentsBefore>
+  <inModels location="4:33-4:47" name="IN">
+    <metamodel href="new-model#/"/>
+  </inModels>
+  <outModels location="4:8-4:23" name="OUT">
+    <metamodel href="new-model#/"/>
+  </outModels>
+  <elements xsi:type="atl:MatchedRule" location="6:1-13:2" name="Rename">
+    <outPattern location="9:2-12:4">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="10:3-12:4" varName="t">
+        <type xsi:type="ocl:OclModelElement" location="10:7-10:22" name="Class">
+          <model href="new-model#/"/>
+        </type>
+        <bindings location="11:4-11:24" propertyName="name">
+          <value xsi:type="ocl:OperatorCallExp" location="11:12-11:24" operationName="+">
+            <source xsi:type="ocl:NavigationOrAttributeCallExp" location="11:12-11:18" name="name">
+              <source xsi:type="ocl:VariableExp" location="11:12-11:13" referredVariable="//@elements.0/@inPattern/@elements.0"/>
+            </source>
+            <arguments xsi:type="ocl:StringExp" location="11:21-11:24" stringSymbol="_"/>
+          </value>
+        </bindings>
+      </elements>
+    </outPattern>
+    <inPattern location="7:2-8:21">
+      <elements xsi:type="atl:SimpleInPatternElement" location="8:3-8:21" varName="s" variableExp="//@elements.0/@outPattern/@elements.0/@bindings.0/@value/@source/@source">
+        <type xsi:type="ocl:OclModelElement" location="8:6-8:21" name="Class">
+          <model href="new-model#/"/>
+        </type>
+      </elements>
+    </inPattern>
+  </elements>
+</atl:Module>

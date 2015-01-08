@@ -1,0 +1,14 @@
+-- @atlcompiler atl2010
+
+
+module CreateManyTraceElements;
+create OUT: SampleUML refining IN: SampleUML;
+
+rule Rename {
+	from
+		s: SampleUML!Class
+	to
+		t: SampleUML!Class (
+			name <- s.name + '_'
+		)
+}

@@ -1,0 +1,80 @@
+-- @atlcompiler atl2010
+
+
+module ReverseBindings;
+create OUT: MMA from IN: MMA;
+
+helper context String def: startsWith(o: String): String =
+	self.regexReplaceAll('^' + o, '') <> self;
+
+rule Root {
+	from
+		s: MMA!Root
+	to
+		t: MMA!Root
+}
+
+rule A1 {
+	from
+		s: MMA!A (
+			s.name.startsWith('a')
+		)
+	to
+		t : MMA!A  -> (s.parent.children) (	 -- test reverse binding on first target
+				-- pattern element
+			name <- s.name
+		),
+		t2 : MMA!A -> (s.parent.children) (	 -- test reverse binding on non-first
+				-- target pattern element
+			name <- s.name + '2'
+		)
+}
+
+-- test multiple reverse bindings and multivalued reverse bindings
+rule A2 {
+	from
+		s: MMA!A (
+			s.name.startsWith('A')
+		)
+	to
+		t : MMA!A  -> (s.parent.children, s.sources.targets) (
+			name <- s.name
+		),
+		t2 : MMA!A -> (s.parent.children, s.sources.targets) (
+			name <- s.name + '2'
+		)
+}
+
+abstract rule B1 {
+	from
+		s: MMA!B
+	to
+		t : MMA!B  -> (s.parent.children) (
+			name <- s.name
+		),
+		t2 : MMA!B -> (s.parent.children) (
+			name <- s.name + '2'
+		)
+}
+
+-- test reverse binding inheritance
+rule B2 extends B1 {
+	from
+		s: MMA!B (
+			s.name.startsWith('b')
+		)
+	to
+		t: MMA!B,
+		t2: MMA!B
+}
+
+-- test reverse binding inheritance and addition
+rule B3 extends B1 {
+	from
+		s: MMA!B (
+			s.name.startsWith('B')
+		)
+	to
+		t : MMA!B -> (s.sources.targets),
+		t2 : MMA!B -> (s.sources.targets)
+}
