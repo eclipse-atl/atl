@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 INRIA and other.
+ * Copyright (c) 2004, 2014 INRIA and other.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,9 @@ package org.eclipse.m2m.atl.engine.compiler;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
@@ -61,18 +63,28 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	 *      java.lang.String)
 	 */
 	public final CompileTimeError[] compile(InputStream in, String outputFileName) {
-		EObject[] eObjects = internalCompile(in, outputFileName);
+		return compile(new InputStreamReader(in), outputFileName);
+	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compile(java.io.Reader,
+	 *      java.lang.String)
+	 */
+	public final CompileTimeError[] compile(Reader in, String outputFileName) {
+		EObject[] eObjects = internalCompile(in, outputFileName);
+		
 		// convert the EObjects into an easily readable form (instances of CompileTimeError).
 		CompileTimeError[] result = new CompileTimeError[eObjects.length];
 		for (int i = 0; i < eObjects.length; i++) {
 			result[i] = ProblemConverter.convertProblem(eObjects[i]);
 		}
-
+		
 		// return them to caller
 		return result;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -80,9 +92,19 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	 *      java.lang.String)
 	 */
 	public EObject[] compileWithProblemModel(InputStream in, String outputFileName) {
-		return internalCompile(in, outputFileName);
+		return compileWithProblemModel(new InputStreamReader(in), outputFileName);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(java.io.Reader,
+	 *      java.lang.String)
+	 */
+	public EObject[] compileWithProblemModel(Reader in, String outputFileName) {
+		return internalCompile(in, outputFileName);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -90,10 +112,20 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	 *      java.io.OutputStream)
 	 */
 	public EObject[] compileWithProblemModel(InputStream in, OutputStream outputStream) {
+		return compileWithProblemModel(new InputStreamReader(in), outputStream);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.engine.compiler.AtlStandaloneCompiler#compileWithProblemModel(java.io.Reader,
+	 *      java.io.OutputStream)
+	 */
+	public EObject[] compileWithProblemModel(Reader in, OutputStream outputStream) {
 		asmOutputStream = outputStream;
 		return internalCompile(in, ASMEmitter.DIRECT_COMPILATION);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -175,12 +207,12 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 	 *            The name of the file to which the ATL compiled program will be saved.
 	 * @return A List of EObject instance of Problem.
 	 */
-	public EObject[] internalCompile(InputStream in, String outputFileName) {
+	public EObject[] internalCompile(Reader in, String outputFileName) {
 		EObject[] ret = null;
 		IModel[] parsed = null;
 		// Parsing + Semantic Analysis
 		try {
-			parsed = AtlParser.getDefault().parseToModelWithProblems(in, true);
+			parsed = AtlParser.getDefault().inject(in, null);
 		} catch (ATLCoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}

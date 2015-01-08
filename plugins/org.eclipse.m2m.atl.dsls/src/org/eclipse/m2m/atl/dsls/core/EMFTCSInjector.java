@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Obeo.
+ * Copyright (c) 2009, 2012, 2014 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,11 +7,14 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dennis Wagelaar
  *******************************************************************************/
 package org.eclipse.m2m.atl.dsls.core;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,6 +41,7 @@ import org.eclipse.m2m.atl.dsls.tcs.injector.ParserLauncher;
  * A wrapper which allow to create {@link IModel} from text with TCS.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class EMFTCSInjector {
 
@@ -77,6 +81,10 @@ public class EMFTCSInjector {
 	}
 
 	public Object inject(EMFModel target, InputStream source, Map params) throws IOException {
+		return inject(target, new InputStreamReader(source), params);
+	}
+
+	public Object inject(EMFModel target, Reader source, Map params) throws IOException {
 		ModelAdapter targetModelAdapter = new EMFInjectorAdapter(target);
 
 		EMFModel problems = (EMFModel)params.get("problems");

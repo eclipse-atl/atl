@@ -11,8 +11,15 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests.compiler;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -103,6 +110,62 @@ public class CompilerTest extends EMFTVMTest {
 		final Model outModel2 = atlwfr(URI.createURI("test-data/Regression/Bug419433-2.atl", true));
 		final Resource pbs = outModel2.getResource();
 		assertEquals(4, pbs.getContents().size());
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=422408">Bug # 422408</a>.
+	 */
+	public void testBug422408() {
+		final Model outModel = atlwfr(URI.createURI("test-data/Regression/Bug422408.atl", true));
+		final Resource pbs = outModel.getResource();
+		assertEquals(3, pbs.getContents().size());
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=425492">Bug # 425492</a>.
+	 */
+	public void testBug425492() {
+		final Model outModel = compile(URI.createURI("test-data/Regression/Bug425492.atl", true));
+		assertEquals(null, validate(outModel));
+
+		final Model refModel = loadTestModel(new ResourceSetImpl(), "/test-data/Regression/Bug425492.emftvm");
+		assertEquals(refModel.getResource(), outModel.getResource());
+	}
+	
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=429745">Bug # 429745</a>: 
+	 * EMFTVM compiler crashes on reference to target element in rule "from" clause.
+	 */
+	public void testBug429745() {
+		final Model outModel = atlwfr(URI.createURI("test-data/Regression/Bug429745.atl", true));
+		final Resource pbs = outModel.getResource();
+		assertEquals(1, pbs.getContents().size());
+	}
+
+	/**
+	 * Tests detection of character set encoding by the compiler.
+	 * @throws CoreException 
+	 * @throws IOException 
+	 */
+	public void testCharEncoding() throws CoreException, IOException {
+		final IWorkspaceRoot wr = ResourcesPlugin.getWorkspace().getRoot();
+		final IProject project = wr.getProject("testCharEncoding");
+		project.create(null);
+		project.open(null);
+		final IFile file = project.getFile("CharEncodingTest.atl");
+		final InputStream inputStream = CompilerTest.class.getResourceAsStream("/test-data/CharEncodingTest.atl");
+		try {
+			file.create(inputStream, true, null);
+			file.setCharset("UTF-8", null);
+		} finally {
+			inputStream.close();
+		}
+
+		final Model outModel = compile(URI.createPlatformResourceURI("/testCharEncoding/CharEncodingTest.atl", true));
+		assertEquals(null, validate(outModel));
+
+		final Model refModel = loadTestModel(new ResourceSetImpl(), "/test-data/CharEncodingTest.emftvm");
+		assertEquals(refModel.getResource(), outModel.getResource());
 	}
 
 	/**
@@ -213,36 +276,24 @@ public class CompilerTest extends EMFTVMTest {
 		}
 
 		final ExecEnv env2 = EmftvmFactory.eINSTANCE.createExecEnv();
-		env2.registerInputModel("IN", outModel);
-
-		final Resource outRes2 = rs.createResource(URI.createFileURI("out.emftvm"));
-		final Model outModel2 = EmftvmFactory.eINSTANCE.createModel();
-		outModel2.setResource(outRes2);
-		env2.registerOutputModel("OUT", outModel2);
-		assertEquals(outModel2, env2.getOutputModels().get("OUT"));
-
-		final Resource pbsRes2 = rs.createResource(URI.createFileURI("pbs.xmi"));
-		final Model pbsModel2 = EmftvmFactory.eINSTANCE.createModel();
-		pbsModel2.setResource(pbsRes2);
-		env2.registerOutputModel("PBS", pbsModel2);
-		assertEquals(pbsModel2, env2.getOutputModels().get("PBS"));
+		env2.registerInOutModel("IN", outModel);
+		assertEquals(outModel, env2.getInoutModels().get("IN"));
 
 		// Load and run module
 		{
 			final ModuleResolver mr = new DefaultModuleResolver(COMPILER_PLUGIN_URI + "/transformations/", new ResourceSetImpl());
 			env2.loadModule(mr, "InlineCodeblocks");
 			env2.run(null);
-			assertTrue(pbsRes2.getContents().isEmpty());
-			assertEquals(1, outRes2.getContents().size());
-			assertTrue(outRes2.getContents().get(0) instanceof Module);
+			assertEquals(1, outRes.getContents().size());
+			assertTrue(outRes.getContents().get(0) instanceof Module);
 		}
 
 		// CodeBlocks passed into a native operation have their parentFrame property set - clear this property:
-		for (EObject cb : outModel2.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
+		for (EObject cb : outModel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
 			((CodeBlock) cb).setParentFrame(null);
 		}
 
-		return outModel2;
+		return outModel;
 	}
 
 	/**

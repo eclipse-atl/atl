@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2014 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ public class EMFTVMLaunchConfigurationTabGroup extends
 	 */
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		final ILaunchConfigurationTab mainTab = new MainEMFTVMTab();
-		final ILaunchConfigurationTab parameterTab = new EMFTVMParameterTab();
+		final ILaunchConfigurationTab parameterTab = new EMFTVMParameterTab(mode);
 		final ILaunchConfigurationTab commonTab = new CommonTab();
 		setTabs(new ILaunchConfigurationTab[]{mainTab, parameterTab, commonTab});
 	}

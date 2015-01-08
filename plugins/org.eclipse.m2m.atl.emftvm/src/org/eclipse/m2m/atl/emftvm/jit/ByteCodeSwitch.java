@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011-2013 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2014 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,13 @@
 package org.eclipse.m2m.atl.emftvm.jit;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -90,7 +93,6 @@ import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.LazyListOnList;
-import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.NativeTypes;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
@@ -150,6 +152,10 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	 * Whether or not the current execution environment has a monitor attached.
 	 */
 	protected final boolean hasMonitor;
+	/**
+	 * Set of instructions to skip while generating bytecode.
+	 */
+	protected final java.util.Set<Instruction> skipInstructions = new HashSet<Instruction>();
 
 	/**
 	 * Creates a new {@link ByteCodeSwitch}.
@@ -384,7 +390,15 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		if (EMFTVMUtil.NATIVE.equals(object.getModelname())) {
 			try {
 				final Class<?> type = NativeTypes.findType(object.getTypename());
-				ldc(Type.getType(type)); // [..., type]
+				final Instruction nextInstr = nextInstruction(object);
+				if (nextInstr instanceof New) {
+					new_(type);
+					dup();
+					invokeSpec(type, "<init>", Void.TYPE);
+					skipInstructions.add(nextInstr);
+				} else {
+					ldc(Type.getType(type)); // [..., type]
+				}
 				return super.caseFindtype(object);
 			} catch (ClassNotFoundException e) {
 				// fall back - will generate same exception anyway
@@ -415,16 +429,18 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	 */
 	@Override
 	public MethodVisitor caseNew(final New object) {
-		// [..., type]
-		final String modelName = object.getModelname();
-		if (modelName == null) {
-			aconst_null(); // [..., type, null]
-		} else {
-			ldc(object.getModelname()) ; // [..., type, modelname]
+		if (!skipInstructions.contains(object)) {
+			// [..., type]
+			final String modelName = object.getModelname();
+			if (modelName == null) {
+				aconst_null(); // [..., type, null]
+			} else {
+				ldc(object.getModelname()) ; // [..., type, modelname]
+			}
+			aload(2); // env: [..., type, modelname, env]
+			invokeStat(JITCodeBlock.class, "newInstance", Object.class,  // newInstance(type, modelname, env): [..., object]
+					Object.class, String.class, ExecEnv.class);
 		}
-		aload(2); // env: [..., type, modelname, env]
-		invokeStat(JITCodeBlock.class, "newInstance", Object.class,  // newInstance(type, modelname, env): [..., object]
-				Object.class, String.class, ExecEnv.class);
 		return super.caseNew(object);
 	}
 
@@ -1077,32 +1093,50 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		if (method == null) {
 			return null;
 		}
+		final int methodModifiers = getRelevantModifiers(method);
 		Class<?> dc = method.getDeclaringClass();
-		Class<?>[] dis = dc.getInterfaces();
+		java.util.Set<Class<?>> dis = new LinkedHashSet<Class<?>>(
+				Arrays.asList(dc.getInterfaces()));
 		while ((dc = dc.getSuperclass()) != null) {
 			try {
-				method = dc.getDeclaredMethod(method.getName(), method.getParameterTypes());
+				Method superMethod = dc.getDeclaredMethod(method.getName(), method.getParameterTypes());
+				if (getRelevantModifiers(superMethod) == methodModifiers) {
+					method = superMethod;
+				} else {
+					break;
+				}
 			} catch (SecurityException e) {
-				break;
 			} catch (NoSuchMethodException e) {
-				break;
 			}
-			dis = dc.getInterfaces();
+			dis.addAll(Arrays.asList(dc.getInterfaces()));
 		}
-		while (dis.length > 0) {
-			Class<?>[] newDis = new Class<?>[0];
+		while (!dis.isEmpty()) {
+			java.util.Set<Class<?>> newDis = new LinkedHashSet<Class<?>>();
 			for (Class<?> di : dis) {
 				try {
-					method = di.getDeclaredMethod(method.getName(), method.getParameterTypes());
-					newDis = di.getInterfaces();
-					break; // skip sibling interfaces
+					// Only replace by method declared in a super-interface
+					if (di.isAssignableFrom(method.getDeclaringClass())) {
+						method = di.getDeclaredMethod(method.getName(), method.getParameterTypes());
+					}
 				} catch (SecurityException e) {
 				} catch (NoSuchMethodException e) {
 				}
+				newDis.addAll(Arrays.asList(di.getInterfaces()));
 			}
+			newDis.removeAll(dis);
 			dis = newDis;
 		}
 		return method;
+	}
+
+	/**
+	 * Returns the relevant modifiers (visibility and static) for the given method.
+	 * @param method the method for which to return the modifiers
+	 * @return the relevant modifiers (visibility and static) for the given method
+	 */
+	private int getRelevantModifiers(final Method method) {
+		final int methodModifiers = method.getModifiers();
+		return methodModifiers & (Modifier.PRIVATE + Modifier.PROTECTED + Modifier.PUBLIC + Modifier.STATIC);
 	}
 
 	/**
@@ -2102,11 +2136,11 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 					invokeVirt(EnumConversionList.class, "cache", EnumConversionList.class); // enumlist.cache(): [..., enumlist]
 					label(ifModelNull); // [..., enumlist]
 				}
-			} else if (Set.class.isAssignableFrom(cls)) {
+			} else if (java.util.Set.class.isAssignableFrom(cls)) {
 				new_(EnumConversionSetOnSet.class); // new EnumConversionSetOnSet: [..., val, enumset]
 				dup_x1(); // [..., enumset, val, enumset]
 				swap(); // [..., enumset, enumset, val]
-				invokeCons(EnumConversionSetOnSet.class, Set.class); // enumset.<init>(val): [..., enumset]
+				invokeCons(EnumConversionSetOnSet.class, java.util.Set.class); // enumset.<init>(val): [..., enumset]
 				if (EObject.class.isAssignableFrom(selfCls)) {
 					final Label ifModelNull = new Label();
 					aload(2); // env: [..., enumset, env]
@@ -2116,7 +2150,6 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 					invokeVirt(EnumConversionSetOnSet.class, "cache", EnumConversionSetOnSet.class); // enumlist.cache(): [..., enumset]
 					label(ifModelNull); // [..., enumset]
 				}
-				invokeVirt(LazyCollection.class, "asSet", LazySet.class); // enumlist.asSet(): [..., enumset]
 			} else {
 				new_(EnumConversionList.class); // new EnumConversionList: [..., val, enumlist]
 				dup_x1(); // [..., enumlist, val, enumlist]
@@ -2135,20 +2168,18 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			}
 		} else if (cls.isArray()) {
 			final Class<?> cType = cls.getComponentType();
-			// Array of cType
-			final Label ifNull = new Label();
-			dup(); // [..., array, array]
-			ifnull(ifNull); // jump if array == null: [..., array]
 			if (Object.class.isAssignableFrom(cType)) {
+				// Array of cType
+				final Label ifNull = new Label();
+				dup(); // [..., array, array]
+				ifnull(ifNull); // jump if array == null: [..., array]
 				invokeStat(Arrays.class, "asList", List.class, Object[].class); // Arrays.asList(array): [..., list]
-			} else {
-				invokeStat(JITCodeBlock.class, "asList", List.class, cls); // JITCodeBlock.asList(array): [..., list]
-			}
-			new_(LazyListOnList.class); // new LazyListOnList: [..., list, lazylist]
-			dup_x1(); // [..., lazylist, list, lazylist]
-			swap(); // [..., lazylist, lazylist, list]
-			invokeCons(LazyListOnList.class, List.class); // lazylist.<init>(list): [..., lazylist]
-			label(ifNull);
+				new_(LazyListOnList.class); // new LazyListOnList: [..., list, lazylist]
+				dup_x1(); // [..., lazylist, list, lazylist]
+				swap(); // [..., lazylist, lazylist, list]
+				invokeCons(LazyListOnList.class, List.class); // lazylist.<init>(list): [..., lazylist]
+				label(ifNull);
+			} // don't wrap primitive type arrays
 		}
 		// [..., Object]
 	}
@@ -2412,6 +2443,20 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	protected void tryCatchBlock(final Label start, final Label end, 
 			final Label handler, final Class<?> type) {
 		mv.visitTryCatchBlock(start, end, handler, Type.getInternalName(type));
+	}
+	
+	/**
+	 * Returns the next instruction for the given instruction, or <code>null</code>.
+	 * @param instruction the instruction
+	 * @return the next instruction for the given instruction, or <code>null</code>
+	 */
+	protected Instruction nextInstruction(final Instruction instruction) {
+		final List<Instruction> code = instruction.getOwningBlock().getCode();
+		final int index = code.indexOf(instruction);
+		if (index < code.size() - 1) {
+			return code.get(index + 1);
+		}
+		return null;
 	}
 
 }

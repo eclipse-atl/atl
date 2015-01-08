@@ -25,6 +25,7 @@ import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.tests.EMFTVMTest;
+import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 
@@ -165,6 +166,211 @@ public class IntegrationTest extends EMFTVMTest {
 		final ResourceSet refRs = new ResourceSetImpl();
 		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug413110Inheritance-out.ecore");
 		assertEquals(refOut.getResource(), model.getResource());
+	}
+	
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=421718">Bug # 421718</a>.
+	 */
+	public void testBug421718() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel metamodel = loadTestMetamodel(rs, "/test-data/Regression/Bug421718.ecore");
+		final Model in = loadTestModel(rs, "/test-data/Regression/Bug421718-in.xmi");
+		final Model out = createTestModel(rs, "/test-data/Regression/Bug421718-out.xmi");
+		env.registerMetaModel("MM", metamodel);
+		env.registerInputModel("IN", in);
+		env.registerOutputModel("OUT", out);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug421718");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		assertEquals(in.getResource(), out.getResource());
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=423281">Bug # 423281</a>.
+	 */
+	public void testBug423281TupleAccess() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.loadModule(createTestModuleResolver(), "Regression::Bug423281TupleAccess");
+		td.finishLoading();
+		final Object result = env.run(td);
+		td.finish();
+
+		assertEquals("one", result);
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=423597">Bug # 423597</a>.
+	 */
+	public void testBug423597() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Model in = loadTestModel(rs, "/test-data/Regression/Bug423597.emftvm");
+		final Model out = createTestModel(rs, "/test-data/Regression/Bug423597-out.xmi");
+		env.registerInputModel("IN", in);
+		env.registerOutputModel("OUT", out);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug423597");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug423597-out.xmi");
+		assertEquals(refOut.getResource(), out.getResource());
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=424513">Bug # 424513</a>.
+	 */
+	public void testBug424513() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel mm = loadTestMetamodel(rs, "/test-data/Regression/Bug424513.ecore");
+		env.registerMetaModel("MM", mm);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug424513");
+		td.finishLoading();
+		final Object result = env.run(td);
+		td.finish();
+
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=425492">Bug # 425492</a>.
+	 */
+	public void testBug425492() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Model in = loadTestModel(rs, "/test-data/Regression/Bug425492.ecore");
+		env.registerInOutModel("IN", in);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug425492");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug425492-out.ecore");
+		assertEquals(refOut.getResource(), in.getResource());
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=425904">Bug # 425904</a>.
+	 */
+	public void testBug425904() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.loadModule(createTestModuleResolver(), "Regression::Bug425904");
+		td.finishLoading();
+		final Object result = env.run(td);
+		td.finish();
+
+		assertEquals(Boolean.TRUE, result);
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=426154">Bug # 426154</a>.
+	 */
+	public void testBug426154() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel tr = EmftvmFactory.eINSTANCE.createMetamodel();
+		tr.setResource(TracePackage.eINSTANCE.eResource());
+		final Model in = EmftvmFactory.eINSTANCE.createModel();
+		in.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model trace = createTestModel(rs, "/test-data/Regression/Bug426154/Bug426154.trace");
+		final Model out = createTestModel(rs, "/test-data/Regression/Bug426154/Bug426154-out.ecore");
+		env.registerMetaModel("TR", tr);
+		env.registerInOutModel("IN", in);
+		env.registerOutputModel("trace", trace);
+		env.registerOutputModel("OUT", out);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug426154::Importing");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refTrace = loadTestModel(refRs, "/test-data/Regression/Bug426154/Bug426154.trace");
+		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug426154/Bug426154-out.ecore");
+		assertEquals(refTrace.getResource(), trace.getResource());
+		assertEquals(refOut.getResource(), out.getResource());
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=427454">Bug # 427454</a>.
+	 */
+	public void testBug427454() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.loadModule(createTestModuleResolver(), "Regression::Bug427454");
+		td.finishLoading();
+		final Object result = env.run(td);
+		td.finish();
+
+		// Transformation should not crash
+
+		assertNotNull(result);
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=441027">Bug # 441027</a>.
+	 */
+	public void testBug441027() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Model in = loadTestModel(rs, "/test-data/Regression/Bug441027.emftvm");
+		final Model out = createTestModel(rs, "/test-data/Regression/Bug441027-out.xmi");
+		env.registerInputModel("IN", in);
+		env.registerOutputModel("OUT", out);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug441027");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug441027-out.xmi");
+		assertEquals(refOut.getResource(), out.getResource());
+	}
+
+	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=454382">Bug # 454382</a>.
+	 */
+	public void testBug454382() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.loadModule(createTestModuleResolver(), "Regression::Bug454382");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		// Test should finish in under a second (and print no "JIT miss" messages)
+		assertTrue(
+				String.format(
+						"Expected Regression::Bug454382 to complete in < 1 sec. but was %f sec.",
+						td.getFinished() / ((double) 1E9)),
+				td.getFinished() < 1E9);
+	}
+
+	/**
+	 * Tests "ToStringTest.atl".
+	 */
+	public void testToString() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.loadModule(createTestModuleResolver(), "ToStringTest");
+		td.finishLoading();
+		final Object result = env.run(td);
+		td.finish();
+
+		assertEquals("Sequence{1, 2, 'three', 'OclUndefined'}", result);
 	}
 
 }

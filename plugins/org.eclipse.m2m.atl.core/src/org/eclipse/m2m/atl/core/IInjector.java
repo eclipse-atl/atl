@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2012, 2014 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,10 +7,12 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dennis Wagelaar
  *******************************************************************************/
 package org.eclipse.m2m.atl.core;
 
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.Map;
 
 /**
@@ -54,5 +56,16 @@ public interface IInjector {
 	 */
 	void inject(IModel targetModel, InputStream source, Map<String, Object> options) throws ATLCoreException;
 
+	/**
+	 * Injects data into an IModel using the given options.
+	 * 
+	 * @param targetModel
+	 *            the IModel where to inject
+	 * @param source
+	 *            the {@link Reader} containing the model
+	 * @param options
+	 *            the injection parameters
+	 */
+	void inject(IModel targetModel, Reader source, Map<String, Object> options) throws ATLCoreException;
 	
 }

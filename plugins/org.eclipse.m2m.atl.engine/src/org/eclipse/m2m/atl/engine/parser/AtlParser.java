@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
@@ -128,6 +129,30 @@ public final class AtlParser implements IInjector, IExtractor {
 	}
 
 	/**
+	 * Create a new Model then injects data using the given options.
+	 * 
+	 * @param source
+	 *            the {@link Reader} containing the model
+	 * @param options
+	 *            the injection parameters
+	 * @return the new ATL Model
+	 * @throws ATLCoreException
+	 */
+	public IModel[] inject(Reader source, Map options) throws ATLCoreException {
+		IModel targetModel = modelFactory.newModel(atlMetamodel);
+		targetModel.setIsTarget(true);
+		final Map params = new HashMap();
+		params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
+		params.put("problems", modelFactory.newModel(problemMetamodel)); //$NON-NLS-1$
+		if (options != null) {
+			params.putAll(options);
+		}
+		inject(targetModel, source, params);
+		targetModel.setIsTarget(false);
+		return new IModel[] {targetModel, (IModel)params.get("problems")}; //$NON-NLS-1$
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.io.InputStream,
@@ -148,6 +173,27 @@ public final class AtlParser implements IInjector, IExtractor {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.m2m.atl.core.IInjector#inject(org.eclipse.m2m.atl.core.IModel, java.io.Reader,
+	 *      java.util.Map)
+	 */
+	public void inject(IModel targetModel, Reader source, Map options) throws ATLCoreException {
+		final EMFTCSInjector ebnfi = new EMFTCSInjector();
+		final Map params = new HashMap();
+		params.put("name", "ATL"); //$NON-NLS-1$ //$NON-NLS-2$
+		params.put("problems", modelFactory.newModel(problemMetamodel)); //$NON-NLS-1$
+		if (options != null) {
+			params.putAll(options);
+		}
+		try {
+			ebnfi.inject((EMFModel)targetModel, source, params);
+		} catch (IOException e) {
+			//fail silently
+		}
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 * 

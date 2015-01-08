@@ -1,0 +1,68 @@
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+-- @atlcompiler emftvm
+
+module "Regression::Bug425492";
+create OUT: ECORE refining IN: ECORE;
+
+lazy rule CreateEClass {
+	from
+		src: ECORE!EClass
+	to
+		tgt: ECORE!EClass (
+			name <- src.name + ' cloned'
+		)
+	do {
+		tgt; 
+	}
+}
+
+unique lazy rule UniqueCreateEClass {
+	from
+		src: ECORE!EClass
+	to
+		tgt: ECORE!EClass (
+			name <- src.name + ' cloned'
+		)
+	do {
+		tgt; 
+	}
+}
+
+lazy refining rule RefineEClass {
+	from
+		src: ECORE!EClass
+	to
+		tgt: ECORE!EClass (
+			name <- src.name + ' refined'
+		)
+	do {
+		tgt; 
+	}
+}
+
+unique lazy refining rule UniqueRefineEClass {
+	from
+		src: ECORE!EClass
+	to
+		tgt: ECORE!EClass (
+			name <- src.name + ' refined'
+		)
+	do {
+		tgt; 
+	}
+}
+
+rule TriplicateEClass {
+	from
+		pkg: ECORE!EPackage,
+		src: ECORE!EClass (
+			pkg.eClassifiers -> includes(src) and src.name = 'Dummy'
+		)
+	using {
+		seq: Sequence(Integer) = Sequence{} -> includingRange(1, 3);
+	}
+	to
+		pkg_out: ECORE!EPackage mapsTo pkg (
+			eClassifiers <- seq -> collect(index | thisModule.CreateEClass(src).debug('CreateEClass'))
+		)
+}

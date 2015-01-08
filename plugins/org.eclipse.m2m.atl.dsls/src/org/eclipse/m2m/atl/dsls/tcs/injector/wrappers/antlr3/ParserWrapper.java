@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2004, 2008 INRIA.
+ * Copyright (c) 2004, 2008, 2014 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,13 +7,14 @@
  * 
  * Contributors:
  *     INRIA - initial API and implementation
+ *     Dennis Wagelaar
  *
  * $Id: ParserWrapper.java,v 1.1 2009/04/21 14:12:27 wpiers Exp $
  */
 package org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3;
 
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -22,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.antlr.runtime.ANTLRReaderStream;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonToken;
@@ -36,6 +38,7 @@ import org.eclipse.m2m.atl.dsls.tcs.injector.TCSClassLoader;
 /**
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class ParserWrapper extends org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.ParserWrapper {
 	
@@ -45,7 +48,7 @@ public class ParserWrapper extends org.eclipse.m2m.atl.dsls.tcs.injector.wrapper
 	public ParserWrapper() {
 	}
 	
-	public Object parse(int tabSize, String name, String productionRule, InputStream in, Map params) throws Exception {
+	public Object parse(int tabSize, String name, String productionRule, Reader isr, Map params) throws Exception {
 		Class lexerClass = (Class)params.get("lexerClass");
 		Class parserClass = (Class)params.get("parserClass");
 		if((lexerClass == null) || (parserClass == null)) {
@@ -72,15 +75,7 @@ public class ParserWrapper extends org.eclipse.m2m.atl.dsls.tcs.injector.wrapper
 		}
 
 
-		Object ret = null;
-		InputStreamReader isr = new InputStreamReader(in);
-		StringBuffer s = new StringBuffer();
-		char buffer[] = new char[10000];
-		int size;
-		while((size = isr.read(buffer)) > 0) {
-			s.append(buffer, 0, size);
-		}
-		ANTLRStringStream stream = new ANTLRStringStream(s.toString());
+		ANTLRReaderStream stream = new ANTLRReaderStream(isr);
 		
 		lexer = (Lexer)lexerClass.getDeclaredConstructor(new Class[] {CharStream.class}).newInstance(new Object[] {stream});
 		
@@ -112,6 +107,7 @@ public class ParserWrapper extends org.eclipse.m2m.atl.dsls.tcs.injector.wrapper
 		f.set(lexer, runtime);
 
 		Method m = parserClass.getMethod(productionRule, new Class[] {});
+		Object ret = null;
 		try {
 			ret = m.invoke(parser, new Object[] {});
 		} catch(java.lang.reflect.InvocationTargetException ite) {

@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.tests.unit;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,8 +28,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.compare.diff.metamodel.DiffGroup;
-import org.eclipse.emf.compare.diff.metamodel.DiffModel;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
 import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.core.ATLCoreException;
@@ -114,7 +113,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 
 				is = atlUrl.openStream();
 				try {
-					AtlCompiler.compile(is, outName);
+					AtlCompiler.compile(new InputStreamReader(is), outName);
 				} catch (CompilerNotFoundException e) {
 					fail("Compiler not found", e); //$NON-NLS-1$
 				}
@@ -139,7 +138,7 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			pureExecutionTime = launch();
 			long endTime = System.currentTimeMillis();
 			executionTime = (endTime - startTime) / 1000.;
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			fail(directory.getName() + ": " + e.getMessage(), e); //$NON-NLS-1$
 		}
 		info(directory.getName() + ": " + executionTime + "s (pure execution: " + pureExecutionTime + "s)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -173,13 +172,9 @@ public abstract class TestNonRegressionTransfo extends TestNonRegression {
 			}
 			String expectedPath = outputPath.replaceFirst("inputs", "expected"); //$NON-NLS-1$ //$NON-NLS-2$
 			try {
-				final DiffModel diff = ModelUtils.compareModels(new File(outputPath), new File(expectedPath),
-						true, true);
-				assertEquals(0, ((DiffGroup)diff.getOwnedElements().get(0)).getSubchanges());
-			} catch (IOException ex) {
-				fail(ex.getMessage());
-			} catch (InterruptedException ex) {
-				fail(ex.getMessage());
+				ModelUtils.assertEquals(new File(outputPath), new File(expectedPath), true);
+			} catch (Throwable ex) {
+				fail("Model comparison failed for " + directory.getPath() + " : " + ex.getMessage(), ex);
 			}
 		}
 		totalTime += executionTime;

@@ -660,6 +660,33 @@ nodefault rule NoSelfVariableInRule {
 		)
 }
 
+-- Rule 'NoSelfVariableInRule'
+-- This rule generates an 'error' Problem for each 'self' variable expression
+-- that is contained by a helper without context declaration.
+nodefault rule NoSelfVariableInContextlessHelper {
+	from
+		s : ATL!VariableExp (
+			if s.referredVariable.oclIsUndefined()
+			then
+				false
+			else
+				s.referredVariable.varName = 'self' and 
+				(
+					let rComp : OclAny = s.getRootComposite() in
+					rComp.oclIsKindOf(ATL!OclFeature) and
+					rComp.definition.context_.oclIsUndefined()
+				)
+			endif
+		)
+	to
+		t : Problem!Problem (
+			severity <- #error,
+			location <- s.location,
+			description <-
+				'Use of the \'self\' variable prohibited in helpers without context declaration'
+		)
+}
+
 -- Rule 'NoResolveTempInSourcePattern'
 -- This rule generates an 'error' Problem for each call of the
 -- 'thisModule.resolveTemp()' operation within a source pattern of a rule.
@@ -842,6 +869,20 @@ nodefault rule NoSuperOutsideHelper {
 		)
 }
 
+nodefault rule NoSuperInContextlessHelper {
+	from s : ATL!SuperExp (
+			let rComp : OclAny = s.getRootComposite() in
+			rComp.oclIsKindOf(ATL!OclFeature) and
+			rComp.definition.context_.oclIsUndefined()
+		)
+	to
+		t : Problem!Problem (
+			severity <- #error,
+			location <- s.location,
+			description <- 'Cannot access "super" from a helper without context declaration'
+		)
+}
+
 nodefault rule OutputElementUsesOutputMetamodel {
 	from s : ATL!OutPatternElement (
 			not s.outPattern."rule"."module".outModels
@@ -871,4 +912,32 @@ nodefault rule BindingStatAssignsToNavigationOrAttributeCallExpOrVariable {
 			location <- s.location,
 			description <- 'Can only assign to model element features, helper attributes, or local variables'
 		)
+}
+
+nodefault rule RefiningRuleInRegularMode {
+	from
+		s : ATL!MatchedRule (
+			s.isRefining and
+			not s."module".isRefining
+		)
+	to
+		t : Problem!Problem (
+			severity <- #error,
+			location <- s.location,
+			description <- 'Refining rules are only allowed in refining mode'
+		) 
+}
+
+nodefault rule NoOutPatternElementReferenceInInPattern {
+	from
+		s : ATL!VariableExp (
+			s.referredVariable.oclIsKindOf(ATL!OutPatternElement) and
+			s.getRootComposite().oclIsKindOf(ATL!InPattern)
+		)
+	to
+		t : Problem!Problem (
+			severity <- #error,
+			location <- s.location,
+			description <- 'Cannot refer to target element \'' + s.referredVariable.varName + '\' in a \'from\' clause'
+		) 
 }

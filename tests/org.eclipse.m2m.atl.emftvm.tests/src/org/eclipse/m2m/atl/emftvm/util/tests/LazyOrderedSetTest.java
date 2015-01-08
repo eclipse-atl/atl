@@ -12,13 +12,20 @@
 package org.eclipse.m2m.atl.emftvm.util.tests;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.util.LazyBag;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
@@ -894,6 +901,63 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 		}
 		assertEquals(bag, set.union(new LazyBag<String>()));
 		assertEquals(bag, new LazyOrderedSet<String>().union(bag));
+	}
+
+	/**
+	 * Tests {@link LazyOrderedSet#sortedBy(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testSortedBy() {
+		final LazyOrderedSet<String> set = getTestLazyCollection();
+		final List<String> expected = new ArrayList<String>(getDataSource());
+		Collections.sort(expected);
+		final LazyOrderedSet<String> sortedSet = set.sortedBy(new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0);
+			}
+
+		});
+		assertEquals(expected, sortedSet);
+		
+		final List<Object> data = new ArrayList<Object>();
+		for (int i = 1; i < 100; i++) {
+			Iterator<EObject> contents = EmftvmPackage.eINSTANCE.eResource().getAllContents();
+			while (contents.hasNext()) {
+				data.add(contents.next());
+			}
+		}
+		final List<Object> expected2 = new ArrayList<Object>(data);
+		final LazyOrderedSet<Object> set2 = new LazyOrderedSet<Object>(data);
+		final CodeBlock byHashCode = new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0).hashCode();
+			}
+
+		};
+		final long refStart2 = System.nanoTime();
+		Collections.sort(expected2, new Comparator<Object>() {
+			public int compare(Object o1, Object o2) {
+				return ((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o1))).compareTo( 
+						((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o2))));
+			}
+		});
+		final long refEnd2 = System.nanoTime();
+		final LazyOrderedSet<Object> sortedSet2 = set2.sortedBy(byHashCode);
+		sortedSet2.last(); // force eval
+		final long lazyEnd2 = System.nanoTime();
+		assertEquals(new LazyOrderedSet<Object>(expected2), sortedSet2);
+		ATLLogger.info(String.format("Collections.sort() : %d ms, LazyOrderedSet.sortedBy() : %d ms", (refEnd2 - refStart2) / 1000000L, (lazyEnd2 - refEnd2) / 1000000L)); 
 	}
 
 }

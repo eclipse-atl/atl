@@ -26,6 +26,8 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -52,6 +54,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TraceFactory;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
+import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
 import org.eclipse.m2m.atl.emftvm.util.FieldContainer;
 import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
@@ -2103,7 +2106,13 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 						"Cannot match rule input element %s against null value for %s", 
 						re, this));
 			}
-			if (!re.getEType().isInstance(value)) {
+			EClassifier eType = re.getEType();
+			if (eType instanceof EEnum) {
+				// Fix for Bug # 441027
+				if (!(value instanceof EnumLiteral)) {
+					return false;
+				}
+			} else if (!eType.isInstance(value)) {
 				return false;
 			}
 			EList<Model> inmodels = re.getEModels();

@@ -18,14 +18,16 @@ import junit.textui.TestRunner;
 import org.eclipse.m2m.atl.emftvm.tests.compiler.AtlResourceTest;
 import org.eclipse.m2m.atl.emftvm.tests.compiler.CompilerTest;
 import org.eclipse.m2m.atl.emftvm.tests.integration.IntegrationTest;
-import org.eclipse.m2m.atl.emftvm.tests.performance.PerformanceTest;
+import org.eclipse.m2m.atl.emftvm.tests.performance.EcoreCopyPerformanceTest;
 import org.eclipse.m2m.atl.emftvm.tests.pojo.PojoModelTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.ExecEnvPoolTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.LazyBagOnCollectionTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyBagTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyListOnCollectionTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyListOnListTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyListTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyOrderedSetTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.LazySetOnSetTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazySetTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.OCLOperationsTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.TupleTest;
@@ -60,7 +62,9 @@ public class EmftvmAllTests extends TestSuite {
 		suite.addTestSuite(LazyListOnCollectionTest.class);
 		suite.addTestSuite(LazyListOnListTest.class);
 		suite.addTestSuite(LazyBagTest.class);
+		suite.addTestSuite(LazyBagOnCollectionTest.class);
 		suite.addTestSuite(LazySetTest.class);
+		suite.addTestSuite(LazySetOnSetTest.class);
 		suite.addTestSuite(LazyOrderedSetTest.class);
 		suite.addTestSuite(ExecEnvPoolTest.class);
 		suite.addTestSuite(OCLOperationsTest.class);
@@ -69,7 +73,7 @@ public class EmftvmAllTests extends TestSuite {
 		suite.addTestSuite(CompilerTest.class);
 		suite.addTestSuite(AtlResourceTest.class);
 		suite.addTestSuite(IntegrationTest.class);
-		suite.addTestSuite(PerformanceTest.class);
+		suite.addTestSuite(EcoreCopyPerformanceTest.class);
 		return suite;
 	}
 

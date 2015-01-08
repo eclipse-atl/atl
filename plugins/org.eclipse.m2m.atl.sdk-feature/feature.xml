@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.m2m.atl.sdk"
       label="%featureName"
-      version="3.4.0.qualifier"
+      version="3.6.0.qualifier"
       provider-name="%providerName">
 
    <description>
@@ -87,13 +87,6 @@
 
    <plugin
          id="org.eclipse.m2m.atl.engine.vm.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.antlr.runtime.source"
          download-size="0"
          install-size="0"
          version="0.0.0"

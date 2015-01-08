@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ASCII"?>
+<trace:TraceLinkSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:trace="http://www.eclipse.org/m2m/atl/emftvm/2011/Trace" defaultSourceElements="//@rules.0/@links.0/@sourceElements.0">
+  <rules rule="CreatePackage">
+    <links>
+      <sourceElements name="src" defaultFor="/">
+        <object href="http://www.eclipse.org/m2m/atl/2011/EMFTVM#/"/>
+      </sourceElements>
+      <targetElements name="tgt">
+        <object href="Bug426154-out.ecore#/"/>
+      </targetElements>
+      <targetElements name="annotation">
+        <object href="Bug426154-out.ecore#//%foo%"/>
+      </targetElements>
+    </links>
+  </rules>
+</trace:TraceLinkSet>

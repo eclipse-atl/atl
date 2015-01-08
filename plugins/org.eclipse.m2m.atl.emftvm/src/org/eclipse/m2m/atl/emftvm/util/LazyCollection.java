@@ -1369,7 +1369,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 */
 		@SuppressWarnings("unchecked")
 		public T next() {
-			return (T) function.execute(parentFrame.getSubFrame(function, new Object[] { inner.next() }));
+			return (T) function.execute(parentFrame.getSubFrame(function, inner.next()));
 		}
 	}
 	
@@ -2352,5 +2352,18 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		}
 		return result;
 	}
+
+	/**
+	 * Results in the Collection containing all elements of the source 
+	 * collection. The element for which body has the lowest value comes
+	 * first, and so on. The type of the body expression must have the 
+	 * <code>&lt;</code> operation defined. The <code>&lt;</code> operation
+	 * must return a Boolean value and must be transitive (i.e., if 
+	 * <code>a &lt; b</code> and <code>b &lt; c</code> then
+	 * <code>a &lt; c</code>).
+	 * @param body the function to evaluate on each element
+	 * @return the sorted collection
+	 */
+	public abstract LazyCollection<E> sortedBy(final CodeBlock body);
 
 }

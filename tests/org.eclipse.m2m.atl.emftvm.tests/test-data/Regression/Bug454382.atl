@@ -1,0 +1,12 @@
+-- @atlcompiler emftvm
+query "Regression::Bug454382" = Sequence{}->includingRange(0, 20000)->collect(i | i.test())->exists(b | b).debug('Bug454382');
+
+helper context Integer def : test() : Boolean =
+	let c : Collection(Integer) =
+		if self < 1000 then
+			Set{}
+		else
+			Sequence{}
+		endif
+	in
+	c->including(self)->isEmpty();

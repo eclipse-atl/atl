@@ -1,0 +1,22 @@
+-- @atlcompiler emftvm
+-- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
+
+--- Counts the number of FINDTYPE - NEW instructions pairs.
+query CountFindtypeNew = Tuple{
+	CountFindtypeNew = EMFTVM!Findtype.allInstances()
+		->select(f | f.nextInstruction().oclIsKindOf(EMFTVM!New))
+		->size(),
+	CountFindtypeNativeNew = EMFTVM!Findtype.allInstances()
+		->select(f | f.modelname = '#native' and f.nextInstruction().oclIsKindOf(EMFTVM!New))
+		->size()
+}.debug();
+
+--- Returns the instruction after 'self', or OclUndefined.
+helper context EMFTVM!Instruction def : nextInstruction() : EMFTVM!Instruction =
+	let code : Sequence(EMFTVM!Instruction) = self.owningBlock.code in
+	let index : Integer = code->indexOf(self) in
+	if index < code->size() then
+		code->at(index + 1)
+	else
+		OclUndefined
+	endif;

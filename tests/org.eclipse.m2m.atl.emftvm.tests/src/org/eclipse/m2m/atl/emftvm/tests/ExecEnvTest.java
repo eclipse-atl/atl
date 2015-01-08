@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
@@ -1102,6 +1103,27 @@ public class ExecEnvTest extends EMFTVMTest {
 		assertEquals(2, env.getModules().size());
 		assertTrue(env.getModules().containsKey("TestLib"));
 		assertEquals(testLib, env.getModules().get("TestLib"));
+	}
+
+	/**
+	 * Tests the {@link ExecEnv#loadModule(ModuleResolver, String)} operation for an abstract target metaclass in a concrete rule.
+	 */
+	public void testLoadModule__AbstractTargetClass() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final ResourceSet rs = new ResourceSetImpl();
+
+		assertEquals(1, env.getModules().size());
+		assertTrue(env.getModules().containsKey("OCL"));
+
+		// Load module
+		final ModuleResolver mr = new DefaultModuleResolver(PLUGIN_URI + "/test-data/", rs);
+		try {
+			env.loadModule(mr, "AbstractTargetClass");
+			fail("Expected VMException");
+		} catch (VMException e) {
+			// Expected
+			ATLLogger.info(e.getMessage());
+		}
 	}
 
 	/**

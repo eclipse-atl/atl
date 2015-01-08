@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.m2m.atl.emftvm"
       label="%featureName"
-      version="3.4.100.qualifier"
+      version="3.6.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.m2m.atl.emftvm">
 
@@ -30,13 +30,13 @@
       <import plugin="org.eclipse.m2m.atl.common" version="3.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.emf.validation" version="1.4.0" match="greaterOrEqual"/>
-      <import plugin="org.objectweb.asm" version="3.3.1" match="greaterOrEqual"/>
       <import plugin="org.apache.ant" version="1.7.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ant.core" version="3.2.101" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources" version="3.5.2" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.5.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.atl.engine" version="3.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.atl.adt" version="3.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.atl.dsls" version="3.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.edit"/>
       <import plugin="org.eclipse.emf.ecore.edit"/>
       <import plugin="org.eclipse.emf.edit.ui"/>
@@ -49,7 +49,7 @@
       <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.atl.adt.ui" version="3.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.atl.debug.core" version="3.1.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.m2m.atl.dsls" version="3.1.0" match="greaterOrEqual"/>
+      <import plugin="org.objectweb.asm" version="3.3.1" match="compatible"/>
    </requires>
 
    <plugin

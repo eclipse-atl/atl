@@ -97,6 +97,7 @@ import org.eclipse.m2m.atl.emftvm.util.LazySetOnSet;
 import org.eclipse.m2m.atl.emftvm.util.NativeTypes;
 import org.eclipse.m2m.atl.emftvm.util.Stack;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
+import org.eclipse.m2m.atl.emftvm.util.Tuple;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 
@@ -997,6 +998,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					try {
 						setJITCodeBlock(jc.jit(this));
 					} catch (Exception e) {
+						frame.setPc(pc);
+						throw new VMException(frame, e);
+					} catch (VerifyError e) {
 						frame.setPc(pc);
 						throw new VMException(frame, e);
 					}
@@ -1935,6 +1939,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		if (field != null) {
 			return field.getValue(o, frame);
 		}
+
+		if (o instanceof Tuple && ((Tuple) o).asMap().containsKey(propname)) {
+			return ((Tuple) o).get(propname);
+		}
+
 		try {
 			final java.lang.reflect.Field f = type.getField(propname);
 			final Object result = f.get(o);

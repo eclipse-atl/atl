@@ -46,6 +46,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreSwitch;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.eclipse.m2m.atl.common.ATLLogger;
@@ -68,6 +69,51 @@ import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public final class EMFTVMUtil {
+
+	/**
+	 * Returns the registry type of the switched object.
+	 * 
+	 * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
+	 */
+	public static class RegistryTypeSwitch extends EcoreSwitch<Object> {
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Object defaultCase(EObject object) {
+			throw new IllegalArgumentException("Unsupported type: " + object);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Object caseEClass(EClass object) {
+			return object;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Object caseEClassifier(EClassifier object) {
+			final Class<?> ic = object.getInstanceClass();
+			if (ic == null) {
+				throw new IllegalArgumentException(String.format("Primitive EMF type without instance class %s", object));
+			}
+			return ic;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Object caseEEnum(EEnum object) {
+			return EnumLiteral.class;
+		}
+
+	}
 
 	/**
 	 * Native type namespace.
@@ -110,6 +156,11 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	private static final Map<Class<?>, Map<Integer, Method>> METHOD_CACHE = new WeakHashMap<Class<?>, Map<Integer, Method>>();
+
+	/**
+	 * Singleton {@link RegistryTypeSwitch} instance.
+	 */
+	private static final RegistryTypeSwitch REGISTRY_TYPE_SWITCH = new RegistryTypeSwitch();
 
 	private static Metamodel ecoreMetamodel;
 	private static Metamodel emfTvmMetamodel;
@@ -177,12 +228,8 @@ public final class EMFTVMUtil {
 	 *             if type is a primitive EMF type without instance class
 	 */
 	public static Object getRegistryType(final Object type) throws IllegalArgumentException {
-		if (type instanceof EClassifier && !(type instanceof EClass)) {
-			final Class<?> ic = ((EClassifier) type).getInstanceClass();
-			if (ic == null) {
-				throw new IllegalArgumentException(String.format("Primitive EMF type without instance class %s", type));
-			}
-			return ic;
+		if (type instanceof EClassifier) {
+			return REGISTRY_TYPE_SWITCH.doSwitch((EClassifier) type);
 		}
 		return type;
 	}
@@ -277,16 +324,16 @@ public final class EMFTVMUtil {
 	 * @return the string representation of <code>object</code>.
 	 */
 	public static String toPrettyString(final Object object, final ExecEnv env) {
-		if (object instanceof EClass) {
+		if (object instanceof EClassifier) {
 			final StringBuffer sb = new StringBuffer();
 			if (env != null) {
-				final Model model = env.getModelOf((EClass) object);
+				final Model model = env.getModelOf((EClassifier) object);
 				if (model != null) {
 					sb.append(env.getModelID(model));
 					sb.append('!');
 				}
 			}
-			sb.append(((EClass) object).getName());
+			sb.append(((EClassifier) object).getName());
 			return sb.toString();
 		} else if (object instanceof EObject) { // EObjects have a notoriously bad toString()
 			final StringBuffer buf = new StringBuffer();
@@ -470,7 +517,11 @@ public final class EMFTVMUtil {
 				}
 			}
 		} else if (value != null && value.getClass().isArray()) {
-			return new LazyListOnList<Object>(Arrays.asList((Object[]) value));
+			if (Object.class.isAssignableFrom(value.getClass().getComponentType())) {
+				return new LazyListOnList<Object>(Arrays.asList((Object[]) value));
+			} else {
+				return value; // don't wrap primitive type arrays
+			}
 		}
 		assert eo == null || !(value instanceof Collection<?>);
 		return value;

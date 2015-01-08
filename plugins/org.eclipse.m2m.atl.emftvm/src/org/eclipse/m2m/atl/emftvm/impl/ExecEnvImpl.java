@@ -1113,6 +1113,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				}
 				// Prevent ConcurrentModificationException by using eObjects copy
 				for (EObject o : eObjects) {
+					// Skip remapping on objects queued for deletion
+					if (deletionQueue.containsKey(o)) {
+						continue;
+					}
 					for (EReference ref : o.eClass().getEAllReferences()) {
 						// Only change changeable references that are not the reverse of a containment reference
 						if (ref.isChangeable() && !ref.isContainer()) {
@@ -1221,12 +1225,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	public synchronized Module loadModule(final ModuleResolver resolver, final String name, final boolean validate) {
 		resetJITCompiler();
-		if (isRuleStateCompiled()) {
-			for (Rule r : getRules()) {
-				r.resetState();
-			}
-		}
-		setRuleStateCompiled(false);
 		try {
 			//detect cyclic imports w.r.t. redefinition
 			if (internalModules.containsKey(name)) {
@@ -1256,6 +1254,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 					throw new VMException(null, String.format("Byte code validation of %s failed", invalidObject));
 				}
 			}
+			// Bug 426154: validation triggers partial rule state compilation, so always reset:
+			for (Rule r : getRules()) {
+				r.resetState();
+			}
+			setRuleStateCompiled(false);
 			loadedModules.add(name);
 			return module;
 		} catch (Exception e) {
@@ -1508,6 +1511,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 		for (OutputRuleElement re : r.getOutputElements()) {
 			resolveRuleElement(re);
+			if (!r.isAbstract()) {
+				EClassifier eType = re.getEType();
+				if (eType instanceof EClass && ((EClass)eType).isAbstract()) {
+					throw new VMException(null, String.format("Non-abstract %s cannot have output elements of an abstract type: \"%s\"", r, re));
+				}
+			}
 		}
 
 		for (Field field : r.getFields()) {

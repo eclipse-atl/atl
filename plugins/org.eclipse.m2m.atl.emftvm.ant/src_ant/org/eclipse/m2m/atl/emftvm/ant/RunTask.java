@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.tools.ant.Project;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -34,7 +35,7 @@ public class RunTask extends EMFTVMTask {
 
 	private String module;
 	private String modulePath;
-	private boolean disableJIT = true; //TODO
+	private boolean disableJIT;
 	private final List<MetaModel> metaModels = new ArrayList<MetaModel>();
 	private final List<InModel> inputModels = new ArrayList<InModel>();
 	private final List<InOutModel> inoutModels = new ArrayList<InOutModel>();
@@ -233,12 +234,17 @@ public class RunTask extends EMFTVMTask {
 			} else {
 				// Use existing in/out model, but override URI if given
 				String u = m.getUri();
+				URI uri = null;
 				if (u != null) {
-					model.getResource().setURI(URI.createURI(u));
+					uri = URI.createURI(u);
 				}
 				String wsp = m.getWspath();
 				if (wsp != null) {
-					model.getResource().setURI(URI.createPlatformResourceURI(wsp, true));
+					uri = URI.createPlatformResourceURI(wsp, true);
+				}
+				if (uri != null) {
+					getProject().log(this, String.format("Changing the URI of in/out model '%s' before executing a transformation will break inter-model references ('%s' -> '%s')", m.getName(), model.getResource().getURI(), uri), Project.MSG_WARN);
+					model.getResource().setURI(uri);
 				}
 			}
 			env.registerInOutModel(getModelKey(m), model);

@@ -1,0 +1,12 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module "Regression::Bug429745";
+create OUT: ECORE refining IN: ECORE;
+
+rule RefineEPackage {
+	from
+		s : ECORE!EPackage (c.eStructuralFeatures->notEmpty())
+	to
+		t : ECORE!EPackage,
+		c : ECORE!EClass
+}

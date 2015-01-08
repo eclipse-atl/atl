@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ASCII"?>
+<emftvm:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:emftvm="http://www.eclipse.org/m2m/atl/2011/EMFTVM">
+  <features xsi:type="emftvm:Operation" name="FINDTYPE"/>
+  <features xsi:type="emftvm:Operation" name="NEW"/>
+  <features xsi:type="emftvm:Operation" name="STORE"/>
+  <features xsi:type="emftvm:Operation" name="LOAD"/>
+  <features xsi:type="emftvm:Operation" name="FINDTYPE"/>
+  <features xsi:type="emftvm:Operation" name="PUSH"/>
+  <features xsi:type="emftvm:Operation" name="INVOKE"/>
+  <features xsi:type="emftvm:Operation" name="GETCB"/>
+  <features xsi:type="emftvm:Operation" name="INVOKE"/>
+  <features xsi:type="emftvm:Operation" name="INVOKE"/>
+  <features xsi:type="emftvm:Operation" name="SET"/>
+  <features xsi:type="emftvm:Operation" name="GETENVTYPE"/>
+  <features xsi:type="emftvm:Operation" name="LOAD"/>
+  <features xsi:type="emftvm:Operation" name="GET"/>
+  <features xsi:type="emftvm:Operation" name="PUSH"/>
+  <features xsi:type="emftvm:Operation" name="INVOKE"/>
+  <features xsi:type="emftvm:Operation" name="INVOKE_STATIC"/>
+  <features xsi:type="emftvm:Operation" name="GETENVTYPE"/>
+  <features xsi:type="emftvm:Operation" name="INVOKE_STATIC"/>
+  <features xsi:type="emftvm:Operation" name="LOAD"/>
+  <features xsi:type="emftvm:Operation" name="LOAD"/>
+  <features xsi:type="emftvm:Operation" name="INVOKE"/>
+  <features xsi:type="emftvm:Operation" name="INVOKE"/>
+  <features xsi:type="emftvm:Operation" name="SET"/>
+  <features xsi:type="emftvm:Operation" name="LOAD"/>
+  <features xsi:type="emftvm:Operation" name="LOAD"/>
+</emftvm:Module>

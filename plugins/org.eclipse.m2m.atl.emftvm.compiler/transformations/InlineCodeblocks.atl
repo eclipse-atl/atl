@@ -3,9 +3,7 @@
 -- Inlines nested code blocks
 -- $Id: InlineCodeblocks.atl,v 1.7 2012/05/20 18:19:40 dwagelaar Exp $
 module InlineCodeblocks;
-create OUT : EMFTVM from IN : EMFTVM;
-
-uses EMFTVMCopy;
+create OUT : EMFTVM refining IN : EMFTVM;
 
 -- ======================================================================
 -- helpers begin
@@ -211,39 +209,18 @@ helper context EMFTVM!CodeBlock def : remainingLineNumbers : Sequence(EMFTVM!Lin
 -- matched rules begin
 -- ======================================================================
 
-rule InvokeCb {
-    from s : EMFTVM!"emftvm::InvokeCb" in IN (false) -- disable
-    to t : EMFTVM!"emftvm::InvokeCb"
+rule DeleteInvokeCb {
+    from s : EMFTVM!"emftvm::InvokeCb" in IN
 }
 
-rule InvokeAllCbs {
-    from s : EMFTVM!"emftvm::InvokeAllCbs" in IN (false) -- disable
-    to t : EMFTVM!"emftvm::InvokeAllCbs"
-}
-
-rule Rule {
-    from s : EMFTVM!"emftvm::Rule" in IN
-    to t : EMFTVM!"emftvm::Rule" (
-        name <- s.name,
-        mode <- s.mode,
-        superRules <- s.superRules,
-        "abstract" <- s."abstract",
-		default <- s.default,
-		"unique" <- s."unique",
-		distinctElements <- s.distinctElements,
-        inputElements <- s.inputElements,
-        outputElements <- s.outputElements,
-        matcher <- s.matcher,
-        applier <- if s.applier.isInlined then OclUndefined else s.applier endif,
-        postApply <- s.postApply,
-        fields <- s.fields)
+rule DeleteInvokeAllCbs {
+    from s : EMFTVM!"emftvm::InvokeAllCbs" in IN
 }
 
 rule CodeBlock {
 	from s : EMFTVM!CodeBlock in IN (
 		not s.isInlined)
 	to t : EMFTVM!CodeBlock (
-		parentFrame <- s.parentFrame,
 		code <- s.inline,
 		nested <- s.collapseNested,
 		lineNumbers <- s.remainingLineNumbers->union(
@@ -253,28 +230,34 @@ rule CodeBlock {
 	)
 }
 
+rule DeleteCodeBlock {
+	from s : EMFTVM!CodeBlock in IN (
+		s.isInlined)
+}
+
 rule LocalVariable {
     from s : EMFTVM!"emftvm::LocalVariable" in IN (
 		not s.owningBlock.isEmptyRuleCode)
     to t : EMFTVM!"emftvm::LocalVariable" (
-        name <- s.name,
-        type <- s.type,
-        typeModel <- s.typeModel,
         startInstruction <- s.startInstruction.reTarget,
         endInstruction <- s.endInstruction.endReTarget)
+}
+
+rule DeleteLocalVariable {
+    from s : EMFTVM!"emftvm::LocalVariable" in IN (
+		s.owningBlock.isEmptyRuleCode)
 }
 
 rule LineNumber {
     from s : EMFTVM!"emftvm::LineNumber" in IN (
 		s.hasRemainingInstructions)
     to t : EMFTVM!"emftvm::LineNumber" (
-        startLine <- s.startLine,
-        startColumn <- s.startColumn,
-        endLine <- s.endLine,
-        endColumn <- s.endColumn,
-		startChar <- s.startChar,
-		endChar <- s.endChar,
 		instructions <- s.remainingInstructions)
+}
+
+rule DeleteLineNumber {
+    from s : EMFTVM!"emftvm::LineNumber" in IN (
+		not s.hasRemainingInstructions)
 }
 
 rule And {
@@ -337,11 +320,6 @@ rule Enditerate {
     from s : EMFTVM!"emftvm::Enditerate" in IN
     to t : EMFTVM!"emftvm::Enditerate" (
         target <- s.target.endReTarget)
-}
-
-rule Return {
-	from s : EMFTVM!"emftvm::Return" in IN (not s.owningBlock.isInlined)
-	to t : EMFTVM!"emftvm::Return"
 }
 
 rule ReturnToGoto {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004-2012 INRIA and Vrije Universiteit Brussel.
+ * Copyright (c) 2004-2014 INRIA and Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ package org.eclipse.m2m.atl.emftvm.launcher;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -38,11 +39,22 @@ import org.eclipse.swt.widgets.Group;
  */
 public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 
+	private final String mode;
+	
 	private ScrolledComposite scrollContainer;
 	private Composite rootContainer;
 	private Group parameterGroup;
 	private Button displayTimingData;
 	private Button disableJIT;
+	private Button profile;
+	
+	/**
+	 * Creates a new {@link EMFTVMParameterTab}.
+	 * @param mode the mode the launch configuration dialog was opened in
+	 */
+	public EMFTVMParameterTab (String mode) {
+		this.mode = mode;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -62,7 +74,7 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 		parameterGroup.setText("EMFTVM parameters");
 		
 		displayTimingData = new Button(parameterGroup, SWT.CHECK);
-		displayTimingData.setText("Display Timing Data");
+		displayTimingData.setText(EMFTVMLaunchConstants.DISPLAY_TIMING);
 		displayTimingData.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -71,8 +83,17 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 		});
 
 		disableJIT = new Button(parameterGroup, SWT.CHECK);
-		disableJIT.setText("Disable JIT compiler");
+		disableJIT.setText(EMFTVMLaunchConstants.DISABLE_JIT);
 		disableJIT.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+		});
+
+		profile = new Button(parameterGroup, SWT.CHECK);
+		profile.setText(EMFTVMLaunchConstants.PROFILE);
+		profile.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateLaunchConfigurationDialog();
@@ -88,6 +109,7 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(EMFTVMLaunchConstants.DISPLAY_TIMING, true);
 		configuration.setAttribute(EMFTVMLaunchConstants.DISABLE_JIT, false);
+		configuration.setAttribute(EMFTVMLaunchConstants.PROFILE, false);
 	}
 
 	/**
@@ -101,6 +123,13 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 			disableJIT.setSelection(
 					configuration.getAttribute(
 							EMFTVMLaunchConstants.DISABLE_JIT, false));
+			profile.setSelection(
+					configuration.getAttribute(
+							EMFTVMLaunchConstants.PROFILE, false));
+			// Profiling does not make sense while debugging
+			if (ILaunchManager.DEBUG_MODE.equals(mode)) {
+				profile.setEnabled(false);
+			}
 		} catch (CoreException e) {
 			EmftvmLauncherPlugin.log(e.getStatus());
 		}
@@ -114,6 +143,8 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 				EMFTVMLaunchConstants.DISPLAY_TIMING, displayTimingData.getSelection());
 		configuration.setAttribute(
 				EMFTVMLaunchConstants.DISABLE_JIT, disableJIT.getSelection());
+		configuration.setAttribute(
+				EMFTVMLaunchConstants.PROFILE, profile.getSelection());
 	}
 
 	/**

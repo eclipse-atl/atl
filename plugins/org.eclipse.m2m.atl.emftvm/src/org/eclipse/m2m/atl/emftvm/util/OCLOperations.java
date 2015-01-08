@@ -273,6 +273,15 @@ public final class OCLOperations {
 						return object;
 					}
 		});
+		createOperation(false, "toString", Types.OCL_ANY_TYPE, Types.STRING_TYPE,
+				new String[][][]{}, 
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						final Object object = frame.getLocal(0, 0);
+						return EMFTVMUtil.toPrettyString(object, frame.getEnv());
+					}
+		});
 		createOperation(false, "oclAsType", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
 				new String[][][]{{{"type"}, Types.CLASSIFIER_TYPE}}, 
 				new NativeCodeBlock() {
@@ -312,8 +321,8 @@ public final class OCLOperations {
 					public Object execute(final StackFrame frame) {
 						final Object o = frame.getLocal(0, 0);
 						final EClassifier type = (EClassifier)frame.getLocal(0, 1);
-						if (type instanceof EClass && o instanceof EObject) {
-							return ((EObject) o).eClass() == type;
+						if (type instanceof EClass) {
+							return o instanceof EObject && ((EObject) o).eClass() == type;
 						} else if (o != null) {
 							final Class<?> ic = ((EClassifier)type).getInstanceClass();
 							if (ic == null) {

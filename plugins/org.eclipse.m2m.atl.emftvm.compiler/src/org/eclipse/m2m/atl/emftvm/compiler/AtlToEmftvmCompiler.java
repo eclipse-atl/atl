@@ -16,7 +16,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -96,7 +98,28 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	/**
 	 * {@inheritDoc}
 	 */
-	public CompileTimeError[] compile(final InputStream in, final String outputFileName) {
+	public final CompileTimeError[] compile(InputStream in, String outputFileName) {
+		return compile(new InputStreamReader(in), outputFileName);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public EObject[] compileWithProblemModel(InputStream in, String outputFileName) {
+		return compileWithProblemModel(new InputStreamReader(in), outputFileName);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public EObject[] compileWithProblemModel(InputStream in, OutputStream outputStream) {
+		return compileWithProblemModel(new InputStreamReader(in), outputStream);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public CompileTimeError[] compile(final Reader in, final String outputFileName) {
 		EObject[] eObjects = compileWithProblemModel(in, outputFileName);
 
 		// convert the EObjects into an easily readable form (instances of CompileTimeError).
@@ -113,7 +136,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("deprecation")
-	public EObject[] compileWithProblemModel(final InputStream in, final String outputFileName) {
+	public EObject[] compileWithProblemModel(final Reader in, final String outputFileName) {
 		EObject[] result = new EObject[0];
 		try {
 			File asm = new File(outputFileName);
@@ -150,10 +173,10 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	/**
 	 * {@inheritDoc}
 	 */
-	public EObject[] compileWithProblemModel(final InputStream in, final OutputStream outputStream) {
+	public EObject[] compileWithProblemModel(final Reader in, final OutputStream outputStream) {
 		final List<EObject> pbs = new ArrayList<EObject>();
 		try {
-			final IModel[] parsed = AtlParser.getDefault().parseToModelWithProblems(in, true);
+			final IModel[] parsed = AtlParser.getDefault().inject(in, null);
 			final IModel atlmodel = parsed[0];
 			final IModel problems = parsed[1];
 
@@ -187,10 +210,6 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		final Model emftvmm = EmftvmFactory.eINSTANCE.createModel();
 		emftvmm.setResource(r);
 
-		final Resource ri = rs.createResource(URI.createFileURI("inlined.emftvm"), "org.eclipse.m2m.atl.emftvm");
-		final Model emftvmmi = EmftvmFactory.eINSTANCE.createModel();
-		emftvmmi.setResource(ri);
-
 		final ExecEnv atlWfrEnv = atlWfrPool.getExecEnv();
 		final ExecEnv atlToEmftvmEnv = atlToEmftvmPool.getExecEnv();
 		final ExecEnv inlineCodeblocksEnv = inlineCodeblocksPool.getExecEnv();
@@ -206,11 +225,10 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 				atlToEmftvmEnv.run(null);
 
 				if (getProblems(pbm, pbs) == 0) {
-					inlineCodeblocksEnv.registerInputModel("IN", emftvmm);
-					inlineCodeblocksEnv.registerOutputModel("OUT", emftvmmi);
+					inlineCodeblocksEnv.registerInOutModel("IN", emftvmm);
 					inlineCodeblocksEnv.run(null);
 
-					ri.save(outputStream, Collections.emptyMap());
+					r.save(outputStream, Collections.emptyMap());
 				}
 			}
 		} catch (VMException e) {
@@ -225,7 +243,6 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 			inlineCodeblocksPool.returnExecEnv(inlineCodeblocksEnv);
 			rs.getResources().remove(pr); // unload
 			rs.getResources().remove(r); // unload
-			rs.getResources().remove(ri); // unload
 		}
 
 		return pbs.toArray(new EObject[pbs.size()]);

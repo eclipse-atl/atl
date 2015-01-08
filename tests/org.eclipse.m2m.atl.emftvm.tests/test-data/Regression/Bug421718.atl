@@ -1,0 +1,11 @@
+-- @atlcompiler emftvm
+-- @path MM=/org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/Bug421718.ecore
+module "Regression::Bug421718";
+
+create OUT : MM from IN : MM;
+
+rule Test {
+	from s : MM!Test
+	to t : MM!Test (
+		byteArray <- s.byteArray)
+}

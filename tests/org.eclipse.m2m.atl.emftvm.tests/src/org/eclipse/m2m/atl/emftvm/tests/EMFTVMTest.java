@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
@@ -44,7 +45,7 @@ import org.osgi.framework.Bundle;
 /**
  * Abstract unit test base class for EMFTVM.
  * 
- * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public abstract class EMFTVMTest extends TestCase {
 
@@ -64,8 +65,10 @@ public abstract class EMFTVMTest extends TestCase {
 	/**
 	 * Asserts that leftResource and rightResource are equal. Uses EMF Compare.
 	 * 
-	 * @param leftObject
-	 * @param rightObject
+	 * @param leftResource
+	 *            the left-hand resource to compare
+	 * @param rightResource
+	 *            the right-hand resource to compare
 	 */
 	public static void assertEquals(Resource leftResource, Resource rightResource) {
 		final DefaultComparisonScope scope = new DefaultComparisonScope(leftResource, rightResource, null);
@@ -110,8 +113,8 @@ public abstract class EMFTVMTest extends TestCase {
 				assertSameURI(errorMsg, (EObject) leftVs.next(), (EObject) rightVs.next());
 			}
 		} else {
-			final EObject leftValue = (EObject) left.eGet(ref);
-			final EObject rightValue = (EObject) right.eGet(ref);
+			final EObject leftValue = left == null ? null : (EObject) left.eGet(ref);
+			final EObject rightValue = right == null ? null : (EObject) right.eGet(ref);
 			final String errorMsg = String.format("Different value found on %s.%s (%s) and %s.%s (%s)",
 					EMFTVMUtil.toPrettyString(left, null), ref.getName(), EMFTVMUtil.toPrettyString(leftValue, null),
 					EMFTVMUtil.toPrettyString(right, null), ref.getName(), EMFTVMUtil.toPrettyString(rightValue, null));
@@ -131,8 +134,10 @@ public abstract class EMFTVMTest extends TestCase {
 	 *            the right-hand value to compare
 	 */
 	private static void assertSameURI(final String errorMsg, final EObject leftValue, final EObject rightValue) {
-		assertEquals(errorMsg, leftValue.eResource().getURI(), rightValue.eResource().getURI());
-		assertEquals(errorMsg, leftValue.eResource().getURIFragment(leftValue), rightValue.eResource().getURIFragment(rightValue));
+		assertEquals(errorMsg, leftValue == null ? null : leftValue.eResource().getURI(), 
+				rightValue == null ? null : rightValue.eResource().getURI());
+		assertEquals(errorMsg, leftValue == null ? null : leftValue.eResource().getURIFragment(leftValue), 
+				rightValue == null ? null : rightValue.eResource().getURIFragment(rightValue));
 	}
 
 	/**
@@ -228,6 +233,21 @@ public abstract class EMFTVMTest extends TestCase {
 	 */
 	public Model loadTestModel(final ResourceSet rs, final String file) {
 		final Model model = EmftvmFactory.eINSTANCE.createModel();
+		model.setResource(rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + file, true), true));
+		return model;
+	}
+
+	/**
+	 * Loads a {@link Metamodel} instance for the given file name.
+	 * 
+	 * @param rs
+	 *            the {@link ResourceSet} to use for loading
+	 * @param file
+	 *            the file name relative to {@value #PLUGIN_URI}.
+	 * @return the {@link Metamodel} instance for the given file name
+	 */
+	public Metamodel loadTestMetamodel(final ResourceSet rs, final String file) {
+		final Metamodel model = EmftvmFactory.eINSTANCE.createMetamodel();
 		model.setResource(rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + file, true), true));
 		return model;
 	}

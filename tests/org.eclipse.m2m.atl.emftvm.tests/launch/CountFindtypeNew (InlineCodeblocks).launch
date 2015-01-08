@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.emftvm.launcher.EMFTVMTransformation">
+<stringAttribute key="ATL File Name" value="//org.eclipse.m2m.atl.emftvm.tests/transformations/CountFindtypeNew.atl"/>
+<booleanAttribute key="Disable JIT compiler" value="false"/>
+<booleanAttribute key="Display Profiling Data" value="false"/>
+<booleanAttribute key="Display Timing Data" value="true"/>
+<mapAttribute key="Inout Model Options"/>
+<mapAttribute key="Inout Models"/>
+<mapAttribute key="Inout Models Output Locations"/>
+<mapAttribute key="Input Model Options"/>
+<mapAttribute key="Input Models">
+<mapEntry key="IN" value="platform:/resource/org.eclipse.m2m.atl.emftvm.compiler/transformations/InlineCodeblocks.emftvm"/>
+</mapAttribute>
+<mapAttribute key="Metamodel Options"/>
+<mapAttribute key="Metamodels">
+<mapEntry key="EMFTVM" value="http://www.eclipse.org/m2m/atl/2011/EMFTVM"/>
+</mapAttribute>
+<stringAttribute key="Module Name" value="CountFindtypeNew"/>
+<stringAttribute key="Module Path" value="/org.eclipse.m2m.atl.emftvm.tests/transformations/"/>
+<mapAttribute key="Output Model Options"/>
+<mapAttribute key="Output Models"/>
+<listAttribute key="Superimpose"/>
+</launchConfiguration>

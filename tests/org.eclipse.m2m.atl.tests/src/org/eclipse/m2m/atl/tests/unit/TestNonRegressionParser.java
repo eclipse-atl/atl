@@ -60,7 +60,8 @@ public class TestNonRegressionParser extends TestNonRegression {
 			String serialized = ModelUtils.serialize(result);
 			serialized = serialized.replaceAll("\r\n","\n");
 			if (new File(expectedPath).exists()) {
-				assertEquals(FileUtils.readFileAsString(new File(expectedPath)), serialized);
+				// Git core.autocrlf=true will convert "\n" to "\r\n" on Windows systems, so we also need to convert the reference file 
+				assertEquals(FileUtils.readFileAsString(new File(expectedPath)).replaceAll("\r\n","\n"), serialized);
 			} else {
 				FileWriter fw = new FileWriter(expectedPath);
 				fw.write(serialized);

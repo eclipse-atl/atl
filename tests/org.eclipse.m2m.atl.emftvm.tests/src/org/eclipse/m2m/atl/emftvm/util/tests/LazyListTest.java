@@ -12,14 +12,21 @@
 package org.eclipse.m2m.atl.emftvm.util.tests;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
+import org.eclipse.m2m.atl.emftvm.util.LazyListOnList;
 import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.NativeCodeBlock;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
@@ -723,6 +730,63 @@ public class LazyListTest extends LazyCollectionTest {
 		assertFalse(unionIt.hasNext());
 		assertEquals(list, list.union(new LazyList<String>()));
 		assertEquals(list, new LazyList<String>().union(list));
+	}
+
+	/**
+	 * Tests {@link LazyList#sortedBy(org.eclipse.m2m.atl.emftvm.CodeBlock)}.
+	 */
+	public void testSortedBy() {
+		final LazyList<String> list = getTestLazyCollection();
+		final List<String> expected = new ArrayList<String>(getDataSource());
+		Collections.sort(expected);
+		final LazyList<String> sortedList = list.sortedBy(new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0);
+			}
+
+		});
+		assertEquals(expected, sortedList);
+		
+		final List<Object> data = new ArrayList<Object>();
+		for (int i = 1; i < 100; i++) {
+			Iterator<EObject> contents = EmftvmPackage.eINSTANCE.eResource().getAllContents();
+			while (contents.hasNext()) {
+				data.add(contents.next());
+			}
+		}
+		final List<Object> expected2 = new ArrayList<Object>(data);
+		final LazyList<Object> list2 = new LazyListOnList<Object>(data);
+		final CodeBlock byHashCode = new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public Object execute(final StackFrame frame) {
+				return frame.getLocal(0).hashCode();
+			}
+
+		};
+		final long refStart2 = System.nanoTime();
+		Collections.sort(expected2, new Comparator<Object>() {
+			public int compare(Object o1, Object o2) {
+				return ((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o1))).compareTo( 
+						((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o2))));
+			}
+		});
+		final long refEnd2 = System.nanoTime();
+		final LazyList<Object> sortedList2 = list2.sortedBy(byHashCode);
+		sortedList2.last(); // force eval
+		final long lazyEnd2 = System.nanoTime();
+		assertEquals(expected2, sortedList2);
+		ATLLogger.info(String.format("Collections.sort() : %d ms, LazyList.sortedBy() : %d ms", (refEnd2 - refStart2) / 1000000L, (lazyEnd2 - refEnd2) / 1000000L)); 
 	}
 
 }

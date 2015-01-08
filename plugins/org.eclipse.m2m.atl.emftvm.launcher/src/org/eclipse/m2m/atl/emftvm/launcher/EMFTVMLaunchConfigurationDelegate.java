@@ -44,6 +44,7 @@ import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.launcher.debug.NetworkDebugger;
+import org.eclipse.m2m.atl.emftvm.launcher.profiler.ProfilingLaunchAdapter;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
@@ -122,6 +123,8 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		final VMMonitor vmmon; // Create monitor/debugger before any exceptions can be thrown
 		if (ILaunchManager.DEBUG_MODE.equals(mode)) {
 			vmmon = new NetworkDebugger(launch, getPort(launch), true);
+		} else if (configuration.getAttribute(EMFTVMLaunchConstants.PROFILE, false)) {
+			vmmon = new ProfilingLaunchAdapter(launch);
 		} else {
 			vmmon = new LaunchAdapter(launch);
 		}
@@ -131,22 +134,22 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		env.setMonitor(vmmon);
 		final ResourceSet rs = new ResourceSetImpl();
 		
-		final Map<String, String> metamodelLocations = configuration.getAttribute(EMFTVMLaunchConstants.METAMODELS, Collections.emptyMap());
-		final Map<String, String> metamodelOptions = configuration.getAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, Collections.emptyMap());
+		final Map<String, String> metamodelLocations = configuration.getAttribute(EMFTVMLaunchConstants.METAMODELS, Collections.EMPTY_MAP);
+		final Map<String, String> metamodelOptions = configuration.getAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, Collections.EMPTY_MAP);
 		loadFileMetaModels(rs, metamodelLocations, metamodelOptions, env);
 		EMFTVMUtil.registerEPackages(rs);
 		
-		final Map<String, String> inputModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODELS, Collections.emptyMap());
-		final Map<String, String> inputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, Collections.emptyMap());
+		final Map<String, String> inputModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODELS, Collections.EMPTY_MAP);
+		final Map<String, String> inputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, Collections.EMPTY_MAP);
 		loadInputModels(rs, inputModelLocations, inputModelOptions, env);
 		
-		final Map<String, String> inoutModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODELS, Collections.emptyMap());
-		final Map<String, String> inoutModelOutLocations = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_OUT_MODELS, Collections.emptyMap());
-		final Map<String, String> inoutModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, Collections.emptyMap());
+		final Map<String, String> inoutModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODELS, Collections.EMPTY_MAP);
+		final Map<String, String> inoutModelOutLocations = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_OUT_MODELS, Collections.EMPTY_MAP);
+		final Map<String, String> inoutModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, Collections.EMPTY_MAP);
 		loadInOutModels(rs, inoutModelLocations, inoutModelOptions, env);
 		
-		final Map<String, String> outputModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODELS, Collections.emptyMap());
-		final Map<String, String> outputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, Collections.emptyMap());
+		final Map<String, String> outputModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODELS, Collections.EMPTY_MAP);
+		final Map<String, String> outputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, Collections.EMPTY_MAP);
 		createOutputModels(rs, outputModelLocations, outputModelOptions, env);
 
 		loadOtherMetaModels(rs, metamodelLocations, metamodelOptions, env);

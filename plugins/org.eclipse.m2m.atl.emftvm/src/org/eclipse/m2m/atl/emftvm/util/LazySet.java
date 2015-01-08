@@ -11,10 +11,14 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.util;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -912,6 +916,47 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		});
 	}
 
-	//TODO provide other iterator operations: collectNested, sortedBy
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public LazyOrderedSet<E> sortedBy(final CodeBlock body) {
+		// Parent frame may change after this method returns!
+		final StackFrame parentFrame = body.getParentFrame();
+		body.setParentFrame(null);
+		return new LazyOrderedSet<E>(this) {
+			@SuppressWarnings("unchecked")
+			@Override
+			public Iterator<E> iterator() {
+				final Collection<E> inner = (Collection<E>) dataSource;
+				if (inner != null) {
+					final Iterator<Comparable<Object>> sortingKeys = new CollectIterator<Comparable<Object>>(inner, body, parentFrame);
+					final Object[] innerCopy = inner.toArray();
+					final Map<Object, Comparable<Object>> elementsToKeys = new HashMap<Object, Comparable<Object>>(innerCopy.length);
+					for (Object o : innerCopy) {
+						elementsToKeys.put(o, sortingKeys.next());
+					}
+					assert !sortingKeys.hasNext();
+					Arrays.sort(innerCopy, new Comparator<Object>() {
+						public int compare(Object o1, Object o2) {
+							return elementsToKeys.get(o1).compareTo(elementsToKeys.get(o2));
+						}
+					});
+					cache = (Collection<E>) Arrays.asList(innerCopy);
+					dataSource = null;
+				}
+				return super.iterator();
+			}
+			@Override
+			public int size() {
+				if (dataSource == null) {
+					return cache.size();
+				}
+				return ((Collection<E>) dataSource).size();
+			}
+		};
+	}
+
+	//TODO provide other iterator operations: collectNested
 
 }
