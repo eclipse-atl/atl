@@ -53,6 +53,8 @@ import org.eclipse.m2m.atl.engine.emfvm.launch.ITool;
  */
 public class ExecEnv {
 
+	private static final ArrayList EMPTY_ARRAY_LIST = new ArrayList(0);
+
 	// TODO analyze:
 	// - make static to avoid recomputing the map of nativelib operations for each launch. However, it is much
 	// more convenient when not static for development: it is possible to add operations without needing to
@@ -703,7 +705,7 @@ public class ExecEnv {
 						if (end >= start) {
 							return new ArrayList<Object>(((List<?>)localVars[0]).subList(start - 1, end));
 						} else {
-							return Collections.EMPTY_LIST;
+							return EMPTY_ARRAY_LIST;
 						}
 					}
 				});
