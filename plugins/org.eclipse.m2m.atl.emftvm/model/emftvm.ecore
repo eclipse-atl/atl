@@ -566,6 +566,15 @@
         </eGenericType>
       </eParameters>
     </eOperations>
+    <eOperations name="matchOneOnly" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="valuesMap">
+        <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
+          <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+          <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
     <eOperations name="createTraces">
       <eParameters name="frame" eType="#//StackFrame"/>
     </eOperations>
@@ -581,6 +590,10 @@
     </eOperations>
     <eOperations name="applyFirst" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
       <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="applyOne" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="trace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink"/>
     </eOperations>
     <eOperations name="applyFor" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject">
       <eParameters name="frame" eType="#//StackFrame"/>

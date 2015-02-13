@@ -480,6 +480,10 @@
         <genParameters ecoreParameter="emftvm.ecore#//Rule/matchOne/frame"/>
         <genParameters ecoreParameter="emftvm.ecore#//Rule/matchOne/valuesMap"/>
       </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/matchOneOnly">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/matchOneOnly/frame"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/matchOneOnly/valuesMap"/>
+      </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/createTraces">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/createTraces/frame"/>
       </genOperations>
@@ -495,6 +499,10 @@
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/applyFirst">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFirst/frame"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/applyOne">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyOne/frame"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyOne/trace"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/applyFor">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFor/frame"/>
@@ -516,6 +524,9 @@
         <genParameters ecoreParameter="emftvm.ecore#//Rule/compileIterables/env"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/clearFields"/>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/findInputElement">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/findInputElement/name"/>
+      </genOperations>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//RuleElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//RuleElement/models"/>

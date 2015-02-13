@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -138,7 +139,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 				final Object[] values);
 
 		/**
-		 * 
+		 * Matches 
 		 * @param frame
 		 * @param values
 		 * @return
@@ -179,10 +180,44 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			assert !isUnique();
 			final Map<String, Object> valuesMap = createValuesMap(values);
 			if (matchOne(frame, valuesMap)) {
-				return applyTo(frame, createTrace(frame, valuesMap));
+				final Set<Rule> matchedRules = matchManualSubRules(RuleImpl.this, frame, valuesMap);
+				final int size = matchedRules.size();
+				switch (size) {
+				case 0:
+					//TODO should not work for abstract rules
+					return applyOne(frame, createTrace(frame, valuesMap));
+				case 1:
+					return matchedRules.iterator().next().applyOne(frame, createTrace(frame, valuesMap));
+				default:
+					throw new VMException(frame, String.format("More than one matching sub-rule found for %s: %s",
+							RuleImpl.this, matchedRules));
+				}
 			} else {
 				return null;
 			}
+		}
+
+		/**
+		 * TODO
+		 * @param rule
+		 * @param frame
+		 * @param valuesMap
+		 * @return
+		 */
+		private Set<Rule> matchManualSubRules(final Rule rule, final StackFrame frame, final Map<String, Object> valuesMap) {
+			final Set<Rule> matchedRules = new HashSet<Rule>();
+			for (Rule subRule : rule.getESubRules()) {
+				if (subRule.matchOneOnly(frame, valuesMap)) {
+					Set<Rule> matchedSubRules = matchManualSubRules(subRule, frame, valuesMap);
+					if (!matchedSubRules.isEmpty()) {
+						matchedRules.addAll(matchedSubRules);
+					} else {
+						//TODO not for abstract rules
+						matchedRules.add(subRule);
+					}
+				}
+			}
+			return matchedRules;
 		}
 
 		/**
@@ -2086,13 +2121,23 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public boolean matchOne(StackFrame frame, Map<String, Object> valuesMap) {
+	public boolean matchOne(final StackFrame frame, final Map<String, Object> valuesMap) {
 		for (Rule superRule : getESuperRules()) {
 			if (!superRule.matchOne(frame, valuesMap)) {
 				return false;
 			}
 		}
 
+		return matchOneOnly(frame, valuesMap);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public boolean matchOneOnly(StackFrame frame, Map<String, Object> valuesMap) {
 		// Check value types
 		final ExecEnv env = frame.getEnv();
 		final Object[] values = createValuesArray(valuesMap);
@@ -2124,7 +2169,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			}
 
 			// Check bound values
-			final CodeBlock binding = re.getBinding();
+			CodeBlock binding = re.getBinding();
 			if (binding != null) {
 				final Object bvalue = binding.execute(frame.getSubFrame(binding, values));
 				if (bvalue == null) {
@@ -2231,6 +2276,39 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	public boolean applyFirst(final StackFrame frame) {
 		return leafState.applyFirst(frame);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public Object applyOne(final StackFrame frame, final TraceLink trace) {
+		Object result = null;
+		for (Rule rule : getAllESuperRules()) {
+			if (rule.getApplier() != null) {
+				result = rule.applyFor(frame, trace);
+			} else {
+				rule.applyFor(frame, trace);
+			}
+			if (rule.getPostApply() != null) {
+				result = rule.postApplyFor(frame, trace);
+			} else {
+				rule.postApplyFor(frame, trace);
+			}
+		}
+		if (getApplier() != null) {
+			result = applierCbState.applyFor(frame, trace);
+		} else {
+			applierCbState.applyFor(frame, trace);
+		}
+		if (getPostApply() != null) {
+			result = applierCbState.postApplyFor(frame, trace);
+		} else {
+			applierCbState.postApplyFor(frame, trace);
+		}
+		return result;
 	}
 
 	/**

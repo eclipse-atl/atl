@@ -549,6 +549,19 @@ public interface Rule extends NamedElement {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Matches this rule only (without suoer-rules) for <code>valuesMap</code>.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame in which to execute the matcher
+	 * @param valuesMap the values to match against
+	 * @return <code>true</code> iff the rule matches
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	boolean matchOneOnly(StackFrame frame, Map<String, Object> valuesMap);
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * Creates trace elements for the recorded matches for this rule.
 	 * Call {@link #compileState()} before calling this method.
 	 * @param frame the stack frame context
@@ -610,6 +623,18 @@ public interface Rule extends NamedElement {
 	 * @generated
 	 */
 	boolean applyFirst(StackFrame frame);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Applies {@link #getRule()} to <code>trace</code>
+	 * @param frame the stack frame in which to execute the applier and post-apply
+	 * @param trace the source and target values to which to apply the rule
+	 * @return the rule application result
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	Object applyOne(StackFrame frame, TraceLink trace);
 
 	/**
 	 * <!-- begin-user-doc --> 
