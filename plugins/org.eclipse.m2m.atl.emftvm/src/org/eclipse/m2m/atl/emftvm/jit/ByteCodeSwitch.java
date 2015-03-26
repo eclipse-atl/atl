@@ -11,13 +11,11 @@
 package org.eclipse.m2m.atl.emftvm.jit;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -664,7 +662,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			localVariable("body", CodeBlock.class, bodyStart, ifOpNull, bodyIdx);
 		}
 		// Generate native method invocation code here
-		final Method method = findRootMethod(object.getNativeMethod());
+		final Method method = EMFTVMUtil.findRootMethod(object.getNativeMethod());
 		if (method != null) { // native method recorded - try first
 			// Labels
 			final Label subframeStart = new Label();
@@ -849,7 +847,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			localVariable("body", CodeBlock.class, bodyStart, ifOpNull, bodyIdx);
 		}
 		// Generate native method invocation code here
-		final Method method = findRootMethod(object.getNativeMethod());
+		final Method method = EMFTVMUtil.findRootMethod(object.getNativeMethod());
 		if (method != null) { // native method recorded - try first
 			// Labels
 			final Label subframeStart = new Label();
@@ -1084,61 +1082,6 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		}
 	}
 	
-	/**
-	 * Finds the root {@link Class} in which <code>method</code> was declared.
-	 * @param method the method for which to find the root {@link Class}
-	 * @return the root {@link Class} in which <code>method</code> was declared
-	 */
-	private Method findRootMethod(Method method) {
-		if (method == null) {
-			return null;
-		}
-		final int methodModifiers = getRelevantModifiers(method);
-		Class<?> dc = method.getDeclaringClass();
-		java.util.Set<Class<?>> dis = new LinkedHashSet<Class<?>>(
-				Arrays.asList(dc.getInterfaces()));
-		while ((dc = dc.getSuperclass()) != null) {
-			try {
-				Method superMethod = dc.getDeclaredMethod(method.getName(), method.getParameterTypes());
-				if (getRelevantModifiers(superMethod) == methodModifiers) {
-					method = superMethod;
-				} else {
-					break;
-				}
-			} catch (SecurityException e) {
-			} catch (NoSuchMethodException e) {
-			}
-			dis.addAll(Arrays.asList(dc.getInterfaces()));
-		}
-		while (!dis.isEmpty()) {
-			java.util.Set<Class<?>> newDis = new LinkedHashSet<Class<?>>();
-			for (Class<?> di : dis) {
-				try {
-					// Only replace by method declared in a super-interface
-					if (di.isAssignableFrom(method.getDeclaringClass())) {
-						method = di.getDeclaredMethod(method.getName(), method.getParameterTypes());
-					}
-				} catch (SecurityException e) {
-				} catch (NoSuchMethodException e) {
-				}
-				newDis.addAll(Arrays.asList(di.getInterfaces()));
-			}
-			newDis.removeAll(dis);
-			dis = newDis;
-		}
-		return method;
-	}
-
-	/**
-	 * Returns the relevant modifiers (visibility and static) for the given method.
-	 * @param method the method for which to return the modifiers
-	 * @return the relevant modifiers (visibility and static) for the given method
-	 */
-	private int getRelevantModifiers(final Method method) {
-		final int methodModifiers = method.getModifiers();
-		return methodModifiers & (Modifier.PRIVATE + Modifier.PROTECTED + Modifier.PUBLIC + Modifier.STATIC);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
