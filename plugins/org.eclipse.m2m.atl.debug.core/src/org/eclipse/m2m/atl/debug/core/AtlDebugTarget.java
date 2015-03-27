@@ -413,6 +413,9 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	 *      org.eclipse.core.resources.IMarkerDelta)
 	 */
 	public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) {
+		if(!(breakpoint instanceof AtlBreakpoint)) {
+			return;
+		}
 		AtlBreakpoint ab = (AtlBreakpoint)breakpoint;
 		String location = ""; //$NON-NLS-1$
 		Boolean enabled = Boolean.FALSE;
