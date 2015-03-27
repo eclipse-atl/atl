@@ -248,6 +248,11 @@ public class ASMEMFModelElement extends ASMModelElement {
 				ret = col;
 			} else {
 				ret = emf2ASM(frame, object.eGet(sf));
+				if(sf.isMany() && sf.getEType() instanceof EClass) {
+					// we must remove any ASMOclUndefined (due to dangling elements) present in the returned collection
+					ASMOclUndefined undef = new ASMOclUndefined();
+					while(((ASMCollection)ret).collection().remove(undef));
+				}
 			}
 		}
 		return ret;
@@ -405,6 +410,8 @@ public class ASMEMFModelElement extends ASMModelElement {
 		Resource valueExtent = value.eResource();
 		if (model.getExtent().equals(valueExtent)) {
 			return model.getASMModelElement(value);
+		} else if(valueExtent == null) {
+			return new ASMOclUndefined();
 		} else {
 			Iterator models = frame.getModels().values().iterator();
 			while (models.hasNext()) {
