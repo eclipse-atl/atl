@@ -236,6 +236,7 @@ public class AtlCodeScanner extends AbstractScanner {
 		rules.add(new EndOfLineRule("--", getToken(AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT_COLOR))); //$NON-NLS-1$
 		rules.add(new EnumLiteralRule(getToken(AtlPreferenceConstants.SYNTAX_LITERAL_COLOR)));
 		rules.add(new MultiLineRule("'", "'", getToken(AtlPreferenceConstants.SYNTAX_STRING_COLOR), '\\')); //$NON-NLS-1$ //$NON-NLS-2$
+		rules.add(new MultiLineRule("\"", "\"", getToken(AtlPreferenceConstants.SYNTAX_IDENTIFIER_COLOR), '\\')); //$NON-NLS-1$ //$NON-NLS-2$
 		rules.add(new NumberRule(getToken(AtlPreferenceConstants.SYNTAX_NUMBER_COLOR)));
 		rules.add(new SymbolRule(IAtlLexems.BRACKETS, getToken(AtlPreferenceConstants.SYNTAX_BRACKET_COLOR)));
 		rules
