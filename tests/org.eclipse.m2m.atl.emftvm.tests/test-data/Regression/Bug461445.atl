@@ -1,0 +1,4 @@
+-- @atlcompiler emftvm
+query "Regression::Bug461445" = "#native"!"java::util::Collections"
+	.refInvokeStaticOperation('unmodifiableMap', Sequence{Map{('key', 'value')}})
+	.get('key').debug('Bug');

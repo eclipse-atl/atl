@@ -1109,7 +1109,9 @@ public final class EMFTVMUtil {
 	 *            the method arguments
 	 * @return the method result
 	 */
-	public static Object invokeNative(final StackFrame frame, final Object self, final Method method, final Object[] args) {
+	public static Object invokeNative(final StackFrame frame, final Object self, Method method, final Object[] args) {
+		// Fix for Bug # 461445: EMFTVM cannot invoke Java methods on instances of private classes:
+		method = findRootMethod(method);
 		final StackFrame subFrame = frame.prepareNativeArgs(method, self, args);
 		try {
 			return emf2vm(frame.getEnv(), self instanceof EObject ? (EObject) self : null, method.invoke(self, args));
@@ -1163,7 +1165,9 @@ public final class EMFTVMUtil {
 	 *            the method argument
 	 * @return the method result
 	 */
-	public static Object invokeNative(final StackFrame frame, final Object self, final Method method, Object arg) {
+	public static Object invokeNative(final StackFrame frame, final Object self, Method method, Object arg) {
+		// Fix for Bug # 461445: EMFTVM cannot invoke Java methods on instances of private classes:
+		method = findRootMethod(method);
 		StackFrame subFrame = frame.prepareNativeContext(method, self);
 		if (arg instanceof CodeBlock) {
 			if (subFrame == null) {
@@ -1220,7 +1224,9 @@ public final class EMFTVMUtil {
 	 *            the method
 	 * @return the method result
 	 */
-	public static Object invokeNative(final StackFrame frame, final Object self, final Method method) {
+	public static Object invokeNative(final StackFrame frame, final Object self, Method method) {
+		// Fix for Bug # 461445: EMFTVM cannot invoke Java methods on instances of private classes:
+		method = findRootMethod(method);
 		final StackFrame subFrame = frame.prepareNativeContext(method, self);
 		try {
 			return emf2vm(frame.getEnv(), self instanceof EObject ? (EObject) self : null, method.invoke(self));
@@ -2423,6 +2429,61 @@ public final class EMFTVMUtil {
 				registry.put(nsURI, p);
 			}
 		}
+	}
+
+	/**
+	 * Finds the root {@link Class} declaration for the given <code>method</code>.
+	 * @param method the method for which to find the root declaration
+	 * @return the root {@link Method}
+	 */
+	public static Method findRootMethod(Method method) {
+		if (method == null) {
+			return null;
+		}
+		final int methodModifiers = getRelevantModifiers(method);
+		Class<?> dc = method.getDeclaringClass();
+		java.util.Set<Class<?>> dis = new LinkedHashSet<Class<?>>(
+				Arrays.asList(dc.getInterfaces()));
+		while ((dc = dc.getSuperclass()) != null) {
+			try {
+				Method superMethod = dc.getDeclaredMethod(method.getName(), method.getParameterTypes());
+				if (getRelevantModifiers(superMethod) == methodModifiers) {
+					method = superMethod;
+				} else {
+					break;
+				}
+			} catch (SecurityException e) {
+			} catch (NoSuchMethodException e) {
+			}
+			dis.addAll(Arrays.asList(dc.getInterfaces()));
+		}
+		while (!dis.isEmpty()) {
+			java.util.Set<Class<?>> newDis = new LinkedHashSet<Class<?>>();
+			for (Class<?> di : dis) {
+				try {
+					// Only replace by method declared in a super-interface
+					if (di.isAssignableFrom(method.getDeclaringClass())) {
+						method = di.getDeclaredMethod(method.getName(), method.getParameterTypes());
+					}
+				} catch (SecurityException e) {
+				} catch (NoSuchMethodException e) {
+				}
+				newDis.addAll(Arrays.asList(di.getInterfaces()));
+			}
+			newDis.removeAll(dis);
+			dis = newDis;
+		}
+		return method;
+	}
+
+	/**
+	 * Returns the relevant modifiers (visibility and static) for the given method.
+	 * @param method the method for which to return the modifiers
+	 * @return the relevant modifiers (visibility and static) for the given method
+	 */
+	private static int getRelevantModifiers(final Method method) {
+		final int methodModifiers = method.getModifiers();
+		return methodModifiers & (Modifier.PRIVATE + Modifier.PROTECTED + Modifier.PUBLIC + Modifier.STATIC);
 	}
 
 }

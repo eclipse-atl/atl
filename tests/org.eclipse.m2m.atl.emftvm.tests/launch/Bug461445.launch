@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.emftvm.launcher.EMFTVMTransformation">
+<stringAttribute key="ATL File Name" value="//org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/Bug461445.atl"/>
+<booleanAttribute key="Disable JIT compiler" value="false"/>
+<booleanAttribute key="Display Profiling Data" value="false"/>
+<booleanAttribute key="Display Timing Data" value="true"/>
+<mapAttribute key="Inout Model Options"/>
+<mapAttribute key="Inout Models"/>
+<mapAttribute key="Inout Models Output Locations"/>
+<mapAttribute key="Input Model Options"/>
+<mapAttribute key="Input Models"/>
+<mapAttribute key="Metamodel Options"/>
+<mapAttribute key="Metamodels"/>
+<stringAttribute key="Module Name" value="Regression::Bug461445"/>
+<stringAttribute key="Module Path" value="/org.eclipse.m2m.atl.emftvm.tests/test-data/"/>
+<mapAttribute key="Output Model Options"/>
+<mapAttribute key="Output Models"/>
+<listAttribute key="Superimpose"/>
+</launchConfiguration>
