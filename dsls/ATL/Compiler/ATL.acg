@@ -973,7 +973,18 @@ acg ATL startsWith Unit {
 				pcall 'J.__applyReverseBinding(SJ):V'
 									-- element
 			} else {
-				report error 'only navigations are allowed in reversebindings' 
+				if(rb isa OperationCallExp) {
+					if(rb.operationName = 'refGetValue' and rb.arguments.size() = 1) {
+						dup
+						analyze rb.arguments.first()
+						analyze rb.source
+						pcall 'J.__applyReverseBinding(SJ):V'
+					} else {
+						report error 'only navigations (including refGetValue) are allowed in reversebindings' 
+					}
+				} else {
+					report error 'only navigations (including refGetValue) are allowed in reversebindings' 
+				}
 			}
 		}
 	}

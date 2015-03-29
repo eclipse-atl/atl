@@ -66,6 +66,8 @@ public class EMFModelFactory extends ModelFactory {
 		Map<Object, Object> loadOptions = resourceSet.getLoadOptions();
 		loadOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
 		loadOptions.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
+		// do not fail on unknown features such as xmi:Extension (e.g., in some models not serialized by EMF)
+		loadOptions.put(XMLResource.OPTION_RECORD_UNKNOWN_FEATURE, Boolean.TRUE);
 	}
 
 	/**
