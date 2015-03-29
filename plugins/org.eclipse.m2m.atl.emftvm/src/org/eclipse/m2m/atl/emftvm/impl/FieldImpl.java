@@ -563,15 +563,7 @@ public class FieldImpl extends FeatureImpl implements Field {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		if (isStatic()) {
-			result.append(" (staticValue: ");
-			result.append(staticValue);
-			result.append(')');
-		}
-		return result.toString();
+		return super.toString();
 	}
 
 	/**
