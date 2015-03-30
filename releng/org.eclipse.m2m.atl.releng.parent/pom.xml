@@ -50,6 +50,7 @@
       <id>repo.eclipse.org</id>
       <name>ATL Repository - Snapshots</name>
       <url>https://repo.eclipse.org/content/repositories/atl-snapshots/</url>
+      <uniqueVersion>true</uniqueVersion>
     </snapshotRepository>
   </distributionManagement>
 
