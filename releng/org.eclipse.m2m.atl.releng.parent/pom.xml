@@ -37,9 +37,21 @@
   </licenses>
 
   <properties>
-    <tycho-version>0.16.0</tycho-version>
+    <tycho-version>0.22.0</tycho-version>
   </properties>
 
+  <distributionManagement>
+    <repository>
+      <id>repo.eclipse.org</id>
+      <name>ATL Repository - Releases</name>
+      <url>https://repo.eclipse.org/content/repositories/atl-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>repo.eclipse.org</id>
+      <name>ATL Repository - Snapshots</name>
+      <url>https://repo.eclipse.org/content/repositories/atl-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <modules>
   
