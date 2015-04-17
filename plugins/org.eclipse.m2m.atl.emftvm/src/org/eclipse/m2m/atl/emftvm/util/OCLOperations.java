@@ -1024,6 +1024,14 @@ public final class OCLOperations {
 					}
 		});
 		createOperation(false, "-", Types.REAL_TYPE, Types.REAL_TYPE,
+				new String[][][]{}, 
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						return -(Double)frame.getLocal(0, 0);
+					}
+		});
+		createOperation(false, "-", Types.REAL_TYPE, Types.REAL_TYPE,
 				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
 				new NativeCodeBlock() {
 					@Override
@@ -1224,6 +1232,14 @@ public final class OCLOperations {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) + (Integer)frame.getLocal(0, 1);
+					}
+		});
+		createOperation(false, "-", Types.INTEGER_TYPE, Types.INTEGER_TYPE,
+				new String[][][]{}, 
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						return -(Integer)frame.getLocal(0, 0);
 					}
 		});
 		createOperation(false, "-", Types.INTEGER_TYPE, Types.REAL_TYPE,

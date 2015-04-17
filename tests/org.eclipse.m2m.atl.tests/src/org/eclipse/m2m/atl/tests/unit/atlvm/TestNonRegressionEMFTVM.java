@@ -153,7 +153,7 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 		for (String metamodel : metamodels) {
 			loadMetaModel(env, rs, metamodel, modelPaths.get(metamodel));
 		}
-		
+
 		EMFTVMUtil.registerEPackages(rs);
 
 		// Libraries
@@ -214,10 +214,6 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 			model.setResource(EcorePackage.eINSTANCE.eResource());
 		} else {
 			model.setResource(rs.getResource(uri(path), true));
-		}
-		for (EObject root : model.getResource().getContents()) {
-			Diagnostic diag = Diagnostician.INSTANCE.validate(root);
-			assertEquals("Metamodel invalid: " + path, Diagnostic.OK, diag.getSeverity());
 		}
 		env.registerMetaModel(name, model);
 	}
@@ -301,36 +297,23 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 		}
 
 		final ExecEnv env2 = EmftvmFactory.eINSTANCE.createExecEnv();
-		env2.registerInputModel("IN", outModel);
-
-		final Resource outRes2 = rs.createResource(URI.createFileURI("out.emftvm"));
-		final Model outModel2 = EmftvmFactory.eINSTANCE.createModel();
-		outModel2.setResource(outRes2);
-		env2.registerOutputModel("OUT", outModel2);
-		assertEquals(outModel2, env2.getOutputModels().get("OUT"));
-
-		final Resource pbsRes2 = rs.createResource(URI.createFileURI("pbs.xmi"));
-		final Model pbsModel2 = EmftvmFactory.eINSTANCE.createModel();
-		pbsModel2.setResource(pbsRes2);
-		env2.registerOutputModel("PBS", pbsModel2);
-		assertEquals(pbsModel2, env2.getOutputModels().get("PBS"));
+		env2.registerInOutModel("IN", outModel);
 
 		// Load and run module
 		{
 			final ModuleResolver mr = new DefaultModuleResolver(COMPILER_PLUGIN_URI + "/transformations/", new ResourceSetImpl());
 			env2.loadModule(mr, "InlineCodeblocks");
 			env2.run(null);
-			assertTrue(pbsRes2.getContents().isEmpty());
-			assertEquals(1, outRes2.getContents().size());
-			assertTrue(outRes2.getContents().get(0) instanceof Module);
+			assertEquals(1, outRes.getContents().size());
+			assertTrue(outRes.getContents().get(0) instanceof Module);
 		}
 
 		// CodeBlocks passed into a native operation have their parentFrame property set - clear this property:
-		for (EObject cb : outModel2.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
+		for (EObject cb : outModel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
 			((CodeBlock) cb).setParentFrame(null);
 		}
 
-		return outModel2;
+		return outModel;
 	}
 
 	/**

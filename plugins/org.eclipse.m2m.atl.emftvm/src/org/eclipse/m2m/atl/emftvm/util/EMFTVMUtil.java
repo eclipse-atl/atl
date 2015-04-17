@@ -39,6 +39,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -2427,6 +2428,33 @@ public final class EMFTVMUtil {
 				}
 				// overwrite with current value to prevent aliasing problems
 				registry.put(nsURI, p);
+			} else if (object instanceof EDataType) {
+				adaptDataType((EDataType) object);
+			}
+		}
+	}
+
+	/**
+	 * Adapts the given {@link EDataType} if necessary.
+	 * @param dt the {@link EDataType} to adapt
+	 */
+	private static void adaptDataType(final EDataType dt) {
+		String icn = dt.getInstanceClassName();
+		if (icn == null) {
+			final String tname = dt.getName();
+			if (tname.equals("Boolean")) { //$NON-NLS-1$
+				icn = "boolean"; //$NON-NLS-1$
+			} else if (tname.equals("Double") || tname.equals("Real")) { //$NON-NLS-1$ //$NON-NLS-2$
+				icn = "java.lang.Double"; //$NON-NLS-1$
+			} else if (tname.equals("Float")) { //$NON-NLS-1$
+				icn = "java.lang.Float"; //$NON-NLS-1$
+			} else if (tname.equals("Integer")) { //$NON-NLS-1$
+				icn = "java.lang.Integer"; //$NON-NLS-1$
+			} else if (tname.equals("String")) { //$NON-NLS-1$
+				icn = "java.lang.String"; //$NON-NLS-1$
+			}
+			if (icn != null) {
+				dt.setInstanceClassName(icn);
 			}
 		}
 	}
