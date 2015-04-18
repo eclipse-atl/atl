@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2015 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ import org.eclipse.m2m.atl.emftvm.ExecEnv;
  * Based on the OCL 2.2 specification (formal/2010-02-01).
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
- * @param <E>
+ * @param <E> the collection element type
  */
 public abstract class LazyCollection<E> implements Collection<E> {
 
@@ -2365,5 +2365,47 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @return the sorted collection
 	 */
 	public abstract LazyCollection<E> sortedBy(final CodeBlock body);
+
+	/**
+	 * Returns a Map indexed by the return value(s) <code>x</code> of the
+	 * body expression, containing the Set of elements for which the
+	 * body expression returns <code>x</code>. 
+	 * @param body the function to evaluate on each element
+	 * @return the Map
+	 */
+	public Map<Object, LazySet<E>> mappedBy(final CodeBlock body) {
+		final StackFrame frame = body.getParentFrame();
+		body.setParentFrame(null);
+		final Map<Object, LazySet<E>> result = new HashMap<Object, LazySet<E>>();
+		final Map<Object, HashSet<E>> shadow = new HashMap<Object, HashSet<E>>();
+		for (E e : this) {
+			Object key = body.execute(frame.getSubFrame(body, new Object[] { e }));
+			if (key instanceof Collection<?>) {
+				for (Object k : (Collection<?>) key) {
+					updateMaps(k, e, result, shadow);
+				}
+			} else {
+				updateMaps(key, e, result, shadow);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Updates the given maps for {@link #mappedBy(CodeBlock)}.
+	 * @param key the map key
+	 * @param e the map value
+	 * @param result the result map
+	 * @param shadow the shadow map of mutable sets
+	 */
+	private void updateMaps(final Object key, E e, final Map<Object, LazySet<E>> result, final Map<Object, HashSet<E>> shadow) {
+		HashSet<E> values = shadow.get(key);
+		if (values == null) {
+			values = new HashSet<E>();
+			shadow.put(key, values);
+			result.put(key, new LazySetOnSet<E>(values));
+		}
+		values.add(e);
+	}
 
 }

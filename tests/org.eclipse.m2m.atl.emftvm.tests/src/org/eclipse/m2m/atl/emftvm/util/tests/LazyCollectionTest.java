@@ -18,12 +18,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.util.LazyBag;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
@@ -928,6 +930,55 @@ public abstract class LazyCollectionTest extends TestCase {
 		assertTrue(list.toString().length() > 0);
 		assertFalse(list.toString().equals(getEmptyLazyCollection().toString()));
 		assertEquals(getDataSource().toString(), list.toString());
+	}
+
+	/**
+	 * Tests {@link LazyCollection#mappedBy(CodeBlock)}.
+	 */
+	public void testMappedBy() {
+		final LazyCollection<String> list = getTestLazyCollection();
+		// Test for single return value
+		final Map<Object, LazySet<String>> result = list.mappedBy(new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public Object execute(final StackFrame frame) {
+				return ((String) frame.getLocal(0)).length();
+			}
+
+		});
+		for (Object key : result.keySet()) {
+			for (String value : result.get(key)) {
+				assertEquals(key, Integer.valueOf(value.length()));
+			}
+		}
+		// Test for collection return value
+		final Map<Object, LazySet<String>> result2 = list.mappedBy(new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public Object execute(final StackFrame frame) {
+				final String self = ((String) frame.getLocal(0));
+				final List<Character> chars = new ArrayList<Character>(self.length());
+				for (char c : (self.toCharArray())) {
+					chars.add(c);
+				}
+				return chars;
+			}
+
+		});
+		for (Object key : result2.keySet()) {
+			for (String value : result2.get(key)) {
+				assertTrue(String.format("Expected \"%s\" to contain \'%s\'", value, key), 
+						value.indexOf((Character) key) >= 0);
+			}
+		}
 	}
 
 }
