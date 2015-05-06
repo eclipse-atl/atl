@@ -100,8 +100,8 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.eclipse.dash.maven</groupId>
-						<artifactId>eclipse-signing-maven-plugin</artifactId>
+						<groupId>org.eclipse.cbi.maven.plugins</groupId>
+				        <artifactId>eclipse-jarsigner-plugin</artifactId>
 						<version>1.0.5</version>
 						<executions>
 							<execution>
@@ -174,8 +174,8 @@
 
 			<pluginRepositories>
 				<pluginRepository>
-					<id>maven.eclipse.org</id>
-					<url>http://maven.eclipse.org/nexus/content/groups/public/</url>
+					<id>CBI</id>
+					<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
