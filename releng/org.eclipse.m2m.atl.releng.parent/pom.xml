@@ -352,12 +352,12 @@
 		
 		    <profile>
       <id>sign</id>
-   <!--  <activation>
+     <activation>
         <property>
           <name>BUILD_SIGN</name>
           <value>true</value>
         </property>
-      </activation>-->
+      </activation>
       <build>
         <plugins>
           <plugin>
