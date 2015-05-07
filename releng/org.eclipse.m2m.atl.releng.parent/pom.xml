@@ -125,6 +125,7 @@
   
   <build>
   	<sourceDirectory>src</sourceDirectory>
+  	
     <plugins>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
@@ -248,6 +249,23 @@
               </goals>
             </execution>
           </executions>
+        </plugin>
+         <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-p2-plugin</artifactId>
+          <version>${tycho-extras-version}</version>
+          <executions>
+            <execution>
+              <id>p2-metadata</id>
+              <goals>
+                <goal>p2-metadata</goal>
+              </goals>
+              <phase>package</phase>
+            </execution>
+          </executions>
+          <configuration>
+            <defaultP2Metadata>false</defaultP2Metadata>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
