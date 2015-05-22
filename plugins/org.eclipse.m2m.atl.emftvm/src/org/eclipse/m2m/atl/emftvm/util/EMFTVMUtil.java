@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011-2013 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2015 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -157,6 +158,16 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	private static final Map<Class<?>, Map<Integer, Method>> METHOD_CACHE = new WeakHashMap<Class<?>, Map<Integer, Method>>();
+
+	/**
+	 * Cache used to store the found root methods for native Java methods.
+	 * 
+	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
+	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+	 */
+	private static final Map<Method, Method> ROOT_METHOD_CACHE = Collections.synchronizedMap(new WeakHashMap<Method, Method>());
 
 	/**
 	 * Singleton {@link RegistryTypeSwitch} instance.
@@ -2464,10 +2475,25 @@ public final class EMFTVMUtil {
 	 * @param method the method for which to find the root declaration
 	 * @return the root {@link Method}
 	 */
-	public static Method findRootMethod(Method method) {
+	public static Method findRootMethod(final Method method) {
 		if (method == null) {
 			return null;
 		}
+		Method rootMethod = ROOT_METHOD_CACHE.get(method);
+		if (rootMethod != null) {
+			return rootMethod;
+		}
+		rootMethod = findRootMethodInner(method);
+		ROOT_METHOD_CACHE.put(method, rootMethod);
+		return rootMethod;
+	}
+
+	/**
+	 * Finds the root {@link Class} declaration for the given <code>method</code>.
+	 * @param method the method for which to find the root declaration
+	 * @return the root {@link Method}
+	 */
+	private static Method findRootMethodInner(Method method) {
 		final int methodModifiers = getRelevantModifiers(method);
 		Class<?> dc = method.getDeclaringClass();
 		java.util.Set<Class<?>> dis = new LinkedHashSet<Class<?>>(

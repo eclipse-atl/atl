@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2015 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -82,7 +82,7 @@ public final class Tuple {
 	 *            the map with tuple key-value pairs
 	 */
 	public Tuple(Map<String, Object> map) {
-		values = Collections.unmodifiableMap(map);
+		values = map;
 	}
 
 	/**
