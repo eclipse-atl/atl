@@ -2392,6 +2392,30 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	}
 
 	/**
+	 * Returns a Map indexed by the return value(s) <code>x</code> of the
+	 * body expression, containing a single element for which the
+	 * body expression returns <code>x</code>. 
+	 * @param body the function to evaluate on each element
+	 * @return the Map
+	 */
+	public Map<Object, E> mappedBySingle(final CodeBlock body) {
+		final StackFrame frame = body.getParentFrame();
+		body.setParentFrame(null);
+		final Map<Object, E> result = new HashMap<Object, E>();
+		for (E e : this) {
+			Object key = body.execute(frame.getSubFrame(body, new Object[] { e }));
+			if (key instanceof Collection<?>) {
+				for (Object k : (Collection<?>) key) {
+					result.put(k, e);
+				}
+			} else {
+				result.put(key, e);
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * Updates the given maps for {@link #mappedBy(CodeBlock)}.
 	 * @param key the map key
 	 * @param e the map value

@@ -981,4 +981,51 @@ public abstract class LazyCollectionTest extends TestCase {
 		}
 	}
 
+	/**
+	 * Tests {@link LazyCollection#mappedBySingle(CodeBlock)}.
+	 */
+	public void testMappedBySingle() {
+		final LazyCollection<String> list = getTestLazyCollection();
+		// Test for single return value
+		final Map<Object, String> result = list.mappedBySingle(new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public Object execute(final StackFrame frame) {
+				return ((String) frame.getLocal(0)).length();
+			}
+
+		});
+		for (Object key : result.keySet()) {
+			String value = result.get(key);
+			assertEquals(key, Integer.valueOf(value.length()));
+		}
+		// Test for collection return value
+		final Map<Object, String> result2 = list.mappedBySingle(new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public Object execute(final StackFrame frame) {
+				final String self = ((String) frame.getLocal(0));
+				final List<Character> chars = new ArrayList<Character>(self.length());
+				for (char c : (self.toCharArray())) {
+					chars.add(c);
+				}
+				return chars;
+			}
+
+		});
+		for (Object key : result2.keySet()) {
+			String value = result2.get(key);
+			assertTrue(String.format("Expected \"%s\" to contain \'%s\'", value, key), 
+					value.indexOf((Character) key) >= 0);
+		}
+	}
+
 }
