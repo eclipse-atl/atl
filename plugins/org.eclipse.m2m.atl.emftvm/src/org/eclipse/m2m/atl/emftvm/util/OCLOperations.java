@@ -498,7 +498,7 @@ public final class OCLOperations {
 										"Cannot find property %s::%s", ecls.getName(), propname));
 							}
 							((EObject)object).eSet(sf, value);
-							return null;
+							return object;
 						}
 						throw new VMException(frame, String.format(
 								"Cannot set properties for regular objects: %s",
@@ -521,7 +521,7 @@ public final class OCLOperations {
 										"Cannot find property %s::%s", ecls.getName(), propname));
 							}
 							((EObject)object).eUnset(sf);
-							return null;
+							return object;
 						}
 						throw new VMException(frame, String.format(
 								"Cannot unset properties for regular objects: %s",
