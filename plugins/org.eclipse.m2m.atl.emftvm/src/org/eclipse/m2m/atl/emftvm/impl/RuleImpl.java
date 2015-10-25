@@ -3390,7 +3390,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	private Map<String, Object> createValuesMap(final Object[] values) {
 		final EList<InputRuleElement> allInput = getInputElements();
-		final Map<String, Object> valuesMap = new HashMap<String, Object>(allInput.size());
+		final Map<String, Object> valuesMap = new LinkedHashMap<String, Object>(allInput.size());
 		assert allInput.size() == values.length;
 		int i = 0;
 		for (RuleElement re : allInput) {
