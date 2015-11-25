@@ -26,6 +26,8 @@ import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.common.ATL.ATLPackage;
+import org.eclipse.m2m.atl.common.Problem.ProblemPackage;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IExtractor;
 import org.eclipse.m2m.atl.core.IInjector;
@@ -91,8 +93,10 @@ public final class AtlParser implements IInjector, IExtractor {
 			URL tcsMetamodelURL = AtlParser.class.getResource("resources/TCS.ecore"); //$NON-NLS-1$
 			URL atlTcsModelURL = AtlParser.class.getResource("resources/ATL-TCS.xmi"); //$NON-NLS-1$
 			injector = new EMFInjector();
-			atlMetamodel = modelFactory.getBuiltInResource("ATL.ecore"); //$NON-NLS-1$
-			problemMetamodel = modelFactory.getBuiltInResource("Problem.ecore"); //$NON-NLS-1$		
+			atlMetamodel = modelFactory.newReferenceModel();
+			((EMFInjector)injector).inject(atlMetamodel, ATLPackage.eINSTANCE.eResource());
+			problemMetamodel = modelFactory.newReferenceModel();		
+			((EMFInjector)injector).inject(problemMetamodel, ProblemPackage.eINSTANCE.eResource());
 			IReferenceModel tcsMetamodel = modelFactory.newReferenceModel();
 			injector.inject(tcsMetamodel, tcsMetamodelURL.openStream(), null);
 			atlTcsModel = modelFactory.newModel(tcsMetamodel);

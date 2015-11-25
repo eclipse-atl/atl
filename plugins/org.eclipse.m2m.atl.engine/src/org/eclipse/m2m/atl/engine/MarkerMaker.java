@@ -24,8 +24,8 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -96,7 +96,7 @@ public class MarkerMaker {
 			//$NON-NLS-1$//$NON-NLS-2$
 		}
 
-		String severity = ((EEnumLiteral)problem.eGet(sfSeverity)).getName();
+		String severity = ((Enumerator)problem.eGet(sfSeverity)).getName();
 		int eclipseSeverity = ((Integer)severities.get(severity)).intValue();
 
 		try {
@@ -193,7 +193,7 @@ public class MarkerMaker {
 			EObject ame = (EObject)i.next();
 			pbsa[k] = ame;
 			EStructuralFeature severityFeature = ame.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
-			if ("error".equals(((EEnumLiteral)ame.eGet(severityFeature)).getName())) { //$NON-NLS-1$
+			if ("error".equals(((Enumerator)ame.eGet(severityFeature)).getName())) { //$NON-NLS-1$
 				nbErrors++;
 			}
 			k++;

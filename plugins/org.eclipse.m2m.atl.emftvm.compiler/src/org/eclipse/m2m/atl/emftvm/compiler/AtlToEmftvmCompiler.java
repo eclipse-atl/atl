@@ -29,9 +29,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -290,7 +290,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		if (pbs != null) {
 			for (EObject pb : pbs) {
 				EStructuralFeature severityFeature = pb.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
-				if (severityFeature != null && "error".equals(((EEnumLiteral) pb.eGet(severityFeature)).getName())) { //$NON-NLS-1$
+				if (severityFeature != null && "error".equals(((Enumerator) pb.eGet(severityFeature)).getName())) { //$NON-NLS-1$
 					nbErrors++;
 				}
 			}
@@ -316,7 +316,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		if (pbs != null) {
 			for (EObject pb : pbs) {
 				EStructuralFeature severityFeature = pb.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
-				if (severityFeature != null && "error".equals(((EEnumLiteral) pb.eGet(severityFeature)).getName())) { //$NON-NLS-1$
+				if (severityFeature != null && "error".equals(((Enumerator) pb.eGet(severityFeature)).getName())) { //$NON-NLS-1$
 					nbErrors++;
 				}
 			}

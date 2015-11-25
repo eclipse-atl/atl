@@ -273,7 +273,8 @@ public class AtlResourceImpl extends ResourceImpl {
 		for (EObject o : res.getContents()) {
 			if (o instanceof EPackage) {
 				EPackage p = (EPackage)o;
-				if (r.containsKey(p.getNsURI()) && r.get(p.getNsURI()) != p) {
+				Object existing = r.get(p.getNsURI());
+				if (existing != null && existing != p) {
 					throw new IOException(String.format("EPackage with URI \"%s\" already registered by another EPackage instance",
 							p.getNsURI()));
 				}
