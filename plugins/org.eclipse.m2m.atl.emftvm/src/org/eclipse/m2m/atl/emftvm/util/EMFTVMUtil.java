@@ -670,11 +670,13 @@ public final class EMFTVMUtil {
 				assert value == null || ((EObject) value).eResource() != null;
 				assert oldValue == null || oldValue.eResource() != null;
 				eo.eSet(sf, value);
-				if (value != null) {
-					updateResource(eo, (EObject) value);
-				}
-				if (oldValue != null) {
-					updateResource(eo, oldValue);
+				if (ref.isContainment() || ref.isContainer()) {
+					if (value != null) {
+						updateResource(eo, (EObject) value);
+					}
+					if (oldValue != null) {
+						updateResource(eo, oldValue);
+					}
 				}
 				assert eo.eResource() != null;
 				assert value == null || ((EObject) value).eResource() != null;
@@ -920,7 +922,9 @@ public final class EMFTVMUtil {
 			} else {
 				values.add(v);
 			}
-			updateResource(eo, v);
+			if (ref.isContainment() || ref.isContainer()) {
+				updateResource(eo, v);
+			}
 		}
 		assert eo.eResource() != null;
 		assert v.eResource() != null;
@@ -939,7 +943,7 @@ public final class EMFTVMUtil {
 	private static void removeRefValue(final EReference ref, final EObject eo, final Collection<Object> values, final EObject v) {
 		assert eo.eResource() != null;
 		assert v.eResource() != null;
-		if (values.remove(v)) {
+		if (values.remove(v) && (ref.isContainment() || ref.isContainer())) {
 			updateResource(eo, v);
 		}
 		assert eo.eResource() != null;
@@ -2187,26 +2191,10 @@ public final class EMFTVMUtil {
 	}
 
 	/**
-	 * Retrieves the transitive closure of
-	 * 
-	 * <pre>
-	 * field
-	 * </pre>
-	 * 
-	 * on
-	 * 
-	 * <pre>
-	 * object
-	 * </pre>
-	 * 
-	 * .
+	 * Retrieves the transitive closure of <code>field</code> on <code>object</code>.
 	 * 
 	 * @param object
-	 *            the object on which to retrieve
-	 * 
-	 *            <pre>
-	 * field
-	 * </pre>
+	 *            the object on which to retrieve <code>field</code>
 	 * @param field
 	 *            the field for which to retrieve the value
 	 * @param frame
@@ -2239,26 +2227,10 @@ public final class EMFTVMUtil {
 	}
 
 	/**
-	 * Retrieves the transitive closure of
-	 * 
-	 * <pre>
-	 * sf
-	 * </pre>
-	 * 
-	 * on
-	 * 
-	 * <pre>
-	 * object
-	 * </pre>
-	 * 
-	 * .
+	 * Retrieves the transitive closure of <code>sf</code> on <code>object</code>.
 	 * 
 	 * @param object
-	 *            the object on which to retrieve
-	 * 
-	 *            <pre>
-	 * sf
-	 * </pre>
+	 *            the object on which to retrieve <code>sf</code>
 	 * @param sf
 	 *            the structural feature for which to retrieve the value
 	 * @param env
@@ -2298,26 +2270,10 @@ public final class EMFTVMUtil {
 	}
 
 	/**
-	 * Retrieves the transitive closure of
-	 * 
-	 * <pre>
-	 * field
-	 * </pre>
-	 * 
-	 * on
-	 * 
-	 * <pre>
-	 * object
-	 * </pre>
-	 * 
-	 * .
+	 * Retrieves the transitive closure of <code>field</code> on <code>object</code>.
 	 * 
 	 * @param object
-	 *            the object on which to retrieve
-	 * 
-	 *            <pre>
-	 * field
-	 * </pre>
+	 *            the object on which to retrieve <code>field</code>
 	 * @param field
 	 *            the field for which to retrieve the value
 	 * @param result
