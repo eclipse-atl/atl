@@ -184,7 +184,8 @@ public class CodeBlockJIT implements Opcodes {
 		init.visitMethodInsn(INVOKESPECIAL, // super(cb) 
 				Type.getInternalName(JITCodeBlock.class), 
 				"<init>", 
-				Type.getMethodDescriptor(Type.VOID_TYPE, new Type[]{Type.getType(CodeBlock.class)}));
+				Type.getMethodDescriptor(Type.VOID_TYPE, new Type[]{Type.getType(CodeBlock.class)}),
+				false);
 		init.visitInsn(RETURN);
 		init.visitLabel(end);
 		// Create local variable table
@@ -221,10 +222,10 @@ public class CodeBlockJIT implements Opcodes {
 		// Generate bytecode
 		execute.visitLabel(start);
 		execute.visitVarInsn(ALOAD, 1); // frame
-		execute.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(StackFrame.class), "getEnv", Type.getMethodDescriptor(Type.getType(ExecEnv.class), new Type[0]));
+		execute.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(StackFrame.class), "getEnv", Type.getMethodDescriptor(Type.getType(ExecEnv.class), new Type[0]), false);
 		execute.visitVarInsn(ASTORE, 2);
 		execute.visitVarInsn(ALOAD, 2); // env
-		execute.visitMethodInsn(INVOKEINTERFACE, Type.getInternalName(ExecEnv.class), "getMonitor", Type.getMethodDescriptor(Type.getType(VMMonitor.class), new Type[0]));
+		execute.visitMethodInsn(INVOKEINTERFACE, Type.getInternalName(ExecEnv.class), "getMonitor", Type.getMethodDescriptor(Type.getType(VMMonitor.class), new Type[0]), true);
 		execute.visitVarInsn(ASTORE, 3); // monitor
 		final boolean hasMonitor = getEnv().getMonitor() != null;
 		if (hasMonitor) {
@@ -235,7 +236,8 @@ public class CodeBlockJIT implements Opcodes {
 					"enter", 
 					Type.getMethodDescriptor(Type.VOID_TYPE, new Type[]{
 							Type.getType(StackFrame.class)
-					}));
+					}),
+					true);
 		}
 		execute.visitLabel(tryStart);
 		final ByteCodeSwitch bs = new ByteCodeSwitch(this, execute, ls);
@@ -267,7 +269,8 @@ public class CodeBlockJIT implements Opcodes {
 				Type.getMethodDescriptor(Type.VOID_TYPE, new Type[]{
 						Type.getType(StackFrame.class),
 						Type.getType(Throwable.class)
-				}));
+				}),
+				false);
 		execute.visitInsn(ATHROW); // throw vme
 		// Regular method return
 		execute.visitLabel(catchEnd);
@@ -279,7 +282,8 @@ public class CodeBlockJIT implements Opcodes {
 					"leave", 
 					Type.getMethodDescriptor(Type.VOID_TYPE, new Type[]{
 							Type.getType(StackFrame.class)
-					}));
+					}),
+					true);
 		}
 		if (cb.getStackLevel() == 0) {
 			execute.visitInsn(ACONST_NULL); // push null
@@ -311,7 +315,8 @@ public class CodeBlockJIT implements Opcodes {
 		mv.visitMethodInsn(INVOKEINTERFACE, // monitor.isTerminated(): [..., boolean]
 				Type.getInternalName(VMMonitor.class), 
 				"isTerminated", 
-				Type.getMethodDescriptor(Type.BOOLEAN_TYPE, new Type[0]));
+				Type.getMethodDescriptor(Type.BOOLEAN_TYPE, new Type[0]),
+				true);
 		mv.visitJumpInsn(IFEQ, notTerminated); // jump if isTerminated == false: [...]
 		mv.visitTypeInsn(NEW, Type.getInternalName(VMException.class)); // new VMException: [..., vme]
 		mv.visitInsn(DUP); // [..., vme, vme]
@@ -323,7 +328,8 @@ public class CodeBlockJIT implements Opcodes {
 				Type.getMethodDescriptor(Type.VOID_TYPE, new Type[]{
 						Type.getType(StackFrame.class),
 						Type.getType(String.class)
-				}));
+				}),
+				false);
 		mv.visitInsn(ATHROW); // throw vme: [...]
 		mv.visitLabel(notTerminated);
 		mv.visitVarInsn(ALOAD, 1); // frame: [..., frame]
@@ -333,7 +339,8 @@ public class CodeBlockJIT implements Opcodes {
 				"setPc", 
 				Type.getMethodDescriptor(Type.VOID_TYPE, new Type[]{
 						Type.INT_TYPE
-				}));
+				}),
+				false);
 		mv.visitVarInsn(ALOAD, 3); // monitor: [..., monitor]
 		mv.visitVarInsn(ALOAD, 1); // frame: [..., monitor, frame]
 		mv.visitMethodInsn(INVOKEINTERFACE, // monitor.step(frame): [...]
@@ -341,7 +348,8 @@ public class CodeBlockJIT implements Opcodes {
 				"step", 
 				Type.getMethodDescriptor(Type.VOID_TYPE, new Type[]{
 						Type.getType(StackFrame.class)
-				}));
+				}),
+				true);
 	}
 
 	/**

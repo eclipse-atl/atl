@@ -709,7 +709,8 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			mv.visitMethodInsn(opcode, // self.<method>(): [..., ?]
 					Type.getInternalName(dc), 
 					method.getName(), 
-					Type.getMethodDescriptor(method));
+					Type.getMethodDescriptor(method),
+					dc.isInterface());
 			// Check if method returned anything
 			final Class<?> rt = method.getReturnType();
 			// Box primitive return values
@@ -913,7 +914,8 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			mv.visitMethodInsn(opcode, // self.<method>(arg): [..., ?]
 					Type.getInternalName(dc), 
 					method.getName(), 
-					Type.getMethodDescriptor(method));
+					Type.getMethodDescriptor(method),
+					dc.isInterface());
 			// Check if method returned anything
 			final Class<?> rt = method.getReturnType();
 			// Box primitive return values
@@ -2279,7 +2281,8 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 				name, 
 				Type.getMethodDescriptor(
 						retType instanceof Type ? (Type)retType : Type.getType((Class<?>)retType), 
-						ats));
+						ats),
+				owner.isInterface());
 	}
 
 	protected void invokeIface(final Class<?> owner, final String name, 
