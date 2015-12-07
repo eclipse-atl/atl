@@ -274,6 +274,21 @@
 	<profiles>
 		
 		<profile>
+			<id>mars</id>
+			<repositories>
+				<repository><id>releasetrain</id><layout>p2</layout>
+					<url>http://download.eclipse.org/releases/mars</url>
+				</repository>
+        		<repository><id>orbit</id><layout>p2</layout>
+			 	    <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</url>
+        		</repository>
+        		<repository><id>emf compare 1.2 (test purpose only)</id><layout>p2</layout>
+			 	    <url>http://download.eclipse.org/modeling/emf/compare/updates/releases/1.2</url>
+        		</repository>
+			</repositories>
+		</profile>
+		
+		<profile>
 			<id>luna</id>
 			<repositories>
 				<repository><id>releasetrain</id><layout>p2</layout>
