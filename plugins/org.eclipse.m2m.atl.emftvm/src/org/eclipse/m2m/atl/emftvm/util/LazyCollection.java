@@ -562,7 +562,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public class ExcludingIterator extends CachingIterator {
 	
-		protected final E object;
+		protected final Object object;
 		protected E next;
 		protected boolean nextSet;
 	
@@ -570,7 +570,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * Creates a new {@link ExcludingIterator}, which excludes <code>object</code>.
 		 * @param object the object to exclude
 		 */
-		public ExcludingIterator(final E object) {
+		public ExcludingIterator(final Object object) {
 			super(dataSource.iterator());
 			this.object = object;
 		}
@@ -694,7 +694,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public class SubtractionIterator extends CachingIterator {
 	
-		protected final Collection<E> s;
+		protected final Collection<?> s;
 		protected E next;
 		protected boolean nextSet;
 	
@@ -702,7 +702,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * Creates a new {@link SubtractionIterator} on this and <code>s</code>.
 		 * @param s the collection to subtract from this
 		 */
-		public SubtractionIterator(final Collection<E> s) {
+		public SubtractionIterator(final Collection<?> s) {
 			super(dataSource.iterator());
 			this.s = s;
 		}
@@ -761,8 +761,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public class UnionIterator extends WrappedIterator {
 
-		protected final Iterable<E> s;
-		protected Iterator<E> added; // lazily instantiate this iterator
+		protected final Iterable<? extends E> s;
+		protected Iterator<? extends E> added; // lazily instantiate this iterator
 		protected boolean innerNext; // cache last inner.hasNext() invocation
 
 		/**
@@ -770,7 +770,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * collection and <code>s</code>.
 		 * @param s the collection to union with this
 		 */
-		public UnionIterator(final Iterable<E> s) {
+		public UnionIterator(final Iterable<? extends E> s) {
 			super();
 			this.s = s;
 		}
@@ -816,8 +816,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public class UnionSetIterator extends CachingSetIterator {
 
-		protected final Iterable<E> s;
-		protected Iterator<E> added; // lazily instantiate this iterator
+		protected final Iterable<? extends E> s;
+		protected Iterator<? extends E> added; // lazily instantiate this iterator
 		protected boolean innerNext; // cache last inner.hasNext() invocation
 
 		/**
@@ -825,7 +825,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * collection and <code>s</code>.
 		 * @param s the collection to union with this
 		 */
-		public UnionSetIterator(final Iterable<E> s) {
+		public UnionSetIterator(final Iterable<? extends E> s) {
 			super();
 			this.s = s;
 		}
@@ -1853,7 +1853,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @param object the object to check for
 	 * @return <code>true</code> if <code>object</code> is an element of self, <code>false</code> otherwise.
 	 */
-	public boolean includes(final E object) {
+	public boolean includes(final Object object) {
 		return contains(object);
 	}
 
@@ -1862,7 +1862,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @param object the object to check for
 	 * @return <code>true</code> if <code>object</code> is not an element of self, <code>false</code> otherwise.
 	 */
-	public boolean excludes(final E object) {
+	public boolean excludes(final Object object) {
 		return !contains(object);
 	}
 
@@ -1871,7 +1871,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @param object the object to check for
 	 * @return The number of times that <code>object</code> occurs in the collection self.
 	 */
-	public synchronized int count(final E object) {
+	public synchronized int count(final Object object) {
 		if (occurrences == null) {
 			occurrences = new HashMap<E, Integer>();
 			for (E e : this) {
@@ -1890,7 +1890,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @param c2 the collection to check
 	 * @return <code>true</code> iff self contains all elements of <code>c2</code>.
 	 */
-	public boolean includesAll(final Collection<E> c2) {
+	public boolean includesAll(final Collection<?> c2) {
 		return containsAll(c2);
 	}
 
@@ -1899,7 +1899,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @param c2 the collection to check
 	 * @return <code>true</code> iff self contains no elements of <code>c2</code>.
 	 */
-	public boolean excludesAll(final Collection<E> c2) {
+	public boolean excludesAll(final Collection<?> c2) {
 		return !containsAny(c2);
 	}
 
@@ -2136,7 +2136,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 *            the collection to include
 	 * @return The collection containing all elements of self plus <code>coll</code>.
 	 */
-	public abstract LazyCollection<E> includingAll(Collection<E> coll);
+	public abstract LazyCollection<E> includingAll(Collection<? extends E> coll);
 
 	/**
 	 * Returns the collection containing all elements of self plus <code>coll</code>.
@@ -2150,7 +2150,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 *            the index at which to insert <code>coll</code> (starting at 1)
 	 * @return The collection containing all elements of self plus <code>coll</code>.
 	 */
-	public abstract LazyCollection<E> includingAll(Collection<E> coll, int index);
+	public abstract LazyCollection<E> includingAll(Collection<? extends E> coll, int index);
 
 	/**
 	 * Returns the collection containing all elements of self apart from all occurrences of <code>object</code>.
@@ -2162,7 +2162,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 *            the object to exclude
 	 * @return The collection containing all elements of self apart from all occurrences of <code>object</code>.
 	 */
-	public abstract LazyCollection<E> excluding(final E object);
+	public abstract LazyCollection<E> excluding(final Object object);
 
 	/**
 	 * Returns the collection containing all elements of self minus <code>coll</code>.
@@ -2174,7 +2174,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 *            the collection to exclude
 	 * @return The collection containing all elements of self minus <code>coll</code>.
 	 */
-	public abstract LazyCollection<E> excludingAll(Collection<E> coll);
+	public abstract LazyCollection<E> excludingAll(Collection<?> coll);
 
 	/**
 	 * Returns the collection containing all elements of self plus the collection of <code>first</code> running to <code>last</code>.

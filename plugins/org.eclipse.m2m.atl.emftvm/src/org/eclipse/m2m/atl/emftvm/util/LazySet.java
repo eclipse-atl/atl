@@ -159,7 +159,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(final E o) {
+		public int count(final Object o) {
 			return (object == null ? o == null : object.equals(o)) ? 1 : 
 					((LazyCollection<E>)dataSource).count(o);
 		}
@@ -269,7 +269,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 			}
 		}
 
-		protected final E object;
+		protected final Object object;
 		protected boolean containsExcluded;
 		protected boolean containsExcludedSet;
 	
@@ -278,7 +278,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		 * @param object the element to exclude
 		 * @param dataSource the underlying collection
 		 */
-		public ExcludingSet(final E object, final LazySet<E> dataSource) {
+		public ExcludingSet(final Object object, final LazySet<E> dataSource) {
 			super(dataSource);
 			this.object = object;
 		}
@@ -296,7 +296,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(final E o) {
+		public int count(final Object o) {
 			return (object == null ? o == null : object.equals(o)) ? 0 : 
 					((LazyCollection<E>)dataSource).count(o);
 		}
@@ -387,7 +387,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Integer object) {
+		public int count(Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -471,7 +471,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Long object) {
+		public int count(Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -595,7 +595,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	 * @return The number of occurrences of <code>object</code> in self.
 	 */
 	@Override
-	public int count(final E o) {
+	public int count(final Object o) {
 		return contains(o) ? 1 : 0;
 	}
 
@@ -609,7 +609,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	 * @param s the collection to union with self
 	 * @return The union of self and <code>s</code>.
 	 */
-	public LazySet<E> union(final LazySet<E> s) {
+	public LazySet<E> union(final LazySet<? extends E> s) {
 		return new LazySet<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -723,7 +723,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	 * @return The collection containing all elements of self plus <code>coll</code>.
 	 */
 	@Override
-	public LazySet<E> includingAll(final Collection<E> coll) {
+	public LazySet<E> includingAll(final Collection<? extends E> coll) {
 		return union(LazyCollections.asLazySet(coll));
 	}
 
@@ -741,7 +741,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	 * @throws UnsupportedOperationException
 	 */
 	@Override
-	public LazySet<E> includingAll(final Collection<E> coll, final int index) {
+	public LazySet<E> includingAll(final Collection<? extends E> coll, final int index) {
 		throw new UnsupportedOperationException("Cannot specify index for adding values to unordered collections");
 	}
 
@@ -755,7 +755,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	 *            the object to exclude
 	 * @return The set containing all elements of self without <code>object</code>.
 	 */
-	public LazySet<E> excluding(final E object) {
+	public LazySet<E> excluding(final Object object) {
 		return new ExcludingSet<E>(object, this);
 	}
 
@@ -770,7 +770,7 @@ public class LazySet<E> extends LazyCollection<E> implements Set<E> {
 	 * @return The collection containing all elements of self minus <code>coll</code>.
 	 */
 	@Override
-	public LazySet<E> excludingAll(final Collection<E> coll) {
+	public LazySet<E> excludingAll(final Collection<?> coll) {
 		return new LazySet<E>(this) {
 			@Override
 			public Iterator<E> iterator() {

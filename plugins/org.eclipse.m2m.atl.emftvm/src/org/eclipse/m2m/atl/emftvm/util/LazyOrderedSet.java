@@ -373,7 +373,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(final E o) {
+		public int count(final Object o) {
 			return (object == null ? o == null : object.equals(o)) ? 1 : 
 					((LazyCollection<E>)dataSource).count(o);
 		}
@@ -1279,7 +1279,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			}
 		}
 
-		protected final E object;
+		protected final Object object;
 		protected int excludedIndex;
 		protected boolean excludedIndexSet;
 
@@ -1288,7 +1288,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * @param object the object to exclude
 		 * @param dataSource the underlying collection
 		 */
-		public ExcludingOrderedSet(final E object, final LazyOrderedSet<E> dataSource) {
+		public ExcludingOrderedSet(final Object object, final LazyOrderedSet<E> dataSource) {
 			super(dataSource);
 			this.object = object;
 		}
@@ -1306,7 +1306,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(final E o) {
+		public int count(final Object o) {
 			return (object == null ? o == null : object.equals(o)) ? 0 : 
 					((LazyCollection<E>)dataSource).count(o);
 		}
@@ -1658,7 +1658,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Integer object) {
+		public int count(Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -1806,7 +1806,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Long object) {
+		public int count(Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -2048,7 +2048,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 *            the object to count
 	 * @return The number of occurrences of <code>object</code> in self.
 	 */
-	public int count(final E o) {
+	public int count(final Object o) {
 		return contains(o) ? 1 : 0;
 	}
 
@@ -2142,7 +2142,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @param s the collection to union with self
 	 * @return The union of self and <code>s</code>.
 	 */
-	public LazyOrderedSet<E> union(final LazyOrderedSet<E> s) {
+	public LazyOrderedSet<E> union(final LazyOrderedSet<? extends E> s) {
 		return new LazyOrderedSet<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -2166,7 +2166,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 *            the insertion index (starting at 1)
 	 * @return The ordered set consisting of all elements in self, with all elements in <code>s</code> inserted at <code>index</code>
 	 */
-	public LazyOrderedSet<E> union(final LazyOrderedSet<E> s, final int index) {
+	public LazyOrderedSet<E> union(final LazyOrderedSet<? extends E> s, final int index) {
 		if (index == 1) {
 			return union(s);
 		}
@@ -2337,7 +2337,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @return The collection containing all elements of self plus <code>coll</code>.
 	 */
 	@Override
-	public LazyOrderedSet<E> includingAll(final Collection<E> coll) {
+	public LazyOrderedSet<E> includingAll(final Collection<? extends E> coll) {
 		return union(LazyCollections.asLazyOrderedSet(coll));
 	}
 
@@ -2354,7 +2354,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @return The collection containing all elements of self plus <code>coll</code>.
 	 */
 	@Override
-	public LazyOrderedSet<E> includingAll(final Collection<E> coll, final int index) {
+	public LazyOrderedSet<E> includingAll(final Collection<? extends E> coll, final int index) {
 		if (index > 0) {
 			return union(LazyCollections.asLazyOrderedSet(coll), index);
 		} else {
@@ -2372,7 +2372,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 *            the element to exclude
 	 * @return The set containing all elements of self without <code>object</code>.
 	 */
-	public LazyOrderedSet<E> excluding(final E object) {
+	public LazyOrderedSet<E> excluding(final Object object) {
 		return new ExcludingOrderedSet<E>(object, this);
 	}
 
@@ -2387,7 +2387,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @return The collection containing all elements of self minus <code>coll</code>.
 	 */
 	@Override
-	public LazyOrderedSet<E> excludingAll(final Collection<E> coll) {
+	public LazyOrderedSet<E> excludingAll(final Collection<?> coll) {
 		return new LazyOrderedSet<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
