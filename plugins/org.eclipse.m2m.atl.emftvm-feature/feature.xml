@@ -49,7 +49,7 @@
       <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.atl.adt.ui" version="3.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.atl.debug.core" version="3.1.0" match="greaterOrEqual"/>
-      <import plugin="org.objectweb.asm" version="3.3.1" match="compatible"/>
+      <import plugin="org.objectweb.asm" version="5.0.1" match="compatible"/>
    </requires>
 
    <plugin

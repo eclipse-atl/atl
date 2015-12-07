@@ -45,6 +45,7 @@
       <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.ecore.editor"/>
       <import plugin="org.apache.ant" version="1.7.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.atl.emftvm"/>
    </requires>
 
    <plugin
