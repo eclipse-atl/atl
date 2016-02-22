@@ -157,7 +157,7 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static final Map<Class<?>, Map<Integer, Method>> METHOD_CACHE = new WeakHashMap<Class<?>, Map<Integer, Method>>();
+	private static final Map<Class<?>, Map<MethodSignature, Method>> METHOD_CACHE = new WeakHashMap<Class<?>, Map<MethodSignature, Method>>();
 
 	/**
 	 * Cache used to store the found root methods for native Java methods.
@@ -1393,7 +1393,7 @@ public final class EMFTVMUtil {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 
-		final Integer sig = getMethodSignature(opname, argTypes, isStatic);
+		final MethodSignature sig = getMethodSignature(opname, argTypes, isStatic);
 		Method ret = findCachedMethod(context, sig);
 		if (ret != null || hasCachedMethod(context, sig)) {
 			return ret;
@@ -1467,7 +1467,7 @@ public final class EMFTVMUtil {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 
-		final Integer sig = getMethodSignature(opname, argType, isStatic);
+		final MethodSignature sig = getMethodSignature(opname, argType, isStatic);
 		Method ret = findCachedMethod(context, sig);
 		if (ret != null || hasCachedMethod(context, sig)) {
 			return ret;
@@ -1538,7 +1538,7 @@ public final class EMFTVMUtil {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 
-		final Integer sig = getMethodSignature(opname, isStatic);
+		final MethodSignature sig = getMethodSignature(opname, isStatic);
 		Method ret = findCachedMethod(context, sig);
 		if (ret != null || hasCachedMethod(context, sig)) {
 			return ret;
@@ -1936,8 +1936,8 @@ public final class EMFTVMUtil {
 	 *            The method signature
 	 * @return <code>true</code> if the method cache contains the given caller and signature
 	 */
-	private static boolean hasCachedMethod(final Class<?> caller, final Integer signature) {
-		final Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);
+	private static boolean hasCachedMethod(final Class<?> caller, final MethodSignature signature) {
+		final Map<MethodSignature, Method> sigMap = METHOD_CACHE.get(caller);
 		return (sigMap != null) && sigMap.containsKey(signature);
 	}
 
@@ -1954,8 +1954,8 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static Method findCachedMethod(final Class<?> caller, final Integer signature) {
-		final Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);
+	private static Method findCachedMethod(final Class<?> caller, final MethodSignature signature) {
+		final Map<MethodSignature, Method> sigMap = METHOD_CACHE.get(caller);
 		return (sigMap != null) ? sigMap.get(signature) : null;
 	}
 
@@ -1973,11 +1973,11 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static void cacheMethod(final Class<?> caller, final Integer signature, final Method method) {
+	private static void cacheMethod(final Class<?> caller, final MethodSignature signature, final Method method) {
 		synchronized (METHOD_CACHE) {
-			Map<Integer, Method> sigMap = METHOD_CACHE.get(caller);
+			Map<MethodSignature, Method> sigMap = METHOD_CACHE.get(caller);
 			if (sigMap == null) {
-				sigMap = new HashMap<Integer, Method>();
+				sigMap = new HashMap<MethodSignature, Method>();
 				METHOD_CACHE.put(caller, sigMap);
 			}
 			sigMap.put(signature, method);
@@ -1985,7 +1985,7 @@ public final class EMFTVMUtil {
 	}
 
 	/**
-	 * Generates an int signature to store methods.
+	 * Generates a signature to store methods.
 	 * 
 	 * @param name
 	 * @param argumentTypes
@@ -1996,16 +1996,13 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static int getMethodSignature(final String name, final Class<?>[] argumentTypes, final boolean isStatic) {
-		int sig = (isStatic ? 31 : 0) + name.hashCode();
-		for (int i = 0; i < argumentTypes.length; i++) {
-			sig = sig * 31 + argumentTypes[i].hashCode();
-		}
-		return sig;
+	private static MethodSignature getMethodSignature(final String name, final Class<?>[] argumentTypes,
+			final boolean isStatic) {
+		return new MethodSignature(name, argumentTypes, isStatic);
 	}
 
 	/**
-	 * Generates an int signature to store methods.
+	 * Generates a signature to store methods.
 	 * 
 	 * @param name
 	 * @param argumentType
@@ -2016,12 +2013,13 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static int getMethodSignature(final String name, final Class<?> argumentType, final boolean isStatic) {
-		return ((isStatic ? 31 : 0) + name.hashCode()) * 31 + argumentType.hashCode();
+	private static MethodSignature getMethodSignature(final String name, final Class<?> argumentType,
+			final boolean isStatic) {
+		return new MethodSignature(name, new Class<?>[] { argumentType }, isStatic);
 	}
 
 	/**
-	 * Generates an int signature to store methods.
+	 * Generates a signature to store methods.
 	 * 
 	 * @param name
 	 * @param isStatic
@@ -2031,8 +2029,8 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static int getMethodSignature(final String name, final boolean isStatic) {
-		return (isStatic ? 31 : 0) + name.hashCode();
+	private static MethodSignature getMethodSignature(final String name, final boolean isStatic) {
+		return new MethodSignature(name, null, isStatic);
 	}
 
 	/**
