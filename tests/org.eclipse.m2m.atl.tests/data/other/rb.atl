@@ -1,0 +1,29 @@
+-- /**
+-- * Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe.
+-- * Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe.
+-- * Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe.
+-- * Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe.
+-- * Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe.
+-- * Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe.
+-- * Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe.
+-- * Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe.
+-- * Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe.
+-- * Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe, Author: Jon & Jane Doe.
+-- */
+
+
+-- @nsURI UML=http://www.eclipse.org/uml2/2.1.0/UML
+
+module rb;
+create OUT : UML from IN : UML;
+
+rule XToY
+{
+	from s : UML!Package(s.oclIsTypeOf(UML!Package))		
+	to t : UML!Package
+	(				
+	)
+	do
+	{
+	}
+}

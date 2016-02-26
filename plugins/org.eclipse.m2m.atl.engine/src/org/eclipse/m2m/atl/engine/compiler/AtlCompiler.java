@@ -14,6 +14,7 @@ package org.eclipse.m2m.atl.engine.compiler;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.CharArrayReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -152,9 +153,8 @@ public final class AtlCompiler {
 		newIn.mark(MAX_LINE_LENGTH);
 		char[] buffer = new char[MAX_LINE_LENGTH];
 		newIn.read(buffer);
-		newIn.reset();
-		atlcompiler = AtlSourceManager.getCompilerName(AtlSourceManager.getTaggedInformations(newIn,
-				AtlSourceManager.COMPILER_TAG));
+		atlcompiler = AtlSourceManager.getCompilerName(AtlSourceManager.getTaggedInformations(
+				new BufferedReader(new CharArrayReader(buffer)), AtlSourceManager.COMPILER_TAG));
 		newIn.reset();
 
 		ret = getCompiler(atlcompiler).compileWithProblemModel(newIn, outputFileName);
