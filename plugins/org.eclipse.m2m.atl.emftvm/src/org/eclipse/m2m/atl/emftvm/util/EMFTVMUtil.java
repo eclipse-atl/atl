@@ -202,7 +202,9 @@ public final class EMFTVMUtil {
 			}
 			return eCls.getName();
 		} else if (type instanceof Class<?>) {
-			return NATIVE + '!' + ((Class<?>) type).getName();
+			final Class<?> cls = (Class<?>) type;
+			final String nativeTypeName = NativeTypes.typeName(cls);
+			return cls.getName().equals(nativeTypeName) ? NATIVE + '!' + nativeTypeName : nativeTypeName;
 		} else {
 			return type.toString();
 		}
@@ -562,8 +564,8 @@ public final class EMFTVMUtil {
 		}
 		if (sf.isMany()) {
 			if (!(value instanceof Collection<?>)) {
-				throw new IllegalArgumentException(String.format("Cannot assign %s to multi-valued field %s::%s", value, sf
-						.getEContainingClass().getName(), sf.getName()));
+				throw new IllegalArgumentException(String.format("Cannot assign %s to multi-valued field %s::%s",
+						toPrettyString(value, env), sf.getEContainingClass().getName(), sf.getName()));
 			}
 			setMany(env, eo, sf, (Collection<?>) value);
 		} else {
@@ -772,10 +774,12 @@ public final class EMFTVMUtil {
 			if (index > -1) {
 				int currentIndex = index;
 				for (Object v : srcValues) {
+					checkValueTypeIsEObject(env, ref, v);
 					addRefValue(env, ref, eo, values, (EObject) v, currentIndex++, allowInterModelReferences);
 				}
 			} else {
 				for (Object v : srcValues) {
+					checkValueTypeIsEObject(env, ref, v);
 					addRefValue(env, ref, eo, values, (EObject) v, -1, allowInterModelReferences);
 				}
 			}
@@ -798,6 +802,24 @@ public final class EMFTVMUtil {
 			} else {
 				values.addAll(value);
 			}
+		}
+	}
+
+	/**
+	 * Checks that the value is an instance of {@link EObject}.
+	 * 
+	 * @param env
+	 *            the current {@link ExecEnv}
+	 * @param ref
+	 *            the {@link EReference} to assign to
+	 * @param v
+	 *            the value to check
+	 */
+	private static void checkValueTypeIsEObject(final ExecEnv env, final EReference ref, final Object v) {
+		if (!(v instanceof EObject)) {
+			throw new IllegalArgumentException(String.format(
+					"Cannot add/remove values of type %s to/from multi-valued field %s::%s",
+					getTypeName(env, v.getClass()), ref.getEContainingClass().getName(), ref.getName()));
 		}
 	}
 
@@ -843,6 +865,7 @@ public final class EMFTVMUtil {
 			final EReference ref = (EReference) sf;
 			final Collection<?> srcValues = ref.isContainment() ? new ArrayList<Object>(value) : value;
 			for (Object v : srcValues) {
+				checkValueTypeIsEObject(env, ref, v);
 				removeRefValue(ref, eo, values, (EObject) v);
 			}
 		} else {

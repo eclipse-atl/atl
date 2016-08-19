@@ -15,7 +15,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
+import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
+import org.eclipse.m2m.atl.emftvm.ExecEnv;
+import org.eclipse.m2m.atl.emftvm.Instruction;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
@@ -109,6 +115,67 @@ public class EMFTVMUtilTest extends TestCase {
 		final Class<?>[] parameterTypes = method.getParameterTypes();
 		assertEquals(0, parameterTypes.length);
 		assertEquals(int.class, method.getReturnType());
+	}
+
+	/**
+	 * Test method for
+	 * {@link EMFTVMUtil#set(ExecEnv, org.eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EStructuralFeature, Object)}.
+	 */
+	public void testSet_Bug496434() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final CodeBlock eo = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final EReference sf = EmftvmPackage.eINSTANCE.getCodeBlock_Code();
+		final LazyList<Instruction> element = new LazyList<Instruction>().append(EmftvmFactory.eINSTANCE.createPusht());
+		final LazyList<LazyList<Instruction>> value = new LazyList<LazyList<Instruction>>().append(element);
+
+		try {
+			EMFTVMUtil.set(env, eo, sf, value);
+			fail("Expected VMException");
+		} catch (IllegalArgumentException e) {
+			assertEquals("Cannot add/remove values of type Sequence to/from multi-valued field CodeBlock::code",
+					e.getMessage());
+		}
+	}
+
+	/**
+	 * Test method for {@link EMFTVMUtil#add(ExecEnv,
+	 * org.eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EStructuralFeature,
+	 * Object, int).
+	 */
+	public void testAdd_Bug496434() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final CodeBlock eo = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final EReference sf = EmftvmPackage.eINSTANCE.getCodeBlock_Code();
+		final LazyList<Instruction> element = new LazyList<Instruction>().append(EmftvmFactory.eINSTANCE.createPusht());
+		final LazyList<LazyList<Instruction>> value = new LazyList<LazyList<Instruction>>().append(element);
+
+		try {
+			EMFTVMUtil.add(env, eo, sf, value, 0);
+			fail("Expected VMException");
+		} catch (IllegalArgumentException e) {
+			assertEquals("Cannot add/remove values of type Sequence to/from multi-valued field CodeBlock::code",
+					e.getMessage());
+		}
+	}
+
+	/**
+	 * Test method for
+	 * {@link EMFTVMUtil#remove(ExecEnv, org.eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EStructuralFeature, Object)}.
+	 */
+	public void testRemove_Bug496434() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final CodeBlock eo = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final EReference sf = EmftvmPackage.eINSTANCE.getCodeBlock_Code();
+		final LazyList<Instruction> element = new LazyList<Instruction>().append(EmftvmFactory.eINSTANCE.createPusht());
+		final LazyList<LazyList<Instruction>> value = new LazyList<LazyList<Instruction>>().append(element);
+
+		try {
+			EMFTVMUtil.remove(env, eo, sf, value);
+			fail("Expected VMException");
+		} catch (IllegalArgumentException e) {
+			assertEquals("Cannot add/remove values of type Sequence to/from multi-valued field CodeBlock::code",
+					e.getMessage());
+		}
 	}
 
 }
