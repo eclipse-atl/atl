@@ -23,17 +23,18 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 
 
 /**
- * Immutable {@link List} that supports lazy evaluation.
+ * Immutable {@link EList} that supports lazy evaluation.
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  *
  * @param <E> the collection element type
  */
-public class LazyList<E> extends LazyCollection<E> implements List<E> {
+public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 
 	/**
 	 * Abstract {@link LazyList} that disables caching of the underlying {@link LazyList}.
@@ -1732,6 +1733,28 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 */
 	public LazyList<E> subList(final int fromIndex, final int toIndex) {
 		return new SubList<E>(fromIndex, toIndex, this);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * Unsupported in this implementation.
+
+	 * @throws UnsupportedOperationException
+	 */
+	public void move(int newPosition, E object) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * Unsupported in this implementation.
+
+	 * @throws UnsupportedOperationException
+	 */
+	public E move(int newPosition, int oldPosition) {
+		throw new UnsupportedOperationException();
 	}
 
 	/**

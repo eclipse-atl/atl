@@ -99,6 +99,32 @@ public class LazyListTest extends LazyCollectionTest {
 	}
 
 	/**
+	 * Tests {@link LazyList#move(int, int)}.
+	 */
+	public void testMove__int_int() {
+		final LazyList<String> list = getTestLazyCollection();
+		try {
+			list.move(0, 1);
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+	}
+
+	/**
+	 * Tests {@link LazyList#move(int, int)}.
+	 */
+	public void testMove__int_Object() {
+		final LazyList<String> list = getTestLazyCollection();
+		try {
+			list.move(1, list.first());
+			fail("Expected UnsupportedOperationException");
+		} catch (UnsupportedOperationException e) {
+			// expected
+		}
+	}
+
+	/**
 	 * Tests {@link LazyList#append(Object)}.
 	 */
 	public void testAppend() {
