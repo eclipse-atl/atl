@@ -289,10 +289,10 @@
 		</profile>
 		
 		<profile>
-			<id>mars</id>
+			<id>oxygen</id>
 			<repositories>
 				<repository><id>releasetrain</id><layout>p2</layout>
-					<url>http://download.eclipse.org/releases/mars</url>
+					<url>http://download.eclipse.org/releases/oxygen</url>
 				</repository>
         		<repository><id>orbit</id><layout>p2</layout>
 			 	    <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</url>
