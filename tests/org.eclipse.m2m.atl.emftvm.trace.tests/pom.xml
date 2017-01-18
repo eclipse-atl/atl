@@ -31,6 +31,10 @@
         <artifactId>tycho-source-plugin</artifactId>
       </plugin>
   	  <plugin>
+		<groupId>org.jacoco</groupId>
+		<artifactId>jacoco-maven-plugin</artifactId>
+	  </plugin>
+  	  <plugin>
 		<groupId>org.eclipse.tycho</groupId>
 		<artifactId>tycho-surefire-plugin</artifactId>
 		<version>${tycho-version}</version>
@@ -41,7 +45,8 @@
 			<useUIHarness>false</useUIHarness>
 			<useUIThread>false</useUIThread>
 			<argLine>-Xmx512m</argLine>
-			<argLine>-XX:MaxPermSize=256m</argLine>			
+			<argLine>-ea</argLine>
+			<argLine>${tycho.testArgLine}</argLine>
 		</configuration>
 	  </plugin>
     </plugins>

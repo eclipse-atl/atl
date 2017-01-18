@@ -39,6 +39,10 @@
   <properties>
     <tycho-version>0.22.0</tycho-version>
     <tycho-extras-version>0.22.0</tycho-extras-version>
+    <!-- Properties to enable jacoco code coverage analysis -->
+    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+    <sonar.jacoco.reportPath>../../target/jacoco.exec</sonar.jacoco.reportPath>
   </properties>
 
   <distributionManagement>
@@ -267,11 +271,46 @@
             <defaultP2Metadata>false</defaultP2Metadata>
           </configuration>
         </plugin>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.7.6.201602180812</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+                <configuration>
+                  <!-- Where to put jacoco coverage report -->
+                  <destFile>${sonar.jacoco.reportPath}</destFile>
+                  <includes>
+                    <include>org.eclipse.m2m.atl.*</include>
+                  </includes>
+                  <append>true</append>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
       </plugins>
     </pluginManagement>
   </build>
   
 	<profiles>
+		
+		<profile>
+			<id>oxygen</id>
+			<repositories>
+				<repository><id>releasetrain</id><layout>p2</layout>
+					<url>http://download.eclipse.org/releases/oxygen</url>
+				</repository>
+        		<repository><id>orbit</id><layout>p2</layout>
+			 	    <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</url>
+        		</repository>
+        		<repository><id>emf compare 1.2 (test purpose only)</id><layout>p2</layout>
+			 	    <url>http://download.eclipse.org/modeling/emf/compare/updates/releases/1.2</url>
+        		</repository>
+			</repositories>
+		</profile>
 		
 		<profile>
 			<id>neon</id>
@@ -289,10 +328,10 @@
 		</profile>
 		
 		<profile>
-			<id>oxygen</id>
+			<id>mars</id>
 			<repositories>
 				<repository><id>releasetrain</id><layout>p2</layout>
-					<url>http://download.eclipse.org/releases/oxygen</url>
+					<url>http://download.eclipse.org/releases/mars</url>
 				</repository>
         		<repository><id>orbit</id><layout>p2</layout>
 			 	    <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</url>
