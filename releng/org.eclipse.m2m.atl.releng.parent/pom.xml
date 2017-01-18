@@ -143,9 +143,9 @@
         <version>${tycho-version}</version>
         <configuration>
         <includePackedArtifacts>true</includePackedArtifacts>
-          <resolver>p2</resolver>
-         <environments>
-		       <environment>
+        <resolver>p2</resolver>
+        <environments>
+		    <environment>
 				<os>linux</os>
 				<ws>gtk</ws>
 				<arch>x86</arch>
@@ -170,9 +170,29 @@
 				<ws>cocoa</ws>
 				<arch>x86_64</arch>
 			</environment>
-	</environments>
+		</environments>
        </configuration>	          
       </plugin>       
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.7.6.201602180812</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <!-- Where to put jacoco coverage report -->
+              <destFile>${sonar.jacoco.reportPath}</destFile>
+              <includes>
+                <include>org.eclipse.m2m.atl.*</include>
+              </includes>
+              <append>true</append>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
@@ -271,26 +291,6 @@
             <defaultP2Metadata>false</defaultP2Metadata>
           </configuration>
         </plugin>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.7.6.201602180812</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>prepare-agent</goal>
-                </goals>
-                <configuration>
-                  <!-- Where to put jacoco coverage report -->
-                  <destFile>${sonar.jacoco.reportPath}</destFile>
-                  <includes>
-                    <include>org.eclipse.m2m.atl.*</include>
-                  </includes>
-                  <append>true</append>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
       </plugins>
     </pluginManagement>
   </build>
