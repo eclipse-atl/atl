@@ -277,8 +277,8 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 */
 		@Override
 		public boolean contains(Object o) {
-			if (o instanceof Integer) {
-				final Integer obj = (Integer) o;
+			if (o instanceof Long) {
+				final Long obj = (Long) o;
 				return (obj >= first && obj <= last);
 			}
 			return false;

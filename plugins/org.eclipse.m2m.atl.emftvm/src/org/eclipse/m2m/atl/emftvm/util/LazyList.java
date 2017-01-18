@@ -1380,8 +1380,8 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 */
 		@Override
 		public boolean contains(Object o) {
-			if (o instanceof Integer) {
-				final Integer obj = (Integer) o;
+			if (o instanceof Long) {
+				final Long obj = (Long) o;
 				return (obj >= first && obj <= last);
 			}
 			return false;
@@ -2133,7 +2133,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			return union((LazyList<E>) new IntegerRangeList((Integer) first, (Integer) last));
 		}
 		if (first instanceof Long && last instanceof Long) {
-			return union((LazyList<E>) new LongRangeList((Integer) first, (Integer) last));
+			return union((LazyList<E>) new LongRangeList((Long) first, (Long) last));
 		}
 		throw new IllegalArgumentException(String.format("includingRange() not supported for arguments of type %s and %s", first.getClass()
 				.getName(), last.getClass().getName()));

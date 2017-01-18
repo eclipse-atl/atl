@@ -579,21 +579,40 @@ public abstract class LazyCollectionTest extends TestCase {
 		} catch (IllegalArgumentException e) {
 			// expected
 		}
-		final LazyCollection<Integer> intlist = getEmptyLazyCollection();
-		final LazyCollection<Integer> appended = intlist.includingRange(300, 400);
-		assertEquals(intlist.size() + 400 - 300 + 1, appended.size());
-		assertTrue(appended.contains(300));
-		assertTrue(appended.contains(301));
-		assertTrue(appended.contains(349));
-		assertTrue(appended.contains(399));
-		assertTrue(appended.contains(400));
-		// Test iterator
-		int index = 0;
-		for (Integer element : appended) {
-			assertEquals(index + 300, element.intValue());
-			index++;
+		{
+			final LazyCollection<Integer> intlist = getEmptyLazyCollection();
+			final LazyCollection<Integer> appended = intlist.includingRange(300, 400);
+			assertEquals(intlist.size() + 400 - 300 + 1, appended.size());
+			assertTrue(appended.contains(300));
+			assertTrue(appended.contains(301));
+			assertTrue(appended.contains(349));
+			assertTrue(appended.contains(399));
+			assertTrue(appended.contains(400));
+			// Test iterator
+			int index = 0;
+			for (Integer element : appended) {
+				assertEquals(index + 300, element.intValue());
+				index++;
+			}
+			assertEquals(appended.size(), index);
 		}
-		assertEquals(appended.size(), index);
+		{
+			final LazyCollection<Long> longlist = getEmptyLazyCollection();
+			final LazyCollection<Long> appended = longlist.includingRange(300L, 400L);
+			assertEquals(longlist.size() + 400 - 300 + 1, appended.size());
+			assertTrue(appended.contains(300L));
+			assertTrue(appended.contains(301L));
+			assertTrue(appended.contains(349L));
+			assertTrue(appended.contains(399L));
+			assertTrue(appended.contains(400L));
+			// Test iterator
+			int index = 0;
+			for (Long element : appended) {
+				assertEquals(index + 300, element.intValue());
+				index++;
+			}
+			assertEquals(appended.size(), index);
+		}
 	}
 
 	/**

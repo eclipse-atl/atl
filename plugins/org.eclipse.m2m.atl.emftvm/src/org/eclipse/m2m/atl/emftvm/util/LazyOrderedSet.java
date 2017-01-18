@@ -2516,7 +2516,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			return union((LazyOrderedSet<E>) new IntegerRangeOrderedSet((Integer) first, (Integer) last));
 		}
 		if (first instanceof Long && last instanceof Long) {
-			return union((LazyOrderedSet<E>) new LongRangeOrderedSet((Integer) first, (Integer) last));
+			return union((LazyOrderedSet<E>) new LongRangeOrderedSet((Long) first, (Long) last));
 		}
 		throw new IllegalArgumentException(String.format("includingRange() not supported for arguments of type %s and %s", first.getClass()
 				.getName(), last.getClass().getName()));
