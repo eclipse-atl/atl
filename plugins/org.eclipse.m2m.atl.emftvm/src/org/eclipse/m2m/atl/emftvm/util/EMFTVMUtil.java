@@ -253,7 +253,7 @@ public final class EMFTVMUtil {
 	 * 
 	 * @return the singleton instance of the Ecore metamodel
 	 */
-	public static Metamodel getEcoreMetamodel() {
+	public static synchronized Metamodel getEcoreMetamodel() {
 		if (ecoreMetamodel == null) {
 			ecoreMetamodel = EmftvmFactory.eINSTANCE.createMetamodel();
 			ecoreMetamodel.setResource(EcorePackage.eINSTANCE.eResource());
@@ -266,7 +266,7 @@ public final class EMFTVMUtil {
 	 * 
 	 * @return the singleton instance of the EMFTVM metamodel
 	 */
-	public static Metamodel getEmfTvmMetamodel() {
+	public static synchronized Metamodel getEmfTvmMetamodel() {
 		if (emfTvmMetamodel == null) {
 			emfTvmMetamodel = EmftvmFactory.eINSTANCE.createMetamodel();
 			emfTvmMetamodel.setResource(EmftvmPackage.eINSTANCE.eResource());
@@ -279,7 +279,7 @@ public final class EMFTVMUtil {
 	 * 
 	 * @return the singleton instance of the Trace metamodel
 	 */
-	public static Metamodel getTraceMetamodel() {
+	public static synchronized Metamodel getTraceMetamodel() {
 		if (traceMetamodel == null) {
 			traceMetamodel = EmftvmFactory.eINSTANCE.createMetamodel();
 			traceMetamodel.setResource(TracePackage.eINSTANCE.eResource());
@@ -1960,8 +1960,10 @@ public final class EMFTVMUtil {
 	 * @return <code>true</code> if the method cache contains the given caller and signature
 	 */
 	private static boolean hasCachedMethod(final Class<?> caller, final MethodSignature signature) {
-		final Map<MethodSignature, Method> sigMap = METHOD_CACHE.get(caller);
-		return (sigMap != null) && sigMap.containsKey(signature);
+		synchronized (METHOD_CACHE) {
+			final Map<MethodSignature, Method> sigMap = METHOD_CACHE.get(caller);
+			return (sigMap != null) && sigMap.containsKey(signature);
+		}
 	}
 
 	/**
@@ -1978,8 +1980,10 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	private static Method findCachedMethod(final Class<?> caller, final MethodSignature signature) {
-		final Map<MethodSignature, Method> sigMap = METHOD_CACHE.get(caller);
-		return (sigMap != null) ? sigMap.get(signature) : null;
+		synchronized (METHOD_CACHE) {
+			final Map<MethodSignature, Method> sigMap = METHOD_CACHE.get(caller);
+			return (sigMap != null) ? sigMap.get(signature) : null;
+		}
 	}
 
 	/**
