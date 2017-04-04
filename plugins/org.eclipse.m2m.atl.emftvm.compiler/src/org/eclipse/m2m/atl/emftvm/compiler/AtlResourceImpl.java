@@ -29,6 +29,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -48,18 +49,20 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
  * Wraps the ATL parser.
+ * 
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class AtlResourceImpl extends ResourceImpl {
 
 	/**
 	 * {@link IOException} with nested {@link Exception}.
+	 * 
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static class ATLIOException extends IOException {
 
 		private static final long serialVersionUID = -6673120460005697460L;
-		
+
 		/**
 		 * Creates a new {@link ATLIOException}.
 		 */
@@ -69,8 +72,11 @@ public class AtlResourceImpl extends ResourceImpl {
 
 		/**
 		 * Creates a new {@link ATLIOException}.
-		 * @param message the error message
-		 * @param cause the nested exception
+		 * 
+		 * @param message
+		 *            the error message
+		 * @param cause
+		 *            the nested exception
 		 */
 		public ATLIOException(String message, Throwable cause) {
 			super(message);
@@ -79,7 +85,9 @@ public class AtlResourceImpl extends ResourceImpl {
 
 		/**
 		 * Creates a new {@link ATLIOException}.
-		 * @param message the error message
+		 * 
+		 * @param message
+		 *            the error message
 		 */
 		public ATLIOException(String message) {
 			super(message);
@@ -87,7 +95,9 @@ public class AtlResourceImpl extends ResourceImpl {
 
 		/**
 		 * Creates a new {@link ATLIOException}.
-		 * @param cause the nested exception
+		 * 
+		 * @param cause
+		 *            the nested exception
 		 */
 		public ATLIOException(Throwable cause) {
 			super();
@@ -98,6 +108,7 @@ public class AtlResourceImpl extends ResourceImpl {
 
 	/**
 	 * Wraps an {@link EMFModel} around this resource.
+	 * 
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class EMFModelWrapper extends EMFModel {
@@ -106,12 +117,10 @@ public class AtlResourceImpl extends ResourceImpl {
 		 * Creates a new {@link EMFModelWrapper} around this resource.
 		 */
 		public EMFModelWrapper() {
-			super(
-					(EMFReferenceModel)parser.getAtlMetamodel(), 
-					(EMFModelFactory)parser.getModelFactory());
+			super((EMFReferenceModel) parser.getAtlMetamodel(), (EMFModelFactory) parser.getModelFactory());
 			setResource(AtlResourceImpl.this);
 		}
-		
+
 	}
 
 	protected final AtlParser parser = AtlParser.getDefault();
@@ -130,7 +139,9 @@ public class AtlResourceImpl extends ResourceImpl {
 
 	/**
 	 * Creates a new {@link AtlResourceImpl} for <code>uri</code>.
-	 * @param uri the resource's URI
+	 * 
+	 * @param uri
+	 *            the resource's URI
 	 */
 	public AtlResourceImpl(URI uri) {
 		super(uri);
@@ -158,8 +169,11 @@ public class AtlResourceImpl extends ResourceImpl {
 
 	/**
 	 * Loads an ATL resource.
-	 * @param inputStream the data source
-	 * @param options options passed to the ATL parser
+	 * 
+	 * @param inputStream
+	 *            the data source
+	 * @param options
+	 *            options passed to the ATL parser
 	 */
 	@Override
 	protected void doLoad(final InputStream inputStream, final Map<?, ?> options) throws IOException {
@@ -184,8 +198,9 @@ public class AtlResourceImpl extends ResourceImpl {
 		ebnfi.inject(modelWrapper, reader, params);
 		// Report problems
 		int nbErrors = 0;
-		for (Iterator<? extends Object> i = pbs.getElementsByType(parser.getProblemMetamodel().getMetaElementByName("Problem")).iterator(); i
-				.hasNext();) {
+		for (Iterator<? extends Object> i = pbs
+				.getElementsByType(parser.getProblemMetamodel().getMetaElementByName("Problem")).iterator(); i
+						.hasNext();) {
 			final EObject ame = (EObject) i.next();
 			final Enumerator severity = (Enumerator) ame.eGet(ame.eClass().getEStructuralFeature("severity"));
 			List<Diagnostic> list = null;
@@ -232,7 +247,8 @@ public class AtlResourceImpl extends ResourceImpl {
 			}
 		}
 		if (nbErrors == 0) {
-			getWarnings().clear(); // because the EMF editor fails when there are warnings
+			getWarnings().clear(); // because the EMF editor fails when there
+									// are warnings
 		}
 
 		registerEPackages(modelWrapper.getReferenceModel().getResource());
@@ -240,8 +256,11 @@ public class AtlResourceImpl extends ResourceImpl {
 
 	/**
 	 * Saves an ATL resource.
-	 * @param outputStream the data destination
-	 * @param options the options passed to the ATL extractor
+	 * 
+	 * @param outputStream
+	 *            the data destination
+	 * @param options
+	 *            the options passed to the ATL extractor
 	 */
 	@Override
 	protected void doSave(final OutputStream outputStream, final Map<?, ?> options) throws IOException {
@@ -265,37 +284,39 @@ public class AtlResourceImpl extends ResourceImpl {
 	 * @param res
 	 *            the resource containing the EPackages
 	 * @throws IOException
-	 *             if the nsURIs from EPackages from r are already registered by other EPackages
+	 *             if the nsURIs from EPackages from r are already registered by
+	 *             other EPackages
 	 */
 	protected void registerEPackages(final Resource res) throws IOException {
 		final ResourceSet rs = getResourceSet();
 		final Registry r = rs.getPackageRegistry();
 		for (EObject o : res.getContents()) {
 			if (o instanceof EPackage) {
-				EPackage p = (EPackage)o;
+				EPackage p = (EPackage) o;
 				Object existing = r.get(p.getNsURI());
 				if (existing != null && existing != p) {
-					throw new IOException(String.format("EPackage with URI \"%s\" already registered by another EPackage instance",
-							p.getNsURI()));
+					throw new IOException(String.format(
+							"EPackage with URI \"%s\" already registered by another EPackage instance", p.getNsURI()));
 				}
 				r.put(p.getNsURI(), p);
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns the {@link Charset} to use for the current {@link URI}.
+	 * 
 	 * @return the {@link Charset} to use for the current {@link URI}
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	protected Charset getCharset() throws IOException {
 		final URI uri = getURI();
-		if (uri != null && uri.isPlatformResource()) {
+		if (uri != null && uri.isPlatformResource() && EMFPlugin.IS_ECLIPSE_RUNNING) {
 			final IWorkspaceRoot wr = ResourcesPlugin.getWorkspace().getRoot();
 			final IResource r = wr.findMember(uri.toPlatformString(true));
 			if (r instanceof IFile) {
 				try {
-					return Charset.forName(((IFile)r).getCharset());
+					return Charset.forName(((IFile) r).getCharset());
 				} catch (CoreException e) {
 					throw new ATLIOException(e);
 				}
