@@ -294,6 +294,9 @@ public class AtlResourceImpl extends ResourceImpl {
 			if (o instanceof EPackage) {
 				EPackage p = (EPackage) o;
 				Object existing = r.get(p.getNsURI());
+				if (existing instanceof EPackage.Descriptor) {
+					existing = ((EPackage.Descriptor) existing).getEPackage();
+				}
 				if (existing != null && existing != p) {
 					throw new IOException(String.format(
 							"EPackage with URI \"%s\" already registered by another EPackage instance", p.getNsURI()));
