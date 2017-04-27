@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Dennis Wagelaar.
+ * Copyright (c) 2016-2017 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,9 @@ import java.util.Arrays;
  */
 public final class MethodSignature {
 
+	private final String context;
 	private final String name;
-	private final Class<?>[] argumentTypes;
+	private final String[] argumentTypes;
 	private final boolean isStatic;
 
 	/**
@@ -35,11 +36,28 @@ public final class MethodSignature {
 	 * @param isStatic
 	 *            whether the method is static
 	 */
-	public MethodSignature(String name, Class<?>[] argumentTypes, boolean isStatic) {
+	public MethodSignature(Class<?> context, String name, Class<?>[] argumentTypes, boolean isStatic) {
 		super();
+		this.context = context.getName();
 		this.name = name;
-		this.argumentTypes = argumentTypes;
+		if (argumentTypes != null) {
+			this.argumentTypes = new String[argumentTypes.length];
+			for (int i = 0; i < argumentTypes.length; i++) {
+				this.argumentTypes[i] = argumentTypes[i].getName();
+			}
+		} else {
+			this.argumentTypes = null;
+		}
 		this.isStatic = isStatic;
+	}
+
+	/**
+	 * Returns the method context (i.e. declaring class).
+	 * 
+	 * @return the context
+	 */
+	public String getContext() {
+		return context;
 	}
 
 	/**
@@ -56,7 +74,7 @@ public final class MethodSignature {
 	 * 
 	 * @return the argumentTypes
 	 */
-	public Class<?>[] getArgumentTypes() {
+	public String[] getArgumentTypes() {
 		return argumentTypes;
 	}
 
@@ -76,9 +94,10 @@ public final class MethodSignature {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Arrays.hashCode(argumentTypes);
-		result = prime * result + (isStatic ? 1231 : 1237);
+		result = prime * result + ((context == null) ? 0 : context.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + (isStatic ? 1231 : 1237);
+		result = prime * result + Arrays.hashCode(argumentTypes);
 		return result;
 	}
 
@@ -94,14 +113,19 @@ public final class MethodSignature {
 		if (getClass() != obj.getClass())
 			return false;
 		MethodSignature other = (MethodSignature) obj;
-		if (!Arrays.equals(argumentTypes, other.argumentTypes))
-			return false;
-		if (isStatic != other.isStatic)
+		if (context == null) {
+			if (other.context != null)
+				return false;
+		} else if (!context.equals(other.context))
 			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (isStatic != other.isStatic)
+			return false;
+		if (!Arrays.equals(argumentTypes, other.argumentTypes))
 			return false;
 		return true;
 	}
@@ -111,8 +135,8 @@ public final class MethodSignature {
 	 */
 	@Override
 	public String toString() {
-		return "MethodSignature [name=" + name + ", argumentTypes=" + Arrays.toString(argumentTypes) + ", isStatic="
-				+ isStatic + "]";
+		return "MethodSignature [context=" + context + ", name=" + name + ", argumentTypes="
+				+ Arrays.toString(argumentTypes) + ", isStatic=" + isStatic + "]";
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Dennis Wagelaar.
+ * Copyright (c) 2016-2017 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,9 @@ package org.eclipse.m2m.atl.emftvm.util.tests;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
@@ -176,6 +179,57 @@ public class EMFTVMUtilTest extends TestCase {
 			assertEquals("Cannot add/remove values of type Sequence to/from multi-valued field CodeBlock::code",
 					e.getMessage());
 		}
+	}
+
+	/**
+	 * Test method for {@link EMFTVMUtil#findRootMethod(Method)}.
+	 */
+	public void testFindRootMethod() {
+		final Map<String, String> sourceMap = new HashMap<String, String>();
+		sourceMap.put("key", "value");
+		final Map<String, String> wrapperMap = Collections.unmodifiableMap(sourceMap);
+		final Method getMethod = EMFTVMUtil.findNativeMethod(wrapperMap.getClass(), "get", String.class, false);
+
+		assertNotNull(getMethod);
+		assertNotSame(Map.class, getMethod.getDeclaringClass());
+		assertTrue(Modifier.isPrivate(getMethod.getDeclaringClass().getModifiers()));
+
+		final Method rootMethod = EMFTVMUtil.findRootMethod(getMethod);
+
+		assertNotNull(rootMethod);
+		assertNotSame(getMethod, rootMethod);
+		assertEquals(Map.class, rootMethod.getDeclaringClass());
+	}
+
+	/**
+	 * Test method for {@link EMFTVMUtil#getMethodCacheHitRate()}.
+	 */
+	public void testGetMethodCacheHitRate() {
+		testFindNativeMethodClassOfQStringBoolean();
+		testFindNativeMethodClassOfQStringBoolean();
+		testFindNativeMethodClassOfQStringBoolean();
+		testFindNativeMethodClassOfQStringClassOfQBoolean();
+		testFindNativeMethodClassOfQStringClassOfQBoolean();
+		testFindNativeMethodClassOfQStringClassOfQBoolean();
+		testFindNativeMethodClassOfQStringClassOfQArrayBoolean();
+		testFindNativeMethodClassOfQStringClassOfQArrayBoolean();
+		testFindNativeMethodClassOfQStringClassOfQArrayBoolean();
+
+		final double hitRate = EMFTVMUtil.getMethodCacheHitRate();
+
+		assertTrue("Expected hitRate >= 0.5, but was " + hitRate, hitRate >= 0.5);
+	}
+
+	/**
+	 * Test method for {@link EMFTVMUtil#getRootMethodCacheHitRate()}.
+	 */
+	public void testGetRootMethodCacheHitRate() {
+		testFindRootMethod();
+		testFindRootMethod();
+
+		final double hitRate = EMFTVMUtil.getRootMethodCacheHitRate();
+
+		assertTrue("Expected hitRate >= 0.5, but was " + hitRate, hitRate >= 0.5);
 	}
 
 }

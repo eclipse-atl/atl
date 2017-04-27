@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011-2015 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2017 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -34,6 +34,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.EList;
@@ -157,7 +159,12 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static final Map<Class<?>, Map<MethodSignature, Method>> METHOD_CACHE = new WeakHashMap<Class<?>, Map<MethodSignature, Method>>();
+	private static final ConcurrentMap<MethodSignature, WeakReference<Method>> METHOD_CACHE = new ConcurrentHashMap<MethodSignature, WeakReference<Method>>();
+
+	/**
+	 * Represents the <code>null</code> method reference for the {@link #METHOD_CACHE}.
+	 */
+	private static final WeakReference<Method> NULL_METHOD_REFERENCE = new WeakReference<Method>(null);
 
 	/**
 	 * Cache used to store the found root methods for native Java methods.
@@ -167,7 +174,8 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static final Map<Method, Method> ROOT_METHOD_CACHE = Collections.synchronizedMap(new WeakHashMap<Method, Method>());
+	private static final Map<Method, WeakReference<Method>> ROOT_METHOD_CACHE = Collections
+			.synchronizedMap(new WeakHashMap<Method, WeakReference<Method>>());
 
 	/**
 	 * Singleton {@link RegistryTypeSwitch} instance.
@@ -177,6 +185,11 @@ public final class EMFTVMUtil {
 	private static Metamodel ecoreMetamodel;
 	private static Metamodel emfTvmMetamodel;
 	private static Metamodel traceMetamodel;
+
+	private static volatile int MethodCacheAccesses;
+	private static volatile int MethodCacheHits;
+	private static volatile int RootMethodCacheAccesses;
+	private static volatile int RootMethodCacheHits;
 
 	/**
 	 * Not used.
@@ -1400,7 +1413,7 @@ public final class EMFTVMUtil {
 	 *            The class of the method
 	 * @param opname
 	 *            The method name
-	 * @param argumentTypes
+	 * @param argTypes
 	 *            The types of all arguments
 	 * @param isStatic
 	 *            Whether to look for a static method or not
@@ -1410,61 +1423,21 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	// TODO implement multi-methods in ExecEnv
 	public static Method findNativeMethod(final Class<?> context, final String opname, final Class<?>[] argTypes, final boolean isStatic) {
 		if (context == Void.TYPE) {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 
-		final MethodSignature sig = getMethodSignature(opname, argTypes, isStatic);
-		Method ret = findCachedMethod(context, sig);
-		if (ret != null || hasCachedMethod(context, sig)) {
-			return ret;
+		final MethodSignature sig = getMethodSignature(context, opname, argTypes, isStatic);
+		MethodCacheAccesses++;
+		final WeakReference<Method> methodRef = METHOD_CACHE.get(sig);
+		final Method ret = methodRef != null ? methodRef.get() : null;
+		if (ret != null || methodRef == NULL_METHOD_REFERENCE) {
+			MethodCacheHits++;
+			return methodRef.get();
 		}
 
-		final Method[] methods = context.getDeclaredMethods();
-		METHODS: for (int i = 0; i < methods.length; i++) {
-			Method method = methods[i];
-			if ((Modifier.isStatic(method.getModifiers()) == isStatic) && method.getName().equals(opname)) {
-				Class<?>[] pts = method.getParameterTypes();
-				if (pts.length == argTypes.length) {
-					boolean ok = true;
-					for (int j = 0; (j < pts.length) && ok; j++) {
-						if (argTypes[j] == EnumLiteral.class && Enumerator.class.isAssignableFrom(pts[j])) {
-							continue;
-						}
-						if (!pts[j].isAssignableFrom(argTypes[j])) {
-							if (pts[j] == boolean.class)
-								ok = argTypes[j] == Boolean.class;
-							else if (pts[j] == int.class)
-								ok = argTypes[j] == Integer.class;
-							else if (pts[j] == char.class)
-								ok = argTypes[j] == Character.class;
-							else if (pts[j] == long.class)
-								ok = argTypes[j] == Long.class;
-							else if (pts[j] == float.class)
-								ok = argTypes[j] == Float.class;
-							else if (pts[j] == double.class)
-								ok = argTypes[j] == Double.class;
-							else
-								ok = argTypes[j] == Void.TYPE; // any type
-						}
-					}
-					if (ok) {
-						ret = method;
-						break METHODS;
-					}
-				}
-			}
-		}
-
-		if ((ret == null) && !isStatic && (context.getSuperclass() != null)) {
-			ret = findNativeMethod(context.getSuperclass(), opname, argTypes, isStatic);
-		}
-
-		cacheMethod(context, sig, ret);
-
-		return ret;
+		return findNativeMethodInternal(context, opname, argTypes, isStatic, sig);
 	}
 
 	/**
@@ -1484,61 +1457,21 @@ public final class EMFTVMUtil {
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	// TODO implement multi-methods in ExecEnv
 	public static Method findNativeMethod(final Class<?> context, final String opname, final Class<?> argType, final boolean isStatic) {
 		if (context == Void.TYPE) {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 
-		final MethodSignature sig = getMethodSignature(opname, argType, isStatic);
-		Method ret = findCachedMethod(context, sig);
-		if (ret != null || hasCachedMethod(context, sig)) {
+		final MethodSignature sig = getMethodSignature(context, opname, argType, isStatic);
+		MethodCacheAccesses++;
+		final WeakReference<Method> methodRef = METHOD_CACHE.get(sig);
+		final Method ret = methodRef != null ? methodRef.get() : null;
+		if (ret != null || methodRef == NULL_METHOD_REFERENCE) {
+			MethodCacheHits++;
 			return ret;
 		}
 
-		final Method[] methods = context.getDeclaredMethods();
-		METHODS: for (int i = 0; i < methods.length; i++) {
-			Method method = methods[i];
-			if ((Modifier.isStatic(method.getModifiers()) == isStatic) && method.getName().equals(opname)) {
-				Class<?>[] pts = method.getParameterTypes();
-				if (pts.length == 1) {
-					Class<?> pt = pts[0];
-					if (argType == EnumLiteral.class && Enumerator.class.isAssignableFrom(pt)) {
-						ret = method;
-						break METHODS;
-					}
-					boolean ok = true;
-					if (!pt.isAssignableFrom(argType)) {
-						if (pt == boolean.class)
-							ok = argType == Boolean.class;
-						else if (pt == int.class)
-							ok = argType == Integer.class;
-						else if (pt == char.class)
-							ok = argType == Character.class;
-						else if (pt == long.class)
-							ok = argType == Long.class;
-						else if (pt == float.class)
-							ok = argType == Float.class;
-						else if (pt == double.class)
-							ok = argType == Double.class;
-						else
-							ok = argType == Void.TYPE; // any type
-					}
-					if (ok) {
-						ret = method;
-						break METHODS;
-					}
-				}
-			}
-		}
-
-		if ((ret == null) && !isStatic && (context.getSuperclass() != null)) {
-			ret = findNativeMethod(context.getSuperclass(), opname, argType, isStatic);
-		}
-
-		cacheMethod(context, sig, ret);
-
-		return ret;
+		return findNativeMethodInternal(context, opname, argType, isStatic, sig);
 	}
 
 	/**
@@ -1561,11 +1494,125 @@ public final class EMFTVMUtil {
 			return null; // Java methods cannot be invoked on null, or defined on Void
 		}
 
-		final MethodSignature sig = getMethodSignature(opname, isStatic);
-		Method ret = findCachedMethod(context, sig);
-		if (ret != null || hasCachedMethod(context, sig)) {
+		final MethodSignature sig = getMethodSignature(context, opname, isStatic);
+		MethodCacheAccesses++;
+		final WeakReference<Method> methodRef = METHOD_CACHE.get(sig);
+		Method ret = methodRef != null ? methodRef.get() : null;
+		if (ret != null || methodRef == NULL_METHOD_REFERENCE) {
+			MethodCacheHits++;
 			return ret;
 		}
+
+		return findNativeMethodInternal(context, opname, isStatic, sig);
+	}
+
+	/**
+	 * Looks for a native Java method.
+	 * 
+	 * @param context
+	 *            The class of the method
+	 * @param opname
+	 *            The method name
+	 * @param argTypes
+	 *            The types of all arguments
+	 * @param isStatic
+	 *            Whether to look for a static method or not
+	 * @param sig
+	 *            the method signature
+	 * @return the method if found, null otherwise
+	 */
+	private static Method findNativeMethodInternal(final Class<?> context, final String opname,
+			final Class<?>[] argTypes, final boolean isStatic, final MethodSignature sig) {
+		Method ret = null;
+	
+		final Method[] methods = context.getDeclaredMethods();
+		METHODS: for (int i = 0; i < methods.length; i++) {
+			Method method = methods[i];
+			if ((Modifier.isStatic(method.getModifiers()) == isStatic) && method.getName().equals(opname)) {
+				Class<?>[] pts = method.getParameterTypes();
+				if (pts.length == argTypes.length) {
+					boolean ok = true;
+					for (int j = 0; (j < pts.length) && ok; j++) {
+						if (!checkParameterType(argTypes[j], pts[j])) {
+							ok = false;
+							break;
+						}
+					}
+					if (ok) {
+						ret = method;
+						break METHODS;
+					}
+				}
+			}
+		}
+	
+		if ((ret == null) && !isStatic && (context.getSuperclass() != null)) {
+			ret = findNativeMethodInternal(context.getSuperclass(), opname, argTypes, isStatic, sig);
+		} else {
+			METHOD_CACHE.put(sig, ret != null ? new WeakReference<Method>(ret) : NULL_METHOD_REFERENCE);
+		}
+	
+		return ret;
+	}
+
+	/**
+	 * Looks for a native Java method.
+	 * 
+	 * @param context
+	 *            The class of the method
+	 * @param opname
+	 *            The method name
+	 * @param argType
+	 *            The type of the argument
+	 * @param isStatic
+	 *            Whether to look for a static method or not
+	 * @param sig
+	 *            the method signature
+	 * @return the method if found, null otherwise
+	 */
+	private static Method findNativeMethodInternal(final Class<?> context, final String opname, final Class<?> argType,
+			final boolean isStatic, final MethodSignature sig) {
+		Method ret = null;
+	
+		final Method[] methods = context.getDeclaredMethods();
+		METHODS: for (int i = 0; i < methods.length; i++) {
+			Method method = methods[i];
+			if ((Modifier.isStatic(method.getModifiers()) == isStatic) && method.getName().equals(opname)) {
+				Class<?>[] pts = method.getParameterTypes();
+				if (pts.length == 1) {
+					if (checkParameterType(argType, pts[0])) {
+						ret = method;
+						break METHODS;
+					}
+				}
+			}
+		}
+	
+		if ((ret == null) && !isStatic && (context.getSuperclass() != null)) {
+			ret = findNativeMethodInternal(context.getSuperclass(), opname, argType, isStatic, sig);
+		} else {
+			METHOD_CACHE.put(sig, ret != null ? new WeakReference<Method>(ret) : NULL_METHOD_REFERENCE);
+		}
+	
+		return ret;
+	}
+
+	/**
+	 * Looks for a native Java method without arguments.
+	 * 
+	 * @param context
+	 *            The class of the method
+	 * @param opname
+	 *            The method name
+	 * @param isStatic
+	 *            Whether to look for a static method or not
+	 * @param sig
+	 *            the method signature
+	 * @return the method if found, null otherwise
+	 */
+	private static Method findNativeMethodInternal(final Class<?> context, final String opname, final boolean isStatic,
+			final MethodSignature sig) {
+		Method ret = null;
 
 		final Method[] methods = context.getDeclaredMethods();
 		METHODS: for (int i = 0; i < methods.length; i++) {
@@ -1579,12 +1626,50 @@ public final class EMFTVMUtil {
 		}
 
 		if ((ret == null) && !isStatic && (context.getSuperclass() != null)) {
-			ret = findNativeMethod(context.getSuperclass(), opname, isStatic);
+			ret = findNativeMethodInternal(context.getSuperclass(), opname, isStatic, sig);
+		} else {
+			METHOD_CACHE.put(sig, ret != null ? new WeakReference<Method>(ret) : NULL_METHOD_REFERENCE);
 		}
 
-		cacheMethod(context, sig, ret);
-
 		return ret;
+	}
+
+	/**
+	 * Checks whether the parameter type is compatible with the argument type
+	 * 
+	 * @param argType
+	 *            the invocation argument type
+	 * @param pt
+	 *            the method parameter type
+	 * @return <code>true</code> if the parameter type is compatible,
+	 *         <code>false</code> otherwise
+	 */
+	private static boolean checkParameterType(final Class<?> argType, final Class<?> pt) {
+		if (argType == EnumLiteral.class && Enumerator.class.isAssignableFrom(pt)) {
+			return true;
+		}
+		if (pt.isAssignableFrom(argType)) {
+			return true;
+		}
+		if (pt == boolean.class){
+			return argType == Boolean.class;
+		}
+		if (pt == int.class) {
+			return argType == Integer.class;
+		}
+		if (pt == char.class) {
+			return argType == Character.class;
+		}
+		if (pt == long.class) {
+			return argType == Long.class;
+		}
+		if (pt == float.class) {
+			return argType == Float.class;
+		}
+		if (pt == double.class) {
+			return argType == Double.class;
+		}
+		return argType == Void.TYPE; // any type
 	}
 
 	/**
@@ -1951,113 +2036,71 @@ public final class EMFTVMUtil {
 	}
 
 	/**
-	 * Returns <code>true</code> if the method cache contains the given caller and signature.
-	 * 
-	 * @param caller
-	 *            The class of the method
-	 * @param signature
-	 *            The method signature
-	 * @return <code>true</code> if the method cache contains the given caller and signature
-	 */
-	private static boolean hasCachedMethod(final Class<?> caller, final MethodSignature signature) {
-		synchronized (METHOD_CACHE) {
-			final Map<MethodSignature, Method> sigMap = METHOD_CACHE.get(caller);
-			return (sigMap != null) && sigMap.containsKey(signature);
-		}
-	}
-
-	/**
-	 * Find a method in the cache.
-	 * 
-	 * @param caller
-	 *            The class of the method
-	 * @param signature
-	 *            The method signature
-	 * @return the method
-	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
-	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
-	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	private static Method findCachedMethod(final Class<?> caller, final MethodSignature signature) {
-		synchronized (METHOD_CACHE) {
-			final Map<MethodSignature, Method> sigMap = METHOD_CACHE.get(caller);
-			return (sigMap != null) ? sigMap.get(signature) : null;
-		}
-	}
-
-	/**
-	 * Stores a method in a cache.
-	 * 
-	 * @param caller
-	 *            The class of the method
-	 * @param signature
-	 *            The method signature
-	 * @param method
-	 *            The method to store
-	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
-	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
-	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
-	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
-	 */
-	private static void cacheMethod(final Class<?> caller, final MethodSignature signature, final Method method) {
-		synchronized (METHOD_CACHE) {
-			Map<MethodSignature, Method> sigMap = METHOD_CACHE.get(caller);
-			if (sigMap == null) {
-				sigMap = new HashMap<MethodSignature, Method>();
-				METHOD_CACHE.put(caller, sigMap);
-			}
-			sigMap.put(signature, method);
-		}
-	}
-
-	/**
 	 * Generates a signature to store methods.
 	 * 
+	 * @param context
+	 *            the method declaring class
 	 * @param name
+	 *            the method name
 	 * @param argumentTypes
+	 *            the argument types
 	 * @param isStatic
+	 *            whether the method is static
 	 * @return The method signature
-	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic
+	 *         Jouault</a>
 	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static MethodSignature getMethodSignature(final String name, final Class<?>[] argumentTypes,
-			final boolean isStatic) {
-		return new MethodSignature(name, argumentTypes, isStatic);
+	private static MethodSignature getMethodSignature(final Class<?> context, final String name,
+			final Class<?>[] argumentTypes, final boolean isStatic) {
+		return new MethodSignature(context, name, argumentTypes, isStatic);
 	}
 
 	/**
 	 * Generates a signature to store methods.
 	 * 
+	 * @param context
+	 *            the method declaring class
 	 * @param name
+	 *            the method name
 	 * @param argumentType
+	 *            the (single) argument type
+	 * @param isStatic
+	 *            whether the method is static
 	 * @param isStatic
 	 * @return The method signature
-	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic
+	 *         Jouault</a>
 	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static MethodSignature getMethodSignature(final String name, final Class<?> argumentType,
-			final boolean isStatic) {
-		return new MethodSignature(name, new Class<?>[] { argumentType }, isStatic);
+	private static MethodSignature getMethodSignature(final Class<?> context, final String name,
+			final Class<?> argumentType, final boolean isStatic) {
+		return new MethodSignature(context, name, new Class<?>[] { argumentType }, isStatic);
 	}
 
 	/**
 	 * Generates a signature to store methods.
 	 * 
+	 * @param context
+	 *            the method declaring class
 	 * @param name
+	 *            the method name
 	 * @param isStatic
+	 *            whether the method is static
 	 * @return The method signature
-	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
+	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic
+	 *         Jouault</a>
 	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	private static MethodSignature getMethodSignature(final String name, final boolean isStatic) {
-		return new MethodSignature(name, null, isStatic);
+	private static MethodSignature getMethodSignature(final Class<?> context, final String name,
+			final boolean isStatic) {
+		return new MethodSignature(context, name, null, isStatic);
 	}
 
 	/**
@@ -2460,12 +2503,15 @@ public final class EMFTVMUtil {
 		if (method == null) {
 			return null;
 		}
-		Method rootMethod = ROOT_METHOD_CACHE.get(method);
+		RootMethodCacheAccesses++;
+		final WeakReference<Method> rootMethodReference = ROOT_METHOD_CACHE.get(method);
+		Method rootMethod = rootMethodReference != null ? rootMethodReference.get() : null;
 		if (rootMethod != null) {
+			RootMethodCacheHits++;
 			return rootMethod;
 		}
 		rootMethod = findRootMethodInner(method);
-		ROOT_METHOD_CACHE.put(method, rootMethod);
+		ROOT_METHOD_CACHE.put(method, new WeakReference<Method>(rootMethod));
 		return rootMethod;
 	}
 
@@ -2519,6 +2565,26 @@ public final class EMFTVMUtil {
 	private static int getRelevantModifiers(final Method method) {
 		final int methodModifiers = method.getModifiers();
 		return methodModifiers & (Modifier.PRIVATE + Modifier.PROTECTED + Modifier.PUBLIC + Modifier.STATIC);
+	}
+
+	/**
+	 * Returns the hit rate of the method cache.
+	 * 
+	 * @return the hit rate of the method cache, or <code>-1.0</code> if no hits
+	 *         were recorded yet
+	 */
+	public static double getMethodCacheHitRate() {
+		return MethodCacheAccesses > 0 ? (double) MethodCacheHits / (double) MethodCacheAccesses : -1.0;
+	}
+
+	/**
+	 * Returns the hit rate of the root method cache.
+	 * 
+	 * @return the hit rate of the root method cache, or <code>-1.0</code> if no
+	 *         hits were recorded yet
+	 */
+	public static double getRootMethodCacheHitRate() {
+		return RootMethodCacheAccesses > 0 ? (double) RootMethodCacheHits / (double) RootMethodCacheAccesses : -1.0;
 	}
 
 }
