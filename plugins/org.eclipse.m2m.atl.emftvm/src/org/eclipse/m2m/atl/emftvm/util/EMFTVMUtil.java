@@ -2524,7 +2524,7 @@ public final class EMFTVMUtil {
 		final int methodModifiers = getRelevantModifiers(method);
 		Class<?> dc = method.getDeclaringClass();
 		java.util.Set<Class<?>> dis = new LinkedHashSet<Class<?>>(
-				Arrays.asList(dc.getInterfaces()));
+				Arrays.<Class<?>> asList(dc.getInterfaces()));
 		while ((dc = dc.getSuperclass()) != null) {
 			try {
 				Method superMethod = dc.getDeclaredMethod(method.getName(), method.getParameterTypes());
@@ -2536,7 +2536,7 @@ public final class EMFTVMUtil {
 			} catch (SecurityException e) {
 			} catch (NoSuchMethodException e) {
 			}
-			dis.addAll(Arrays.asList(dc.getInterfaces()));
+			dis.addAll(Arrays.<Class<?>> asList(dc.getInterfaces()));
 		}
 		while (!dis.isEmpty()) {
 			java.util.Set<Class<?>> newDis = new LinkedHashSet<Class<?>>();
@@ -2549,7 +2549,7 @@ public final class EMFTVMUtil {
 				} catch (SecurityException e) {
 				} catch (NoSuchMethodException e) {
 				}
-				newDis.addAll(Arrays.asList(di.getInterfaces()));
+				newDis.addAll(Arrays.<Class<?>> asList(di.getInterfaces()));
 			}
 			newDis.removeAll(dis);
 			dis = newDis;
