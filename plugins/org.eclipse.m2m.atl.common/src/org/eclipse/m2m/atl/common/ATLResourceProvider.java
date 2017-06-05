@@ -12,6 +12,8 @@ package org.eclipse.m2m.atl.common;
 
 import java.net.URL;
 
+import org.eclipse.m2m.atl.common.internal.BundleUtil;
+
 /**
  * Provides common .ecore files:
  * <ul>
@@ -25,6 +27,8 @@ import java.net.URL;
  */
 public final class ATLResourceProvider {
 
+	private static final String BUNDLE_UTIL_IMPL = "org.eclipse.m2m.atl.common.internal.BundleUtilImpl"; //$NON-NLS-1$
+
 	private ATLResourceProvider() {
 		super();
 	}
@@ -37,7 +41,18 @@ public final class ATLResourceProvider {
 	 * @return the URL of the resource matching the given name.
 	 */
 	public static URL getURL(String resourceName) {
-		return ATLResourceProvider.class.getResource("resources/" + resourceName); //$NON-NLS-1$
+		try {
+			final BundleUtil bundleUtil = (BundleUtil)Class.forName(BUNDLE_UTIL_IMPL).newInstance();
+			return bundleUtil.getResource(resourceName);
+		} catch (InstantiationException e) {
+			ATLLogger.fine(e.getMessage());
+		} catch (IllegalAccessException e) {
+			ATLLogger.fine(e.getMessage());
+		} catch (ClassNotFoundException e) {
+			ATLLogger.fine(e.getMessage());
+		}
+		ATLLogger.info("Could not access OSGi bundle; falling back to native java resource resolution");
+		return ATLResourceProvider.class.getResource("/../model/" + resourceName); //$NON-NLS-1$
 	}
 
 }

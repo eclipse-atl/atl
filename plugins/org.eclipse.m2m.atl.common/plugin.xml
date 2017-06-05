@@ -20,7 +20,7 @@
       <package
             uri="http://www.eclipse.org/gmt/2005/ATL"
             class="org.eclipse.m2m.atl.common.ATL.ATLPackage"
-            genModel="org/eclipse/m2m/atl/common/resources/ATL.genmodel"/>
+            genModel="model/ATL.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -28,7 +28,7 @@
       <package
             uri="http://www.eclipse.org/gmt/2005/OCL"
             class="org.eclipse.m2m.atl.common.OCL.OCLPackage"
-            genModel="org/eclipse/m2m/atl/common/resources/ATL.genmodel"/>
+            genModel="model/ATL.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -36,7 +36,7 @@
       <package
             uri="http://www.eclipse.org/gmt/2005/ATL-PrimitiveTypes"
             class="org.eclipse.m2m.atl.common.PrimitiveTypes.PrimitiveTypesPackage"
-            genModel="org/eclipse/m2m/atl/common/resources/ATL.genmodel"/>
+            genModel="model/ATL.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -44,7 +44,7 @@
       <package
             uri="http://www.eclipse.org/gmt/2005/Problem-PrimitiveTypes"
             class="org.eclipse.m2m.atl.common.Problem.PrimitiveTypes.PrimitiveTypesPackage"
-            genModel="org/eclipse/m2m/atl/common/resources/Problem.genmodel"/>
+            genModel="model/Problem.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
@@ -52,6 +52,6 @@
       <package
             uri="http://www.eclipse.org/gmt/2005/Problem"
             class="org.eclipse.m2m.atl.common.Problem.ProblemPackage"
-            genModel="org/eclipse/m2m/atl/common/resources/Problem.genmodel"/>
+            genModel="model/Problem.genmodel"/>
    </extension>
 </plugin>
