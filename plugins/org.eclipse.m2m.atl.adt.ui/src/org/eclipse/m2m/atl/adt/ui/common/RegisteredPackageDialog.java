@@ -85,10 +85,10 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
 			Object nsURI = result[0];
 			if (isDevelopmentTimeVersion() && !isRuntimeOnly) {
 				ResourceSet resourceSet = new ResourceSetImpl();
-				resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
+				resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap(false));
 				String uri = ""; //$NON-NLS-1$
 				Map<String, URI> ePackageNsURItoGenModelLocationMap = EcorePlugin
-						.getEPackageNsURIToGenModelLocationMap();
+						.getEPackageNsURIToGenModelLocationMap(false);
 
 				URI location = ePackageNsURItoGenModelLocationMap.get(nsURI);
 				Resource resource = resourceSet.getResource(location, true);
@@ -136,7 +136,7 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
 	private void updateElements() {
 		if (isDevelopmentTimeVersion) {
 			Map<String, URI> ePackageNsURItoGenModelLocationMap = EcorePlugin
-					.getEPackageNsURIToGenModelLocationMap();
+					.getEPackageNsURIToGenModelLocationMap(false);
 			Object[] result = ePackageNsURItoGenModelLocationMap.keySet().toArray(
 					new Object[ePackageNsURItoGenModelLocationMap.size()]);
 			Arrays.sort(result);

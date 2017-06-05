@@ -246,7 +246,7 @@ public class AtlFileWizard extends Wizard implements INewWizard, IExecutableExte
 			if (advancedPage.generateLaunchConfig()) {
 				ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 				String unitName = advancedPage.getUnitName();
-				String name = manager.generateUniqueLaunchConfigurationNameFrom(unitName);
+				String name = manager.generateLaunchConfigurationName(unitName);
 				ILaunchConfigurationType type = manager
 						.getLaunchConfigurationType(ATLLaunchConstants.LAUNCH_CONFIGURATION_TYPE);
 				ILaunchConfigurationWorkingCopy editableConfiguration = type.newInstance(null, name);
