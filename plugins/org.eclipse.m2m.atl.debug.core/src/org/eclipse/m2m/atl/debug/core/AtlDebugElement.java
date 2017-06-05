@@ -68,9 +68,9 @@ public abstract class AtlDebugElement extends PlatformObject implements IDebugEl
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object getAdapter(Class adapter) {
+	public <T> T getAdapter(final Class<T> adapter) {
 		if (adapter == IDebugElement.class) {
-			return this;
+			return (T) this;
 		}
 		return super.getAdapter(adapter);
 	}

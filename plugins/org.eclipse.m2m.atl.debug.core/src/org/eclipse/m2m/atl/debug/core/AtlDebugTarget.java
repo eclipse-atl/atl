@@ -158,7 +158,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 		try {
 			disassemblyMode = Boolean.valueOf(
 					(String)(launch.getLaunchConfiguration().getAttribute(ATLLaunchConstants.OPTIONS,
-							Collections.EMPTY_MAP)).get("disassemblyMode")) //$NON-NLS-1$
+							Collections.<String, String> emptyMap())).get("disassemblyMode")) //$NON-NLS-1$
 					.booleanValue();
 		} catch (CoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -205,7 +205,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 			} while (socket == null);
 
 			debugger = new ADWPDebugger(socket.getInputStream(), socket.getOutputStream());
-//			ATLLogger.info(Messages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
+			ATLLogger.fine(Messages.getString("AtlDebugTarget.CONNECTED")); //$NON-NLS-1$
 			state = STATE_SUSPENDED;
 
 			threads = new AtlThread[1];
@@ -309,27 +309,26 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	 *             if the launch configuration could not be read
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
-	@SuppressWarnings("unchecked")
-	private String getPathFrom(ObjectReference stackFrame) throws CoreException {
+	private String getPathFrom(final ObjectReference stackFrame) throws CoreException {
 		String path = null;
 
-		ObjectReference operation = (ObjectReference)stackFrame.call(
+		final ObjectReference operation = (ObjectReference)stackFrame.call(
 				"getOperation", Collections.<Value> emptyList()); //$NON-NLS-1$
 		Assert.isNotNull(operation);
-		ObjectReference asm = (ObjectReference)operation.call("getASM", Collections.<Value> emptyList()); //$NON-NLS-1$
+		final ObjectReference asm = (ObjectReference)operation.call("getASM", Collections.<Value> emptyList()); //$NON-NLS-1$
 		Assert.isNotNull(asm);
-		Value version = asm.call("getVersion", Collections.<Value> emptyList()); //$NON-NLS-1$
+		final Value version = asm.call("getVersion", Collections.<Value> emptyList()); //$NON-NLS-1$
 		Assert.isTrue(version instanceof StringValue);
 		
 		if ("ETVM".equals(((StringValue)version).getValue())) { // This thing sits in a located EMF Resource
-			ObjectReference res = (ObjectReference)asm.call("eResource", Collections.<Value> emptyList()); //$NON-NLS-1$
+			final ObjectReference res = (ObjectReference)asm.call("eResource", Collections.<Value> emptyList()); //$NON-NLS-1$
 			Assert.isNotNull(res);
-			ObjectReference uri = (ObjectReference)res.call("getURI", Collections.<Value> emptyList()); //$NON-NLS-1$
+			final ObjectReference uri = (ObjectReference)res.call("getURI", Collections.<Value> emptyList()); //$NON-NLS-1$
 			Assert.isNotNull(uri);
-			boolean isPR = ((BooleanValue)uri.call("isPlatformResource", Collections.<Value> emptyList())).getValue(); //$NON-NLS-1$
+			final boolean isPR = ((BooleanValue)uri.call("isPlatformResource", Collections.<Value> emptyList())).getValue(); //$NON-NLS-1$
 			if (isPR) {
 				String pStr = ((StringValue)uri.call("toPlatformString", Collections.<Value> singletonList(BooleanValue.valueOf(true)))).getValue(); //$NON-NLS-1$
-				String sName = ((StringValue)asm.call("getSourceName", Collections.<Value> emptyList())).getValue(); //$NON-NLS-1$
+				final String sName = ((StringValue)asm.call("getSourceName", Collections.<Value> emptyList())).getValue(); //$NON-NLS-1$
 				if (sName != null) {
 					pStr = pStr.substring(0, pStr.lastIndexOf('/') + 1) + sName;
 				}
@@ -337,21 +336,21 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 			}
 		}
 		
-		String asmName = ((StringValue)asm.call("getName", Collections.<Value> emptyList())).getValue(); //$NON-NLS-1$
+		final String asmName = ((StringValue)asm.call("getName", Collections.<Value> emptyList())).getValue(); //$NON-NLS-1$
 		Assert.isNotNull(asmName);
 
-		ILaunchConfiguration configuration = launch.getLaunchConfiguration();
-		List<String> superimpose = configuration.getAttribute(ATLLaunchConstants.SUPERIMPOSE, Collections
+		final ILaunchConfiguration configuration = launch.getLaunchConfiguration();
+		final List<String> superimpose = configuration.getAttribute(ATLLaunchConstants.SUPERIMPOSE, Collections
 				.<String> emptyList());
-		for (Iterator<String> i = superimpose.iterator(); i.hasNext();) {
+		for (final Iterator<String> i = superimpose.iterator(); i.hasNext();) {
 			path = i.next();
 			if (asmName.equals(getAsmNameFrom(path))) {
 				return path.substring(0, path.length() - 3) + "atl"; //$NON-NLS-1$
 			}
 		}
-		Map<String, String> libraries = configuration.getAttribute(ATLLaunchConstants.LIBS,
+		final Map<String, String> libraries = configuration.getAttribute(ATLLaunchConstants.LIBS,
 				new HashMap<String, String>());
-		for (Iterator<String> i = libraries.keySet().iterator(); i.hasNext();) {
+		for (final Iterator<String> i = libraries.keySet().iterator(); i.hasNext();) {
 			String lib = i.next();
 			path = libraries.get(lib);
 			if (asmName.equals(lib) || asmName.equals(getAsmNameFrom(path))) {
@@ -701,8 +700,8 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	 * @param command
 	 * @param contextObject
 	 */
-	void generateDebugEvent(int command, IDebugElement contextObject) {
-		DebugEvent event = null;
+	void generateDebugEvent(final int command, final IDebugElement contextObject) {
+		final DebugEvent event;
 		try {
 			switch (command) {
 				case CREATE:
@@ -737,8 +736,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 				default:
 					return;
 			}
-			DebugEvent[] debugEvents = new DebugEvent[1];
-			debugEvents[0] = event;
+			final DebugEvent[] debugEvents = new DebugEvent[] {event};
 			DebugPlugin.getDefault().fireDebugEventSet(debugEvents);
 		} catch (DebugException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -752,7 +750,7 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	 *            the handled event
 	 * @see org.eclipse.debug.core.IDebugEventSetListener#handleDebugEvents(org.eclipse.debug.core.DebugEvent[])
 	 */
-	public void handleDebugEvents(DebugEvent[] events) {
+	public void handleDebugEvents(final DebugEvent[] events) {
 		for (int i = 0; i < events.length; i++) {
 			if (events[i].getDetail() == DebugEvent.SUSPEND) {
 				setState(AtlDebugTarget.STATE_SUSPENDED);
