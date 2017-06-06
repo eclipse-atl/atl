@@ -57,6 +57,11 @@
                mode="debug"
                name="disassemblyMode">
          </option>
+         <option
+               description="Stop in main"
+               mode="debug"
+               name="stopInMain">
+         </option>
       </launcher>
    </extension>
 

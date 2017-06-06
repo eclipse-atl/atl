@@ -153,7 +153,6 @@ public class AtlDebugTarget extends AtlDebugElement implements IDebugTarget {
 	public AtlDebugTarget(ILaunch launch) {
 		super(null);
 		DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(this);
-		// DebugPlugin.getDefault().addDebugEventListener(this);
 
 		try {
 			disassemblyMode = Boolean.valueOf(

@@ -25,11 +25,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.atl.common.ATLLogger;
+import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IModel;
-import org.eclipse.m2m.atl.core.IReferenceModel;
+import org.eclipse.m2m.atl.core.emf.EMFInjector;
 import org.eclipse.m2m.atl.core.emf.EMFModel;
 import org.eclipse.m2m.atl.core.emf.EMFReferenceModel;
 import org.eclipse.m2m.atl.core.launch.ILauncher;
+import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.core.service.LauncherService;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
@@ -39,6 +41,7 @@ import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
+import org.eclipse.m2m.atl.emftvm.util.LazyCollections;
 import org.eclipse.m2m.atl.emftvm.util.ModuleNotFoundException;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
@@ -70,6 +73,8 @@ public class EMFTVMLauncher implements ILauncher {
 
 	protected ExecEnv execEnv;
 
+	protected ResourceSet outputResourceSet;
+
 	protected TimingData timingData;
 
 	/**
@@ -88,16 +93,36 @@ public class EMFTVMLauncher implements ILauncher {
 	 *            the model name
 	 * @param referenceModelName
 	 *            the model reference model name
+	 * @return the EMFTVM {@link Model}
 	 */
-	protected void addModel(IModel model, String name, String referenceModelName) {
+	protected Model addModel(IModel model, String name, String referenceModelName) {
+		final Model emftvmModel;
 		if (models.containsKey(name)) {
 			ATLLogger.warning(Messages.getString("EMFTVMLauncher.MODEL_REGISTERED", name)); //$NON-NLS-1$
+			emftvmModel = null;
 		} else {
 			models.put(name, model);
+			final EMFModel emfModel = (EMFModel) model;
+			final Resource resource = emfModel.getResource();
+			if (resource == null) {
+				final EMFInjector emfInjector;
+				try {
+					emfInjector = (EMFInjector) CoreService.getInjector(MODEL_FACTORY_NAME);
+				} catch (ATLCoreException e) {
+					throw new VMException(null, e.getLocalizedMessage(), e);
+				}
+				emfInjector.inject(emfModel, outputResourceSet.createResource(URI.createURI(name + ".xmi"))); //$NON-NLS-1$
+			}
+			emftvmModel = EmftvmFactory.eINSTANCE.createModel();
+			emftvmModel.setResource(emfModel.getResource()); 
 		}
 		if (!models.containsKey(referenceModelName)) {
 			models.put(referenceModelName, model.getReferenceModel());
+			final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel();
+			metamodel.setResource(((EMFReferenceModel) model.getReferenceModel()).getResource());
+			execEnv.registerMetaModel(referenceModelName, metamodel);
 		}
+		return emftvmModel;
 	}
 
 	/**
@@ -108,7 +133,10 @@ public class EMFTVMLauncher implements ILauncher {
 	 */
 	public void addInModel(IModel model, String name, String referenceModelName) {
 		model.setIsTarget(false);
-		addModel(model, name, referenceModelName);
+		final Model emftvmModel = addModel(model, name, referenceModelName);
+		if (emftvmModel != null) {
+			execEnv.registerInputModel(name, emftvmModel);
+		}
 	}
 
 	/**
@@ -119,7 +147,10 @@ public class EMFTVMLauncher implements ILauncher {
 	 */
 	public void addInOutModel(IModel model, String name, String referenceModelName) {
 		model.setIsTarget(true);
-		addModel(model, name, referenceModelName);
+		final Model emftvmModel = addModel(model, name, referenceModelName);
+		if (emftvmModel != null) {
+			execEnv.registerInOutModel(name, emftvmModel);
+		}
 	}
 
 	/**
@@ -130,7 +161,10 @@ public class EMFTVMLauncher implements ILauncher {
 	 */
 	public void addOutModel(IModel model, String name, String referenceModelName) {
 		model.setIsTarget(true);
-		addModel(model, name, referenceModelName);
+		final Model emftvmModel = addModel(model, name, referenceModelName);
+		if (emftvmModel != null) {
+			execEnv.registerOutputModel(name, emftvmModel);
+		}
 	}
 
 	/**
@@ -158,6 +192,7 @@ public class EMFTVMLauncher implements ILauncher {
 		moduleResourceSet = new ResourceSetImpl();
 		moduleResolver = new DefaultModuleResolver(EMF_URI_PREFIX, moduleResourceSet);
 		execEnv = EmftvmFactory.eINSTANCE.createExecEnv();
+		outputResourceSet = new ResourceSetImpl();
 		timingData = new TimingData();
 	}
 
@@ -193,30 +228,19 @@ public class EMFTVMLauncher implements ILauncher {
 			getModuleFromObject(modules[i]);
 		}
 
-		for (Map.Entry<String, IModel> entry : models.entrySet()) {
-			String name = entry.getKey();
-			IModel iModel = entry.getValue();
-			if (iModel instanceof IReferenceModel) {
-				Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel();
-				metamodel.setResource(((EMFReferenceModel) iModel).getResource());
-				execEnv.registerMetaModel(name, metamodel);
-			} else {
-				Model model = EmftvmFactory.eINSTANCE.createModel();
-				model.setResource(((EMFModel) iModel).getResource());
-				if (iModel.isTarget()) {
-					model.setAllowInterModelReferences(
-							LauncherService.getBooleanOption(options.get("allowInterModelReferences"), false)); //$NON-NLS-1$
-					execEnv.registerOutputModel(name, model);
-				} else {
-					execEnv.registerInputModel(name, model);
-				}
-			}
+		for (Model model : LazyCollections.asLazySet(execEnv.getInoutModels().values())
+				.union(LazyCollections.asLazySet(execEnv.getOutputModels().values()))) {
+			model.setAllowInterModelReferences(
+					LauncherService.getBooleanOption(options.get("allowInterModelReferences"), false)); //$NON-NLS-1$
 		}
 
 		execEnv.setMonitor(tool);
 		execEnv.setJitDisabled(LauncherService.getBooleanOption(options.get("jitDisabled"), false)); //$NON-NLS-1$
+		timingData.finishLoading();
+		
 		final Object result = execEnv.run(timingData);
 
+		timingData.finish();
 		if (LauncherService.getBooleanOption(options.get("printExecutionTime"), false)) { //$NON-NLS-1$
 			ATLLogger.info(timingData.toString());
 		}
