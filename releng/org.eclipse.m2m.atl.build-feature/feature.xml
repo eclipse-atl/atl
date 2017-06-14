@@ -27,8 +27,4 @@
          id="org.eclipse.m2m.atl.sdk"
          version="0.0.0"/>
 
-   <includes
-         id="org.eclipse.m2m.atl.emftvm"
-         version="0.0.0"/>
-
 </feature>
