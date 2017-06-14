@@ -43,7 +43,7 @@ public class ATLtoEMFTVMPerformanceTest extends PerformanceTest {
 	 * @throws IOException
 	 */
 	public void testEMFTVM_ATLtoEMFTVM() throws IOException {
-		runTestEMFTVM_ATLtoEMFTVM("EcoreCopyPerformanceTest#testEMFTVM_ATLtoEMFTVM", false);
+		runTestEMFTVM_ATLtoEMFTVM("ATLtoEMFTVMPerformanceTest#testEMFTVM_ATLtoEMFTVM", false);
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class ATLtoEMFTVMPerformanceTest extends PerformanceTest {
 	 * @throws IOException
 	 */
 	public void testEMFTVM_NoJIT_ATLtoEMFTVM() throws IOException {
-		runTestEMFTVM_ATLtoEMFTVM("EcoreCopyPerformanceTest#testEMFTVM_NoJIT_ATLtoEMFTVM", true);
+		runTestEMFTVM_ATLtoEMFTVM("ATLtoEMFTVMPerformanceTest#testEMFTVM_NoJIT_ATLtoEMFTVM", true);
 	}
 
 	/**
