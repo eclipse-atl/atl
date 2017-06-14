@@ -14,6 +14,7 @@ package org.eclipse.m2m.atl.emftvm.trace.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
+import org.eclipse.m2m.atl.emftvm.trace.util.IdentityHashList;
 
 /**
  * <!-- begin-user-doc -->
@@ -107,12 +109,12 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	/**
 	 * Lookup table of referred objects to {@link SourceElement}s.
 	 */
-	protected final Map<Object, SourceElement> uniqueSourceObjects = new HashMap<Object, SourceElement>();
+	protected final Map<Object, SourceElement> uniqueSourceObjects = new IdentityHashMap<Object, SourceElement>();
 
 	/**
 	 * Lookup table of referred objects to {@link SourceElementList}s.
 	 */
-	protected final Map<List<Object>, SourceElementList> uniqueSourceObjectLists = new HashMap<List<Object>, SourceElementList>();
+	protected final Map<IdentityHashList<Object>, SourceElementList> uniqueSourceObjectLists = new HashMap<IdentityHashList<Object>, SourceElementList>();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -485,14 +487,13 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	 */
 	private void uniqueSourceElementAdded(final SourceElement se) {
 		final Object object = se.getRuntimeObject();
-		if (uniqueSourceObjects.containsKey(object)) {
-			final SourceElement eSe = uniqueSourceObjects.get(object);
+		final SourceElement eSe = uniqueSourceObjects.put(object, se);
+		if (eSe != null) {
 			throw new IllegalArgumentException(String.format(
 					"Unique trace already exists for source element %s::%s: %s::%s", 
 					se.getSourceOf().getRule(), se, 
 					eSe.getSourceOf().getRule(), eSe));
 		}
-		uniqueSourceObjects.put(object, se);
 	}
 
 	/**
@@ -509,17 +510,16 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	 */
 	private void uniqueSourceElementListAdded(final SourceElementList sel) {
 		final List<Object> objects = sel.getSourceObjects();
-		if (uniqueSourceObjectLists.containsKey(objects)) {
+		final SourceElementList eSel = uniqueSourceObjectLists.put(new IdentityHashList<Object>(objects), sel);
+		if (eSel != null) {
 			assert !sel.getSourceElements().isEmpty();
 			final TracedRule selRule = sel.getSourceElements().get(0).getSourceOf().getRule();
-			final SourceElementList eSel = uniqueSourceObjectLists.get(objects);
 			assert !eSel.getSourceElements().isEmpty();
 			final TracedRule eSelRule = eSel.getSourceElements().get(0).getSourceOf().getRule();
 			throw new IllegalArgumentException(String.format(
 					"Unique trace already exists for source element list %s::%s: %s::%s", 
 					selRule, sel, eSelRule, eSel));
 		}
-		uniqueSourceObjectLists.put(objects, sel);
 	}
 
 	/**
@@ -527,7 +527,7 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	 * @param sel
 	 */
 	private void uniqueSourceElementListRemoved(final SourceElementList sel) {
-		uniqueSourceObjectLists.remove(sel.getSourceObjects());
+		uniqueSourceObjectLists.remove(new IdentityHashList<Object>(sel.getSourceObjects()));
 	}
 
 } //TracedRuleImpl

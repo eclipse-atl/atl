@@ -13,6 +13,7 @@ package org.eclipse.m2m.atl.emftvm.trace.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TraceFactory;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
+import org.eclipse.m2m.atl.emftvm.trace.util.IdentityHashList;
 
 
 /**
@@ -85,17 +87,17 @@ public class TraceLinkSetImpl extends EObjectImpl implements TraceLinkSet {
 	/**
 	 * Lookup table of referred objects to {@link SourceElement}s.
 	 */
-	protected final Map<EObject, SourceElement> defaultSourceObjects = new HashMap<EObject, SourceElement>();
+	protected final Map<EObject, SourceElement> defaultSourceObjects = new IdentityHashMap<EObject, SourceElement>();
 
 	/**
 	 * Lookup table of referred objects to {@link SourceElementList}s.
 	 */
-	protected final Map<List<Object>, SourceElementList> defaultSourceObjectLists = new HashMap<List<Object>, SourceElementList>();
+	protected final Map<IdentityHashList<Object>, SourceElementList> defaultSourceObjectLists = new HashMap<IdentityHashList<Object>, SourceElementList>();
 
 	/**
 	 * Lookup table of traced rules by name.
 	 */
-	protected final Map<String, TracedRule> linksByRuleName = new HashMap<String, TracedRule>();
+	protected final Map<String, TracedRule> linksByRuleName = new IdentityHashMap<String, TracedRule>();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -168,8 +170,10 @@ public class TraceLinkSetImpl extends EObjectImpl implements TraceLinkSet {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@SuppressWarnings("unchecked")
 	public SourceElementList getDefaultSourceElements(final List<?> sourceElements) {
-		return defaultSourceObjectLists.get(sourceElements);
+		return defaultSourceObjectLists.get(sourceElements instanceof IdentityHashList<?> ? sourceElements
+				: new IdentityHashList<Object>((List<Object>) sourceElements));
 	}
 
 	/**
@@ -450,14 +454,13 @@ public class TraceLinkSetImpl extends EObjectImpl implements TraceLinkSet {
 	 */
 	private void defaultSourceElementAdded(final SourceElement se) {
 		final EObject object = se.getObject();
-		if (defaultSourceObjects.containsKey(object)) {
-			final SourceElement eSe = defaultSourceObjects.get(object);
+		final SourceElement eSe = defaultSourceObjects.put(object, se);
+		if (eSe != null) {
 			throw new IllegalArgumentException(String.format(
 					"Default trace already exists for source element %s::%s: %s::%s", 
 					se.getSourceOf().getRule(), se, 
 					eSe.getSourceOf().getRule(), eSe));
 		}
-		defaultSourceObjects.put(object, se);
 	}
 
 	/**
@@ -474,17 +477,16 @@ public class TraceLinkSetImpl extends EObjectImpl implements TraceLinkSet {
 	 */
 	private void defaultSourceElementListAdded(final SourceElementList sel) {
 		final List<Object> objects = sel.getSourceObjects();
-		if (defaultSourceObjectLists.containsKey(objects)) {
+		final SourceElementList eSel = defaultSourceObjectLists.put(new IdentityHashList<Object>(objects), sel);
+		if (eSel != null) {
 			assert !sel.getSourceElements().isEmpty();
 			final TracedRule selRule = sel.getSourceElements().get(0).getSourceOf().getRule();
-			final SourceElementList eSel = defaultSourceObjectLists.get(objects);
 			assert !eSel.getSourceElements().isEmpty();
 			final TracedRule eSelRule = eSel.getSourceElements().get(0).getSourceOf().getRule();
 			throw new IllegalArgumentException(String.format(
 					"Default trace already exists for source element list %s::%s: %s::%s", 
 					selRule, sel, eSelRule, eSel));
 		}
-		defaultSourceObjectLists.put(objects, sel);
 	}
 
 	/**
@@ -492,7 +494,7 @@ public class TraceLinkSetImpl extends EObjectImpl implements TraceLinkSet {
 	 * @param sel
 	 */
 	private void defaultSourceElementListRemoved(final SourceElementList sel) {
-		defaultSourceObjectLists.remove(sel.getSourceObjects());
+		defaultSourceObjectLists.remove(new IdentityHashList<Object>(sel.getSourceObjects()));
 	}
 
 } //TraceLinkSetImpl
