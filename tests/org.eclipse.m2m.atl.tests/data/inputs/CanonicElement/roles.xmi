@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:roles="roles">
+  <roles:Role
+      personId="1"
+      personFirstName="John"
+      personLastName="Doe"/>
+  <roles:Role
+      personId="1"
+      personFirstName="John"
+      personLastName="Doe"/>
+  <roles:Role
+      personId="2"
+      personFirstName="Jane"
+      personLastName="Doe"/>
+</xmi:XMI>

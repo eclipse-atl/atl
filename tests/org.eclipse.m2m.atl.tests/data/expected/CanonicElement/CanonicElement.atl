@@ -1,0 +1,39 @@
+module CanonicElement;
+create OUT: PEOPLE from IN: ROLES;
+
+helper context ROLES!Role def: toTuple: TupleType(id: String, firstName: String,
+		lastName: String) =
+	Tuple{id = self.personId, firstName = self.personFirstName, lastName = self.
+			personLastName};
+
+helper def: roleByTuple: Map(TupleType(id: String, firstName: String, lastName: String),
+		ROLES!Role) =
+	ROLES!Role.allInstances() -> iterate(r; acc: Map(TupleType(id: String, firstName:
+			String, lastName: String), ROLES!Role) = Map {} | acc.including(r.toTuple,
+			r));
+
+helper context ROLES!Role def: canonic: ROLES!Role =
+	thisModule.roleByTuple.get(self.toTuple);
+
+unique lazy rule RolesToPerson {
+	from
+		r: TupleType(id: String, firstName: String, lastName: String)
+	using {
+		roles: Sequence(ROLES!Role) = ROLES!Role.allInstances() -> select(e | e.personId
+				= r.id);
+	}
+	to
+		p: PEOPLE!Person (
+			id <- r.id,
+			firstName <- r.firstName,
+			lastName <- r.lastName
+		)
+}
+
+endpoint rule Transform() {
+	do {
+		for (r in ROLES!Role.allInstances()) {
+				thisModule.RolesToPerson(r.toTuple);
+		}
+	}
+}

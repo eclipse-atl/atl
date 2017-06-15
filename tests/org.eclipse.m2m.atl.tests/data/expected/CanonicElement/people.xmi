@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:people="people">
+  <people:Person id="1" firstName="John" lastName="Doe"/>
+  <people:Person id="2" firstName="Jane" lastName="Doe"/>
+</xmi:XMI>
