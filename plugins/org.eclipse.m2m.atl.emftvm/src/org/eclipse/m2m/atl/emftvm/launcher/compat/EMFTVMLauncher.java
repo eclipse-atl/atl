@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.m2m.atl.common.ATLLaunchConstants;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IModel;
@@ -55,9 +56,6 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  */
 public class EMFTVMLauncher implements ILauncher {
 
-	/** The {@link ILauncher} extension name. */
-	public static final String LAUNCHER_NAME = "EMFTVM (Compatibility)"; //$NON-NLS-1$
-
 	/** The Default model factory name to use. */
 	public static final String MODEL_FACTORY_NAME = "EMF"; //$NON-NLS-1$
 
@@ -81,7 +79,7 @@ public class EMFTVMLauncher implements ILauncher {
 	 * {@inheritDoc}
 	 */
 	public String getName() {
-		return LAUNCHER_NAME;
+		return ATLLaunchConstants.EMFTVM_NAME;
 	}
 
 	/**
