@@ -41,7 +41,7 @@
          point="org.eclipse.m2m.atl.core.launcher">
       <launcher
             class="org.eclipse.m2m.atl.emftvm.launcher.compat.EMFTVMUILauncher"
-            name="EMFTVM (Compatibility)">          
+            name="EMFTVM">          
          <option
                description="Print execution times to console"
                mode="run"
