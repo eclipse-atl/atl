@@ -485,14 +485,13 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	 */
 	private void uniqueSourceElementAdded(final SourceElement se) {
 		final Object object = se.getRuntimeObject();
-		if (uniqueSourceObjects.containsKey(object)) {
-			final SourceElement eSe = uniqueSourceObjects.get(object);
+		final SourceElement eSe = uniqueSourceObjects.put(object, se);
+		if (eSe != null) {
 			throw new IllegalArgumentException(String.format(
 					"Unique trace already exists for source element %s::%s: %s::%s", 
 					se.getSourceOf().getRule(), se, 
 					eSe.getSourceOf().getRule(), eSe));
 		}
-		uniqueSourceObjects.put(object, se);
 	}
 
 	/**
@@ -509,17 +508,16 @@ public class TracedRuleImpl extends EObjectImpl implements TracedRule {
 	 */
 	private void uniqueSourceElementListAdded(final SourceElementList sel) {
 		final List<Object> objects = sel.getSourceObjects();
-		if (uniqueSourceObjectLists.containsKey(objects)) {
+		final SourceElementList eSel = uniqueSourceObjectLists.put(objects, sel);
+		if (eSel != null) {
 			assert !sel.getSourceElements().isEmpty();
 			final TracedRule selRule = sel.getSourceElements().get(0).getSourceOf().getRule();
-			final SourceElementList eSel = uniqueSourceObjectLists.get(objects);
 			assert !eSel.getSourceElements().isEmpty();
 			final TracedRule eSelRule = eSel.getSourceElements().get(0).getSourceOf().getRule();
 			throw new IllegalArgumentException(String.format(
 					"Unique trace already exists for source element list %s::%s: %s::%s", 
 					selRule, sel, eSelRule, eSel));
 		}
-		uniqueSourceObjectLists.put(objects, sel);
 	}
 
 	/**
