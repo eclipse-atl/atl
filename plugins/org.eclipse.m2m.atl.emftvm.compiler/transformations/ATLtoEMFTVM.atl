@@ -131,11 +131,11 @@ helper context ATL!Rule def : outPatternElements : Sequence(ATL!OutPatternElemen
 	endif;
 
 --- Returns the source code location representing the apply section of this rule.
-helper context ATL!Rule def : applyLoc : ATL!LocatedElement =
+helper context ATL!Rule def : applyLoc : String =
 	if self.outPattern.oclIsUndefined() then
-		self
+		self.location
 	else
-		self.outPattern
+		self.outPattern.location
 	endif;
 
 --- Support for multiple rule inheritance, including rules outside same module
@@ -297,22 +297,23 @@ helper context ATL!LazyMatchedRule def : isRefiningRule : Boolean =
 abstract rule Unit {
 	from s : ATL!Unit in IN
 	to t : EMFTVM!Module (
-		name <:= s.name,
-		sourceName <:=
+		name <- s.name,
+		sourceName <-
 			let index : Integer = s.name.lastIndexOf('::') in
 			if index > 0 then
 				s.name.substring(index + 2, s.name.size()) + '.atl'
 			else
 				s.name + '.atl'
 			endif,
-		imports <:= s.libraries->collect(l|l.name)),
+		imports <- s.libraries->collect(l|l.name),
+		features <- Sequence{main}),
 	   main : EMFTVM!Operation (
-	   	name <:= 'main',
-		static <:= true,
-		"context" <:= 'ExecEnv',
-		contextModel <:= 'EMFTVM',
-		type <:= 'Object',
-		typeModel <:= '#native')
+	   	name <- 'main',
+		static <- true,
+		"context" <- 'ExecEnv',
+		contextModel <- 'EMFTVM',
+		type <- 'Object',
+		typeModel <- '#native')
 }
 
 rule Library extends Unit {
@@ -320,7 +321,7 @@ rule Library extends Unit {
 	to t : EMFTVM!Module (
 		features <- s.helpers->collect(h|h.definition)->append(main)),
 	   main : EMFTVM!Operation (
-	   	body <:= body),
+	   	body <- body),
 	   body : EMFTVM!CodeBlock
 }
 
@@ -343,14 +344,14 @@ rule Module extends Unit {
 			->append(main),
 		rules <- s.elements->select(e|e.oclIsKindOf(ATL!MatchedRule))),
 	   main : EMFTVM!Operation (
-	   	body <:= body),
+	   	body <- body),
 	   body : EMFTVM!CodeBlock (
-	   	lineNumbers <:= Sequence{ln}),
+	   	lineNumbers <- Sequence{ln}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn) 
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn) 
 }
 
 rule ModuleWithEntryPoint extends Module {
@@ -363,9 +364,9 @@ rule ModuleWithEntryPoint extends Module {
 	}
 	to t : EMFTVM!Module,
 	   body : EMFTVM!CodeBlock (
-		code <:= Sequence{getenvtype_entry, invoke_entry}),
+		code <- Sequence{getenvtype_entry, invoke_entry}),
 	   ln : EMFTVM!LineNumber (
-	   	instructions <:= Sequence{getenvtype_entry, invoke_entry}),
+	   	instructions <- Sequence{getenvtype_entry, invoke_entry}),
 	   getenvtype_entry : EMFTVM!Getenvtype,								-- [..., ExecEnv]
 	   invoke_entry : EMFTVM!InvokeStatic (									-- [..., result]
 	   	opname <- entryPointRule.name,
@@ -386,9 +387,9 @@ rule ModuleWithEndPoint extends Module {
 	}
 	to t : EMFTVM!Module,
 	   body : EMFTVM!CodeBlock (
-		code <:= Sequence{getenvtype_end, invoke_end}),
+		code <- Sequence{getenvtype_end, invoke_end}),
 	   ln : EMFTVM!LineNumber (
-	   	instructions <:= Sequence{getenvtype_end, invoke_end}),
+	   	instructions <- Sequence{getenvtype_end, invoke_end}),
 	   getenvtype_end : EMFTVM!Getenvtype,									-- [..., ExecEnv]
 	   invoke_end : EMFTVM!InvokeStatic (									-- [..., result]
 	   	opname <- endPointRule.name,
@@ -407,9 +408,9 @@ rule ModuleWithEntryAndEndPoint extends Module {
 	}
 	to t : EMFTVM!Module,
 	   body : EMFTVM!CodeBlock (
-		code <:= Sequence{getenvtype_entry, invoke_entry, pop, getenvtype_end, invoke_end}),
+		code <- Sequence{getenvtype_entry, invoke_entry, pop, getenvtype_end, invoke_end}),
 	   ln : EMFTVM!LineNumber (
-	   	instructions <:= Sequence{getenvtype_entry, invoke_entry, pop, getenvtype_end, invoke_end}),
+	   	instructions <- Sequence{getenvtype_entry, invoke_entry, pop, getenvtype_end, invoke_end}),
 	   getenvtype_entry : EMFTVM!Getenvtype,								-- [..., ExecEnv]
 	   invoke_entry : EMFTVM!InvokeStatic (									-- [..., result]
 	   	opname <- entryPointRule.name,
@@ -548,14 +549,14 @@ rule CalledRuleOutPatternElement {
 			endif;
 	}
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
-		code <:= Sequence{findtype, new, store}),
+		lineNumbers <- Sequence{ln},
+		code <- Sequence{findtype, new, store}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{findtype, new, store}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{findtype, new, store}),
 	   lv : EMFTVM!LocalVariable (
 	   	name <- s.varName,
 		type <- s.type.typeName,
@@ -574,15 +575,15 @@ rule CalledRuleVariableDeclaration {
 		type <- s.type.typeName,
 		typeModel <- s.type.modelName),
 	   cb : EMFTVM!CodeBlock (
-	   	lineNumbers <:= Sequence{ln},
+	   	lineNumbers <- Sequence{ln},
 	   	nested <- Sequence{s.initExpression},
-		code <:= Sequence{invokeCb, store}),
+		code <- Sequence{invokeCb, store}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{invokeCb, store}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb, store}),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.initExpression, argcount <- 0),	-- [..., value]
 	   store : EMFTVM!Store (localVariable <- s)									-- [...]
 }
@@ -599,7 +600,7 @@ rule CalledRule { -- Called rules are really operations
 		parameters <- s.parameters,
 		body <- body),
 	   body : EMFTVM!CodeBlock (
-	   	lineNumbers <:= Sequence{ln},
+	   	lineNumbers <- Sequence{ln},
 		localVariables <- s.parameters->collect(p|thisModule.resolveTemp(p, 'lv'))
 			->union(s.outPatternElements->collect(p|thisModule.resolveTemp(p, 'lv')))
 			->union(s.variables),
@@ -612,13 +613,13 @@ rule CalledRule { -- Called rules are really operations
 				else
 					s.actionBlock.statements
 				endif),
-		code <:= Sequence{invokeAllCbs}),
+		code <- Sequence{invokeAllCbs}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{invokeAllCbs}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeAllCbs}),
 	   invokeAllCbs : EMFTVM!InvokeAllCbs									-- [...]
 }
 
@@ -642,15 +643,15 @@ rule MatchedRuleVariableDeclaration {
 		initialiser <- init),
 	   init : EMFTVM!CodeBlock, -- Empty initialiser
 	   cb : EMFTVM!CodeBlock (
-	   	lineNumbers <:= Sequence{ln},
+	   	lineNumbers <- Sequence{ln},
 	   	nested <- Sequence{s.initExpression},
-		code <:= Sequence{load, invokeCb, set}),
+		code <- Sequence{load, invokeCb, set}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{load, invokeCb, set}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{load, invokeCb, set}),
 	   load : EMFTVM!Load (localVariable <- thisModule.resolveTemp(s."rule", 'a_trace')),	-- [..., trace]
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.initExpression, argcount <- 0),			-- [..., trace, value]
 	   set : EMFTVM!"Set" (fieldname <- s.varName)											-- [...]
@@ -697,7 +698,7 @@ rule MatchedRule {
 		fields <- s.variables,
 		applier <- a),
 	   a : EMFTVM!CodeBlock (
-	   	lineNumbers <:= Sequence{aln},
+	   	lineNumbers <- Sequence{aln},
 	   	localVariables <- Sequence{a_trace}
 			->union(s.inPattern.elements->collect(e|thisModule.resolveTemp(e, 'ov')))
 			->union(s.outPatternElements->reject(e|e.isRefiningElement)->collect(e|thisModule.resolveTemp(e, 'ov'))),
@@ -719,13 +720,13 @@ rule MatchedRule {
 					)}
 				endif
 			),
-	   	code <:= Sequence{a_invokeAllCbs}),
+	   	code <- Sequence{a_invokeAllCbs}),
 	   aln : EMFTVM!LineNumber (
 	   	startLine <- s.applyLoc.startLine,
 		startColumn <- s.applyLoc.startColumn,
 		endLine <- s.applyLoc.endLine,
 		endColumn <- s.applyLoc.endColumn,
-		instructions <:= Sequence{a_invokeAllCbs}),
+		instructions <- Sequence{a_invokeAllCbs}),
 	   a_trace : EMFTVM!LocalVariable (
 	   	name <- '__trace__',
 		type <- 'TraceLink',
@@ -737,21 +738,21 @@ rule MatchedRuleWithFilter extends MatchedRule {
 	from s : ATL!MatchedRule in IN (
 		not s.inPattern.filter.oclIsUndefined())
 	using {
-		matchLoc : ATL!LocatedElement = s.inPattern.filter;
+		matchLoc : String = s.inPattern.filter.location;
 	}
 	to t : EMFTVM!Rule (
 		matcher <- m),
 	   m : EMFTVM!CodeBlock (
-	   	lineNumbers <:= Sequence{mln},
+	   	lineNumbers <- Sequence{mln},
 	   	localVariables <- s.inPattern.elements->collect(e|thisModule.resolveTemp(e, 'lv')),
 	   	nested <- Sequence{s.inPattern.filter},
-	   	code <:= Sequence{invokeCb}),
+	   	code <- Sequence{invokeCb}),
 	   mln : EMFTVM!LineNumber (
 	   	startLine <- matchLoc.startLine,
 		startColumn <- matchLoc.startColumn,
 		endLine <- matchLoc.endLine,
 		endColumn <- matchLoc.endColumn,
-	   	instructions <:= Sequence{invokeCb}),
+	   	instructions <- Sequence{invokeCb}),
 	   invokeCb : EMFTVM!InvokeCb  (codeBlock <- s.inPattern.filter)
 }
 
@@ -759,7 +760,7 @@ rule MatchedRuleWithAction extends MatchedRule {
 	from s : ATL!MatchedRule in IN (
 		not s.actionBlock.oclIsUndefined())
 	using {
-		postLoc : ATL!LocatedElement = s.actionBlock;
+		postLoc : String = s.actionBlock.location;
 	}
 	to t : EMFTVM!Rule (
 		postApply <- p),
@@ -767,9 +768,9 @@ rule MatchedRuleWithAction extends MatchedRule {
 	   	localVariables <- Sequence{p_trace}
 			->union(s.inPattern.elements->collect(e|thisModule.resolveTemp(e, 'pv')))
 			->union(s.outPatternElements->reject(e|e.isRefiningElement)->collect(e|thisModule.resolveTemp(e, 'pv'))),
-	   	lineNumbers <:= Sequence{pln},
+	   	lineNumbers <- Sequence{pln},
 	   	nested <- s.actionBlock.statements,
-		code <:= Sequence{p_invokeAllCbs}),
+		code <- Sequence{p_invokeAllCbs}),
 	   p_trace : EMFTVM!LocalVariable (
 	   	name <- '__trace__',
 	   	type <- 'TraceLink',
@@ -779,7 +780,7 @@ rule MatchedRuleWithAction extends MatchedRule {
 		startColumn <- postLoc.startColumn,
 		endLine <- postLoc.endLine,
 		endColumn <- postLoc.endColumn,
-		instructions <:= Sequence{p_invokeAllCbs}),
+		instructions <- Sequence{p_invokeAllCbs}),
 	   p_invokeAllCbs : EMFTVM!InvokeAllCbs									-- [..., value]
 }
 
@@ -808,15 +809,15 @@ rule Binding {
 			endif;
 	}
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
+		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.value},
-		code <:= Sequence{load, invokeCb, set}),
+		code <- Sequence{load, invokeCb, set}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{load, invokeCb, set}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{load, invokeCb, set}),
 	   load : EMFTVM!Load (
 	   	localVariable <-													-- [..., lv]
 			if s.parentRule.oclIsKindOf(ATL!MatchedRule) then
@@ -831,9 +832,9 @@ rule Binding {
 rule ResolvingBinding extends Binding {
 	from s : ATL!Binding in IN (not s.isAssignment)
 	to cb : EMFTVM!CodeBlock (
-		code <:= Sequence{load, invokeCb, invoke, set}),
+		code <- Sequence{load, invokeCb, invoke, set}),
 	   ln : EMFTVM!LineNumber (
-		instructions <:= Sequence{load, invokeCb, invoke, set}),
+		instructions <- Sequence{load, invokeCb, invoke, set}),
 	   load : EMFTVM!Load,													-- [..., lv]
 	   invokeCb : EMFTVM!InvokeCb,											-- [..., lv, value]
 	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [..., lv, rvalue]
@@ -845,15 +846,15 @@ rule ResolvingBinding extends Binding {
 rule ExpressionStat {
 	from s : ATL!ExpressionStat in IN
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
+		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.expression},
-		code <:= Sequence{invokeCb}),
+		code <- Sequence{invokeCb}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{invokeCb}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb}),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.expression, argcount <- 0)	-- [..., value]
 }
 
@@ -862,9 +863,9 @@ rule NonLastExpressionStat extends ExpressionStat {
 		not s.refImmediateComposite().oclIsKindOf(ATL!ActionBlock) or
 		s.refImmediateComposite().statements->last() <> s)
 	to cb : EMFTVM!CodeBlock (
-		code <:= Sequence{invokeCb, pop}),
+		code <- Sequence{invokeCb, pop}),
 	   ln : EMFTVM!LineNumber (
-	   	instructions <:= Sequence{invokeCb, pop}),
+	   	instructions <- Sequence{invokeCb, pop}),
 	   invokeCb : EMFTVM!InvokeCb,											-- [..., value]
 	   pop : EMFTVM!Pop														-- [...]
 }
@@ -873,15 +874,15 @@ abstract rule BindingStat {
 	from s : ATL!BindingStat in IN (
 		s.source.oclIsKindOf(ATL!NavigationOrAttributeCallExp))
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
+		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.source.source, s.value},
-		code <:= Sequence{invokeCb, invokeCb2, set}),
+		code <- Sequence{invokeCb, invokeCb2, set}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{invokeCb, invokeCb2, set}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb, invokeCb2, set}),
 	   invokeCb : EMFTVM!InvokeCb (											-- [..., source]
 	   	codeBlock <- s.source.source, argcount <- 0),
 	   invokeCb2 : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),	-- [..., source, value]
@@ -900,9 +901,9 @@ rule BindingStatAttribute extends BindingStat {
 rule ResolvingBindingStatAttribute extends BindingStatAttribute {
 	from s : ATL!BindingStat in IN (not s.isAssignment)
 	to cb : EMFTVM!CodeBlock (
-		code <:= Sequence{invokeCb, invokeCb2, invoke, set}),
+		code <- Sequence{invokeCb, invokeCb2, invoke, set}),
 	   ln : EMFTVM!LineNumber (
-		instructions <:= Sequence{invokeCb, invokeCb2, invoke, set}),
+		instructions <- Sequence{invokeCb, invokeCb2, invoke, set}),
 	   invokeCb : EMFTVM!InvokeCb,											-- [..., source]
 	   invokeCb2 : EMFTVM!InvokeCb,											-- [..., source, value]
 	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [..., source, rvalue]
@@ -921,9 +922,9 @@ rule BindingStatStaticAttribute extends BindingStat {
 rule ResolvingBindingStatStaticAttribute extends BindingStatStaticAttribute {
 	from s : ATL!BindingStat in IN (not s.isAssignment)
 	to cb : EMFTVM!CodeBlock (
-		code <:= Sequence{invokeCb, invokeCb2, invoke, set}),
+		code <- Sequence{invokeCb, invokeCb2, invoke, set}),
 	   ln : EMFTVM!LineNumber (
-		instructions <:= Sequence{invokeCb, invokeCb2, invoke, set}),
+		instructions <- Sequence{invokeCb, invokeCb2, invoke, set}),
 	   invokeCb : EMFTVM!InvokeCb,											-- [..., source]
 	   invokeCb2 : EMFTVM!InvokeCb,											-- [..., source, value]
 	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [..., source, rvalue]
@@ -936,15 +937,15 @@ rule BindingStatVariable {
 		s.source.referredVariable.varName <> 'thisModule' and
 		not s.source.referredVariable.isMatchedRuleField)
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
+		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.value},
-		code <:= Sequence{invokeCb, store}),
+		code <- Sequence{invokeCb, store}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{invokeCb, store}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb, store}),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),	-- [..., value]
 	   store : EMFTVM!Store (localVariable <- s.source.referredVariable)	-- [...]
 }
@@ -952,9 +953,9 @@ rule BindingStatVariable {
 rule ResolvingBindingStatVariable extends BindingStatVariable {
 	from s : ATL!BindingStat in IN (not s.isAssignment)
 	to cb : EMFTVM!CodeBlock (
-		code <:= Sequence{invokeCb, invoke, store}),
+		code <- Sequence{invokeCb, invoke, store}),
 	   ln : EMFTVM!LineNumber (
-		instructions <:= Sequence{invokeCb, invoke, store}),
+		instructions <- Sequence{invokeCb, invoke, store}),
 	   invokeCb : EMFTVM!InvokeCb,											-- [..., value]
 	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [..., rvalue]
 	   store : EMFTVM!Store													-- [...]
@@ -965,15 +966,15 @@ rule BindingStatRuleField {
 		s.source.oclIsKindOf(ATL!VariableExp) and
 		s.source.referredVariable.isMatchedRuleField)
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
+		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.value},
-		code <:= Sequence{load, invokeCb, set}),
+		code <- Sequence{load, invokeCb, set}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{load, invokeCb, set}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{load, invokeCb, set}),
 	   load : EMFTVM!Load (localVariable <- s.source.traceVariable()),		-- [..., trace]
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.value, argcount <- 0),	-- [..., trace, value]
 	   set : EMFTVM!"Set" (fieldname <- s.source.referredVariable.varName)	-- [...]
@@ -982,9 +983,9 @@ rule BindingStatRuleField {
 rule ResolvingBindingStatRuleField extends BindingStatRuleField {
 	from s : ATL!BindingStat in IN (not s.isAssignment)
 	to cb : EMFTVM!CodeBlock (
-		code <:= Sequence{load, invokeCb, invoke, set}),
+		code <- Sequence{load, invokeCb, invoke, set}),
 	   ln : EMFTVM!LineNumber (
-		instructions <:= Sequence{load, invokeCb, invoke, set}),
+		instructions <- Sequence{load, invokeCb, invoke, set}),
 	   load : EMFTVM!Load,													-- [..., trace]
 	   invokeCb : EMFTVM!InvokeCb,											-- [..., trace, value]
 	   invoke : EMFTVM!Invoke (opname <- 'resolve', argcount <- 0),			-- [..., trace, rvalue]
@@ -994,27 +995,27 @@ rule ResolvingBindingStatRuleField extends BindingStatRuleField {
 abstract rule IfStat {
 	from s : ATL!IfStat in IN
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln}),
+		lineNumbers <- Sequence{ln}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.condition, argcount <- 0)	-- [..., cond]
 }
 
 rule IfStatWithThenAndElse extends IfStat {
 	from s : ATL!IfStat in IN (s.thenStatements->notEmpty() and s.elseStatements->notEmpty())
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
+		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.condition, thenCb, elseCb},
-		code <:= Sequence{invokeCb, ifn, invokeThen, goto, invokeElse}),
+		code <- Sequence{invokeCb, ifn, invokeThen, goto, invokeElse}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{invokeCb, ifn, invokeThen, goto, invokeElse}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb, ifn, invokeThen, goto, invokeElse}),
 	   invokeCb : EMFTVM!InvokeCb,											-- [..., cond]
 	   ifn : EMFTVM!Ifn (target <- goto),									-- [...]
 	   invokeThen : EMFTVM!InvokeCb (codeBlock <- thenCb, argcount <- 0),	-- [..., result]
@@ -1022,68 +1023,68 @@ rule IfStatWithThenAndElse extends IfStat {
 	   invokeElse : EMFTVM!InvokeCb (codeBlock <- elseCb, argcount <- 0),	-- [..., result]
 	   thenCb : EMFTVM!CodeBlock (
 	   	nested <- s.thenStatements,
-		code <:= Sequence{invokeAllCbs}),
+		code <- Sequence{invokeAllCbs}),
 	   invokeAllCbs : EMFTVM!InvokeAllCbs (argcount <- 0),
 	   elseCb : EMFTVM!CodeBlock (
 	   	nested <- s.elseStatements,
-		code <:= Sequence{invokeAllCbs2}),
+		code <- Sequence{invokeAllCbs2}),
 	   invokeAllCbs2 : EMFTVM!InvokeAllCbs (argcount <- 0)
 }
 
 rule IfStatWithThen extends IfStat {
 	from s : ATL!IfStat in IN (s.thenStatements->notEmpty() and s.elseStatements->isEmpty())
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
+		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.condition, thenCb},
-		code <:= Sequence{invokeCb, ifn, invokeThen}),
+		code <- Sequence{invokeCb, ifn, invokeThen}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{invokeCb, ifn, invokeThen}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb, ifn, invokeThen}),
 	   invokeCb : EMFTVM!InvokeCb,											-- [..., cond]
 	   ifn : EMFTVM!Ifn (target <- invokeThen),								-- [...]
 	   invokeThen : EMFTVM!InvokeCb (codeBlock <- thenCb, argcount <- 0),	-- [..., result]
 	   thenCb : EMFTVM!CodeBlock (
 	   	nested <- s.thenStatements,
-		code <:= Sequence{invokeAllCbs}),
+		code <- Sequence{invokeAllCbs}),
 	   invokeAllCbs : EMFTVM!InvokeAllCbs (argcount <- 0)
 }
 
 rule IfStatWithElse extends IfStat {
 	from s : ATL!IfStat in IN (s.thenStatements->isEmpty() and s.elseStatements->notEmpty())
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
+		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.condition, elseCb},
-		code <:= Sequence{invokeCb, ift, invokeElse}),
+		code <- Sequence{invokeCb, ift, invokeElse}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{invokeCb, ift, invokeElse}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb, ift, invokeElse}),
 	   invokeCb : EMFTVM!InvokeCb,											-- [..., cond]
 	   ift : EMFTVM!If (target <- invokeElse),								-- [...]
 	   invokeElse : EMFTVM!InvokeCb (codeBlock <- elseCb, argcount <- 0),	-- [..., result]
 	   elseCb : EMFTVM!CodeBlock (
 	   	nested <- s.elseStatements,
-		code <:= Sequence{invokeAllCbs2}),
+		code <- Sequence{invokeAllCbs2}),
 	   invokeAllCbs2 : EMFTVM!InvokeAllCbs (argcount <- 0)
 }
 
 rule IfStatWithNothing extends IfStat {
 	from s : ATL!IfStat in IN (s.thenStatements->isEmpty() and s.elseStatements->isEmpty())
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
+		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.condition},
-		code <:= Sequence{invokeCb, pop}),
+		code <- Sequence{invokeCb, pop}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{invokeCb, pop}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb, pop}),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.condition, argcount <- 0),	-- [..., cond]
 	   pop : EMFTVM!Pop 														-- [...]
 }
@@ -1092,15 +1093,15 @@ rule ForStat {
 	from s : ATL!ForStat in IN
 	to cb : EMFTVM!CodeBlock (
 		localVariables <- Sequence{s.iterator},
-		lineNumbers <:= Sequence{ln},
+		lineNumbers <- Sequence{ln},
 		nested <- Sequence{s.collection, loop},
-		code <:= Sequence{invokeCb, it, store, invokeCb2, endit}),
+		code <- Sequence{invokeCb, it, store, invokeCb2, endit}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{invokeCb, it, store, invokeCb2, endit}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{invokeCb, it, store, invokeCb2, endit}),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.collection, argcount <- 0),		-- [..., coll]
 	   it : EMFTVM!Iterate (target <- endit),										-- [..., it(coll), value]
 	   store : EMFTVM!Store (localVariable <- s.iterator),							-- [..., it(coll)]
@@ -1108,7 +1109,7 @@ rule ForStat {
 	   endit : EMFTVM!Enditerate (target <- it),									-- [...]
 	   loop : EMFTVM!CodeBlock (
 	   	nested <- s.statements,
-		code <:= Sequence{invokeAllCbs}),
+		code <- Sequence{invokeAllCbs}),
 	   invokeAllCbs : EMFTVM!InvokeAllCbs (argcount <- 0)
 }
 
@@ -1123,14 +1124,14 @@ rule ForStat {
 lazy rule DeleteInPatternElement {
 	from s : ATL!InPatternElement
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
-		code <:= Sequence{load, delete}),
+		lineNumbers <- Sequence{ln},
+		code <- Sequence{load, delete}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{load, delete}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{load, delete}),
 	   load : EMFTVM!Load (															-- [..., source]
 	   	localVariable <- thisModule.resolveTemp(s, 'ov')),
 	   delete : EMFTVM!Delete														-- [...]
@@ -1142,14 +1143,14 @@ lazy rule DeleteInPatternElement {
 lazy rule RemapInPatternElement {
 	from s : ATL!InPatternElement
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
-		code <:= Sequence{load, load2, invoke, pop}),
+		lineNumbers <- Sequence{ln},
+		code <- Sequence{load, load2, invoke, pop}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{load, load2, invoke, pop}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{load, load2, invoke, pop}),
 	   load : EMFTVM!Load (															-- [..., source]
 	   	localVariable <- thisModule.resolveTemp(s, 'ov')),
 	   load2 : EMFTVM!Load (														-- [..., source, target]
@@ -1166,14 +1167,14 @@ lazy rule RemapInPatternElement {
 lazy rule LoadPatternElement {
 	from s : ATL!PatternElement
 	to cb : EMFTVM!CodeBlock (
-		lineNumbers <:= Sequence{ln},
-		code <:= Sequence{load}),
+		lineNumbers <- Sequence{ln},
+		code <- Sequence{load}),
 	   ln : EMFTVM!LineNumber (
-	   	startLine <:= s.startLine,
-		startColumn <:= s.startColumn,
-		endLine <:= s.endLine,
-		endColumn <:= s.endColumn,
-		instructions <:= Sequence{load}),
+	   	startLine <- s.location.startLine,
+		startColumn <- s.location.startColumn,
+		endLine <- s.location.endLine,
+		endColumn <- s.location.endColumn,
+		instructions <- Sequence{load}),
 	   load : EMFTVM!Load (															-- [..., source]
 	   	localVariable <- thisModule.resolveTemp(s, 'ov'))
 	do {
