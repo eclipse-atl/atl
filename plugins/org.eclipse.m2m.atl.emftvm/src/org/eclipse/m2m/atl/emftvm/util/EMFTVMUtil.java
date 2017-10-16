@@ -68,7 +68,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 
 /**
  * EMFTVM static utility methods.
- * 
+ *
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
@@ -76,7 +76,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Returns the registry type of the switched object.
-	 * 
+	 *
 	 * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
 	 */
 	public static class RegistryTypeSwitch extends EcoreSwitch<Object> {
@@ -131,7 +131,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Type namespace matching pattern.
-	 * 
+	 *
 	 * @see #NS_DELIM
 	 */
 	public static final Pattern DELIM_PATTERN = Pattern.compile(NS_DELIM);
@@ -153,7 +153,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Cache used to store native Java methods.
-	 * 
+	 *
 	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
 	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
@@ -168,7 +168,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Cache used to store the found root methods for native Java methods.
-	 * 
+	 *
 	 * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
 	 * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
 	 * @author <a href="mailto:mikael.barbero@obeo.fr">Mikael Barbero</a>
@@ -181,6 +181,11 @@ public final class EMFTVMUtil {
 	 * Singleton {@link RegistryTypeSwitch} instance.
 	 */
 	private static final RegistryTypeSwitch REGISTRY_TYPE_SWITCH = new RegistryTypeSwitch();
+
+	/**
+	 * {@link Map#toString()} evaluation cut-off number.
+	 */
+	private static final int CUT_OFF = 31;
 
 	private static Metamodel ecoreMetamodel;
 	private static Metamodel emfTvmMetamodel;
@@ -199,7 +204,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Returns the name of <code>type</code>, for printing.
-	 * 
+	 *
 	 * @param env
 	 *            the current {@link ExecEnv}
 	 * @param type
@@ -225,7 +230,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Returns the names of <code>types</code>, for printing.
-	 * 
+	 *
 	 * @param env
 	 *            the current {@link ExecEnv}.
 	 * @param types
@@ -235,7 +240,7 @@ public final class EMFTVMUtil {
 	public static String getTypeNames(final ExecEnv env, final Object[] types) {
 		final StringBuffer names = new StringBuffer();
 		boolean notFirst = false;
-		for (Object type : types) {
+		for (final Object type : types) {
 			if (notFirst) {
 				names.append(", ");
 			}
@@ -247,7 +252,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Returns the type object to use for the registry.
-	 * 
+	 *
 	 * @param type
 	 *            the type object
 	 * @return the type object to use for the registry
@@ -263,7 +268,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Returns the singleton instance of the Ecore metamodel.
-	 * 
+	 *
 	 * @return the singleton instance of the Ecore metamodel
 	 */
 	public static synchronized Metamodel getEcoreMetamodel() {
@@ -276,7 +281,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Returns the singleton instance of the EMFTVM metamodel.
-	 * 
+	 *
 	 * @return the singleton instance of the EMFTVM metamodel
 	 */
 	public static synchronized Metamodel getEmfTvmMetamodel() {
@@ -289,7 +294,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Returns the singleton instance of the Trace metamodel.
-	 * 
+	 *
 	 * @return the singleton instance of the Trace metamodel
 	 */
 	public static synchronized Metamodel getTraceMetamodel() {
@@ -302,7 +307,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Finds all instances of type in the registered input/inout models.
-	 * 
+	 *
 	 * @param type
 	 *            the type
 	 * @param env
@@ -311,10 +316,10 @@ public final class EMFTVMUtil {
 	 */
 	public static LazyList<EObject> findAllInstances(final EClass type, final ExecEnv env) {
 		LazyList<EObject> allInst = new LazyList<EObject>();
-		for (Model model : env.getInputModels().values()) {
+		for (final Model model : env.getInputModels().values()) {
 			allInst = allInst.union(model.allInstancesOf(type));
 		}
-		for (Model model : env.getInoutModels().values()) {
+		for (final Model model : env.getInoutModels().values()) {
 			allInst = allInst.union(model.allInstancesOf(type));
 		}
 		return allInst;
@@ -322,7 +327,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Finds all instances of type in the given model.
-	 * 
+	 *
 	 * @param modelname
 	 *            the model name
 	 * @param type
@@ -345,7 +350,7 @@ public final class EMFTVMUtil {
 	/**
 	 * Offers an alternative to the default <code>toString()</code> method. Uses <code>env</code> to determine the containing model of
 	 * types. Compensates for {@link EObject}'s notoriously bad <code>toString()</code>.
-	 * 
+	 *
 	 * @param object
 	 * @param env
 	 * @return the string representation of <code>object</code>.
@@ -383,6 +388,18 @@ public final class EMFTVMUtil {
 			return new StringBuffer().append('\'').append(object.toString()).append('\'').toString();
 		} else if (object instanceof LazyCollection<?>) {
 			return ((LazyCollection<?>) object).asString(env);
+		} else if (object instanceof Map<?,?>) {
+			final Map<?, ?> map = (Map<?, ?>) object;
+			final StringBuilder buf = new StringBuilder("Map{");
+			appendMapEntries(env, map, buf);
+			buf.append('}');
+			return buf.toString();
+		} else if (object instanceof Tuple) {
+			final Tuple tuple = (Tuple) object;
+			final StringBuilder buf = new StringBuilder("Tuple{");
+			appendMapEntries(env, tuple.asMap(), buf);
+			buf.append('}');
+			return buf.toString();
 		} else if (object != null) {
 			return object.toString();
 		} else {
@@ -391,9 +408,35 @@ public final class EMFTVMUtil {
 	}
 
 	/**
+	 * Appends the map entries to the string builder.
+	 *
+	 * @param env
+	 *            the current {@link ExecEnv}
+	 * @param map
+	 *            the {@link Map} for which to append the entries
+	 * @param buf
+	 *            the {@link StringBuilder} to append to
+	 */
+	private static void appendMapEntries(final ExecEnv env, final Map<?, ?> map, final StringBuilder buf) {
+		int index = 0;
+		for (final Map.Entry<?, ?> entry : map.entrySet()) {
+			if (index > CUT_OFF) {
+				buf.append(", ...");
+				break;
+			}
+			if (index++ > 0) {
+				buf.append(", ");
+			}
+			buf.append(EMFTVMUtil.toPrettyString(entry.getKey(), env));
+			buf.append('=');
+			buf.append(EMFTVMUtil.toPrettyString(entry.getValue(), env));
+		}
+	}
+
+	/**
 	 * Offers an alternative to the default <code>toString()</code> method. Uses <code>env</code> to determine the containing model of
 	 * types. Compensates for {@link EObject}'s notoriously bad <code>toString()</code>.
-	 * 
+	 *
 	 * @param coll
 	 * @param env
 	 * @return the string representation of <code>coll</code>.
@@ -402,7 +445,7 @@ public final class EMFTVMUtil {
 		final StringBuffer sb = new StringBuffer();
 		sb.append('[');
 		boolean first = true;
-		for (Object object : coll) {
+		for (final Object object : coll) {
 			if (!first) {
 				sb.append(", ");
 			}
@@ -416,7 +459,7 @@ public final class EMFTVMUtil {
 	/**
 	 * Offers an alternative to the default <code>toString()</code> method. Uses <code>env</code> to determine the containing model of
 	 * types. Compensates for {@link EObject}'s notoriously bad <code>toString()</code>.
-	 * 
+	 *
 	 * @param array
 	 * @param env
 	 * @return the string representation of <code>coll</code>.
@@ -425,7 +468,7 @@ public final class EMFTVMUtil {
 		final StringBuffer sb = new StringBuffer();
 		sb.append('[');
 		boolean first = true;
-		for (Object object : array) {
+		for (final Object object : array) {
 			if (!first) {
 				sb.append(", ");
 			}
@@ -438,7 +481,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Retrieves the value of <code>eo.sf</code>. Checks that <code>eo</code> is not in an output model.
-	 * 
+	 *
 	 * @param env
 	 *            the current {@link ExecEnv}
 	 * @param eo
@@ -457,7 +500,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Retrieves the value of <code>eo.sf</code>.
-	 * 
+	 *
 	 * @param env
 	 *            the current {@link ExecEnv}
 	 * @param eo
@@ -504,7 +547,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Converts <code>value</code> to an EMFTVM value.
-	 * 
+	 *
 	 * @param env
 	 *            the current {@link ExecEnv}
 	 * @param eo
@@ -556,7 +599,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Sets the <code>value</code> of <code>eo.sf</code>.
-	 * 
+	 *
 	 * @param env
 	 *            the current {@link ExecEnv}
 	 * @param eo
@@ -589,7 +632,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Adds the <code>value</code> of <code>eo.sf</code>.
-	 * 
+	 *
 	 * @param env
 	 * @param eo
 	 * @param sf
@@ -624,7 +667,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Removes the <code>value</code> from <code>eo.sf</code>.
-	 * 
+	 *
 	 * @param env
 	 * @param eo
 	 * @param sf
@@ -664,7 +707,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Sets the <code>value</code> of <code>eo.sf</code>. Assumes <code>sf</code> has a multiplicity &lt;= 1.
-	 * 
+	 *
 	 * @param env
 	 * @param eo
 	 * @param sf
@@ -714,7 +757,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Sets the <code>value</code> of <code>eo.sf</code>. Assumes <code>sf</code> has a multiplicity &gt; 1.
-	 * 
+	 *
 	 * @param env
 	 * @param eo
 	 * @param sf
@@ -727,7 +770,7 @@ public final class EMFTVMUtil {
 		if (!values.isEmpty()) {
 			if (sf instanceof EReference) {
 				final List<Object> vCopy = new ArrayList<Object>(values);
-				for (EObject v : (List<? extends EObject>) vCopy) {
+				for (final EObject v : (List<? extends EObject>) vCopy) {
 					removeRefValue((EReference) sf, eo, values, v);
 				}
 			} else {
@@ -739,7 +782,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Adds <code>value</code> to <code>eo.sf</code>. Assumes <code>sf</code> has a multiplicity &gt; 1.
-	 * 
+	 *
 	 * @param env
 	 * @param eo
 	 * @param sf
@@ -768,7 +811,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Adds all <code>value</code> elements to <code>eo.sf</code>. Assumes <code>sf</code> has a multiplicity &gt; 1.
-	 * 
+	 *
 	 * @param env
 	 * @param eo
 	 * @param sf
@@ -786,12 +829,12 @@ public final class EMFTVMUtil {
 			final Collection<?> srcValues = ref.isContainment() ? new ArrayList<Object>(value) : value;
 			if (index > -1) {
 				int currentIndex = index;
-				for (Object v : srcValues) {
+				for (final Object v : srcValues) {
 					checkValueTypeIsEObject(env, ref, v);
 					addRefValue(env, ref, eo, values, (EObject) v, currentIndex++, allowInterModelReferences);
 				}
 			} else {
-				for (Object v : srcValues) {
+				for (final Object v : srcValues) {
 					checkValueTypeIsEObject(env, ref, v);
 					addRefValue(env, ref, eo, values, (EObject) v, -1, allowInterModelReferences);
 				}
@@ -802,11 +845,11 @@ public final class EMFTVMUtil {
 				final EEnum eEnum = (EEnum) sfType;
 				if (index > -1) {
 					int currentIndex = index;
-					for (Object v : value) {
+					for (final Object v : value) {
 						addEnumValue(eEnum, values, v, currentIndex++);
 					}
 				} else {
-					for (Object v : value) {
+					for (final Object v : value) {
 						addEnumValue(eEnum, values, v, -1);
 					}
 				}
@@ -820,7 +863,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Checks that the value is an instance of {@link EObject}.
-	 * 
+	 *
 	 * @param env
 	 *            the current {@link ExecEnv}
 	 * @param ref
@@ -838,7 +881,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Removes the <code>value</code> from <code>eo.sf</code>. Assumes <code>sf</code> has a multiplicity &gt; 1.
-	 * 
+	 *
 	 * @param env
 	 * @param eo
 	 * @param sf
@@ -864,7 +907,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Removes all elements of <code>value</code> from <code>eo.sf</code>. Assumes <code>sf</code> has a multiplicity &gt; 1.
-	 * 
+	 *
 	 * @param env
 	 * @param eo
 	 * @param sf
@@ -877,7 +920,7 @@ public final class EMFTVMUtil {
 		if (sf instanceof EReference) {
 			final EReference ref = (EReference) sf;
 			final Collection<?> srcValues = ref.isContainment() ? new ArrayList<Object>(value) : value;
-			for (Object v : srcValues) {
+			for (final Object v : srcValues) {
 				checkValueTypeIsEObject(env, ref, v);
 				removeRefValue(ref, eo, values, (EObject) v);
 			}
@@ -885,7 +928,7 @@ public final class EMFTVMUtil {
 			final EClassifier sfType = sf.getEType();
 			if (sfType instanceof EEnum) {
 				final EEnum eEnum = (EEnum) sfType;
-				for (Object v : value) {
+				for (final Object v : value) {
 					removeEnumValue(eEnum, values, v);
 				}
 			} else {
@@ -896,7 +939,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Adds <code>v</code> to <code>values</code>. Performs enumerator conversion.
-	 * 
+	 *
 	 * @param eEnum
 	 *            The enumeration type
 	 * @param values
@@ -920,7 +963,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Removes <code>v</code> from <code>values</code>. Performs enumerator conversion.
-	 * 
+	 *
 	 * @param eEnum
 	 *            The enumeration type
 	 * @param values
@@ -936,7 +979,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Adds <code>v</code> to <code>values</code>. Performs constraint checking on <code>v</code>.
-	 * 
+	 *
 	 * @param env
 	 * @param ref
 	 *            The reference type
@@ -968,7 +1011,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Removes <code>v</code> from <code>values</code>. Performs constraint checking on <code>v</code>.
-	 * 
+	 *
 	 * @param ref
 	 *            The reference type
 	 * @param eo
@@ -988,7 +1031,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Updates the eResource() for <code>eo</code> and <code>v</code> where necessary
-	 * 
+	 *
 	 * @param eo
 	 *            the {@link EObject} for which an {@link EReference} has just been modified
 	 * @param v
@@ -1012,7 +1055,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Checks whether the model containing <code>eo</code> allows inter-model references.
-	 * 
+	 *
 	 * @param env
 	 *            the {@link ExecEnv} in which to find the model.
 	 * @param eo
@@ -1030,7 +1073,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Checks whether <code>value</code> may be assigned to <code>eo.ref</code>.
-	 * 
+	 *
 	 * @param env
 	 *            the current {@link ExecEnv}
 	 * @param eo
@@ -1054,16 +1097,16 @@ public final class EMFTVMUtil {
 			assert ev.eResource() != null;
 			if (!allowInterModelReferences) {
 				ATLLogger
-						.warning(String.format("Cannot set %s::%s to %s for %s: inter-model references are not allowed for this model",
-								toPrettyString(ref.getEContainingClass(), env), ref.getName(), toPrettyString(value, env),
-								toPrettyString(eo, env)));
+				.warning(String.format("Cannot set %s::%s to %s for %s: inter-model references are not allowed for this model",
+						toPrettyString(ref.getEContainingClass(), env), ref.getName(), toPrettyString(value, env),
+						toPrettyString(eo, env)));
 				return false;
 			}
 			if (ref.isContainer() || ref.isContainment()) {
 				ATLLogger
-						.warning(String.format("Cannot set %s::%s to %s for %s: containment references cannot span across models",
-								toPrettyString(ref.getEContainingClass(), env), ref.getName(), toPrettyString(value, env),
-								toPrettyString(eo, env)));
+				.warning(String.format("Cannot set %s::%s to %s for %s: containment references cannot span across models",
+						toPrettyString(ref.getEContainingClass(), env), ref.getName(), toPrettyString(value, env),
+						toPrettyString(eo, env)));
 				return false;
 			}
 			final EReference opposite = ref.getEOpposite();
@@ -1082,10 +1125,10 @@ public final class EMFTVMUtil {
 					final Model oppositeModel = env.getInputModelOf((EObject) ev.eGet(opposite));
 					if (oppositeModel != null) {
 						ATLLogger
-								.warning(String
-										.format("Cannot set %s::%s to %s for %s: inter-model reference with single-valued opposite causes changes in input model %s",
-												toPrettyString(ref.getEContainingClass(), env), ref.getName(), toPrettyString(value, env),
-												toPrettyString(eo, env), env.getModelID(oppositeModel)));
+						.warning(String
+								.format("Cannot set %s::%s to %s for %s: inter-model reference with single-valued opposite causes changes in input model %s",
+										toPrettyString(ref.getEContainingClass(), env), ref.getName(), toPrettyString(value, env),
+										toPrettyString(eo, env), env.getModelID(oppositeModel)));
 						return false;
 					}
 				}
@@ -1096,7 +1139,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Retrieves the types of <code>args</code>.
-	 * 
+	 *
 	 * @param args
 	 * @return the types of <code>args</code>
 	 */
@@ -1111,7 +1154,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Retrieves the type of <code>arg</code>.
-	 * 
+	 *
 	 * @param arg
 	 * @return the type of <code>arg</code>
 	 */
@@ -1127,7 +1170,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Invokes native Java method <code>opname</code> on <code>self</code> with arguments <code>args</code>.
-	 * 
+	 *
 	 * @param frame
 	 *            the current stack frame
 	 * @param self
@@ -1150,7 +1193,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Invokes native Java <code>method</code> on <code>self</code> with arguments <code>args</code>.
-	 * 
+	 *
 	 * @param frame
 	 *            the current stack frame
 	 * @param self
@@ -1167,23 +1210,23 @@ public final class EMFTVMUtil {
 		final StackFrame subFrame = frame.prepareNativeArgs(method, self, args);
 		try {
 			return emf2vm(frame.getEnv(), self instanceof EObject ? (EObject) self : null, method.invoke(self, args));
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			final Throwable target = e.getTargetException();
 			if (target instanceof VMException) {
 				throw (VMException) target;
 			} else {
 				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
 			}
-		} catch (VMException e) {
+		} catch (final VMException e) {
 			throw e;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
 		}
 	}
 
 	/**
 	 * Invokes native Java method <code>opname</code> on <code>self</code> with argument <code>arg</code>.
-	 * 
+	 *
 	 * @param frame
 	 *            the current stack frame
 	 * @param self
@@ -1206,7 +1249,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Invokes native Java <code>method</code> on <code>self</code> with argument <code>arg</code>.
-	 * 
+	 *
 	 * @param frame
 	 *            the current stack frame
 	 * @param self
@@ -1231,23 +1274,23 @@ public final class EMFTVMUtil {
 		}
 		try {
 			return emf2vm(frame.getEnv(), self instanceof EObject ? (EObject) self : null, method.invoke(self, arg));
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			final Throwable target = e.getTargetException();
 			if (target instanceof VMException) {
 				throw (VMException) target;
 			} else {
 				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
 			}
-		} catch (VMException e) {
+		} catch (final VMException e) {
 			throw e;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
 		}
 	}
 
 	/**
 	 * Invokes native Java method <code>opname</code> on <code>self</code> without arguments.
-	 * 
+	 *
 	 * @param frame
 	 *            the current stack frame
 	 * @param self
@@ -1267,7 +1310,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Invokes native Java <code>method</code> on <code>self</code> without arguments.
-	 * 
+	 *
 	 * @param frame
 	 *            the current stack frame
 	 * @param self
@@ -1282,23 +1325,23 @@ public final class EMFTVMUtil {
 		final StackFrame subFrame = frame.prepareNativeContext(method, self);
 		try {
 			return emf2vm(frame.getEnv(), self instanceof EObject ? (EObject) self : null, method.invoke(self));
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			final Throwable target = e.getTargetException();
 			if (target instanceof VMException) {
 				throw (VMException) target;
 			} else {
 				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
 			}
-		} catch (VMException e) {
+		} catch (final VMException e) {
 			throw e;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
 		}
 	}
 
 	/**
 	 * Invokes static native Java method <code>opname</code> with arguments <code>args</code>.
-	 * 
+	 *
 	 * @param frame
 	 *            the current stack frame
 	 * @param type
@@ -1315,16 +1358,16 @@ public final class EMFTVMUtil {
 			final StackFrame subFrame = frame.prepareNativeArgs(method, args);
 			try {
 				return emf2vm(frame.getEnv(), null, method.invoke(type, args));
-			} catch (InvocationTargetException e) {
+			} catch (final InvocationTargetException e) {
 				final Throwable target = e.getTargetException();
 				if (target instanceof VMException) {
 					throw (VMException) target;
 				} else {
 					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
 				}
-			} catch (VMException e) {
+			} catch (final VMException e) {
 				throw e;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
 			}
 		}
@@ -1334,7 +1377,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Invokes static native Java method <code>opname</code> with argument <code>arg</code>.
-	 * 
+	 *
 	 * @param frame
 	 *            the current stack frame
 	 * @param type
@@ -1357,16 +1400,16 @@ public final class EMFTVMUtil {
 			}
 			try {
 				return emf2vm(frame.getEnv(), null, method.invoke(type, arg));
-			} catch (InvocationTargetException e) {
+			} catch (final InvocationTargetException e) {
 				final Throwable target = e.getTargetException();
 				if (target instanceof VMException) {
 					throw (VMException) target;
 				} else {
 					throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, target);
 				}
-			} catch (VMException e) {
+			} catch (final VMException e) {
 				throw e;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				throw new VMException(subFrame == null ? new StackFrame(frame, method) : subFrame, e);
 			}
 		}
@@ -1376,7 +1419,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Invokes static native Java method <code>opname</code> without arguments.
-	 * 
+	 *
 	 * @param frame
 	 *            the current stack frame
 	 * @param type
@@ -1390,16 +1433,16 @@ public final class EMFTVMUtil {
 		if (method != null) {
 			try {
 				return emf2vm(frame.getEnv(), null, method.invoke(type));
-			} catch (InvocationTargetException e) {
+			} catch (final InvocationTargetException e) {
 				final Throwable target = e.getTargetException();
 				if (target instanceof VMException) {
 					throw (VMException) target;
 				} else {
 					throw new VMException(new StackFrame(frame, method), target);
 				}
-			} catch (VMException e) {
+			} catch (final VMException e) {
 				throw e;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				throw new VMException(new StackFrame(frame, method), e);
 			}
 		}
@@ -1408,7 +1451,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Looks for a native Java method.
-	 * 
+	 *
 	 * @param context
 	 *            The class of the method
 	 * @param opname
@@ -1442,7 +1485,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Looks for a native Java method.
-	 * 
+	 *
 	 * @param context
 	 *            The class of the method
 	 * @param opname
@@ -1476,7 +1519,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Looks for a native Java method without arguments.
-	 * 
+	 *
 	 * @param context
 	 *            The class of the method
 	 * @param opname
@@ -1497,7 +1540,7 @@ public final class EMFTVMUtil {
 		final MethodSignature sig = getMethodSignature(context, opname, isStatic);
 		MethodCacheAccesses++;
 		final WeakReference<Method> methodRef = METHOD_CACHE.get(sig);
-		Method ret = methodRef != null ? methodRef.get() : null;
+		final Method ret = methodRef != null ? methodRef.get() : null;
 		if (ret != null || methodRef == NULL_METHOD_REFERENCE) {
 			MethodCacheHits++;
 			return ret;
@@ -1508,7 +1551,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Looks for a native Java method.
-	 * 
+	 *
 	 * @param context
 	 *            The class of the method
 	 * @param opname
@@ -1524,12 +1567,12 @@ public final class EMFTVMUtil {
 	private static Method findNativeMethodInternal(final Class<?> context, final String opname,
 			final Class<?>[] argTypes, final boolean isStatic, final MethodSignature sig) {
 		Method ret = null;
-	
+
 		final Method[] methods = context.getDeclaredMethods();
 		METHODS: for (int i = 0; i < methods.length; i++) {
-			Method method = methods[i];
+			final Method method = methods[i];
 			if ((Modifier.isStatic(method.getModifiers()) == isStatic) && method.getName().equals(opname)) {
-				Class<?>[] pts = method.getParameterTypes();
+				final Class<?>[] pts = method.getParameterTypes();
 				if (pts.length == argTypes.length) {
 					boolean ok = true;
 					for (int j = 0; (j < pts.length) && ok; j++) {
@@ -1545,19 +1588,19 @@ public final class EMFTVMUtil {
 				}
 			}
 		}
-	
+
 		if ((ret == null) && !isStatic && (context.getSuperclass() != null)) {
 			ret = findNativeMethodInternal(context.getSuperclass(), opname, argTypes, isStatic, sig);
 		} else {
 			METHOD_CACHE.put(sig, ret != null ? new WeakReference<Method>(ret) : NULL_METHOD_REFERENCE);
 		}
-	
+
 		return ret;
 	}
 
 	/**
 	 * Looks for a native Java method.
-	 * 
+	 *
 	 * @param context
 	 *            The class of the method
 	 * @param opname
@@ -1573,12 +1616,12 @@ public final class EMFTVMUtil {
 	private static Method findNativeMethodInternal(final Class<?> context, final String opname, final Class<?> argType,
 			final boolean isStatic, final MethodSignature sig) {
 		Method ret = null;
-	
+
 		final Method[] methods = context.getDeclaredMethods();
 		METHODS: for (int i = 0; i < methods.length; i++) {
-			Method method = methods[i];
+			final Method method = methods[i];
 			if ((Modifier.isStatic(method.getModifiers()) == isStatic) && method.getName().equals(opname)) {
-				Class<?>[] pts = method.getParameterTypes();
+				final Class<?>[] pts = method.getParameterTypes();
 				if (pts.length == 1) {
 					if (checkParameterType(argType, pts[0])) {
 						ret = method;
@@ -1587,19 +1630,19 @@ public final class EMFTVMUtil {
 				}
 			}
 		}
-	
+
 		if ((ret == null) && !isStatic && (context.getSuperclass() != null)) {
 			ret = findNativeMethodInternal(context.getSuperclass(), opname, argType, isStatic, sig);
 		} else {
 			METHOD_CACHE.put(sig, ret != null ? new WeakReference<Method>(ret) : NULL_METHOD_REFERENCE);
 		}
-	
+
 		return ret;
 	}
 
 	/**
 	 * Looks for a native Java method without arguments.
-	 * 
+	 *
 	 * @param context
 	 *            The class of the method
 	 * @param opname
@@ -1616,7 +1659,7 @@ public final class EMFTVMUtil {
 
 		final Method[] methods = context.getDeclaredMethods();
 		METHODS: for (int i = 0; i < methods.length; i++) {
-			Method method = methods[i];
+			final Method method = methods[i];
 			if ((Modifier.isStatic(method.getModifiers()) == isStatic) && method.getName().equals(opname)) {
 				if (method.getParameterTypes().length == 0) {
 					ret = method;
@@ -1636,7 +1679,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Checks whether the parameter type is compatible with the argument type
-	 * 
+	 *
 	 * @param argType
 	 *            the invocation argument type
 	 * @param pt
@@ -1674,7 +1717,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Compares 0-parameter <code>op</code> to <code>method</code>.
-	 * 
+	 *
 	 * @param op
 	 *            the previously found EMFTVM {@link Operation}
 	 * @param method
@@ -1694,7 +1737,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Compares 1-parameter <code>op</code> to <code>method</code>.
-	 * 
+	 *
 	 * @param op
 	 *            the previously found EMFTVM {@link Operation}
 	 * @param method
@@ -1724,7 +1767,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Compares N-parameter <code>op</code> to <code>method</code>.
-	 * 
+	 *
 	 * @param op
 	 *            the previously found EMFTVM {@link Operation}
 	 * @param method
@@ -1759,7 +1802,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Looks for a native Java method without arguments.
-	 * 
+	 *
 	 * @param op
 	 *            the previously found EMFTVM {@link Operation}
 	 * @param self
@@ -1774,7 +1817,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Looks for a native Java method with one argument.
-	 * 
+	 *
 	 * @param op
 	 *            the previously found EMFTVM {@link Operation}
 	 * @param self
@@ -1792,7 +1835,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Looks for a native Java method with multiple arguments.
-	 * 
+	 *
 	 * @param op
 	 *            the previously found EMFTVM {@link Operation}
 	 * @param self
@@ -1810,7 +1853,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Returns the superclass as well as super-interfaces for <code>type</code>.
-	 * 
+	 *
 	 * @param type
 	 *            the type for which to return supertypes
 	 * @return the superclass as well as super-interfaces for <code>type</code>
@@ -1835,7 +1878,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Compares 0-parameter <code>method1</code> to <code>method2</code>.
-	 * 
+	 *
 	 * @param method1
 	 *            the previously found method
 	 * @param method2
@@ -1858,7 +1901,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Compares 1-parameter <code>method1</code> to <code>method2</code>.
-	 * 
+	 *
 	 * @param method1
 	 *            the previously found method
 	 * @param method2
@@ -1888,7 +1931,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Compares N-parameter <code>op</code> to <code>method</code>.
-	 * 
+	 *
 	 * @param method1
 	 *            the previously found EMFTVM {@link Operation}
 	 * @param method2
@@ -1920,7 +1963,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Looks for a native superclass Java method without arguments.
-	 * 
+	 *
 	 * @param op
 	 *            the previously found EMFTVM {@link Operation}
 	 * @param context
@@ -1931,7 +1974,7 @@ public final class EMFTVMUtil {
 	 */
 	public static Method findNativeSuperMethod(final Operation op, final Class<?> context, final String opname) {
 		Method method = null;
-		for (Class<?> superCtx : getSuperTypes(context)) {
+		for (final Class<?> superCtx : getSuperTypes(context)) {
 			method = compareNativeMethod0(method, findNativeMethod(superCtx, opname, false));
 		}
 		return compareNativeMethod0(op, method);
@@ -1939,7 +1982,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Looks for a native superclass Java method with one argument.
-	 * 
+	 *
 	 * @param op
 	 *            the previously found EMFTVM {@link Operation}
 	 * @param context
@@ -1953,7 +1996,7 @@ public final class EMFTVMUtil {
 	public static Method findNativeSuperMethod(final Operation op, final Class<?> context, final String opname, final Object arg) {
 		final Class<?> argType = arg == null ? Void.TYPE : arg.getClass();
 		Method method = null;
-		for (Class<?> superCtx : getSuperTypes(context)) {
+		for (final Class<?> superCtx : getSuperTypes(context)) {
 			method = compareNativeMethod1(method, findNativeMethod(superCtx, opname, argType, false));
 		}
 		return compareNativeMethod1(op, method);
@@ -1961,7 +2004,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Looks for a native superclass Java method with multiple arguments.
-	 * 
+	 *
 	 * @param op
 	 *            the previously found EMFTVM {@link Operation}
 	 * @param context
@@ -1975,7 +2018,7 @@ public final class EMFTVMUtil {
 	public static Method findNativeSuperMethod(final Operation op, final Class<?> context, final String opname, final Object[] args) {
 		final Class<?>[] argTypes = getArgumentClasses(args);
 		Method method = null;
-		for (Class<?> superCtx : getSuperTypes(context)) {
+		for (final Class<?> superCtx : getSuperTypes(context)) {
 			method = compareNativeMethodN(method, findNativeMethod(superCtx, opname, argTypes, false));
 		}
 		return compareNativeMethodN(op, method);
@@ -1983,7 +2026,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Looks for a native Java constructor.
-	 * 
+	 *
 	 * @param context
 	 *            The class of the method
 	 * @param argumentTypes
@@ -2000,8 +2043,8 @@ public final class EMFTVMUtil {
 
 		final Constructor<?>[] constructors = context.getConstructors();
 		CONSTRUCTOR: for (int i = 0; i < constructors.length; i++) {
-			Constructor<?> constructor = constructors[i];
-			Class<?>[] pts = constructor.getParameterTypes();
+			final Constructor<?> constructor = constructors[i];
+			final Class<?>[] pts = constructor.getParameterTypes();
 			if (pts.length == argTypes.length) {
 				boolean ok = true;
 				for (int j = 0; (j < pts.length) && ok; j++) {
@@ -2037,7 +2080,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Generates a signature to store methods.
-	 * 
+	 *
 	 * @param context
 	 *            the method declaring class
 	 * @param name
@@ -2060,7 +2103,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Generates a signature to store methods.
-	 * 
+	 *
 	 * @param context
 	 *            the method declaring class
 	 * @param name
@@ -2084,7 +2127,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Generates a signature to store methods.
-	 * 
+	 *
 	 * @param context
 	 *            the method declaring class
 	 * @param name
@@ -2105,7 +2148,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Retrieves the classes of <code>args</code>.
-	 * 
+	 *
 	 * @param args
 	 * @return the classes of <code>args</code>
 	 */
@@ -2120,7 +2163,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Writes <code>string</code> to <code>path</code> with the given <code>charset</code>.
-	 * 
+	 *
 	 * @param string
 	 *            the string to write
 	 * @param path
@@ -2151,7 +2194,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Returns the file with the given <code>path</code> in the workspace, or the file in the filesystem if the workspace is not available.
-	 * 
+	 *
 	 * @param path
 	 *            the absolute or relative path to a file.
 	 * @return the file in the workspace, or the file in the filesystem if the workspace is not available.
@@ -2165,11 +2208,11 @@ public final class EMFTVMUtil {
 			if (wsPath != null) {
 				return new File(wsPath);
 			}
-		} catch (InstantiationException e) {
+		} catch (final InstantiationException e) {
 			ATLLogger.fine(e.getMessage());
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			ATLLogger.fine(e.getMessage());
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			ATLLogger.fine(e.getMessage());
 		}
 		ATLLogger.info("Could not find workspace root; falling back to native java.io.File path resolution");
@@ -2178,7 +2221,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Creates a new {@link Operation}.
-	 * 
+	 *
 	 * @param isStatic
 	 *            whether the created operation is static
 	 * @param name
@@ -2207,19 +2250,19 @@ public final class EMFTVMUtil {
 		final EList<Parameter> pars = op.getParameters();
 		final EList<LocalVariable> locals = body.getLocalVariables();
 		if (!isStatic) {
-			LocalVariable self = factory.createLocalVariable();
+			final LocalVariable self = factory.createLocalVariable();
 			self.setName("self");
 			self.setTypeModel(context[0]);
 			self.setType(context[1]);
 			locals.add(self);
 		}
-		for (String[][] par : parameters) {
-			Parameter p = factory.createParameter();
+		for (final String[][] par : parameters) {
+			final Parameter p = factory.createParameter();
 			p.setName(par[0][0]);
 			p.setTypeModel(par[1][0]);
 			p.setType(par[1][1]);
 			pars.add(p);
-			LocalVariable lv = factory.createLocalVariable();
+			final LocalVariable lv = factory.createLocalVariable();
 			lv.setName(par[0][0]);
 			lv.setTypeModel(par[1][0]);
 			lv.setType(par[1][1]);
@@ -2231,7 +2274,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Creates a new {@link Field}.
-	 * 
+	 *
 	 * @param name
 	 *            field name
 	 * @param isStatic
@@ -2260,7 +2303,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Retrieves the transitive closure of <code>field</code> on <code>object</code>.
-	 * 
+	 *
 	 * @param object
 	 *            the object on which to retrieve <code>field</code>
 	 * @param field
@@ -2278,13 +2321,13 @@ public final class EMFTVMUtil {
 		if (value instanceof List<?>) {
 			final List<Object> cvalue = (List<Object>) value;
 			newResult = newResult.union(new LazyListOnList<Object>(cvalue));
-			for (Object v : cvalue) {
+			for (final Object v : cvalue) {
 				newResult = getTrans(v, field, frame, newResult);
 			}
 		} else if (value instanceof Collection<?>) {
 			final Collection<Object> cvalue = (Collection<Object>) value;
 			newResult = newResult.union(new LazyListOnCollection<Object>(cvalue));
-			for (Object v : cvalue) {
+			for (final Object v : cvalue) {
 				newResult = getTrans(v, field, frame, newResult);
 			}
 		} else if (value != null) {
@@ -2296,7 +2339,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Retrieves the transitive closure of <code>sf</code> on <code>object</code>.
-	 * 
+	 *
 	 * @param object
 	 *            the object on which to retrieve <code>sf</code>
 	 * @param sf
@@ -2318,7 +2361,7 @@ public final class EMFTVMUtil {
 		if (value instanceof LazyList<?>) {
 			final LazyList<Object> cvalue = (LazyList<Object>) value;
 			newResult = newResult.union(cvalue);
-			for (Object v : cvalue) {
+			for (final Object v : cvalue) {
 				if (v instanceof EObject) {
 					newResult = getTrans((EObject) v, sf, env, newResult);
 				}
@@ -2339,7 +2382,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Retrieves the transitive closure of <code>field</code> on <code>object</code>.
-	 * 
+	 *
 	 * @param object
 	 *            the object on which to retrieve <code>field</code>
 	 * @param field
@@ -2361,19 +2404,19 @@ public final class EMFTVMUtil {
 		if (value instanceof LazyList<?>) {
 			final LazyList<Object> cvalue = (LazyList<Object>) value;
 			newResult = newResult.union(cvalue);
-			for (Object v : cvalue) {
+			for (final Object v : cvalue) {
 				newResult = getTrans(v, field, newResult);
 			}
 		} else if (value instanceof List<?>) {
 			final List<Object> cvalue = (List<Object>) value;
 			newResult = newResult.union(new LazyListOnList<Object>(cvalue));
-			for (Object v : cvalue) {
+			for (final Object v : cvalue) {
 				newResult = getTrans(v, field, newResult);
 			}
 		} else if (value instanceof Collection<?>) {
 			final Collection<Object> cvalue = (Collection<Object>) value;
 			newResult = newResult.union(new LazyListOnCollection<Object>(cvalue));
-			for (Object v : cvalue) {
+			for (final Object v : cvalue) {
 				newResult = getTrans(v, field, newResult);
 			}
 		} else if (value != null) {
@@ -2385,7 +2428,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Tries to convert literal to an instance of type.
-	 * 
+	 *
 	 * @param literal
 	 *            the enum literal to convert
 	 * @param type
@@ -2399,7 +2442,7 @@ public final class EMFTVMUtil {
 				final java.lang.reflect.Field valuesField = type.getDeclaredField("VALUES");
 				final Object values = valuesField.get(null);
 				if (values instanceof Collection<?>) {
-					for (Object value : (Collection<?>) values) {
+					for (final Object value : (Collection<?>) values) {
 						if (value instanceof Enumerator) {
 							if (litName.equals(((Enumerator) value).getName()) || litName.equals(value.toString())) {
 								return value;
@@ -2408,13 +2451,13 @@ public final class EMFTVMUtil {
 					}
 				}
 				// Ignore exceptions; just don't convert here
-			} catch (SecurityException e) {
+			} catch (final SecurityException e) {
 				// do nothing
-			} catch (NoSuchFieldException e) {
+			} catch (final NoSuchFieldException e) {
 				// do nothing
-			} catch (IllegalArgumentException e) {
+			} catch (final IllegalArgumentException e) {
 				// do nothing
-			} catch (IllegalAccessException e) {
+			} catch (final IllegalAccessException e) {
 				// do nothing
 			}
 		}
@@ -2423,7 +2466,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Returns the {@link Locale} for the given <code>locale</code> string.
-	 * 
+	 *
 	 * @param locale
 	 *            the locale string (e.g. "nl_BE", "es_ES_Traditional_WIN")
 	 * @return the {@link Locale} for the given <code>locale</code> string
@@ -2445,16 +2488,16 @@ public final class EMFTVMUtil {
 	/**
 	 * Registers all {@link EPackage} nsURIs in <code>rs</code> in the local <code>rs</code> {@link EPackage.Registry}. Sets the
 	 * {@link EPackage} nsURI to the {@link EPackage} name if not set.
-	 * 
+	 *
 	 * @param rs
 	 *            the {@link ResourceSet}
 	 */
 	public static void registerEPackages(final ResourceSet rs) {
 		final EPackage.Registry registry = rs.getPackageRegistry();
-		for (Iterator<Object> i = EcoreUtil.getAllContents(rs, true); i.hasNext();) {
-			Object object = i.next();
+		for (final Iterator<Object> i = EcoreUtil.getAllContents(rs, true); i.hasNext();) {
+			final Object object = i.next();
 			if (object instanceof EPackage) {
-				EPackage p = (EPackage) object;
+				final EPackage p = (EPackage) object;
 				// force existence of nsURI
 				String nsURI = p.getNsURI();
 				if (nsURI == null) {
@@ -2527,27 +2570,27 @@ public final class EMFTVMUtil {
 				Arrays.<Class<?>> asList(dc.getInterfaces()));
 		while ((dc = dc.getSuperclass()) != null) {
 			try {
-				Method superMethod = dc.getDeclaredMethod(method.getName(), method.getParameterTypes());
+				final Method superMethod = dc.getDeclaredMethod(method.getName(), method.getParameterTypes());
 				if (getRelevantModifiers(superMethod) == methodModifiers) {
 					method = superMethod;
 				} else {
 					break;
 				}
-			} catch (SecurityException e) {
-			} catch (NoSuchMethodException e) {
+			} catch (final SecurityException e) {
+			} catch (final NoSuchMethodException e) {
 			}
 			dis.addAll(Arrays.<Class<?>> asList(dc.getInterfaces()));
 		}
 		while (!dis.isEmpty()) {
-			java.util.Set<Class<?>> newDis = new LinkedHashSet<Class<?>>();
-			for (Class<?> di : dis) {
+			final java.util.Set<Class<?>> newDis = new LinkedHashSet<Class<?>>();
+			for (final Class<?> di : dis) {
 				try {
 					// Only replace by method declared in a super-interface
 					if (di.isAssignableFrom(method.getDeclaringClass())) {
 						method = di.getDeclaredMethod(method.getName(), method.getParameterTypes());
 					}
-				} catch (SecurityException e) {
-				} catch (NoSuchMethodException e) {
+				} catch (final SecurityException e) {
+				} catch (final NoSuchMethodException e) {
 				}
 				newDis.addAll(Arrays.<Class<?>> asList(di.getInterfaces()));
 			}
@@ -2569,7 +2612,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Returns the hit rate of the method cache.
-	 * 
+	 *
 	 * @return the hit rate of the method cache, or <code>-1.0</code> if no hits
 	 *         were recorded yet
 	 */
@@ -2579,7 +2622,7 @@ public final class EMFTVMUtil {
 
 	/**
 	 * Returns the hit rate of the root method cache.
-	 * 
+	 *
 	 * @return the hit rate of the root method cache, or <code>-1.0</code> if no
 	 *         hits were recorded yet
 	 */

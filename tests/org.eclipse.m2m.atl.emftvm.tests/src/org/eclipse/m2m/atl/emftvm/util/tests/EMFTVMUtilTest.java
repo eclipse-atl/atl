@@ -13,8 +13,10 @@ package org.eclipse.m2m.atl.emftvm.util.tests;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EClass;
@@ -27,14 +29,16 @@ import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Instruction;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
+import org.eclipse.m2m.atl.emftvm.util.LazyCollections;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.LazyList.AppendList;
+import org.eclipse.m2m.atl.emftvm.util.Tuple;
 
 import junit.framework.TestCase;
 
 /**
  * Tests {@link EMFTVMUtil}.
- * 
+ *
  * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class EMFTVMUtilTest extends TestCase {
@@ -46,7 +50,7 @@ public class EMFTVMUtilTest extends TestCase {
 		final LazyList<Object> list = new LazyList<Object>().append(EcorePackage.eINSTANCE.getEClass());
 		final EClass object = EcorePackage.eINSTANCE.getEEnum();
 		final Integer index = 0;
-		
+
 		final Method method = EMFTVMUtil.findNativeMethod(list.getClass(), "including",
 				new Class[] { object.getClass(), index.getClass() }, false);
 
@@ -134,7 +138,7 @@ public class EMFTVMUtilTest extends TestCase {
 		try {
 			EMFTVMUtil.set(env, eo, sf, value);
 			fail("Expected VMException");
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			assertEquals("Cannot add/remove values of type Sequence to/from multi-valued field CodeBlock::code",
 					e.getMessage());
 		}
@@ -155,7 +159,7 @@ public class EMFTVMUtilTest extends TestCase {
 		try {
 			EMFTVMUtil.add(env, eo, sf, value, 0);
 			fail("Expected VMException");
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			assertEquals("Cannot add/remove values of type Sequence to/from multi-valued field CodeBlock::code",
 					e.getMessage());
 		}
@@ -175,7 +179,7 @@ public class EMFTVMUtilTest extends TestCase {
 		try {
 			EMFTVMUtil.remove(env, eo, sf, value);
 			fail("Expected VMException");
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			assertEquals("Cannot add/remove values of type Sequence to/from multi-valued field CodeBlock::code",
 					e.getMessage());
 		}
@@ -230,6 +234,50 @@ public class EMFTVMUtilTest extends TestCase {
 		final double hitRate = EMFTVMUtil.getRootMethodCacheHitRate();
 
 		assertTrue("Expected hitRate >= 0.5, but was " + hitRate, hitRate >= 0.5);
+	}
+
+	/**
+	 * Test method for {@link EMFTVMUtil#toPrettyString(Object, ExecEnv)}.
+	 */
+	public void testToPrettyString_Map() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final Map<Object, Object> map = new LinkedHashMap<Object, Object>();
+		map.put(Integer.valueOf(3), EmftvmPackage.eINSTANCE.getExecEnv());
+		map.put(Integer.valueOf(5), LazyCollections.asLazyBag(Arrays.asList(1, 2, 3, 4, 5)));
+		map.put("6", null);
+		for (int i = 100; i < 1000; i++) {
+			map.put(i, LazyCollections.asLazyList(Collections.singletonList(Collections.singletonMap(1, 2))));
+		}
+
+		final String result = EMFTVMUtil.toPrettyString(map, env);
+
+		assertEquals(
+				"Map{3=EMFTVM!ExecEnv, 5=Bag{1, 2, 3, 4, 5}, '6'=OclUndefined, 100=Sequence{Map{1=2}}, 101=Sequence{Map{1=2}}, 102=Sequence{Map{1=2}}, 103=Sequence{Map{1=2}}, 104=Sequence{Map{1=2}}, 105=Sequence{Map{1=2}}, 106=Sequence{Map{1=2}}, 107=Sequence{Map{1=2}}, 108=Sequence{Map{1=2}}, 109=Sequence{Map{1=2}}, 110=Sequence{Map{1=2}}, 111=Sequence{Map{1=2}}, 112=Sequence{Map{1=2}}, 113=Sequence{Map{1=2}}, 114=Sequence{Map{1=2}}, 115=Sequence{Map{1=2}}, 116=Sequence{Map{1=2}}, 117=Sequence{Map{1=2}}, 118=Sequence{Map{1=2}}, 119=Sequence{Map{1=2}}, 120=Sequence{Map{1=2}}, 121=Sequence{Map{1=2}}, 122=Sequence{Map{1=2}}, 123=Sequence{Map{1=2}}, 124=Sequence{Map{1=2}}, 125=Sequence{Map{1=2}}, 126=Sequence{Map{1=2}}, 127=Sequence{Map{1=2}}, 128=Sequence{Map{1=2}}, ...}",
+				result);
+	}
+
+	/**
+	 * Test method for {@link EMFTVMUtil#toPrettyString(Object, ExecEnv)}.
+	 */
+	public void testToPrettyString_Tuple() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final Map<String, Object> map = new LinkedHashMap<String, Object>();
+		map.put("one", EmftvmPackage.eINSTANCE.getExecEnv());
+		map.put("three", LazyCollections.asLazyBag(Arrays.asList(1, 2, 3, 4, 5)));
+		map.put("6", null);
+		for (int i = 100; i < 1000; i++) {
+			map.put(Integer.toString(i),
+					LazyCollections
+					.asLazyList(Collections
+							.singletonList(Tuple.fromMap(Collections.singletonMap("key", "value")))));
+		}
+		final Tuple tuple = Tuple.fromMap(map);
+
+		final String result = EMFTVMUtil.toPrettyString(tuple, env);
+
+		assertEquals(
+				"Tuple{'one'=EMFTVM!ExecEnv, 'three'=Bag{1, 2, 3, 4, 5}, '6'=OclUndefined, '100'=Sequence{Tuple{'key'='value'}}, '101'=Sequence{Tuple{'key'='value'}}, '102'=Sequence{Tuple{'key'='value'}}, '103'=Sequence{Tuple{'key'='value'}}, '104'=Sequence{Tuple{'key'='value'}}, '105'=Sequence{Tuple{'key'='value'}}, '106'=Sequence{Tuple{'key'='value'}}, '107'=Sequence{Tuple{'key'='value'}}, '108'=Sequence{Tuple{'key'='value'}}, '109'=Sequence{Tuple{'key'='value'}}, '110'=Sequence{Tuple{'key'='value'}}, '111'=Sequence{Tuple{'key'='value'}}, '112'=Sequence{Tuple{'key'='value'}}, '113'=Sequence{Tuple{'key'='value'}}, '114'=Sequence{Tuple{'key'='value'}}, '115'=Sequence{Tuple{'key'='value'}}, '116'=Sequence{Tuple{'key'='value'}}, '117'=Sequence{Tuple{'key'='value'}}, '118'=Sequence{Tuple{'key'='value'}}, '119'=Sequence{Tuple{'key'='value'}}, '120'=Sequence{Tuple{'key'='value'}}, '121'=Sequence{Tuple{'key'='value'}}, '122'=Sequence{Tuple{'key'='value'}}, '123'=Sequence{Tuple{'key'='value'}}, '124'=Sequence{Tuple{'key'='value'}}, '125'=Sequence{Tuple{'key'='value'}}, '126'=Sequence{Tuple{'key'='value'}}, '127'=Sequence{Tuple{'key'='value'}}, '128'=Sequence{Tuple{'key'='value'}}, ...}",
+				result);
 	}
 
 }
