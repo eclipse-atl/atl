@@ -42,6 +42,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.common.ATLResourceProvider;
+import org.eclipse.m2m.atl.common.ATL.ATLPackage;
 import org.eclipse.m2m.atl.drivers.emf4atl.tcs.injector.TCSInjector;
 import org.eclipse.m2m.atl.engine.injectors.xml.XMLInjector;
 import org.eclipse.m2m.atl.engine.vm.ModelLoader;
@@ -144,11 +145,7 @@ public class EMFModelLoader extends ModelLoader {
 	 */
 	public ASMModel getATL() {
 		if (atlmm == null) {
-			try {
-				atlmm = loadModel("ATL", getMOF(), ATLResourceProvider.getURL("ATL.ecore").openStream());
-			} catch (IOException e) {
-				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			}
+			atlmm = createASMEMFModel("ATL", ATLPackage.eINSTANCE.eResource(), getMOF(), true);
 		}
 		return atlmm;
 	}

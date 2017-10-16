@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="ASCII"?>
+<atl:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:atl="http://www.eclipse.org/gmt/2005/ATL" xmlns:ocl="http://www.eclipse.org/gmt/2005/OCL" location="1:1-39:2" name="CanonicElement">
+  <inModels location="2:25-2:34" name="IN">
+    <metamodel href="new-model#/1"/>
+  </inModels>
+  <outModels location="2:8-2:19" name="OUT">
+    <metamodel href="new-model#/0"/>
+  </outModels>
+  <elements xsi:type="atl:Helper" location="4:1-7:20">
+    <definition location="4:8-7:19">
+      <feature xsi:type="ocl:Attribute" location="4:32-7:19" name="toTuple">
+        <initExpression xsi:type="ocl:TupleExp" location="6:2-7:19">
+          <tuplePart location="6:8-6:26" varName="id">
+            <initExpression xsi:type="ocl:NavigationOrAttributeCallExp" location="6:13-6:26" name="personId">
+              <source xsi:type="ocl:VariableExp" location="6:13-6:17">
+                <referredVariable href="new-model#/2"/>
+              </source>
+            </initExpression>
+          </tuplePart>
+          <tuplePart location="6:28-6:60" varName="firstName">
+            <initExpression xsi:type="ocl:NavigationOrAttributeCallExp" location="6:40-6:60" name="personFirstName">
+              <source xsi:type="ocl:VariableExp" location="6:40-6:44">
+                <referredVariable href="new-model#/3"/>
+              </source>
+            </initExpression>
+          </tuplePart>
+          <tuplePart location="6:62-7:18" varName="lastName">
+            <initExpression xsi:type="ocl:NavigationOrAttributeCallExp" location="6:73-7:18" name="personLastName">
+              <source xsi:type="ocl:VariableExp" location="6:73-6:77">
+                <referredVariable href="new-model#/4"/>
+              </source>
+            </initExpression>
+          </tuplePart>
+        </initExpression>
+        <type xsi:type="ocl:TupleType" location="4:41-5:20">
+          <attributes location="4:51-4:61" name="id">
+            <type xsi:type="ocl:StringType" location="4:55-4:61"/>
+          </attributes>
+          <attributes location="4:63-4:80" name="firstName">
+            <type xsi:type="ocl:StringType" location="4:74-4:80"/>
+          </attributes>
+          <attributes location="5:3-5:19" name="lastName">
+            <type xsi:type="ocl:StringType" location="5:13-5:19"/>
+          </attributes>
+        </type>
+      </feature>
+      <context_ location="4:8-4:26">
+        <context_ xsi:type="ocl:OclModelElement" location="4:16-4:26" name="Role">
+          <model href="new-model#/1"/>
+        </context_>
+      </context_>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:Helper" location="9:1-13:8">
+    <definition location="9:8-13:7">
+      <feature xsi:type="ocl:Attribute" location="9:13-13:7" name="roleByTuple">
+        <initExpression xsi:type="ocl:IterateExp" location="11:2-13:7">
+          <source xsi:type="ocl:OperationCallExp" location="11:2-11:27" operationName="allInstances">
+            <source xsi:type="ocl:OclModelElement" location="11:2-11:12" name="Role">
+              <model href="new-model#/1"/>
+            </source>
+          </source>
+          <body xsi:type="ocl:OperationCallExp" location="12:54-13:6" operationName="including">
+            <source xsi:type="ocl:VariableExp" location="12:54-12:57" referredVariable="//@elements.1/@definition/@feature/@initExpression/@result"/>
+            <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="12:68-12:77" name="toTuple">
+              <source xsi:type="ocl:VariableExp" location="12:68-12:69" referredVariable="//@elements.1/@definition/@feature/@initExpression/@iterators.0"/>
+            </arguments>
+            <arguments xsi:type="ocl:VariableExp" location="13:4-13:5" referredVariable="//@elements.1/@definition/@feature/@initExpression/@iterators.0"/>
+          </body>
+          <iterators location="11:39-11:40" varName="r" variableExp="//@elements.1/@definition/@feature/@initExpression/@body/@arguments.0/@source //@elements.1/@definition/@feature/@initExpression/@body/@arguments.1"/>
+          <result location="11:42-12:51" varName="acc" variableExp="//@elements.1/@definition/@feature/@initExpression/@body/@source">
+            <type xsi:type="ocl:MapType" location="11:47-12:42">
+              <valueType xsi:type="ocl:OclModelElement" location="12:31-12:41" name="Role">
+                <model href="new-model#/1"/>
+              </valueType>
+              <keyType xsi:type="ocl:TupleType" location="11:51-12:29">
+                <attributes location="11:61-11:71" name="id">
+                  <type xsi:type="ocl:StringType" location="11:65-11:71"/>
+                </attributes>
+                <attributes location="11:73-12:10" name="firstName">
+                  <type xsi:type="ocl:StringType" location="12:4-12:10"/>
+                </attributes>
+                <attributes location="12:12-12:28" name="lastName">
+                  <type xsi:type="ocl:StringType" location="12:22-12:28"/>
+                </attributes>
+              </keyType>
+            </type>
+            <initExpression xsi:type="ocl:MapExp" location="12:45-12:51"/>
+          </result>
+        </initExpression>
+        <type xsi:type="ocl:MapType" location="9:26-10:14">
+          <valueType xsi:type="ocl:OclModelElement" location="10:3-10:13" name="Role">
+            <model href="new-model#/1"/>
+          </valueType>
+          <keyType xsi:type="ocl:TupleType" location="9:30-9:88">
+            <attributes location="9:40-9:50" name="id">
+              <type xsi:type="ocl:StringType" location="9:44-9:50"/>
+            </attributes>
+            <attributes location="9:52-9:69" name="firstName">
+              <type xsi:type="ocl:StringType" location="9:63-9:69"/>
+            </attributes>
+            <attributes location="9:71-9:87" name="lastName">
+              <type xsi:type="ocl:StringType" location="9:81-9:87"/>
+            </attributes>
+          </keyType>
+        </type>
+      </feature>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:Helper" location="15:1-16:43">
+    <definition location="15:8-16:42">
+      <feature xsi:type="ocl:Attribute" location="15:32-16:42" name="canonic">
+        <initExpression xsi:type="ocl:OperationCallExp" location="16:2-16:42" operationName="get">
+          <source xsi:type="ocl:NavigationOrAttributeCallExp" location="16:2-16:24" name="roleByTuple">
+            <source xsi:type="ocl:VariableExp" location="16:2-16:12">
+              <referredVariable href="new-model#/5"/>
+            </source>
+          </source>
+          <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="16:29-16:41" name="toTuple">
+            <source xsi:type="ocl:VariableExp" location="16:29-16:33">
+              <referredVariable href="new-model#/6"/>
+            </source>
+          </arguments>
+        </initExpression>
+        <type xsi:type="ocl:OclModelElement" location="15:41-15:51" name="Role">
+          <model href="new-model#/1"/>
+        </type>
+      </feature>
+      <context_ location="15:8-15:26">
+        <context_ xsi:type="ocl:OclModelElement" location="15:16-15:26" name="Role">
+          <model href="new-model#/1"/>
+        </context_>
+      </context_>
+    </definition>
+  </elements>
+  <elements xsi:type="atl:LazyMatchedRule" location="18:1-31:2" name="RolesToPerson" isUnique="true">
+    <outPattern location="25:2-30:4">
+      <elements xsi:type="atl:SimpleOutPatternElement" location="26:3-30:4" varName="p">
+        <type xsi:type="ocl:OclModelElement" location="26:6-26:19" name="Person">
+          <model href="new-model#/0"/>
+        </type>
+        <bindings location="27:4-27:14" propertyName="id">
+          <value xsi:type="ocl:NavigationOrAttributeCallExp" location="27:10-27:14" name="id">
+            <source xsi:type="ocl:VariableExp" location="27:10-27:11" referredVariable="//@elements.3/@inPattern/@elements.0"/>
+          </value>
+        </bindings>
+        <bindings location="28:4-28:28" propertyName="firstName">
+          <value xsi:type="ocl:NavigationOrAttributeCallExp" location="28:17-28:28" name="firstName">
+            <source xsi:type="ocl:VariableExp" location="28:17-28:18" referredVariable="//@elements.3/@inPattern/@elements.0"/>
+          </value>
+        </bindings>
+        <bindings location="29:4-29:26" propertyName="lastName">
+          <value xsi:type="ocl:NavigationOrAttributeCallExp" location="29:16-29:26" name="lastName">
+            <source xsi:type="ocl:VariableExp" location="29:16-29:17" referredVariable="//@elements.3/@inPattern/@elements.0"/>
+          </value>
+        </bindings>
+      </elements>
+    </outPattern>
+    <variables location="22:3-23:13" varName="roles">
+      <type xsi:type="ocl:SequenceType" location="22:10-22:30">
+        <elementType xsi:type="ocl:OclModelElement" location="22:19-22:29" name="Role">
+          <model href="new-model#/1"/>
+        </elementType>
+      </type>
+      <initExpression xsi:type="ocl:IteratorExp" location="22:33-23:12" name="select">
+        <source xsi:type="ocl:OperationCallExp" location="22:33-22:58" operationName="allInstances">
+          <source xsi:type="ocl:OclModelElement" location="22:33-22:43" name="Role">
+            <model href="new-model#/1"/>
+          </source>
+        </source>
+        <body xsi:type="ocl:OperatorCallExp" location="22:73-23:11" operationName="=">
+          <source xsi:type="ocl:NavigationOrAttributeCallExp" location="22:73-22:83" name="personId">
+            <source xsi:type="ocl:VariableExp" location="22:73-22:74" referredVariable="//@elements.3/@variables.0/@initExpression/@iterators.0"/>
+          </source>
+          <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="23:7-23:11" name="id">
+            <source xsi:type="ocl:VariableExp" location="23:7-23:8" referredVariable="//@elements.3/@inPattern/@elements.0"/>
+          </arguments>
+        </body>
+        <iterators location="22:69-22:70" varName="e" variableExp="//@elements.3/@variables.0/@initExpression/@body/@source/@source"/>
+      </initExpression>
+    </variables>
+    <inPattern location="19:2-20:64">
+      <elements xsi:type="atl:SimpleInPatternElement" location="20:3-20:64" varName="r" variableExp="//@elements.3/@variables.0/@initExpression/@body/@arguments.0/@source //@elements.3/@outPattern/@elements.0/@bindings.0/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.1/@value/@source //@elements.3/@outPattern/@elements.0/@bindings.2/@value/@source">
+        <type xsi:type="ocl:TupleType" location="20:6-20:64">
+          <attributes location="20:16-20:26" name="id">
+            <type xsi:type="ocl:StringType" location="20:20-20:26"/>
+          </attributes>
+          <attributes location="20:28-20:45" name="firstName">
+            <type xsi:type="ocl:StringType" location="20:39-20:45"/>
+          </attributes>
+          <attributes location="20:47-20:63" name="lastName">
+            <type xsi:type="ocl:StringType" location="20:57-20:63"/>
+          </attributes>
+        </type>
+      </elements>
+    </inPattern>
+  </elements>
+  <elements xsi:type="atl:CalledRule" location="33:1-39:2" name="Transform" isEndpoint="true">
+    <actionBlock location="34:2-38:3">
+      <statements xsi:type="atl:ForStat" location="35:3-37:4">
+        <iterator location="35:8-35:9" varName="r" variableExp="//@elements.4/@actionBlock/@statements.0/@statements.0/@expression/@arguments.0/@source"/>
+        <collection xsi:type="ocl:OperationCallExp" location="35:13-35:38" operationName="allInstances">
+          <source xsi:type="ocl:OclModelElement" location="35:13-35:23" name="Role">
+            <model href="new-model#/1"/>
+          </source>
+        </collection>
+        <statements xsi:type="atl:ExpressionStat" location="36:5-36:41">
+          <expression xsi:type="ocl:OperationCallExp" location="36:5-36:40" operationName="RolesToPerson">
+            <source xsi:type="ocl:VariableExp" location="36:5-36:15">
+              <referredVariable href="new-model#/7"/>
+            </source>
+            <arguments xsi:type="ocl:NavigationOrAttributeCallExp" location="36:30-36:39" name="toTuple">
+              <source xsi:type="ocl:VariableExp" location="36:30-36:31" referredVariable="//@elements.4/@actionBlock/@statements.0/@iterator"/>
+            </arguments>
+          </expression>
+        </statements>
+      </statements>
+    </actionBlock>
+  </elements>
+</atl:Module>

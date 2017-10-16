@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.templates.Template;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlEditorUI;
 import org.eclipse.m2m.atl.adt.ui.text.atl.AtlModelAnalyser;
 import org.eclipse.m2m.atl.engine.parser.AtlSourceManager;
@@ -170,13 +171,17 @@ public class AtlTypesProcessor {
 		return null;
 	}
 
-	public String getTemplateInformation(String elementName, EObject element) throws BadLocationException {
-		String name = AtlEditorUI.getDefault().getTemplateStore().findTemplate(elementName).getPattern();
-		name = name.replaceAll("\\$\\{([\\w]*)\\}", "$1"); //$NON-NLS-1$ //$NON-NLS-2$
-		String type = getType(element).toString();
-		String desc = AtlEditorUI.getDefault().getTemplateStore().findTemplate(elementName).getDescription();
-		String cutDesc = cutString(desc);
-		return name + " : " + type + "\n\n" + cutDesc; //$NON-NLS-1$ //$NON-NLS-2$
+	public String getTemplateInformation(final String elementName, final EObject element) throws BadLocationException {
+		final Template template = AtlEditorUI.getDefault().getTemplateStore().findTemplate(elementName);
+		if (template != null) {
+			String name = template.getPattern();
+			name = name.replaceAll("\\$\\{([\\w]*)\\}", "$1"); //$NON-NLS-1$ //$NON-NLS-2$
+			final String type = getType(element).toString();
+			final String desc = template.getDescription();
+			final String cutDesc = cutString(desc);
+			return name + " : " + type + "\n\n" + cutDesc; //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		return null;
 	}
 
 	public static String cutString(String s) {

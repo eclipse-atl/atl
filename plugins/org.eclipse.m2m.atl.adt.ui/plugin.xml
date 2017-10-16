@@ -93,11 +93,14 @@
     	 	    </with>
 		 </visibleWhen>
          </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.projectConfigure">
          <command
                commandId="org.eclipse.m2m.atl.adt.ui.toggleATLNature"
                icon="icons/atl_logo.gif"
                id="addATLNature"
-               label="Convert Project to ATL project"
+               label="Convert to ATL Project"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -123,12 +126,6 @@
                               </test>
                            </and>
                         </adapt>
-                        <with
-                              variable="activeWorkbenchWindow.activePerspective">
-                           <equals
-                                 value="org.eclipse.m2m.atl.adt.ui.atlPerspective">
-                           </equals>
-                        </with>
                      </and>
                   </iterate>
                </with>
@@ -164,7 +161,6 @@
                   </iterate>
                </with>
             </visibleWhen>
- 
          </command>
       </menuContribution>
    </extension>

@@ -18,12 +18,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.util.LazyBag;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
@@ -577,21 +579,40 @@ public abstract class LazyCollectionTest extends TestCase {
 		} catch (IllegalArgumentException e) {
 			// expected
 		}
-		final LazyCollection<Integer> intlist = getEmptyLazyCollection();
-		final LazyCollection<Integer> appended = intlist.includingRange(300, 400);
-		assertEquals(intlist.size() + 400 - 300 + 1, appended.size());
-		assertTrue(appended.contains(300));
-		assertTrue(appended.contains(301));
-		assertTrue(appended.contains(349));
-		assertTrue(appended.contains(399));
-		assertTrue(appended.contains(400));
-		// Test iterator
-		int index = 0;
-		for (Integer element : appended) {
-			assertEquals(index + 300, element.intValue());
-			index++;
+		{
+			final LazyCollection<Integer> intlist = getEmptyLazyCollection();
+			final LazyCollection<Integer> appended = intlist.includingRange(300, 400);
+			assertEquals(intlist.size() + 400 - 300 + 1, appended.size());
+			assertTrue(appended.contains(300));
+			assertTrue(appended.contains(301));
+			assertTrue(appended.contains(349));
+			assertTrue(appended.contains(399));
+			assertTrue(appended.contains(400));
+			// Test iterator
+			int index = 0;
+			for (Integer element : appended) {
+				assertEquals(index + 300, element.intValue());
+				index++;
+			}
+			assertEquals(appended.size(), index);
 		}
-		assertEquals(appended.size(), index);
+		{
+			final LazyCollection<Long> longlist = getEmptyLazyCollection();
+			final LazyCollection<Long> appended = longlist.includingRange(300L, 400L);
+			assertEquals(longlist.size() + 400 - 300 + 1, appended.size());
+			assertTrue(appended.contains(300L));
+			assertTrue(appended.contains(301L));
+			assertTrue(appended.contains(349L));
+			assertTrue(appended.contains(399L));
+			assertTrue(appended.contains(400L));
+			// Test iterator
+			int index = 0;
+			for (Long element : appended) {
+				assertEquals(index + 300, element.intValue());
+				index++;
+			}
+			assertEquals(appended.size(), index);
+		}
 	}
 
 	/**
@@ -928,6 +949,102 @@ public abstract class LazyCollectionTest extends TestCase {
 		assertTrue(list.toString().length() > 0);
 		assertFalse(list.toString().equals(getEmptyLazyCollection().toString()));
 		assertEquals(getDataSource().toString(), list.toString());
+	}
+
+	/**
+	 * Tests {@link LazyCollection#mappedBy(CodeBlock)}.
+	 */
+	public void testMappedBy() {
+		final LazyCollection<String> list = getTestLazyCollection();
+		// Test for single return value
+		final Map<Object, LazySet<String>> result = list.mappedBy(new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public Object execute(final StackFrame frame) {
+				return ((String) frame.getLocal(0)).length();
+			}
+
+		});
+		for (Object key : result.keySet()) {
+			for (String value : result.get(key)) {
+				assertEquals(key, Integer.valueOf(value.length()));
+			}
+		}
+		// Test for collection return value
+		final Map<Object, LazySet<String>> result2 = list.mappedBy(new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public Object execute(final StackFrame frame) {
+				final String self = ((String) frame.getLocal(0));
+				final List<Character> chars = new ArrayList<Character>(self.length());
+				for (char c : (self.toCharArray())) {
+					chars.add(c);
+				}
+				return chars;
+			}
+
+		});
+		for (Object key : result2.keySet()) {
+			for (String value : result2.get(key)) {
+				assertTrue(String.format("Expected \"%s\" to contain \'%s\'", value, key), 
+						value.indexOf((Character) key) >= 0);
+			}
+		}
+	}
+
+	/**
+	 * Tests {@link LazyCollection#mappedBySingle(CodeBlock)}.
+	 */
+	public void testMappedBySingle() {
+		final LazyCollection<String> list = getTestLazyCollection();
+		// Test for single return value
+		final Map<Object, String> result = list.mappedBySingle(new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public Object execute(final StackFrame frame) {
+				return ((String) frame.getLocal(0)).length();
+			}
+
+		});
+		for (Object key : result.keySet()) {
+			String value = result.get(key);
+			assertEquals(key, Integer.valueOf(value.length()));
+		}
+		// Test for collection return value
+		final Map<Object, String> result2 = list.mappedBySingle(new NativeCodeBlock() {
+			{
+				setParentFrame(new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), this));
+				getLocalVariables().add(EmftvmFactory.eINSTANCE.createLocalVariable());
+			}
+
+			@Override
+			public Object execute(final StackFrame frame) {
+				final String self = ((String) frame.getLocal(0));
+				final List<Character> chars = new ArrayList<Character>(self.length());
+				for (char c : (self.toCharArray())) {
+					chars.add(c);
+				}
+				return chars;
+			}
+
+		});
+		for (Object key : result2.keySet()) {
+			String value = result2.get(key);
+			assertTrue(String.format("Expected \"%s\" to contain \'%s\'", value, key), 
+					value.indexOf((Character) key) >= 0);
+		}
 	}
 
 }

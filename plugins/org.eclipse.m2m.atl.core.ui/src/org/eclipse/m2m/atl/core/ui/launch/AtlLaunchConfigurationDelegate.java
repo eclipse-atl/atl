@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -72,7 +73,6 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration,
 	 *      java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	@SuppressWarnings("unchecked")
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 
@@ -95,19 +95,19 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 		String fileName = configuration.getAttribute(ATLLaunchConstants.ATL_FILE_NAME,
 				ATLLaunchConstants.NULL_PARAMETER);
 		Map<String, String> unsortedSourceModels = configuration.getAttribute(ATLLaunchConstants.INPUT,
-				Collections.EMPTY_MAP);
+				Collections.<String, String> emptyMap());
 		Map<String, String> unsortedTargetModels = configuration.getAttribute(ATLLaunchConstants.OUTPUT,
-				Collections.EMPTY_MAP);
+				Collections.<String, String> emptyMap());
 		Map<String, String> launchConfigModelPaths = configuration.getAttribute(ATLLaunchConstants.PATH,
-				Collections.EMPTY_MAP);
+				Collections.<String, String> emptyMap());
 		Map<String, String> modelPaths = convertPaths(launchConfigModelPaths);
 
-		Map<String, String> libs = configuration.getAttribute(ATLLaunchConstants.LIBS, Collections.EMPTY_MAP);
+		Map<String, String> libs = configuration.getAttribute(ATLLaunchConstants.LIBS, Collections.<String, String> emptyMap());
 		List<String> superimps = configuration.getAttribute(ATLLaunchConstants.SUPERIMPOSE,
-				Collections.EMPTY_LIST);
-		options.putAll(configuration.getAttribute(ATLLaunchConstants.OPTIONS, Collections.EMPTY_MAP));
+				Collections.<String> emptyList());
+		options.putAll(configuration.getAttribute(ATLLaunchConstants.OPTIONS, Collections.<String, String> emptyMap()));
 		Map<String, String> modelHandlers = configuration.getAttribute(ATLLaunchConstants.MODEL_HANDLER,
-				Collections.EMPTY_MAP);
+				Collections.<String, String> emptyMap());
 		options.put(ATLLaunchConstants.OPTION_MODEL_HANDLER, modelHandlers);
 
 		if (LauncherService.getBooleanOption(options.get(AdvancedTab.OPTION_CLEAR), false)) {
@@ -133,7 +133,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 		}
 
 		// ATL modules
-		IFile currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(Path.fromOSString(fileName));
+		IFile currentAtlFile = ResourcesPlugin.getWorkspace().getRoot().getFile(getBytecodePath(fileName, launcher));
 		String currentExtension = currentAtlFile.getFileExtension().toLowerCase();
 		if (currentExtension.equals("atl")) { //$NON-NLS-1$
 			options.put(ATLLaunchConstants.OPTION_ATL_FILE_PATH, fileName);
@@ -153,7 +153,7 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 		for (int i = 1; i < modules.length; i++) {
 			String moduleFileName = superimps.get(i - 1);
 			IFile moduleFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
-					Path.fromOSString(moduleFileName));
+					getBytecodePath(moduleFileName, launcher));
 			if (!addLaunchedModule(moduleFile)) {
 				return;
 			}
@@ -179,14 +179,14 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 
 		Map<String, String> sourceModels = unsortedSourceModels;
 		List<String> orderedInput = configuration.getAttribute(ATLLaunchConstants.ORDERED_INPUT,
-				Collections.EMPTY_LIST);
+				Collections.<String> emptyList());
 		if (!orderedInput.isEmpty()) {
 			sourceModels = sort(unsortedSourceModels, orderedInput);
 		}
 
 		Map<String, String> targetModels = unsortedTargetModels;
 		List<String> orderedOutput = configuration.getAttribute(ATLLaunchConstants.ORDERED_OUTPUT,
-				Collections.EMPTY_LIST);
+				Collections.<String> emptyList());
 		if (!orderedOutput.isEmpty()) {
 			targetModels = sort(unsortedTargetModels, orderedOutput);
 		}
@@ -231,10 +231,10 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 				newTargetModels.remove(key);
 			}
 
-			launchOrDebug(mode, monitor, launcher, Collections.EMPTY_MAP, sourceModels, newTargetModels,
+			launchOrDebug(mode, monitor, launcher, Collections.<String, String> emptyMap(), sourceModels, newTargetModels,
 					modelPaths, options, libraries, launch, modules);
 		} else {
-			launchOrDebug(mode, monitor, launcher, sourceModels, Collections.EMPTY_MAP, targetModels,
+			launchOrDebug(mode, monitor, launcher, sourceModels, Collections.<String, String> emptyMap(), targetModels,
 					modelPaths, options, libraries, launch, modules);
 		}
 
@@ -242,10 +242,17 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 			// Set generated files as derived
 			for (String targetModel : targetModels.keySet()) {
 				String path = launchConfigModelPaths.get(targetModel);
-				setDerived(path);
+				setDerived(path, monitor);
 			}
 		}
 
+	}
+
+	private IPath getBytecodePath(String fileName, final ILauncher launcher) {
+		if (launcher != null && launcher.getClass().getSimpleName().startsWith("EMFTVM")) { //$NON-NLS-1$
+			fileName = fileName.replaceAll("\\.(atl|asm)$", ".emftvm"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		return Path.fromOSString(fileName);
 	}
 
 	private static Object launchOrDebug(final String mode, final IProgressMonitor monitor,
@@ -424,12 +431,12 @@ public class AtlLaunchConfigurationDelegate extends LaunchConfigurationDelegate 
 		return "platform:/resource" + path; //$NON-NLS-1$
 	}
 
-	private void setDerived(String filePath) {
+	private void setDerived(String filePath, IProgressMonitor monitor) {
 		if (Platform.isRunning()) {
 			try {
 				IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(filePath));
 				if (file.exists()) {
-					file.setDerived(true);
+					file.setDerived(true, monitor);
 				}
 			} catch (IllegalStateException e) {
 				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);

@@ -37,4 +37,32 @@
       </launchConfigurationTypeImage>
    </extension>
 
+   <extension
+         point="org.eclipse.m2m.atl.core.launcher">
+      <launcher
+            class="org.eclipse.m2m.atl.emftvm.launcher.compat.EMFTVMUILauncher"
+            name="EMFTVM">          
+         <option
+               description="Print execution times to console"
+               mode="run"
+               name="printExecutionTime"></option>
+         <option
+               description="Allow inter-model references"
+               name="allowInterModelReferences"></option>
+         <option
+               description="Disable JIT compiler"
+               name="disableJit"></option>
+         <option
+               description="Disassembly mode"
+               mode="debug"
+               name="disassemblyMode">
+         </option>
+         <option
+               description="Stop in main"
+               mode="debug"
+               name="stopInMain">
+         </option>
+      </launcher>
+   </extension>
+
 </plugin>

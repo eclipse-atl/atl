@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Dennis Wagelaar
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.debug.ui;
 
@@ -19,6 +20,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * Creates a toggle breakpoint adapter factory. This factory is used to create a new ATL breakpoint.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class AtlBreakpointAdapterFactory implements IAdapterFactory {
 
@@ -28,14 +30,14 @@ public class AtlBreakpointAdapterFactory implements IAdapterFactory {
 	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object, java.lang.Class)
 	 */
 	@SuppressWarnings("unchecked")
-	public Object getAdapter(Object adaptableObject, Class adapterType) {
-		Object adapter = null;
+	public <T> T getAdapter(final Object adaptableObject, final Class<T> adapterType) {
+		T adapter = null;
 		if (adaptableObject instanceof ITextEditor) {
-			ITextEditor editorPart = (ITextEditor)adaptableObject;
-			IResource resource = (IResource)editorPart.getEditorInput().getAdapter(IResource.class);
+			final ITextEditor editorPart = (ITextEditor)adaptableObject;
+			final IResource resource = (IResource)editorPart.getEditorInput().getAdapter(IResource.class);
 			if (resource != null && "atl".equals(resource.getFileExtension())) { //$NON-NLS-1$
 				if (adapterType.equals(IToggleBreakpointsTarget.class)) {
-					adapter = new AtlBreakpointAdapter();
+					adapter = (T) new AtlBreakpointAdapter();
 				}
 			}
 		}
@@ -47,9 +49,8 @@ public class AtlBreakpointAdapterFactory implements IAdapterFactory {
 	 * 
 	 * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
 	 */
-	@SuppressWarnings("unchecked")
-	public Class[] getAdapterList() {
-		return new Class[] {IToggleBreakpointsTarget.class};
+	public Class<?>[] getAdapterList() {
+		return new Class<?>[] {IToggleBreakpointsTarget.class};
 	}
 
 }

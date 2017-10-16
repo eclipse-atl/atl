@@ -62,7 +62,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(E o) {
+		public int count(Object o) {
 			return (object == null ? o == null : object.equals(o)) ? 1 : 0 + 
 					((LazyCollection<E>)dataSource).count(o);
 		}
@@ -98,14 +98,14 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 */
 	public static class UnionBag<E> extends LazyBag<E> {
 
-		protected final LazyCollection<E> other;
+		protected final LazyCollection<? extends E> other;
 
 		/**
 		 * Creates a new {@link UnionBag}.
 		 * @param other the collection to union with <pre>dataSource</pre>
 		 * @param dataSource the underlying collection
 		 */
-		public UnionBag(final LazyCollection<E> other, final LazyCollection<E> dataSource) {
+		public UnionBag(final LazyCollection<? extends E> other, final LazyCollection<E> dataSource) {
 			super(dataSource);
 			this.other = other;
 		}
@@ -122,7 +122,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(E object) {
+		public int count(Object object) {
 			return ((LazyCollection<E>)dataSource).count(object) + other.count(object);
 		}
 
@@ -204,7 +204,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Integer object) {
+		public int count(Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -277,8 +277,8 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 */
 		@Override
 		public boolean contains(Object o) {
-			if (o instanceof Integer) {
-				final Integer obj = (Integer) o;
+			if (o instanceof Long) {
+				final Long obj = (Long) o;
 				return (obj >= first && obj <= last);
 			}
 			return false;
@@ -288,7 +288,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Long object) {
+		public int count(Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -488,7 +488,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * @param bag the collection to union with this
 	 * @return The union of self and <code>bag</code>.
 	 */
-	public LazyBag<E> union(final LazyBag<E> bag) {
+	public LazyBag<E> union(final LazyBag<? extends E> bag) {
 		return new UnionBag<E>(bag, this);
 	}
 
@@ -579,7 +579,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * @return The collection containing all elements of self plus <code>coll</code>.
 	 */
 	@Override
-	public LazyBag<E> includingAll(final Collection<E> coll) {
+	public LazyBag<E> includingAll(final Collection<? extends E> coll) {
 		return union(LazyCollections.asLazyBag(coll));
 	}
 
@@ -597,7 +597,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * @throws UnsupportedOperationException
 	 */
 	@Override
-	public LazyBag<E> includingAll(final Collection<E> coll, final int index) {
+	public LazyBag<E> includingAll(final Collection<? extends E> coll, final int index) {
 		throw new UnsupportedOperationException("Cannot specify index for adding values to unordered collections");
 	}
 
@@ -611,7 +611,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 *            the object to exclude
 	 * @return The bag containing all elements of self apart from all occurrences of <code>object</code>.
 	 */
-	public LazyBag<E> excluding(final E object) {
+	public LazyBag<E> excluding(final Object object) {
 		return new LazyBag<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -634,7 +634,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * @return The collection containing all elements of self minus <code>coll</code>.
 	 */
 	@Override
-	public LazyBag<E> excludingAll(final Collection<E> coll) {
+	public LazyBag<E> excludingAll(final Collection<?> coll) {
 		return new LazyBag<E>(this) {
 			@Override
 			public Iterator<E> iterator() {

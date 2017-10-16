@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.Comparison;
 import org.eclipse.emf.compare.Diff;
@@ -71,12 +72,13 @@ public abstract class EMFTVMTest extends TestCase {
 	 *            the right-hand resource to compare
 	 */
 	public static void assertEquals(Resource leftResource, Resource rightResource) {
+		final BasicMonitor monitor = new BasicMonitor();
 		final DefaultComparisonScope scope = new DefaultComparisonScope(leftResource, rightResource, null);
-		final Comparison match = DefaultMatchEngine.create(UseIdentifiers.NEVER).match(scope, null);
+		final Comparison match = DefaultMatchEngine.create(UseIdentifiers.NEVER).match(scope, monitor);
 		if (!leftResource.getContents().isEmpty()) {
 			assertFalse("Match model is empty: " + match.getMatches(), match.getMatches().isEmpty());
 		}
-		new DefaultDiffEngine(new DiffBuilder()).diff(match, null);
+		new DefaultDiffEngine(new DiffBuilder()).diff(match, monitor);
 		for (Diff diff : match.getDifferences()) {
 			// allow only certain kinds of diff elements
 			if (diff instanceof ReferenceChange && ((ReferenceChange) diff).getKind() == DifferenceKind.CHANGE) {

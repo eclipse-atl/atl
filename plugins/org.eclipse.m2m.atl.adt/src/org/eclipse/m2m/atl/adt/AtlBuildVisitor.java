@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2004 INRIA.
+ * Copyright (c) 2017 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +9,7 @@
  * Contributors:
  *    Tarik Idrissi (INRIA) - initial API and implementation
  *    Obeo - runnable Java generation
+ *    Dennis Wagelaar
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt;
 
@@ -19,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -29,10 +30,10 @@ import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.adt.runner.ATLProperties;
 import org.eclipse.m2m.atl.adt.runner.CreateRunnableAtlOperation;
-import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.engine.MarkerMaker;
 import org.eclipse.m2m.atl.engine.compiler.AtlCompiler;
 import org.eclipse.m2m.atl.engine.compiler.CompilerNotFoundException;
@@ -42,8 +43,9 @@ import org.eclipse.m2m.atl.engine.compiler.CompilerNotFoundException;
  * 
  * @author <a href="mailto:tarik.idrissi@laposte.net">Tarik Idrissi</a>
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
-public class AtlBuildVisitor implements IResourceVisitor {
+public class AtlBuildVisitor extends AtlResourceVisitor {
 
 	/** Contains routines to manage problem markers when compiling. */
 	private MarkerMaker markerMaker = new MarkerMaker();
@@ -56,7 +58,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 	 * @param monitor
 	 *            the progress monitor
 	 */
-	public AtlBuildVisitor(IProgressMonitor monitor) {
+	public AtlBuildVisitor(final IProgressMonitor monitor) {
 		this.monitor = monitor;
 	}
 
@@ -67,61 +69,31 @@ public class AtlBuildVisitor implements IResourceVisitor {
 	 *            the tested file
 	 * @return <code>true</code> if the file has changed since its last build <code>false</code> otherwise
 	 */
-	private boolean hasChanged(IResource resource) {
-		return resource.getLocalTimeStamp() > getAsmFile(resource).getLocalTimeStamp();
-	}
-
-	/**
-	 * Returns <code>true</code> if the given resource has an associated asm file <code>false</code>
-	 * otherwise.
-	 * 
-	 * @param resource
-	 *            the resource for which to test whether it has an associated asm file
-	 * @return <code>true</code> if the given resource has an associated asm file <code>false</code> otherwise
-	 */
-	private boolean hasAsmFile(IResource resource) {
-		return getAsmFile(resource).exists();
-	}
-
-	/**
-	 * Returns <code>true</code> if the given resource has an associated asm file <code>false</code>
-	 * otherwise.
-	 * 
-	 * @param resource
-	 *            the resource for which to test whether it has an associated asm file
-	 * @return <code>true</code> if the given resource has an associated asm file <code>false</code> otherwise
-	 */
-	private IFile getAsmFile(IResource resource) {
-		String atlFileName = resource.getName();
-		String asmFileName = atlFileName.substring(0, atlFileName.lastIndexOf('.')) + ".asm"; //$NON-NLS-1$
-		IFile asm = resource.getParent().getFile(new Path(asmFileName));
-		return asm;
+	private boolean hasChanged(final IResource resource) {
+		return resource.getLocalTimeStamp() > getBytecodeFile(resource).getLocalTimeStamp();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
+	 * @see org.eclipse.core.resources.IResourceVisitor#visit(IResource)
 	 */
-	public boolean visit(IResource resource) throws CoreException {
+	public boolean visit(final IResource resource) throws CoreException {
 
-		String extension = resource.getFileExtension();
+		final String extension = resource.getFileExtension();
 		if (("atl".equals(extension) && (resource instanceof IFile)) && ((IFile)resource).getLocation().toFile().length() > 0//$NON-NLS-1$
-				&& (!hasAsmFile(resource) || hasChanged(resource))) {
-			String inName = resource.getName();
+				&& (!getBytecodeFile(resource).exists() || hasChanged(resource))) {
+			final String inName = resource.getName();
 			monitor.subTask(Messages.getString("AtlBuildVisitor.COMPILETASK", new Object[] {inName})); //$NON-NLS-1$
-			String outName = inName.substring(0, inName.lastIndexOf('.')) + ".asm"; //$NON-NLS-1$
-			IFile out = resource.getParent().getFile(new Path(outName));
-			InputStream is = ((IFile)resource).getContents();
+			final InputStream is = ((IFile)resource).getContents();
 			try {
-				Reader r = new InputStreamReader(is, ((IFile)resource).getCharset());
-				EObject[] pbms = AtlCompiler.compile(r, out);
+				final Reader r = new InputStreamReader(is, ((IFile)resource).getCharset());
+				final EObject[] pbms = AtlCompiler.compile(r, getAsmFile(resource));
 				markerMaker.resetPbmMarkers(resource, pbms);
-				IFile asmFile = getAsmFile(resource);
-				if (asmFile.exists()) {
-					asmFile.setDerived(true);
+				final IFile newBytecodeFile = getBytecodeFile(resource);
+				if (newBytecodeFile.exists()) {
+					newBytecodeFile.setDerived(true, monitor);
 				}
-				is.close();
 				if (pbms.length == 0) {
 					for (IFile propertyFile : getRelatedPropertyFiles((IFile)resource)) {
 						if (!propertyFile.isDerived()) {
@@ -140,7 +112,13 @@ public class AtlBuildVisitor implements IResourceVisitor {
 				marker.setAttribute(IMarker.MESSAGE, cnfee.getMessage());
 				marker.setAttribute(IMarker.LINE_NUMBER, 1);
 			} catch (IOException e) {
-				ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+				throw new CoreException(new Status(Status.ERROR, AdtPlugin.PLUGIN_ID, e.getLocalizedMessage(), e));
+			} finally {
+				try {
+					is.close();
+				} catch (IOException e) {
+					throw new CoreException(new Status(Status.ERROR, AdtPlugin.PLUGIN_ID, e.getLocalizedMessage(), e));
+				}
 			}
 			return false;
 		}
@@ -148,8 +126,8 @@ public class AtlBuildVisitor implements IResourceVisitor {
 		return true;
 	}
 
-	private IFile[] getRelatedPropertyFiles(IFile atlFile) throws IOException, CoreException {
-		List<IFile> res = new ArrayList<IFile>();
+	private IFile[] getRelatedPropertyFiles(final IFile atlFile) throws IOException, CoreException {
+		final List<IFile> res = new ArrayList<IFile>();
 		for (IFile propertyFile : getAllPropertyFiles(atlFile.getParent())) {
 			ATLProperties properties = new ATLProperties(propertyFile);
 			IFile[] modules = properties.getTransformationFiles();
@@ -160,7 +138,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 		return res.toArray(new IFile[res.size()]);
 	}
 
-	private List<IFile> getAllPropertyFiles(IContainer container) throws CoreException {
+	private List<IFile> getAllPropertyFiles(final IContainer container) throws CoreException {
 		if (container.getProject().hasNature("org.eclipse.pde.PluginNature")) { //$NON-NLS-1$
 			PropertiesVisitor visitor = new PropertiesVisitor();
 			container.accept(visitor);
@@ -181,7 +159,7 @@ public class AtlBuildVisitor implements IResourceVisitor {
 		 * 
 		 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
 		 */
-		public boolean visit(IResource resource) throws CoreException {
+		public boolean visit(final IResource resource) throws CoreException {
 			if (resource instanceof IContainer) {
 				return true;
 			} else if (resource instanceof IFile) {

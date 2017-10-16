@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Freddy Allilaire (INRIA) - initial API and implementation
+ *    Dennis Wagelaar
  *******************************************************************************/
 package org.eclipse.m2m.atl.adt.debug.ui;
 
@@ -49,6 +50,7 @@ import org.eclipse.ui.part.FileEditorInput;
  * interface defines a setAttribute method.
  * 
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class AtlDebugModelPresentation extends LabelProvider implements IDebugModelPresentation {
 	/** If you add a constant here, look in the class AtlVariable if the value is not already used. */
@@ -330,7 +332,7 @@ public class AtlDebugModelPresentation extends LabelProvider implements IDebugMo
 		 * 
 		 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 		 */
-		public Object getAdapter(Class adapter) {
+		public <T> T getAdapter(Class<T> adapter) {
 			return null;
 		}
 

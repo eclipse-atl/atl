@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2015 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ import org.eclipse.m2m.atl.emftvm.ExecEnv;
  * Based on the OCL 2.2 specification (formal/2010-02-01).
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  *
- * @param <E>
+ * @param <E> the collection element type
  */
 public abstract class LazyCollection<E> implements Collection<E> {
 
@@ -562,7 +562,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public class ExcludingIterator extends CachingIterator {
 	
-		protected final E object;
+		protected final Object object;
 		protected E next;
 		protected boolean nextSet;
 	
@@ -570,7 +570,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * Creates a new {@link ExcludingIterator}, which excludes <code>object</code>.
 		 * @param object the object to exclude
 		 */
-		public ExcludingIterator(final E object) {
+		public ExcludingIterator(final Object object) {
 			super(dataSource.iterator());
 			this.object = object;
 		}
@@ -694,7 +694,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public class SubtractionIterator extends CachingIterator {
 	
-		protected final Collection<E> s;
+		protected final Collection<?> s;
 		protected E next;
 		protected boolean nextSet;
 	
@@ -702,7 +702,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * Creates a new {@link SubtractionIterator} on this and <code>s</code>.
 		 * @param s the collection to subtract from this
 		 */
-		public SubtractionIterator(final Collection<E> s) {
+		public SubtractionIterator(final Collection<?> s) {
 			super(dataSource.iterator());
 			this.s = s;
 		}
@@ -761,8 +761,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public class UnionIterator extends WrappedIterator {
 
-		protected final Iterable<E> s;
-		protected Iterator<E> added; // lazily instantiate this iterator
+		protected final Iterable<? extends E> s;
+		protected Iterator<? extends E> added; // lazily instantiate this iterator
 		protected boolean innerNext; // cache last inner.hasNext() invocation
 
 		/**
@@ -770,7 +770,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * collection and <code>s</code>.
 		 * @param s the collection to union with this
 		 */
-		public UnionIterator(final Iterable<E> s) {
+		public UnionIterator(final Iterable<? extends E> s) {
 			super();
 			this.s = s;
 		}
@@ -816,8 +816,8 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 */
 	public class UnionSetIterator extends CachingSetIterator {
 
-		protected final Iterable<E> s;
-		protected Iterator<E> added; // lazily instantiate this iterator
+		protected final Iterable<? extends E> s;
+		protected Iterator<? extends E> added; // lazily instantiate this iterator
 		protected boolean innerNext; // cache last inner.hasNext() invocation
 
 		/**
@@ -825,7 +825,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 		 * collection and <code>s</code>.
 		 * @param s the collection to union with this
 		 */
-		public UnionSetIterator(final Iterable<E> s) {
+		public UnionSetIterator(final Iterable<? extends E> s) {
 			super();
 			this.s = s;
 		}
@@ -1853,7 +1853,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @param object the object to check for
 	 * @return <code>true</code> if <code>object</code> is an element of self, <code>false</code> otherwise.
 	 */
-	public boolean includes(final E object) {
+	public boolean includes(final Object object) {
 		return contains(object);
 	}
 
@@ -1862,7 +1862,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @param object the object to check for
 	 * @return <code>true</code> if <code>object</code> is not an element of self, <code>false</code> otherwise.
 	 */
-	public boolean excludes(final E object) {
+	public boolean excludes(final Object object) {
 		return !contains(object);
 	}
 
@@ -1871,7 +1871,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @param object the object to check for
 	 * @return The number of times that <code>object</code> occurs in the collection self.
 	 */
-	public synchronized int count(final E object) {
+	public synchronized int count(final Object object) {
 		if (occurrences == null) {
 			occurrences = new HashMap<E, Integer>();
 			for (E e : this) {
@@ -1890,7 +1890,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @param c2 the collection to check
 	 * @return <code>true</code> iff self contains all elements of <code>c2</code>.
 	 */
-	public boolean includesAll(final Collection<E> c2) {
+	public boolean includesAll(final Collection<?> c2) {
 		return containsAll(c2);
 	}
 
@@ -1899,7 +1899,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @param c2 the collection to check
 	 * @return <code>true</code> iff self contains no elements of <code>c2</code>.
 	 */
-	public boolean excludesAll(final Collection<E> c2) {
+	public boolean excludesAll(final Collection<?> c2) {
 		return !containsAny(c2);
 	}
 
@@ -2136,7 +2136,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 *            the collection to include
 	 * @return The collection containing all elements of self plus <code>coll</code>.
 	 */
-	public abstract LazyCollection<E> includingAll(Collection<E> coll);
+	public abstract LazyCollection<E> includingAll(Collection<? extends E> coll);
 
 	/**
 	 * Returns the collection containing all elements of self plus <code>coll</code>.
@@ -2150,7 +2150,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 *            the index at which to insert <code>coll</code> (starting at 1)
 	 * @return The collection containing all elements of self plus <code>coll</code>.
 	 */
-	public abstract LazyCollection<E> includingAll(Collection<E> coll, int index);
+	public abstract LazyCollection<E> includingAll(Collection<? extends E> coll, int index);
 
 	/**
 	 * Returns the collection containing all elements of self apart from all occurrences of <code>object</code>.
@@ -2162,7 +2162,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 *            the object to exclude
 	 * @return The collection containing all elements of self apart from all occurrences of <code>object</code>.
 	 */
-	public abstract LazyCollection<E> excluding(final E object);
+	public abstract LazyCollection<E> excluding(final Object object);
 
 	/**
 	 * Returns the collection containing all elements of self minus <code>coll</code>.
@@ -2174,7 +2174,7 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 *            the collection to exclude
 	 * @return The collection containing all elements of self minus <code>coll</code>.
 	 */
-	public abstract LazyCollection<E> excludingAll(Collection<E> coll);
+	public abstract LazyCollection<E> excludingAll(Collection<?> coll);
 
 	/**
 	 * Returns the collection containing all elements of self plus the collection of <code>first</code> running to <code>last</code>.
@@ -2365,5 +2365,71 @@ public abstract class LazyCollection<E> implements Collection<E> {
 	 * @return the sorted collection
 	 */
 	public abstract LazyCollection<E> sortedBy(final CodeBlock body);
+
+	/**
+	 * Returns a Map indexed by the return value(s) <code>x</code> of the
+	 * body expression, containing the Set of elements for which the
+	 * body expression returns <code>x</code>. 
+	 * @param body the function to evaluate on each element
+	 * @return the Map
+	 */
+	public Map<Object, LazySet<E>> mappedBy(final CodeBlock body) {
+		final StackFrame frame = body.getParentFrame();
+		body.setParentFrame(null);
+		final Map<Object, LazySet<E>> result = new HashMap<Object, LazySet<E>>();
+		final Map<Object, HashSet<E>> shadow = new HashMap<Object, HashSet<E>>();
+		for (E e : this) {
+			Object key = body.execute(frame.getSubFrame(body, new Object[] { e }));
+			if (key instanceof Collection<?>) {
+				for (Object k : (Collection<?>) key) {
+					updateMaps(k, e, result, shadow);
+				}
+			} else {
+				updateMaps(key, e, result, shadow);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Returns a Map indexed by the return value(s) <code>x</code> of the
+	 * body expression, containing a single element for which the
+	 * body expression returns <code>x</code>. 
+	 * @param body the function to evaluate on each element
+	 * @return the Map
+	 */
+	public Map<Object, E> mappedBySingle(final CodeBlock body) {
+		final StackFrame frame = body.getParentFrame();
+		body.setParentFrame(null);
+		final Map<Object, E> result = new HashMap<Object, E>();
+		for (E e : this) {
+			Object key = body.execute(frame.getSubFrame(body, new Object[] { e }));
+			if (key instanceof Collection<?>) {
+				for (Object k : (Collection<?>) key) {
+					result.put(k, e);
+				}
+			} else {
+				result.put(key, e);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Updates the given maps for {@link #mappedBy(CodeBlock)}.
+	 * @param key the map key
+	 * @param e the map value
+	 * @param result the result map
+	 * @param shadow the shadow map of mutable sets
+	 */
+	private void updateMaps(final Object key, E e, final Map<Object, LazySet<E>> result, final Map<Object, HashSet<E>> shadow) {
+		HashSet<E> values = shadow.get(key);
+		if (values == null) {
+			values = new HashSet<E>();
+			shadow.put(key, values);
+			result.put(key, new LazySetOnSet<E>(values));
+		}
+		values.add(e);
+	}
 
 }

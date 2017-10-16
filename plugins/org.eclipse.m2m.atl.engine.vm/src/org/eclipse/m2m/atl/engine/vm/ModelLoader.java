@@ -186,7 +186,9 @@ public abstract class ModelLoader {
 	 * @param metamodel
 	 * @return A new ASMModel
 	 */
-	public abstract ASMModel newModel(String name, String uri, ASMModel metamodel);
+	public ASMModel newModel(String name, String uri, ASMModel metamodel) {
+		return newModel(name, metamodel);
+	}
 
 	protected abstract void setParameter(String name, Object value);
 

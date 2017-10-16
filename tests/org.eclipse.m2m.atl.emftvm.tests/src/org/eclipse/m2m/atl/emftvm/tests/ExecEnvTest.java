@@ -1447,7 +1447,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		{
 		final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
-		pbmm.setResource(rs.getResource(URI.createPlatformPluginURI(COMMON_PLUGIN_ID + "/org/eclipse/m2m/atl/common/resources/Problem.ecore", true), true));
+		pbmm.setResource(rs.getResource(URI.createPlatformPluginURI(COMMON_PLUGIN_ID + "/model/Problem.ecore", true), true));
 		env.registerMetaModel("Problem", pbmm);
 		}
 

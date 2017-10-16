@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2017 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,26 +21,26 @@ import java.util.TimeZone;
 
 /**
  * Reflective, immutable implementation of OCL Tuples.
- * 
+ *
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public final class Tuple {
 
 	/**
 	 * Creates a new {@link Tuple} from <code>map</code>.
-	 * 
+	 *
 	 * @param map
 	 *            the {@link Map} with tuple data
 	 * @return a new {@link Tuple} from <code>map</code>
 	 */
-	public static Tuple fromMap(final Map<String, Object> map) {
+	public static Tuple fromMap(final Map<String, ? extends Object> map) {
 		return new Tuple(map);
 	}
 
 	/**
 	 * Returns a new {@link Tuple} from <code>cal</code>. Supported fields: timezone, year, month, day_of_month, day_of_week, day_of_week_in_month,
 	 * day_of_year, era, hour, hour_of_day, minute, second, millisecond, am_pm, week_of_month, week_of_year.
-	 * 
+	 *
 	 * @param cal
 	 *            the input {@link Calendar}
 	 * @return a new {@link Tuple} from <code>cal</code>
@@ -66,7 +66,7 @@ public final class Tuple {
 		return new Tuple(values);
 	}
 
-	private final Map<String, Object> values;
+	private final Map<String, ? extends Object> values;
 
 	/**
 	 * Creates a new empty {@link Tuple}.
@@ -77,31 +77,23 @@ public final class Tuple {
 
 	/**
 	 * Creates a new {@link Tuple} initialized with the given <code>map</code>.
-	 * 
+	 *
 	 * @param map
 	 *            the map with tuple key-value pairs
 	 */
-	public Tuple(Map<String, Object> map) {
-		values = Collections.unmodifiableMap(map);
+	public Tuple(Map<String, ? extends Object> map) {
+		values = map;
 	}
 
 	/**
 	 * Returns the value for <code>name</code>.
-	 * 
+	 *
 	 * @param name
 	 *            the element name
 	 * @return the value for <code>name</code>
 	 */
 	public Object get(Object name) {
 		return values.get(name);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String toString() {
-		return "Tuple " + values.toString(); //$NON-NLS-1$
 	}
 
 	/**
@@ -122,10 +114,10 @@ public final class Tuple {
 
 	/**
 	 * Returns this {@link Tuple}'s value map.
-	 * 
+	 *
 	 * @return this {@link Tuple}'s value map
 	 */
-	public Map<String, Object> asMap() {
+	public Map<String, ? extends Object> asMap() {
 		return values;
 	}
 
@@ -133,7 +125,7 @@ public final class Tuple {
 	 * Returns a {@link Date} instance using the fields of this tuple. Supported fields: timezone, locale, year, month,
 	 * day_of_month, day_of_week, day_of_week_in_month, day_of_year, era, hour, hour_of_day, minute, second, millisecond, am_pm,
 	 * week_of_month, week_of_year.
-	 * 
+	 *
 	 * @return a {@link Date} instance using the fields of this tuple
 	 * @see Calendar
 	 */

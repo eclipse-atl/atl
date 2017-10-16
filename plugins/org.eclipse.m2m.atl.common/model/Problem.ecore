@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore">
+  <ecore:EPackage xmi:id="a1" name="PrimitiveTypes" nsURI="http://www.eclipse.org/gmt/2005/Problem-PrimitiveTypes"
+      nsPrefix="pbptypes">
+    <eClassifiers xsi:type="ecore:EDataType" xmi:id="a2" name="Boolean" instanceClassName="boolean"/>
+    <eClassifiers xsi:type="ecore:EDataType" xmi:id="a3" name="Integer" instanceClassName="int"/>
+    <eClassifiers xsi:type="ecore:EDataType" xmi:id="a4" name="String" instanceClassName="java.lang.String"/>
+  </ecore:EPackage>
+  <ecore:EPackage xmi:id="a5" name="Problem" nsURI="http://www.eclipse.org/gmt/2005/Problem"
+      nsPrefix="pb">
+    <eClassifiers xsi:type="ecore:EClass" xmi:id="a6" name="Problem">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a7" name="severity"
+          ordered="false" unique="false" lowerBound="1" eType="#a10"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a8" name="location"
+          ordered="false" unique="false" lowerBound="1" eType="#a4"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="a9" name="description"
+          ordered="false" unique="false" lowerBound="1" eType="#a4"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" xmi:id="a10" name="Severity">
+      <eLiterals xmi:id="a11" name="critic"/>
+      <eLiterals xmi:id="a12" name="error"/>
+      <eLiterals xmi:id="a13" name="warning"/>
+    </eClassifiers>
+  </ecore:EPackage>
+</xmi:XMI>

@@ -450,14 +450,13 @@ public class TraceLinkSetImpl extends EObjectImpl implements TraceLinkSet {
 	 */
 	private void defaultSourceElementAdded(final SourceElement se) {
 		final EObject object = se.getObject();
-		if (defaultSourceObjects.containsKey(object)) {
-			final SourceElement eSe = defaultSourceObjects.get(object);
+		final SourceElement eSe = defaultSourceObjects.put(object, se);
+		if (eSe != null) {
 			throw new IllegalArgumentException(String.format(
 					"Default trace already exists for source element %s::%s: %s::%s", 
 					se.getSourceOf().getRule(), se, 
 					eSe.getSourceOf().getRule(), eSe));
 		}
-		defaultSourceObjects.put(object, se);
 	}
 
 	/**
@@ -474,17 +473,16 @@ public class TraceLinkSetImpl extends EObjectImpl implements TraceLinkSet {
 	 */
 	private void defaultSourceElementListAdded(final SourceElementList sel) {
 		final List<Object> objects = sel.getSourceObjects();
-		if (defaultSourceObjectLists.containsKey(objects)) {
+		final SourceElementList eSel = defaultSourceObjectLists.put(objects, sel);
+		if (eSel != null) {
 			assert !sel.getSourceElements().isEmpty();
 			final TracedRule selRule = sel.getSourceElements().get(0).getSourceOf().getRule();
-			final SourceElementList eSel = defaultSourceObjectLists.get(objects);
 			assert !eSel.getSourceElements().isEmpty();
 			final TracedRule eSelRule = eSel.getSourceElements().get(0).getSourceOf().getRule();
 			throw new IllegalArgumentException(String.format(
 					"Default trace already exists for source element list %s::%s: %s::%s", 
 					selRule, sel, eSelRule, eSel));
 		}
-		defaultSourceObjectLists.put(objects, sel);
 	}
 
 	/**

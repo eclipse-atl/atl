@@ -315,14 +315,22 @@ public final class StackFrame {
 					if (lv.getSlot() == slot && lv.getStartInstructionIndex() <= loc && lv.getEndInstructionIndex() >= loc) {
 						sb.append(lv.toString());
 						sb.append(" = ");
-						sb.append(EMFTVMUtil.toPrettyString(locals[slot], getEnv()));
+						try {
+							sb.append(EMFTVMUtil.toPrettyString(locals[slot], getEnv()));
+						} catch (VMException e) {
+							sb.append("<VMException>");
+						}
 						break;
 					}
 				}
 			}
 			sb.append(']');
 		} else {
-			sb.append(EMFTVMUtil.toPrettyString(locals, getEnv()));
+			try {
+				sb.append(EMFTVMUtil.toPrettyString(locals, getEnv()));
+			} catch (VMException e) {
+				sb.append("<VMException>");
+			}
 		}
 		final StackFrame parent = getParent();
 		if (parent != null) {

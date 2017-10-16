@@ -11,13 +11,10 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
-
 import org.eclipse.m2m.atl.emftvm.tests.compiler.AtlResourceTest;
 import org.eclipse.m2m.atl.emftvm.tests.compiler.CompilerTest;
 import org.eclipse.m2m.atl.emftvm.tests.integration.IntegrationTest;
+import org.eclipse.m2m.atl.emftvm.tests.performance.ATLtoEMFTVMPerformanceTest;
 import org.eclipse.m2m.atl.emftvm.tests.performance.EcoreCopyPerformanceTest;
 import org.eclipse.m2m.atl.emftvm.tests.pojo.PojoModelTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.ExecEnvPoolTest;
@@ -30,7 +27,12 @@ import org.eclipse.m2m.atl.emftvm.util.tests.LazyOrderedSetTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazySetOnSetTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazySetTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.OCLOperationsTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.StackFrameTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.TupleTest;
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
@@ -68,12 +70,14 @@ public class EmftvmAllTests extends TestSuite {
 		suite.addTestSuite(LazyOrderedSetTest.class);
 		suite.addTestSuite(ExecEnvPoolTest.class);
 		suite.addTestSuite(OCLOperationsTest.class);
+		suite.addTestSuite(StackFrameTest.class);
 		suite.addTestSuite(TupleTest.class);
 		suite.addTestSuite(PojoModelTest.class);
 		suite.addTestSuite(CompilerTest.class);
 		suite.addTestSuite(AtlResourceTest.class);
 		suite.addTestSuite(IntegrationTest.class);
 		suite.addTestSuite(EcoreCopyPerformanceTest.class);
+		suite.addTestSuite(ATLtoEMFTVMPerformanceTest.class);
 		return suite;
 	}
 

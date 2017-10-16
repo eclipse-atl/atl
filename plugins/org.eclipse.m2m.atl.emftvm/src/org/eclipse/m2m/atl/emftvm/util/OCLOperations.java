@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2017 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,7 +46,6 @@ import org.eclipse.m2m.atl.emftvm.trace.TargetElement;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
 
-
 /**
  * Provides native operations on simple OCL types.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
@@ -68,7 +68,7 @@ public final class OCLOperations {
 			public ResolveIterator() {
 				super(dataSource.iterator());
 			}
-	
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -82,7 +82,7 @@ public final class OCLOperations {
 						assert seMapsTo.get(0).getObject().eResource() != null;
 						next = seMapsTo.get(0).getObject();
 					} else {
-						for (TargetElement te : se.getSourceOf().getTargetElements()) {
+						for (final TargetElement te : se.getSourceOf().getTargetElements()) {
 							if (te.getMapsTo().isEmpty()) { // default mapping
 								assert te.getObject().eResource() != null;
 								next = te.getObject();
@@ -107,7 +107,7 @@ public final class OCLOperations {
 			super(dataSource);
 			this.tls = frame.getEnv().getTraces();
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -118,7 +118,7 @@ public final class OCLOperations {
 			}
 			return new ResolveIterator(); // extends CachingIterator
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -129,7 +129,7 @@ public final class OCLOperations {
 			}
 			return ((Collection<Object>)dataSource).size();
 		}
-		
+
 	}
 
 	/**
@@ -155,7 +155,7 @@ public final class OCLOperations {
 						assert seMapsTo.get(0).getObject().eResource() != null;
 						next = seMapsTo.get(0).getObject();
 					} else {
-						for (TargetElement te : se.getSourceOf().getTargetElements()) {
+						for (final TargetElement te : se.getSourceOf().getTargetElements()) {
 							if (te.getMapsTo().isEmpty()) { // default mapping
 								assert te.getObject().eResource() != null;
 								next = te.getObject();
@@ -197,7 +197,7 @@ public final class OCLOperations {
 				return new UniqueResolveIterator(); // extends CachingIterator
 			}
 		}
-		
+
 	}
 
 	private static OCLOperations instance;
@@ -233,7 +233,7 @@ public final class OCLOperations {
 		// OclAny
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "debug", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -251,9 +251,9 @@ public final class OCLOperations {
 						ATLLogger.info(buf.toString());
 						return object;
 					}
-		});
+				});
 		createOperation(false, "debug", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{{{"message"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"message"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -272,18 +272,18 @@ public final class OCLOperations {
 						ATLLogger.info(buf.toString());
 						return object;
 					}
-		});
+				});
 		createOperation(false, "toString", Types.OCL_ANY_TYPE, Types.STRING_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						final Object object = frame.getLocal(0, 0);
 						return EMFTVMUtil.toPrettyString(object, frame.getEnv());
 					}
-		});
+				});
 		createOperation(false, "oclAsType", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{{{"type"}, Types.CLASSIFIER_TYPE}}, 
+				new String[][][]{{{"type"}, Types.CLASSIFIER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -297,9 +297,9 @@ public final class OCLOperations {
 						return object;
 
 					}
-		});
+				});
 		createOperation(false, "oclAsType", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{{{"type"}, Types.JAVA_CLASS_TYPE}}, 
+				new String[][][]{{{"type"}, Types.JAVA_CLASS_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -313,9 +313,9 @@ public final class OCLOperations {
 						return object;
 
 					}
-		});
+				});
 		createOperation(false, "oclIsTypeOf", Types.OCL_ANY_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"type"}, Types.CLASSIFIER_TYPE}}, 
+				new String[][][]{{{"type"}, Types.CLASSIFIER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -324,7 +324,7 @@ public final class OCLOperations {
 						if (type instanceof EClass) {
 							return o instanceof EObject && ((EObject) o).eClass() == type;
 						} else if (o != null) {
-							final Class<?> ic = ((EClassifier)type).getInstanceClass();
+							final Class<?> ic = type.getInstanceClass();
 							if (ic == null) {
 								throw new IllegalArgumentException(String.format("EClassifier %s must have an instance class", type));
 							}
@@ -333,9 +333,9 @@ public final class OCLOperations {
 							return false;
 						}
 					}
-		});
+				});
 		createOperation(false, "oclIsTypeOf", Types.OCL_ANY_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"type"}, Types.JAVA_CLASS_TYPE}}, 
+				new String[][][]{{{"type"}, Types.JAVA_CLASS_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -343,9 +343,9 @@ public final class OCLOperations {
 						final Class<?> type = (Class<?>)frame.getLocal(0, 1);
 						return o != null ? o.getClass() == type : false;
 					}
-		});
+				});
 		createOperation(false, "oclIsKindOf", Types.OCL_ANY_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"type"}, Types.CLASSIFIER_TYPE}}, 
+				new String[][][]{{{"type"}, Types.CLASSIFIER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -353,9 +353,9 @@ public final class OCLOperations {
 						final EClassifier type = (EClassifier)frame.getLocal(0, 1);
 						return type.isInstance(o);
 					}
-		});
+				});
 		createOperation(false, "oclIsKindOf", Types.OCL_ANY_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"type"}, Types.JAVA_CLASS_TYPE}}, 
+				new String[][][]{{{"type"}, Types.JAVA_CLASS_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -363,9 +363,9 @@ public final class OCLOperations {
 						final Class<?> type = (Class<?>)frame.getLocal(0, 1);
 						return type.isInstance(o);
 					}
-		});
+				});
 		createOperation(false, "oclType", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -378,9 +378,9 @@ public final class OCLOperations {
 							return Void.TYPE;
 						}
 					}
-		});
+				});
 		createOperation(false, "=", Types.OCL_ANY_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}}, 
+				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -388,9 +388,9 @@ public final class OCLOperations {
 						final Object o2 = frame.getLocal(0, 1);
 						return o == null ? o2 == null : o.equals(o2);
 					}
-		});
+				});
 		createOperation(false, "=~", Types.OCL_ANY_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}}, 
+				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -398,9 +398,9 @@ public final class OCLOperations {
 						final Object o2 = frame.getLocal(0, 1);
 						return o == null ? o2 == null : o.equals(o2);
 					}
-		});
+				});
 		createOperation(false, "=~|", Types.OCL_ANY_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}}, 
+				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -408,9 +408,9 @@ public final class OCLOperations {
 						final Object o2 = frame.getLocal(0, 1);
 						return o == null ? o2 == null : o.equals(o2);
 					}
-		});
+				});
 		createOperation(false, "<>", Types.OCL_ANY_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}}, 
+				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -418,9 +418,9 @@ public final class OCLOperations {
 						final Object o2 = frame.getLocal(0, 1);
 						return !(o == null ? o2 == null : o.equals(o2));
 					}
-		});
+				});
 		createOperation(false, "isInModel", Types.OCL_ANY_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"model"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"model"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -444,9 +444,9 @@ public final class OCLOperations {
 							return false;
 						}
 					}
-		});
+				});
 		createOperation(false, "refImmediateComposite", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -458,9 +458,9 @@ public final class OCLOperations {
 								"Cannot retrieve immediate composite for regular objects: %s",
 								object));
 					}
-		});
+				});
 		createOperation(false, "refGetValue", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{{{"propname"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"propname"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -480,9 +480,9 @@ public final class OCLOperations {
 								"Cannot retrieve properties for regular objects: %s",
 								object));
 					}
-		});
+				});
 		createOperation(false, "refSetValue", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{{{"propname"}, Types.STRING_TYPE}, {{"value"}, Types.OCL_ANY_TYPE}}, 
+				new String[][][]{{{"propname"}, Types.STRING_TYPE}, {{"value"}, Types.OCL_ANY_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -498,15 +498,15 @@ public final class OCLOperations {
 										"Cannot find property %s::%s", ecls.getName(), propname));
 							}
 							((EObject)object).eSet(sf, value);
-							return null;
+							return object;
 						}
 						throw new VMException(frame, String.format(
 								"Cannot set properties for regular objects: %s",
 								object));
 					}
-		});
+				});
 		createOperation(false, "refUnsetValue", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{{{"propname"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"propname"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -521,13 +521,13 @@ public final class OCLOperations {
 										"Cannot find property %s::%s", ecls.getName(), propname));
 							}
 							((EObject)object).eUnset(sf);
-							return null;
+							return object;
 						}
 						throw new VMException(frame, String.format(
 								"Cannot unset properties for regular objects: %s",
 								object));
 					}
-		});
+				});
 		createOperation(false, "refInvokeOperation", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
 				new String[][][]{{{"opname"}, Types.STRING_TYPE}, {{"arguments"}, Types.SEQUENCE_TYPE}},
 				new NativeCodeBlock() {
@@ -538,9 +538,9 @@ public final class OCLOperations {
 						final List<?> args = (List<?>)frame.getLocal(0, 2);
 						return EMFTVMUtil.invokeNative(frame, object, opname, args.toArray());
 					}
-		});
+				});
 		createOperation(false, "resolve", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -552,7 +552,7 @@ public final class OCLOperations {
 								assert seMapsTo.get(0).getObject().eResource() != null;
 								return seMapsTo.get(0).getObject();
 							}
-							for (TargetElement te : se.getSourceOf().getTargetElements()) {
+							for (final TargetElement te : se.getSourceOf().getTargetElements()) {
 								if (te.getMapsTo().isEmpty()) { // default mapping
 									assert te.getObject().eResource() != null;
 									return te.getObject();
@@ -561,9 +561,9 @@ public final class OCLOperations {
 						}
 						return object;
 					}
-		});
+				});
 		createOperation(false, "resolve", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{{{"rule"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"rule"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -578,7 +578,7 @@ public final class OCLOperations {
 									assert seMapsTo.get(0).getObject().eResource() != null;
 									return seMapsTo.get(0).getObject();
 								}
-								for (TargetElement te : se.getSourceOf().getTargetElements()) {
+								for (final TargetElement te : se.getSourceOf().getTargetElements()) {
 									if (te.getMapsTo().isEmpty()) { // default mapping
 										assert te.getObject().eResource() != null;
 										return te.getObject();
@@ -588,8 +588,8 @@ public final class OCLOperations {
 						}
 						return object;
 					}
-		});
-		createOperation(false, "remap", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE, 
+				});
+		createOperation(false, "remap", Types.OCL_ANY_TYPE, Types.OCL_ANY_TYPE,
 				new String[][][]{{{"to"}, Types.OCL_ANY_TYPE}},
 				new NativeCodeBlock() {
 					@Override
@@ -601,12 +601,12 @@ public final class OCLOperations {
 						}
 						return target;
 					}
-		});
+				});
 		/////////////////////////////////////////////////////////////////////
 		// Collection
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "toString", Types.COLLECTION_TYPE, Types.STRING_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@SuppressWarnings("unchecked")
 					@Override
@@ -614,12 +614,12 @@ public final class OCLOperations {
 						final LazyCollection<Object> coll = (LazyCollection<Object>)frame.getLocal(0, 0);
 						return coll.asString(frame.getEnv());
 					}
-		});
+				});
 		/////////////////////////////////////////////////////////////////////
 		// JavaCollection
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "resolve", Types.JAVA_COLLECTION_TYPE, Types.SEQUENCE_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@SuppressWarnings("unchecked")
 					@Override
@@ -627,9 +627,9 @@ public final class OCLOperations {
 						final Collection<Object> object = (Collection<Object>)frame.getLocal(0, 0);
 						return new ResolveList(object, frame);
 					}
-		});
+				});
 		createOperation(false, "resolve", Types.JAVA_COLLECTION_TYPE, Types.SEQUENCE_TYPE,
-				new String[][][]{{{"rule"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"rule"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@SuppressWarnings("unchecked")
 					@Override
@@ -638,9 +638,9 @@ public final class OCLOperations {
 						final String rule = (String)frame.getLocal(0, 1);
 						return new UniqueResolveList(object, frame, rule);
 					}
-		});
+				});
 		createOperation(false, "=~", Types.JAVA_COLLECTION_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}}, 
+				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -652,9 +652,9 @@ public final class OCLOperations {
 							return o.contains(o2);
 						}
 					}
-		});
+				});
 		createOperation(false, "=~|", Types.JAVA_COLLECTION_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}}, 
+				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -666,12 +666,12 @@ public final class OCLOperations {
 							return o.contains(o2);
 						}
 					}
-		});
+				});
 		/////////////////////////////////////////////////////////////////////
 		// JavaList
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "=~|", Types.JAVA_LIST_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}}, 
+				new String[][][]{{{"o"}, Types.OCL_ANY_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -692,58 +692,58 @@ public final class OCLOperations {
 							return false;
 						}
 					}
-		});
+				});
 		/////////////////////////////////////////////////////////////////////
 		// Map
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "including", Types.MAP_TYPE, Types.SET_TYPE,
 				new String[][][]{{{"key"}, Types.OCL_ANY_TYPE}, {{"value"}, Types.OCL_ANY_TYPE}},
 				new NativeCodeBlock() {
-			@Override
-			public Object execute(final StackFrame frame) {
-				final Map<Object, Object> o = new HashMap<Object, Object>((Map<?, ?>)frame.getLocal(0, 0));
-				final Object key = frame.getLocal(0, 1);
-				final Object value = frame.getLocal(0, 2);
-				o.put(key, value);
-				return o;
-			}
-		});
+					@Override
+					public Object execute(final StackFrame frame) {
+						final Map<Object, Object> o = new HashMap<Object, Object>((Map<?, ?>)frame.getLocal(0, 0));
+						final Object key = frame.getLocal(0, 1);
+						final Object value = frame.getLocal(0, 2);
+						o.put(key, value);
+						return o;
+					}
+				});
 		createOperation(false, "getKeys", Types.MAP_TYPE, Types.SET_TYPE,
 				new String[][][]{},
 				new NativeCodeBlock() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public Object execute(final StackFrame frame) {
-				final Map<?, ?> o = (Map<?, ?>)frame.getLocal(0, 0);
-				return new LazySetOnSet<Object>((Set<Object>)o.keySet());
-			}
-		});
+					@SuppressWarnings("unchecked")
+					@Override
+					public Object execute(final StackFrame frame) {
+						final Map<?, ?> o = (Map<?, ?>)frame.getLocal(0, 0);
+						return new LazySetOnSet<Object>((Set<Object>)o.keySet());
+					}
+				});
 		createOperation(false, "getValues", Types.MAP_TYPE, Types.SET_TYPE,
 				new String[][][]{},
 				new NativeCodeBlock() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public Object execute(final StackFrame frame) {
-				final Map<?, ?> o = (Map<?, ?>)frame.getLocal(0, 0);
-				return new LazyBagOnCollection<Object>((Collection<Object>)o.values());
-			}
-		});
+					@SuppressWarnings("unchecked")
+					@Override
+					public Object execute(final StackFrame frame) {
+						final Map<?, ?> o = (Map<?, ?>)frame.getLocal(0, 0);
+						return new LazyBagOnCollection<Object>((Collection<Object>)o.values());
+					}
+				});
 		createOperation(false, "union", Types.MAP_TYPE, Types.SET_TYPE,
 				new String[][][]{{{"m"}, Types.MAP_TYPE}},
 				new NativeCodeBlock() {
-			@Override
-			public Object execute(final StackFrame frame) {
-				final Map<Object, Object> o = new HashMap<Object, Object>((Map<?, ?>)frame.getLocal(0, 0));
-				final Map<?, ?> m = (Map<?, ?>)frame.getLocal(0, 1);
-				o.putAll(m);
-				return o;
-			}
-		});
+					@Override
+					public Object execute(final StackFrame frame) {
+						final Map<Object, Object> o = new HashMap<Object, Object>((Map<?, ?>)frame.getLocal(0, 0));
+						final Map<?, ?> m = (Map<?, ?>)frame.getLocal(0, 1);
+						o.putAll(m);
+						return o;
+					}
+				});
 		/////////////////////////////////////////////////////////////////////
 		// ExecEnv
 		/////////////////////////////////////////////////////////////////////
 		createOperation(true, "resolveTemp", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{{{"var"}, Types.OCL_ANY_TYPE}, {{"target_pattern_name"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"var"}, Types.OCL_ANY_TYPE}, {{"target_pattern_name"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -768,63 +768,63 @@ public final class OCLOperations {
 							}
 						}
 						throw new VMException(frame, String.format(
-								"Cannot resolve default trace target '%s' for %s", 
+								"Cannot resolve default trace target '%s' for %s",
 								name, EMFTVMUtil.toPrettyString(object, frame.getEnv())));
 					}
-		});
+				});
 		createOperation(true, "resolveTemp", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE,
-				new String[][][]{{{"var"}, Types.OCL_ANY_TYPE}, 
-					{{"rule_name"}, Types.STRING_TYPE}, 
-					{{"target_pattern_name"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"var"}, Types.OCL_ANY_TYPE},
+			{{"rule_name"}, Types.STRING_TYPE},
+			{{"target_pattern_name"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
-					@Override
-					public Object execute(final StackFrame frame) {
-						final Object object = frame.getLocal(0, 0);
-						final String rule = (String)frame.getLocal(0, 1);
-						final String name = (String)frame.getLocal(0, 2);
-						if (object instanceof List<?>) {
-							final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(rule, false);
-							if (tr != null) {
-								final SourceElementList sel = tr.getUniqueSourceElements((List<?>)object);
-								if (sel != null) {
-									assert !sel.getSourceElements().isEmpty();
-									final TargetElement te = sel.getSourceElements().get(0).getSourceOf().getTargetElement(name);
-									if (te != null) {
-										return te.getObject();
-									}
-								}
-							}
-						} else {
-							final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(rule, false);
-							if (tr != null) {
-								final SourceElement se = tr.getUniqueSourceElement(object);
-								if (se != null) {
-									final TargetElement te = se.getSourceOf().getTargetElement(name);
-									if (te != null) {
-										return te.getObject();
-									}
+				@Override
+				public Object execute(final StackFrame frame) {
+					final Object object = frame.getLocal(0, 0);
+					final String rule = (String)frame.getLocal(0, 1);
+					final String name = (String)frame.getLocal(0, 2);
+					if (object instanceof List<?>) {
+						final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(rule, false);
+						if (tr != null) {
+							final SourceElementList sel = tr.getUniqueSourceElements((List<?>)object);
+							if (sel != null) {
+								assert !sel.getSourceElements().isEmpty();
+								final TargetElement te = sel.getSourceElements().get(0).getSourceOf().getTargetElement(name);
+								if (te != null) {
+									return te.getObject();
 								}
 							}
 						}
-						throw new VMException(frame, String.format(
-								"Cannot resolve unique trace target '%s::%s' for %s", 
-								rule, name, EMFTVMUtil.toPrettyString(object, frame.getEnv())));
+					} else {
+						final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(rule, false);
+						if (tr != null) {
+							final SourceElement se = tr.getUniqueSourceElement(object);
+							if (se != null) {
+								final TargetElement te = se.getSourceOf().getTargetElement(name);
+								if (te != null) {
+									return te.getObject();
+								}
+							}
+						}
 					}
-		});
+					throw new VMException(frame, String.format(
+							"Cannot resolve unique trace target '%s::%s' for %s",
+							rule, name, EMFTVMUtil.toPrettyString(object, frame.getEnv())));
+				}
+			});
 		/////////////////////////////////////////////////////////////////////
 		// Class
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "allInstances", Types.CLASS_TYPE, Types.SEQUENCE_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						final EClass c = (EClass)frame.getLocal(0, 0);
 						return EMFTVMUtil.findAllInstances(c, frame.getEnv());
 					}
-		});
+				});
 		createOperation(false, "allInstancesFrom", Types.CLASS_TYPE, Types.SEQUENCE_TYPE,
-				new String[][][]{{{"metamodel"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"metamodel"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -832,9 +832,9 @@ public final class OCLOperations {
 						final String mm = (String)frame.getLocal(0, 1);
 						return EMFTVMUtil.findAllInstIn(mm, c, frame.getEnv());
 					}
-		});
+				});
 		createOperation(false, "conformsTo", Types.CLASS_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"type"}, Types.CLASS_TYPE}}, 
+				new String[][][]{{{"type"}, Types.CLASS_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -842,9 +842,9 @@ public final class OCLOperations {
 						final EClass c2 = (EClass)frame.getLocal(0, 1);
 						return c2.isSuperTypeOf(c);
 					}
-		});
+				});
 		createOperation(false, "conformsTo", Types.CLASS_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"type"}, Types.JAVA_CLASS_TYPE}}, 
+				new String[][][]{{{"type"}, Types.JAVA_CLASS_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -857,7 +857,7 @@ public final class OCLOperations {
 							return c2 == Object.class; // everything is an Object
 						}
 					}
-		});
+				});
 		createOperation(false, "newInstance", Types.CLASS_TYPE, Types.OCL_ANY_TYPE,
 				new String[][][]{},
 				new NativeCodeBlock() {
@@ -866,7 +866,7 @@ public final class OCLOperations {
 						final EClass type = (EClass)frame.getLocal(0, 0);
 						return type.getEPackage().getEFactoryInstance().create(type);
 					}
-		});
+				});
 		createOperation(false, "newInstanceIn", Types.CLASS_TYPE, Types.OCL_ANY_TYPE,
 				new String[][][]{{{"modelname"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
@@ -884,7 +884,7 @@ public final class OCLOperations {
 						}
 						return model.newElement(type);
 					}
-		});
+				});
 		createOperation(false, "getInstanceById", Types.CLASS_TYPE, Types.OCL_ANY_TYPE,
 				new String[][][]{{{"id"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
@@ -896,7 +896,7 @@ public final class OCLOperations {
 						final List<Model> models = new LazyListOnCollection<Model>(
 								env.getInputModels().values()).union(new LazyListOnCollection<Model>(
 										env.getInoutModels().values()));
-						for (Model model : models) {
+						for (final Model model : models) {
 							final EObject instance = model.getResource().getEObject(id);
 							if (type.isInstance(instance)) {
 								return instance;
@@ -904,7 +904,7 @@ public final class OCLOperations {
 						}
 						return null;
 					}
-		});
+				});
 		createOperation(false, "getInstanceById", Types.CLASS_TYPE, Types.OCL_ANY_TYPE,
 				new String[][][]{{{"modelname"}, Types.STRING_TYPE}, {{"id"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
@@ -928,12 +928,12 @@ public final class OCLOperations {
 							return null;
 						}
 					}
-		});
+				});
 		/////////////////////////////////////////////////////////////////////
 		// JavaClass
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "conformsTo", Types.JAVA_CLASS_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"type"}, Types.CLASS_TYPE}}, 
+				new String[][][]{{{"type"}, Types.CLASS_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -946,9 +946,9 @@ public final class OCLOperations {
 							return false;
 						}
 					}
-		});
+				});
 		createOperation(false, "conformsTo", Types.JAVA_CLASS_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"type"}, Types.JAVA_CLASS_TYPE}}, 
+				new String[][][]{{{"type"}, Types.JAVA_CLASS_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -956,16 +956,16 @@ public final class OCLOperations {
 						final Class<?> c2 = (Class<?>)frame.getLocal(0, 1);
 						return c2.isAssignableFrom(c);
 					}
-		});
+				});
 		createOperation(false, "getName", Types.JAVA_CLASS_TYPE, Types.STRING_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						final Class<?> c = (Class<?>)frame.getLocal(0, 0);
 						return NativeTypes.typeName(c);
 					}
-		});
+				});
 		createOperation(false, "refInvokeStaticOperation", Types.JAVA_CLASS_TYPE, Types.OCL_ANY_TYPE,
 				new String[][][]{{{"opname"}, Types.STRING_TYPE}, {{"arguments"}, Types.SEQUENCE_TYPE}},
 				new NativeCodeBlock() {
@@ -976,460 +976,476 @@ public final class OCLOperations {
 						final List<?> args = (List<?>)frame.getLocal(0, 2);
 						return EMFTVMUtil.invokeNativeStatic(frame, c, opname, args.toArray());
 					}
-		});
+				});
 		createOperation(false, "refNewInstance", Types.JAVA_CLASS_TYPE, Types.OCL_ANY_TYPE, new String[][][] { { { "arguments" },
-				Types.SEQUENCE_TYPE } }, new NativeCodeBlock() {
-			@Override
-			public Object execute(final StackFrame frame) {
-				final Class<?> c = (Class<?>) frame.getLocal(0, 0);
-				final Object[] args = ((List<?>) frame.getLocal(0, 1)).toArray();
-				final Constructor<?> constructor = EMFTVMUtil.findConstructor(c, EMFTVMUtil.getArgumentClasses(args));
-				if (constructor != null) {
-					try {
-						return EMFTVMUtil.emf2vm(frame.getEnv(), null, constructor.newInstance(args));
-					} catch (InvocationTargetException e) {
-						final Throwable target = e.getTargetException();
-						if (target instanceof VMException) {
-							throw (VMException) target;
-						} else {
-							throw new VMException(frame, target);
+			Types.SEQUENCE_TYPE } }, new NativeCodeBlock() {
+				@Override
+				public Object execute(final StackFrame frame) {
+					final Class<?> c = (Class<?>) frame.getLocal(0, 0);
+					final Object[] args = ((List<?>) frame.getLocal(0, 1)).toArray();
+					final Constructor<?> constructor = EMFTVMUtil.findConstructor(c, EMFTVMUtil.getArgumentClasses(args));
+					if (constructor != null) {
+						try {
+							return EMFTVMUtil.emf2vm(frame.getEnv(), null, constructor.newInstance(args));
+						} catch (final InvocationTargetException e) {
+							final Throwable target = e.getTargetException();
+							if (target instanceof VMException) {
+								throw (VMException) target;
+							} else {
+								throw new VMException(frame, target);
+							}
+						} catch (final VMException e) {
+							throw e;
+						} catch (final Exception e) {
+							throw new VMException(frame, e);
 						}
-					} catch (VMException e) {
-						throw e;
-					} catch (Exception e) {
-						throw new VMException(frame, e);
 					}
+					throw new UnsupportedOperationException(String.format("%s::<init>(%s)", EMFTVMUtil.getTypeName(frame.getEnv(), c),
+							EMFTVMUtil.getTypeNames(frame.getEnv(), EMFTVMUtil.getArgumentTypes(args))));
 				}
-				throw new UnsupportedOperationException(String.format("%s::<init>(%s)", EMFTVMUtil.getTypeName(frame.getEnv(), c),
-						EMFTVMUtil.getTypeNames(frame.getEnv(), EMFTVMUtil.getArgumentTypes(args))));
-			}
-		});
+			});
 		/////////////////////////////////////////////////////////////////////
 		// Real
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "+", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Double)frame.getLocal(0, 0) + (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "+", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Double)frame.getLocal(0, 0) + (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "-", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
-				new NativeCodeBlock() {
-					@Override
-					public Object execute(final StackFrame frame) {
-						return (Double)frame.getLocal(0, 0) - (Double)frame.getLocal(0, 1);
-					}
-		});
-		createOperation(false, "-", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
-				new NativeCodeBlock() {
-					@Override
-					public Object execute(final StackFrame frame) {
-						return (Double)frame.getLocal(0, 0) - (Integer)frame.getLocal(0, 1);
-					}
-		});
-		createOperation(false, "*", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
-				new NativeCodeBlock() {
-					@Override
-					public Object execute(final StackFrame frame) {
-						return (Double)frame.getLocal(0, 0) * (Double)frame.getLocal(0, 1);
-					}
-		});
-		createOperation(false, "*", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
-				new NativeCodeBlock() {
-					@Override
-					public Object execute(final StackFrame frame) {
-						return (Double)frame.getLocal(0, 0) * (Integer)frame.getLocal(0, 1);
-					}
-		});
-		createOperation(false, "neg", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return -(Double)frame.getLocal(0, 0);
 					}
-		});
+				});
+		createOperation(false, "-", Types.REAL_TYPE, Types.REAL_TYPE,
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						return (Double)frame.getLocal(0, 0) - (Double)frame.getLocal(0, 1);
+					}
+				});
+		createOperation(false, "-", Types.REAL_TYPE, Types.REAL_TYPE,
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						return (Double)frame.getLocal(0, 0) - (Integer)frame.getLocal(0, 1);
+					}
+				});
+		createOperation(false, "*", Types.REAL_TYPE, Types.REAL_TYPE,
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						return (Double)frame.getLocal(0, 0) * (Double)frame.getLocal(0, 1);
+					}
+				});
+		createOperation(false, "*", Types.REAL_TYPE, Types.REAL_TYPE,
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						return (Double)frame.getLocal(0, 0) * (Integer)frame.getLocal(0, 1);
+					}
+				});
+		createOperation(false, "neg", Types.REAL_TYPE, Types.REAL_TYPE,
+				new String[][][]{},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						return -(Double)frame.getLocal(0, 0);
+					}
+				});
 		createOperation(false, "/", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Double)frame.getLocal(0, 0) / (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "/", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Double)frame.getLocal(0, 0) / (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "abs", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Math.abs((Double)frame.getLocal(0, 0));
 					}
-		});
+				});
 		createOperation(false, "floor", Types.REAL_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Double.valueOf(Math.floor((Double)frame.getLocal(0, 0))).intValue();
 					}
-		});
+				});
 		createOperation(false, "round", Types.REAL_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Double.valueOf(Math.round((Double)frame.getLocal(0, 0))).intValue();
 					}
-		});
+				});
 		createOperation(false, "max", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Math.max((Double)frame.getLocal(0, 0), (Double)frame.getLocal(0, 1));
 					}
-		});
+				});
 		createOperation(false, "max", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Math.max((Double)frame.getLocal(0, 0), (Integer)frame.getLocal(0, 1));
 					}
-		});
+				});
 		createOperation(false, "min", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Math.min((Double)frame.getLocal(0, 0), (Double)frame.getLocal(0, 1));
 					}
-		});
+				});
 		createOperation(false, "min", Types.REAL_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Math.min((Double)frame.getLocal(0, 0), (Integer)frame.getLocal(0, 1));
 					}
-		});
+				});
 		createOperation(false, "<", Types.REAL_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Double)frame.getLocal(0, 0) < (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "<", Types.REAL_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Double)frame.getLocal(0, 0) < (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, ">", Types.REAL_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Double)frame.getLocal(0, 0) > (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, ">", Types.REAL_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Double)frame.getLocal(0, 0) > (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "<=", Types.REAL_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Double)frame.getLocal(0, 0) <= (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "<=", Types.REAL_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Double)frame.getLocal(0, 0) <= (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, ">=", Types.REAL_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Double)frame.getLocal(0, 0) >= (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, ">=", Types.REAL_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Double)frame.getLocal(0, 0) >= (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		/////////////////////////////////////////////////////////////////////
 		// Integer
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "neg", Types.INTEGER_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return -(Integer)frame.getLocal(0, 0);
 					}
-		});
+				});
 		createOperation(false, "+", Types.INTEGER_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) + (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "+", Types.INTEGER_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) + (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
+		createOperation(false, "-", Types.INTEGER_TYPE, Types.INTEGER_TYPE,
+				new String[][][]{},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						return -(Integer)frame.getLocal(0, 0);
+					}
+				});
 		createOperation(false, "-", Types.INTEGER_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) - (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "-", Types.INTEGER_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) - (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "*", Types.INTEGER_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) * (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "*", Types.INTEGER_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) * (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "/", Types.INTEGER_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) / (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "/", Types.INTEGER_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return ((Integer)frame.getLocal(0, 0)).doubleValue() / (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "abs", Types.INTEGER_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Math.abs((Integer)frame.getLocal(0, 0));
 					}
-		});
+				});
 		createOperation(false, "div", Types.INTEGER_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) / (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "mod", Types.INTEGER_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) % (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "max", Types.INTEGER_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Math.max((Integer)frame.getLocal(0, 0), (Double)frame.getLocal(0, 1));
 
 					}
-		});
+				});
 		createOperation(false, "max", Types.INTEGER_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Math.max((Integer)frame.getLocal(0, 0), (Integer)frame.getLocal(0, 1));
 					}
-		});
+				});
 		createOperation(false, "min", Types.INTEGER_TYPE, Types.REAL_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Math.min((Integer)frame.getLocal(0, 0), (Double)frame.getLocal(0, 1));
 					}
-		});
+				});
 		createOperation(false, "min", Types.INTEGER_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Math.min((Integer)frame.getLocal(0, 0), (Integer)frame.getLocal(0, 1));
 					}
-		});
+				});
 		createOperation(false, "<", Types.INTEGER_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) < (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "<", Types.INTEGER_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) < (Integer)frame.getLocal(0, 1);
 
 					}
-		});
+				});
 		createOperation(false, ">", Types.INTEGER_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) > (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, ">", Types.INTEGER_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) > (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "<=", Types.INTEGER_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) <= (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "<=", Types.INTEGER_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) <= (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, ">=", Types.INTEGER_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"r"}, Types.REAL_TYPE}}, 
+				new String[][][]{{{"r"}, Types.REAL_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) >= (Double)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, ">=", Types.INTEGER_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (Integer)frame.getLocal(0, 0) >= (Integer)frame.getLocal(0, 1);
 					}
-		});
+				});
 		/////////////////////////////////////////////////////////////////////
 		// String
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "+", Types.STRING_TYPE, Types.STRING_TYPE,
-				new String[][][]{{{"s"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"s"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return (String)frame.getLocal(0, 0) + (String)frame.getLocal(0, 1);
 					}
-		});
+				});
 		createOperation(false, "size", Types.STRING_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return ((String)frame.getLocal(0, 0)).length();
 					}
-		});
+				});
 		createOperation(false, "substring", Types.STRING_TYPE, Types.STRING_TYPE,
-				new String[][][]{{{"lower"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"lower"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						try {
 							return ((String)frame.getLocal(0, 0)).substring(
 									(Integer)frame.getLocal(0, 1) - 1);
-						} catch (IndexOutOfBoundsException e) {
+						} catch (final IndexOutOfBoundsException e) {
 							throw new VMException(frame, e);
 						}
 					}
-		});
+				});
 		createOperation(false, "substring", Types.STRING_TYPE, Types.STRING_TYPE,
-				new String[][][]{{{"lower"}, Types.INTEGER_TYPE}, {{"upper"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"lower"}, Types.INTEGER_TYPE}, {{"upper"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
@@ -1437,145 +1453,145 @@ public final class OCLOperations {
 							return ((String)frame.getLocal(0, 0)).substring(
 									(Integer)frame.getLocal(0, 1) - 1,
 									(Integer)frame.getLocal(0, 2));
-						} catch (IndexOutOfBoundsException e) {
+						} catch (final IndexOutOfBoundsException e) {
 							throw new VMException(frame, e);
 						}
 					}
-		});
+				});
 		createOperation(false, "toInteger", Types.STRING_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						try {
 							return Integer.parseInt((String)frame.getLocal(0, 0));
-						} catch (NumberFormatException e) {
+						} catch (final NumberFormatException e) {
 							throw new VMException(frame, e);
 						}
 					}
-		});
+				});
 		createOperation(false, "toReal", Types.STRING_TYPE, Types.REAL_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						try {
 							return Double.parseDouble((String)frame.getLocal(0, 0));
-						} catch (NumberFormatException e) {
+						} catch (final NumberFormatException e) {
 							throw new VMException(frame, e);
 						}
 					}
-		});
+				});
 		createOperation(false, "indexOf", Types.STRING_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{{{"s"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"s"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return ((String)frame.getLocal(0, 0)).indexOf((String)frame.getLocal(0, 1)) + 1;
 					}
-		});
+				});
 		createOperation(false, "lastIndexOf", Types.STRING_TYPE, Types.INTEGER_TYPE,
-				new String[][][]{{{"s"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"s"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return ((String)frame.getLocal(0, 0)).lastIndexOf((String)frame.getLocal(0, 1)) + 1;
 					}
-		});
+				});
 		createOperation(false, "at", Types.STRING_TYPE, Types.STRING_TYPE,
-				new String[][][]{{{"i"}, Types.INTEGER_TYPE}}, 
+				new String[][][]{{{"i"}, Types.INTEGER_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						try {
 							return String.valueOf(((String)frame.getLocal(0, 0))
 									.charAt((Integer)frame.getLocal(0, 1) - 1));
-						} catch (IndexOutOfBoundsException e) {
+						} catch (final IndexOutOfBoundsException e) {
 							throw new VMException(frame, e);
 						}
 					}
-		});
+				});
 		createOperation(false, "characters", Types.STRING_TYPE, Types.SEQUENCE_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						LazyList<String> seq = new LazyList<String>();
-						for (char c : ((String)frame.getLocal(0, 0)).toCharArray()) {
+						for (final char c : ((String)frame.getLocal(0, 0)).toCharArray()) {
 							seq = seq.append(String.valueOf(c));
 						}
 						return seq;
 					}
-		});
+				});
 		createOperation(false, "toBoolean", Types.STRING_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return Boolean.parseBoolean((String)frame.getLocal(0, 0));
 					}
-		});
+				});
 		createOperation(false, "toUpper", Types.STRING_TYPE, Types.STRING_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return ((String)frame.getLocal(0, 0)).toUpperCase();
 					}
-		});
+				});
 		createOperation(false, "toLower", Types.STRING_TYPE, Types.STRING_TYPE,
-				new String[][][]{}, 
+				new String[][][]{},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						return ((String)frame.getLocal(0, 0)).toLowerCase();
 					}
-		});
+				});
 		createOperation(false, "writeTo", Types.STRING_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"path"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"path"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						try {
 							return EMFTVMUtil.writeToWithCharset(
-									(String)frame.getLocal(0, 0), 
+									(String)frame.getLocal(0, 0),
 									(String)frame.getLocal(0, 1),
 									null);
 
-						} catch (IOException e) {
+						} catch (final IOException e) {
 							throw new VMException(frame, e);
 						}
 					}
-		});
+				});
 		createOperation(false, "writeToWithCharset", Types.STRING_TYPE, Types.BOOLEAN_TYPE,
-				new String[][][]{{{"path"}, Types.STRING_TYPE}, {{"charset"}, Types.STRING_TYPE}}, 
+				new String[][][]{{{"path"}, Types.STRING_TYPE}, {{"charset"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						try {
 							return EMFTVMUtil.writeToWithCharset(
-									(String)frame.getLocal(0, 0), 
+									(String)frame.getLocal(0, 0),
 									(String)frame.getLocal(0, 1),
 									(String)frame.getLocal(0, 2));
 
-						} catch (IOException e) {
+						} catch (final IOException e) {
 							throw new VMException(frame, e);
 						}
 					}
-		});
-		createOperation(false, "toDate", Types.STRING_TYPE, Types.JAVA_DATE_TYPE, 
+				});
+		createOperation(false, "toDate", Types.STRING_TYPE, Types.JAVA_DATE_TYPE,
 				new String[][][]{{{"format"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
 					public Object execute(final StackFrame frame) {
 						try {
 							return new SimpleDateFormat((String) frame.getLocal(1)).parse((String) frame.getLocal(0));
-						} catch (ParseException e) {
+						} catch (final ParseException e) {
 							throw new VMException(frame, e);
 						}
 					}
 				});
-		createOperation(false, "toDate", Types.STRING_TYPE, Types.JAVA_DATE_TYPE, 
+		createOperation(false, "toDate", Types.STRING_TYPE, Types.JAVA_DATE_TYPE,
 				new String[][][]{{{"format"}, Types.STRING_TYPE}, {{"locale"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
@@ -1583,7 +1599,7 @@ public final class OCLOperations {
 						try {
 							return new SimpleDateFormat((String) frame.getLocal(1), EMFTVMUtil.getLocale((String) frame.getLocal(2)))
 									.parse((String) frame.getLocal(0));
-						} catch (ParseException e) {
+						} catch (final ParseException e) {
 							throw new VMException(frame, e);
 						}
 					}
@@ -1591,7 +1607,7 @@ public final class OCLOperations {
 		/////////////////////////////////////////////////////////////////////
 		// Date
 		/////////////////////////////////////////////////////////////////////
-		createOperation(false, "toString", Types.JAVA_DATE_TYPE, Types.STRING_TYPE, 
+		createOperation(false, "toString", Types.JAVA_DATE_TYPE, Types.STRING_TYPE,
 				new String[][][]{{{"format"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
@@ -1599,7 +1615,7 @@ public final class OCLOperations {
 						return new SimpleDateFormat((String) frame.getLocal(1)).format((Date) frame.getLocal(0));
 					}
 				});
-		createOperation(false, "toString", Types.JAVA_DATE_TYPE, Types.STRING_TYPE, 
+		createOperation(false, "toString", Types.JAVA_DATE_TYPE, Types.STRING_TYPE,
 				new String[][][]{{{"format"}, Types.STRING_TYPE}, {{"locale"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
@@ -1610,14 +1626,14 @@ public final class OCLOperations {
 				});
 		createOperation(false, "toTuple", Types.JAVA_DATE_TYPE, Types.TUPLE_TYPE, new String[][][]{},
 				new NativeCodeBlock() {
-					@Override
-					public Object execute(final StackFrame frame) {
-						final Calendar cal = Calendar.getInstance();
-						cal.setTime((Date) frame.getLocal(0));
-						return Tuple.fromCalendar(cal);
-					}
-				});
-		createOperation(false, "toTuple", Types.JAVA_DATE_TYPE, Types.TUPLE_TYPE, 
+			@Override
+			public Object execute(final StackFrame frame) {
+				final Calendar cal = Calendar.getInstance();
+				cal.setTime((Date) frame.getLocal(0));
+				return Tuple.fromCalendar(cal);
+			}
+		});
+		createOperation(false, "toTuple", Types.JAVA_DATE_TYPE, Types.TUPLE_TYPE,
 				new String[][][]{{{"timezone"}, Types.STRING_TYPE}},
 				new NativeCodeBlock() {
 					@Override
@@ -1640,7 +1656,7 @@ public final class OCLOperations {
 	 * @return a new {@link Operation}.
 	 * @see Types
 	 */
-	private Operation createOperation(final boolean isStatic, final String name, final String[] context, 
+	private Operation createOperation(final boolean isStatic, final String name, final String[] context,
 			final String[] returnType, final String[][][] parameters, final CodeBlock body) {
 		final Operation op = EMFTVMUtil.createOperation(isStatic, name, context, returnType, parameters, body);
 		oclModule.getFeatures().add(op);

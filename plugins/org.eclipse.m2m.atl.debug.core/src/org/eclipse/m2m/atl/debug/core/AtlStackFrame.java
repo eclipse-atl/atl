@@ -460,8 +460,7 @@ public class AtlStackFrame extends AtlDebugElement implements IStackFrame {
 		 * 
 		 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 		 */
-		@SuppressWarnings("unchecked")
-		public Object getAdapter(Class adapter) {
+		public <T> T getAdapter(Class<T> adapter) {
 			return null;
 		}
 	}

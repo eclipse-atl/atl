@@ -46,7 +46,7 @@ public class AtlPerspective implements IPerspectiveFactory {
 		layout.addNewWizardShortcut("atlFileWizard"); //$NON-NLS-1$
 
 		// Add "show views".
-		layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
+		layout.addShowViewShortcut(IPageLayout.ID_PROJECT_EXPLORER);
 
 		layout.addPerspectiveShortcut("org.eclipse.m2m.atl.adt.atlPerspective"); //$NON-NLS-1$
 	}
@@ -85,7 +85,7 @@ public class AtlPerspective implements IPerspectiveFactory {
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file"); //$NON-NLS-1$
 		layout.addActionSet(IDebugUIConstants.LAUNCH_ACTION_SET);
 
-		layout.addShowViewShortcut(IPageLayout.ID_RES_NAV);
+		layout.addShowViewShortcut(IPageLayout.ID_PROJECT_EXPLORER);
 
 		layout.addPerspectiveShortcut("org.eclipse.m2m.atl.adt.atlPerspective"); //$NON-NLS-1$
 	}

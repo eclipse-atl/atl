@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.ecore.EEnumLiteral;
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.m2m.atl.common.ATLExecutionException;
@@ -186,7 +186,7 @@ public abstract class AtlDefaultCompiler implements AtlStandaloneCompiler {
 				EObject ame = (EObject)i.next();
 				pbsa[k++] = ame;
 				EStructuralFeature severityFeature = ame.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
-				if ("error".equals(((EEnumLiteral)ame.eGet(severityFeature)).getName())) { //$NON-NLS-1$
+				if ("error".equals(((Enumerator)ame.eGet(severityFeature)).getName())) { //$NON-NLS-1$
 					nbErrors++;
 				}
 			}

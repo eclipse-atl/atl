@@ -30,12 +30,19 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EcoreFactoryImpl;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.emf.EMFModel;
 import org.eclipse.m2m.atl.dsls.tcs.injector.ModelAdapter;
 import org.eclipse.m2m.atl.dsls.tcs.injector.ParserLauncher;
+import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
+import org.eclipse.m2m.atl.emftvm.Metamodel;
+import org.eclipse.m2m.atl.emftvm.Model;
 
 /**
  * A wrapper which allow to create {@link IModel} from text with TCS.
@@ -100,16 +107,31 @@ public class EMFTCSInjector {
 		return root;
 	}
 
+	/**
+	 * Adapts an {@link EMFModel}. Uses EMFTVM models internally, because they are more efficient for extent
+	 * lookup during in-place transformation (i.e. parsing).
+	 */
 	public class EMFInjectorAdapter implements ModelAdapter {
 
-		private EMFModel model;
+		private final EMFModel emfModel;
+		private final Model model;
+		private final Metamodel metamodel;
 
 		public EMFInjectorAdapter(Object model) {
-			this.model = (EMFModel)model;
+			this.emfModel = (EMFModel)model;
+			this.model = EmftvmFactory.eINSTANCE.createModel();
+			if (emfModel.getResource() == null) {
+				// Trigger resource creation
+				Object element = emfModel.newElement(EcorePackage.eINSTANCE.getEClass());
+				emfModel.getResource().getContents().remove(element);
+			}
+			this.model.setResource(emfModel.getResource());
+			this.metamodel = EmftvmFactory.eINSTANCE.createMetamodel();
+			this.metamodel.setResource(emfModel.getReferenceModel().getResource());
 		}
 
 		public Object getModel() {
-			return this.model;
+			return this.emfModel;
 		}
 
 		public Object get(Object modelElement, String name) {
@@ -130,7 +152,7 @@ public class EMFTCSInjector {
 		}
 
 		public Set getElementsByType(String typeName) {
-			return model.getElementsByType(getTypeByName(typeName));
+			return model.allInstancesOf(getTypeByName(typeName)).asSet();
 		}
 
 		public void set(Object modelElement, String name, Object value) {
@@ -248,8 +270,9 @@ public class EMFTCSInjector {
 			return ret;
 		}
 
-		private Object getTypeByName(String typeName) {
-			return model.getReferenceModel().getMetaElementByName(typeName);
+		private EClass getTypeByName(String typeName) {
+			final EClassifier type = metamodel.findType(typeName);
+			return type instanceof EClass ? (EClass)type : null;
 		}
 	}
 }

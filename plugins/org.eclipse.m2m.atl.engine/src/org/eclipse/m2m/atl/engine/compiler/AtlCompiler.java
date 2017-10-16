@@ -14,6 +14,7 @@ package org.eclipse.m2m.atl.engine.compiler;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.CharArrayReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -128,7 +130,7 @@ public final class AtlCompiler {
 	public static EObject[] compile(Reader in, IFile out) throws IOException {
 		EObject[] ret = compile(in, out.getLocation().toString());
 		try {
-			out.refreshLocal(0, null);
+			out.getParent().refreshLocal(IResource.DEPTH_ONE, null);
 		} catch (CoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
@@ -152,9 +154,8 @@ public final class AtlCompiler {
 		newIn.mark(MAX_LINE_LENGTH);
 		char[] buffer = new char[MAX_LINE_LENGTH];
 		newIn.read(buffer);
-		newIn.reset();
-		atlcompiler = AtlSourceManager.getCompilerName(AtlSourceManager.getTaggedInformations(newIn,
-				AtlSourceManager.COMPILER_TAG));
+		atlcompiler = AtlSourceManager.getCompilerName(AtlSourceManager.getTaggedInformations(
+				new BufferedReader(new CharArrayReader(buffer)), AtlSourceManager.COMPILER_TAG));
 		newIn.reset();
 
 		ret = getCompiler(atlcompiler).compileWithProblemModel(newIn, outputFileName);

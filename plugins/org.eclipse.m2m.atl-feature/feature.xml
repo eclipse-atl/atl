@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.m2m.atl"
       label="%featureName"
-      version="3.6.0.qualifier"
+      version="4.0.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.m2m.atl">
 
@@ -45,6 +45,7 @@
       <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.ecore.editor"/>
       <import plugin="org.apache.ant" version="1.7.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.atl.emftvm"/>
    </requires>
 
    <plugin

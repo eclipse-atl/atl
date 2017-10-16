@@ -16,17 +16,18 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.m2m.atl.core.service.CoreService;
 import org.eclipse.m2m.atl.tests.AtlTestPlugin;
 import org.eclipse.m2m.atl.tests.util.FileUtils;
 
+import junit.framework.TestCase;
+
 /**
  * Launches all non-regression tests.
  * 
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public abstract class TestNonRegression extends TestCase {
 
@@ -38,20 +39,30 @@ public abstract class TestNonRegression extends TestCase {
 	protected File baseDirectory;
 
 	/**
-	 * Compare the expected models (in the expected directories) with the result of the transformation.
+	 * {@inheritDoc}
 	 * 
-	 * @throws Exception
-	 *             Thrown if an operation has failed or been interrupted.
+	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegression#setUp()
 	 */
-	public void testNonRegression() throws Exception {
-		File inputDir = null;
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
 		if (CoreService.isEclipseRunning()) {
 			this.baseDirectory = FileLocator.getBundleFile(AtlTestPlugin.getDefault().getBundle());
 		} else {
 			this.baseDirectory = new File(AtlTestPlugin.class.getResource("").toURI()).getParentFile() //$NON-NLS-1$
 					.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
 		}
-		inputDir = new File(baseDirectory + INPUT_PATH);
+	}
+
+	/**
+	 * Compare the expected models (in the expected directories) with the result
+	 * of the transformation.
+	 * 
+	 * @throws Exception
+	 *             Thrown if an operation has failed or been interrupted.
+	 */
+	public void testNonRegression() throws Exception {
+		final File inputDir = new File(baseDirectory + INPUT_PATH);
 		final File[] directories = FileUtils.listDirectories(inputDir);
 		assertNotNull(directories);
 		for (int i = 0; i < directories.length; i++) {

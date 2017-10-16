@@ -23,17 +23,18 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 
 
 /**
- * Immutable {@link List} that supports lazy evaluation.
+ * Immutable {@link EList} that supports lazy evaluation.
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  *
  * @param <E> the collection element type
  */
-public class LazyList<E> extends LazyCollection<E> implements List<E> {
+public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 
 	/**
 	 * Abstract {@link LazyList} that disables caching of the underlying {@link LazyList}.
@@ -70,14 +71,14 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 */
 	public static class UnionList<E> extends NonCachingList<E> {
 
-		protected final LazyList<E> s;
+		protected final LazyList<? extends E> s;
 
 		/**
 		 * Creates a new {@link UnionList}.
 		 * @param s the collection to union with the underlying collection
 		 * @param dataSource the underlying collection
 		 */
-		public UnionList(final LazyList<E> s, final LazyList<E> dataSource) {
+		public UnionList(final LazyList<? extends E> s, final LazyList<E> dataSource) {
 			super(dataSource);
 			this.s = s;
 			assert s != null;
@@ -163,7 +164,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(E object) {
+		public int count(Object object) {
 			return ((LazyCollection<E>)dataSource).count(object) + s.count(object);
 		}
 
@@ -362,7 +363,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(final E o) {
+		public int count(final Object o) {
 			return (object == null ? o == null : object.equals(o)) ? 1 : 0 + 
 					((LazyCollection<E>)dataSource).count(o);
 		}
@@ -1242,7 +1243,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Integer object) {
+		public int count(Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -1379,8 +1380,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		 */
 		@Override
 		public boolean contains(Object o) {
-			if (o instanceof Integer) {
-				final Integer obj = (Integer) o;
+			if (o instanceof Long) {
+				final Long obj = (Long) o;
 				return (obj >= first && obj <= last);
 			}
 			return false;
@@ -1390,7 +1391,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Long object) {
+		public int count(Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -1429,8 +1430,8 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 */
 	public class UnionListIterator extends WrappedListIterator {
 
-		protected final List<E> s;
-		protected ListIterator<E> added; // lazily instantiate this iterator
+		protected final List<? extends E> s;
+		protected ListIterator<? extends E> added; // lazily instantiate this iterator
 		protected boolean innerNext; // cache last inner.hasNext() invocation
 		protected boolean addedPrev; // cache last added.hasPrevious() invocation
 
@@ -1439,7 +1440,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		 * collection and <code>s</code>.
 		 * @param s the collection to union
 		 */
-		public UnionListIterator(final List<E> s) {
+		public UnionListIterator(final List<? extends E> s) {
 			super();
 			this.s = s;
 		}
@@ -1450,7 +1451,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 		 * @param s the collection to union
 		 * @param index the iterator starting index.
 		 */
-		public UnionListIterator(final List<E> s, final int index) {
+		public UnionListIterator(final List<? extends E> s, final int index) {
 			super(index);
 			this.s = s;
 		}
@@ -1736,6 +1737,28 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * Unsupported in this implementation.
+
+	 * @throws UnsupportedOperationException
+	 */
+	public void move(int newPosition, E object) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * Unsupported in this implementation.
+
+	 * @throws UnsupportedOperationException
+	 */
+	public E move(int newPosition, int oldPosition) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean equals(final Object o) {
@@ -1865,7 +1888,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 * @param s the list to union with this
 	 * @return The sequence consisting of all elements in self, followed by all elements in <code>s</code>.
 	 */
-	public LazyList<E> union(final LazyList<E> s) {
+	public LazyList<E> union(final LazyList<? extends E> s) {
 		return new UnionList<E>(s, this);
 	}
 
@@ -1881,7 +1904,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 *            the insertion index (starting at 1)
 	 * @return The sequence consisting of all elements in self, with all elements in <code>s</code> inserted at <code>index</code>
 	 */
-	public LazyList<E> union(final LazyList<E> s, final int index) {
+	public LazyList<E> union(final LazyList<? extends E> s, final int index) {
 		if (index == 1) {
 			return union(s);
 		}
@@ -1998,7 +2021,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 * @return The collection containing all elements of self plus <code>coll</code>.
 	 */
 	@Override
-	public LazyList<E> includingAll(final Collection<E> coll) {
+	public LazyList<E> includingAll(final Collection<? extends E> coll) {
 		return union(LazyCollections.asLazyList(coll));
 	}
 
@@ -2015,7 +2038,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 * @return The collection containing all elements of self plus <code>coll</code>.
 	 */
 	@Override
-	public LazyList<E> includingAll(final Collection<E> coll, final int index) {
+	public LazyList<E> includingAll(final Collection<? extends E> coll, final int index) {
 		if (index > 0) {
 			return union(LazyCollections.asLazyList(coll), index);
 		} else {
@@ -2033,7 +2056,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 *            the object to exclude
 	 * @return The sequence containing all elements of self apart from all occurrences of <code>object</code>.
 	 */
-	public LazyList<E> excluding(final E object) {
+	public LazyList<E> excluding(final Object object) {
 		return new LazyList<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -2056,7 +2079,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 	 * @return The collection containing all elements of self minus <code>coll</code>.
 	 */
 	@Override
-	public LazyList<E> excludingAll(final Collection<E> coll) {
+	public LazyList<E> excludingAll(final Collection<?> coll) {
 		return new LazyList<E>(this) {
 			@Override
 			public Iterator<E> iterator() {
@@ -2110,7 +2133,7 @@ public class LazyList<E> extends LazyCollection<E> implements List<E> {
 			return union((LazyList<E>) new IntegerRangeList((Integer) first, (Integer) last));
 		}
 		if (first instanceof Long && last instanceof Long) {
-			return union((LazyList<E>) new LongRangeList((Integer) first, (Integer) last));
+			return union((LazyList<E>) new LongRangeList((Long) first, (Long) last));
 		}
 		throw new IllegalArgumentException(String.format("includingRange() not supported for arguments of type %s and %s", first.getClass()
 				.getName(), last.getClass().getName()));

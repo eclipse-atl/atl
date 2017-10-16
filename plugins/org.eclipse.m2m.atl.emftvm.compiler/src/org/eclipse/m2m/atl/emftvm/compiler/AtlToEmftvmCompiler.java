@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2017 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +13,6 @@
 package org.eclipse.m2m.atl.emftvm.compiler;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,13 +25,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -58,7 +54,7 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
 /**
  * Invokes the ATL to EMFTVM compiler.
  * 
- * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 
@@ -98,21 +94,21 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	/**
 	 * {@inheritDoc}
 	 */
-	public final CompileTimeError[] compile(InputStream in, String outputFileName) {
+	public final CompileTimeError[] compile(final InputStream in, final String outputFileName) {
 		return compile(new InputStreamReader(in), outputFileName);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public EObject[] compileWithProblemModel(InputStream in, String outputFileName) {
+	public EObject[] compileWithProblemModel(final InputStream in, final String outputFileName) {
 		return compileWithProblemModel(new InputStreamReader(in), outputFileName);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public EObject[] compileWithProblemModel(InputStream in, OutputStream outputStream) {
+	public EObject[] compileWithProblemModel(final InputStream in, final OutputStream outputStream) {
 		return compileWithProblemModel(new InputStreamReader(in), outputStream);
 	}
 
@@ -120,10 +116,10 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	 * {@inheritDoc}
 	 */
 	public CompileTimeError[] compile(final Reader in, final String outputFileName) {
-		EObject[] eObjects = compileWithProblemModel(in, outputFileName);
+		final EObject[] eObjects = compileWithProblemModel(in, outputFileName);
 
 		// convert the EObjects into an easily readable form (instances of CompileTimeError).
-		CompileTimeError[] result = new CompileTimeError[eObjects.length];
+		final CompileTimeError[] result = new CompileTimeError[eObjects.length];
 		for (int i = 0; i < eObjects.length; i++) {
 			result[i] = ProblemConverter.convertProblem(eObjects[i]);
 		}
@@ -135,16 +131,9 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("deprecation")
 	public EObject[] compileWithProblemModel(final Reader in, final String outputFileName) {
 		EObject[] result = new EObject[0];
 		try {
-			File asm = new File(outputFileName);
-			if (asm.exists()) {
-				asm.delete();
-			}
-			asm.createNewFile();
-			// TODO Refactor ATL's compiler framework to support multiple file extensions
 			final String emftvmOutputFileName = outputFileName.substring(0, outputFileName.lastIndexOf('.')) + ".emftvm";
 			final OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(emftvmOutputFileName));
 			try {
@@ -152,20 +141,9 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 			} finally {
 				outputStream.close();
 			}
-			final IFile[] outputFiles = ResourcesPlugin.getWorkspace().getRoot()
-					.findFilesForLocationURI(java.net.URI.create("file:/" + emftvmOutputFileName.replace(' ', '+')));
-			for (IFile file : outputFiles) {
-				file.getParent().refreshLocal(IResource.DEPTH_ONE, null);
-				if (file.exists()) {
-					file.setDerived(true);
-				}
-			}
 		} catch (IOException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			EmftvmCompilerPlugin.log(e);
-		} catch (CoreException e) {
-			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-			EmftvmCompilerPlugin.log(e.getStatus());
 		}
 		return result;
 	}
@@ -196,7 +174,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	/**
 	 * {@inheritDoc}
 	 */
-	public EObject[] compileWithProblemModel(IModel atlModel, OutputStream outputStream) {
+	public EObject[] compileWithProblemModel(final IModel atlModel, final OutputStream outputStream) {
 		final List<EObject> pbs = new ArrayList<EObject>();
 
 		final Model atlm = EmftvmFactory.eINSTANCE.createModel();
@@ -253,11 +231,6 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	 */
 	public EObject[] compileWithProblemModel(final IModel atlModel, final String outputFileName) {
 		try {
-			File asm = new File(outputFileName);
-			if (asm.exists()) {
-				asm.delete();
-			}
-			asm.createNewFile();
 			final String emftvmOutputFileName = outputFileName.substring(0, outputFileName.lastIndexOf('.')) + ".emftvm";
 			final OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(emftvmOutputFileName));
 			try {
@@ -282,7 +255,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	 * @return the number of error problems
 	 */
 	@SuppressWarnings("unchecked")
-	protected int getProblems(IModel problems, Collection<EObject> pbElements) {
+	protected int getProblems(final IModel problems, final Collection<EObject> pbElements) {
 		final Collection<EObject> pbs = (Collection<EObject>) problems.getElementsByType(problems.getReferenceModel().getMetaElementByName(
 				"Problem")); //$NON-NLS-1$
 
@@ -290,7 +263,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		if (pbs != null) {
 			for (EObject pb : pbs) {
 				EStructuralFeature severityFeature = pb.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
-				if (severityFeature != null && "error".equals(((EEnumLiteral) pb.eGet(severityFeature)).getName())) { //$NON-NLS-1$
+				if (severityFeature != null && "error".equals(((Enumerator) pb.eGet(severityFeature)).getName())) { //$NON-NLS-1$
 					nbErrors++;
 				}
 			}
@@ -309,14 +282,14 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	 *            the collection of problem elements to augment
 	 * @return the number of error problems
 	 */
-	protected int getProblems(Model problems, Collection<EObject> pbElements) {
+	protected int getProblems(final Model problems, final Collection<EObject> pbElements) {
 		final Collection<EObject> pbs = (Collection<EObject>) problems.allInstancesOf((EClass) pbmm.findType("Problem")); //$NON-NLS-1$
 
 		int nbErrors = 0;
 		if (pbs != null) {
 			for (EObject pb : pbs) {
 				EStructuralFeature severityFeature = pb.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
-				if (severityFeature != null && "error".equals(((EEnumLiteral) pb.eGet(severityFeature)).getName())) { //$NON-NLS-1$
+				if (severityFeature != null && "error".equals(((Enumerator) pb.eGet(severityFeature)).getName())) { //$NON-NLS-1$
 					nbErrors++;
 				}
 			}

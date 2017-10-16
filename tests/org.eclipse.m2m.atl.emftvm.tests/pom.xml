@@ -16,12 +16,12 @@
   <parent>
     <artifactId>m2m.atl-parent</artifactId>
     <groupId>org.eclipse.m2m.atl</groupId>
-    <version>3.6.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
      <relativePath>../../releng/org.eclipse.m2m.atl.releng.parent</relativePath>
   </parent>
   <groupId>org.eclipse.m2m.atl</groupId>
   <artifactId>org.eclipse.m2m.atl.emftvm.tests</artifactId>
-  <version>3.6.0-SNAPSHOT</version>
+  <version>4.0.0-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
     
   <build>
@@ -41,8 +41,8 @@
 			<useUIHarness>false</useUIHarness>
 			<useUIThread>false</useUIThread>
 			<argLine>-Xmx512m</argLine>
-			<argLine>-XX:MaxPermSize=256m</argLine>			
 			<argLine>-ea</argLine>
+			<argLine>${tycho.testArgLine}</argLine>
 		</configuration>
 	  </plugin>
     </plugins>

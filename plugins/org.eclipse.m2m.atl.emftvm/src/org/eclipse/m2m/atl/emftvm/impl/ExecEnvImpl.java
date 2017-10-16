@@ -1610,7 +1610,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		for (String modelName : re.getModels()) {
 			final Model model = models.get(modelName);
 			if (model == null) {
-				throw new IllegalArgumentException(String.format("Model %s not found", modelName));
+				throw new IllegalArgumentException(String.format("Model %s not found for %s", modelName, re));
 			}
 			eModels.add(model);
 		}
