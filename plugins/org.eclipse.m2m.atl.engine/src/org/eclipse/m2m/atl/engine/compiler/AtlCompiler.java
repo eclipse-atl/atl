@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -129,7 +130,7 @@ public final class AtlCompiler {
 	public static EObject[] compile(Reader in, IFile out) throws IOException {
 		EObject[] ret = compile(in, out.getLocation().toString());
 		try {
-			out.refreshLocal(0, null);
+			out.getParent().refreshLocal(IResource.DEPTH_ONE, null);
 		} catch (CoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
