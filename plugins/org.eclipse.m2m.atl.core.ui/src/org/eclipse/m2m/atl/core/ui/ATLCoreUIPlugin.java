@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
@@ -32,14 +32,12 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The core ui plugin provides a way to launch transformations using the core api.
- * 
+ *
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	/** The shared instance. */
 	private static ATLCoreUIPlugin plugin;
-
-	private static ATLConsole console;
 
 	private static Handler[] handlers = new Handler[3];
 
@@ -58,7 +56,7 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance.
-	 * 
+	 *
 	 * @return the shared instance.
 	 */
 	public static ATLCoreUIPlugin getDefault() {
@@ -67,7 +65,7 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Looks for an image in the icons folder.
-	 * 
+	 *
 	 * @param path
 	 *            the image path
 	 * @return the searched Image
@@ -75,7 +73,7 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	public static Image getImage(String path) {
 		Image result = path2image.get(path);
 		if (result == null && !path2image.containsKey(path)) {
-			ImageDescriptor descriptor = getImageDescriptor(path);
+			final ImageDescriptor descriptor = getImageDescriptor(path);
 			if (descriptor != null) {
 				result = descriptor.createImage();
 				path2image.put(path, result);
@@ -91,7 +89,7 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.core.runtime.Plugin#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
@@ -102,7 +100,7 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
@@ -115,10 +113,10 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	 * Starts the ATL Console.
 	 */
 	public static void startConsole() {
-		console = ATLConsole.findConsole();
-		IOConsoleOutputStream infoStream = console.newOutputStream();
-		IOConsoleOutputStream warningStream = console.newOutputStream();
-		IOConsoleOutputStream errorStream = console.newOutputStream();
+		final ATLConsole console = ATLConsole.findConsole();
+		final IOConsoleOutputStream infoStream = console.newOutputStream();
+		final IOConsoleOutputStream warningStream = console.newOutputStream();
+		final IOConsoleOutputStream errorStream = console.newOutputStream();
 
 		infoStream.setColor(new Color(Display.getCurrent(), new RGB(0, 0, 255)));
 		warningStream.setColor(new Color(Display.getCurrent(), new RGB(250, 100, 0)));
@@ -160,6 +158,7 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 	 * Clears the ATL Console.
 	 */
 	public static void clearConsole() {
+		final ATLConsole console = ATLConsole.findConsole();
 		if (console != null) {
 			console.clearConsole();
 		}
@@ -167,21 +166,21 @@ public class ATLCoreUIPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Returns the image descriptor with the given relative path.
-	 * 
+	 *
 	 * @param name
 	 *            the image name
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String name) {
-		String pluginDir = plugin.getBundle().getEntry("/").toString(); //$NON-NLS-1$
-		String iconPath = "icons/"; //$NON-NLS-1$
+		final String pluginDir = plugin.getBundle().getEntry("/").toString(); //$NON-NLS-1$
+		final String iconPath = "icons/"; //$NON-NLS-1$
 		try {
 			return ImageDescriptor.createFromURL(new URL(pluginDir + iconPath + name));
-		} catch (MalformedURLException mfe) {
+		} catch (final MalformedURLException mfe) {
 			return ImageDescriptor.getMissingImageDescriptor();
 		}
 	}
-	
+
 	public Shell getShell() {
 		return getWorkbench().getActiveWorkbenchWindow().getShell();
 	}
