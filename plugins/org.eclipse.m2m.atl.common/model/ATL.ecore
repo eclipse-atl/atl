@@ -443,7 +443,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
           unique="false" lowerBound="1" eType="#/2/String"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="metamodel" ordered="false"
-          lowerBound="1" eType="#/1/OclModel" eOpposite="#/1/OclModel/model"/>
+          eType="#/1/OclModel" eOpposite="#/1/OclModel/model"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="elements" ordered="false"
           upperBound="-1" eType="#/1/OclModelElement" eOpposite="#/1/OclModelElement/model"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="model" ordered="false"
