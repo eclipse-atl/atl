@@ -33,6 +33,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getMetaModels <em>Meta Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getInputModels <em>Input Models</em>}</li>
@@ -45,7 +46,6 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#isJitDisabled <em>Jit Disabled</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getCurrentPhase <em>Current Phase</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getExecEnv()
  * @model
@@ -676,7 +676,7 @@ public interface ExecEnv extends EObject {
 	 * Returns all rules registered in this {@link ExecEnv}.
 	 * @return all rules registered in this {@link ExecEnv}.
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="org.eclipse.m2m.atl.emftvm.LazyList<org.eclipse.m2m.atl.emftvm.Rule>"
+	 * @model kind="operation" dataType="org.eclipse.m2m.atl.emftvm.LazyList&lt;org.eclipse.m2m.atl.emftvm.Rule&gt;"
 	 * @generated
 	 */
 	LazyList<Rule> getRules();

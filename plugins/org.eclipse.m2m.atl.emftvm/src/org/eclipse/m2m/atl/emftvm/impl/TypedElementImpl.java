@@ -28,12 +28,12 @@ import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.TypedElementImpl#getEType <em>EType</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.TypedElementImpl#getType <em>Type</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.TypedElementImpl#getTypeModel <em>Type Model</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

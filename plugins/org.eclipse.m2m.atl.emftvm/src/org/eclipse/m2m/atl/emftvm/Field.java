@@ -22,12 +22,12 @@ import org.eclipse.m2m.atl.emftvm.util.StackFrame;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Field#getStaticValue <em>Static Value</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Field#getInitialiser <em>Initialiser</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Field#getRule <em>Rule</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getField()
  * @model

@@ -35,12 +35,12 @@ import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.OperationImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.OperationImpl#isQuery <em>Query</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.OperationImpl#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

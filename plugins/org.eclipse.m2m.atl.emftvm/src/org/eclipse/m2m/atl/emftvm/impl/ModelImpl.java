@@ -38,11 +38,11 @@ import org.eclipse.m2m.atl.emftvm.util.ResourceIterable;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ModelImpl#getResource <em>Resource</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ModelImpl#isAllowInterModelReferences <em>Allow Inter Model References</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

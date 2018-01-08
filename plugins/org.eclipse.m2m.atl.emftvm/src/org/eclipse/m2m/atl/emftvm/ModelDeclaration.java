@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ModelDeclaration#getModelName <em>Model Name</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ModelDeclaration#getMetaModelName <em>Meta Model Name</em>}</li>
@@ -28,7 +29,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ModelDeclaration#getInoutModelFor <em>Inout Model For</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.ModelDeclaration#getOutputModelFor <em>Output Model For</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getModelDeclaration()
  * @model

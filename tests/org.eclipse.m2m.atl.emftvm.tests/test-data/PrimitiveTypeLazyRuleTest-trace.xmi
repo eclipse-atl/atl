@@ -32,4 +32,8 @@
     <uniqueSourceElementLists sourceElements="//@rules.1/@links.0/@sourceElements.0 //@rules.1/@links.0/@sourceElements.1"/>
     <uniqueSourceElementLists sourceElements="//@rules.1/@links.1/@sourceElements.0 //@rules.1/@links.1/@sourceElements.1"/>
   </rules>
+  <rules rule="CartesianEClassifier">
+    <uniqueSourceElementLists sourceElements="//@rules.1/@links.0/@sourceElements.0 //@rules.1/@links.0/@sourceElements.1"/>
+    <uniqueSourceElementLists sourceElements="//@rules.1/@links.1/@sourceElements.0 //@rules.1/@links.1/@sourceElements.1"/>
+  </rules>
 </trace:TraceLinkSet>

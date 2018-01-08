@@ -20,10 +20,10 @@ package org.eclipse.m2m.atl.emftvm;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Parameter#getOperation <em>Operation</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getParameter()
  * @model

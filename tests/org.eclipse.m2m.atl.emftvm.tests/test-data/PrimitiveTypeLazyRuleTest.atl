@@ -13,7 +13,7 @@ rule EPackage {
 		eClassifiers <- s.eClassifiers
 			->select(c | c.oclIsKindOf(ECORE!EClass))
 			->collect(c | c.eStructuralFeatures
-				->collect(f | thisModule.CartesianEClass(c, f.name)))
+				->collect(f | thisModule.CartesianEClassifier(c, f.name)))
 			->flatten())
 	do {
 		s.eClassifiers
@@ -21,19 +21,22 @@ rule EPackage {
 			->collect(c | 
 				c.eStructuralFeatures->collect(f |
 					thisModule.assertNotOclUndefined(
-						thisModule.resolveTemp(Sequence{c, f.name}, 'CartesianEClass', 't')
+						thisModule.resolveTemp(Sequence{c, f.name}, 'CartesianEClassifier', 't')
 					)
 				)
 			);
 	}
 }
 
-unique lazy rule CartesianEClass {
+unique lazy abstract rule CartesianEClassifier {
+	from s : ECORE!EClassifier,
+		 name : String
+	to t : ECORE!EClassifier (
+		name <- s.name + '_' + name)
+}
+
+unique lazy rule CartesianEClass extends CartesianEClassifier {
 	from s : ECORE!EClass,
 		 name : String
-	to t : ECORE!EClass (
-		name <- s.name + '_' + name)
-	do {
-		t;
-	}
+	to t : ECORE!EClass
 }

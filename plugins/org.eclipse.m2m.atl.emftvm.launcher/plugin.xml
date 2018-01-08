@@ -16,6 +16,13 @@
             class="org.eclipse.m2m.atl.emftvm.launcher.EMFTVMLaunchConfigurationTabGroup"
             id="org.eclipse.m2m.atl.emftvm.launcher.launchConfigurationTabGroup"
             type="org.eclipse.m2m.atl.emftvm.launcher.EMFTVMTransformation">
+            <launchMode
+                  mode="debug"
+                  perspective="org.eclipse.debug.ui.DebugPerspective">
+            </launchMode>
+            <launchMode
+                  mode="run">
+            </launchMode>
       </launchConfigurationTabGroup>
    </extension>
 

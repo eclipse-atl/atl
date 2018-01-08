@@ -20,11 +20,11 @@ package org.eclipse.m2m.atl.emftvm;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#getOffset <em>Offset</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#getTarget <em>Target</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getBranchInstruction()
  * @model abstract="true"

@@ -30,6 +30,7 @@ import org.eclipse.m2m.atl.emftvm.Module;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ModelDeclarationImpl#getModelName <em>Model Name</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ModelDeclarationImpl#getMetaModelName <em>Meta Model Name</em>}</li>
@@ -37,7 +38,6 @@ import org.eclipse.m2m.atl.emftvm.Module;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ModelDeclarationImpl#getInoutModelFor <em>Inout Model For</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ModelDeclarationImpl#getOutputModelFor <em>Output Model For</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

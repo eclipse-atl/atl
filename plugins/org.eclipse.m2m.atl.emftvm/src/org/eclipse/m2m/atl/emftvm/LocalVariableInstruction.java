@@ -20,13 +20,13 @@ package org.eclipse.m2m.atl.emftvm;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getCbOffset <em>Cb Offset</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getSlot <em>Slot</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariableIndex <em>Local Variable Index</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariable <em>Local Variable</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getLocalVariableInstruction()
  * @model abstract="true"

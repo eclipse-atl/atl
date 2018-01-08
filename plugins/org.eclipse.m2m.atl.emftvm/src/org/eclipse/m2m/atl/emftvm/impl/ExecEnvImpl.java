@@ -94,6 +94,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getMetaModels <em>Meta Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getInputModels <em>Input Models</em>}</li>
@@ -106,7 +107,6 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#isJitDisabled <em>Jit Disabled</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ExecEnvImpl#getCurrentPhase <em>Current Phase</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

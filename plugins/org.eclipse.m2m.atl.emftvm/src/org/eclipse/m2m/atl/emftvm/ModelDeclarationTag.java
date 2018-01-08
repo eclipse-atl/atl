@@ -130,6 +130,8 @@ public enum ModelDeclarationTag implements Enumerator {
 	 * @param literal the literal string value
 	 * @return the '<em><b>Model Declaration Tag</b></em>' literal with the specified literal value.
 	 * <!-- end-user-doc -->
+	 * @param literal the literal.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static ModelDeclarationTag get(String literal) {
@@ -148,6 +150,8 @@ public enum ModelDeclarationTag implements Enumerator {
 	 * @param name the literal name
 	 * @return the '<em><b>Model Declaration Tag</b></em>' literal with the specified name.
 	 * <!-- end-user-doc -->
+	 * @param name the name.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static ModelDeclarationTag getByName(String name) {
@@ -166,6 +170,8 @@ public enum ModelDeclarationTag implements Enumerator {
 	 * @param value the literal integer value
 	 * @return the '<em><b>Model Declaration Tag</b></em>' literal with the specified integer value.
 	 * <!-- end-user-doc -->
+	 * @param value the integer value.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static ModelDeclarationTag get(int value) {

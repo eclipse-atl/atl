@@ -28,13 +28,13 @@ import org.eclipse.m2m.atl.emftvm.Opcode;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.IfteImpl#getThenCbIndex <em>Then Cb Index</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.IfteImpl#getElseCbIndex <em>Else Cb Index</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.IfteImpl#getThenCb <em>Then Cb</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.IfteImpl#getElseCb <em>Else Cb</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

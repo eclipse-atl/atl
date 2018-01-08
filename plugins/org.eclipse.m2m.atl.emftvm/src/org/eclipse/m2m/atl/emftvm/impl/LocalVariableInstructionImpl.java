@@ -28,13 +28,13 @@ import org.eclipse.m2m.atl.emftvm.LocalVariableInstruction;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.LocalVariableInstructionImpl#getCbOffset <em>Cb Offset</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.LocalVariableInstructionImpl#getSlot <em>Slot</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.LocalVariableInstructionImpl#getLocalVariableIndex <em>Local Variable Index</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.LocalVariableInstructionImpl#getLocalVariable <em>Local Variable</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

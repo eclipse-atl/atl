@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.LineNumber#getStartLine <em>Start Line</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.LineNumber#getStartColumn <em>Start Column</em>}</li>
@@ -32,7 +33,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.LineNumber#getOwningBlock <em>Owning Block</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.LineNumber#getInstructions <em>Instructions</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getLineNumber()
  * @model

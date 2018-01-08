@@ -20,11 +20,11 @@ package org.eclipse.m2m.atl.emftvm;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCbIndex <em>Cb Index</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCodeBlock <em>Code Block</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getCodeBlockInstruction()
  * @model abstract="true"

@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Module#getSourceName <em>Source Name</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Module#getFeatures <em>Features</em>}</li>
@@ -31,7 +32,6 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Module#getInoutModels <em>Inout Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Module#getOutputModels <em>Output Models</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getModule()
  * @model

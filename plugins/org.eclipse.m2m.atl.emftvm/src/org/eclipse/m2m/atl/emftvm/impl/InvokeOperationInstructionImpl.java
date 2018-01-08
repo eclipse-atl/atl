@@ -27,10 +27,10 @@ import org.eclipse.m2m.atl.emftvm.InvokeOperationInstruction;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InvokeOperationInstructionImpl#getOpname <em>Opname</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

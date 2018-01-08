@@ -20,6 +20,7 @@ package org.eclipse.m2m.atl.emftvm;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Push#getValue <em>Value</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Push#getStringValue <em>String Value</em>}</li>
@@ -32,7 +33,6 @@ package org.eclipse.m2m.atl.emftvm;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Push#getLongValue <em>Long Value</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Push#getEnumValue <em>Enum Value</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getPush()
  * @model

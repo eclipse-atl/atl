@@ -502,7 +502,7 @@
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/applyOne">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/applyOne/frame"/>
-        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyOne/trace"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyOne/valuesMap"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/applyFor">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFor/frame"/>
@@ -526,6 +526,10 @@
       <genOperations ecoreOperation="emftvm.ecore#//Rule/clearFields"/>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/findInputElement">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/findInputElement/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/getUniqueTrace">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/getUniqueTrace/frame"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/getUniqueTrace/values"/>
       </genOperations>
     </genClasses>
     <genClasses ecoreClass="emftvm.ecore#//RuleElement">

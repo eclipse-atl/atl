@@ -36,8 +36,6 @@ import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
  * An implementation of the model object '<em><b>Metamodel</b></em>'.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */

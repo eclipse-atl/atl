@@ -21,12 +21,12 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Operation#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Operation#isQuery <em>Query</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Operation#getBody <em>Body</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getOperation()
  * @model

@@ -27,11 +27,11 @@ import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.CodeBlockInstructionImpl#getCbIndex <em>Cb Index</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.CodeBlockInstructionImpl#getCodeBlock <em>Code Block</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

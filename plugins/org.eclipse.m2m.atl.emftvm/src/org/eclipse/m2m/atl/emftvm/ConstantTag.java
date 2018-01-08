@@ -306,6 +306,8 @@ public enum ConstantTag implements Enumerator {
 	 * @param literal the literal string value
 	 * @return the '<em><b>Constant Tag</b></em>' literal with the specified literal value.
 	 * <!-- end-user-doc -->
+	 * @param literal the literal.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static ConstantTag get(String literal) {
@@ -324,6 +326,8 @@ public enum ConstantTag implements Enumerator {
 	 * @param name the literal name
 	 * @return the '<em><b>Constant Tag</b></em>' literal with the specified name.
 	 * <!-- end-user-doc -->
+	 * @param name the name.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static ConstantTag getByName(String name) {
@@ -342,6 +346,8 @@ public enum ConstantTag implements Enumerator {
 	 * @param value the literal integer value
 	 * @return the '<em><b>Constant Tag</b></em>' literal with the specified integer value.
 	 * <!-- end-user-doc -->
+	 * @param value the integer value.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static ConstantTag get(int value) {

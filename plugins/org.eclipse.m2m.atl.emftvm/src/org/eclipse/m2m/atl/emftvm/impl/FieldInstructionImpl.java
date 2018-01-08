@@ -25,10 +25,10 @@ import org.eclipse.m2m.atl.emftvm.FieldInstruction;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.FieldInstructionImpl#getFieldname <em>Fieldname</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

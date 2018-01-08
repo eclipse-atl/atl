@@ -35,6 +35,7 @@ import org.eclipse.m2m.atl.emftvm.LineNumber;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.LineNumberImpl#getStartLine <em>Start Line</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.LineNumberImpl#getStartColumn <em>Start Column</em>}</li>
@@ -45,7 +46,6 @@ import org.eclipse.m2m.atl.emftvm.LineNumber;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.LineNumberImpl#getOwningBlock <em>Owning Block</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.LineNumberImpl#getInstructions <em>Instructions</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

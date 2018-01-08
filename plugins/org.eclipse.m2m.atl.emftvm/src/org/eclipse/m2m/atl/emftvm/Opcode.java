@@ -1310,6 +1310,8 @@ public enum Opcode implements Enumerator {
 	 * @param literal the literal string value
 	 * @return the '<em><b>Opcode</b></em>' literal with the specified literal value.
 	 * <!-- end-user-doc -->
+	 * @param literal the literal.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static Opcode get(String literal) {
@@ -1328,6 +1330,8 @@ public enum Opcode implements Enumerator {
 	 * @param name the literal name
 	 * @return the '<em><b>Opcode</b></em>' literal with the specified name.
 	 * <!-- end-user-doc -->
+	 * @param name the name.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static Opcode getByName(String name) {
@@ -1346,6 +1350,8 @@ public enum Opcode implements Enumerator {
 	 * @param value the literal integer value
 	 * @return the '<em><b>Opcode</b></em>' literal with the specified integer value.
 	 * <!-- end-user-doc -->
+	 * @param value the integer value.
+	 * @return the matching enumerator or <code>null</code>.
 	 * @generated
 	 */
 	public static Opcode get(int value) {

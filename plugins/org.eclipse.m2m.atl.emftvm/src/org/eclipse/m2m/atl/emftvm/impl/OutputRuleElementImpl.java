@@ -34,11 +34,11 @@ import org.eclipse.m2m.atl.emftvm.Rule;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.OutputRuleElementImpl#getMapsTo <em>Maps To</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.OutputRuleElementImpl#getOutputFor <em>Output For</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

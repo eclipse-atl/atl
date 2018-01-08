@@ -22,10 +22,10 @@ import java.lang.reflect.Method;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.InvokeOperationInstruction#getOpname <em>Opname</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInvokeOperationInstruction()
  * @model abstract="true"

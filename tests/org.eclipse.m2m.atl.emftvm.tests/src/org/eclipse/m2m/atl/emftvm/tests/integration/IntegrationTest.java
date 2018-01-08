@@ -12,7 +12,6 @@
 package org.eclipse.m2m.atl.emftvm.tests.integration;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -24,7 +23,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.atl.common.ATLLogger;
-import org.eclipse.m2m.atl.core.ATLCoreException;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.IReferenceModel;
 import org.eclipse.m2m.atl.core.ModelFactory;
@@ -48,7 +46,7 @@ public class IntegrationTest extends EMFTVMTest {
 	/**
 	 * Tests "PrimitiveTypeLazyRuleTest.atl".
 	 */
-	public void testPrimitiveTypeLazyRule() {
+	public void testPrimitiveTypeLazyRule() throws Exception {
 		final ResourceSet rs = new ResourceSetImpl();
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final TimingData td = new TimingData();
@@ -177,7 +175,7 @@ public class IntegrationTest extends EMFTVMTest {
 		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug413110Inheritance-out.ecore");
 		assertEquals(refOut.getResource(), model.getResource());
 	}
-	
+
 	/**
 	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=421718">Bug # 421718</a>.
 	 */
@@ -365,7 +363,7 @@ public class IntegrationTest extends EMFTVMTest {
 		assertTrue(
 				String.format(
 						"Expected Regression::Bug454382 to complete in < 1 sec. but was %f sec.",
-						td.getFinished() / ((double) 1E9)),
+						td.getFinished() / (1E9)),
 				td.getFinished() < 1E9);
 	}
 
@@ -383,20 +381,24 @@ public class IntegrationTest extends EMFTVMTest {
 		assertEquals("value", result);
 	}
 
-	public void testATLAPI() throws ATLCoreException, IOException {
-		
-		ModelFactory mf = AtlParser.getDefault().getModelFactory();
-		IReferenceModel atlMM = AtlParser.getDefault().getAtlMetamodel();
-		IModel atlM = mf.newModel(atlMM);
-		
-		EObject module = (EObject) atlM.newElement(atlMM.getMetaElementByName("Module"));
+	/**
+	 * Tests the ATL metamodel API.
+	 */
+	public void testATLAPI() throws Exception {
+		final ModelFactory mf = AtlParser.getDefault().getModelFactory();
+		final IReferenceModel atlMM = AtlParser.getDefault().getAtlMetamodel();
+		final IModel atlM = mf.newModel(atlMM);
+
+		final EObject module = (EObject) atlM.newElement(atlMM.getMetaElementByName("Module"));
 		module.eSet(module.eClass().getEStructuralFeature("name"), "testmodule");
-		EObject rule = (EObject) atlM.newElement(atlMM.getMetaElementByName("MatchedRule"));
+		final EObject rule = (EObject) atlM.newElement(atlMM.getMetaElementByName("MatchedRule"));
 		rule.eSet(rule.eClass().getEStructuralFeature("name"), "Test");
+		@SuppressWarnings("unchecked")
+		final
 		EList<EObject> moduleElements = (EList<EObject>) module.eGet(module.eClass().getEStructuralFeature("elements"));
 		moduleElements.add(rule);
-		
-		FileOutputStream fos = new FileOutputStream("testmodule.atl");
+
+		final FileOutputStream fos = new FileOutputStream("testmodule.atl");
 		try {
 			AtlParser.getDefault().extract(atlM, fos, Collections.emptyMap());
 		} finally {
@@ -404,7 +406,6 @@ public class IntegrationTest extends EMFTVMTest {
 				fos.close();
 			}
 		}
-		
 	}
 
 	/**

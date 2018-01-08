@@ -28,11 +28,11 @@ import org.eclipse.m2m.atl.emftvm.Instruction;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.BranchInstructionImpl#getOffset <em>Offset</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.BranchInstructionImpl#getTarget <em>Target</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

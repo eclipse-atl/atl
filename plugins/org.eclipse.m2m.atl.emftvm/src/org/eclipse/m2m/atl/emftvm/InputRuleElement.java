@@ -22,12 +22,12 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.InputRuleElement#getBinding <em>Binding</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.InputRuleElement#getInputFor <em>Input For</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.InputRuleElement#isMapsToSelf <em>Maps To Self</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInputRuleElement()
  * @model
@@ -122,7 +122,7 @@ public interface InputRuleElement extends RuleElement {
 	 * @param env the execution environment context
 	 * @return a new {@link Iterable} of possible match values for this rule element.
 	 * <!-- end-user-doc -->
-	 * @model dataType="org.eclipse.m2m.atl.emftvm.EJavaIterable<org.eclipse.emf.ecore.EObject>"
+	 * @model dataType="org.eclipse.m2m.atl.emftvm.EJavaIterable&lt;org.eclipse.emf.ecore.EObject&gt;"
 	 * @generated
 	 */
 	Iterable<EObject> createIterable(ExecEnv env);

@@ -38,6 +38,7 @@ import org.eclipse.m2m.atl.emftvm.Rule;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ModuleImpl#getSourceName <em>Source Name</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ModuleImpl#getFeatures <em>Features</em>}</li>
@@ -48,7 +49,6 @@ import org.eclipse.m2m.atl.emftvm.Rule;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ModuleImpl#getInoutModels <em>Inout Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.ModuleImpl#getOutputModels <em>Output Models</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

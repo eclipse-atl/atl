@@ -22,8 +22,6 @@ import org.eclipse.m2m.atl.emftvm.SetStatic;
  * An implementation of the model object '<em><b>Set static</b></em>'.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */

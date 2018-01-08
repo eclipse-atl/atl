@@ -109,6 +109,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.CodeBlockImpl#getMaxLocals <em>Max Locals</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.CodeBlockImpl#getMaxStack <em>Max Stack</em>}</li>
@@ -125,7 +126,6 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.CodeBlockImpl#getParentFrame <em>Parent Frame</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.CodeBlockImpl#getBindingFor <em>Binding For</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

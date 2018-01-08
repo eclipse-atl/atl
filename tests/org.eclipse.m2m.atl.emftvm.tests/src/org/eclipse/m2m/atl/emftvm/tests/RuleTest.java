@@ -11,10 +11,10 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import junit.textui.TestRunner;
-
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.Rule;
+
+import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
@@ -48,7 +48,7 @@ import org.eclipse.m2m.atl.emftvm.Rule;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#apply(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Apply</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#postApply(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Post Apply</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#applyFirst(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Apply First</em>}</li>
- *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#applyOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink) <em>Apply One</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#applyOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map) <em>Apply One</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#applyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink) <em>Apply For</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#postApplyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink) <em>Post Apply For</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#getAllESuperRules() <em>Get All ESuper Rules</em>}</li>
@@ -58,6 +58,7 @@ import org.eclipse.m2m.atl.emftvm.Rule;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#compileIterables(org.eclipse.m2m.atl.emftvm.ExecEnv) <em>Compile Iterables</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#clearFields() <em>Clear Fields</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#findInputElement(java.lang.String) <em>Find Input Element</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#getUniqueTrace(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.lang.Object[]) <em>Get Unique Trace</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -119,7 +120,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#getESuperRules() <em>ESuper Rules</em>}' feature getter. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#getESuperRules()
 	 * @generated NOT
 	 */
@@ -132,7 +133,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#getESubRules() <em>ESub Rules</em>}' feature getter. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#getESubRules()
 	 * @generated NOT
 	 */
@@ -145,7 +146,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#isLeaf() <em>Leaf</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#isLeaf()
 	 * @generated NOT
 	 */
@@ -158,7 +159,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#isWithLeaves() <em>With Leaves</em>}' feature getter. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#isWithLeaves()
 	 * @generated NOT
 	 */
@@ -171,7 +172,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#findField(java.lang.Object, java.lang.String) <em>Find Field</em>}' operation. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#findField(java.lang.Object, java.lang.String)
 	 * @generated NOT
 	 */
@@ -184,7 +185,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#hasField(java.lang.String) <em>Has Field</em>}' operation. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#hasField(java.lang.String)
 	 * @generated NOT
 	 */
@@ -197,7 +198,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#findStaticField(java.lang.Object, java.lang.String) <em>Find Static Field</em>}'
 	 * operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#findStaticField(java.lang.Object, java.lang.String)
 	 * @generated NOT
 	 */
@@ -210,7 +211,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#hasStaticField(java.lang.String) <em>Has Static Field</em>}' operation. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#hasStaticField(java.lang.String)
 	 * @generated NOT
 	 */
@@ -223,7 +224,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#registerField(org.eclipse.m2m.atl.emftvm.Field) <em>Register Field</em>}'
 	 * operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#registerField(org.eclipse.m2m.atl.emftvm.Field)
 	 * @generated NOT
 	 */
@@ -236,7 +237,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#matchSingle(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Match Single</em>}'
 	 * operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#matchSingle(org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 * @generated NOT
 	 */
@@ -249,7 +250,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#matchRecursive(org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 * <em>Match Recursive</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#matchRecursive(org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 * @generated NOT
 	 */
@@ -269,13 +270,13 @@ public class RuleTest extends NamedElementTest {
 	public void testMatchManual__StackFrame_Object() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		
+
 	}
 
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#matchOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map)
 	 * <em>Match One</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#matchOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map)
 	 * @generated NOT
 	 */
@@ -290,18 +291,18 @@ public class RuleTest extends NamedElementTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#matchOneOnly(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testMatchOneOnly__StackFrame_Map() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#createTraces(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Create Traces</em>}'
 	 * operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#createTraces(org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 * @generated NOT
 	 */
@@ -315,7 +316,7 @@ public class RuleTest extends NamedElementTest {
 	 * Tests the '
 	 * {@link org.eclipse.m2m.atl.emftvm.Rule#completeTraceFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink)
 	 * <em>Complete Trace For</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#completeTraceFor(org.eclipse.m2m.atl.emftvm.util.StackFrame,
 	 *      org.eclipse.m2m.atl.emftvm.trace.TraceLink)
 	 * @generated NOT
@@ -329,7 +330,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#apply(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Apply</em>}' operation. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#apply(org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 * @generated NOT
 	 */
@@ -342,7 +343,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#postApply(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Post Apply</em>}'
 	 * operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#postApply(org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 * @generated NOT
 	 */
@@ -355,7 +356,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#applyFirst(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Apply First</em>}'
 	 * operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#applyFirst(org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 * @generated NOT
 	 */
@@ -366,23 +367,36 @@ public class RuleTest extends NamedElementTest {
 	}
 
 	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#applyOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map) <em>Apply One</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#applyOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map)
+	 * @generated
+	 */
+	public void testApplyOne__StackFrame_Map() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+
+	}
+
+	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#applyOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink) <em>Apply One</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#applyOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testApplyOne__StackFrame_TraceLink() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+
 	}
 
 	/**
 	 * Tests the '
 	 * {@link org.eclipse.m2m.atl.emftvm.Rule#applyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink)
 	 * <em>Apply For</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#applyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink)
 	 * @generated NOT
 	 */
@@ -396,7 +410,7 @@ public class RuleTest extends NamedElementTest {
 	 * Tests the '
 	 * {@link org.eclipse.m2m.atl.emftvm.Rule#postApplyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink)
 	 * <em>Post Apply For</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#postApplyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame,
 	 *      org.eclipse.m2m.atl.emftvm.trace.TraceLink)
 	 * @generated NOT
@@ -410,7 +424,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#getAllESuperRules() <em>Get All ESuper Rules</em>}' operation. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#getAllESuperRules()
 	 * @generated NOT
 	 */
@@ -423,7 +437,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#createUniqueMapping(org.eclipse.m2m.atl.emftvm.trace.TraceLink)
 	 * <em>Create Unique Mapping</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#createUniqueMapping(org.eclipse.m2m.atl.emftvm.trace.TraceLink)
 	 * @generated NOT
 	 */
@@ -436,7 +450,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#compileState(org.eclipse.m2m.atl.emftvm.ExecEnv) <em>Compile State</em>}'
 	 * operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#compileState(org.eclipse.m2m.atl.emftvm.ExecEnv)
 	 * @generated NOT
 	 */
@@ -449,7 +463,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#resetState() <em>Reset State</em>}' operation. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#resetState()
 	 * @generated NOT
 	 */
@@ -462,7 +476,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#compileIterables(org.eclipse.m2m.atl.emftvm.ExecEnv) <em>Compile Iterables</em>}'
 	 * operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#compileIterables(org.eclipse.m2m.atl.emftvm.ExecEnv)
 	 * @generated NOT
 	 */
@@ -475,7 +489,7 @@ public class RuleTest extends NamedElementTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#clearFields() <em>Clear Fields</em>}' operation. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#clearFields()
 	 * @generated NOT
 	 */
@@ -495,6 +509,19 @@ public class RuleTest extends NamedElementTest {
 	public void testFindInputElement__String() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#getUniqueTrace(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.lang.Object[]) <em>Get Unique Trace</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#getUniqueTrace(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.lang.Object[])
+	 * @generated
+	 */
+	public void testGetUniqueTrace__StackFrame_Object() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+
 	}
 
 } //RuleTest

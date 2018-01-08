@@ -21,11 +21,11 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.RuleElement#getModels <em>Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.RuleElement#getEModels <em>EModels</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getRuleElement()
  * @model abstract="true"

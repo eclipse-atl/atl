@@ -34,6 +34,7 @@ import org.eclipse.m2m.atl.emftvm.Opcode;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getOwningBlock <em>Owning Block</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getOpcode <em>Opcode</em>}</li>
@@ -42,7 +43,6 @@ import org.eclipse.m2m.atl.emftvm.Opcode;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getStackLevel <em>Stack Level</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getLineNumber <em>Line Number</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

@@ -26,11 +26,11 @@ import org.eclipse.m2m.atl.emftvm.Opcode;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.FindtypeImpl#getModelname <em>Modelname</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.FindtypeImpl#getTypename <em>Typename</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

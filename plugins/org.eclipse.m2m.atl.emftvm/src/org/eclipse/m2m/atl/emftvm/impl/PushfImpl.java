@@ -22,8 +22,6 @@ import org.eclipse.m2m.atl.emftvm.Pushf;
  * An implementation of the model object '<em><b>Pushf</b></em>'.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */

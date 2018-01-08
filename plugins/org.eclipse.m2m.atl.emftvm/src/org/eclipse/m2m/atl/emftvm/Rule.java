@@ -27,6 +27,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#getModule <em>Module</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#getMode <em>Mode</em>}</li>
@@ -46,7 +47,6 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#isLeaf <em>Leaf</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#isWithLeaves <em>With Leaves</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getRule()
  * @model
@@ -549,7 +549,7 @@ public interface Rule extends NamedElement {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Matches this rule only (without suoer-rules) for <code>valuesMap</code>.
+	 * Matches this rule only (without super-rules) for <code>valuesMap</code>.
 	 * Call {@link #compileState()} before calling this method.
 	 * @param frame the stack frame in which to execute the matcher
 	 * @param valuesMap the values to match against
@@ -626,25 +626,23 @@ public interface Rule extends NamedElement {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Applies {@link #getRule()} to <code>trace</code>
+	 * Applies this rule to <code>trace</code>
 	 * @param frame the stack frame in which to execute the applier and post-apply
-	 * @param trace the source and target values to which to apply the rule
+	 * @param valuesMap the source and target values to which to apply the rule
 	 * @return the rule application result
 	 * <!-- end-user-doc -->
 	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
 	 */
-	Object applyOne(StackFrame frame, TraceLink trace);
+	Object applyOne(StackFrame frame, Map<String, Object> valuesMap);
 
 	/**
-	 * <!-- begin-user-doc --> 
-	 * Applies this rule for the given <code>trace</code>. Call {@link #compileState()} before calling this method.
-	 * 
-	 * @param frame
-	 *            the stack frame context
-	 * @param trace
-	 *            the trace link to apply the rule for
-	 * @return the application result 
+	 * <!-- begin-user-doc -->
+	 * Applies this rule for the given <code>trace</code>.
+	 * Call {@link #compileState()} before calling this method.
+	 * @param frame the stack frame context
+	 * @param trace the trace link to apply the rule for
+	 * @return the application result
 	 * <!-- end-user-doc -->
 	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
@@ -652,15 +650,15 @@ public interface Rule extends NamedElement {
 	Object applyFor(StackFrame frame, TraceLink trace);
 
 	/**
-	 * <!-- begin-user-doc --> 
+	 * <!-- begin-user-doc -->
 	 * Post-applies this rule for the given <code>trace</code>. Call {@link #compileState()} before calling this
 	 * method.
-	 * 
+	 *
 	 * @param frame
 	 *            the stack frame context
 	 * @param trace
 	 *            the trace link to post-apply the rule for
-	 * @return the post-application result 
+	 * @return the post-application result
 	 * <!-- end-user-doc -->
 	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
 	 * @generated
@@ -674,7 +672,7 @@ public interface Rule extends NamedElement {
 	 * Call {@link #compileState()} before calling this method.
 	 * @return the transitive closure of super-rules.
 	 * <!-- end-user-doc -->
-	 * @model kind="operation" dataType="org.eclipse.m2m.atl.emftvm.LazySet<org.eclipse.m2m.atl.emftvm.Rule>"
+	 * @model kind="operation" dataType="org.eclipse.m2m.atl.emftvm.LazySet&lt;org.eclipse.m2m.atl.emftvm.Rule&gt;"
 	 * @generated
 	 */
 	LazySet<Rule> getAllESuperRules();
@@ -734,7 +732,7 @@ public interface Rule extends NamedElement {
 	/**
 	 * <!-- begin-user-doc -->
 	 * Finds the {@link InputRuleElement} with the given name within the rule inheritance hierarchy depth-first.
-	 * 
+	 *
 	 * @param name
 	 *            the input element name
 	 * @return the {@link InputRuleElement} with the given name or <code>null</code>
@@ -743,5 +741,23 @@ public interface Rule extends NamedElement {
 	 * @generated
 	 */
 	InputRuleElement findInputElement(String name);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 *
+	 * Returns the unique rule application trace for <code>values</code>, if
+	 * applicable.
+	 *
+	 * @param frame
+	 *            the stack frame context
+	 * @param values
+	 *            the source values for the trace
+	 * @return the unique rule application trace, or <code>null</code>
+	 *
+	 *         <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame" valuesDataType="org.eclipse.m2m.atl.emftvm.EJavaObjectArray"
+	 * @generated
+	 */
+	TraceLink getUniqueTrace(StackFrame frame, Object[] values);
 
 } // Rule

@@ -3772,7 +3772,12 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		op = addEOperation(ruleEClass, theEcorePackage.getEJavaObject(), "applyOne", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, theTracePackage.getTraceLink(), "trace", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(ecorePackage.getEMap());
+		g2 = createEGenericType(theEcorePackage.getEString());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(ecorePackage.getEJavaObject());
+		g1.getETypeArguments().add(g2);
+		addEParameter(op, g1, "valuesMap", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(ruleEClass, theEcorePackage.getEJavaObject(), "applyFor", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3803,6 +3808,10 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		op = addEOperation(ruleEClass, this.getInputRuleElement(), "findInputElement", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, theTracePackage.getTraceLink(), "getUniqueTrace", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getEJavaObjectArray(), "values", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(ruleElementEClass, RuleElement.class, "RuleElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getRuleElement_Models(), theEcorePackage.getEString(), "models", null, 0, -1, RuleElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

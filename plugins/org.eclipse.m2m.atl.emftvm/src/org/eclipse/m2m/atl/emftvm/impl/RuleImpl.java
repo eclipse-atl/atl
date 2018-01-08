@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2017-2018 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -68,6 +69,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.RuleImpl#getModule <em>Module</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.RuleImpl#getMode <em>Mode</em>}</li>
@@ -87,7 +89,6 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.RuleImpl#isLeaf <em>Leaf</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.RuleImpl#isWithLeaves <em>With Leaves</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -135,16 +136,60 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * @param values the source values to match against
 		 * @return <code>true</code> iff this rule matches against <code>values</code>
 		 */
-		public abstract boolean matchFor(final StackFrame frame, final Map<String, Object> valuesMap, 
+		public abstract boolean matchFor(final StackFrame frame, final Map<String, Object> valuesMap,
 				final Object[] values);
 
 		/**
-		 * Matches 
-		 * @param frame
-		 * @param values
-		 * @return
+		 * Returns the unique rule application trace for <code>values</code>, if applicable.
+		 * @param frame the stack frame context
+		 * @param values the source values for the trace
+		 * @return the unique rule application trace, or <code>null</code>
 		 */
-		public abstract Object matchManual(final StackFrame frame, final Object[] values);
+		public TraceLink getUniqueTrace(final StackFrame frame, final Object[] values) {
+			for (final Rule subRule : getESubRules()) {
+				final TraceLink subTraceLink = subRule.getUniqueTrace(frame, values);
+				if (subTraceLink != null) {
+					return subTraceLink;
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * Applies {@link #getRule()} to <code>trace</code>
+		 *
+		 * @param frame
+		 *            the stack frame in which to execute the applier and post-apply
+		 * @param trace
+		 *            the trace link with values to which to apply the rule
+		 * @return the rule application result
+		 */
+		public Object applyOne(final StackFrame frame, final TraceLink trace) {
+			Object result = null;
+			for (final Rule rule : getAllESuperRules()) {
+				if (rule.getApplier() != null) {
+					result = rule.applyFor(frame, trace);
+				} else {
+					rule.applyFor(frame, trace);
+				}
+				if (rule.getPostApply() != null) {
+					result = rule.postApplyFor(frame, trace);
+				} else {
+					rule.postApplyFor(frame, trace);
+				}
+			}
+			if (getApplier() != null) {
+				result = applierCbState.applyFor(frame, trace);
+			} else {
+				applierCbState.applyFor(frame, trace);
+			}
+			if (getPostApply() != null) {
+				result = applierCbState.postApplyFor(frame, trace);
+			} else {
+				applierCbState.postApplyFor(frame, trace);
+			}
+			return result;
+		}
 	}
 
 	/**
@@ -176,54 +221,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Object matchManual(final StackFrame frame, final Object[] values) {
-			assert !isUnique();
-			final Map<String, Object> valuesMap = createValuesMap(values);
-			if (matchOne(frame, valuesMap)) {
-				final Set<Rule> matchedRules = matchManualSubRules(RuleImpl.this, frame, valuesMap);
-				final int size = matchedRules.size();
-				switch (size) {
-				case 0:
-					//TODO should not work for abstract rules
-					return applyOne(frame, createTrace(frame, valuesMap));
-				case 1:
-					return matchedRules.iterator().next().applyOne(frame, createTrace(frame, valuesMap));
-				default:
-					throw new VMException(frame, String.format("More than one matching sub-rule found for %s: %s",
-							RuleImpl.this, matchedRules));
-				}
-			} else {
-				return null;
-			}
-		}
-
-		/**
-		 * TODO
-		 * @param rule
-		 * @param frame
-		 * @param valuesMap
-		 * @return
-		 */
-		private Set<Rule> matchManualSubRules(final Rule rule, final StackFrame frame, final Map<String, Object> valuesMap) {
-			final Set<Rule> matchedRules = new HashSet<Rule>();
-			for (Rule subRule : rule.getESubRules()) {
-				if (subRule.matchOneOnly(frame, valuesMap)) {
-					Set<Rule> matchedSubRules = matchManualSubRules(subRule, frame, valuesMap);
-					if (!matchedSubRules.isEmpty()) {
-						matchedRules.addAll(matchedSubRules);
-					} else {
-						//TODO not for abstract rules
-						matchedRules.add(subRule);
-					}
-				}
-			}
-			return matchedRules;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
 		public boolean matchFor(final StackFrame frame, final Object[] values) {
 			assert !isUnique();
 			return matcherCbState.matchFor(frame, values);
@@ -233,7 +230,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean matchFor(final StackFrame frame, final Map<String, Object> valuesMap, 
+		public boolean matchFor(final StackFrame frame, final Map<String, Object> valuesMap,
 				final Object[] values) {
 			assert !isUnique();
 			return matcherCbState.matchFor(frame, valuesMap, values);
@@ -259,7 +256,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			} else {
 				final SourceElementList sel = TraceFactory.eINSTANCE.createSourceElementList();
 				final EList<SourceElement> ses = sel.getSourceElements();
-				for (InputRuleElement re : inputElements) {
+				for (final InputRuleElement re : inputElements) {
 					ses.add(trace.getSourceElement(re.getName(), false));
 				}
 				sel.setUniqueFor(tr);
@@ -290,31 +287,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Object matchManual(final StackFrame frame, final Object[] values) {
-			assert isUnique();
-			final Map<TraceLink, Object> uniqueResults = frame.getEnv().getUniqueResults();
-			// Reuse existing application result for unique rules
-			TraceLink trace = getUniqueTrace(frame, values);
-			if (trace != null) {
-				return uniqueResults.get(trace);
-			}
-			// Otherwise match as normal
-			final Map<String, Object> valuesMap = createValuesMap(values);
-			if (matchOne(frame, valuesMap)) {
-				trace = createTrace(frame, valuesMap);
-				final Object resultValue = applyTo(frame, trace);
-				// Store unique result for later retrieval
-				uniqueResults.put(trace, resultValue);
-				return resultValue;
-			} else {
-				return null;
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
 		public boolean matchFor(final StackFrame frame, final Object[] values) {
 			assert isUnique();
 			// Don't match if values have previously matched
@@ -338,7 +310,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean matchFor(final StackFrame frame, final Map<String, Object> valuesMap, 
+		public boolean matchFor(final StackFrame frame, final Map<String, Object> valuesMap,
 				final Object[] values) {
 			assert isUnique();
 			// Don't match if values have previously matched
@@ -359,12 +331,10 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		}
 
 		/**
-		 * Returns the unique rule application trace for <code>values</code>, if applicable.
-		 * @param frame the stack frame context
-		 * @param values the source values for the trace
-		 * @return the unique rule application trace, or <code>null</code>
+		 * {@inheritDoc}
 		 */
-		private TraceLink getUniqueTrace(final StackFrame frame, final Object[] values) {
+		@Override
+		public TraceLink getUniqueTrace(final StackFrame frame, final Object[] values) {
 			final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(getName(), false);
 			if (tr != null) {
 				if (values.length == 1) {
@@ -379,7 +349,18 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 					}
 				}
 			}
-			return null;
+			return super.getUniqueTrace(frame, values);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Object applyOne(final StackFrame frame, final TraceLink trace) {
+			final Object resultValue = super.applyOne(frame, trace);
+			// Store unique result for later retrieval
+			frame.getEnv().getUniqueResults().put(trace, resultValue);
+			return resultValue;
 		}
 	}
 
@@ -413,7 +394,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	protected class DefaultOffState extends DefaultState {
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -430,13 +411,13 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * {@link DefaultState} class for rules with {@link Rule#isDefault()} set to <code>true</code>.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	protected class DefaultOnState extends DefaultState {
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -469,7 +450,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	protected abstract class SuperRulesState {
-		
+
 		/**
 		 * Matches {@link #getRule()}.
 		 * @param frame the stack frame in which to execute the matcher
@@ -495,7 +476,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	protected class WithoutSuperRulesState extends SuperRulesState {
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -523,7 +504,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			// Create value iterables and initial value array
 			final EList<InputRuleElement> allInputs = getInputElements();
 			final List<Iterable<EObject>> iterables = new ArrayList<Iterable<EObject>>(allInputs.size());
-			for (InputRuleElement re : allInputs) {
+			for (final InputRuleElement re : allInputs) {
 				if (re.getBinding() != null) {
 					// Skip bound elements until all non-bound values have been set
 					iterables.add(null);
@@ -535,33 +516,34 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			iterableMap = null;
 		}
 	}
-	
+
 	/**
 	 * {@link SuperRulesState} class for rules with {@link Rule#getESuperRules()}.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	protected class WithSuperRulesState extends SuperRulesState {
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public boolean match(final StackFrame frame) {
 			final EList<Rule> superRules = getESuperRules();
 			assert !superRules.isEmpty();
 			// Retrieve super-rule matches
 			final List<TracedRule> superMatches = new ArrayList<TracedRule>(superRules.size());
 			final TraceLinkSet matches = frame.getEnv().getMatches();
-			for (Rule superRule : superRules) {
-				TracedRule superMatch = matches.getLinksByRule(superRule.getName(), false);
+			for (final Rule superRule : superRules) {
+				final TracedRule superMatch = matches.getLinksByRule(superRule.getName(), false);
 				assert superMatch != null;
 				superMatches.add(superMatch);
 			}
 			// Do the matching
-			return matchFor(frame, 
-					new LinkedHashMap<String, Object>(getInputElements().size()), 
-					0, 
-					superMatches, 
-					iterableMap, 
+			return matchFor(frame,
+					new LinkedHashMap<String, Object>(getInputElements().size()),
+					0,
+					superMatches,
+					iterableMap,
 					new LinkedHashMap<TracedRule, TraceLink>(superRules.size()));
 		}
 
@@ -575,17 +557,17 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			// Retrieve super-rule matches
 			final List<TracedRule> superMatches = new ArrayList<TracedRule>(superRules.size());
 			final TraceLinkSet matches = frame.getEnv().getMatches();
-			for (Rule superRule : superRules) {
-				TracedRule superMatch = matches.getLinksByRule(superRule.getName(), false);
+			for (final Rule superRule : superRules) {
+				final TracedRule superMatch = matches.getLinksByRule(superRule.getName(), false);
 				assert superMatch != null;
 				superMatches.add(superMatch);
 			}
 			// Do the matching
-			return matchOneFor(frame, 
-					new LinkedHashMap<String, Object>(getInputElements().size()), 
-					0, 
-					superMatches, 
-					iterableMap, 
+			return matchOneFor(frame,
+					new LinkedHashMap<String, Object>(getInputElements().size()),
+					0,
+					superMatches,
+					iterableMap,
 					new HashMap<TracedRule, TraceLink>(superRules.size()));
 		}
 
@@ -596,15 +578,15 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		public void compileIterables(final ExecEnv env) {
 			// Collect input element names for all super-rules
 			final java.util.Set<String> superRuleElementNames = new HashSet<String>();
-			for (Rule rule : getAllESuperRules()) {
-				for (RuleElement re : rule.getInputElements()) {
+			for (final Rule rule : getAllESuperRules()) {
+				for (final RuleElement re : rule.getInputElements()) {
 					superRuleElementNames.add(re.getName());
 				}
 			}
 			// Create iterables for all new input elements
 			final Map<String, Iterable<EObject>> iterables = new LinkedHashMap<String, Iterable<EObject>>();
-			for (InputRuleElement re : getInputElements()) {
-				String name = re.getName();
+			for (final InputRuleElement re : getInputElements()) {
+				final String name = re.getName();
 				if (!superRuleElementNames.contains(name) && re.getBinding() == null) {
 					// Skip bound elements until all non-bound values have been set
 					iterables.put(name, re.createIterable(env));
@@ -620,7 +602,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	protected abstract class RuleModeState {
-		
+
 		/**
 		 * Matches {@link #getRule()} for the automatic single stage, if applicable.
 		 * @param frame the stack frame in which to execute the matcher
@@ -651,7 +633,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			throw new VMException(frame, String.format(
 					"Rule %s is not a manual rule", this));
 		}
-		
+
 		/**
 		 * Matches this rule against <code>values</code>,
 		 * and records a match in {@link ExecEnv#getMatches()} in case of a match.
@@ -673,7 +655,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * @param values the source values to match against
 		 * @return <code>true</code> iff this rule matches against <code>values</code>
 		 */
-		public abstract boolean matchFor(StackFrame frame, Map<String, Object> valuesMap, 
+		public abstract boolean matchFor(StackFrame frame, Map<String, Object> valuesMap,
 				Object[] values);
 	}
 
@@ -682,14 +664,63 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	protected class ManualState extends RuleModeState {
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public Object matchManual(final StackFrame frame, final Object[] values) {
 			assert getMode() == RuleMode.MANUAL;
-			return uniqueState.matchManual(frame, values);
+			// Reuse existing application result for unique rules
+			final TraceLink trace = getUniqueTrace(frame, values);
+			if (trace != null) {
+				return frame.getEnv().getUniqueResults().get(trace);
+			}
+			// Otherwise match as normal
+			final Map<String, Object> valuesMap = createValuesMap(values);
+			if (matchOne(frame, valuesMap)) {
+				final Set<Rule> matchedRules = matchManualSubRules(RuleImpl.this, frame, valuesMap);
+				switch (matchedRules.size()) {
+				case 0:
+					return isAbstract() ? null : applyOne(frame, valuesMap);
+				case 1:
+					final Rule subRule = matchedRules.iterator().next();
+					assert !subRule.isAbstract();
+					return subRule.applyOne(frame, valuesMap);
+				default:
+					throw new VMException(frame, String.format("More than one matching sub-rule found for %s: %s",
+							RuleImpl.this, matchedRules));
+				}
+			} else {
+				return null;
+			}
+		}
+
+		/**
+		 * Matches the sub-rules of the given rule manually.
+		 *
+		 * @param rule
+		 *            the rule for which to match the sub-rules
+		 * @param frame
+		 *            the stack frame context
+		 * @param valuesMap
+		 *            the map of all values, including super-rule elements
+		 * @return the matching (non-abstract) sub-rules
+		 */
+		protected Set<Rule> matchManualSubRules(final Rule rule, final StackFrame frame,
+				final Map<String, Object> valuesMap) {
+			final Set<Rule> matchedRules = new HashSet<Rule>();
+			for (final Rule subRule : rule.getESubRules()) {
+				if (subRule.matchOneOnly(frame, valuesMap)) {
+					final Set<Rule> matchedSubRules = matchManualSubRules(subRule, frame, valuesMap);
+					if (!matchedSubRules.isEmpty()) {
+						matchedRules.addAll(matchedSubRules);
+					} else if (!subRule.isAbstract()) {
+						matchedRules.add(subRule);
+					}
+				}
+			}
+			return matchedRules;
 		}
 
 		/**
@@ -698,7 +729,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		@Override
 		public boolean matchFor(final StackFrame frame, final Object[] values) {
 			assert getMode() == RuleMode.MANUAL;
-			throw new VMException(frame, 
+			throw new VMException(frame,
 					"matchFor(StackFrame, EObject[]) should not be used for manual rules");
 		}
 
@@ -709,7 +740,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		public boolean matchFor(final StackFrame frame,
 				final Map<String, Object> valuesMap, final Object[] values) {
 			assert getMode() == RuleMode.MANUAL;
-			throw new VMException(frame, 
+			throw new VMException(frame,
 					"matchFor(StackFrame, Map<String, EObject>, EObject[]) should not be used for manual rules");
 		}
 	}
@@ -719,7 +750,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	protected class AutomaticSingleState extends RuleModeState {
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -742,7 +773,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean matchFor(final StackFrame frame, final Map<String, Object> valuesMap, 
+		public boolean matchFor(final StackFrame frame, final Map<String, Object> valuesMap,
 				final Object[] values) {
 			assert getMode() == RuleMode.AUTOMATIC_SINGLE;
 			return matcherCbState.matchFor(frame, valuesMap, values);
@@ -782,7 +813,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			assert getMode() == RuleMode.AUTOMATIC_RECURSIVE;
 			return uniqueState.matchFor(frame, valuesMap, values);
 		}
-		
+
 	}
 
 	/**
@@ -847,7 +878,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final TraceLinkSet matches = env.getMatches();
 			matches.getRules().clear();
 			matches.getDefaultSourceElements().clear();
-			for (Rule rule : getAllESuperRules()) {
+			for (final Rule rule : getAllESuperRules()) {
 				rule.applyFor(frame, trace);
 				rule.postApplyFor(frame, trace);
 			}
@@ -911,7 +942,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	protected abstract class AbstractState {
-		
+
 		/**
 		 * Creates trace elements for the recorded matches for this rule.
 		 * @param frame the stack frame context
@@ -987,16 +1018,16 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final TraceLinkSet traces = env.getTraces();
 			traces.getRules().add(tr);
 			// Remove overridden matches
-			for (Iterator<TraceLink> links = tr.getLinks().iterator(); links.hasNext();) {
-				TraceLink trace = links.next();
+			for (final Iterator<TraceLink> links = tr.getLinks().iterator(); links.hasNext();) {
+				final TraceLink trace = links.next();
 				if (trace.isOverridden()) {
 					links.remove(); // This match is overridden by a sub-rule
 				} else {
 					createAllUniqueMappings(trace);
-					boolean defaultMappingSet = completeTraceFor(frame, trace);
+					final boolean defaultMappingSet = completeTraceFor(frame, trace);
 					// Mark default/unique source elements if applicable
 					if (!defaultMappingSet) {
-						EList<SourceElement> ses = trace.getSourceElements();
+						final EList<SourceElement> ses = trace.getSourceElements();
 						defaultState.createDefaultMapping(traces, ses);
 					}
 				}
@@ -1013,9 +1044,9 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			if (tr == null) {
 				throw new VMException(frame, String.format("Cannot apply %s; no traces exist", RuleImpl.this));
 			}
-			for (TraceLink trace : tr.getLinks()) {
+			for (final TraceLink trace : tr.getLinks()) {
 				assert !trace.isOverridden();
-				for (Rule rule : getAllESuperRules()) {
+				for (final Rule rule : getAllESuperRules()) {
 					rule.applyFor(frame, trace);
 				}
 				applierCbState.applyFor(frame, trace);
@@ -1032,9 +1063,9 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			if (tr == null) {
 				throw new VMException(frame, String.format("Cannot post-apply %s; no traces exist", RuleImpl.this));
 			}
-			for (TraceLink trace : tr.getLinks()) {
+			for (final TraceLink trace : tr.getLinks()) {
 				assert !trace.isOverridden();
-				for (Rule rule : getAllESuperRules()) {
+				for (final Rule rule : getAllESuperRules()) {
 					rule.postApplyFor(frame, trace);
 				}
 				applierCbState.postApplyFor(frame, trace);
@@ -1060,8 +1091,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final TraceLink match = TraceFactory.eINSTANCE.createTraceLink();
 			final EList<SourceElement> ses = match.getSourceElements();
 			int i = 0;
-			for (InputRuleElement re : getInputElements()) {
-				SourceElement se = TraceFactory.eINSTANCE.createSourceElement();
+			for (final InputRuleElement re : getInputElements()) {
+				final SourceElement se = TraceFactory.eINSTANCE.createSourceElement();
 				se.setName(re.getName());
 				se.setRuntimeObject(values[i++]);
 				se.setMapsToSelf(re.isMapsToSelf());
@@ -1079,16 +1110,16 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * @param values the source values to match against
 		 * @return <code>true</code> iff this rule matches against <code>values</code>
 		 */
-		public boolean matchFor(final StackFrame frame, final Map<String, Object> valuesMap, 
+		public boolean matchFor(final StackFrame frame, final Map<String, Object> valuesMap,
 				final Object[] values) {
 			final TraceLink match = TraceFactory.eINSTANCE.createTraceLink();
 			final EList<SourceElement> ses = match.getSourceElements();
 			// Add all values for the match, not just the ones specified in the rule signature
-			for (Entry<String, Object> v : valuesMap.entrySet()) {
-				SourceElement se = TraceFactory.eINSTANCE.createSourceElement();
+			for (final Entry<String, Object> v : valuesMap.entrySet()) {
+				final SourceElement se = TraceFactory.eINSTANCE.createSourceElement();
 				se.setName(v.getKey());
 				se.setRuntimeObject(v.getValue());
-				InputRuleElement re = findInputElement(v.getKey());
+				final InputRuleElement re = findInputElement(v.getKey());
 				se.setMapsToSelf(re == null ? false : re.isMapsToSelf());
 				ses.add(se);
 			}
@@ -1140,7 +1171,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * Base class for code that depends on whether the rule has a 
+	 * Base class for code that depends on whether the rule has a
 	 * {@link Rule#getApplier()} code block and/or a {@link Rule#getPostApply()} code block.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
@@ -1148,7 +1179,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 
 		/**
 		 * Applies this rule for the given <code>trace</code>.
-		 * 
+		 *
 		 * @param frame
 		 *            the stack frame context
 		 * @param trace
@@ -1159,7 +1190,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 
 		/**
 		 * Post-applies this rule for the given <code>trace</code>.
-		 * 
+		 *
 		 * @param frame
 		 *            the stack frame context
 		 * @param trace
@@ -1541,7 +1572,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	protected boolean withLeaves = WITH_LEAVES_EDEFAULT;
 	/**
-	 * Field storage and lookup. 
+	 * Field storage and lookup.
 	 */
 	protected FieldContainer fieldContainer = new FieldContainer();
 
@@ -1690,7 +1721,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	public void setMode(RuleMode newMode) {
-		RuleMode oldMode = mode;
+		final RuleMode oldMode = mode;
 		mode = newMode == null ? MODE_EDEFAULT : newMode;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__MODE, oldMode, mode));
@@ -1765,10 +1796,10 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	public NotificationChain basicSetMatcher(CodeBlock newMatcher, NotificationChain msgs) {
-		CodeBlock oldMatcher = matcher;
+		final CodeBlock oldMatcher = matcher;
 		matcher = newMatcher;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__MATCHER, oldMatcher, newMatcher);
+			final ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__MATCHER, oldMatcher, newMatcher);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -1811,10 +1842,10 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	public NotificationChain basicSetApplier(CodeBlock newApplier, NotificationChain msgs) {
-		CodeBlock oldApplier = applier;
+		final CodeBlock oldApplier = applier;
 		applier = newApplier;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__APPLIER, oldApplier, newApplier);
+			final ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__APPLIER, oldApplier, newApplier);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -1857,10 +1888,10 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	public NotificationChain basicSetPostApply(CodeBlock newPostApply, NotificationChain msgs) {
-		CodeBlock oldPostApply = postApply;
+		final CodeBlock oldPostApply = postApply;
 		postApply = newPostApply;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__POST_APPLY, oldPostApply, newPostApply);
+			final ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__POST_APPLY, oldPostApply, newPostApply);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -1916,7 +1947,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	public void setAbstract(boolean newAbstract) {
-		boolean oldAbstract = abstract_;
+		final boolean oldAbstract = abstract_;
 		abstract_ = newAbstract;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__ABSTRACT, oldAbstract, abstract_));
@@ -1952,7 +1983,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	public void setDefault(boolean newDefault) {
-		boolean oldDefault = default_;
+		final boolean oldDefault = default_;
 		default_ = newDefault;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__DEFAULT, oldDefault, default_));
@@ -1975,7 +2006,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	public void setDistinctElements(boolean newDistinctElements) {
-		boolean oldDistinctElements = distinctElements;
+		final boolean oldDistinctElements = distinctElements;
 		distinctElements = newDistinctElements;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__DISTINCT_ELEMENTS, oldDistinctElements, distinctElements));
@@ -1998,7 +2029,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	public void setUnique(boolean newUnique) {
-		boolean oldUnique = unique;
+		final boolean oldUnique = unique;
 		unique = newUnique;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__UNIQUE, oldUnique, unique));
@@ -2027,7 +2058,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	public boolean isWithLeaves() {
 		if (!withLeavesSet) {
 			withLeaves = false;
-			for (Rule subRule : getESubRules()) {
+			for (final Rule subRule : getESubRules()) {
 				if (subRule.isLeaf() || subRule.isWithLeaves()) {
 					withLeaves = true;
 					break;
@@ -2122,7 +2153,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated NOT
 	 */
 	public boolean matchOne(final StackFrame frame, final Map<String, Object> valuesMap) {
-		for (Rule superRule : getESuperRules()) {
+		for (final Rule superRule : getESuperRules()) {
 			if (!superRule.matchOne(frame, valuesMap)) {
 				return false;
 			}
@@ -2144,14 +2175,14 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		final EList<InputRuleElement> inputs = getInputElements();
 
 		for (int index = 0; index < inputs.size(); index++) {
-			InputRuleElement re = inputs.get(index);
-			Object value = valuesMap.get(re.getName());
+			final InputRuleElement re = inputs.get(index);
+			final Object value = valuesMap.get(re.getName());
 			if (value == null) {
 				throw new VMException(frame, String.format(
-						"Cannot match rule input element %s against null value for %s", 
+						"Cannot match rule input element %s against null value for %s",
 						re, this));
 			}
-			EClassifier eType = re.getEType();
+			final EClassifier eType = re.getEType();
 			if (eType instanceof EEnum) {
 				// Fix for Bug # 441027
 				if (!(value instanceof EnumLiteral)) {
@@ -2160,7 +2191,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			} else if (!eType.isInstance(value)) {
 				return false;
 			}
-			EList<Model> inmodels = re.getEModels();
+			final EList<Model> inmodels = re.getEModels();
 			if (!inmodels.isEmpty() && !(value instanceof EObject && inmodels.contains(env.getModelOf((EObject) value)))) {
 				return false;
 			}
@@ -2169,7 +2200,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			}
 
 			// Check bound values
-			CodeBlock binding = re.getBinding();
+			final CodeBlock binding = re.getBinding();
 			if (binding != null) {
 				final Object bvalue = binding.execute(frame.getSubFrame(binding, values));
 				if (bvalue == null) {
@@ -2210,18 +2241,18 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		boolean defaultMappingSet = false;
 		final ExecEnv env = frame.getEnv();
 		final int seSize = trace.getSourceElements().size();
-		for (OutputRuleElement ore : getOutputElements()) {
-			String oreName = ore.getName();
+		for (final OutputRuleElement ore : getOutputElements()) {
+			final String oreName = ore.getName();
 			// If there is *any* target element with the same name, it overrides us
 			if (trace.getTargetElement(oreName) != null) {
 				continue;
 			}
-			TargetElement te = TraceFactory.eINSTANCE.createTargetElement();
+			final TargetElement te = TraceFactory.eINSTANCE.createTargetElement();
 			te.setName(oreName);
 			te.setTargetOf(trace);
-			EList<SourceElement> teMapsTo = te.getMapsTo();
-			for (InputRuleElement source : ore.getMapsTo()) {
-				SourceElement mapsTo = trace.getSourceElement(source.getName(), false);
+			final EList<SourceElement> teMapsTo = te.getMapsTo();
+			for (final InputRuleElement source : ore.getMapsTo()) {
+				final SourceElement mapsTo = trace.getSourceElement(source.getName(), false);
 				assert mapsTo != null;
 				teMapsTo.add(mapsTo);
 			}
@@ -2232,17 +2263,17 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			EClass type;
 			try {
 				type = (EClass)env.findType(ore.getTypeModel(), ore.getType());
-			} catch (ClassNotFoundException e) {
+			} catch (final ClassNotFoundException e) {
 				throw new VMException(frame);
 			}
-			EList<Model> models = ore.getEModels();
+			final EList<Model> models = ore.getEModels();
 			assert models.size() == 1;
 			te.setObject(models.get(0).newElement(type));
 			assert te.getObject() != null;
 			assert te.getObject().eResource() != null;
 			assert te.getObject().eResource() == models.get(0).getResource();
 		}
-		for (Rule superRule : getESuperRules()) {
+		for (final Rule superRule : getESuperRules()) {
 			defaultMappingSet |= superRule.completeTraceFor(frame, trace);
 		}
 		return defaultMappingSet;
@@ -2284,31 +2315,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Object applyOne(final StackFrame frame, final TraceLink trace) {
-		Object result = null;
-		for (Rule rule : getAllESuperRules()) {
-			if (rule.getApplier() != null) {
-				result = rule.applyFor(frame, trace);
-			} else {
-				rule.applyFor(frame, trace);
-			}
-			if (rule.getPostApply() != null) {
-				result = rule.postApplyFor(frame, trace);
-			} else {
-				rule.postApplyFor(frame, trace);
-			}
-		}
-		if (getApplier() != null) {
-			result = applierCbState.applyFor(frame, trace);
-		} else {
-			applierCbState.applyFor(frame, trace);
-		}
-		if (getPostApply() != null) {
-			result = applierCbState.postApplyFor(frame, trace);
-		} else {
-			applierCbState.postApplyFor(frame, trace);
-		}
-		return result;
+	public Object applyOne(final StackFrame frame, Map<String, Object> valuesMap) {
+		return uniqueState.applyOne(frame, createTrace(frame, valuesMap));
 	}
 
 	/**
@@ -2341,7 +2349,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		if (allESuperRules == null) {
 			final EList<Rule> eSuperRules = getESuperRules();
 			LazySet<Rule> superRules = new LazySet<Rule>();
-			for (Rule rule : eSuperRules) {
+			for (final Rule rule : eSuperRules) {
 				superRules = superRules.union(rule.getAllESuperRules());
 			}
 			superRules = superRules.union(new LazySet<Rule>(eSuperRules));
@@ -2422,7 +2430,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated NOT
 	 */
 	public InputRuleElement findInputElement(final String name) {
-		for (InputRuleElement ire : getInputElements()) {
+		for (final InputRuleElement ire : getInputElements()) {
 			if (name.equals(ire.getName())) {
 				return ire;
 			}
@@ -2439,38 +2447,48 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public TraceLink getUniqueTrace(final StackFrame frame, final Object[] values) {
+		return uniqueState.getUniqueTrace(frame, values);
+	}
+
+	/**
+	 * <!-- begin-user-doc. -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case EmftvmPackage.RULE__MODULE:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetModule((Module)otherEnd, msgs);
-			case EmftvmPackage.RULE__INPUT_ELEMENTS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getInputElements()).basicAdd(otherEnd, msgs);
-			case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getOutputElements()).basicAdd(otherEnd, msgs);
-			case EmftvmPackage.RULE__ESUPER_RULES:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getESuperRules()).basicAdd(otherEnd, msgs);
-			case EmftvmPackage.RULE__ESUB_RULES:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getESubRules()).basicAdd(otherEnd, msgs);
-			case EmftvmPackage.RULE__MATCHER:
-				if (matcher != null)
-					msgs = ((InternalEObject)matcher).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__MATCHER, null, msgs);
-				return basicSetMatcher((CodeBlock)otherEnd, msgs);
-			case EmftvmPackage.RULE__APPLIER:
-				if (applier != null)
-					msgs = ((InternalEObject)applier).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__APPLIER, null, msgs);
-				return basicSetApplier((CodeBlock)otherEnd, msgs);
-			case EmftvmPackage.RULE__POST_APPLY:
-				if (postApply != null)
-					msgs = ((InternalEObject)postApply).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__POST_APPLY, null, msgs);
-				return basicSetPostApply((CodeBlock)otherEnd, msgs);
-			case EmftvmPackage.RULE__FIELDS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getFields()).basicAdd(otherEnd, msgs);
+		case EmftvmPackage.RULE__MODULE:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetModule((Module)otherEnd, msgs);
+		case EmftvmPackage.RULE__INPUT_ELEMENTS:
+			return ((InternalEList<InternalEObject>)(InternalEList<?>)getInputElements()).basicAdd(otherEnd, msgs);
+		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
+			return ((InternalEList<InternalEObject>)(InternalEList<?>)getOutputElements()).basicAdd(otherEnd, msgs);
+		case EmftvmPackage.RULE__ESUPER_RULES:
+			return ((InternalEList<InternalEObject>)(InternalEList<?>)getESuperRules()).basicAdd(otherEnd, msgs);
+		case EmftvmPackage.RULE__ESUB_RULES:
+			return ((InternalEList<InternalEObject>)(InternalEList<?>)getESubRules()).basicAdd(otherEnd, msgs);
+		case EmftvmPackage.RULE__MATCHER:
+			if (matcher != null)
+				msgs = ((InternalEObject)matcher).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__MATCHER, null, msgs);
+			return basicSetMatcher((CodeBlock)otherEnd, msgs);
+		case EmftvmPackage.RULE__APPLIER:
+			if (applier != null)
+				msgs = ((InternalEObject)applier).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__APPLIER, null, msgs);
+			return basicSetApplier((CodeBlock)otherEnd, msgs);
+		case EmftvmPackage.RULE__POST_APPLY:
+			if (postApply != null)
+				msgs = ((InternalEObject)postApply).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__POST_APPLY, null, msgs);
+			return basicSetPostApply((CodeBlock)otherEnd, msgs);
+		case EmftvmPackage.RULE__FIELDS:
+			return ((InternalEList<InternalEObject>)(InternalEList<?>)getFields()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -2484,24 +2502,24 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case EmftvmPackage.RULE__MODULE:
-				return basicSetModule(null, msgs);
-			case EmftvmPackage.RULE__INPUT_ELEMENTS:
-				return ((InternalEList<?>)getInputElements()).basicRemove(otherEnd, msgs);
-			case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
-				return ((InternalEList<?>)getOutputElements()).basicRemove(otherEnd, msgs);
-			case EmftvmPackage.RULE__ESUPER_RULES:
-				return ((InternalEList<?>)getESuperRules()).basicRemove(otherEnd, msgs);
-			case EmftvmPackage.RULE__ESUB_RULES:
-				return ((InternalEList<?>)getESubRules()).basicRemove(otherEnd, msgs);
-			case EmftvmPackage.RULE__MATCHER:
-				return basicSetMatcher(null, msgs);
-			case EmftvmPackage.RULE__APPLIER:
-				return basicSetApplier(null, msgs);
-			case EmftvmPackage.RULE__POST_APPLY:
-				return basicSetPostApply(null, msgs);
-			case EmftvmPackage.RULE__FIELDS:
-				return ((InternalEList<?>)getFields()).basicRemove(otherEnd, msgs);
+		case EmftvmPackage.RULE__MODULE:
+			return basicSetModule(null, msgs);
+		case EmftvmPackage.RULE__INPUT_ELEMENTS:
+			return ((InternalEList<?>)getInputElements()).basicRemove(otherEnd, msgs);
+		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
+			return ((InternalEList<?>)getOutputElements()).basicRemove(otherEnd, msgs);
+		case EmftvmPackage.RULE__ESUPER_RULES:
+			return ((InternalEList<?>)getESuperRules()).basicRemove(otherEnd, msgs);
+		case EmftvmPackage.RULE__ESUB_RULES:
+			return ((InternalEList<?>)getESubRules()).basicRemove(otherEnd, msgs);
+		case EmftvmPackage.RULE__MATCHER:
+			return basicSetMatcher(null, msgs);
+		case EmftvmPackage.RULE__APPLIER:
+			return basicSetApplier(null, msgs);
+		case EmftvmPackage.RULE__POST_APPLY:
+			return basicSetPostApply(null, msgs);
+		case EmftvmPackage.RULE__FIELDS:
+			return ((InternalEList<?>)getFields()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -2515,8 +2533,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-			case EmftvmPackage.RULE__MODULE:
-				return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__RULES, Module.class, msgs);
+		case EmftvmPackage.RULE__MODULE:
+			return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__RULES, Module.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -2530,40 +2548,40 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case EmftvmPackage.RULE__MODULE:
-				return getModule();
-			case EmftvmPackage.RULE__MODE:
-				return getMode();
-			case EmftvmPackage.RULE__INPUT_ELEMENTS:
-				return getInputElements();
-			case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
-				return getOutputElements();
-			case EmftvmPackage.RULE__ESUPER_RULES:
-				return getESuperRules();
-			case EmftvmPackage.RULE__ESUB_RULES:
-				return getESubRules();
-			case EmftvmPackage.RULE__MATCHER:
-				return getMatcher();
-			case EmftvmPackage.RULE__APPLIER:
-				return getApplier();
-			case EmftvmPackage.RULE__POST_APPLY:
-				return getPostApply();
-			case EmftvmPackage.RULE__SUPER_RULES:
-				return getSuperRules();
-			case EmftvmPackage.RULE__ABSTRACT:
-				return isAbstract();
-			case EmftvmPackage.RULE__FIELDS:
-				return getFields();
-			case EmftvmPackage.RULE__DEFAULT:
-				return isDefault();
-			case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
-				return isDistinctElements();
-			case EmftvmPackage.RULE__UNIQUE:
-				return isUnique();
-			case EmftvmPackage.RULE__LEAF:
-				return isLeaf();
-			case EmftvmPackage.RULE__WITH_LEAVES:
-				return isWithLeaves();
+		case EmftvmPackage.RULE__MODULE:
+			return getModule();
+		case EmftvmPackage.RULE__MODE:
+			return getMode();
+		case EmftvmPackage.RULE__INPUT_ELEMENTS:
+			return getInputElements();
+		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
+			return getOutputElements();
+		case EmftvmPackage.RULE__ESUPER_RULES:
+			return getESuperRules();
+		case EmftvmPackage.RULE__ESUB_RULES:
+			return getESubRules();
+		case EmftvmPackage.RULE__MATCHER:
+			return getMatcher();
+		case EmftvmPackage.RULE__APPLIER:
+			return getApplier();
+		case EmftvmPackage.RULE__POST_APPLY:
+			return getPostApply();
+		case EmftvmPackage.RULE__SUPER_RULES:
+			return getSuperRules();
+		case EmftvmPackage.RULE__ABSTRACT:
+			return isAbstract();
+		case EmftvmPackage.RULE__FIELDS:
+			return getFields();
+		case EmftvmPackage.RULE__DEFAULT:
+			return isDefault();
+		case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
+			return isDistinctElements();
+		case EmftvmPackage.RULE__UNIQUE:
+			return isUnique();
+		case EmftvmPackage.RULE__LEAF:
+			return isLeaf();
+		case EmftvmPackage.RULE__WITH_LEAVES:
+			return isWithLeaves();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -2578,57 +2596,57 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case EmftvmPackage.RULE__MODULE:
-				setModule((Module)newValue);
-				return;
-			case EmftvmPackage.RULE__MODE:
-				setMode((RuleMode)newValue);
-				return;
-			case EmftvmPackage.RULE__INPUT_ELEMENTS:
-				getInputElements().clear();
-				getInputElements().addAll((Collection<? extends InputRuleElement>)newValue);
-				return;
-			case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
-				getOutputElements().clear();
-				getOutputElements().addAll((Collection<? extends OutputRuleElement>)newValue);
-				return;
-			case EmftvmPackage.RULE__ESUPER_RULES:
-				getESuperRules().clear();
-				getESuperRules().addAll((Collection<? extends Rule>)newValue);
-				return;
-			case EmftvmPackage.RULE__ESUB_RULES:
-				getESubRules().clear();
-				getESubRules().addAll((Collection<? extends Rule>)newValue);
-				return;
-			case EmftvmPackage.RULE__MATCHER:
-				setMatcher((CodeBlock)newValue);
-				return;
-			case EmftvmPackage.RULE__APPLIER:
-				setApplier((CodeBlock)newValue);
-				return;
-			case EmftvmPackage.RULE__POST_APPLY:
-				setPostApply((CodeBlock)newValue);
-				return;
-			case EmftvmPackage.RULE__SUPER_RULES:
-				getSuperRules().clear();
-				getSuperRules().addAll((Collection<? extends String>)newValue);
-				return;
-			case EmftvmPackage.RULE__ABSTRACT:
-				setAbstract((Boolean)newValue);
-				return;
-			case EmftvmPackage.RULE__FIELDS:
-				getFields().clear();
-				getFields().addAll((Collection<? extends Field>)newValue);
-				return;
-			case EmftvmPackage.RULE__DEFAULT:
-				setDefault((Boolean)newValue);
-				return;
-			case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
-				setDistinctElements((Boolean)newValue);
-				return;
-			case EmftvmPackage.RULE__UNIQUE:
-				setUnique((Boolean)newValue);
-				return;
+		case EmftvmPackage.RULE__MODULE:
+			setModule((Module)newValue);
+			return;
+		case EmftvmPackage.RULE__MODE:
+			setMode((RuleMode)newValue);
+			return;
+		case EmftvmPackage.RULE__INPUT_ELEMENTS:
+			getInputElements().clear();
+			getInputElements().addAll((Collection<? extends InputRuleElement>)newValue);
+			return;
+		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
+			getOutputElements().clear();
+			getOutputElements().addAll((Collection<? extends OutputRuleElement>)newValue);
+			return;
+		case EmftvmPackage.RULE__ESUPER_RULES:
+			getESuperRules().clear();
+			getESuperRules().addAll((Collection<? extends Rule>)newValue);
+			return;
+		case EmftvmPackage.RULE__ESUB_RULES:
+			getESubRules().clear();
+			getESubRules().addAll((Collection<? extends Rule>)newValue);
+			return;
+		case EmftvmPackage.RULE__MATCHER:
+			setMatcher((CodeBlock)newValue);
+			return;
+		case EmftvmPackage.RULE__APPLIER:
+			setApplier((CodeBlock)newValue);
+			return;
+		case EmftvmPackage.RULE__POST_APPLY:
+			setPostApply((CodeBlock)newValue);
+			return;
+		case EmftvmPackage.RULE__SUPER_RULES:
+			getSuperRules().clear();
+			getSuperRules().addAll((Collection<? extends String>)newValue);
+			return;
+		case EmftvmPackage.RULE__ABSTRACT:
+			setAbstract((Boolean)newValue);
+			return;
+		case EmftvmPackage.RULE__FIELDS:
+			getFields().clear();
+			getFields().addAll((Collection<? extends Field>)newValue);
+			return;
+		case EmftvmPackage.RULE__DEFAULT:
+			setDefault((Boolean)newValue);
+			return;
+		case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
+			setDistinctElements((Boolean)newValue);
+			return;
+		case EmftvmPackage.RULE__UNIQUE:
+			setUnique((Boolean)newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -2642,51 +2660,51 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case EmftvmPackage.RULE__MODULE:
-				setModule((Module)null);
-				return;
-			case EmftvmPackage.RULE__MODE:
-				setMode(MODE_EDEFAULT);
-				return;
-			case EmftvmPackage.RULE__INPUT_ELEMENTS:
-				getInputElements().clear();
-				return;
-			case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
-				getOutputElements().clear();
-				return;
-			case EmftvmPackage.RULE__ESUPER_RULES:
-				getESuperRules().clear();
-				return;
-			case EmftvmPackage.RULE__ESUB_RULES:
-				getESubRules().clear();
-				return;
-			case EmftvmPackage.RULE__MATCHER:
-				setMatcher((CodeBlock)null);
-				return;
-			case EmftvmPackage.RULE__APPLIER:
-				setApplier((CodeBlock)null);
-				return;
-			case EmftvmPackage.RULE__POST_APPLY:
-				setPostApply((CodeBlock)null);
-				return;
-			case EmftvmPackage.RULE__SUPER_RULES:
-				getSuperRules().clear();
-				return;
-			case EmftvmPackage.RULE__ABSTRACT:
-				setAbstract(ABSTRACT_EDEFAULT);
-				return;
-			case EmftvmPackage.RULE__FIELDS:
-				getFields().clear();
-				return;
-			case EmftvmPackage.RULE__DEFAULT:
-				setDefault(DEFAULT_EDEFAULT);
-				return;
-			case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
-				setDistinctElements(DISTINCT_ELEMENTS_EDEFAULT);
-				return;
-			case EmftvmPackage.RULE__UNIQUE:
-				setUnique(UNIQUE_EDEFAULT);
-				return;
+		case EmftvmPackage.RULE__MODULE:
+			setModule((Module)null);
+			return;
+		case EmftvmPackage.RULE__MODE:
+			setMode(MODE_EDEFAULT);
+			return;
+		case EmftvmPackage.RULE__INPUT_ELEMENTS:
+			getInputElements().clear();
+			return;
+		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
+			getOutputElements().clear();
+			return;
+		case EmftvmPackage.RULE__ESUPER_RULES:
+			getESuperRules().clear();
+			return;
+		case EmftvmPackage.RULE__ESUB_RULES:
+			getESubRules().clear();
+			return;
+		case EmftvmPackage.RULE__MATCHER:
+			setMatcher((CodeBlock)null);
+			return;
+		case EmftvmPackage.RULE__APPLIER:
+			setApplier((CodeBlock)null);
+			return;
+		case EmftvmPackage.RULE__POST_APPLY:
+			setPostApply((CodeBlock)null);
+			return;
+		case EmftvmPackage.RULE__SUPER_RULES:
+			getSuperRules().clear();
+			return;
+		case EmftvmPackage.RULE__ABSTRACT:
+			setAbstract(ABSTRACT_EDEFAULT);
+			return;
+		case EmftvmPackage.RULE__FIELDS:
+			getFields().clear();
+			return;
+		case EmftvmPackage.RULE__DEFAULT:
+			setDefault(DEFAULT_EDEFAULT);
+			return;
+		case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
+			setDistinctElements(DISTINCT_ELEMENTS_EDEFAULT);
+			return;
+		case EmftvmPackage.RULE__UNIQUE:
+			setUnique(UNIQUE_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -2700,40 +2718,40 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case EmftvmPackage.RULE__MODULE:
-				return getModule() != null;
-			case EmftvmPackage.RULE__MODE:
-				return mode != MODE_EDEFAULT;
-			case EmftvmPackage.RULE__INPUT_ELEMENTS:
-				return inputElements != null && !inputElements.isEmpty();
-			case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
-				return outputElements != null && !outputElements.isEmpty();
-			case EmftvmPackage.RULE__ESUPER_RULES:
-				return eSuperRules != null && !eSuperRules.isEmpty();
-			case EmftvmPackage.RULE__ESUB_RULES:
-				return eSubRules != null && !eSubRules.isEmpty();
-			case EmftvmPackage.RULE__MATCHER:
-				return matcher != null;
-			case EmftvmPackage.RULE__APPLIER:
-				return applier != null;
-			case EmftvmPackage.RULE__POST_APPLY:
-				return postApply != null;
-			case EmftvmPackage.RULE__SUPER_RULES:
-				return superRules != null && !superRules.isEmpty();
-			case EmftvmPackage.RULE__ABSTRACT:
-				return abstract_ != ABSTRACT_EDEFAULT;
-			case EmftvmPackage.RULE__FIELDS:
-				return fields != null && !fields.isEmpty();
-			case EmftvmPackage.RULE__DEFAULT:
-				return default_ != DEFAULT_EDEFAULT;
-			case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
-				return distinctElements != DISTINCT_ELEMENTS_EDEFAULT;
-			case EmftvmPackage.RULE__UNIQUE:
-				return unique != UNIQUE_EDEFAULT;
-			case EmftvmPackage.RULE__LEAF:
-				return leaf != LEAF_EDEFAULT;
-			case EmftvmPackage.RULE__WITH_LEAVES:
-				return withLeaves != WITH_LEAVES_EDEFAULT;
+		case EmftvmPackage.RULE__MODULE:
+			return getModule() != null;
+		case EmftvmPackage.RULE__MODE:
+			return mode != MODE_EDEFAULT;
+		case EmftvmPackage.RULE__INPUT_ELEMENTS:
+			return inputElements != null && !inputElements.isEmpty();
+		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
+			return outputElements != null && !outputElements.isEmpty();
+		case EmftvmPackage.RULE__ESUPER_RULES:
+			return eSuperRules != null && !eSuperRules.isEmpty();
+		case EmftvmPackage.RULE__ESUB_RULES:
+			return eSubRules != null && !eSubRules.isEmpty();
+		case EmftvmPackage.RULE__MATCHER:
+			return matcher != null;
+		case EmftvmPackage.RULE__APPLIER:
+			return applier != null;
+		case EmftvmPackage.RULE__POST_APPLY:
+			return postApply != null;
+		case EmftvmPackage.RULE__SUPER_RULES:
+			return superRules != null && !superRules.isEmpty();
+		case EmftvmPackage.RULE__ABSTRACT:
+			return abstract_ != ABSTRACT_EDEFAULT;
+		case EmftvmPackage.RULE__FIELDS:
+			return fields != null && !fields.isEmpty();
+		case EmftvmPackage.RULE__DEFAULT:
+			return default_ != DEFAULT_EDEFAULT;
+		case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
+			return distinctElements != DISTINCT_ELEMENTS_EDEFAULT;
+		case EmftvmPackage.RULE__UNIQUE:
+			return unique != UNIQUE_EDEFAULT;
+		case EmftvmPackage.RULE__LEAF:
+			return leaf != LEAF_EDEFAULT;
+		case EmftvmPackage.RULE__WITH_LEAVES:
+			return withLeaves != WITH_LEAVES_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -2747,7 +2765,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer();
+		final StringBuffer result = new StringBuffer();
 		if (abstract_) {
 			result.append("abstract ");
 		}
@@ -2926,7 +2944,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @return <code>true</code> iff the rule matches
 	 */
 	private boolean matchFor(
-			final StackFrame frame, 
+			final StackFrame frame,
 			final Map<String, Object> values, final int index,
 			final List<TracedRule> superMatches,
 			final Map<String, Iterable<EObject>> iterables,
@@ -2934,43 +2952,43 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		boolean result = false;
 		final int superSize = superMatches.size();
 		if (index < superSize) {
-			 // create copy to distinguish pre-existing source elements from the ones added here
+			// create copy to distinguish pre-existing source elements from the ones added here
 			final Map<String, Object> newValues = new LinkedHashMap<String, Object>(values);
 			final TracedRule tr = superMatches.get(index);
 			MATCH:
-			for (TraceLink match : tr.getLinks()) {
-				for (SourceElement se : match.getSourceElements()) {
-					String seName = se.getName();
-					EObject seValue = se.getObject();
-					if (values.containsKey(seName)) {
-						if (values.get(seName) != seValue) {
-							continue MATCH; // go to next match, as elements of the same name must be identical
+				for (final TraceLink match : tr.getLinks()) {
+					for (final SourceElement se : match.getSourceElements()) {
+						final String seName = se.getName();
+						final EObject seValue = se.getObject();
+						if (values.containsKey(seName)) {
+							if (values.get(seName) != seValue) {
+								continue MATCH; // go to next match, as elements of the same name must be identical
+							}
+						} else if (isDistinctElements() && values.containsValue(seValue)) {
+							continue MATCH; // all elements in this rule are distinct
+						} else {
+							newValues.put(seName, seValue);
 						}
-					} else if (isDistinctElements() && values.containsValue(seValue)) {
-						continue MATCH; // all elements in this rule are distinct
-					} else {
-						newValues.put(seName, seValue);
 					}
-				}
-				for (RuleElement re : getInputElements()) {
-					String reName = re.getName();
-					// Not all rule input elements exist in newValues!
-					if (newValues.containsKey(reName) 
-							&& !re.getEType().isInstance(newValues.get(reName))) {
-						// go to next match, as elements must conform to sub-rule type
-						continue MATCH;
+					for (final RuleElement re : getInputElements()) {
+						final String reName = re.getName();
+						// Not all rule input elements exist in newValues!
+						if (newValues.containsKey(reName)
+								&& !re.getEType().isInstance(newValues.get(reName))) {
+							// go to next match, as elements must conform to sub-rule type
+							continue MATCH;
+						}
 					}
+					currentMatches.put(tr, match);
+					result |= matchFor(frame, newValues, index + 1, superMatches, iterables, currentMatches);
 				}
-				currentMatches.put(tr, match);
-				result |= matchFor(frame, newValues, index + 1, superMatches, iterables, currentMatches);
-			}
 		} else if (!iterables.isEmpty()) {
 			result = matchFor(frame, values, iterables, new ArrayList<String>(iterables.keySet()), 0);
 		} else {
 			result = matchFor(frame, values, createValuesArray(values), 0);
 			if (result) {
 				// Schedule selected parent matches for removal
-				for (TraceLink link : currentMatches.values()) {
+				for (final TraceLink link : currentMatches.values()) {
 					link.setOverridden(true);
 				}
 			}
@@ -2988,7 +3006,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @return <code>true</code> iff the rule matches
 	 */
 	private boolean matchFor(
-			final StackFrame frame, 
+			final StackFrame frame,
 			final Map<String, Object> values,
 			final Map<String, Iterable<EObject>> iterables,
 			final List<String> keys,
@@ -2998,7 +3016,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			boolean result = false;
 			final String key = keys.get(keyIndex);
 			assert !values.containsKey(key);
-			for (EObject o : iterables.get(key)) {
+			for (final EObject o : iterables.get(key)) {
 				assert frame.getEnv().getModelOf(o) != null;
 				if (isDistinctElements() && values.containsValue(o)) {
 					continue; // all elements in this rule are distinct
@@ -3032,8 +3050,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 
 		if (newIndex < values.length) {
 			boolean result = false;
-			
-			for (EObject o : iterables.get(newIndex)) {
+
+			for (final EObject o : iterables.get(newIndex)) {
 				assert frame.getEnv().getModelOf(o) != null;
 				if (!distinctState.checkDistinct(values, newIndex, o)) {
 					continue; // all elements in this rule are distinct
@@ -3042,7 +3060,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 				result |= matchFor(frame, values, newIndex + 1, iterables);
 				values[newIndex] = null;
 			}
-			
+
 			return result;
 		} else {
 			return matchFor(frame, values, 0);
@@ -3082,7 +3100,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 					}
 				} else if (value instanceof Collection<?>) {
 					boolean result = false;
-					for (EObject v : (Collection<EObject>)value) {
+					for (final EObject v : (Collection<EObject>)value) {
 						if (!ire.getEType().isInstance(v) || !distinctState.checkDistinct(values, values.length - 1, v)) {
 							continue; // all elements in this rule are distinct
 						}
@@ -3095,7 +3113,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 					if (!ire.getEType().isInstance(value) || !distinctState.checkDistinct(values, values.length - 1, value)) {
 						return false; // all elements in this rule are distinct
 					}
-					values[index] = (EObject)value;
+					values[index] = value;
 					final boolean result = matchFor(frame, values, index + 1);
 					values[index] = null;
 					return result;
@@ -3118,7 +3136,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @return <code>true</code> iff <code>rule</code> matches against <code>values</code>
 	 */
 	@SuppressWarnings("unchecked")
-	private boolean matchFor(final StackFrame frame, final Map<String, Object> valuesMap, 
+	private boolean matchFor(final StackFrame frame, final Map<String, Object> valuesMap,
 			final Object[] values, final int index) {
 		// Assign bound input element values
 		final EList<InputRuleElement> inputs = getInputElements();
@@ -3144,8 +3162,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 				} else if (value instanceof Collection<?>) {
 					final String key = ire.getName();
 					boolean result = false;
-					for (EObject v : (Collection<EObject>)value) {
-						if (!ire.getEType().isInstance(v) || 
+					for (final EObject v : (Collection<EObject>)value) {
+						if (!ire.getEType().isInstance(v) ||
 								(isDistinctElements() && valuesMap.containsValue(v))) {
 							continue; // all elements in this rule are distinct
 						}
@@ -3157,13 +3175,13 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 					}
 					return result;
 				} else {
-					if (!ire.getEType().isInstance(value) || 
+					if (!ire.getEType().isInstance(value) ||
 							(isDistinctElements() && valuesMap.containsValue(value))) {
 						return false; // all elements in this rule are distinct
 					}
 					final String key = ire.getName();
-					values[index] = (EObject)value;
-					valuesMap.put(key, (EObject)value);
+					values[index] = value;
+					valuesMap.put(key, value);
 					final boolean result = matchFor(frame, valuesMap, values, index + 1);
 					valuesMap.remove(key);
 					values[index] = null;
@@ -3188,45 +3206,45 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @return <code>true</code> iff the rule matches
 	 */
 	private boolean matchOneFor(
-			final StackFrame frame, 
+			final StackFrame frame,
 			final Map<String, Object> values, final int index,
 			final List<TracedRule> superMatches,
 			final Map<String, Iterable<EObject>> iterables,
 			final Map<TracedRule, TraceLink> currentMatches) {
 		final int superSize = superMatches.size();
 		if (index < superSize) {
-			 // create copy to distinguish pre-existing source elements from the ones added here
+			// create copy to distinguish pre-existing source elements from the ones added here
 			final Map<String, Object> newValues = new LinkedHashMap<String, Object>(values);
 			final TracedRule tr = superMatches.get(index);
 			MATCH:
-			for (TraceLink match : tr.getLinks()) {
-				for (SourceElement se : match.getSourceElements()) {
-					String seName = se.getName();
-					EObject seValue = se.getObject();
-					if (values.containsKey(seName)) {
-						if (values.get(seName) != seValue) {
-							continue MATCH; // go to next match, as elements of the same name must be identical
+				for (final TraceLink match : tr.getLinks()) {
+					for (final SourceElement se : match.getSourceElements()) {
+						final String seName = se.getName();
+						final EObject seValue = se.getObject();
+						if (values.containsKey(seName)) {
+							if (values.get(seName) != seValue) {
+								continue MATCH; // go to next match, as elements of the same name must be identical
+							}
+						} else if (isDistinctElements() && values.containsValue(seValue)) {
+							continue MATCH; // all elements in this rule are distinct
+						} else {
+							newValues.put(seName, seValue);
 						}
-					} else if (isDistinctElements() && values.containsValue(seValue)) {
-						continue MATCH; // all elements in this rule are distinct
-					} else {
-						newValues.put(seName, seValue);
+					}
+					for (final RuleElement re : getInputElements()) {
+						final String reName = re.getName();
+						// Not all rule input elements exist in newValues!
+						if (newValues.containsKey(reName)
+								&& !re.getEType().isInstance(newValues.get(reName))) {
+							// go to next match, as elements must conform to sub-rule type
+							continue MATCH;
+						}
+					}
+					currentMatches.put(tr, match);
+					if (matchOneFor(frame, newValues, index + 1, superMatches, iterables, currentMatches)) {
+						return true;
 					}
 				}
-				for (RuleElement re : getInputElements()) {
-					String reName = re.getName();
-					// Not all rule input elements exist in newValues!
-					if (newValues.containsKey(reName) 
-							&& !re.getEType().isInstance(newValues.get(reName))) {
-						// go to next match, as elements must conform to sub-rule type
-						continue MATCH;
-					}
-				}
-				currentMatches.put(tr, match);
-				if (matchOneFor(frame, newValues, index + 1, superMatches, iterables, currentMatches)) {
-					return true;
-				}
-			}
 			return false;
 		} else if (!iterables.isEmpty()) {
 			return matchOneFor(frame, values, iterables, new ArrayList<String>(iterables.keySet()), 0);
@@ -3235,7 +3253,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			result = matchOneFor(frame, values, createValuesArray(values), 0);
 			if (result) {
 				// Schedule selected parent matches for removal
-				for (TraceLink link : currentMatches.values()) {
+				for (final TraceLink link : currentMatches.values()) {
 					link.setOverridden(true);
 				}
 			}
@@ -3251,7 +3269,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @param keyIndex
 	 */
 	private boolean matchOneFor(
-			final StackFrame frame, 
+			final StackFrame frame,
 			final Map<String, Object> values,
 			final Map<String, Iterable<EObject>> iterables,
 			final List<String> keys,
@@ -3260,7 +3278,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		if (keyIndex < size) {
 			final String key = keys.get(keyIndex);
 			assert !values.containsKey(key);
-			for (EObject o : iterables.get(key)) {
+			for (final EObject o : iterables.get(key)) {
 				assert frame.getEnv().getModelOf(o) != null;
 				if (isDistinctElements() && values.containsValue(o)) {
 					continue; // all elements in this rule are distinct
@@ -3286,7 +3304,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @param index the current index of <code>values</code> and <code>iterables</code>
 	 * @param iterables the collections over which to iterate
 	 */
-	private boolean matchOneFor(final StackFrame frame, final EObject[] values, final int index, 
+	private boolean matchOneFor(final StackFrame frame, final EObject[] values, final int index,
 			final List<Iterable<EObject>> iterables) {
 		assert values.length == iterables.size();
 		int newIndex = index;
@@ -3295,7 +3313,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		}
 
 		if (newIndex < values.length) {
-			for (EObject o : iterables.get(newIndex)) {
+			for (final EObject o : iterables.get(newIndex)) {
 				assert frame.getEnv().getModelOf(o) != null;
 				if (!distinctState.checkDistinct(values, newIndex, o)) {
 					continue;
@@ -3344,7 +3362,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 						}
 					}
 				} else if (value instanceof Collection<?>) {
-					for (EObject v : (Collection<EObject>)value) {
+					for (final EObject v : (Collection<EObject>)value) {
 						if (!ire.getEType().isInstance(v) || !distinctState.checkDistinct(values, values.length - 1, v)) {
 							continue; // all elements in this rule are distinct
 						}
@@ -3382,7 +3400,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @return <code>true</code> iff <code>rule</code> matches against <code>values</code>
 	 */
 	@SuppressWarnings("unchecked")
-	private boolean matchOneFor(final StackFrame frame, final Map<String, Object> valuesMap, 
+	private boolean matchOneFor(final StackFrame frame, final Map<String, Object> valuesMap,
 			final Object[] values, final int index) {
 		// Assign bound input element values
 		final EList<InputRuleElement> inputs = getInputElements();
@@ -3407,8 +3425,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 					}
 				} else if (value instanceof Collection<?>) {
 					final String key = ire.getName();
-					for (EObject v : (Collection<EObject>)value) {
-						if (!ire.getEType().isInstance(v) || 
+					for (final EObject v : (Collection<EObject>)value) {
+						if (!ire.getEType().isInstance(v) ||
 								(isDistinctElements() && valuesMap.containsValue(v))) {
 							continue; // all elements in this rule are distinct
 						}
@@ -3423,13 +3441,13 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 					}
 					return false;
 				} else {
-					if (!ire.getEType().isInstance(value) || 
+					if (!ire.getEType().isInstance(value) ||
 							(isDistinctElements() && valuesMap.containsValue(value))) {
 						return false; // all elements in this rule are distinct
 					}
 					final String key = ire.getName();
-					values[index] = (EObject)value;
-					valuesMap.put(key, (EObject)value);
+					values[index] = value;
+					valuesMap.put(key, value);
 					final boolean result = matchOneFor(frame, valuesMap, values, index + 1);
 					valuesMap.remove(key);
 					values[index] = null;
@@ -3438,7 +3456,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			}
 			return matchOneFor(frame, valuesMap, values, index + 1);
 		}
-		
+
 		// Match values
 		return uniqueState.matchFor(frame, valuesMap, values);
 	}
@@ -3452,7 +3470,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		final EList<InputRuleElement> allInput = getInputElements();
 		final Object[] valuesArray = new Object[allInput.size()];
 		int i = 0;
-		for (InputRuleElement re : allInput) {
+		for (final InputRuleElement re : allInput) {
 			valuesArray[i++] = values.get(re.getName());
 			// null values allowed, as long as they are later filled in by bound elements
 			assert getMode() == RuleMode.MANUAL || re.getBinding() != null || valuesArray[i - 1] != null;
@@ -3471,7 +3489,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		final Map<String, Object> valuesMap = new LinkedHashMap<String, Object>(allInput.size());
 		assert allInput.size() == values.length;
 		int i = 0;
-		for (RuleElement re : allInput) {
+		for (final RuleElement re : allInput) {
 			valuesMap.put(re.getName(), values[i++]);
 			assert getMode() == RuleMode.MANUAL || values[i - 1] != null;
 		}
@@ -3493,8 +3511,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		tr.getLinks().add(trace);
 		final EList<SourceElement> ses = trace.getSourceElements();
 		//Add all values for the trace, not just the ones specified in the rule signature
-		for (Entry<String, Object> v : values.entrySet()) {
-			SourceElement se = TraceFactory.eINSTANCE.createSourceElement();
+		for (final Entry<String, Object> v : values.entrySet()) {
+			final SourceElement se = TraceFactory.eINSTANCE.createSourceElement();
 			se.setName(v.getKey());
 			se.setRuntimeObject(v.getValue());
 			ses.add(se);
@@ -3524,8 +3542,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 					"Cannot create a trace for rule %s; no matches exist",
 					this));
 		}
-		for (Iterator<TraceLink> links = tr.getLinks().iterator(); links.hasNext();) {
-			TraceLink trace = links.next();
+		for (final Iterator<TraceLink> links = tr.getLinks().iterator(); links.hasNext();) {
+			final TraceLink trace = links.next();
 			if (trace.isOverridden()) {
 				links.remove(); // This match is overridden by a sub-rule
 				continue;
@@ -3534,7 +3552,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final TracedRule ntr = traces.getLinksByRule(ruleName, true);
 			ntr.getLinks().add(trace);
 			uniqueState.createUniqueMapping(trace);
-			for (Rule rule : getAllESuperRules()) {
+			for (final Rule rule : getAllESuperRules()) {
 				rule.createUniqueMapping(trace);
 			}
 			final boolean defaultMappingSet = completeTraceFor(frame, trace);
@@ -3549,39 +3567,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * Applies {@link #getRule()} to <code>trace</code>
-	 * @param frame the stack frame in which to execute the applier and post-apply
-	 * @param trace the source and target values to which to apply the rule
-	 * @return the rule application result
-	 */
-	private Object applyTo(final StackFrame frame, final TraceLink trace) {
-		Object result = null;
-		for (Rule rule : getAllESuperRules()) {
-			if (rule.getApplier() != null) {
-				result = rule.applyFor(frame, trace);
-			} else {
-				rule.applyFor(frame, trace);
-			}
-			if (rule.getPostApply() != null) {
-				result = rule.postApplyFor(frame, trace);
-			} else {
-				rule.postApplyFor(frame, trace);
-			}
-		}
-		if (getApplier() != null) {
-			result = applierCbState.applyFor(frame, trace);
-		} else {
-			applierCbState.applyFor(frame, trace);
-		}
-		if (getPostApply() != null) {
-			result = applierCbState.postApplyFor(frame, trace);
-		} else {
-			applierCbState.postApplyFor(frame, trace);
-		}
-		return result;
-	}
-
-	/**
 	 * Creates applier invocation arguments for this rule from <code>trace</code>.
 	 * @param trace the trace element with source and target values
 	 * @return applier invocation arguments for <code>rule</code>
@@ -3592,11 +3577,11 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		final Object[] args = new Object[1 + input.size() + output.size()];
 		args[0] = trace;
 		int i = 1;
-		for (InputRuleElement ire : input) {
+		for (final InputRuleElement ire : input) {
 			args[i++] = trace.getSourceElement(ire.getName(), false).getRuntimeObject();
 			assert args[i - 1] != null;
 		}
-		for (OutputRuleElement ore : output) {
+		for (final OutputRuleElement ore : output) {
 			args[i++] = trace.getTargetElement(ore.getName()).getObject();
 			assert args[i - 1] != null;
 		}
@@ -3610,7 +3595,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @param trace the trace element with source values
 	 */
 	private void createAllUniqueMappings(final TraceLink trace) {
-		for (Rule rule : getAllESuperRules()) {
+		for (final Rule rule : getAllESuperRules()) {
 			rule.createUniqueMapping(trace);
 		}
 		uniqueState.createUniqueMapping(trace);

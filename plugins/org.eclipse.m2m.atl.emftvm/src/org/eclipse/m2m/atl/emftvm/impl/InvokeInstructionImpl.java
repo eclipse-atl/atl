@@ -25,10 +25,10 @@ import org.eclipse.m2m.atl.emftvm.InvokeInstruction;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InvokeInstructionImpl#getArgcount <em>Argcount</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

@@ -26,6 +26,7 @@ import org.eclipse.m2m.atl.emftvm.util.StackFrame;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getMaxLocals <em>Max Locals</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getMaxStack <em>Max Stack</em>}</li>
@@ -42,7 +43,6 @@ import org.eclipse.m2m.atl.emftvm.util.StackFrame;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getParentFrame <em>Parent Frame</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getBindingFor <em>Binding For</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getCodeBlock()
  * @model

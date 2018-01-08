@@ -27,6 +27,7 @@ import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.PushImpl#getValue <em>Value</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.PushImpl#getStringValue <em>String Value</em>}</li>
@@ -39,7 +40,6 @@ import org.eclipse.m2m.atl.emftvm.util.EnumLiteral;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.PushImpl#getLongValue <em>Long Value</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.PushImpl#getEnumValue <em>Enum Value</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

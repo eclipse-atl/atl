@@ -21,8 +21,6 @@ import org.eclipse.m2m.atl.emftvm.Opcode;
  * An implementation of the model object '<em><b>Getenv</b></em>'.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */

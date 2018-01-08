@@ -24,11 +24,11 @@ import org.eclipse.m2m.atl.emftvm.util.LazyList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Model#getResource <em>Resource</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Model#isAllowInterModelReferences <em>Allow Inter Model References</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getModel()
  * @model
@@ -94,7 +94,7 @@ public interface Model extends EObject {
 	 * @param type the metaclass for which to find the instances
 	 * @return all instances of the given <code>type</code>.
 	 * <!-- end-user-doc -->
-	 * @model dataType="org.eclipse.m2m.atl.emftvm.LazyList<org.eclipse.emf.ecore.EObject>"
+	 * @model dataType="org.eclipse.m2m.atl.emftvm.LazyList&lt;org.eclipse.emf.ecore.EObject&gt;"
 	 * @generated
 	 */
 	LazyList<EObject> allInstancesOf(EClass type);

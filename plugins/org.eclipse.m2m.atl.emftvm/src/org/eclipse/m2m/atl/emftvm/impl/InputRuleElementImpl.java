@@ -35,12 +35,12 @@ import org.eclipse.m2m.atl.emftvm.util.LazyList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InputRuleElementImpl#getBinding <em>Binding</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InputRuleElementImpl#getInputFor <em>Input For</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.InputRuleElementImpl#isMapsToSelf <em>Maps To Self</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

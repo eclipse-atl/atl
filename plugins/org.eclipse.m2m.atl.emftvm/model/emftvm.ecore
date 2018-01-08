@@ -593,7 +593,12 @@
     </eOperations>
     <eOperations name="applyOne" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject">
       <eParameters name="frame" eType="#//StackFrame"/>
-      <eParameters name="trace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink"/>
+      <eParameters name="valuesMap">
+        <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+          <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eGenericType>
+      </eParameters>
     </eOperations>
     <eOperations name="applyFor" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject">
       <eParameters name="frame" eType="#//StackFrame"/>
@@ -621,6 +626,10 @@
     <eOperations name="clearFields"/>
     <eOperations name="findInputElement" eType="#//InputRuleElement">
       <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="getUniqueTrace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="values" eType="#//EJavaObjectArray"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//Module"
         eOpposite="#//Module/rules"/>

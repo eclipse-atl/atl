@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getOwningBlock <em>Owning Block</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getOpcode <em>Opcode</em>}</li>
@@ -29,7 +30,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel <em>Stack Level</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Instruction#getLineNumber <em>Line Number</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getInstruction()
  * @model abstract="true"

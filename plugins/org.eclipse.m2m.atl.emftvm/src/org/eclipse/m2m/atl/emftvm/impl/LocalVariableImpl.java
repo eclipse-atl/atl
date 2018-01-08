@@ -34,6 +34,7 @@ import org.eclipse.m2m.atl.emftvm.LocalVariable;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.LocalVariableImpl#getSlot <em>Slot</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.LocalVariableImpl#getOwningBlock <em>Owning Block</em>}</li>
@@ -42,7 +43,6 @@ import org.eclipse.m2m.atl.emftvm.LocalVariable;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.LocalVariableImpl#getStartInstructionIndex <em>Start Instruction Index</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.LocalVariableImpl#getEndInstructionIndex <em>End Instruction Index</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

@@ -29,11 +29,11 @@ import org.eclipse.m2m.atl.emftvm.RuleElement;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.RuleElementImpl#getModels <em>Models</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.RuleElementImpl#getEModels <em>EModels</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
