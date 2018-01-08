@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ASCII"?>
+<trace:TraceLinkSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:trace="http://www.eclipse.org/m2m/atl/emftvm/2011/Trace">
+  <rules rule="EPackage">
+    <links>
+      <sourceElements name="s">
+        <object href="LazyRuleInheritanceTest.ecore#/"/>
+      </sourceElements>
+      <targetElements name="t">
+        <object href="LazyRuleInheritanceTest-out.ecore#/0"/>
+      </targetElements>
+    </links>
+    <links>
+      <sourceElements name="s">
+        <object href="LazyRuleInheritanceTest.ecore#//subpackage"/>
+      </sourceElements>
+      <targetElements name="t">
+        <object href="LazyRuleInheritanceTest-out.ecore#/0/subpackage"/>
+      </targetElements>
+    </links>
+    <links>
+      <sourceElements name="s">
+        <object href="LazyRuleInheritanceTest.ecore#//subpackage"/>
+      </sourceElements>
+      <targetElements name="t">
+        <object href="LazyRuleInheritanceTest-out.ecore#/1"/>
+      </targetElements>
+    </links>
+  </rules>
+  <rules rule="EClass">
+    <links>
+      <sourceElements name="s">
+        <object href="LazyRuleInheritanceTest.ecore#//ClassA"/>
+      </sourceElements>
+      <targetElements name="t">
+        <object href="LazyRuleInheritanceTest-out.ecore#/0/ClassA"/>
+      </targetElements>
+    </links>
+    <links>
+      <sourceElements name="s">
+        <object href="LazyRuleInheritanceTest.ecore#//subpackage/ClassB"/>
+      </sourceElements>
+      <targetElements name="t">
+        <object href="LazyRuleInheritanceTest-out.ecore#/0/subpackage/ClassB"/>
+      </targetElements>
+    </links>
+    <links>
+      <sourceElements name="s">
+        <object href="LazyRuleInheritanceTest.ecore#//subpackage/ClassB"/>
+      </sourceElements>
+      <targetElements name="t">
+        <object href="LazyRuleInheritanceTest-out.ecore#/1/ClassB"/>
+      </targetElements>
+    </links>
+  </rules>
+</trace:TraceLinkSet>

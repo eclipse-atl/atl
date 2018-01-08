@@ -68,7 +68,33 @@ public class IntegrationTest extends EMFTVMTest {
 	}
 
 	/**
-	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=408391">Bug # 408391</a>.
+	 * Tests "LazyRuleInheritanceTest.atl".
+	 */
+	public void testLazyRuleInheritance() throws Exception {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.registerInputModel("IN", loadTestModel(rs, "/test-data/LazyRuleInheritanceTest.ecore"));
+		env.registerOutputModel("OUT", createTestModel(rs, "/test-data/LazyRuleInheritanceTest-out.ecore"));
+		env.registerInOutModel("trace", createTestModel(rs, "/test-data/LazyRuleInheritanceTest-trace.xmi"));
+		env.loadModule(createTestModuleResolver(), "LazyRuleInheritanceTest");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+		ATLLogger.info("Finished LazyRuleInheritanceTest:\n" + td.toString());
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		loadTestModel(refRs, "/test-data/LazyRuleInheritanceTest.ecore");
+		final Model refOut = loadTestModel(refRs, "/test-data/LazyRuleInheritanceTest-out.ecore");
+		final Model refTrace = loadTestModel(refRs, "/test-data/LazyRuleInheritanceTest-trace.xmi");
+		assertEquals(refOut.getResource(), env.getOutputModels().get("OUT").getResource());
+		assertEquals(refTrace.getResource(), env.getInoutModels().get("trace").getResource());
+	}
+
+	/**
+	 * Tests regression of
+	 * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=408391">Bug #
+	 * 408391</a>.
 	 */
 	public void testBug408391() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();

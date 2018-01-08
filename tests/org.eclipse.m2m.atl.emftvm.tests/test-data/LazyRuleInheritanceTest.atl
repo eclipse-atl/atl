@@ -1,0 +1,58 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module LazyRuleInheritanceTest;
+
+create OUT : ECORE from IN : ECORE;
+
+lazy abstract rule EModelElement {
+	from
+		s : ECORE!EModelElement
+	to
+		t : ECORE!EModelElement
+}
+
+lazy abstract rule ENamedElement extends EModelElement {
+	from
+		s : ECORE!ENamedElement
+	to
+		t : ECORE!ENamedElement (
+			name <- s.name
+		)
+}
+
+lazy rule EPackage extends ENamedElement {
+	from
+		s : ECORE!EPackage
+	to
+		t : ECORE!EPackage (
+			nsPrefix <- s.nsPrefix,
+			nsURI <- s.nsURI,
+			eClassifiers <- s.eClassifiers->collect(c | thisModule.EModelElement(c)),
+			eSubpackages <- s.eSubpackages->collect(c | thisModule.EModelElement(c))
+		)
+}
+
+lazy abstract rule EClassifier extends ENamedElement {
+	from
+		s : ECORE!EClassifier
+	to
+		t : ECORE!EClassifier
+}
+
+lazy rule EClass extends EClassifier {
+	from
+		s : ECORE!EClass
+	to
+		t : ECORE!EClass (
+			"abstract" <- s."abstract"
+			
+		)
+}
+
+endpoint rule map() {
+	do {
+		for (p in ECORE!EPackage.allInstances()) {
+			thisModule.EModelElement(p);
+		}
+	}
+}
