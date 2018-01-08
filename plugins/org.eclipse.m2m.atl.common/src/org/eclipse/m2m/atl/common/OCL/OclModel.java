@@ -163,7 +163,7 @@ public class OclModel extends LocatedElement {
 	 * @see #setMetamodel(OclModel)
 	 * @see org.eclipse.m2m.atl.common.OCL.OCLPackage#getOclModel_Metamodel()
 	 * @see org.eclipse.m2m.atl.common.OCL.OclModel#getModel
-	 * @model opposite="model" required="true" ordered="false"
+	 * @model opposite="model" ordered="false"
 	 * @generated
 	 */
 	public OclModel getMetamodel() {

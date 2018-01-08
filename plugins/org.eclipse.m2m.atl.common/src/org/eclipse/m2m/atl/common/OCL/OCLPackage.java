@@ -12473,7 +12473,7 @@ public class OCLPackage extends EPackageImpl {
 
 		initEClass(oclModelEClass, OclModel.class, "OclModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getOclModel_Name(), thePrimitiveTypesPackage.getString(), "name", null, 1, 1, OclModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-		initEReference(getOclModel_Metamodel(), this.getOclModel(), this.getOclModel_Model(), "metamodel", null, 1, 1, OclModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEReference(getOclModel_Metamodel(), this.getOclModel(), this.getOclModel_Model(), "metamodel", null, 0, 1, OclModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getOclModel_Elements(), this.getOclModelElement(), this.getOclModelElement_Model(), "elements", null, 0, -1, OclModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEReference(getOclModel_Model(), this.getOclModel(), this.getOclModel_Metamodel(), "model", null, 0, -1, OclModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 

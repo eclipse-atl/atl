@@ -16,17 +16,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.debug.core.DebugEvent;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
@@ -59,35 +52,6 @@ public class AtlUIPlugin extends AbstractUIPlugin {
 			resourceBundle = ResourceBundle.getBundle("atlPerspective.AtlPerspectivePluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
-		}
-		addDebugEventListener();
-	}
-
-	/**
-	 * Adds a debug event listener 
-	 */
-	private void addDebugEventListener() {
-		DebugPlugin.getDefault().addDebugEventListener(new IDebugEventSetListener() {
-			public void handleDebugEvents(final DebugEvent[] debugEvents) {
-				for (DebugEvent debugEvent : debugEvents) {
-					if (debugEvent.getKind() == DebugEvent.SUSPEND) {
-						switchToDebugPerspective();
-						break;
-					}
-				}
-			}
-		});
-	}
-
-	/**
-	 * Switches to the debugging perspective.
-	 */
-	private void switchToDebugPerspective() {
-		try {
-			PlatformUI.getWorkbench().showPerspective("org.eclipse.debug.ui.DebugPerspective",
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-		} catch (WorkbenchException e) {
-			ATLLogger.log(Level.SEVERE, e.getMessage(), e);
 		}
 	}
 
