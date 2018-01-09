@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011-2012 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2018 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -143,9 +143,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		public void process() {
 			try {
 				perform();
-			} catch (VMException e) {
+			} catch (final VMException e) {
 				throw e;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				frame.setPc(pc);
 				throw new VMException(frame, e);
 			}
@@ -199,7 +199,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			final Model m = getInoutModelOf(element);
 			try {
 				m.deleteElement(element);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				frame.setPc(pc);
 				throw new VMException(frame, String.format("Error while deleting element %s from %s: %s",
 						EMFTVMUtil.toPrettyString(element, ExecEnvImpl.this), getModelID(m), e.getLocalizedMessage()), e);
@@ -219,9 +219,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				assert ref.isMany() || o.eGet(ref) == element;
 				assert !ref.isMany() || ((Collection<?>) o.eGet(ref)).contains(element);
 				EMFTVMUtil.remove(ExecEnvImpl.this, o, ref, element);
-			} catch (VMException e) {
+			} catch (final VMException e) {
 				throw e;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				frame.setPc(pc);
 				final ExecEnv env = frame.getEnv();
 				throw new VMException(frame, String.format("Error deleting %s.%s from %s: %s", EMFTVMUtil.toPrettyString(o, env),
@@ -285,9 +285,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			try {
 				assert o.eGet(ref) == source;
 				EMFTVMUtil.set(ExecEnvImpl.this, o, ref, target);
-			} catch (VMException e) {
+			} catch (final VMException e) {
 				throw e;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				frame.setPc(pc);
 				final ExecEnv env = frame.getEnv();
 				throw new VMException(frame, String.format("Error remapping %s.%s from %s to %s: %s", EMFTVMUtil.toPrettyString(o, env),
@@ -312,9 +312,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				assert index < 0 || ((List<?>) o.eGet(ref)).get(index) == source;
 				EMFTVMUtil.remove(ExecEnvImpl.this, o, ref, source);
 				EMFTVMUtil.add(ExecEnvImpl.this, o, ref, target, index);
-			} catch (VMException e) {
+			} catch (final VMException e) {
 				throw e;
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				frame.setPc(pc);
 				final ExecEnv env = frame.getEnv();
 				throw new VMException(frame, String.format("Error remapping %s.%s from %s to %s: %s", EMFTVMUtil.toPrettyString(o, env),
@@ -484,6 +484,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * The chain of '<code>main()</code>' operations to be executed after the automatic rules.
 	 */
 	protected final EList<Operation> mainChain = new BasicEList<Operation>();
+
+	/**
+	 * The chain of '<code>init()</code>' operations to be executed before the automatic rules.
+	 */
+	protected final EList<Operation> initChain = new BasicEList<Operation>();
 
 	/**
 	 * Field storage and lookup. 
@@ -668,7 +673,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			basicGetMatches();
 		}
 		if (matches != null && matches.eIsProxy()) {
-			InternalEObject oldMatches = (InternalEObject)matches;
+			final InternalEObject oldMatches = (InternalEObject)matches;
 			matches = (TraceLinkSet)eResolveProxy(oldMatches);
 			if (matches != oldMatches) {
 				if (eNotificationRequired())
@@ -712,7 +717,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			basicGetTraces();
 		}
 		if (traces != null && traces.eIsProxy()) {
-			InternalEObject oldTraces = (InternalEObject)traces;
+			final InternalEObject oldTraces = (InternalEObject)traces;
 			traces = (TraceLinkSet)eResolveProxy(oldTraces);
 			if (traces != oldTraces) {
 				if (eNotificationRequired())
@@ -772,8 +777,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setJitDisabled(boolean newJitDisabled) {
-		boolean oldJitDisabled = jitDisabled;
+	public void setJitDisabled(final boolean newJitDisabled) {
+		final boolean oldJitDisabled = jitDisabled;
 		jitDisabled = newJitDisabled;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.EXEC_ENV__JIT_DISABLED, oldJitDisabled, jitDisabled));
@@ -1087,7 +1092,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void queueForRemap(EObject source, EObject target, StackFrame frame) {
+	public void queueForRemap(final EObject source, final EObject target, final StackFrame frame) {
 		if (remapQueue.containsKey(source)) {
 			throw new IllegalArgumentException(String.format("Source element %s already queued for remap",
 					EMFTVMUtil.toPrettyString(source, this)));
@@ -1106,38 +1111,38 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			return;
 		}
 		try {
-			for (Model m : getInoutModels().values()) {
-				List<EObject> eObjects = new ArrayList<EObject>();
-				for (EObject o : new ResourceIterable(m.getResource())) {
+			for (final Model m : getInoutModels().values()) {
+				final List<EObject> eObjects = new ArrayList<EObject>();
+				for (final EObject o : new ResourceIterable(m.getResource())) {
 					eObjects.add(o);
 				}
 				// Prevent ConcurrentModificationException by using eObjects copy
-				for (EObject o : eObjects) {
+				for (final EObject o : eObjects) {
 					// Skip remapping on objects queued for deletion
 					if (deletionQueue.containsKey(o)) {
 						continue;
 					}
-					for (EReference ref : o.eClass().getEAllReferences()) {
+					for (final EReference ref : o.eClass().getEAllReferences()) {
 						// Only change changeable references that are not the reverse of a containment reference
 						if (ref.isChangeable() && !ref.isContainer()) {
-							Object val = o.eGet(ref);
+							final Object val = o.eGet(ref);
 							if (val instanceof Collection<?>) {
 								if (val instanceof List<?>) {
-									List<?> listVal = (List<?>) val;
+									final List<?> listVal = (List<?>) val;
 									for (int index = 0; index < listVal.size(); index++) {
-										Object source = listVal.get(index);
+										final Object source = listVal.get(index);
 										if (remapQueue.containsKey(source)) {
 											remapQueue.get(source).process(o, ref, index);
 										}
 									}
 								} else {
-									List<RemapEntry> remapEntries = new ArrayList<RemapEntry>();
-									for (Object source : (Collection<?>) val) {
+									final List<RemapEntry> remapEntries = new ArrayList<RemapEntry>();
+									for (final Object source : (Collection<?>) val) {
 										if (remapQueue.containsKey(source)) {
 											remapEntries.add(remapQueue.get(source));
 										}
 									}
-									for (RemapEntry remapEntry : remapEntries) {
+									for (final RemapEntry remapEntry : remapEntries) {
 										remapEntry.process(o, ref, -1);
 									}
 								}
@@ -1238,14 +1243,14 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			final Module module = resolver.resolveModule(name);
 			internalModules.put(name, module);
 			resolveImports(module, resolver, validate);
-			for (Feature f : module.getFeatures()) {
+			for (final Feature f : module.getFeatures()) {
 				registerFeature(f);
 			}
-			for (Rule r : module.getRules()) {
+			for (final Rule r : module.getRules()) {
 				registerRule(r);
 			}
 			// Re-resolve all super-rules, because they may have been redefined
-			for (Rule r : getRules()) {
+			for (final Rule r : getRules()) {
 				resolveSuperRules(r);
 			}
 			if (validate && module.eResource() != null) { // skip built-in native modules
@@ -1255,13 +1260,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				}
 			}
 			// Bug 426154: validation triggers partial rule state compilation, so always reset:
-			for (Rule r : getRules()) {
+			for (final Rule r : getRules()) {
 				r.resetState();
 			}
 			setRuleStateCompiled(false);
 			loadedModules.add(name);
 			return module;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new VMException(null, String.format(
 					"Error during module loading: %s", 
 					e.getMessage()), e);
@@ -1280,12 +1285,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		}
 		final Model mmodel = EmftvmFactory.eINSTANCE.createModel();
 		mmodel.setResource(module.eResource());
-		for (EObject eObject : mmodel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
-			CodeBlock cb = (CodeBlock) eObject;
+		for (final EObject eObject : mmodel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
+			final CodeBlock cb = (CodeBlock) eObject;
 			if (!cbStackValidator.validate(cb)) {
 				return cb;
 			}
-			for (Instruction i : cb.getCode()) {
+			for (final Instruction i : cb.getCode()) {
 				if (!instrStackValidator.validate(i)) {
 					return i;
 				}
@@ -1302,8 +1307,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	private void resolveImports(final Module module, final ModuleResolver resolver, final boolean validate) {
 		final EList<Module> eImports = module.getEImports();
-		for (String imp : module.getImports()) {
-			Module impModule = loadModule(resolver, imp, validate);
+		for (final String imp : module.getImports()) {
+			final Module impModule = loadModule(resolver, imp, validate);
 			eImports.add(impModule);
 		}
 	}
@@ -1333,9 +1338,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 */
 	private void registerOperation(final Operation op) {
 		if (op.isStatic()) {
+			// main() and init() are special, and cannot be invoked programmatically
 			if (EMFTVMUtil.MAIN_OP_NAME.equals(op.getName()) && op.getParameters().isEmpty()) {
-				// main() is special, and cannot be invoked programmatically
 				mainChain.add(op);
+			} else if (EMFTVMUtil.INIT_OP_NAME.equals(op.getName()) && op.getParameters().isEmpty()) {
+				initChain.add(op);
 			} else {
 				registerOperationIn(op, staticOperations);
 			}
@@ -1387,10 +1394,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @param eList
 	 * @return the registry types of elements
 	 */
-	private Object[] getTypesOfParameters(EList<Parameter> eList) {
+	private Object[] getTypesOfParameters(final EList<Parameter> eList) {
 		final Object[] types = new Object[eList.size()];
 		for (int i = 0; i < types.length; i++) {
-			Parameter par = eList.get(i);
+			final Parameter par = eList.get(i);
 			par.setEType(findEClassifier(par.getTypeModel(), par.getType()));
 			types[i] = EMFTVMUtil.getRegistryType(par.getEType());
 		}
@@ -1505,21 +1512,21 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		}
 		rules.put(rName, r);
 
-		for (RuleElement re : r.getInputElements()) {
+		for (final RuleElement re : r.getInputElements()) {
 			resolveRuleElement(re);
 		}
 
-		for (OutputRuleElement re : r.getOutputElements()) {
+		for (final OutputRuleElement re : r.getOutputElements()) {
 			resolveRuleElement(re);
 			if (!r.isAbstract()) {
-				EClassifier eType = re.getEType();
+				final EClassifier eType = re.getEType();
 				if (eType instanceof EClass && ((EClass)eType).isAbstract()) {
 					throw new VMException(null, String.format("Non-abstract %s cannot have output elements of an abstract type: \"%s\"", r, re));
 				}
 			}
 		}
 
-		for (Field field : r.getFields()) {
+		for (final Field field : r.getFields()) {
 			field.setEContext(findEClassifier(field.getContextModel(), field.getContext()));
 			field.setEType(findEClassifier(field.getTypeModel(), field.getType()));
 			r.registerField(field);
@@ -1542,8 +1549,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	private void resolveSuperRules(final Rule rule) {
 		final EList<Rule> eSuperRules = rule.getESuperRules();
 		eSuperRules.clear();
-		for (String superRuleName : rule.getSuperRules()) {
-			Rule superRule = findRule(superRuleName);
+		for (final String superRuleName : rule.getSuperRules()) {
+			final Rule superRule = findRule(superRuleName);
 			if (superRule == null) {
 				throw new IllegalArgumentException(String.format(
 						"Super-rule %s of %s is not found in any module loaded before %s",
@@ -1556,8 +1563,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 						rule.getName(), rule.getMode(), superRule.getName(), superRule.getMode()));
 			}
 			//check type consistency of rule element declarations
-			for (OutputRuleElement sre : superRule.getOutputElements()) {
-				for (OutputRuleElement re : rule.getOutputElements()) {
+			for (final OutputRuleElement sre : superRule.getOutputElements()) {
+				for (final OutputRuleElement re : rule.getOutputElements()) {
 					if (sre.getName().equals(re.getName())) {
 						if (!((EClass)sre.getEType()).isSuperTypeOf((EClass)re.getEType())) {
 							throw new IllegalArgumentException(String.format(
@@ -1583,13 +1590,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	protected void resolveRuleModels(final Rule r) {
 		final Map<String, Model> inModels = new LinkedHashMap<String, Model>(getInputModels());
 		inModels.putAll(getInoutModels());
-		for (RuleElement re : r.getInputElements()) {
+		for (final RuleElement re : r.getInputElements()) {
 			resolveRuleElementModels(re, inModels);
 		}
 
 		final Map<String, Model> outModels = new LinkedHashMap<String, Model>(getOutputModels());
 		outModels.putAll(getInoutModels());
-		for (OutputRuleElement re : r.getOutputElements()) {
+		for (final OutputRuleElement re : r.getOutputElements()) {
 			resolveRuleElementModels(re, outModels);
 		}
 		if (r.getMode() != RuleMode.MANUAL) {
@@ -1607,7 +1614,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		re.setEType(findEClassifier(re.getTypeModel(), re.getType()));
 		final EList<Model> eModels = re.getEModels();
 		eModels.clear();
-		for (String modelName : re.getModels()) {
+		for (final String modelName : re.getModels()) {
 			final Model model = models.get(modelName);
 			if (model == null) {
 				throw new IllegalArgumentException(String.format("Model %s not found for %s", modelName, re));
@@ -1621,10 +1628,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @param rule the {@link Rule} to resolve
 	 */
 	protected void clearRuleModels(final Rule r) {
-		for (RuleElement re : r.getInputElements()) {
+		for (final RuleElement re : r.getInputElements()) {
 			re.getEModels().clear();
 		}
-		for (OutputRuleElement re : r.getOutputElements()) {
+		for (final OutputRuleElement re : r.getOutputElements()) {
 			re.getEModels().clear();
 		}
 	}
@@ -1657,7 +1664,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 					final Set<Object> ctxKeys = new HashSet<Object>();
 					ctxMap.findAllKeys(context, ctxKeys);
 					final Set<Operation> ops = new LinkedHashSet<Operation>();
-					for (Object ctxKey : ctxKeys) {
+					for (final Object ctxKey : ctxKeys) {
 						// There are operations defined on the given context type
 						argMap = (TypeMap<Object, Object>)ctxMap.get(ctxKey);
 						findOperations(argMap, parameterTypes, ops, 0);
@@ -1685,7 +1692,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Operation findOperation(Object context, String name) {
+	public Operation findOperation(final Object context, final String name) {
 		Operation op = null;
 		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = operations.get(name);
 
@@ -1721,7 +1728,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
-	public Operation findOperation(Object context, String name, Object parameterType) {
+	public Operation findOperation(final Object context, final String name, final Object parameterType) {
 		Operation op = null;
 		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = operations.get(name);
 
@@ -1741,12 +1748,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 					final Set<Object> ctxKeys = new HashSet<Object>();
 					ctxMap.findAllKeys(context, ctxKeys);
 					final Set<Operation> ops = new LinkedHashSet<Operation>();
-					for (Object ctxKey : ctxKeys) {
+					for (final Object ctxKey : ctxKeys) {
 						// There are operations defined on the given context type
 						argMap = (TypeMap<Object, Object>)ctxMap.get(ctxKey);
 						final Set<Object> argTypeKeys = new HashSet<Object>();
 						argMap.findAllKeys(parameterType, argTypeKeys);
-						for (Object argTypeKey : argTypeKeys) {
+						for (final Object argTypeKey : argTypeKeys) {
 							// There are operations defined on all given parameter types
 							ops.add((Operation)argMap.get(argTypeKey));
 						}
@@ -1774,7 +1781,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public boolean hasOperation(String name, int argcount) {
+	public boolean hasOperation(final String name, final int argcount) {
 		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = operations.get(name);
 		if (argcountOpsMap != null) { // There are operations with the given name
 			return argcountOpsMap.get(argcount) != null;
@@ -1789,7 +1796,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
-	public Operation findStaticOperation(Object context, final String name, final Object[] parameterTypes) {
+	public Operation findStaticOperation(final Object context, final String name, final Object[] parameterTypes) {
 		Operation op = null;
 		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = staticOperations.get(name);
 
@@ -1801,7 +1808,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			if (ctxMap != null) {
 				// There are operations with argCount arguments
 				// Static operations must be defined in exact context type
-				TypeMap<Object, Object> argMap = (TypeMap<Object, Object>)ctxMap.get(context);
+				final TypeMap<Object, Object> argMap = (TypeMap<Object, Object>)ctxMap.get(context);
 				if (argMap != null) {
 					// First try to find with direct types
 					op = findOperationDirect(argMap, parameterTypes, 0);
@@ -1828,7 +1835,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Operation findStaticOperation(Object context, String name) {
+	public Operation findStaticOperation(final Object context, final String name) {
 		Operation op = null;
 		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = staticOperations.get(name);
 
@@ -1853,7 +1860,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
-	public Operation findStaticOperation(Object context, String name, Object parameterType) {
+	public Operation findStaticOperation(final Object context, final String name, final Object parameterType) {
 		Operation op = null;
 		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = staticOperations.get(name);
 
@@ -1873,7 +1880,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 						final Set<Operation> ops = new LinkedHashSet<Operation>();
 						final Set<Object> argTypeKeys = new HashSet<Object>();
 						argMap.findAllKeys(parameterType, argTypeKeys);
-						for (Object argTypeKey : argTypeKeys) {
+						for (final Object argTypeKey : argTypeKeys) {
 							// There are operations defined on all given parameter types
 							ops.add((Operation)argMap.get(argTypeKey));
 						}
@@ -1901,7 +1908,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public boolean hasStaticOperation(String name, int argcount) {
+	public boolean hasStaticOperation(final String name, final int argcount) {
 		final Map<Integer, TypeMap<Object, Object>> argcountOpsMap = staticOperations.get(name);
 		if (argcountOpsMap != null) { // There are operations with the given name
 			return argcountOpsMap.get(argcount) != null;
@@ -1917,7 +1924,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @return the operation, or <code>null</code>
 	 */
 	@SuppressWarnings("unchecked")
-	private static Operation findOperationDirect(final TypeMap<Object, Object> typeMap, Object[] parameterTypes, 
+	private static Operation findOperationDirect(final TypeMap<Object, Object> typeMap, final Object[] parameterTypes, 
 			final int argIndex) {
 		final int argCount = parameterTypes.length;
 		assert argIndex >= 0 && argIndex < argCount;
@@ -1951,13 +1958,13 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		typeMap.findAllKeys(argType, argTypeKeys);
 		
 		if (argIndex < argCount - 1) {
-			for (Object argTypeKey : argTypeKeys) {
+			for (final Object argTypeKey : argTypeKeys) {
 				// There are operations defined on the given parameter type so far...
-				TypeMap<Object, Object> nestedTypeMap = (TypeMap<Object, Object>)typeMap.get(argTypeKey);
+				final TypeMap<Object, Object> nestedTypeMap = (TypeMap<Object, Object>)typeMap.get(argTypeKey);
 				findOperations(nestedTypeMap, parameterTypes, ops, argIndex + 1);
 			}
 		} else {
-			for (Object argTypeKey : argTypeKeys) {
+			for (final Object argTypeKey : argTypeKeys) {
 				// There are operations defined on all given parameter types
 				ops.add((Operation)typeMap.get(argTypeKey));
 			}
@@ -1975,7 +1982,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		final Set<Operation> conflicts = new HashSet<Operation>();
 
 		// First iteration to find most-specific op
-		for (Operation op : ops) {
+		for (final Operation op : ops) {
 			if (msOp == null || isMoreSpecific(op, msOp)) {
 				msOp = op;
 			} else if (!isMoreSpecific(msOp, op)) {
@@ -1985,7 +1992,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		assert msOp != null || (ops.isEmpty() && conflicts.isEmpty());
 
 		// Second iteration to resolve conflicts
-		for (Operation op : conflicts) {
+		for (final Operation op : conflicts) {
 			if (!isMoreSpecific(msOp, op)) {
 				throw new DuplicateEntryException(String.format(
 						"More than one operation found for given context/arguments: %s and %s",
@@ -2022,7 +2029,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Field findStaticField(Object context, String name) {
+	public Field findStaticField(final Object context, final String name) {
 		return fieldContainer.findStaticField(context, name);
 	}
 
@@ -2042,7 +2049,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Rule findRule(String name) {
+	public Rule findRule(final String name) {
 		return rules.get(name);
 	}
 
@@ -2052,7 +2059,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Object findType(String modelName, String typeName) throws ClassNotFoundException {
+	public Object findType(final String modelName, final String typeName) throws ClassNotFoundException {
 		if (EMFTVMUtil.NATIVE.equals(modelName)) {
 			return NativeTypes.findType(typeName);
 		} else {
@@ -2075,26 +2082,37 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		try {
 			assert deletionQueue.isEmpty();
 			if (!isRuleStateCompiled()) {
-				for (Rule r : getRules()) {
+				for (final Rule r : getRules()) {
 					r.compileState(this); // compile internal state for all registered rules
 				}
 			}
-			for (Rule r : getRules()) {
+			for (final Rule r : getRules()) {
 				resolveRuleModels(r);
 			}
 			final Iterator<Operation> mains = mainChain.iterator();
 			if (!mains.hasNext()) {
 				throw new UnsupportedOperationException(String.format("Operation %s not found", EMFTVMUtil.MAIN_OP_NAME));
 			}
-			final StackFrame rootFrame = new StackFrame(this, mainChain.get(mainChain.size() - 1).getBody());
+			// run all init() operations
+			currentPhase = RuleMode.MANUAL;
+			for (final Operation init: initChain) {
+				final CodeBlock cb = init.getBody();
+				if (cb.getStackLevel() > 0) {
+					result = cb.execute(new StackFrame(this, cb));
+				} else {
+					cb.execute(new StackFrame(this, cb));
+				}
+			}
 			// run all automatic rules before main
+			final StackFrame rootFrame = new StackFrame(this, mainChain.get(mainChain.size() - 1).getBody());
 			currentPhase = RuleMode.AUTOMATIC_SINGLE;
 			matchAllSingle(rootFrame, timingData);
 			currentPhase = RuleMode.AUTOMATIC_RECURSIVE;
 			matchAllRecursive(rootFrame, timingData);
+			// run all main() operations
 			currentPhase = RuleMode.MANUAL;
 			while (mains.hasNext()) {
-				CodeBlock cb = mains.next().getBody();
+				final CodeBlock cb = mains.next().getBody();
 				if (cb.getStackLevel() > 0) {
 					result = cb.execute(new StackFrame(this, cb));
 				} else {
@@ -2108,7 +2126,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			if (monitor != null) {
 				monitor.terminated();
 			}
-		} catch (VMException e) {
+		} catch (final VMException e) {
 			if (monitor != null) {
 				monitor.error(e.getFrame(), e.getLocalizedMessage(), e);
 				monitor.terminated();
@@ -2120,7 +2138,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			this.traces = null;
 			this.uniqueResults = null;
 			fieldContainer.clear();
-			for (Rule r : getRules()) {
+			for (final Rule r : getRules()) {
 				r.clearFields();
 				clearRuleModels(r);
 			}
@@ -2136,7 +2154,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @param typeName the type/metaclass name (may be fully qualified using '<pre>::</pre>')
 	 * @return the type/metaclass, or <code>null</code> if not found
 	 */
-	private EClassifier findEClassifier(String modelName, String typeName) {
+	private EClassifier findEClassifier(final String modelName, final String typeName) {
 		try {
 			final Object type = findType(modelName, typeName);
 			if (type instanceof Class<?>) {
@@ -2148,7 +2166,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			} else {
 				return (EClassifier)type;
 			}
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
@@ -2185,9 +2203,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @param thisModelOf local resource to model map
 	 */
 	private void cacheModels(final Map<String, ? extends Model> models, final Map<Resource, Model> thisModelOf) {
-		for (Entry<String, ? extends Model> entry : models.entrySet()) {
-			String id = entry.getKey();
-			Model model = entry.getValue();
+		for (final Entry<String, ? extends Model> entry : models.entrySet()) {
+			final String id = entry.getKey();
+			final Model model = entry.getValue();
 			modelOf.put(model.getResource(), model);
 			if (thisModelOf != null) {
 				thisModelOf.put(model.getResource(), model);
@@ -2202,9 +2220,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @param thisModelOf local resource to model map
 	 */
 	private void cacheMetaModels(final Map<String, ? extends Metamodel> models, final Map<Resource, Metamodel> thisModelOf) {
-		for (Entry<String, ? extends Metamodel> entry : models.entrySet()) {
-			String id = entry.getKey();
-			Metamodel model = entry.getValue();
+		for (final Entry<String, ? extends Metamodel> entry : models.entrySet()) {
+			final String id = entry.getKey();
+			final Metamodel model = entry.getValue();
 			if (thisModelOf != null) {
 				thisModelOf.put(model.getResource(), model);
 			}
@@ -2224,7 +2242,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		boolean match;
 		do {
 			match = false;
-			for (Rule rule : rules) {
+			for (final Rule rule : rules) {
 				// Only match rules for which all super-rules have already been matched
 				if (!matchedRules.contains(rule) && matchedRules.containsAll(rule.getESuperRules())) {
 					if (rule.matchSingle(frame)) {
@@ -2235,19 +2253,19 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			}
 		} while (match);
 		// Create traces for automatic single rules
-		for (Rule rule : matchedRules) {
+		for (final Rule rule : matchedRules) {
 			rule.createTraces(frame);
 		}
 		if (timingData != null) timingData.finishMatch();
 		// Apply rules
-		for (Rule rule : matchedRules) {
+		for (final Rule rule : matchedRules) {
 			rule.apply(frame);
 		}
 		setQueue();
 		remapQueue();
 		if (timingData != null) timingData.finishApply();
 		// Run post-apply
-		for (Rule rule : matchedRules) {
+		for (final Rule rule : matchedRules) {
 			rule.postApply(frame);
 		}
 		setQueue();
@@ -2275,10 +2293,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			MATCHER:
 			do {
 				match = false;
-				for (Rule rule : rules) {
+				for (final Rule rule : rules) {
 					// Only match rules for which all super-rules have already been matched
 					if (!matchedRules.contains(rule) && matchedRules.containsAll(rule.getESuperRules())) {
-						boolean[] matchResult = rule.matchRecursive(frame);
+						final boolean[] matchResult = rule.matchRecursive(frame);
 						if (matchResult[1]) { // Guaranteed final match
 							outerMatch = true;
 							matchedRules.add(rule);
@@ -2292,7 +2310,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				}
 			} while (match);
 
-			for (Rule rule : matchedRules) {
+			for (final Rule rule : matchedRules) {
 				if (rule.applyFirst(frame)) {
 					break;
 				}
@@ -2321,7 +2339,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Model getModelOf(EObject object) {
+	public Model getModelOf(final EObject object) {
 		if (!modelCacheInit) {
 			cacheModels();
 		}
@@ -2335,7 +2353,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public String getModelID(Model model) {
+	public String getModelID(final Model model) {
 		if (!modelCacheInit) {
 			cacheModels();
 		}
@@ -2377,25 +2395,25 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		}
 		try {
 			// Delete cross-references for all entries
-			for (Model m : getInoutModels().values()) {
-				List<EObject> eObjects = new ArrayList<EObject>();
-				for (EObject o : new ResourceIterable(m.getResource())) {
+			for (final Model m : getInoutModels().values()) {
+				final List<EObject> eObjects = new ArrayList<EObject>();
+				for (final EObject o : new ResourceIterable(m.getResource())) {
 					eObjects.add(o);
 				}
 				// Prevent ConcurrentModificationException by using eObjects copy
-				for (EObject o : eObjects) {
-					for (EReference ref : o.eClass().getEAllReferences()) {
+				for (final EObject o : eObjects) {
+					for (final EReference ref : o.eClass().getEAllReferences()) {
 						// Only change changeable references that are not the reverse of a containment reference
 						if (ref.isChangeable() && !ref.isContainer()) {
-							Object val = o.eGet(ref);
+							final Object val = o.eGet(ref);
 							if (val instanceof Collection<?>) {
-								List<DeletionEntry> deletionEntries = new ArrayList<DeletionEntry>();
-								for (Object source : (Collection<?>) val) {
+								final List<DeletionEntry> deletionEntries = new ArrayList<DeletionEntry>();
+								for (final Object source : (Collection<?>) val) {
 									if (deletionQueue.containsKey(source)) {
 										deletionEntries.add(deletionQueue.get(source));
 									}
 								}
-								for (DeletionEntry deletionEntry : deletionEntries) {
+								for (final DeletionEntry deletionEntry : deletionEntries) {
 									deletionEntry.process(o, ref);
 								}
 							} else {
@@ -2408,7 +2426,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				}
 			}
 			// Delete entries from their models
-			for (DeletionEntry deletionEntry : deletionQueue.values()) {
+			for (final DeletionEntry deletionEntry : deletionQueue.values()) {
 				deletionEntry.process();
 			}
 		} finally {
@@ -2422,7 +2440,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Model getInputModelOf(EObject object) {
+	public Model getInputModelOf(final EObject object) {
 		if (!modelCacheInit) {
 			cacheModels();
 		}
@@ -2436,7 +2454,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Model getInoutModelOf(EObject object) {
+	public Model getInoutModelOf(final EObject object) {
 		if (!modelCacheInit) {
 			cacheModels();
 		}
@@ -2450,7 +2468,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Model getOutputModelOf(EObject object) {
+	public Model getOutputModelOf(final EObject object) {
 		if (!modelCacheInit) {
 			cacheModels();
 		}
@@ -2465,7 +2483,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated
 	 */
 	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
 		switch (featureID) {
 			case EmftvmPackage.EXEC_ENV__META_MODELS:
 				return getMetaModels();
@@ -2499,7 +2517,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated
 	 */
 	@Override
-	public void eSet(int featureID, Object newValue) {
+	public void eSet(final int featureID, final Object newValue) {
 		switch (featureID) {
 			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
 				setJitDisabled((Boolean)newValue);
@@ -2514,7 +2532,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated
 	 */
 	@Override
-	public void eUnset(int featureID) {
+	public void eUnset(final int featureID) {
 		switch (featureID) {
 			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
 				setJitDisabled(JIT_DISABLED_EDEFAULT);
@@ -2530,7 +2548,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @generated
 	 */
 	@Override
-	public boolean eIsSet(int featureID) {
+	public boolean eIsSet(final int featureID) {
 		switch (featureID) {
 			case EmftvmPackage.EXEC_ENV__META_MODELS:
 				return metaModels != null;
@@ -2566,7 +2584,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		final StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (metaModels: ");
 		result.append(metaModels);
 		result.append(", inputModels: ");
@@ -2619,7 +2637,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * Sets whether the internal state of the rules has been compiled.
 	 * @param ruleStateCompiled the ruleStateCompiled to set
 	 */
-	protected void setRuleStateCompiled(boolean ruleStateCompiled) {
+	protected void setRuleStateCompiled(final boolean ruleStateCompiled) {
 		this.ruleStateCompiled = ruleStateCompiled;
 	}
 

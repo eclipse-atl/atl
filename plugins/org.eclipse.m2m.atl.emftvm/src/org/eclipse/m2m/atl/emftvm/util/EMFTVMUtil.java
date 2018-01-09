@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011-2017 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2018 Dennis Wagelaar, Vrije Universiteit Brussel.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -140,6 +140,11 @@ public final class EMFTVMUtil {
 	 * Name of the "main" static parameterless operation.
 	 */
 	public static final String MAIN_OP_NAME = "main";
+
+	/**
+	 * Name of the "init" static parameterless operation.
+	 */
+	public static final String INIT_OP_NAME = "init";
 
 	/**
 	 * Name if the XMI ID feature for {@link EObject}s contained in {@link XMIResource}s.
