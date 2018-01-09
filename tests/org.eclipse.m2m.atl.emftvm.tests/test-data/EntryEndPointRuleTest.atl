@@ -1,0 +1,21 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module EntryEndPointRuleTest;
+
+create OUT : ECORE from IN : ECORE;
+
+uses EcoreCopy;
+
+entrypoint rule before() {
+	to
+		t : ECORE!EPackage (
+			name <- 'before'
+		)
+}
+
+endpoint rule after() {
+	to
+		t : ECORE!EPackage (
+			name <- 'after'
+		)
+}

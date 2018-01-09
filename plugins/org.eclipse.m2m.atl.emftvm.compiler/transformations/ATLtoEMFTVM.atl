@@ -1,9 +1,8 @@
 -- @atlcompiler emftvm
 -- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
--- @path ATL=/org.eclipse.m2m.atl.common/src/org/eclipse/m2m/atl/common/resources/ATL.ecore
--- @path Problem=/org.eclipse.m2m.atl.common/src/org/eclipse/m2m/atl/common/resources/Problem.ecore
+-- @path ATL=/org.eclipse.m2m.atl.common/model/ATL.ecore
+-- @path Problem=/org.eclipse.m2m.atl.common/model/Problem.ecore
 -- Transforms ATL modules into EMFTVM modules
--- $Id: ATLtoEMFTVM.atl,v 1.12 2012/04/08 14:34:47 dwagelaar Exp $
 module ATLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
@@ -340,7 +339,7 @@ rule Module extends Unit {
 		outputModels <- s.outModels->reject(m | m.isRefiningModel),
 		features <- s.elements->select(e|e.oclIsKindOf(ATL!Helper))->collect(h|h.definition)
 			->union(s.elements->select(e|e.oclIsKindOf(ATL!CalledRule)))
-			->append(main),
+			->append(init)->append(main),
 		rules <- s.elements->select(e|e.oclIsKindOf(ATL!MatchedRule))),
 	   main : EMFTVM!Operation (
 	   	body <:= body),
@@ -350,35 +349,44 @@ rule Module extends Unit {
 	   	startLine <:= s.startLine,
 		startColumn <:= s.startColumn,
 		endLine <:= s.endLine,
+		endColumn <:= s.endColumn), 
+	   init : EMFTVM!Operation (
+	   	name <:= 'init',
+		static <:= true,
+		"context" <:= 'ExecEnv',
+		contextModel <:= 'EMFTVM',
+		type <:= 'Object',
+		typeModel <:= '#native',
+	   	body <:= initBody),
+	   initBody : EMFTVM!CodeBlock (
+	   	lineNumbers <:= Sequence{initLn}),
+	   initLn : EMFTVM!LineNumber (
+	   	startLine <:= s.startLine,
+		startColumn <:= s.startColumn,
+		endLine <:= s.endLine,
 		endColumn <:= s.endColumn) 
 }
 
 rule ModuleWithEntryPoint extends Module {
 	from s : ATL!Module in IN (
-		s.calledRules->exists(r|r.isEntrypoint) and
-		not s.calledRules->exists(r|r.isEndpoint))
+		s.calledRules->exists(r|r.isEntrypoint))
 	using {
 		entryPointRule : ATL!CalledRule =
 			s.calledRules->select(r|r.isEntrypoint)->first();
 	}
 	to t : EMFTVM!Module,
-	   body : EMFTVM!CodeBlock (
+	   initBody : EMFTVM!CodeBlock (
 		code <:= Sequence{getenvtype_entry, invoke_entry}),
-	   ln : EMFTVM!LineNumber (
+	   initLn : EMFTVM!LineNumber (
 	   	instructions <:= Sequence{getenvtype_entry, invoke_entry}),
 	   getenvtype_entry : EMFTVM!Getenvtype,								-- [..., ExecEnv]
 	   invoke_entry : EMFTVM!InvokeStatic (									-- [..., result]
 	   	opname <- entryPointRule.name,
-		argcount <- 0),
-	   pb : Problem!Problem (
-	   	description <- 'Entrypoint rules are invoked after matched rules in EMFTVM',
-		location <- entryPointRule.location,
-		severity <- #warning)
+		argcount <- 0)
 }
 
 rule ModuleWithEndPoint extends Module {
 	from s : ATL!Module in IN (
-		not s.calledRules->exists(r|r.isEntrypoint) and
 		s.calledRules->exists(r|r.isEndpoint))
 	using {
 		endPointRule : ATL!CalledRule =
@@ -395,34 +403,12 @@ rule ModuleWithEndPoint extends Module {
 		argcount <- 0)
 }
 
-rule ModuleWithEntryAndEndPoint extends Module {
+-- @extends ModuleWithEntryPoint, ModuleWithEndPoint
+rule ModuleWithEntryAndEndPoint {
 	from s : ATL!Module in IN (
 		s.calledRules->exists(r|r.isEntrypoint) and
 		s.calledRules->exists(r|r.isEndpoint))
-	using {
-		entryPointRule : ATL!CalledRule =
-			s.calledRules->select(r|r.isEntrypoint)->first();
-		endPointRule : ATL!CalledRule =
-			s.calledRules->select(r|r.isEndpoint)->first();
-	}
-	to t : EMFTVM!Module,
-	   body : EMFTVM!CodeBlock (
-		code <:= Sequence{getenvtype_entry, invoke_entry, pop, getenvtype_end, invoke_end}),
-	   ln : EMFTVM!LineNumber (
-	   	instructions <:= Sequence{getenvtype_entry, invoke_entry, pop, getenvtype_end, invoke_end}),
-	   getenvtype_entry : EMFTVM!Getenvtype,								-- [..., ExecEnv]
-	   invoke_entry : EMFTVM!InvokeStatic (									-- [..., result]
-	   	opname <- entryPointRule.name,
-		argcount <- 0),
-	   pop : EMFTVM!Pop,													-- [...]
-	   getenvtype_end : EMFTVM!Getenvtype,									-- [..., ExecEnv]
-	   invoke_end : EMFTVM!InvokeStatic (									-- [..., result]
-	   	opname <- endPointRule.name,
-		argcount <- 0),
-	   pb : Problem!Problem (
-	   	description <- 'Entrypoint rules are invoked after matched rules in EMFTVM',
-		location <- entryPointRule.location,
-		severity <- #warning)
+	to t : EMFTVM!Module
 }
 
 rule ModelDeclaration {

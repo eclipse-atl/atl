@@ -33,6 +33,7 @@ import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.tests.EMFTVMTest;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
+import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
@@ -89,6 +90,28 @@ public class IntegrationTest extends EMFTVMTest {
 		final Model refTrace = loadTestModel(refRs, "/test-data/LazyRuleInheritanceTest-trace.xmi");
 		assertEquals(refOut.getResource(), env.getOutputModels().get("OUT").getResource());
 		assertEquals(refTrace.getResource(), env.getInoutModels().get("trace").getResource());
+	}
+
+	/**
+	 * Tests "EntryEndPointRuleTest.atl".
+	 */
+	public void testEntryEndPointRule() throws Exception {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.registerInputModel("IN", loadTestModel(rs, "/test-data/EcoreCopy/My.ecore"));
+		env.registerOutputModel("OUT", createTestModel(rs, "/test-data/EntryEndPointRuleTest-out.ecore"));
+		final DefaultModuleResolver moduleResolver = new DefaultModuleResolver(PLUGIN_URI + "/test-data/", new ResourceSetImpl());
+		moduleResolver.addUriPrefix(PLUGIN_URI + "/test-data/EcoreCopy/");
+		env.loadModule(moduleResolver, "EntryEndPointRuleTest");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+		ATLLogger.info("Finished EntryEndPointRuleTest:\n" + td.toString());
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/EntryEndPointRuleTest-out.ecore");
+		assertEquals(refOut.getResource(), env.getOutputModels().get("OUT").getResource());
 	}
 
 	/**

@@ -18,7 +18,7 @@
 		<emftvm.loadModel name="InlineCodeblocks" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/InlineCodeblocks.atl"/>
 		<emftvm.loadModel name="ATLWFR" wspath="org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLWFR.atl"/>
 		<emftvm.loadMetamodel name="ATL" uri="http://www.eclipse.org/gmt/2005/ATL"/>
-		<emftvm.loadMetamodel name="Problem" uri="platform:/plugin/org.eclipse.m2m.atl.common/org/eclipse/m2m/atl/common/resources/Problem.ecore"/>
+		<emftvm.loadMetamodel name="Problem" uri="http://www.eclipse.org/gmt/2005/Problem"/>
 	</target>
 
 	<target name="compile-OCLtoEMFTVM" depends="loadModels">

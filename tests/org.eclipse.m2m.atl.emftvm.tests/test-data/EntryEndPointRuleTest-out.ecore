@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore">
+  <ecore:EPackage name="before"/>
+  <ecore:EPackage name="My" nsURI="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/EcoreCopy/My.ecore"
+      nsPrefix="My">
+    <eClassifiers xsi:type="ecore:EClass" name="TestClass">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="testAtt" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="testAtt2" eType="#/1/TestEnum"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EEnum" name="TestEnum">
+      <eLiterals name="testLiteral" literal="testLiteral"/>
+      <eLiterals name="testLiteral2" value="1" literal="testLiteral2"/>
+    </eClassifiers>
+  </ecore:EPackage>
+  <ecore:EPackage name="after"/>
+</xmi:XMI>
