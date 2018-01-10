@@ -551,7 +551,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean matchOne(StackFrame frame) {
+		public boolean matchOne(final StackFrame frame) {
 			final EList<Rule> superRules = getESuperRules();
 			assert !superRules.isEmpty();
 			// Retrieve super-rule matches
@@ -1677,7 +1677,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetModule(Module newModule, NotificationChain msgs) {
+	public NotificationChain basicSetModule(final Module newModule, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newModule, EmftvmPackage.RULE__MODULE, msgs);
 		return msgs;
 	}
@@ -1688,7 +1688,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setModule(Module newModule) {
+	public void setModule(final Module newModule) {
 		if (newModule != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.RULE__MODULE && newModule != null)) {
 			if (EcoreUtil.isAncestor(this, newModule))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -1720,7 +1720,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMode(RuleMode newMode) {
+	public void setMode(final RuleMode newMode) {
 		final RuleMode oldMode = mode;
 		mode = newMode == null ? MODE_EDEFAULT : newMode;
 		if (eNotificationRequired())
@@ -1795,7 +1795,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetMatcher(CodeBlock newMatcher, NotificationChain msgs) {
+	public NotificationChain basicSetMatcher(final CodeBlock newMatcher, NotificationChain msgs) {
 		final CodeBlock oldMatcher = matcher;
 		matcher = newMatcher;
 		if (eNotificationRequired()) {
@@ -1811,7 +1811,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMatcher(CodeBlock newMatcher) {
+	public void setMatcher(final CodeBlock newMatcher) {
 		if (newMatcher != matcher) {
 			NotificationChain msgs = null;
 			if (matcher != null)
@@ -1841,7 +1841,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetApplier(CodeBlock newApplier, NotificationChain msgs) {
+	public NotificationChain basicSetApplier(final CodeBlock newApplier, NotificationChain msgs) {
 		final CodeBlock oldApplier = applier;
 		applier = newApplier;
 		if (eNotificationRequired()) {
@@ -1857,7 +1857,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setApplier(CodeBlock newApplier) {
+	public void setApplier(final CodeBlock newApplier) {
 		if (newApplier != applier) {
 			NotificationChain msgs = null;
 			if (applier != null)
@@ -1887,7 +1887,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPostApply(CodeBlock newPostApply, NotificationChain msgs) {
+	public NotificationChain basicSetPostApply(final CodeBlock newPostApply, NotificationChain msgs) {
 		final CodeBlock oldPostApply = postApply;
 		postApply = newPostApply;
 		if (eNotificationRequired()) {
@@ -1903,7 +1903,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setPostApply(CodeBlock newPostApply) {
+	public void setPostApply(final CodeBlock newPostApply) {
 		if (newPostApply != postApply) {
 			NotificationChain msgs = null;
 			if (postApply != null)
@@ -1946,7 +1946,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setAbstract(boolean newAbstract) {
+	public void setAbstract(final boolean newAbstract) {
 		final boolean oldAbstract = abstract_;
 		abstract_ = newAbstract;
 		if (eNotificationRequired())
@@ -1982,7 +1982,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setDefault(boolean newDefault) {
+	public void setDefault(final boolean newDefault) {
 		final boolean oldDefault = default_;
 		default_ = newDefault;
 		if (eNotificationRequired())
@@ -2005,7 +2005,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setDistinctElements(boolean newDistinctElements) {
+	public void setDistinctElements(final boolean newDistinctElements) {
 		final boolean oldDistinctElements = distinctElements;
 		distinctElements = newDistinctElements;
 		if (eNotificationRequired())
@@ -2028,7 +2028,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setUnique(boolean newUnique) {
+	public void setUnique(final boolean newUnique) {
 		final boolean oldUnique = unique;
 		unique = newUnique;
 		if (eNotificationRequired())
@@ -2112,7 +2112,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
-	public void registerField(Field field) {
+	public void registerField(final Field field) {
 		fieldContainer.registerField(field);
 	}
 
@@ -2122,7 +2122,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public boolean matchSingle(StackFrame frame) {
+	public boolean matchSingle(final StackFrame frame) {
 		return ruleModeState.matchSingle(frame);
 	}
 
@@ -2132,7 +2132,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public boolean[] matchRecursive(StackFrame frame) {
+	public boolean[] matchRecursive(final StackFrame frame) {
 		return ruleModeState.matchRecursive(frame);
 	}
 
@@ -2142,7 +2142,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Object matchManual(StackFrame frame, Object[] values) {
+	public Object matchManual(final StackFrame frame, final Object[] values) {
 		return ruleModeState.matchManual(frame, values);
 	}
 
@@ -2168,7 +2168,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public boolean matchOneOnly(StackFrame frame, Map<String, Object> valuesMap) {
+	public boolean matchOneOnly(final StackFrame frame, final Map<String, Object> valuesMap) {
 		// Check value types
 		final ExecEnv env = frame.getEnv();
 		final Object[] values = createValuesArray(valuesMap);
@@ -2177,11 +2177,6 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		for (int index = 0; index < inputs.size(); index++) {
 			final InputRuleElement re = inputs.get(index);
 			final Object value = valuesMap.get(re.getName());
-			if (value == null) {
-				throw new VMException(frame, String.format(
-						"Cannot match rule input element %s against null value for %s",
-						re, this));
-			}
 			final EClassifier eType = re.getEType();
 			if (eType instanceof EEnum) {
 				// Fix for Bug # 441027
@@ -2211,7 +2206,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 						return false;
 					}
 				} else {
-					if (!value.equals(bvalue)) {
+					if (!bvalue.equals(value)) {
 						return false;
 					}
 				}
@@ -2315,7 +2310,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public Object applyOne(final StackFrame frame, Map<String, Object> valuesMap) {
+	public Object applyOne(final StackFrame frame, final Map<String, Object> valuesMap) {
 		return uniqueState.applyOne(frame, createTrace(frame, valuesMap));
 	}
 
@@ -2364,7 +2359,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void createUniqueMapping(TraceLink trace) {
+	public void createUniqueMapping(final TraceLink trace) {
 		uniqueState.createUniqueMapping(trace);
 	}
 
@@ -2409,7 +2404,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void compileIterables(ExecEnv env) {
+	public void compileIterables(final ExecEnv env) {
 		superRulesState.compileIterables(env);
 	}
 
@@ -2461,7 +2456,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID, NotificationChain msgs) {
 		switch (featureID) {
 		case EmftvmPackage.RULE__MODULE:
 			if (eInternalContainer() != null)
@@ -2500,7 +2495,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID, final NotificationChain msgs) {
 		switch (featureID) {
 		case EmftvmPackage.RULE__MODULE:
 			return basicSetModule(null, msgs);
@@ -2531,7 +2526,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
+	public NotificationChain eBasicRemoveFromContainerFeature(final NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
 		case EmftvmPackage.RULE__MODULE:
 			return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__RULES, Module.class, msgs);
@@ -2546,7 +2541,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
 		switch (featureID) {
 		case EmftvmPackage.RULE__MODULE:
 			return getModule();
@@ -2594,7 +2589,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void eSet(int featureID, Object newValue) {
+	public void eSet(final int featureID, final Object newValue) {
 		switch (featureID) {
 		case EmftvmPackage.RULE__MODULE:
 			setModule((Module)newValue);
@@ -2658,7 +2653,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	@Override
-	public void eUnset(int featureID) {
+	public void eUnset(final int featureID) {
 		switch (featureID) {
 		case EmftvmPackage.RULE__MODULE:
 			setModule((Module)null);
@@ -2716,7 +2711,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * @generated
 	 */
 	@Override
-	public boolean eIsSet(int featureID) {
+	public boolean eIsSet(final int featureID) {
 		switch (featureID) {
 		case EmftvmPackage.RULE__MODULE:
 			return getModule() != null;
@@ -3010,7 +3005,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final Map<String, Object> values,
 			final Map<String, Iterable<EObject>> iterables,
 			final List<String> keys,
-			int keyIndex) {
+			final int keyIndex) {
 		final int size = iterables.size();
 		if (keyIndex < size) {
 			boolean result = false;
@@ -3273,7 +3268,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			final Map<String, Object> values,
 			final Map<String, Iterable<EObject>> iterables,
 			final List<String> keys,
-			int keyIndex) {
+			final int keyIndex) {
 		final int size = iterables.size();
 		if (keyIndex < size) {
 			final String key = keys.get(keyIndex);

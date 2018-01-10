@@ -32,6 +32,17 @@ lazy rule EPackage extends ENamedElement {
 		)
 }
 
+lazy rule MultiEPackage extends EPackage {
+	from
+		s : ECORE!EPackage,
+		x : OclAny
+	to
+		t : ECORE!EPackage
+	do {
+		Sequence{t};
+	}
+}
+
 lazy abstract rule EClassifier extends ENamedElement {
 	from
 		s : ECORE!EClassifier
