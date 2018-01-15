@@ -61,7 +61,11 @@ public class ParserLauncher {
 			}
 		} else {
 			// default parser generator
-			parserWrapper = new org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3.ParserWrapper();
+			try {
+				parserWrapper = ANTLR3ClassLoader.getParserWrapper(getClass().getClassLoader());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		String nameAndProductionRule = (String)arguments.get("name");
