@@ -28,6 +28,11 @@
             library="lib/emftvmAntTasks.jar"
             name="emftvm.newModel">
       </antTask>
+      <antTask
+            class="org.eclipse.m2m.atl.emftvm.ant.CompileTask"
+            library="lib/emftvmAntTasks.jar"
+            name="emftvm.compile">
+      </antTask>
    </extension>
 
 </plugin>
