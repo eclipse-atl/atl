@@ -24,10 +24,40 @@
   <packaging>eclipse-plugin</packaging>
   
   <build>
-   <plugins>
+    <plugins>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-source-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>0</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <mkdir dir="target/standalone"/>
+                <jar destfile="target/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}.jar">
+                  <zipfileset src="../org.eclipse.m2m.atl.core/target/org.eclipse.m2m.atl.core-${project.version}.jar" excludes="*.*" />
+                  <zipfileset src="../org.eclipse.m2m.atl.core.emf/target/org.eclipse.m2m.atl.core.emf-${project.version}.jar" excludes="*.*" />
+                  <zipfileset src="../org.eclipse.m2m.atl.common/target/org.eclipse.m2m.atl.common-${project.version}.jar" excludes="*.*" />
+                  <zipfileset src="../org.eclipse.m2m.atl.dsls/target/org.eclipse.m2m.atl.dsls-${project.version}.jar" excludes="*.*" />
+                  <zipfileset src="../org.eclipse.m2m.atl.engine/target/org.eclipse.m2m.atl.engine-${project.version}.jar" excludes="*.*" />
+                  <zipfileset src="../org.eclipse.m2m.atl.emftvm/target/org.eclipse.m2m.atl.emftvm-${project.version}.jar" excludes="*.*" />
+                  <zipfileset src="../org.eclipse.m2m.atl.emftvm.trace/target/org.eclipse.m2m.atl.emftvm.trace-${project.version}.jar" excludes="*.*" />
+                  <zipfileset src="../org.eclipse.m2m.atl.emftvm.compiler/target/org.eclipse.m2m.atl.emftvm.compiler-${project.version}.jar" excludes="*.*" />
+                  <zipfileset src="target/org.eclipse.m2m.atl.emftvm.ant-${project.version}.jar" excludes="lib/**" />
+                  <zipfileset src="lib/emftvmAntTasks.jar" />
+                </jar>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011 Vrije Universiteit Brussel.
- * Copyright (c) 2017 Dennis Wagelaar.
+ * Copyright (c) 2017-2018 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,13 @@ import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.Module;
+import org.eclipse.m2m.atl.emftvm.impl.resource.EMFTVMResourceFactoryImpl;
+import org.eclipse.m2m.atl.emftvm.util.ClassModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolverFactory;
 import org.eclipse.m2m.atl.emftvm.util.ExecEnvPool;
+import org.eclipse.m2m.atl.emftvm.util.ModuleNotFoundException;
+import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolverFactory;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 import org.eclipse.m2m.atl.engine.ProblemConverter;
@@ -69,12 +74,16 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	 */
 	public AtlToEmftvmCompiler() {
 		super();
+		/*
+		 * Explicitly register the EMFTVMResourceFactoryImpl for .emftvm files for
+		 * standalone compiler use.
+		 */
+		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("emftvm", new EMFTVMResourceFactoryImpl());
 
 		final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
 		atlmm.setResource(((EMFReferenceModel) AtlParser.getDefault().getAtlMetamodel()).getResource());
 		pbmm.setResource(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
-		final ModuleResolverFactory mrf = new DefaultModuleResolverFactory("platform:/plugin/" + EmftvmCompilerPlugin.PLUGIN_ID
-				+ "/transformations/");
+		final ModuleResolverFactory mrf = createModuleResolverFactory();
 
 		atlWfrPool.setModuleResolverFactory(mrf);
 		atlWfrPool.registerMetaModel("ATL", atlmm);
@@ -89,6 +98,31 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		inlineCodeblocksPool.setModuleResolverFactory(mrf);
 		inlineCodeblocksPool.registerMetaModel("Problem", pbmm);
 		inlineCodeblocksPool.loadModule("InlineCodeblocks");
+	}
+
+	/**
+	 * Creates a new {@link ModuleResolverFactory}.
+	 * 
+	 * @return a new {@link ModuleResolverFactory}
+	 */
+	protected ModuleResolverFactory createModuleResolverFactory() {
+		ModuleResolverFactory moduleResolverFactory = new DefaultModuleResolverFactory(
+				"platform:/plugin/" + EmftvmCompilerPlugin.PLUGIN_ID + "/transformations/");
+		try {
+			moduleResolverFactory.createModuleResolver().resolveModule("ATLWFR");
+		} catch (final ModuleNotFoundException e) {
+			moduleResolverFactory = new ModuleResolverFactory() {
+				public ModuleResolver createModuleResolver() {
+					return new ClassModuleResolver(getClass()) {
+						@Override
+						public Module resolveModule(String module) throws ModuleNotFoundException {
+							return super.resolveModule("/transformations/" + module);
+						}
+					};
+				}
+			};
+		}
+		return moduleResolverFactory;
 	}
 
 	/**
@@ -141,7 +175,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 			} finally {
 				outputStream.close();
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			EmftvmCompilerPlugin.log(e);
 		}
@@ -160,11 +194,11 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 
 			if (getProblems(problems, pbs) == 0) {
 				final EObject[] cpbs = compileWithProblemModel(atlmodel, outputStream);
-				for (EObject cpb : cpbs) {
+				for (final EObject cpb : cpbs) {
 					pbs.add(cpb);
 				}
 			}
-		} catch (ATLCoreException e) {
+		} catch (final ATLCoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			EmftvmCompilerPlugin.log(e);
 		}
@@ -209,10 +243,10 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 					r.save(outputStream, Collections.emptyMap());
 				}
 			}
-		} catch (VMException e) {
+		} catch (final VMException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			EmftvmCompilerPlugin.log(e);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			EmftvmCompilerPlugin.log(e);
 		} finally {
@@ -238,7 +272,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 			} finally {
 				outputStream.close();
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			EmftvmCompilerPlugin.log(e);
 		}
@@ -261,8 +295,8 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 
 		int nbErrors = 0;
 		if (pbs != null) {
-			for (EObject pb : pbs) {
-				EStructuralFeature severityFeature = pb.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
+			for (final EObject pb : pbs) {
+				final EStructuralFeature severityFeature = pb.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
 				if (severityFeature != null && "error".equals(((Enumerator) pb.eGet(severityFeature)).getName())) { //$NON-NLS-1$
 					nbErrors++;
 				}
@@ -283,12 +317,12 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	 * @return the number of error problems
 	 */
 	protected int getProblems(final Model problems, final Collection<EObject> pbElements) {
-		final Collection<EObject> pbs = (Collection<EObject>) problems.allInstancesOf((EClass) pbmm.findType("Problem")); //$NON-NLS-1$
+		final Collection<EObject> pbs = problems.allInstancesOf((EClass) pbmm.findType("Problem")); //$NON-NLS-1$
 
 		int nbErrors = 0;
 		if (pbs != null) {
-			for (EObject pb : pbs) {
-				EStructuralFeature severityFeature = pb.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
+			for (final EObject pb : pbs) {
+				final EStructuralFeature severityFeature = pb.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
 				if (severityFeature != null && "error".equals(((Enumerator) pb.eGet(severityFeature)).getName())) { //$NON-NLS-1$
 					nbErrors++;
 				}
