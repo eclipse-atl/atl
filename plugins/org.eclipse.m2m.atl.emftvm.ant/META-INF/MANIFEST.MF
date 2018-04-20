@@ -13,8 +13,6 @@ Require-Bundle: org.apache.ant;bundle-version="1.7.1",
  org.eclipse.m2m.atl.common,
  org.eclipse.m2m.atl.emftvm.compiler,
  org.eclipse.m2m.atl.engine
-Bundle-ClassPath: .,lib/emftvmAntTasks.jar
 Bundle-Activator: org.eclipse.m2m.atl.emftvm.ant.EmftvmAntPlugin
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.m2m.atl.emftvm.ant
-Class-Path: .,lib/emftvmAntTasks.jar
