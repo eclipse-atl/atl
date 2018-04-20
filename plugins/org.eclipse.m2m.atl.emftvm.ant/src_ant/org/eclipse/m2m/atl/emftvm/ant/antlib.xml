@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<antlib>
+	<taskdef name="emftvm.loadModel" classname="org.eclipse.m2m.atl.emftvm.ant.LoadModelTask" />
+	<taskdef name="emftvm.loadMetamodel" classname="org.eclipse.m2m.atl.emftvm.ant.LoadMetamodelTask" />
+	<taskdef name="emftvm.run" classname="org.eclipse.m2m.atl.emftvm.ant.RunTask" />
+	<taskdef name="emftvm.saveModel" classname="org.eclipse.m2m.atl.emftvm.ant.SaveModelTask" />
+	<taskdef name="emftvm.newModel" classname="org.eclipse.m2m.atl.emftvm.ant.NewModelTask" />
+	<taskdef name="emftvm.compile" classname="org.eclipse.m2m.atl.emftvm.ant.CompileTask" />
+</antlib>
