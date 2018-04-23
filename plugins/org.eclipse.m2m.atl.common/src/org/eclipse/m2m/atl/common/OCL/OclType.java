@@ -97,7 +97,7 @@ public class OclType extends OclExpression {
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see org.eclipse.m2m.atl.common.OCL.OCLPackage#getOclType_Name()
-	 * @model unique="false" dataType="org.eclipse.m2m.atl.common.PrimitiveTypes.String" required="true" ordered="false"
+	 * @model unique="false" dataType="org.eclipse.m2m.atl.common.PrimitiveTypes.String" ordered="false"
 	 * @generated
 	 */
 	public String getName() {

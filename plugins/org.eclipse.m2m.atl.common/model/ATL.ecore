@@ -352,7 +352,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="OclType" eSuperTypes="#/1/OclExpression">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
-          unique="false" lowerBound="1" eType="#/2/String"/>
+          unique="false" eType="#/2/String"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="definitions" ordered="false"
           eType="#/1/OclContextDefinition" eOpposite="#/1/OclContextDefinition/context_"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="oclExpression" ordered="false"
