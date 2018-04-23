@@ -109,7 +109,7 @@
     <eClassifiers xsi:type="ecore:EClass" name="InPatternElement" abstract="true"
         eSuperTypes="#/0/PatternElement">
       <eStructuralFeatures xsi:type="ecore:EReference" name="mapsTo" ordered="false"
-          lowerBound="1" eType="#/0/OutPatternElement" eOpposite="#/0/OutPatternElement/sourceElement"/>
+          eType="#/0/OutPatternElement" eOpposite="#/0/OutPatternElement/sourceElement"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="inPattern" ordered="false"
           lowerBound="1" eType="#/0/InPattern" eOpposite="#/0/InPattern/elements"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="models" ordered="false"

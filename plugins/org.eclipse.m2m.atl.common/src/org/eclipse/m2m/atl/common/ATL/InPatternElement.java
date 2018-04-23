@@ -99,7 +99,7 @@ public abstract class InPatternElement extends PatternElement {
 	 * @see #setMapsTo(OutPatternElement)
 	 * @see org.eclipse.m2m.atl.common.ATL.ATLPackage#getInPatternElement_MapsTo()
 	 * @see org.eclipse.m2m.atl.common.ATL.OutPatternElement#getSourceElement
-	 * @model opposite="sourceElement" required="true" ordered="false"
+	 * @model opposite="sourceElement" ordered="false"
 	 * @generated
 	 */
 	public OutPatternElement getMapsTo() {
