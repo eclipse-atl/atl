@@ -39,15 +39,15 @@ public class AtlNbCharFile {
 		int indexFirstChar;
 
 		/** Relative offset of each tab in the current line. */
-		List indexTabs;
+		List<Integer> indexTabs;
 
 		/**
 		 * Actual width of each tab (using ANTLR_TAB_WIDTH as standard tab size). Seems useless (to remove? if
 		 * so, also remove computation in computePosition).
 		 */
-		List tabsWidth;
+		List<Integer> tabsWidth;
 
-		public Line(int indexFirstChar, List indexTabs, List tabsWidth) {
+		public Line(int indexFirstChar, List<Integer> indexTabs, List<Integer> tabsWidth) {
 			this.indexFirstChar = indexFirstChar;
 			this.indexTabs = indexTabs;
 			this.tabsWidth = tabsWidth;
@@ -57,7 +57,7 @@ public class AtlNbCharFile {
 	/**
 	 * List of structures Line for the file.
 	 */
-	private List lines;
+	private List<Line> lines;
 
 	/**
 	 * The AtlNbCharFile constructor.
@@ -77,7 +77,7 @@ public class AtlNbCharFile {
 	 *            the input stream
 	 */
 	private void computePosition(InputStream is) {
-		lines = new ArrayList();
+		lines = new ArrayList<Line>();
 
 		try {
 			int currentChar;
@@ -85,15 +85,15 @@ public class AtlNbCharFile {
 			int currentCharIndex = 0;
 			int currentCharInLine = 0; // first char of a line has index 0
 			int nbCharsSinceLastTab = 0;
-			List indexTabs = new ArrayList();
-			List tabsWidth = new ArrayList();
+			List<Integer> indexTabs = new ArrayList<Integer>();
+			List<Integer> tabsWidth = new ArrayList<Integer>();
 			while (true) {
 				currentChar = is.read();
 				if (((char)currentChar == '\n') || (currentChar == -1)) {
 					lines.add(new Line(currentLineCharIndex, indexTabs, tabsWidth));
 					currentLineCharIndex = currentCharIndex;
-					indexTabs = new ArrayList();
-					tabsWidth = new ArrayList();
+					indexTabs = new ArrayList<Integer>();
+					tabsWidth = new ArrayList<Integer>();
 					currentCharInLine = -1; // first char of a line has index 0 (see currentCharInLine++
 					// below)
 					nbCharsSinceLastTab = -1;
@@ -112,7 +112,7 @@ public class AtlNbCharFile {
 			}
 			lines.add(new Line(currentLineCharIndex, indexTabs, tabsWidth));
 			is.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
@@ -139,11 +139,11 @@ public class AtlNbCharFile {
 			if (lineNumber > lines.size()) {
 				return -1;
 			}
-			Line line = (Line)lines.get(lineNumber - 1);
+			final Line line = lines.get(lineNumber - 1);
 
-			for (Iterator i = line.indexTabs.iterator(); i.hasNext();) {
-				int index = ((Integer)i.next()).intValue() + indexOffset;
-				int actualTabWidth = tabWidth - (index % tabWidth);
+			for (final Iterator<Integer> i = line.indexTabs.iterator(); i.hasNext();) {
+				final int index = i.next().intValue() + indexOffset;
+				final int actualTabWidth = tabWidth - (index % tabWidth);
 				if (column > index) {
 					ret -= actualTabWidth - 1;
 					indexOffset += actualTabWidth - 1;
@@ -181,13 +181,13 @@ public class AtlNbCharFile {
 	 * @return An array of int: first element is startChar, second element is endChar
 	 */
 	public int[] getIndexChar(String sourceLocation, int tabWidth) {
-		int[] ret = new int[2];
+		final int[] ret = new int[2];
 		int currentTabWidth = tabWidth;
 		if (currentTabWidth < 0) {
 			currentTabWidth = ANTLR_TAB_WIDTH;
 		}
 
-		String locRegex = "^(-?\\d{1,9}):(-?\\d{1,9})-(-?\\d{1,9}):(-?\\d{1,9})$"; //$NON-NLS-1$
+		final String locRegex = "^(-?\\d{1,9}):(-?\\d{1,9})-(-?\\d{1,9}):(-?\\d{1,9})$"; //$NON-NLS-1$
 		if (sourceLocation.matches(locRegex)) {
 			ret[0] = getIndexChar(Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$1")), //$NON-NLS-1$
 					Integer.parseInt(sourceLocation.replaceFirst(locRegex, "$2")) - 1, //$NON-NLS-1$
@@ -213,9 +213,9 @@ public class AtlNbCharFile {
 	 */
 	public int getIndex(String cursorPosition) {
 		int ret = 0;
-		String[] starts = cursorPosition.split(":"); //$NON-NLS-1$
-		int startLine = Integer.parseInt(starts[0].trim());
-		int startColumn = Integer.parseInt(starts[1].trim()) - 1; // Eclipse assigns index 1 to first char
+		final String[] starts = cursorPosition.split(":"); //$NON-NLS-1$
+		final int startLine = Integer.parseInt(starts[0].trim());
+		final int startColumn = Integer.parseInt(starts[1].trim()) - 1; // Eclipse assigns index 1 to first char
 
 		ret = getIndexChar(startLine, startColumn, 4);
 		return ret;
