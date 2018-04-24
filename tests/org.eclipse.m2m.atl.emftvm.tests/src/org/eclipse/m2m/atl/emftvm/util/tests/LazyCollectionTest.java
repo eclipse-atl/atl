@@ -23,8 +23,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.util.LazyBag;
@@ -34,6 +32,8 @@ import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.NativeCodeBlock;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.Tuple;
+
+import junit.framework.TestCase;
 
 /**
  * Tests for {@link LazyCollection} subclasses.
@@ -71,7 +71,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			list.add("Four");
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 	}
@@ -84,7 +84,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			list.addAll(getDataSource());
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 	}
@@ -144,7 +144,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		assertEquals(referenceSet.size(), set.size());
 		assertTrue(set.containsAll(list));
 		int i = 0;
-		for (String s : referenceSet) {
+		for (final String s : referenceSet) {
 			assertEquals(s, set.get(i++));
 		}
 	}
@@ -179,7 +179,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			list.clear();
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 	}
@@ -189,11 +189,11 @@ public abstract class LazyCollectionTest extends TestCase {
 	 */
 	public void testContains() {
 		final LazyCollection<String> list = getTestLazyCollection();
-		for (String s : getDataSource()) {
+		for (final String s : getDataSource()) {
 			assertTrue(list.contains(s));
 		}
 		assertFalse(list.contains(null));
-		assertFalse(list.contains(this));
+		assertFalse(list.contains(this.toString()));
 	}
 
 	/**
@@ -208,7 +208,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			list.containsAll(null);
 			fail("Expected NullPointerException");
-		} catch (NullPointerException e) {
+		} catch (final NullPointerException e) {
 			// expected
 		}
 	}
@@ -225,7 +225,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			list.containsAny(null);
 			fail("Expected NullPointerException");
-		} catch (NullPointerException e) {
+		} catch (final NullPointerException e) {
 			// expected
 		}
 	}
@@ -237,11 +237,11 @@ public abstract class LazyCollectionTest extends TestCase {
 		final LazyCollection<String> list = getTestLazyCollection();
 		assertEquals(0, list.count("NotContained"));
 		assertEquals(0, list.count(null));
-		Map<String, Integer> counts = new HashMap<String, Integer>();
-		for (String s : list) {
+		final Map<String, Integer> counts = new HashMap<String, Integer>();
+		for (final String s : list) {
 			counts.put(s, counts.containsKey(s) ? counts.get(s) + 1 : 1);
 		}
-		for (String s : list) {
+		for (final String s : list) {
 			assertEquals(counts.get(s).intValue(), list.count(s));
 		}
 	}
@@ -253,7 +253,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final LazyCollection<String> list = getTestLazyCollection();
 		assertTrue(list.excludes("NotContained"));
 		assertTrue(list.excludes(null));
-		for (String s : list) {
+		for (final String s : list) {
 			assertFalse(list.excludes(s));
 		}
 	}
@@ -264,7 +264,7 @@ public abstract class LazyCollectionTest extends TestCase {
 	public void testExcludesAll() {
 		final LazyCollection<String> list = getTestLazyCollection();
 		assertFalse(list.excludesAll(list));
-		for (String s : list) {
+		for (final String s : list) {
 			assertFalse(list.excludesAll(list.excluding(s)));
 		}
 		final LazyCollection<String> empty = getEmptyLazyCollection();
@@ -274,7 +274,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			list.excludesAll(null);
 			fail("Expected NullPointerException");
-		} catch (NullPointerException e) {
+		} catch (final NullPointerException e) {
 			// expected
 		}
 	}
@@ -284,11 +284,11 @@ public abstract class LazyCollectionTest extends TestCase {
 	 */
 	public void testExcluding() {
 		final LazyCollection<String> list = getTestLazyCollection();
-		for (String s : list) {
+		for (final String s : list) {
 			final LazyCollection<String> excluding = list.excluding(s);
 			assertEquals(list.size() - list.count(s), excluding.size());
 			final Iterator<String> exclIt = excluding.iterator();
-			for (String s1 : list) {
+			for (final String s1 : list) {
 				if (!s1.equals(s)) {
 					assertSame(s1, exclIt.next());
 				}
@@ -532,7 +532,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final LazyCollection<String> list = getTestLazyCollection();
 		assertFalse(list.includes("NotContained"));
 		assertFalse(list.includes(null));
-		for (String s : list) {
+		for (final String s : list) {
 			assertTrue(list.includes(s));
 		}
 	}
@@ -543,7 +543,7 @@ public abstract class LazyCollectionTest extends TestCase {
 	public void testIncludesAll() {
 		final LazyCollection<String> list = getTestLazyCollection();
 		assertTrue(list.includesAll(list));
-		for (String s : list) {
+		for (final String s : list) {
 			assertTrue(list.includesAll(list.excluding(s)));
 		}
 		final LazyCollection<String> empty = getEmptyLazyCollection();
@@ -553,7 +553,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			list.includesAll(null);
 			fail("Expected NullPointerException");
-		} catch (NullPointerException e) {
+		} catch (final NullPointerException e) {
 			// expected
 		}
 	}
@@ -576,7 +576,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			final LazyCollection<String> appended = list.includingRange("One", "Four");
 			fail("Expected IllegalArgumentException, but got " + appended);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			// expected
 		}
 		{
@@ -590,7 +590,7 @@ public abstract class LazyCollectionTest extends TestCase {
 			assertTrue(appended.contains(400));
 			// Test iterator
 			int index = 0;
-			for (Integer element : appended) {
+			for (final Integer element : appended) {
 				assertEquals(index + 300, element.intValue());
 				index++;
 			}
@@ -607,7 +607,7 @@ public abstract class LazyCollectionTest extends TestCase {
 			assertTrue(appended.contains(400L));
 			// Test iterator
 			int index = 0;
-			for (Long element : appended) {
+			for (final Long element : appended) {
 				assertEquals(index + 300, element.intValue());
 				index++;
 			}
@@ -686,7 +686,7 @@ public abstract class LazyCollectionTest extends TestCase {
 
 		});
 		final StringBuffer expected = new StringBuffer();
-		for (String s : list) {
+		for (final String s : list) {
 			expected.append(s);
 		}
 		assertEquals(expected.toString(), result);
@@ -707,13 +707,13 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			listIt.remove();
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 		try {
 			listIt.next();
 			fail("Expected NoSuchElementException");
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			// expected
 		}
 	}
@@ -724,9 +724,9 @@ public abstract class LazyCollectionTest extends TestCase {
 	public void testMax() {
 		final LazyCollection<String> list = getTestLazyCollection();
 		try {
-			String max = list.max();
+			final String max = list.max();
 			fail("Expected IllegalArgumentException, but got \"" + max + "\"");
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			// expected
 		}
 
@@ -741,9 +741,9 @@ public abstract class LazyCollectionTest extends TestCase {
 	public void testMin() {
 		final LazyCollection<String> list = getTestLazyCollection();
 		try {
-			String min = list.min();
+			final String min = list.min();
 			fail("Expected IllegalArgumentException, but got \"" + min + "\"");
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			// expected
 		}
 
@@ -823,7 +823,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final LazyCollection<String> list = getTestLazyCollection();
 		final LazySet<Tuple> product = list.product(list);
 		assertEquals(list.asSet().size() * list.asSet().size(), product.size());
-		for (Tuple t : product) {
+		for (final Tuple t : product) {
 			assertEquals(2, t.asMap().size());
 			assertTrue(list.contains(t.get("first")));
 			assertTrue(list.contains(t.get("second")));
@@ -840,7 +840,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			list.remove("One");
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 	}
@@ -853,13 +853,13 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			list.removeAll(Collections.emptyList());
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 		try {
 			list.removeAll(getDataSource());
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 	}
@@ -872,13 +872,13 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			list.retainAll(Collections.emptyList());
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 		try {
 			list.retainAll(getDataSource());
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 	}
@@ -900,7 +900,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		try {
 			list.sum();
 			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			// expected
 		}
 		final LazyCollection<Integer> emptyInt = getEmptyLazyCollection();
@@ -922,7 +922,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final Object[] array = list.toArray();
 		assertEquals(list.size(), array.length);
 		int i = 0;
-		for (String s : list) {
+		for (final String s : list) {
 			assertSame(s, array[i++]);
 		}
 	}
@@ -935,7 +935,7 @@ public abstract class LazyCollectionTest extends TestCase {
 		final String[] array = list.toArray(new String[0]);
 		assertEquals(list.size(), array.length);
 		int i = 0;
-		for (String s : list) {
+		for (final String s : list) {
 			assertSame(s, array[i++]);
 		}
 		assertSame(array, list.toArray(array));
@@ -969,8 +969,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 		});
-		for (Object key : result.keySet()) {
-			for (String value : result.get(key)) {
+		for (final Object key : result.keySet()) {
+			for (final String value : result.get(key)) {
 				assertEquals(key, Integer.valueOf(value.length()));
 			}
 		}
@@ -985,15 +985,15 @@ public abstract class LazyCollectionTest extends TestCase {
 			public Object execute(final StackFrame frame) {
 				final String self = ((String) frame.getLocal(0));
 				final List<Character> chars = new ArrayList<Character>(self.length());
-				for (char c : (self.toCharArray())) {
+				for (final char c : (self.toCharArray())) {
 					chars.add(c);
 				}
 				return chars;
 			}
 
 		});
-		for (Object key : result2.keySet()) {
-			for (String value : result2.get(key)) {
+		for (final Object key : result2.keySet()) {
+			for (final String value : result2.get(key)) {
 				assertTrue(String.format("Expected \"%s\" to contain \'%s\'", value, key), 
 						value.indexOf((Character) key) >= 0);
 			}
@@ -1018,8 +1018,8 @@ public abstract class LazyCollectionTest extends TestCase {
 			}
 
 		});
-		for (Object key : result.keySet()) {
-			String value = result.get(key);
+		for (final Object key : result.keySet()) {
+			final String value = result.get(key);
 			assertEquals(key, Integer.valueOf(value.length()));
 		}
 		// Test for collection return value
@@ -1033,15 +1033,15 @@ public abstract class LazyCollectionTest extends TestCase {
 			public Object execute(final StackFrame frame) {
 				final String self = ((String) frame.getLocal(0));
 				final List<Character> chars = new ArrayList<Character>(self.length());
-				for (char c : (self.toCharArray())) {
+				for (final char c : (self.toCharArray())) {
 					chars.add(c);
 				}
 				return chars;
 			}
 
 		});
-		for (Object key : result2.keySet()) {
-			String value = result2.get(key);
+		for (final Object key : result2.keySet()) {
+			final String value = result2.get(key);
 			assertTrue(String.format("Expected \"%s\" to contain \'%s\'", value, key), 
 					value.indexOf((Character) key) >= 0);
 		}
