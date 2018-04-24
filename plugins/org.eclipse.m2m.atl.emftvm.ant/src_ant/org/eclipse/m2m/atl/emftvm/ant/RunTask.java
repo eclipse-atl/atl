@@ -165,9 +165,10 @@ public class RunTask extends EMFTVMTask {
 		addInoutModelsToEnv(env);
 		addOutputModelsToEnv(env);
 		final StringTokenizer pathElements = new StringTokenizer(getModulePath(), ",");
-		final DefaultModuleResolver resolver = new DefaultModuleResolver(pathElements.nextToken(), getResourceSet());
+		final DefaultModuleResolver resolver = new DefaultModuleResolver(pathElements.nextToken().replace('\\', '/'),
+				getResourceSet());
 		while (pathElements.hasMoreTokens()) {
-			resolver.addUriPrefix(pathElements.nextToken());
+			resolver.addUriPrefix(pathElements.nextToken().replace('\\', '/'));
 		}
 		final TimingData timingData = new TimingData();
 		env.loadModule(resolver, getModule());
@@ -213,32 +214,32 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	private void addInputModelsToEnv(final ExecEnv env) {
-		for (ModelElement me : getInputModels()) {
+		for (final ModelElement me : getInputModels()) {
 			env.registerInputModel(getModelKey(me), getModel(me));
 		}
 	}
 
 	private void addInoutModelsToEnv(final ExecEnv env) {
 		final ResourceSet rs = getResourceSet();
-		for (InOutModel m : getInoutModels()) {
+		for (final InOutModel m : getInoutModels()) {
 			Model model = getModel(m);
 			if (model == null) {
 				// Create new in/out model
-				String u = m.getUri();
-				URI uri = u == null ? URI.createPlatformResourceURI(m.getWspath(), true) : URI.createURI(u);
-				Resource r = rs.createResource(uri);
+				final String u = m.getUri();
+				final URI uri = u == null ? URI.createPlatformResourceURI(m.getWspath(), true) : URI.createURI(u);
+				final Resource r = rs.createResource(uri);
 				model = EmftvmFactory.eINSTANCE.createModel();
 				model.setResource(r);
 				model.setAllowInterModelReferences(m.isAllowInterModelReferences());
 				setModel(m.getName(), model);
 			} else {
 				// Use existing in/out model, but override URI if given
-				String u = m.getUri();
+				final String u = m.getUri();
 				URI uri = null;
 				if (u != null) {
 					uri = URI.createURI(u);
 				}
-				String wsp = m.getWspath();
+				final String wsp = m.getWspath();
 				if (wsp != null) {
 					uri = URI.createPlatformResourceURI(wsp, true);
 				}
@@ -253,11 +254,11 @@ public class RunTask extends EMFTVMTask {
 
 	private void addOutputModelsToEnv(final ExecEnv env) {
 		final ResourceSet rs = getResourceSet();
-		for (OutModel m : getOutputModels()) {
-			String u = m.getUri();
-			URI uri = u == null ? URI.createPlatformResourceURI(m.getWspath(), true) : URI.createURI(u);
-			Resource r = rs.createResource(uri);
-			Model model = EmftvmFactory.eINSTANCE.createModel();
+		for (final OutModel m : getOutputModels()) {
+			final String u = m.getUri();
+			final URI uri = u == null ? URI.createPlatformResourceURI(m.getWspath(), true) : URI.createURI(u);
+			final Resource r = rs.createResource(uri);
+			final Model model = EmftvmFactory.eINSTANCE.createModel();
 			model.setResource(r);
 			model.setAllowInterModelReferences(m.isAllowInterModelReferences());
 			setModel(m.getName(), model);
@@ -266,7 +267,7 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	private void addMetamodelsToEnv(final ExecEnv env) {
-		for (MetaModel m : getMetaModels()) {
+		for (final MetaModel m : getMetaModels()) {
 			env.registerMetaModel(getModelKey(m), getMetamodel(m));
 		}
 	}

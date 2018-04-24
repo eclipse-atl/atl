@@ -15,8 +15,11 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.compiler.AtlResourceFactoryImpl;
+import org.eclipse.m2m.atl.emftvm.impl.resource.EMFTVMResourceFactoryImpl;
 
 
 /**
@@ -38,6 +41,17 @@ public abstract class EMFTVMTask extends Task {
 		ResourceSet resourceSet = (ResourceSet)getProject().getReference(RESOURCE_SET);
 		if (resourceSet == null) {
 			resourceSet = new ResourceSetImpl();
+
+			/*
+			 * Create and register built-in resource factories for stand-alone use.
+			 */
+			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi",
+					new XMIResourceFactoryImpl());
+			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("atl",
+					new AtlResourceFactoryImpl());
+			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("emftvm",
+					new EMFTVMResourceFactoryImpl());
+
 			getProject().addReference(RESOURCE_SET, resourceSet);
 		}
 		return resourceSet;
@@ -82,7 +96,7 @@ public abstract class EMFTVMTask extends Task {
 			super.execute();
 			EMFTVMBuildListener.attachBuildListener(getProject());
 			innerExecute();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 			throw new BuildException(e);
 		}
