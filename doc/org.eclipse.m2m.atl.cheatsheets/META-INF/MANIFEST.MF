@@ -12,3 +12,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Activator: org.eclipse.m2m.atl.cheatsheets.Family2PersonCheatsheet
+Automatic-Module-Name: org.eclipse.m2m.atl.cheatsheets

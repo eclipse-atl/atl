@@ -14,3 +14,4 @@ Require-Bundle: org.eclipse.m2m.atl.core.ui.vm,
  org.eclipse.m2m.atl.tests,
  org.eclipse.emf.compare
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Automatic-Module-Name: org.eclipse.m2m.atl.tests.standalone

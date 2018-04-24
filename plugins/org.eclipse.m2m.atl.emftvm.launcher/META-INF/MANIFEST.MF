@@ -22,3 +22,4 @@ Export-Package: org.eclipse.m2m.atl.emftvm.launcher,
  org.eclipse.m2m.atl.emftvm.launcher.compat,
  org.eclipse.m2m.atl.emftvm.launcher.debug,
  org.eclipse.m2m.atl.emftvm.launcher.profiler
+Automatic-Module-Name: org.eclipse.m2m.atl.emftvm.launcher

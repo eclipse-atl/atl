@@ -11,4 +11,5 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.runtime;visibility:=reexport
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
+Automatic-Module-Name: org.eclipse.m2m.atl.core
 

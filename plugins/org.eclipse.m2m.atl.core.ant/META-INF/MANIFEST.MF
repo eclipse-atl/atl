@@ -13,3 +13,4 @@ Export-Package: org.eclipse.m2m.atl.core.ant,
  org.eclipse.m2m.atl.core.ant.tasks,
  org.eclipse.m2m.atl.core.ant.tasks.nested
 Bundle-Localization: plugin
+Automatic-Module-Name: org.eclipse.m2m.atl.core.ant

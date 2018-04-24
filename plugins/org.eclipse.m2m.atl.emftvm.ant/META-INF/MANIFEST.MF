@@ -16,3 +16,4 @@ Require-Bundle: org.apache.ant;bundle-version="1.7.1",
 Bundle-Activator: org.eclipse.m2m.atl.emftvm.ant.EmftvmAntPlugin
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.m2m.atl.emftvm.ant
+Automatic-Module-Name: org.eclipse.m2m.atl.emftvm.ant

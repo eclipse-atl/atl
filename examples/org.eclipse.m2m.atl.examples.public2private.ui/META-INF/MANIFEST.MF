@@ -13,3 +13,4 @@ Export-Package: org.eclipse.m2m.atl.examples.public2private.ui
 Bundle-Vendor: %providerName
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.eclipse.m2m.atl.examples.public2private.ui

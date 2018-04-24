@@ -13,3 +13,4 @@ Export-Package: org.eclipse.m2m.atl.emftvm.trace,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport;bundle-version="2.4.0"
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.eclipse.m2m.atl.emftvm.trace
