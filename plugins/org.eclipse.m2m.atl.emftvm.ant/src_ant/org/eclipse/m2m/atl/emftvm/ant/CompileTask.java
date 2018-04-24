@@ -25,7 +25,7 @@ import org.eclipse.m2m.atl.engine.compiler.CompileTimeError;
 
 /**
  * Compiles an ATL module to EMFTVM bytecode.
- * 
+ *
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class CompileTask extends EMFTVMTask {
@@ -41,7 +41,7 @@ public class CompileTask extends EMFTVMTask {
 
 	/**
 	 * Sets the module name.
-	 * 
+	 *
 	 * @param module
 	 *            the module to set
 	 */
@@ -51,7 +51,7 @@ public class CompileTask extends EMFTVMTask {
 
 	/**
 	 * Returns the module name.
-	 * 
+	 *
 	 * @return the module
 	 */
 	public String getModule() {
@@ -61,7 +61,7 @@ public class CompileTask extends EMFTVMTask {
 	/**
 	 * Sets the module path. If not set,
 	 * {@link org.apache.tools.ant.Project#getBaseDir()} is used.
-	 * 
+	 *
 	 * @param modulePath
 	 *            the modulePath to set
 	 */
@@ -72,7 +72,7 @@ public class CompileTask extends EMFTVMTask {
 	/**
 	 * Returns the module path. If not set,
 	 * {@link org.apache.tools.ant.Project#getBaseDir()} is used.
-	 * 
+	 *
 	 * @return the modulePath
 	 */
 	public String getModulePath() {
@@ -81,7 +81,7 @@ public class CompileTask extends EMFTVMTask {
 
 	/**
 	 * Returns the character set to be used for parsing.
-	 * 
+	 *
 	 * @return the character set to be used for parsing
 	 */
 	public String getCharset() {
@@ -90,7 +90,7 @@ public class CompileTask extends EMFTVMTask {
 
 	/**
 	 * Sets the character set to be used for parsing.
-	 * 
+	 *
 	 * @param charset
 	 *            the character set to set
 	 */
@@ -101,7 +101,7 @@ public class CompileTask extends EMFTVMTask {
 	/**
 	 * Returns the directory path to write the output file to. If not set,
 	 * {@link #getModulePath()} is used.
-	 * 
+	 *
 	 * @return the outputPath
 	 */
 	public String getOutputPath() {
@@ -111,7 +111,7 @@ public class CompileTask extends EMFTVMTask {
 	/**
 	 * Sets the directory path to write the output file to. If not set,
 	 * {@link #getModulePath()} is used.
-	 * 
+	 *
 	 * @param outputPath
 	 *            the outputPath to set
 	 */
@@ -134,7 +134,7 @@ public class CompileTask extends EMFTVMTask {
 		try {
 			final BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
 			final String charset = getCharset();
-			final Reader reader = charset == null || charset.isEmpty() ? new InputStreamReader(bufferedInputStream)
+			final Reader reader = charset == null ? new InputStreamReader(bufferedInputStream)
 					: new InputStreamReader(bufferedInputStream, charset);
 			final String outputPath = getOutputPath();
 			final String outputFilePath = (outputPath != null ? outputPath : modulePath) + module + DOT_EMFTVM;
@@ -145,7 +145,7 @@ public class CompileTask extends EMFTVMTask {
 				final StringBuilder errorString = new StringBuilder();
 				for (final CompileTimeError error : errors) {
 					errorString.append("\n\t").append(error.getSeverity()).append(" : ").append(error.getDescription())
-							.append(" [").append(error.getLocation()).append("]");
+					.append(" [").append(error.getLocation()).append("]");
 				}
 				throw new ATLCoreException("Compile error" + errorString);
 			}
@@ -159,7 +159,7 @@ public class CompileTask extends EMFTVMTask {
 
 	/**
 	 * Trims <code>null</code> strings to the project's BaseDir.
-	 * 
+	 *
 	 * @param str
 	 *            the string to trim
 	 * @return <code>str</code>, or
