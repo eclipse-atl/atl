@@ -65,6 +65,10 @@
         <executions>
           <execution>
             <id>deploy-standalone</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>deploy-file</goal>
+            </goals>
             <configuration>
               <file>${project.build.directory}/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}.jar</file>
               <repositoryId>repo.eclipse.org</repositoryId>
