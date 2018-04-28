@@ -75,6 +75,8 @@
               <url>https://repo.eclipse.org/content/repositories/atl-snapshots/</url>
               <groupId>org.eclipse.m2m.atl</groupId>
               <artifactId>org.eclipse.m2m.atl.emftvm.ant.standalone</artifactId>
+              <version>${project.version}</version>
+              <packaging>jar</packaging>
             </configuration>
           </execution>
         </executions>
