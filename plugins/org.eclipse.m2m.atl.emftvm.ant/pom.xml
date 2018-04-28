@@ -59,6 +59,22 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>deploy-standalone</id>
+            <configuration>
+              <file>${project.build.directory}/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}.jar</file>
+              <repositoryId>repo.eclipse.org</repositoryId>
+              <url>https://repo.eclipse.org/content/repositories/atl-snapshots/</url>
+              <groupId>org.eclipse.m2m.atl</groupId>
+              <artifactId>org.eclipse.m2m.atl.emftvm.ant.standalone</artifactId>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
