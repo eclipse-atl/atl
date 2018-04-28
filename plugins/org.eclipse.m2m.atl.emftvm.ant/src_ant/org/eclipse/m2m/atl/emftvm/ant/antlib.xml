@@ -6,4 +6,5 @@
 	<taskdef name="emftvm.saveModel" classname="org.eclipse.m2m.atl.emftvm.ant.SaveModelTask" />
 	<taskdef name="emftvm.newModel" classname="org.eclipse.m2m.atl.emftvm.ant.NewModelTask" />
 	<taskdef name="emftvm.compile" classname="org.eclipse.m2m.atl.emftvm.ant.CompileTask" />
+	<taskdef name="emftvm.registerMetamodel" classname="org.eclipse.m2m.atl.emftvm.ant.RegisterMetamodelTask" />
 </antlib>

@@ -33,6 +33,11 @@
             library="lib/emftvmAntTasks.jar"
             name="emftvm.compile">
       </antTask>
+      <antTask
+            class="org.eclipse.m2m.atl.emftvm.ant.RegisterMetamodelTask"
+            library="lib/emftvmAntTasks.jar"
+            name="emftvm.registerMetamodel">
+      </antTask>
    </extension>
 
 </plugin>
