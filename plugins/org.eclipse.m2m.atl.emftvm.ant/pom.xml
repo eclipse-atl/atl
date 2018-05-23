@@ -71,8 +71,8 @@
             </goals>
             <configuration>
               <file>${project.build.directory}/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}.jar</file>
-              <repositoryId>${project.distributionManagement.repository.id}</repositoryId>
-              <url>${project.distributionManagement.repository.url}</url>
+              <repositoryId>${repository.id}</repositoryId>
+              <url>${repository.url}</url>
               <groupId>org.eclipse.m2m.atl</groupId>
               <artifactId>org.eclipse.m2m.atl.emftvm.ant.standalone</artifactId>
               <version>${project.version}</version>

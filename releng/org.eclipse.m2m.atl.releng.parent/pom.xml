@@ -43,6 +43,8 @@
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>../../target/jacoco.exec</sonar.jacoco.reportPath>
+    <repository.id>${project.distributionManagement.snapshotRepository.id}</repository.id>
+    <repository.url>${project.distributionManagement.snapshotRepository.url}</repository.url>
   </properties>
 
   <distributionManagement>
@@ -510,6 +512,20 @@
           </snapshots>
         </pluginRepository>
       </pluginRepositories>
+    </profile>
+
+    <profile>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>BUILD_TYPE</name>
+          <value>R</value>
+        </property>
+      </activation>
+      <properties>
+        <repository.id>${project.distributionManagement.repository.id}</repository.id>
+        <repository.url>${project.distributionManagement.repository.url}</repository.url>
+      </properties>
     </profile>
 	</profiles>
   
