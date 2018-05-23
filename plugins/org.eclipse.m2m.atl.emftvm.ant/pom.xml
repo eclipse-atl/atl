@@ -71,8 +71,8 @@
             </goals>
             <configuration>
               <file>${project.build.directory}/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}.jar</file>
-              <repositoryId>repo.eclipse.org</repositoryId>
-              <url>https://repo.eclipse.org/content/repositories/atl-snapshots/</url>
+              <repositoryId>${project.distributionManagement.repository.id}</repositoryId>
+              <url>${project.distributionManagement.repository.url}</url>
               <groupId>org.eclipse.m2m.atl</groupId>
               <artifactId>org.eclipse.m2m.atl.emftvm.ant.standalone</artifactId>
               <version>${project.version}</version>
