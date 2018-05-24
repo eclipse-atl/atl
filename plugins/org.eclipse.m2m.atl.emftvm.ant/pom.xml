@@ -1,86 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Copyright (c) 2012 Obeo.
+
     All rights reserved. This program and the accompanying materials
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
     http://www.eclipse.org/legal/epl-v10.html
-   
+
     Contributors:
         Obeo - initial creator
  -->
- <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>m2m.atl-parent</artifactId>
-    <groupId>org.eclipse.m2m.atl</groupId>
-    <version>4.0.0-SNAPSHOT</version>
-     <relativePath>../../releng/org.eclipse.m2m.atl.releng.parent</relativePath>
-  </parent>
-  <groupId>org.eclipse.m2m.atl</groupId>
-  <artifactId>org.eclipse.m2m.atl.emftvm.ant</artifactId>
-  <version>4.0.0-SNAPSHOT</version>
-  <packaging>eclipse-plugin</packaging>
-  
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-source-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>0</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <tasks>
-                <mkdir dir="target/standalone"/>
-                <jar destfile="target/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}.jar">
-                  <zipfileset src="../org.eclipse.m2m.atl.core/target/org.eclipse.m2m.atl.core-${project.version}.jar" excludes="*.* META-INF/ECLIPSE_.*" />
-                  <zipfileset src="../org.eclipse.m2m.atl.core.emf/target/org.eclipse.m2m.atl.core.emf-${project.version}.jar" excludes="*.* META-INF/ECLIPSE_.*" />
-                  <zipfileset src="../org.eclipse.m2m.atl.common/target/org.eclipse.m2m.atl.common-${project.version}.jar" excludes="*.* META-INF/ECLIPSE_.*" />
-                  <zipfileset src="../org.eclipse.m2m.atl.dsls/target/org.eclipse.m2m.atl.dsls-${project.version}.jar" excludes="*.* META-INF/ECLIPSE_.*" />
-                  <zipfileset src="../org.eclipse.m2m.atl.engine/target/org.eclipse.m2m.atl.engine-${project.version}.jar" excludes="*.* META-INF/ECLIPSE_.*" />
-                  <zipfileset src="../org.eclipse.m2m.atl.emftvm/target/org.eclipse.m2m.atl.emftvm-${project.version}.jar" excludes="*.* META-INF/ECLIPSE_.*" />
-                  <zipfileset src="../org.eclipse.m2m.atl.emftvm.trace/target/org.eclipse.m2m.atl.emftvm.trace-${project.version}.jar" excludes="*.* META-INF/ECLIPSE_.*" />
-                  <zipfileset src="../org.eclipse.m2m.atl.emftvm.compiler/target/org.eclipse.m2m.atl.emftvm.compiler-${project.version}.jar" excludes="*.* META-INF/ECLIPSE_.*" />
-                  <zipfileset src="target/org.eclipse.m2m.atl.emftvm.ant-${project.version}.jar" excludes="lib/** META-INF/ECLIPSE_.*" />
-                  <zipfileset src="lib/emftvmAntTasks.jar" />
-                </jar>
-              </tasks>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>deploy-standalone</id>
-            <phase>deploy</phase>
-            <goals>
-              <goal>deploy-file</goal>
-            </goals>
-            <configuration>
-              <file>${project.build.directory}/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}.jar</file>
-              <repositoryId>${repository.id}</repositoryId>
-              <url>${repository.url}</url>
-              <groupId>org.eclipse.m2m.atl</groupId>
-              <artifactId>org.eclipse.m2m.atl.emftvm.ant.standalone</artifactId>
-              <version>${project.version}</version>
-              <packaging>jar</packaging>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>m2m.atl-parent</artifactId>
+		<groupId>org.eclipse.m2m.atl</groupId>
+		<version>4.0.0-SNAPSHOT</version>
+		<relativePath>../../releng/org.eclipse.m2m.atl.releng.parent</relativePath>
+	</parent>
+	<groupId>org.eclipse.m2m.atl</groupId>
+	<artifactId>org.eclipse.m2m.atl.emftvm.ant</artifactId>
+	<version>4.0.0-SNAPSHOT</version>
+	<packaging>eclipse-plugin</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>0</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<mkdir dir="target/standalone" />
+								<jar
+									destfile="target/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}.jar">
+									<zipfileset
+										src="../org.eclipse.m2m.atl.core/target/org.eclipse.m2m.atl.core-${project.version}.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.core.emf/target/org.eclipse.m2m.atl.core.emf-${project.version}.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.common/target/org.eclipse.m2m.atl.common-${project.version}.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.dsls/target/org.eclipse.m2m.atl.dsls-${project.version}.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.engine/target/org.eclipse.m2m.atl.engine-${project.version}.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.emftvm/target/org.eclipse.m2m.atl.emftvm-${project.version}.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.emftvm.trace/target/org.eclipse.m2m.atl.emftvm.trace-${project.version}.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.emftvm.compiler/target/org.eclipse.m2m.atl.emftvm.compiler-${project.version}.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="target/org.eclipse.m2m.atl.emftvm.ant-${project.version}.jar"
+										excludes="lib/** META-INF/ECLIPSE_.*" />
+									<zipfileset src="lib/emftvmAntTasks.jar" />
+								</jar>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>deploy-standalone</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy-file</goal>
+						</goals>
+						<configuration>
+							<file>${project.build.directory}/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}.jar</file>
+							<repositoryId>${repository.id}</repositoryId>
+							<url>${repository.url}</url>
+							<groupId>org.eclipse.m2m.atl</groupId>
+							<artifactId>org.eclipse.m2m.atl.emftvm.ant.standalone</artifactId>
+							<version>${project.version}</version>
+							<packaging>jar</packaging>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
