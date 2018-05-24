@@ -96,9 +96,9 @@
 							<file>${project.build.directory}/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}.jar</file>
 							<repositoryId>${repository.id}</repositoryId>
 							<url>${repository.url}</url>
-							<groupId>org.eclipse.m2m.atl</groupId>
-							<artifactId>org.eclipse.m2m.atl.emftvm.ant.standalone</artifactId>
-							<version>${project.version}</version>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${project.artifactId}.standalone</artifactId>
+							<version>${project.releaseVersion}</version>
 							<packaging>jar</packaging>
 						</configuration>
 					</execution>
