@@ -77,6 +77,36 @@
 										excludes="lib/** META-INF/ECLIPSE_.*" />
 									<zipfileset src="lib/emftvmAntTasks.jar" />
 								</jar>
+								<jar
+									destfile="target/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}-sources.jar">
+									<zipfileset
+										src="../org.eclipse.m2m.atl.core/target/org.eclipse.m2m.atl.core-${project.version}-sources.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.core.emf/target/org.eclipse.m2m.atl.core.emf-${project.version}-sources.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.common/target/org.eclipse.m2m.atl.common-${project.version}-sources.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.dsls/target/org.eclipse.m2m.atl.dsls-${project.version}-sources.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.engine/target/org.eclipse.m2m.atl.engine-${project.version}-sources.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.emftvm/target/org.eclipse.m2m.atl.emftvm-${project.version}-sources.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.emftvm.trace/target/org.eclipse.m2m.atl.emftvm.trace-${project.version}-sources.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="../org.eclipse.m2m.atl.emftvm.compiler/target/org.eclipse.m2m.atl.emftvm.compiler-${project.version}-sources.jar"
+										excludes="*.* META-INF/ECLIPSE_.*" />
+									<zipfileset
+										src="target/org.eclipse.m2m.atl.emftvm.ant-${project.version}-sources.jar"
+										excludes="lib/** META-INF/ECLIPSE_.*" />
+								</jar>
 							</tasks>
 						</configuration>
 					</execution>
@@ -94,12 +124,14 @@
 						</goals>
 						<configuration>
 							<file>${project.build.directory}/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}.jar</file>
+							<sources>${project.build.directory}/standalone/org.eclipse.m2m.atl.emftvm.ant.standalone-${project.version}-sources.jar</sources>
 							<repositoryId>${repository.id}</repositoryId>
 							<url>${repository.url}</url>
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${project.artifactId}.standalone</artifactId>
-							<version>${project.releaseVersion}</version>
+							<version>${project.deployVersion}</version>
 							<packaging>jar</packaging>
+							<pomFile>${project.basedir}/standalone/pom.xml</pomFile>
 						</configuration>
 					</execution>
 				</executions>

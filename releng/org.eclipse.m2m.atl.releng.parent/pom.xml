@@ -45,7 +45,7 @@
 		<sonar.jacoco.reportPath>../../target/jacoco.exec</sonar.jacoco.reportPath>
 		<repository.id>${project.distributionManagement.snapshotRepository.id}</repository.id>
 		<repository.url>${project.distributionManagement.snapshotRepository.url}</repository.url>
-		<project.releaseVersion>${project.version}</project.releaseVersion>
+		<project.deployVersion>${project.version}</project.deployVersion>
 	</properties>
 
 	<distributionManagement>
@@ -581,7 +581,7 @@
 								</goals>
 								<configuration>
 									<source>
-										System.setProperty("project.releaseVersion",
+										System.setProperty("project.deployVersion",
 										"${project.version}".replace('-SNAPSHOT', ''))
 									</source>
 								</configuration>
