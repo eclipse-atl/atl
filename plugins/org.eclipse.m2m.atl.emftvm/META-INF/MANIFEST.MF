@@ -17,7 +17,6 @@ Export-Package: org.eclipse.m2m.atl.emftvm,
  org.eclipse.m2m.atl.emftvm.profiler,
  org.eclipse.m2m.atl.emftvm.util
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore;bundle-version="2.4.0";visibility:=reexport,
  org.eclipse.emf.ecore.xmi;bundle-version="2.4.0";visibility:=reexport,
  org.eclipse.m2m.atl.emftvm.trace;visibility:=reexport,
  org.eclipse.m2m.atl.common,

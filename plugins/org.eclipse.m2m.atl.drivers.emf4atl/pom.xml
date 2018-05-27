@@ -50,6 +50,7 @@
 							<artifactId>${project.artifactId}</artifactId>
 							<version>${project.deployVersion}</version>
 							<packaging>jar</packaging>
+							<pomFile>${project.basedir}/deploy/pom.xml</pomFile>
 						</configuration>
 					</execution>
 				</executions>
