@@ -117,6 +117,23 @@
 				<artifactId>maven-deploy-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>deploy-custom</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy-file</goal>
+						</goals>
+						<configuration>
+							<file>${project.build.directory}/${project.artifactId}-${project.version}.jar</file>
+							<sources>${project.build.directory}/${project.artifactId}-${project.version}-sources.jar</sources>
+							<repositoryId>${repository.id}</repositoryId>
+							<url>${repository.url}</url>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${project.artifactId}</artifactId>
+							<version>${project.deployVersion}</version>
+							<packaging>jar</packaging>
+						</configuration>
+					</execution>
+					<execution>
 						<id>deploy-standalone</id>
 						<phase>deploy</phase>
 						<goals>
