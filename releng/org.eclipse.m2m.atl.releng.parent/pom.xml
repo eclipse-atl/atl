@@ -316,6 +316,19 @@
 		</pluginManagement>
 	</build>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<url>http://central.maven.org/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<profiles>
 
 		<profile>
