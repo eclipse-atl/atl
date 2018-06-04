@@ -43,9 +43,7 @@
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.jacoco.reportPath>../../target/jacoco.exec</sonar.jacoco.reportPath>
-		<repository.id>${project.distributionManagement.snapshotRepository.id}</repository.id>
-		<repository.url>${project.distributionManagement.snapshotRepository.url}</repository.url>
-		<project.deployVersion>${project.version}</project.deployVersion>
+		<project.releaseVersion>4.0.0</project.releaseVersion>
 	</properties>
 
 	<distributionManagement>
@@ -303,11 +301,6 @@
 					</configuration>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.groovy.maven</groupId>
-					<artifactId>gmaven-plugin</artifactId>
-					<version>1.0</version>
-				</plugin>
-				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>sonar-maven-plugin</artifactId>
 					<version>3.3.0.603</version>
@@ -315,19 +308,6 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>central</id>
-			<url>http://central.maven.org/maven2/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 
 	<profiles>
 
@@ -575,42 +555,6 @@
 					</snapshots>
 				</pluginRepository>
 			</pluginRepositories>
-		</profile>
-
-		<profile>
-			<id>release</id>
-			<activation>
-				<property>
-					<name>BUILD_TYPE</name>
-					<value>R</value>
-				</property>
-			</activation>
-			<properties>
-				<repository.id>${project.distributionManagement.repository.id}</repository.id>
-				<repository.url>${project.distributionManagement.repository.url}</repository.url>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.groovy.maven</groupId>
-						<artifactId>gmaven-plugin</artifactId>
-						<executions>
-							<execution>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>execute</goal>
-								</goals>
-								<configuration>
-									<source>
-										System.setProperty("project.deployVersion",
-										"${project.version}".replace('-SNAPSHOT', ''))
-									</source>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 	</profiles>
 
