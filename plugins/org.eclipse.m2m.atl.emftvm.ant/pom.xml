@@ -131,25 +131,6 @@
 						<artifactId>maven-deploy-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>deploy-custom</id>
-								<phase>deploy</phase>
-								<goals>
-									<goal>deploy-file</goal>
-								</goals>
-								<configuration>
-									<file>${project.build.directory}/${project.artifactId}-${project.version}.jar</file>
-									<files>${project.build.directory}/${project.artifactId}-${project.version}-sources.jar</files>
-									<classifiers>sources</classifiers>
-									<repositoryId>${project.distributionManagement.snapshotRepository.id}</repositoryId>
-									<url>${project.distributionManagement.snapshotRepository.url}</url>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>${project.artifactId}</artifactId>
-									<version>${project.version}</version>
-									<packaging>jar</packaging>
-									<pomFile>${project.basedir}/deploy/pom.xml</pomFile>
-								</configuration>
-							</execution>
-							<execution>
 								<id>deploy-standalone</id>
 								<phase>deploy</phase>
 								<goals>
@@ -187,25 +168,6 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-deploy-plugin</artifactId>
 						<executions>
-							<execution>
-								<id>deploy-custom</id>
-								<phase>deploy</phase>
-								<goals>
-									<goal>deploy-file</goal>
-								</goals>
-								<configuration>
-									<file>${project.build.directory}/${project.artifactId}-${project.version}.jar</file>
-									<files>${project.build.directory}/${project.artifactId}-${project.version}-sources.jar</files>
-									<classifiers>sources</classifiers>
-									<repositoryId>${project.distributionManagement.repository.id}</repositoryId>
-									<url>${project.distributionManagement.repository.url}</url>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>${project.artifactId}</artifactId>
-									<version>${project.releaseVersion}</version>
-									<packaging>jar</packaging>
-									<pomFile>${project.basedir}/deploy/pom.xml</pomFile>
-								</configuration>
-							</execution>
 							<execution>
 								<id>deploy-standalone</id>
 								<phase>deploy</phase>
