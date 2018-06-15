@@ -146,7 +146,7 @@
 									<artifactId>${project.artifactId}.standalone</artifactId>
 									<version>${project.version}</version>
 									<packaging>jar</packaging>
-									<pomFile>${project.basedir}/standalone/pom.xml</pomFile>
+									<pomFile>${project.basedir}/standalone/snapshot/pom.xml</pomFile>
 								</configuration>
 							</execution>
 						</executions>
@@ -184,7 +184,7 @@
 									<artifactId>${project.artifactId}.standalone</artifactId>
 									<version>${project.releaseVersion}</version>
 									<packaging>jar</packaging>
-									<pomFile>${project.basedir}/standalone/pom.xml</pomFile>
+									<pomFile>${project.basedir}/standalone/release/pom.xml</pomFile>
 								</configuration>
 							</execution>
 						</executions>
