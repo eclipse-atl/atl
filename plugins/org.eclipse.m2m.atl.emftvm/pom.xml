@@ -65,7 +65,7 @@
 									<artifactId>${project.artifactId}</artifactId>
 									<version>${project.version}</version>
 									<packaging>jar</packaging>
-									<pomFile>${project.basedir}/deploy/pom.xml</pomFile>
+									<pomFile>${project.basedir}/deploy/snapshot/pom.xml</pomFile>
 								</configuration>
 							</execution>
 						</executions>
@@ -103,7 +103,7 @@
 									<artifactId>${project.artifactId}</artifactId>
 									<version>${project.releaseVersion}</version>
 									<packaging>jar</packaging>
-									<pomFile>${project.basedir}/deploy/pom.xml</pomFile>
+									<pomFile>${project.basedir}/deploy/release/pom.xml</pomFile>
 								</configuration>
 							</execution>
 						</executions>
