@@ -878,9 +878,12 @@ public final class EMFTVMUtil {
 	 */
 	private static void checkValueTypeIsEObject(final ExecEnv env, final EReference ref, final Object v) {
 		if (!(v instanceof EObject)) {
-			throw new IllegalArgumentException(String.format(
-					"Cannot add/remove values of type %s to/from multi-valued field %s::%s",
-					getTypeName(env, v.getClass()), ref.getEContainingClass().getName(), ref.getName()));
+			final String message = v == null
+					? String.format("Cannot add/remove OclUndefined to/from multi-valued field %s::%s",
+							ref.getEContainingClass().getName(), ref.getName())
+					: String.format("Cannot add/remove values of type %s to/from multi-valued field %s::%s",
+							getTypeName(env, v.getClass()), ref.getEContainingClass().getName(), ref.getName());
+			throw new IllegalArgumentException(message);
 		}
 	}
 
@@ -999,7 +1002,7 @@ public final class EMFTVMUtil {
 	private static void addRefValue(final ExecEnv env, final EReference ref, final EObject eo, final Collection<Object> values,
 			final EObject v, final int index, final boolean allowInterModelReferences) {
 		assert eo.eResource() != null;
-		assert v.eResource() != null;
+		assert v == null || v.eResource() != null;
 		if (checkValue(env, eo, ref, v, allowInterModelReferences)) {
 			if (index > -1) {
 				((List<Object>) values).add(index, v);
