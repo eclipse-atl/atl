@@ -22,6 +22,8 @@ import java.util.Map;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
@@ -137,7 +139,7 @@ public class EMFTVMUtilTest extends TestCase {
 
 		try {
 			EMFTVMUtil.set(env, eo, sf, value);
-			fail("Expected VMException");
+			fail("Expected IllegalArgumentException");
 		} catch (final IllegalArgumentException e) {
 			assertEquals("Cannot add/remove values of type Sequence to/from multi-valued field CodeBlock::code",
 					e.getMessage());
@@ -158,7 +160,7 @@ public class EMFTVMUtilTest extends TestCase {
 
 		try {
 			EMFTVMUtil.add(env, eo, sf, value, 0);
-			fail("Expected VMException");
+			fail("Expected IllegalArgumentException");
 		} catch (final IllegalArgumentException e) {
 			assertEquals("Cannot add/remove values of type Sequence to/from multi-valued field CodeBlock::code",
 					e.getMessage());
@@ -178,10 +180,70 @@ public class EMFTVMUtilTest extends TestCase {
 
 		try {
 			EMFTVMUtil.remove(env, eo, sf, value);
-			fail("Expected VMException");
+			fail("Expected IllegalArgumentException");
 		} catch (final IllegalArgumentException e) {
 			assertEquals("Cannot add/remove values of type Sequence to/from multi-valued field CodeBlock::code",
 					e.getMessage());
+		}
+	}
+
+	/**
+	 * Test method for
+	 * {@link EMFTVMUtil#set(ExecEnv, org.eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EStructuralFeature, Object)}.
+	 */
+	public void testSet_null() {
+		final Resource res = new ResourceImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final CodeBlock eo = EmftvmFactory.eINSTANCE.createCodeBlock();
+		res.getContents().add(eo);
+		final EReference sf = EmftvmPackage.eINSTANCE.getCodeBlock_Code();
+		final LazyList<Instruction> value = new LazyList<Instruction>().append(null);
+
+		try {
+			EMFTVMUtil.set(env, eo, sf, value);
+			fail("Expected IllegalArgumentException");
+		} catch (final IllegalArgumentException e) {
+			assertEquals("Cannot add/remove OclUndefined to/from multi-valued field CodeBlock::code", e.getMessage());
+		}
+	}
+
+	/**
+	 * Test method for {@link EMFTVMUtil#add(ExecEnv, org.eclipse.emf.ecore.EObject,
+	 * org.eclipse.emf.ecore.EStructuralFeature, Object, int).
+	 */
+	public void testAdd_null() {
+		final Resource res = new ResourceImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final CodeBlock eo = EmftvmFactory.eINSTANCE.createCodeBlock();
+		res.getContents().add(eo);
+		final EReference sf = EmftvmPackage.eINSTANCE.getCodeBlock_Code();
+		final LazyList<Instruction> value = new LazyList<Instruction>().append(null);
+
+		try {
+			EMFTVMUtil.add(env, eo, sf, value, 0);
+			fail("Expected IllegalArgumentException");
+		} catch (final IllegalArgumentException e) {
+			assertEquals("Cannot add/remove OclUndefined to/from multi-valued field CodeBlock::code", e.getMessage());
+		}
+	}
+
+	/**
+	 * Test method for
+	 * {@link EMFTVMUtil#remove(ExecEnv, org.eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EStructuralFeature, Object)}.
+	 */
+	public void testRemove_null() {
+		final Resource res = new ResourceImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final CodeBlock eo = EmftvmFactory.eINSTANCE.createCodeBlock();
+		res.getContents().add(eo);
+		final EReference sf = EmftvmPackage.eINSTANCE.getCodeBlock_Code();
+		final LazyList<Instruction> value = new LazyList<Instruction>().append(null);
+
+		try {
+			EMFTVMUtil.remove(env, eo, sf, value);
+			fail("Expected IllegalArgumentException");
+		} catch (final IllegalArgumentException e) {
+			assertEquals("Cannot add/remove OclUndefined to/from multi-valued field CodeBlock::code", e.getMessage());
 		}
 	}
 
