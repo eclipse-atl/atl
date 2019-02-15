@@ -26,8 +26,8 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.m2m.atl.adt.ui.AtlUIPlugin;
 import org.eclipse.m2m.atl.adt.ui.editor.AtlEditor;
 import org.eclipse.m2m.atl.common.AtlNbCharFile;
@@ -38,6 +38,7 @@ import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
@@ -53,8 +54,9 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		 *      org.eclipse.ui.IPerspectiveDescriptor)
 		 */
 		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
-			if (page == getSite().getPage()) {
-				int newDepth = computeDepth(perspective);
+			final IPageSite site = getSite();
+			if (site != null && page == site.getPage()) {
+				final int newDepth = computeDepth(perspective);
 				if (depth != newDepth) {
 					depth = newDepth;
 					doSetSelection(cursorPosition);
@@ -79,7 +81,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	/** The wake up frequency of the background thread in charge of the refresh of the outline tree viewer */
 	// private static final int REFRESH_PERIOD = 5000;
 	/* Sorter enabling sorting the content of the tree viewer */
-	private ViewerSorter alphabeticalSorter, defaultSorter;
+	private ViewerComparator alphabeticalSorter, defaultSorter;
 
 	/**
 	 * A description of the current cursor position of the associated editor
@@ -144,7 +146,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	private EObject selectedEo;
 
 	/** The ATL editor associated with this outline. */
-	private AtlEditor textEditor;
+	private final AtlEditor textEditor;
 
 	/**
 	 * @param textEditor
@@ -240,11 +242,11 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 			 */
 			@Override
 			public void run() {
-				IStructuredSelection is = (IStructuredSelection)treeViewer.getSelection();
-				EObject element = (EObject)is.getFirstElement();
+				final IStructuredSelection is = (IStructuredSelection)treeViewer.getSelection();
+				final EObject element = (EObject)is.getFirstElement();
 				try {
 					textEditor.toggleLineBreakpoints(element);
-				} catch (CoreException e) {
+				} catch (final CoreException e) {
 					e.printStackTrace();
 				}
 			}
@@ -313,7 +315,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 */
 	private void createContextMenu() {
 		// Create menu manager.
-		MenuManager menuMgr = new MenuManager();
+		final MenuManager menuMgr = new MenuManager();
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager mgr) {
@@ -321,7 +323,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 			}
 		});
 		// Create menu.
-		Menu menu = menuMgr.createContextMenu(treeViewer.getControl());
+		final Menu menu = menuMgr.createContextMenu(treeViewer.getControl());
 		treeViewer.getControl().setMenu(menu);
 		// Register menu for extension.
 		getSite().registerContextMenu(ATL_OUTLINE_VIEW_CONTEXT_MENU_ID, menuMgr, this);
@@ -337,7 +339,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		super.createControl(arg0);
 		root = new Root();
 		// Add all listeners that were added when the tree viewer was null
-		Object[] listeners = selectionChangedListeners.getListeners();
+		final Object[] listeners = selectionChangedListeners.getListeners();
 		for (int i = 0; i < listeners.length; i++) {
 			selectionChangedListeners.remove(listeners[i]);
 			treeViewer.addPostSelectionChangedListener((ISelectionChangedListener)listeners[i]);
@@ -351,7 +353,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		createFiltersAndSorters();
 		setUnit();
 		treeViewer.addFilter(defaultFilter);
-		treeViewer.setSorter(defaultSorter);
+		treeViewer.setComparator(defaultSorter);
 		// Necessary so that the PropertySheetView hears about selections in the treeViewer
 		getSite().setSelectionProvider(treeViewer);
 		this.perspectiveListener = new PerspectiveListener();
@@ -374,7 +376,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * Creates a menu (for the view) with the same actions than the toolbar.
 	 */
 	private void createMenu() {
-		IMenuManager mgr = getSite().getActionBars().getMenuManager();
+		final IMenuManager mgr = getSite().getActionBars().getMenuManager();
 		// mgr.add(refreshItemAction);
 		mgr.add(filterHelperAction);
 		mgr.add(filterRuleAction);
@@ -386,7 +388,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * the tree viewer.
 	 */
 	private void createToolbar() {
-		IToolBarManager mgr = getSite().getActionBars().getToolBarManager();
+		final IToolBarManager mgr = getSite().getActionBars().getToolBarManager();
 		// mgr.add(refreshItemAction);
 		mgr.add(filterHelperAction);
 		mgr.add(filterRuleAction);
@@ -396,10 +398,10 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	private void doSetSelection(String currentCursorPosition) {
 		if (!(currentCursorPosition == null || treeViewer.getTree().isDisposed())) {
 			this.cursorPosition = currentCursorPosition;
-			Root input = (Root)treeViewer.getInput();
+			final Root input = (Root)treeViewer.getInput();
 			if (input != null) {
-				EObject unit = input.getUnit();
-				int cursorIndexChar = help.getIndex(currentCursorPosition);
+				final EObject unit = input.getUnit();
+				final int cursorIndexChar = help.getIndex(currentCursorPosition);
 				if (cursorIndexChar == -1) {
 					return;
 				}
@@ -449,11 +451,11 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 *         char
 	 */
 	private static int[] getPos(EObject eo) {
-		String location = (String)eo.eGet(AtlEMFConstants.sfLocation);
+		final String location = (String)eo.eGet(AtlEMFConstants.sfLocation);
 		if (location == null) {
 			return null;
 		}
-		int[] pos = help.getIndexChar(location);
+		final int[] pos = help.getIndexChar(location);
 		return pos;
 	}
 
@@ -471,8 +473,8 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * Sets the Unit of the input of the tree Viewer.
 	 */
 	public void setUnit() {
-		EObject eo = textEditor.getSourceManager().getModel();
-		String newContent = textEditor.getDocumentProviderContent();
+		final EObject eo = textEditor.getSourceManager().getModel();
+		final String newContent = textEditor.getDocumentProviderContent();
 		if (eo != null) {
 			root.setUnit(eo);
 			if (!inputSet) {
@@ -493,16 +495,16 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 			return;
 		}
 
-		Object[] contents = input.eContents().toArray();
+		final Object[] contents = input.eContents().toArray();
 		for (int i = 0; i < contents.length; i++) {
-			EObject eo = (EObject)contents[i];
-			int[] pos = getPos(eo);
+			final EObject eo = (EObject)contents[i];
+			final int[] pos = getPos(eo);
 			if (pos == null) { // some EObject define no location
 				continue;
 			}
 
-			int eoStartChar = pos[0];
-			int eoEndChar = pos[1];
+			final int eoStartChar = pos[0];
+			final int eoEndChar = pos[1];
 			if (eoStartChar <= cursorIndexChar && eoEndChar >= cursorIndexChar) {
 				this.selectedEo = eo;
 				if ((currentLevel + 1 < depth) || (depth == -1)) {
@@ -532,7 +534,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 *            the element to show in the tree viewer
 	 */
 	private void showItem(EObject element) {
-		int[] pos = getPos(element);
+		final int[] pos = getPos(element);
 		if (pos != null) {
 			if (pos[1] - pos[0] > 0) {
 				textEditor.setHighlightRange(pos[0], pos[1] - pos[0], false);
@@ -583,9 +585,9 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	protected void updateSorter(Action actionParam) {
 		if (actionParam == sorterAction) {
 			if (actionParam.isChecked()) {
-				treeViewer.setSorter(alphabeticalSorter);
+				treeViewer.setComparator(alphabeticalSorter);
 			} else {
-				treeViewer.setSorter(defaultSorter);
+				treeViewer.setComparator(defaultSorter);
 			}
 		}
 	}
