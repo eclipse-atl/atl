@@ -1245,7 +1245,8 @@ public class ExecEnv {
 						boolean ret = true;
 						Collection<?> s = (Collection<?>)localVars[0];
 						for (Iterator<?> i = ((Collection<?>)localVars[1]).iterator(); i.hasNext();) {
-							ret = ret && !s.contains(i.next());
+							Object next = i.next();
+							ret = ret && !s.contains(next);
 						}
 						return Boolean.valueOf(ret);
 					}
