@@ -21,19 +21,12 @@ public class CreateModulePropertiesWriter
   protected final String TEXT_4 = ".modules = ";
   protected final String TEXT_5 = ",";
   protected final String TEXT_6 = NL + NL + "# Metamodels paths or nsUris";
-  protected final String TEXT_7 = NL;
-  protected final String TEXT_8 = ".metamodels.";
-  protected final String TEXT_9 = " = ";
-  protected final String TEXT_10 = NL + NL + "# Libraries paths";
-  protected final String TEXT_11 = NL;
-  protected final String TEXT_12 = ".libraries.";
-  protected final String TEXT_13 = " = ";
-  protected final String TEXT_14 = NL + NL + "# ATL Launching options";
-  protected final String TEXT_15 = NL;
-  protected final String TEXT_16 = ".options.";
-  protected final String TEXT_17 = " = ";
-  protected final String TEXT_18 = NL;
-  protected final String TEXT_19 = NL;
+  protected final String TEXT_7 = ".metamodels.";
+  protected final String TEXT_8 = " = ";
+  protected final String TEXT_9 = NL + NL + "# Libraries paths";
+  protected final String TEXT_10 = ".libraries.";
+  protected final String TEXT_11 = NL + NL + "# ATL Launching options";
+  protected final String TEXT_12 = ".options.";
 
   public String generate(Object argument)
   {
@@ -55,37 +48,37 @@ public class CreateModulePropertiesWriter
     }
     stringBuffer.append(TEXT_6);
     for (String metamodelName : content.getAllMetamodelsNames()) { String location = content.getMetamodelLocations().get(metamodelName); 
-    stringBuffer.append(TEXT_7);
+    stringBuffer.append(TEXT_3);
     stringBuffer.append(content.getClassShortName());
-    stringBuffer.append(TEXT_8);
+    stringBuffer.append(TEXT_7);
     stringBuffer.append(metamodelName);
-    stringBuffer.append(TEXT_9);
+    stringBuffer.append(TEXT_8);
     if (location != null) {
     stringBuffer.append(location);
     }
     }
-    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_9);
     for (String libraryName : content.getAllLibrariesNames()) { String location = content.getLibraryLocations().get(libraryName); 
-    stringBuffer.append(TEXT_11);
+    stringBuffer.append(TEXT_3);
     stringBuffer.append(content.getClassShortName());
-    stringBuffer.append(TEXT_12);
+    stringBuffer.append(TEXT_10);
     stringBuffer.append(libraryName);
-    stringBuffer.append(TEXT_13);
+    stringBuffer.append(TEXT_8);
     if (location != null) {
     stringBuffer.append(new Path(location).lastSegment());
     }
     }
-    stringBuffer.append(TEXT_14);
+    stringBuffer.append(TEXT_11);
     for (Entry<String, String> entry : content.getOptions().entrySet()) {
-    stringBuffer.append(TEXT_15);
+    stringBuffer.append(TEXT_3);
     stringBuffer.append(content.getClassShortName());
-    stringBuffer.append(TEXT_16);
+    stringBuffer.append(TEXT_12);
     stringBuffer.append(entry.getKey());
-    stringBuffer.append(TEXT_17);
+    stringBuffer.append(TEXT_8);
     stringBuffer.append(entry.getValue());
     }
-    stringBuffer.append(TEXT_18);
-    stringBuffer.append(TEXT_19);
+    stringBuffer.append(TEXT_3);
+    stringBuffer.append(TEXT_3);
     return stringBuffer.toString();
   }
 }
