@@ -22,21 +22,6 @@
       <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
    </url>
 
-   <requires>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.emf.compare.match"/>
-      <import plugin="org.eclipse.emf.compare.diff"/>
-      <import plugin="org.junit"/>
-      <import plugin="org.eclipse.m2m.atl.engine"/>
-      <import plugin="org.eclipse.m2m.atl.drivers.emf4atl"/>
-      <import plugin="org.eclipse.m2m.atl"/>
-      <import plugin="org.eclipse.m2m.atl.engine.emfvm"/>
-      <import plugin="org.eclipse.m2m.atl.core"/>
-      <import plugin="org.eclipse.m2m.atl.core.emf"/>
-      <import plugin="org.eclipse.m2m.atl.core.ui.vm"/>
-   </requires>
-
    <plugin
          id="org.eclipse.m2m.atl.tests"
          download-size="0"
