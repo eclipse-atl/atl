@@ -79,28 +79,35 @@ public class MarkerMaker {
 		String description = (String)problem.eGet(sfDescription);
 
 		String location = (String)problem.eGet(sfLocation);
-		String[] parts = location.split("-")[0].split(":"); //$NON-NLS-1$ //$NON-NLS-2$
-		int lineNumber = Integer.parseInt(parts[0]);
-		int columnNumber = Integer.parseInt(parts[1]);
+		final String[] parts = location.split("-")[0].split(":"); //$NON-NLS-1$ //$NON-NLS-2$
+		int lineNumber;
+		int columnNumber;
+		try {
+			lineNumber = Integer.parseInt(parts[0]);
+			columnNumber = Integer.parseInt(parts[1]);
+		} catch (final NumberFormatException e) {
+			lineNumber = 1;
+			columnNumber = 1;
+		}
 		int charStart = 0;
 		int charEnd = 0;
 		try {
 			if (location.indexOf('-') == -1) {
 				location += '-' + location;
 			}
-			int[] pos = help.getIndexChar(location, tabWidth);
+			final int[] pos = help.getIndexChar(location, tabWidth);
 			charStart = pos[0];
 			charEnd = pos[1];
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			description += " [location \"" + location + "\" incorrectly reported because of error]"; //$NON-NLS-1$ //$NON-NLS-2$
 			//$NON-NLS-1$//$NON-NLS-2$
 		}
 
-		String severity = ((Enumerator)problem.eGet(sfSeverity)).getName();
-		int eclipseSeverity = ((Integer)severities.get(severity)).intValue();
+		final String severity = ((Enumerator)problem.eGet(sfSeverity)).getName();
+		final int eclipseSeverity = ((Integer)severities.get(severity)).intValue();
 
 		try {
-			IMarker pbmMarker = res.createMarker(PROBLEM_MARKER);
+			final IMarker pbmMarker = res.createMarker(PROBLEM_MARKER);
 			pbmMarker.setAttribute(IMarker.SEVERITY, eclipseSeverity);
 			pbmMarker.setAttribute(IMarker.MESSAGE, description);
 			pbmMarker.setAttribute(IMarker.LINE_NUMBER, lineNumber);
@@ -108,18 +115,18 @@ public class MarkerMaker {
 					new Object[] {new Integer(lineNumber), new Integer(columnNumber)}));
 			pbmMarker.setAttribute(IMarker.CHAR_START, charStart);
 			pbmMarker.setAttribute(IMarker.CHAR_END, (charEnd > charStart) ? charEnd : charStart + 1);
-		} catch (CoreException e) {
+		} catch (final CoreException e) {
 			ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	}
 
 	private void createPbmMarkers(IResource res, EObject[] eos, int tabWidth) {
 		try {
-			AtlNbCharFile help = new AtlNbCharFile(((IFile)res).getContents());
+			final AtlNbCharFile help = new AtlNbCharFile(((IFile)res).getContents());
 			for (int i = 0; i < eos.length; i++) {
 				eObjectToPbmMarker(res, help, eos[i], tabWidth);
 			}
-		} catch (CoreException e1) {
+		} catch (final CoreException e1) {
 			ATLLogger.log(Level.SEVERE, e1.getLocalizedMessage(), e1);
 
 		}
@@ -140,12 +147,12 @@ public class MarkerMaker {
 
 	private void resetPbmMarkers(final IResource res, final EObject[] eos, final int tabWidth)
 			throws CoreException {
-		IWorkspaceRunnable r = new IWorkspaceRunnable() {
+		final IWorkspaceRunnable r = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
 				synchronized (res) {
 					try {
 						res.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-					} catch (CoreException e) {
+					} catch (final CoreException e) {
 						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 					createPbmMarkers(res, eos, tabWidth);
@@ -185,14 +192,14 @@ public class MarkerMaker {
 	private int applyMarkers(IFile file, IModel pbs, int tabWidth) throws CoreException {
 		int nbErrors = 0;
 
-		Object problemType = AtlParser.getDefault().getProblemMetamodel().getMetaElementByName("Problem");
-		Collection pbsc = pbs.getElementsByType(problemType); //$NON-NLS-1$
-		EObject[] pbsa = new EObject[pbsc.size()];
+		final Object problemType = AtlParser.getDefault().getProblemMetamodel().getMetaElementByName("Problem");
+		final Collection pbsc = pbs.getElementsByType(problemType); //$NON-NLS-1$
+		final EObject[] pbsa = new EObject[pbsc.size()];
 		int k = 0;
-		for (Iterator i = pbsc.iterator(); i.hasNext();) {
-			EObject ame = (EObject)i.next();
+		for (final Iterator i = pbsc.iterator(); i.hasNext();) {
+			final EObject ame = (EObject)i.next();
 			pbsa[k] = ame;
-			EStructuralFeature severityFeature = ame.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
+			final EStructuralFeature severityFeature = ame.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
 			if ("error".equals(((Enumerator)ame.eGet(severityFeature)).getName())) { //$NON-NLS-1$
 				nbErrors++;
 			}
