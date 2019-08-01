@@ -20,10 +20,6 @@
       <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
    </url>
 
-   <requires>
-      <import plugin="org.eclipse.help"/>
-   </requires>
-
    <plugin
          id="org.eclipse.m2m.atl.doc"
          download-size="0"
