@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b5e702a_e482665a",
+        "filename": "releng/org.eclipse.m2m.atl.releng.parent/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 102970
+      },
+      "writtenOn": "2019-08-02T10:15:39Z",
+      "side": 1,
+      "message": "version is newer than 2019-06",
+      "revId": "f82a12218b6ce376587c2b73a00b431bf9debcde",
+      "serverId": "97ee7c02-f12f-4043-b43e-dea463d88b31",
+      "unresolved": false
+    }
+  ]
+}
