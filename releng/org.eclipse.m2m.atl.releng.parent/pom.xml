@@ -37,8 +37,8 @@
 	</licenses>
 
 	<properties>
-		<tycho-version>0.22.0</tycho-version>
-		<tycho-extras-version>0.22.0</tycho-extras-version>
+		<tycho-version>1.4.0</tycho-version>
+		<tycho-extras-version>1.4.0</tycho-extras-version>
 		<!-- Properties to enable jacoco code coverage analysis -->
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
