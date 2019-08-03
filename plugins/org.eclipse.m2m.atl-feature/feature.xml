@@ -83,7 +83,7 @@
          id="org.antlr.runtime"
          download-size="0"
          install-size="0"
-         version="3.0.0"
+         version="3.0.0.v200803061811"
          unpack="false"/>
 
    <plugin
