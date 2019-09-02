@@ -43,7 +43,7 @@
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.jacoco.reportPath>../../target/jacoco.exec</sonar.jacoco.reportPath>
-		<project.releaseVersion>4.0.1</project.releaseVersion>
+		<project.releaseVersion>4.1.0</project.releaseVersion>
 	</properties>
 
 	<distributionManagement>
