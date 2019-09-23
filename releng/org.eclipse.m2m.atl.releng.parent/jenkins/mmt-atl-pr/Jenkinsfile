@@ -1,0 +1,17 @@
+pipeline {
+    agent any
+    tools {
+        maven 'apache-maven-latest'
+        jdk 'adoptopenjdk-hotspot-jdk8-latest'
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh '''
+                    java -version
+                    mvn clean verify -P2019-06 -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml
+                '''
+            }
+        }
+    }
+}
