@@ -32,7 +32,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.m2m.atl</groupId>
-			<artifactId>org.eclipse.m2m.atl.emfvm</artifactId>
+			<artifactId>org.eclipse.m2m.atl.engine.emfvm</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
