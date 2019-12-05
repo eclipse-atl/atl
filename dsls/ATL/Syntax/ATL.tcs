@@ -1,4 +1,4 @@
--- @authors		Frédéric Jouault
+-- @authors		FrÃ©dÃ©ric Jouault
 -- @date		2007/07/26
 -- @description	This TCS model defines the syntax of the ATL language.
 
@@ -529,7 +529,7 @@ syntax ATL(k = 0) {
 	}
 
 	token COMMENT	: endOfLine(start = "--");
-	token STRING	: multiLine(start = "\'", end = "\'", esc = "\\");
+--	token STRING	: multiLine(start = "\'", end = "\'", esc = "\\");
 	
 	lexer = "
 %options testLiterals = false;
@@ -578,12 +578,12 @@ NAME
 	:	(
 %v3			SNAME
 %v2			s:SNAME {if(s.getType() != SNAME) $setType(s.getType());}
-		|	'\"'!
+		|	'\"'
 			(	ESC
 			|	'\\n' {newline();}
 			|	~('\\\\'|'\\\"'|'\\n')
 			)*
-			'\"'!
+			'\"'
 %v3			{setText(ei.unescapeString(getText(), 1));}
 		)
 	;
@@ -598,7 +598,7 @@ INT
 
 %protected
 ESC
-	:	'\\\\'!
+	:	'\\\\'
 		(	'n' %v2{%setText(\"\\n\");}
 		|	'r' %v2{%setText(\"\\r\");}
 		|	't' %v2{%setText(\"\\t\");}
@@ -640,6 +640,13 @@ ESC
 %v2					%setText(ans);
 				}
 		)
+	;
+STRING @init {}
+	:	(('\\'' (options {greedy = false;} : (('\\\\' ~ '\\n')| '\\n'| ~('\\\\'| '\\n')))* '\\''))
+        {
+            
+        }
+
 	;
 	";
 
