@@ -26,6 +26,24 @@
 	<version>4.2.0-SNAPSHOT</version>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>.</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>publisher.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>.</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>downloads.sh</include>
+					<include>index.html</include>
+					<include>updates.sh</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -33,61 +51,25 @@
 				<version>${tycho-version}</version>
 				<configuration>
 					<createArtifactRepository>true</createArtifactRepository>
-					<finalName>${project.artifactId}</finalName>
+					<finalName>${project.groupId}-${unqualifiedVersion}.${buildId}</finalName>
 					<compress>true</compress>
+					<repositoryName>ATL ${unqualifiedVersion}.${buildId}</repositoryName>
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>copy-resources</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/repository</outputDirectory>
-							<resources>
-								<resource>
-									<directory>.</directory>
-									<includes>
-										<include>index.html</include>
-										<include>web/*</include>
-									</includes>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>prepare_promotion</id>
 						<phase>verify</phase>
 						<goals>
-							<goal>run</goal>
+							<goal>resources</goal>
 						</goals>
-						<configuration>
-							<tasks>
-								<!-- create a properties file for promotion process -->
-								<mkdir dir="${project.build.directory}/promotion" />
-								<echo
-									file="${project.build.directory}/promotion/promote.properties"
-									message="#ATL promotion process.${line.separator}build.alias=${BUILD_ALIAS}${line.separator}build.qualifier=${env.BUILD_TYPE}${buildQualifier}${line.separator}version=${unqualifiedVersion}" />
-								<!-- copy necessary scripts to archive location -->
-								<copy file="p2.xsl"
-									todir="${project.build.directory}/promotion" />
-								<copy file="promoter.xml"
-									todir="${project.build.directory}/promotion" />
-								<copy file="addDownloadStats.xsl"
-									todir="${project.build.directory}/promotion" />
-							</tasks>
-						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<outputDirectory>${project.build.directory}</outputDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
