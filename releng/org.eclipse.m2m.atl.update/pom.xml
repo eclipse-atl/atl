@@ -51,9 +51,9 @@
 				<version>${tycho-version}</version>
 				<configuration>
 					<createArtifactRepository>true</createArtifactRepository>
-					<finalName>${project.groupId}-${unqualifiedVersion}.${buildId}</finalName>
+					<finalName>${project.groupId}-${unqualifiedVersion}.${buildQualifier}</finalName>
 					<compress>true</compress>
-					<repositoryName>ATL ${unqualifiedVersion}.${buildId}</repositoryName>
+					<repositoryName>ATL ${unqualifiedVersion}.${buildQualifier}</repositoryName>
 				</configuration>
 			</plugin>
 			<plugin>
