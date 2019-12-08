@@ -1,6 +1,6 @@
 #!/bin/bash -xv
 #*******************************************************************************
-# Copyright (c) 2018, 2019 Willink Transformations and others.
+# Copyright (c) 2017, 2019 Willink Transformations and others.
 # All rights reserved. This program and the accompanying materials
 # are made available under the terms of the Eclipse Public License v2.0
 # which accompanies this distribution, and is available at
@@ -11,25 +11,23 @@
 #     Dennis Wagelaar
 #*******************************************************************************
 #
-#    Promote the PUBLISH__URL to an updates repository.
+#    Promote ~/publish.zip to an updates repository.
 #
-#    -u PUBLISH__URL            The zip to be published e.g. https://ci.eclipse.org/ocl/job/ocl-master/38/artifact/releng/org.eclipse.ocl.releng.build-site/target/org.eclipse.ocl-6.5.0.v20171021-1702.zip
-#    -v PUBLISH__VERSION        Unqualified version e.g. 6.5.0
+#    -v PUBLISH__VERSION        Unqualified version e.g. 3.9.0
 #    -t PUBLISH__BUILD_T        Build type N/I/S/R, blank suppresses promotion
-#    -q PUBLISH__QUALIFIER      Version qualifier e.g. v20171020-1234
+#    -q PUBLISH__QUALIFIER      Version qualifier e.g. v20171025-1600
 #
-updatesFolder="updates/"
+updatesFolder="/home/data/httpd/download.eclipse.org/mmt/atl/updates/"
 group="modeling.mmt.atl"
 localZip="atl.zip"
 projectRepoName="ATL"
-manageComposite="ant -f ${WORKSPACE}/promotion/manage-composite.xml"
+manageComposite="/shared/common/apache-ant-latest/bin/ant -f /shared/modeling/tools/promotion/manage-composite.xml"
 externalUpdatesFolder="https://download.eclipse.org/mmt/atl/updates/"
 
-while getopts u:v:t:q: option
+while getopts v:t:q: option
 do
 case "${option}"
 in
-u) PUBLISH__URL=${OPTARG};;
 v) PUBLISH__VERSION=${OPTARG};;
 t) PUBLISH__BUILD_T=${OPTARG};;
 q) PUBLISH__QUALIFIER=${OPTARG};;
@@ -81,7 +79,7 @@ then
 
     if [ "${PUBLISH__BUILD_T}" = "N" ]
     then
-      curl -s -k ${PUBLISH__URL} > ${localZip}
+      cp ~/publish.zip ${localZip}
       unzip -ou ${localZip} -d new${PUBLISH__VERSION}
       chgrp -R ${group} new${PUBLISH__VERSION}
       chmod -R g+w new${PUBLISH__VERSION}
@@ -90,7 +88,7 @@ then
       rm -rf old${PUBLISH__VERSION} ${localZip}
     elif [ "${PUBLISH__BUILD_T}" = "I" ]
     then
-      curl -s -k ${PUBLISH__URL} > ${localZip}
+      cp ~/publish.zip ${localZip}
       unzip -ou ${localZip} -d new${PUBLISH__VERSION}
       chgrp -R ${group} new${PUBLISH__VERSION}
       chmod -R g+w new${PUBLISH__VERSION}
@@ -107,7 +105,7 @@ then
           mkdir ${tQualifier}
         fi
 
-        curl -s -k ${PUBLISH__URL} > ${localZip}
+        cp ~/publish.zip ${localZip}
         unzip ${localZip} -d ${tQualifier}
         rm ${localZip}
 
@@ -117,7 +115,7 @@ then
       popd
     elif [ "${PUBLISH__BUILD_T}" = "R" ]
     then
-      curl -s -k ${PUBLISH__URL} > ${localZip}
+      cp ~/publish.zip ${localZip}
       unzip -ou ${localZip} -d new${PUBLISH__VERSION}
       chgrp -R ${group} new${PUBLISH__VERSION}
       chmod -R g+w new${PUBLISH__VERSION}
@@ -141,4 +139,3 @@ then
   popd
 
 fi
-
