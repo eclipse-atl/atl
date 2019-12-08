@@ -21,7 +21,7 @@
 #	-j PUBLISH__JAVADOC		The optional Javadoc zip to be published e.g. https://ci.eclipse.org/ocl/job/ocl-master/38/artifact/releng/org.eclipse.ocl.releng.build-site/target/OCL-javadoc.zip
 #	-p PUBLISH__PDFDOC			The optional PDF doc to be published e.g. https://ci.eclipse.org/ocl/job/ocl-master/38/artifact/releng/org.eclipse.ocl.releng.build-site/target/ocl.pdf
 #
-dropsFolder="downloads/drops/"
+dropsFolder="/home/data/httpd/download.eclipse.org/mmt/atl/downloads/drops/"
 group="modeling.mmt.atl"
 zipPrefix="m2m-atl-Update-"
 
@@ -60,6 +60,8 @@ then
     curl -s -k ${PUBLISH__URL} > ${zipFile}
     md5sum -b ${zipFile} > ${zipFile}.md5
     sha512sum -b ${zipFile} > ${zipFile}.sha1
+    # make sure permissions are for the intended group
+    chgrp -R ${group} ${zipFile} ${zipFile}.md5 ${zipFile}.sha1
     chmod -R g+w ${zipFile} ${zipFile}.md5 ${zipFile}.sha1
   popd
   

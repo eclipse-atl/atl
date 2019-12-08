@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
    Copyright (C) 2011, 2012 Obeo
- 
+
    Cedric Brun <cedric.brun@obeo.fr>
    William Piers <william.piers@obeo.fr>
 
@@ -40,6 +40,7 @@
 				<includes>
 					<include>downloads.sh</include>
 					<include>index.html</include>
+					<include>publish.sh</include>
 					<include>updates.sh</include>
 				</includes>
 			</resource>
