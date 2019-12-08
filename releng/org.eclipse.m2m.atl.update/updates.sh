@@ -18,7 +18,7 @@
 #    -t PUBLISH__BUILD_T        Build type N/I/S/R, blank suppresses promotion
 #    -q PUBLISH__QUALIFIER      Version qualifier e.g. v20171020-1234
 #
-updatesFolder="/home/data/httpd/download.eclipse.org/mmt/atl/updates/"
+updatesFolder="updates/"
 group="modeling.mmt.atl"
 localZip="atl.zip"
 projectRepoName="ATL"

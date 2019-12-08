@@ -21,7 +21,7 @@
 #	-j PUBLISH__JAVADOC		The optional Javadoc zip to be published e.g. https://ci.eclipse.org/ocl/job/ocl-master/38/artifact/releng/org.eclipse.ocl.releng.build-site/target/OCL-javadoc.zip
 #	-p PUBLISH__PDFDOC			The optional PDF doc to be published e.g. https://ci.eclipse.org/ocl/job/ocl-master/38/artifact/releng/org.eclipse.ocl.releng.build-site/target/ocl.pdf
 #
-dropsFolder="/home/data/httpd/download.eclipse.org/mmt/atl/downloads/drops/"
+dropsFolder="downloads/drops/"
 group="modeling.mmt.atl"
 zipPrefix="m2m-atl-Update-"
 
