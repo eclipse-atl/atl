@@ -21,7 +21,7 @@
 updatesFolder="updates/"
 localZip="atl.zip"
 projectRepoName="ATL"
-manageComposite="/shared/common/apache-ant-latest/bin/ant -f /shared/modeling/tools/promotion/manage-composite.xml"
+manageComposite="ant -f promotion/manage-composite.xml"
 externalUpdatesFolder="https://download.eclipse.org/mmt/atl/updates/"
 
 while getopts u:v:t:q: option
