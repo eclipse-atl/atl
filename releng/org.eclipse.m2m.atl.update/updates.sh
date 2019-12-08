@@ -19,7 +19,6 @@
 #    -q PUBLISH__QUALIFIER      Version qualifier e.g. v20171020-1234
 #
 updatesFolder="updates/"
-group="modeling.mmt.atl"
 localZip="atl.zip"
 projectRepoName="ATL"
 manageComposite="/shared/common/apache-ant-latest/bin/ant -f /shared/modeling/tools/promotion/manage-composite.xml"
@@ -83,7 +82,6 @@ then
     then
       curl -s -k ${PUBLISH__URL} > ${localZip}
       unzip -ou ${localZip} -d new${PUBLISH__VERSION}
-      chgrp -R ${group} new${PUBLISH__VERSION}
       chmod -R g+w new${PUBLISH__VERSION}
       mv ${PUBLISH__VERSION} old${PUBLISH__VERSION}
       mv new${PUBLISH__VERSION} ${PUBLISH__VERSION}
@@ -92,7 +90,6 @@ then
     then
       curl -s -k ${PUBLISH__URL} > ${localZip}
       unzip -ou ${localZip} -d new${PUBLISH__VERSION}
-      chgrp -R ${group} new${PUBLISH__VERSION}
       chmod -R g+w new${PUBLISH__VERSION}
       mv ${PUBLISH__VERSION} old${PUBLISH__VERSION}
       mv new${PUBLISH__VERSION} ${PUBLISH__VERSION}
@@ -111,7 +108,6 @@ then
         unzip ${localZip} -d ${tQualifier}
         rm ${localZip}
 
-        chgrp -R ${group} ${tQualifier}
         chmod -R g+w ${tQualifier}
         ${manageComposite} add -Dchild.repository=${tQualifier} -Dcomposite.name="${projectRepoName} ${PUBLISH__VERSION} ${buildRepoName} Repository"
       popd
@@ -119,7 +115,6 @@ then
     then
       curl -s -k ${PUBLISH__URL} > ${localZip}
       unzip -ou ${localZip} -d new${PUBLISH__VERSION}
-      chgrp -R ${group} new${PUBLISH__VERSION}
       chmod -R g+w new${PUBLISH__VERSION}
       mv ${PUBLISH__VERSION} old${PUBLISH__VERSION}
       mv new${PUBLISH__VERSION} ${PUBLISH__VERSION}

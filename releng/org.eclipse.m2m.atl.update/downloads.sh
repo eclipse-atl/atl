@@ -60,8 +60,6 @@ then
     curl -s -k ${PUBLISH__URL} > ${zipFile}
     md5sum -b ${zipFile} > ${zipFile}.md5
     sha512sum -b ${zipFile} > ${zipFile}.sha1
-    # make sure permissions are for the intended group
-    chgrp -R ${group} ${zipFile} ${zipFile}.md5 ${zipFile}.sha1
     chmod -R g+w ${zipFile} ${zipFile}.md5 ${zipFile}.sha1
   popd
   
