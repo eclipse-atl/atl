@@ -37,8 +37,15 @@
 	</licenses>
 
 	<properties>
+		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
+		<buildTimestamp>${maven.build.timestamp}</buildTimestamp>
+		<buildId>${buildType}${buildTimestamp}</buildId>
+		<buildType>${env.BUILD_TYPE}</buildType>
+
 		<tycho-version>1.4.0</tycho-version>
 		<tycho-extras-version>1.4.0</tycho-extras-version>
+		<tycho.scmUrl>scm:git:https://git.eclipse.org/c/mmt/org.eclipse.atl.git</tycho.scmUrl>
+
 		<!-- Properties to enable jacoco code coverage analysis -->
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
