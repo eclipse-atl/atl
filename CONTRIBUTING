@@ -17,7 +17,23 @@ Information regarding source code management, builds, coding standards, and more
 
 - https://projects.eclipse.org/projects/modeling.mmt.atl/developer
 
-Contributor License Agreement:
+Anonymous read-only access to the git repository:
+
+  git clone git://git.eclipse.org/gitroot/mmt/org.eclipse.atl.git
+  
+- or -
+
+  git clone https://git.eclipse.org/r/mmt/org.eclipse.atl
+
+Read/write access to the git repository for committers:
+
+  git clone ssh://<user_id>@git.eclipse.org:29418/mmt/org.eclipse.atl
+
+The project uses Maven for its main build. You can build the project as follows:
+
+  mvn clean verify
+
+Eclipse Contributor Agreement:
 ------------------------------
 
 Before your contribution can be accepted by the project, you need to create and electronically sign the Eclipse Contributor Agreement (ECA).

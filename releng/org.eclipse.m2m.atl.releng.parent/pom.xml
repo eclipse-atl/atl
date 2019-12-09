@@ -313,6 +313,9 @@
 
 		<profile>
 			<id>2019-12</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<repositories>
 				<repository>
 					<id>releasetrain</id>
@@ -511,6 +514,7 @@
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
+
 	</profiles>
 
 </project>
