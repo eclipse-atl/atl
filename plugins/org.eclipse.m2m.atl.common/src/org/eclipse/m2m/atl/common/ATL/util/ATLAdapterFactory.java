@@ -95,7 +95,7 @@ public class ATLAdapterFactory extends AdapterFactoryImpl {
 				return createQueryAdapter();
 			}
 			@Override
-			public Adapter caseModule(Module object) {
+			public Adapter caseModule(org.eclipse.m2m.atl.common.ATL.Module object) {
 				return createModuleAdapter();
 			}
 			@Override

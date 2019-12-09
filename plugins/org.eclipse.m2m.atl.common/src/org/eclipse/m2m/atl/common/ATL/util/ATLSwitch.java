@@ -124,7 +124,7 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.MODULE: {
-				Module module = (Module)theEObject;
+				org.eclipse.m2m.atl.common.ATL.Module module = (org.eclipse.m2m.atl.common.ATL.Module)theEObject;
 				T result = caseModule(module);
 				if (result == null) result = caseUnit(module);
 				if (result == null) result = caseLocatedElement(module);
@@ -402,7 +402,7 @@ public class ATLSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseModule(Module object) {
+	public T caseModule(org.eclipse.m2m.atl.common.ATL.Module object) {
 		return null;
 	}
 
