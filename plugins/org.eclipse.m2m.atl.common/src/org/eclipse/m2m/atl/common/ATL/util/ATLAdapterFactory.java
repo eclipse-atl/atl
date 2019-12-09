@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  *     Dennis Wagelaar (Vrije Universiteit Brussel)
@@ -13,13 +13,37 @@ package org.eclipse.m2m.atl.common.ATL.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
-
-import org.eclipse.m2m.atl.common.ATL.*;
-
+import org.eclipse.m2m.atl.common.ATL.ATLPackage;
+import org.eclipse.m2m.atl.common.ATL.ActionBlock;
+import org.eclipse.m2m.atl.common.ATL.Binding;
+import org.eclipse.m2m.atl.common.ATL.BindingStat;
+import org.eclipse.m2m.atl.common.ATL.CalledRule;
+import org.eclipse.m2m.atl.common.ATL.DropPattern;
+import org.eclipse.m2m.atl.common.ATL.ExpressionStat;
+import org.eclipse.m2m.atl.common.ATL.ForEachOutPatternElement;
+import org.eclipse.m2m.atl.common.ATL.ForStat;
+import org.eclipse.m2m.atl.common.ATL.Helper;
+import org.eclipse.m2m.atl.common.ATL.IfStat;
+import org.eclipse.m2m.atl.common.ATL.InPattern;
+import org.eclipse.m2m.atl.common.ATL.InPatternElement;
+import org.eclipse.m2m.atl.common.ATL.LazyMatchedRule;
+import org.eclipse.m2m.atl.common.ATL.Library;
+import org.eclipse.m2m.atl.common.ATL.LibraryRef;
+import org.eclipse.m2m.atl.common.ATL.LocatedElement;
+import org.eclipse.m2m.atl.common.ATL.MatchedRule;
+import org.eclipse.m2m.atl.common.ATL.ModuleElement;
+import org.eclipse.m2m.atl.common.ATL.OutPattern;
+import org.eclipse.m2m.atl.common.ATL.OutPatternElement;
+import org.eclipse.m2m.atl.common.ATL.PatternElement;
+import org.eclipse.m2m.atl.common.ATL.Query;
+import org.eclipse.m2m.atl.common.ATL.Rule;
+import org.eclipse.m2m.atl.common.ATL.RuleVariableDeclaration;
+import org.eclipse.m2m.atl.common.ATL.SimpleInPatternElement;
+import org.eclipse.m2m.atl.common.ATL.SimpleOutPatternElement;
+import org.eclipse.m2m.atl.common.ATL.Statement;
+import org.eclipse.m2m.atl.common.ATL.Unit;
 import org.eclipse.m2m.atl.common.OCL.VariableDeclaration;
 
 /**
@@ -77,132 +101,132 @@ public class ATLAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	protected ATLSwitch<Adapter> modelSwitch =
-		new ATLSwitch<Adapter>() {
-			@Override
-			public Adapter caseLocatedElement(LocatedElement object) {
-				return createLocatedElementAdapter();
-			}
-			@Override
-			public Adapter caseUnit(Unit object) {
-				return createUnitAdapter();
-			}
-			@Override
-			public Adapter caseLibrary(Library object) {
-				return createLibraryAdapter();
-			}
-			@Override
-			public Adapter caseQuery(Query object) {
-				return createQueryAdapter();
-			}
-			@Override
-			public Adapter caseModule(Module object) {
-				return createModuleAdapter();
-			}
-			@Override
-			public Adapter caseModuleElement(ModuleElement object) {
-				return createModuleElementAdapter();
-			}
-			@Override
-			public Adapter caseHelper(Helper object) {
-				return createHelperAdapter();
-			}
-			@Override
-			public Adapter caseRule(Rule object) {
-				return createRuleAdapter();
-			}
-			@Override
-			public Adapter caseMatchedRule(MatchedRule object) {
-				return createMatchedRuleAdapter();
-			}
-			@Override
-			public Adapter caseLazyMatchedRule(LazyMatchedRule object) {
-				return createLazyMatchedRuleAdapter();
-			}
-			@Override
-			public Adapter caseCalledRule(CalledRule object) {
-				return createCalledRuleAdapter();
-			}
-			@Override
-			public Adapter caseInPattern(InPattern object) {
-				return createInPatternAdapter();
-			}
-			@Override
-			public Adapter caseOutPattern(OutPattern object) {
-				return createOutPatternAdapter();
-			}
-			@Override
-			public Adapter caseDropPattern(DropPattern object) {
-				return createDropPatternAdapter();
-			}
-			@Override
-			public Adapter casePatternElement(PatternElement object) {
-				return createPatternElementAdapter();
-			}
-			@Override
-			public Adapter caseInPatternElement(InPatternElement object) {
-				return createInPatternElementAdapter();
-			}
-			@Override
-			public Adapter caseSimpleInPatternElement(SimpleInPatternElement object) {
-				return createSimpleInPatternElementAdapter();
-			}
-			@Override
-			public Adapter caseOutPatternElement(OutPatternElement object) {
-				return createOutPatternElementAdapter();
-			}
-			@Override
-			public Adapter caseSimpleOutPatternElement(SimpleOutPatternElement object) {
-				return createSimpleOutPatternElementAdapter();
-			}
-			@Override
-			public Adapter caseForEachOutPatternElement(ForEachOutPatternElement object) {
-				return createForEachOutPatternElementAdapter();
-			}
-			@Override
-			public Adapter caseBinding(Binding object) {
-				return createBindingAdapter();
-			}
-			@Override
-			public Adapter caseRuleVariableDeclaration(RuleVariableDeclaration object) {
-				return createRuleVariableDeclarationAdapter();
-			}
-			@Override
-			public Adapter caseLibraryRef(LibraryRef object) {
-				return createLibraryRefAdapter();
-			}
-			@Override
-			public Adapter caseActionBlock(ActionBlock object) {
-				return createActionBlockAdapter();
-			}
-			@Override
-			public Adapter caseStatement(Statement object) {
-				return createStatementAdapter();
-			}
-			@Override
-			public Adapter caseExpressionStat(ExpressionStat object) {
-				return createExpressionStatAdapter();
-			}
-			@Override
-			public Adapter caseBindingStat(BindingStat object) {
-				return createBindingStatAdapter();
-			}
-			@Override
-			public Adapter caseIfStat(IfStat object) {
-				return createIfStatAdapter();
-			}
-			@Override
-			public Adapter caseForStat(ForStat object) {
-				return createForStatAdapter();
-			}
-			@Override
-			public Adapter caseVariableDeclaration(VariableDeclaration object) {
-				return createVariableDeclarationAdapter();
-			}
-			@Override
-			public Adapter defaultCase(EObject object) {
-				return createEObjectAdapter();
-			}
-		};
+			new ATLSwitch<Adapter>() {
+		@Override
+		public Adapter caseLocatedElement(LocatedElement object) {
+			return createLocatedElementAdapter();
+		}
+		@Override
+		public Adapter caseUnit(Unit object) {
+			return createUnitAdapter();
+		}
+		@Override
+		public Adapter caseLibrary(Library object) {
+			return createLibraryAdapter();
+		}
+		@Override
+		public Adapter caseQuery(Query object) {
+			return createQueryAdapter();
+		}
+		@Override
+				public Adapter caseModule(org.eclipse.m2m.atl.common.ATL.Module object) {
+			return createModuleAdapter();
+		}
+		@Override
+		public Adapter caseModuleElement(ModuleElement object) {
+			return createModuleElementAdapter();
+		}
+		@Override
+		public Adapter caseHelper(Helper object) {
+			return createHelperAdapter();
+		}
+		@Override
+		public Adapter caseRule(Rule object) {
+			return createRuleAdapter();
+		}
+		@Override
+		public Adapter caseMatchedRule(MatchedRule object) {
+			return createMatchedRuleAdapter();
+		}
+		@Override
+		public Adapter caseLazyMatchedRule(LazyMatchedRule object) {
+			return createLazyMatchedRuleAdapter();
+		}
+		@Override
+		public Adapter caseCalledRule(CalledRule object) {
+			return createCalledRuleAdapter();
+		}
+		@Override
+		public Adapter caseInPattern(InPattern object) {
+			return createInPatternAdapter();
+		}
+		@Override
+		public Adapter caseOutPattern(OutPattern object) {
+			return createOutPatternAdapter();
+		}
+		@Override
+		public Adapter caseDropPattern(DropPattern object) {
+			return createDropPatternAdapter();
+		}
+		@Override
+		public Adapter casePatternElement(PatternElement object) {
+			return createPatternElementAdapter();
+		}
+		@Override
+		public Adapter caseInPatternElement(InPatternElement object) {
+			return createInPatternElementAdapter();
+		}
+		@Override
+		public Adapter caseSimpleInPatternElement(SimpleInPatternElement object) {
+			return createSimpleInPatternElementAdapter();
+		}
+		@Override
+		public Adapter caseOutPatternElement(OutPatternElement object) {
+			return createOutPatternElementAdapter();
+		}
+		@Override
+		public Adapter caseSimpleOutPatternElement(SimpleOutPatternElement object) {
+			return createSimpleOutPatternElementAdapter();
+		}
+		@Override
+		public Adapter caseForEachOutPatternElement(ForEachOutPatternElement object) {
+			return createForEachOutPatternElementAdapter();
+		}
+		@Override
+		public Adapter caseBinding(Binding object) {
+			return createBindingAdapter();
+		}
+		@Override
+		public Adapter caseRuleVariableDeclaration(RuleVariableDeclaration object) {
+			return createRuleVariableDeclarationAdapter();
+		}
+		@Override
+		public Adapter caseLibraryRef(LibraryRef object) {
+			return createLibraryRefAdapter();
+		}
+		@Override
+		public Adapter caseActionBlock(ActionBlock object) {
+			return createActionBlockAdapter();
+		}
+		@Override
+		public Adapter caseStatement(Statement object) {
+			return createStatementAdapter();
+		}
+		@Override
+		public Adapter caseExpressionStat(ExpressionStat object) {
+			return createExpressionStatAdapter();
+		}
+		@Override
+		public Adapter caseBindingStat(BindingStat object) {
+			return createBindingStatAdapter();
+		}
+		@Override
+		public Adapter caseIfStat(IfStat object) {
+			return createIfStatAdapter();
+		}
+		@Override
+		public Adapter caseForStat(ForStat object) {
+			return createForStatAdapter();
+		}
+		@Override
+		public Adapter caseVariableDeclaration(VariableDeclaration object) {
+			return createVariableDeclarationAdapter();
+		}
+		@Override
+		public Adapter defaultCase(EObject object) {
+			return createEObjectAdapter();
+		}
+	};
 
 	/**
 	 * Creates an adapter for the <code>target</code>.

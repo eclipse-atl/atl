@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  *     Dennis Wagelaar (Vrije Universiteit Brussel)
@@ -15,9 +15,35 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-
-import org.eclipse.m2m.atl.common.ATL.*;
-
+import org.eclipse.m2m.atl.common.ATL.ATLPackage;
+import org.eclipse.m2m.atl.common.ATL.ActionBlock;
+import org.eclipse.m2m.atl.common.ATL.Binding;
+import org.eclipse.m2m.atl.common.ATL.BindingStat;
+import org.eclipse.m2m.atl.common.ATL.CalledRule;
+import org.eclipse.m2m.atl.common.ATL.DropPattern;
+import org.eclipse.m2m.atl.common.ATL.ExpressionStat;
+import org.eclipse.m2m.atl.common.ATL.ForEachOutPatternElement;
+import org.eclipse.m2m.atl.common.ATL.ForStat;
+import org.eclipse.m2m.atl.common.ATL.Helper;
+import org.eclipse.m2m.atl.common.ATL.IfStat;
+import org.eclipse.m2m.atl.common.ATL.InPattern;
+import org.eclipse.m2m.atl.common.ATL.InPatternElement;
+import org.eclipse.m2m.atl.common.ATL.LazyMatchedRule;
+import org.eclipse.m2m.atl.common.ATL.Library;
+import org.eclipse.m2m.atl.common.ATL.LibraryRef;
+import org.eclipse.m2m.atl.common.ATL.LocatedElement;
+import org.eclipse.m2m.atl.common.ATL.MatchedRule;
+import org.eclipse.m2m.atl.common.ATL.ModuleElement;
+import org.eclipse.m2m.atl.common.ATL.OutPattern;
+import org.eclipse.m2m.atl.common.ATL.OutPatternElement;
+import org.eclipse.m2m.atl.common.ATL.PatternElement;
+import org.eclipse.m2m.atl.common.ATL.Query;
+import org.eclipse.m2m.atl.common.ATL.Rule;
+import org.eclipse.m2m.atl.common.ATL.RuleVariableDeclaration;
+import org.eclipse.m2m.atl.common.ATL.SimpleInPatternElement;
+import org.eclipse.m2m.atl.common.ATL.SimpleOutPatternElement;
+import org.eclipse.m2m.atl.common.ATL.Statement;
+import org.eclipse.m2m.atl.common.ATL.Unit;
 import org.eclipse.m2m.atl.common.OCL.VariableDeclaration;
 
 /**
@@ -77,11 +103,11 @@ public class ATLSwitch<T> {
 			return doSwitch(theEClass.getClassifierID(), theEObject);
 		}
 		else {
-			List<EClass> eSuperTypes = theEClass.getESuperTypes();
+			final List<EClass> eSuperTypes = theEClass.getESuperTypes();
 			return
-				eSuperTypes.isEmpty() ?
-					defaultCase(theEObject) :
-					doSwitch(eSuperTypes.get(0), theEObject);
+					eSuperTypes.isEmpty() ?
+							defaultCase(theEObject) :
+								doSwitch(eSuperTypes.get(0), theEObject);
 		}
 	}
 
@@ -95,20 +121,20 @@ public class ATLSwitch<T> {
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
 			case ATLPackage.LOCATED_ELEMENT: {
-				LocatedElement locatedElement = (LocatedElement)theEObject;
+				final LocatedElement locatedElement = (LocatedElement)theEObject;
 				T result = caseLocatedElement(locatedElement);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.UNIT: {
-				Unit unit = (Unit)theEObject;
+				final Unit unit = (Unit)theEObject;
 				T result = caseUnit(unit);
 				if (result == null) result = caseLocatedElement(unit);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.LIBRARY: {
-				Library library = (Library)theEObject;
+				final Library library = (Library)theEObject;
 				T result = caseLibrary(library);
 				if (result == null) result = caseUnit(library);
 				if (result == null) result = caseLocatedElement(library);
@@ -116,7 +142,7 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.QUERY: {
-				Query query = (Query)theEObject;
+				final Query query = (Query)theEObject;
 				T result = caseQuery(query);
 				if (result == null) result = caseUnit(query);
 				if (result == null) result = caseLocatedElement(query);
@@ -124,7 +150,7 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.MODULE: {
-				Module module = (Module)theEObject;
+				final org.eclipse.m2m.atl.common.ATL.Module module = (org.eclipse.m2m.atl.common.ATL.Module)theEObject;
 				T result = caseModule(module);
 				if (result == null) result = caseUnit(module);
 				if (result == null) result = caseLocatedElement(module);
@@ -132,79 +158,84 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.MODULE_ELEMENT: {
-				ModuleElement moduleElement = (ModuleElement)theEObject;
+				final ModuleElement moduleElement = (ModuleElement)theEObject;
 				T result = caseModuleElement(moduleElement);
 				if (result == null) result = caseLocatedElement(moduleElement);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.HELPER: {
-				Helper helper = (Helper)theEObject;
+				final Helper helper = (Helper)theEObject;
 				T result = caseHelper(helper);
-				if (result == null) result = caseModuleElement(helper);
+				if (result == null)
+					result = caseModuleElement(helper);
 				if (result == null) result = caseLocatedElement(helper);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.RULE: {
-				Rule rule = (Rule)theEObject;
+				final Rule rule = (Rule)theEObject;
 				T result = caseRule(rule);
-				if (result == null) result = caseModuleElement(rule);
+				if (result == null)
+					result = caseModuleElement(rule);
 				if (result == null) result = caseLocatedElement(rule);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.MATCHED_RULE: {
-				MatchedRule matchedRule = (MatchedRule)theEObject;
+				final MatchedRule matchedRule = (MatchedRule)theEObject;
 				T result = caseMatchedRule(matchedRule);
 				if (result == null) result = caseRule(matchedRule);
-				if (result == null) result = caseModuleElement(matchedRule);
+				if (result == null)
+					result = caseModuleElement(matchedRule);
 				if (result == null) result = caseLocatedElement(matchedRule);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.LAZY_MATCHED_RULE: {
-				LazyMatchedRule lazyMatchedRule = (LazyMatchedRule)theEObject;
+				final LazyMatchedRule lazyMatchedRule = (LazyMatchedRule)theEObject;
 				T result = caseLazyMatchedRule(lazyMatchedRule);
 				if (result == null) result = caseMatchedRule(lazyMatchedRule);
 				if (result == null) result = caseRule(lazyMatchedRule);
-				if (result == null) result = caseModuleElement(lazyMatchedRule);
+				if (result == null)
+					result = caseModuleElement(lazyMatchedRule);
 				if (result == null) result = caseLocatedElement(lazyMatchedRule);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.CALLED_RULE: {
-				CalledRule calledRule = (CalledRule)theEObject;
+				final CalledRule calledRule = (CalledRule)theEObject;
 				T result = caseCalledRule(calledRule);
 				if (result == null) result = caseRule(calledRule);
-				if (result == null) result = caseModuleElement(calledRule);
+				if (result == null)
+					result = caseModuleElement(calledRule);
 				if (result == null) result = caseLocatedElement(calledRule);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.IN_PATTERN: {
-				InPattern inPattern = (InPattern)theEObject;
+				final InPattern inPattern = (InPattern)theEObject;
 				T result = caseInPattern(inPattern);
 				if (result == null) result = caseLocatedElement(inPattern);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.OUT_PATTERN: {
-				OutPattern outPattern = (OutPattern)theEObject;
+				final OutPattern outPattern = (OutPattern)theEObject;
 				T result = caseOutPattern(outPattern);
 				if (result == null) result = caseLocatedElement(outPattern);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.DROP_PATTERN: {
-				DropPattern dropPattern = (DropPattern)theEObject;
+				final DropPattern dropPattern = (DropPattern)theEObject;
 				T result = caseDropPattern(dropPattern);
 				if (result == null) result = caseLocatedElement(dropPattern);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.PATTERN_ELEMENT: {
-				PatternElement patternElement = (PatternElement)theEObject;
+				final PatternElement patternElement = (PatternElement)theEObject;
 				T result = casePatternElement(patternElement);
 				if (result == null) result = caseVariableDeclaration(patternElement);
 				if (result == null) result = caseLocatedElement(patternElement);
@@ -212,7 +243,7 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.IN_PATTERN_ELEMENT: {
-				InPatternElement inPatternElement = (InPatternElement)theEObject;
+				final InPatternElement inPatternElement = (InPatternElement)theEObject;
 				T result = caseInPatternElement(inPatternElement);
 				if (result == null) result = casePatternElement(inPatternElement);
 				if (result == null) result = caseVariableDeclaration(inPatternElement);
@@ -221,7 +252,7 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.SIMPLE_IN_PATTERN_ELEMENT: {
-				SimpleInPatternElement simpleInPatternElement = (SimpleInPatternElement)theEObject;
+				final SimpleInPatternElement simpleInPatternElement = (SimpleInPatternElement)theEObject;
 				T result = caseSimpleInPatternElement(simpleInPatternElement);
 				if (result == null) result = caseInPatternElement(simpleInPatternElement);
 				if (result == null) result = casePatternElement(simpleInPatternElement);
@@ -231,7 +262,7 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.OUT_PATTERN_ELEMENT: {
-				OutPatternElement outPatternElement = (OutPatternElement)theEObject;
+				final OutPatternElement outPatternElement = (OutPatternElement)theEObject;
 				T result = caseOutPatternElement(outPatternElement);
 				if (result == null) result = casePatternElement(outPatternElement);
 				if (result == null) result = caseVariableDeclaration(outPatternElement);
@@ -240,7 +271,7 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.SIMPLE_OUT_PATTERN_ELEMENT: {
-				SimpleOutPatternElement simpleOutPatternElement = (SimpleOutPatternElement)theEObject;
+				final SimpleOutPatternElement simpleOutPatternElement = (SimpleOutPatternElement)theEObject;
 				T result = caseSimpleOutPatternElement(simpleOutPatternElement);
 				if (result == null) result = caseOutPatternElement(simpleOutPatternElement);
 				if (result == null) result = casePatternElement(simpleOutPatternElement);
@@ -250,7 +281,7 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.FOR_EACH_OUT_PATTERN_ELEMENT: {
-				ForEachOutPatternElement forEachOutPatternElement = (ForEachOutPatternElement)theEObject;
+				final ForEachOutPatternElement forEachOutPatternElement = (ForEachOutPatternElement)theEObject;
 				T result = caseForEachOutPatternElement(forEachOutPatternElement);
 				if (result == null) result = caseOutPatternElement(forEachOutPatternElement);
 				if (result == null) result = casePatternElement(forEachOutPatternElement);
@@ -260,14 +291,14 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.BINDING: {
-				Binding binding = (Binding)theEObject;
+				final Binding binding = (Binding)theEObject;
 				T result = caseBinding(binding);
 				if (result == null) result = caseLocatedElement(binding);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.RULE_VARIABLE_DECLARATION: {
-				RuleVariableDeclaration ruleVariableDeclaration = (RuleVariableDeclaration)theEObject;
+				final RuleVariableDeclaration ruleVariableDeclaration = (RuleVariableDeclaration)theEObject;
 				T result = caseRuleVariableDeclaration(ruleVariableDeclaration);
 				if (result == null) result = caseVariableDeclaration(ruleVariableDeclaration);
 				if (result == null) result = caseLocatedElement(ruleVariableDeclaration);
@@ -275,28 +306,28 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.LIBRARY_REF: {
-				LibraryRef libraryRef = (LibraryRef)theEObject;
+				final LibraryRef libraryRef = (LibraryRef)theEObject;
 				T result = caseLibraryRef(libraryRef);
 				if (result == null) result = caseLocatedElement(libraryRef);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.ACTION_BLOCK: {
-				ActionBlock actionBlock = (ActionBlock)theEObject;
+				final ActionBlock actionBlock = (ActionBlock)theEObject;
 				T result = caseActionBlock(actionBlock);
 				if (result == null) result = caseLocatedElement(actionBlock);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.STATEMENT: {
-				Statement statement = (Statement)theEObject;
+				final Statement statement = (Statement)theEObject;
 				T result = caseStatement(statement);
 				if (result == null) result = caseLocatedElement(statement);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case ATLPackage.EXPRESSION_STAT: {
-				ExpressionStat expressionStat = (ExpressionStat)theEObject;
+				final ExpressionStat expressionStat = (ExpressionStat)theEObject;
 				T result = caseExpressionStat(expressionStat);
 				if (result == null) result = caseStatement(expressionStat);
 				if (result == null) result = caseLocatedElement(expressionStat);
@@ -304,7 +335,7 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.BINDING_STAT: {
-				BindingStat bindingStat = (BindingStat)theEObject;
+				final BindingStat bindingStat = (BindingStat)theEObject;
 				T result = caseBindingStat(bindingStat);
 				if (result == null) result = caseStatement(bindingStat);
 				if (result == null) result = caseLocatedElement(bindingStat);
@@ -312,7 +343,7 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.IF_STAT: {
-				IfStat ifStat = (IfStat)theEObject;
+				final IfStat ifStat = (IfStat)theEObject;
 				T result = caseIfStat(ifStat);
 				if (result == null) result = caseStatement(ifStat);
 				if (result == null) result = caseLocatedElement(ifStat);
@@ -320,7 +351,7 @@ public class ATLSwitch<T> {
 				return result;
 			}
 			case ATLPackage.FOR_STAT: {
-				ForStat forStat = (ForStat)theEObject;
+				final ForStat forStat = (ForStat)theEObject;
 				T result = caseForStat(forStat);
 				if (result == null) result = caseStatement(forStat);
 				if (result == null) result = caseLocatedElement(forStat);
@@ -392,27 +423,27 @@ public class ATLSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Module</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Module</em>'. <!-- begin-user-doc
+	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Module</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseModule(Module object) {
+	public T caseModule(org.eclipse.m2m.atl.common.ATL.Module object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Module Element</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
+	 * Returns the result of interpreting the object as an instance of '<em>Module Element</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Module Element</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
