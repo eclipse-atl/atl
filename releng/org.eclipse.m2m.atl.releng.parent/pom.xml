@@ -319,7 +319,7 @@
 	<profiles>
 
 		<profile>
-			<id>2019-12</id>
+			<id>latest</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -327,7 +327,28 @@
 				<repository>
 					<id>releasetrain</id>
 					<layout>p2</layout>
-					<url>http://download.eclipse.org/releases/2019-12</url>
+					<url>https://download.eclipse.org/releases/latest</url>
+				</repository>
+				<repository>
+					<id>orbit</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/tools/orbit/downloads/latest-R</url>
+				</repository>
+				<repository>
+					<id>emf compare 1.2 (test purpose only)</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/modeling/emf/compare/updates/releases/1.2</url>
+				</repository>
+			</repositories>
+		</profile>
+
+		<profile>
+			<id>2019-12</id>
+			<repositories>
+				<repository>
+					<id>releasetrain</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/releases/2019-12</url>
 				</repository>
 				<repository>
 					<id>orbit</id>

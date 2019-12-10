@@ -31,7 +31,7 @@ Read/write access to the git repository for committers:
 
 The project uses Maven for its main build. You can build the project as follows:
 
-  mvn clean verify
+  mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify
 
 Eclipse Contributor Agreement:
 ------------------------------
