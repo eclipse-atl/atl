@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.m2m.atl.profiler"
       label="%featureName"
-      version="4.2.0.qualifier"
+      version="4.2.1.qualifier"
       provider-name="%providerName">
 
    <description>
