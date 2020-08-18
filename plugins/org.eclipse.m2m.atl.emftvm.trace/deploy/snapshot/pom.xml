@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.eclipse.m2m.atl</groupId>
 	<artifactId>org.eclipse.m2m.atl.emftvm.trace</artifactId>
-	<version>4.2.1-SNAPSHOT</version>
+	<version>4.2.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<licenses>
 		<license>
