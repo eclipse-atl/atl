@@ -24,6 +24,10 @@ projectRepoName="ATL"
 manageComposite="/shared/common/apache-ant-latest/bin/ant -f /shared/modeling/tools/promotion/manage-composite.xml"
 externalUpdatesFolder="https://download.eclipse.org/mmt/atl/updates/"
 
+export JAVA_HOME=/opt/java/openjdk
+java -version
+/shared/common/apache-ant-latest/bin/ant -version
+
 while getopts v:t:q: option
 do
 case "${option}"
