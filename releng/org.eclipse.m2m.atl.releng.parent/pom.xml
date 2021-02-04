@@ -19,7 +19,7 @@
 
 	<groupId>org.eclipse.m2m.atl</groupId>
 	<artifactId>m2m.atl-parent</artifactId>
-	<version>4.2.2-SNAPSHOT</version>
+	<version>4.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<licenses>
@@ -50,7 +50,7 @@
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.jacoco.reportPath>../../target/jacoco.exec</sonar.jacoco.reportPath>
-		<project.releaseVersion>4.2.2</project.releaseVersion>
+		<project.releaseVersion>4.3.0</project.releaseVersion>
 	</properties>
 
 	<distributionManagement>
