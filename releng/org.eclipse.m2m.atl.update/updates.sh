@@ -24,7 +24,7 @@ projectRepoName="ATL"
 manageComposite="/shared/common/apache-ant-latest/bin/ant -f /shared/modeling/tools/promotion/manage-composite.xml"
 externalUpdatesFolder="https://download.eclipse.org/mmt/atl/updates/"
 
-export JAVA_HOME=/opt/java/openjdk
+export JAVA_HOME=/shared/common/jdk1.8.0_x64-latest
 java -version
 /shared/common/apache-ant-latest/bin/ant -version
 
