@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Dennis Wagelaar.
+ * Copyright (c) 2018, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,8 @@ public class RegisterMetamodelTask extends EMFTVMTask {
 		final String resourceFactoryClass = getResourceFactoryClass();
 		if (resourceFactoryClass != null) {
 			final Class<?> resourceFactoryClazz = Class.forName(resourceFactoryClass);
-			final Resource.Factory resourceFactory = (Resource.Factory) resourceFactoryClazz.newInstance();
+			final Resource.Factory resourceFactory = (Resource.Factory) resourceFactoryClazz.getDeclaredConstructor()
+					.newInstance();
 			final String fileExtension = getFileExtension();
 			if (fileExtension == null) {
 				throw new IllegalArgumentException("File extension cannot be null if resource factory class is set");
