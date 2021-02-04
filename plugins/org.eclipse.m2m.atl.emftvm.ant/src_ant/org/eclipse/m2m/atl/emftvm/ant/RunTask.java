@@ -37,7 +37,7 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 
 /**
  * Runs a model transformation in the EMFTVM.
- * 
+ *
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
 public class RunTask extends EMFTVMTask {
@@ -69,7 +69,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Sets the module name.
-	 * 
+	 *
 	 * @param module the module to set
 	 */
 	public void setModule(String module) {
@@ -78,7 +78,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the module name.
-	 * 
+	 *
 	 * @return the module
 	 */
 	public String getModule() {
@@ -87,7 +87,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Sets the module path.
-	 * 
+	 *
 	 * @param modulePath the modulePath to set
 	 */
 	public void setModulePath(String modulePath) {
@@ -96,7 +96,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the module path.
-	 * 
+	 *
 	 * @return the modulePath
 	 */
 	public String getModulePath() {
@@ -105,7 +105,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns whether to disable the JIT compiler.
-	 * 
+	 *
 	 * @return whether to disable the JIT compiler
 	 */
 	public boolean isDisableJIT() {
@@ -114,7 +114,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Sets whether to disable the JIT compiler
-	 * 
+	 *
 	 * @param disableJIT whether to disable the JIT compiler
 	 */
 	public void setDisableJIT(boolean disableJIT) {
@@ -123,7 +123,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the list of metamodels.
-	 * 
+	 *
 	 * @return the metaModels
 	 */
 	public List<MetaModel> getMetaModels() {
@@ -132,7 +132,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the list of input models.
-	 * 
+	 *
 	 * @return the inputModels
 	 */
 	public List<InModel> getInputModels() {
@@ -141,7 +141,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the list of in/out models.
-	 * 
+	 *
 	 * @return the inoutModels
 	 */
 	public List<InOutModel> getInoutModels() {
@@ -150,7 +150,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the list of output models.
-	 * 
+	 *
 	 * @return the outputModels
 	 */
 	public List<OutModel> getOutputModels() {
@@ -159,7 +159,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the list of input model sets.
-	 * 
+	 *
 	 * @return the inModelSets
 	 */
 	public List<InModelSet> getInputModelSets() {
@@ -168,7 +168,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the list of input/output model sets.
-	 * 
+	 *
 	 * @return the inOutModelSets
 	 */
 	public List<InOutModelSet> getInoutModelSets() {
@@ -177,7 +177,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the list of output model sets.
-	 * 
+	 *
 	 * @return the outModelSets
 	 */
 	public List<OutModelSet> getOutputModelSets() {
@@ -186,7 +186,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Adds metamodel to the run task.
-	 * 
+	 *
 	 * @param metamodel the metamodel
 	 */
 	public void addConfiguredMetamodel(MetaModel metamodel) {
@@ -195,7 +195,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Adds model as input model to the run task.
-	 * 
+	 *
 	 * @param model the input model
 	 */
 	public void addConfiguredInputModel(InModel model) {
@@ -204,7 +204,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Adds model as input/output model to the run task.
-	 * 
+	 *
 	 * @param model the in/out model
 	 */
 	public void addConfiguredInoutModel(InOutModel model) {
@@ -213,7 +213,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Adds model as output model to the run task.
-	 * 
+	 *
 	 * @param model the output model
 	 */
 	public void addConfiguredOutputModel(OutModel model) {
@@ -222,7 +222,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Adds model set as input model set to the run task.
-	 * 
+	 *
 	 * @param modelSet the input model set
 	 */
 	public void addConfiguredInputModelSet(InModelSet modelSet) {
@@ -231,7 +231,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Adds model as input/output model to the run task.
-	 * 
+	 *
 	 * @param modelSet the in/out model set
 	 */
 	public void addConfiguredInoutModelSet(InOutModelSet modelSet) {
@@ -240,7 +240,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Adds model as output model to the run task.
-	 * 
+	 *
 	 * @param modelSet the output model set
 	 */
 	public void addConfiguredOutputModelSet(OutModelSet modelSet) {
@@ -311,8 +311,10 @@ public class RunTask extends EMFTVMTask {
 
 			for (final InOutModelSet inOutModelSet : getInoutModelSets()) {
 				final Model model = env.getInoutModels().get(getModelKey(inOutModelSet));
+				final String suffix = inOutModelSet.getSuffix();
 				model.getResource().setURI(URI.createFileURI(new File(inOutModelSet.getEffectiveOutputDir(),
-						generateFilename(inputFileNames, inOutModelSet.getSuffix())).getPath()));
+						generateFilename(inputFileNames, StringUtils.trimToNull(suffix) != null ? suffix
+								: "." + model.getResource().getURI().fileExtension())).getPath()));
 				try {
 					model.getResource().save(Collections.emptyMap());
 				} catch (final IOException e) {
@@ -346,7 +348,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the {@link Model} for <code>me</code>.
-	 * 
+	 *
 	 * @param me the {@link ModelElement} task parameter
 	 * @return the {@link Model}
 	 */
@@ -360,7 +362,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the {@link Metamodel} for <code>me</code>.
-	 * 
+	 *
 	 * @param mm the {@link MetaModel} task parameter
 	 * @return the {@link Metamodel}
 	 */
@@ -370,7 +372,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the model name key to use in the {@link ExecEnv} for <code>me</code>.
-	 * 
+	 *
 	 * @param me the {@link ModelElement} task parameter
 	 * @return the model name key
 	 */
@@ -384,7 +386,7 @@ public class RunTask extends EMFTVMTask {
 
 	/**
 	 * Returns the model name key to use in the {@link ExecEnv} for <code>me</code>.
-	 * 
+	 *
 	 * @param me the {@link ModelElementSet} task parameter
 	 * @return the model name key
 	 */
