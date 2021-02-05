@@ -282,8 +282,11 @@ public class RunTask extends EMFTVMTask {
 				if (!modelResource.isDirectory()) {
 					final Model model = loadFromResource(modelSet.getDir(), modelResource);
 					env.registerInputModel(getModelKey(modelSet), model);
+
 					runForInputModelSet(env, timingData, inModelSets,
 							inputFileNames.append(getBaseName(modelResource)));
+
+					getResourceSet().getResources().remove(model.getResource());
 				}
 			}
 		} else {
@@ -304,6 +307,8 @@ public class RunTask extends EMFTVMTask {
 
 					runForInOutModelSet(env, timingData, inOutModelSets,
 							inputFileNames.append(getBaseName(modelResource)));
+
+					getResourceSet().getResources().remove(model.getResource());
 				}
 			}
 		} else {
@@ -340,6 +345,8 @@ public class RunTask extends EMFTVMTask {
 				model.getResource().save(Collections.emptyMap());
 			} catch (final IOException e) {
 				throw new BuildException(e);
+			} finally {
+				getResourceSet().getResources().remove(model.getResource());
 			}
 		} else {
 			env.run(timingData);
