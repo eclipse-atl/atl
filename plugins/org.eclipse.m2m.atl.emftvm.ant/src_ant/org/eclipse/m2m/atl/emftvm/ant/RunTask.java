@@ -49,7 +49,7 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	private static String generateFilename(final List<String> inputFileNames, String suffix) {
-		if (StringUtils.trimToNull(suffix) == null) {
+		if (suffix == null) {
 			return StringUtils.join(inputFileNames, "-");
 		} else {
 			return StringUtils.join(inputFileNames, "-").concat(suffix);
@@ -318,7 +318,7 @@ public class RunTask extends EMFTVMTask {
 				final Model model = env.getInoutModels().get(getModelKey(inOutModelSet));
 				final String suffix = inOutModelSet.getSuffix();
 				model.getResource().setURI(URI.createFileURI(new File(inOutModelSet.getEffectiveOutputDir(),
-						generateFilename(inputFileNames, StringUtils.trimToNull(suffix) != null ? suffix
+						generateFilename(inputFileNames, suffix != null ? suffix
 								: "." + model.getResource().getURI().fileExtension())).getPath()));
 				try {
 					model.getResource().save(Collections.emptyMap());
