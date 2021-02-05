@@ -347,6 +347,9 @@ public final class EMFTVMUtil {
 			model = env.getInoutModels().get(modelname);
 		}
 		if (model == null) {
+			model = env.getMetaModels().get(modelname);
+		}
+		if (model == null) {
 			throw new IllegalArgumentException(String.format("No input/inout model found with name %s", modelname));
 		}
 		return model.allInstancesOf(type);
@@ -881,8 +884,8 @@ public final class EMFTVMUtil {
 			final String message = v == null
 					? String.format("Cannot add/remove OclUndefined to/from multi-valued field %s::%s",
 							ref.getEContainingClass().getName(), ref.getName())
-					: String.format("Cannot add/remove values of type %s to/from multi-valued field %s::%s",
-							getTypeName(env, v.getClass()), ref.getEContainingClass().getName(), ref.getName());
+							: String.format("Cannot add/remove values of type %s to/from multi-valued field %s::%s",
+									getTypeName(env, v.getClass()), ref.getEContainingClass().getName(), ref.getName());
 			throw new IllegalArgumentException(message);
 		}
 	}

@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -29,6 +30,9 @@ import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Instruction;
+import org.eclipse.m2m.atl.emftvm.Metamodel;
+import org.eclipse.m2m.atl.emftvm.Model;
+import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollection;
 import org.eclipse.m2m.atl.emftvm.util.LazyCollections;
@@ -340,6 +344,161 @@ public class EMFTVMUtilTest extends TestCase {
 		assertEquals(
 				"Tuple{'one'=EMFTVM!ExecEnv, 'three'=Bag{1, 2, 3, 4, 5}, '6'=OclUndefined, '100'=Sequence{Tuple{'key'='value'}}, '101'=Sequence{Tuple{'key'='value'}}, '102'=Sequence{Tuple{'key'='value'}}, '103'=Sequence{Tuple{'key'='value'}}, '104'=Sequence{Tuple{'key'='value'}}, '105'=Sequence{Tuple{'key'='value'}}, '106'=Sequence{Tuple{'key'='value'}}, '107'=Sequence{Tuple{'key'='value'}}, '108'=Sequence{Tuple{'key'='value'}}, '109'=Sequence{Tuple{'key'='value'}}, '110'=Sequence{Tuple{'key'='value'}}, '111'=Sequence{Tuple{'key'='value'}}, '112'=Sequence{Tuple{'key'='value'}}, '113'=Sequence{Tuple{'key'='value'}}, '114'=Sequence{Tuple{'key'='value'}}, '115'=Sequence{Tuple{'key'='value'}}, '116'=Sequence{Tuple{'key'='value'}}, '117'=Sequence{Tuple{'key'='value'}}, '118'=Sequence{Tuple{'key'='value'}}, '119'=Sequence{Tuple{'key'='value'}}, '120'=Sequence{Tuple{'key'='value'}}, '121'=Sequence{Tuple{'key'='value'}}, '122'=Sequence{Tuple{'key'='value'}}, '123'=Sequence{Tuple{'key'='value'}}, '124'=Sequence{Tuple{'key'='value'}}, '125'=Sequence{Tuple{'key'='value'}}, '126'=Sequence{Tuple{'key'='value'}}, '127'=Sequence{Tuple{'key'='value'}}, '128'=Sequence{Tuple{'key'='value'}}, ...}",
 				result);
+	}
+
+	/**
+	 * Test method for {@link EMFTVMUtil#findAllInstances(EClass, ExecEnv)}.
+	 */
+	public void testfindAllInstances() {
+		final EmftvmFactory ef = EmftvmFactory.eINSTANCE;
+		final ExecEnv env = ef.createExecEnv();
+
+		final Metamodel metamodel = ef.createMetamodel();
+		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		env.registerMetaModel("ECORE", metamodel);
+
+		final Model inmodel = ef.createModel();
+		inmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		env.registerInputModel("IN", inmodel);
+
+		final Model inoutmodel = ef.createModel();
+		inoutmodel.setResource(TracePackage.eINSTANCE.eResource());
+		env.registerInOutModel("INOUT", inoutmodel);
+
+		final Model outmodel = ef.createModel();
+		outmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		env.registerOutputModel("OUT", outmodel);
+
+		final EClass eClass = EcorePackage.eINSTANCE.getEClass();
+
+		final LazyList<EObject> result = EMFTVMUtil.findAllInstances(eClass, env);
+
+		assertEquals(inmodel.allInstancesOf(eClass)
+				.union(inoutmodel.allInstancesOf(eClass)), result);
+	}
+
+	/**
+	 * Test method for {@link EMFTVMUtil#findAllInstIn(Object, EClass, ExecEnv)}.
+	 */
+	public void testfindAllInstIn_Input() {
+		final EmftvmFactory ef = EmftvmFactory.eINSTANCE;
+		final ExecEnv env = ef.createExecEnv();
+
+		final Metamodel metamodel = ef.createMetamodel();
+		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		env.registerMetaModel("ECORE", metamodel);
+
+		final Model inmodel = ef.createModel();
+		inmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		env.registerInputModel("IN", inmodel);
+
+		final Model inoutmodel = ef.createModel();
+		inoutmodel.setResource(TracePackage.eINSTANCE.eResource());
+		env.registerInOutModel("INOUT", inoutmodel);
+
+		final Model outmodel = ef.createModel();
+		outmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		env.registerOutputModel("OUT", outmodel);
+
+		final EClass eClass = EcorePackage.eINSTANCE.getEClass();
+
+		final LazyList<EObject> result = EMFTVMUtil.findAllInstIn("IN", eClass, env);
+
+		assertEquals(inmodel.allInstancesOf(eClass), result);
+	}
+
+	/**
+	 * Test method for {@link EMFTVMUtil#findAllInstIn(Object, EClass, ExecEnv)}.
+	 */
+	public void testfindAllInstIn_InOut() {
+		final EmftvmFactory ef = EmftvmFactory.eINSTANCE;
+		final ExecEnv env = ef.createExecEnv();
+
+		final Metamodel metamodel = ef.createMetamodel();
+		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		env.registerMetaModel("ECORE", metamodel);
+
+		final Model inmodel = ef.createModel();
+		inmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		env.registerInputModel("IN", inmodel);
+
+		final Model inoutmodel = ef.createModel();
+		inoutmodel.setResource(TracePackage.eINSTANCE.eResource());
+		env.registerInOutModel("INOUT", inoutmodel);
+
+		final Model outmodel = ef.createModel();
+		outmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		env.registerOutputModel("OUT", outmodel);
+
+		final EClass eClass = EcorePackage.eINSTANCE.getEClass();
+
+		final LazyList<EObject> result = EMFTVMUtil.findAllInstIn("INOUT", eClass, env);
+
+		assertEquals(inoutmodel.allInstancesOf(eClass), result);
+	}
+
+	/**
+	 * Test method for {@link EMFTVMUtil#findAllInstIn(Object, EClass, ExecEnv)}.
+	 */
+	public void testfindAllInstIn_Out() {
+		final EmftvmFactory ef = EmftvmFactory.eINSTANCE;
+		final ExecEnv env = ef.createExecEnv();
+
+		final Metamodel metamodel = ef.createMetamodel();
+		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		env.registerMetaModel("ECORE", metamodel);
+
+		final Model inmodel = ef.createModel();
+		inmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		env.registerInputModel("IN", inmodel);
+
+		final Model inoutmodel = ef.createModel();
+		inoutmodel.setResource(TracePackage.eINSTANCE.eResource());
+		env.registerInOutModel("INOUT", inoutmodel);
+
+		final Model outmodel = ef.createModel();
+		outmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		env.registerOutputModel("OUT", outmodel);
+
+		final EClass eClass = EcorePackage.eINSTANCE.getEClass();
+
+		try {
+			final LazyList<EObject> result = EMFTVMUtil.findAllInstIn("OUT", eClass, env);
+
+			fail("Expected IllegalArgumentExceptionm but got " + result);
+		} catch (final IllegalArgumentException e) {
+			// Expected
+		}
+	}
+
+	/**
+	 * Test method for {@link EMFTVMUtil#findAllInstIn(Object, EClass, ExecEnv)}.
+	 */
+	public void testfindAllInstIn_Meta() {
+		final EmftvmFactory ef = EmftvmFactory.eINSTANCE;
+		final ExecEnv env = ef.createExecEnv();
+
+		final Metamodel metamodel = ef.createMetamodel();
+		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		env.registerMetaModel("ECORE", metamodel);
+
+		final Model inmodel = ef.createModel();
+		inmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		env.registerInputModel("IN", inmodel);
+
+		final Model inoutmodel = ef.createModel();
+		inoutmodel.setResource(TracePackage.eINSTANCE.eResource());
+		env.registerInOutModel("INOUT", inoutmodel);
+
+		final Model outmodel = ef.createModel();
+		outmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		env.registerOutputModel("OUT", outmodel);
+
+		final EClass eClass = EcorePackage.eINSTANCE.getEClass();
+
+		final LazyList<EObject> result = EMFTVMUtil.findAllInstIn("ECORE", eClass, env);
+
+		assertEquals(metamodel.allInstancesOf(eClass), result);
 	}
 
 }
