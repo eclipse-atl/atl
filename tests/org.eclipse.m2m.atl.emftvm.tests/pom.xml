@@ -66,6 +66,9 @@
 								<emftvm.compile module="EcoreCopy"
 									modulepath="${basedir}/test-data/EcoreCopy/"
 									outputpath="${basedir}/target/" charset="UTF-8" />
+								<emftvm.compile outputpath="${basedir}/target/" charset="UTF-8">
+									<moduleset dir="${basedir}/test-data/EcoreCopy/" includes="*.atl"/>
+								</emftvm.compile>
 								<echo message="Loading metamodel ECORE" />
 								<emftvm.loadMetamodel name="ECORE"
 									uri="http://www.eclipse.org/emf/2002/Ecore" />
@@ -74,8 +77,7 @@
 									uri="file:/${basedir}/../../plugins/org.eclipse.m2m.atl.emftvm/model/emftvm.ecore" />
 								<echo
 									message="Running file:/${basedir}/target/EcoreCopy.emftvm" />
-								<emftvm.run modulepath="file:/${basedir}/target/"
-									module="EcoreCopy">
+								<emftvm.run modulepath="file:/${basedir}/target/" module="EcoreCopy">
 									<metamodel name="ECORE" />
 									<inputmodel name="EMFTVM" as="IN" />
 									<outputmodel name="EMFTVM-OUT" as="OUT"
@@ -83,6 +85,15 @@
 								</emftvm.run>
 								<echo message="Saving model EMFTVM-OUT" />
 								<emftvm.saveModel name="EMFTVM-OUT" />
+								<echo
+									message="Batch running file:/${basedir}/target/EcoreCopy.emftvm" />
+								<emftvm.run modulepath="file:/${basedir}/target/" module="EcoreCopy">
+									<metamodel name="ECORE" />
+									<inputmodelset name="IN" dir="${basedir}/../../plugins/org.eclipse.m2m.atl.emftvm/model">
+										<include name="*.ecore" />
+									</inputmodelset>
+									<outputmodelset name="OUT" dir="${basedir}/target/" suffix=".ecore" />
+								</emftvm.run>
 							</tasks>
 						</configuration>
 					</execution>

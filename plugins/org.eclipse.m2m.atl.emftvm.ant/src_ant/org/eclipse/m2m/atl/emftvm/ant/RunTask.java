@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.util.StringUtils;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -49,11 +48,17 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	private static String generateFilename(final List<String> inputFileNames, String suffix) {
-		if (StringUtils.trimToNull(suffix) == null) {
-			return StringUtils.join(inputFileNames, "-");
-		} else {
-			return StringUtils.join(inputFileNames, "-").concat(suffix);
+		final StringBuilder sb = new StringBuilder();
+		for (final String fileName : inputFileNames) {
+			if (sb.length() > 0) {
+				sb.append("-");
+			}
+			sb.append(fileName);
 		}
+		if (suffix != null) {
+			sb.append(suffix);
+		}
+		return sb.toString();
 	}
 
 	private String module;
@@ -318,7 +323,7 @@ public class RunTask extends EMFTVMTask {
 				final Model model = env.getInoutModels().get(getModelKey(inOutModelSet));
 				final String suffix = inOutModelSet.getSuffix();
 				model.getResource().setURI(URI.createFileURI(new File(inOutModelSet.getEffectiveOutputDir(),
-						generateFilename(inputFileNames, StringUtils.trimToNull(suffix) != null ? suffix
+						generateFilename(inputFileNames, suffix != null ? suffix
 								: "." + model.getResource().getURI().fileExtension())).getPath()));
 				try {
 					model.getResource().save(Collections.emptyMap());
