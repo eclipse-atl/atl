@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Dennis Wagelaar.
+ * Copyright (c) 2013, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -122,8 +122,7 @@ public class IntegrationTest extends EMFTVMTest {
 	public void testBug408391() {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final TimingData td = new TimingData();
-		final Model model = EmftvmFactory.eINSTANCE.createModel();
-		model.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model model = EmftvmFactory.eINSTANCE.createModel(EmftvmPackage.eINSTANCE.eResource());
 		env.registerInputModel("IN", model);
 		env.loadModule(createTestModuleResolver(), "Regression::Bug408391");
 		td.finishLoading();
@@ -166,8 +165,7 @@ public class IntegrationTest extends EMFTVMTest {
 		final ResourceSet rs = new ResourceSetImpl();
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final TimingData td = new TimingData();
-		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel();
-		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel(EcorePackage.eINSTANCE.eResource());
 		final Model model = loadTestModel(rs, "/test-data/EcoreCopy/My.ecore");
 		env.registerMetaModel("E", metamodel);
 		env.registerInOutModel("IN", model);
@@ -188,8 +186,7 @@ public class IntegrationTest extends EMFTVMTest {
 		final ResourceSet rs = new ResourceSetImpl();
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final TimingData td = new TimingData();
-		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel();
-		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel(EcorePackage.eINSTANCE.eResource());
 		final Model model = loadTestModel(rs, "/test-data/EcoreCopy/My.ecore");
 		env.registerMetaModel("ECORE", metamodel);
 		env.registerInOutModel("IN", model);
@@ -210,8 +207,7 @@ public class IntegrationTest extends EMFTVMTest {
 		final ResourceSet rs = new ResourceSetImpl();
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final TimingData td = new TimingData();
-		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel();
-		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel(EcorePackage.eINSTANCE.eResource());
 		final Model model = loadTestModel(rs, "/test-data/EcoreCopy/My.ecore");
 		env.registerMetaModel("ECORE", metamodel);
 		env.registerInOutModel("IN", model);
@@ -338,10 +334,8 @@ public class IntegrationTest extends EMFTVMTest {
 		final ResourceSet rs = new ResourceSetImpl();
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final TimingData td = new TimingData();
-		final Metamodel tr = EmftvmFactory.eINSTANCE.createMetamodel();
-		tr.setResource(TracePackage.eINSTANCE.eResource());
-		final Model in = EmftvmFactory.eINSTANCE.createModel();
-		in.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Metamodel tr = EmftvmFactory.eINSTANCE.createMetamodel(TracePackage.eINSTANCE.eResource());
+		final Model in = EmftvmFactory.eINSTANCE.createModel(EmftvmPackage.eINSTANCE.eResource());
 		final Model trace = createTestModel(rs, "/test-data/Regression/Bug426154/Bug426154.trace");
 		final Model out = createTestModel(rs, "/test-data/Regression/Bug426154/Bug426154-out.ecore");
 		env.registerMetaModel("TR", tr);

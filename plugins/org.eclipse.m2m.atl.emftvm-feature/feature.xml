@@ -7,7 +7,7 @@
       plugin="org.eclipse.m2m.atl.emftvm">
 
    <description>
-      ATL EMFTVM
+      %description
    </description>
 
    <copyright url="%copyrightURL">
