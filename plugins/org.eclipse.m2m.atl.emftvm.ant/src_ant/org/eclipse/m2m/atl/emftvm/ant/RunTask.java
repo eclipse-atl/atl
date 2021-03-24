@@ -47,7 +47,7 @@ public class RunTask extends EMFTVMTask {
 		return FILE_EXT.matcher(resource.getName()).replaceAll("");
 	}
 
-	private static String generateFilename(final List<String> inputFileNames, String suffix) {
+	private static String generateFilename(final List<String> inputFileNames, final String suffix) {
 		final StringBuilder sb = new StringBuilder();
 		for (final String fileName : inputFileNames) {
 			if (sb.length() > 0) {
@@ -77,7 +77,7 @@ public class RunTask extends EMFTVMTask {
 	 *
 	 * @param module the module to set
 	 */
-	public void setModule(String module) {
+	public void setModule(final String module) {
 		this.module = module;
 	}
 
@@ -95,7 +95,7 @@ public class RunTask extends EMFTVMTask {
 	 *
 	 * @param modulePath the modulePath to set
 	 */
-	public void setModulePath(String modulePath) {
+	public void setModulePath(final String modulePath) {
 		this.modulePath = modulePath;
 	}
 
@@ -122,7 +122,7 @@ public class RunTask extends EMFTVMTask {
 	 *
 	 * @param disableJIT whether to disable the JIT compiler
 	 */
-	public void setDisableJIT(boolean disableJIT) {
+	public void setDisableJIT(final boolean disableJIT) {
 		this.disableJIT = disableJIT;
 	}
 
@@ -194,7 +194,7 @@ public class RunTask extends EMFTVMTask {
 	 *
 	 * @param metamodel the metamodel
 	 */
-	public void addConfiguredMetamodel(MetaModel metamodel) {
+	public void addConfiguredMetamodel(final MetaModel metamodel) {
 		getMetaModels().add(metamodel);
 	}
 
@@ -203,7 +203,7 @@ public class RunTask extends EMFTVMTask {
 	 *
 	 * @param model the input model
 	 */
-	public void addConfiguredInputModel(InModel model) {
+	public void addConfiguredInputModel(final InModel model) {
 		getInputModels().add(model);
 	}
 
@@ -212,7 +212,7 @@ public class RunTask extends EMFTVMTask {
 	 *
 	 * @param model the in/out model
 	 */
-	public void addConfiguredInoutModel(InOutModel model) {
+	public void addConfiguredInoutModel(final InOutModel model) {
 		getInoutModels().add(model);
 	}
 
@@ -221,7 +221,7 @@ public class RunTask extends EMFTVMTask {
 	 *
 	 * @param model the output model
 	 */
-	public void addConfiguredOutputModel(OutModel model) {
+	public void addConfiguredOutputModel(final OutModel model) {
 		getOutputModels().add(model);
 	}
 
@@ -230,7 +230,7 @@ public class RunTask extends EMFTVMTask {
 	 *
 	 * @param modelSet the input model set
 	 */
-	public void addConfiguredInputModelSet(InModelSet modelSet) {
+	public void addConfiguredInputModelSet(final InModelSet modelSet) {
 		getInputModelSets().add(modelSet);
 	}
 
@@ -239,7 +239,7 @@ public class RunTask extends EMFTVMTask {
 	 *
 	 * @param modelSet the in/out model set
 	 */
-	public void addConfiguredInoutModelSet(InOutModelSet modelSet) {
+	public void addConfiguredInoutModelSet(final InOutModelSet modelSet) {
 		getInoutModelSets().add(modelSet);
 	}
 
@@ -248,7 +248,7 @@ public class RunTask extends EMFTVMTask {
 	 *
 	 * @param modelSet the output model set
 	 */
-	public void addConfiguredOutputModelSet(OutModelSet modelSet) {
+	public void addConfiguredOutputModelSet(final OutModelSet modelSet) {
 		getOutputModelSets().add(modelSet);
 	}
 
@@ -425,8 +425,7 @@ public class RunTask extends EMFTVMTask {
 				final String u = m.getUri();
 				final URI uri = u == null ? URI.createPlatformResourceURI(m.getWspath(), true) : URI.createURI(u);
 				final Resource r = rs.createResource(uri);
-				model = EmftvmFactory.eINSTANCE.createModel();
-				model.setResource(r);
+				model = EmftvmFactory.eINSTANCE.createModel(r);
 				model.setAllowInterModelReferences(m.isAllowInterModelReferences());
 				setModel(m.getName(), model);
 			} else {
@@ -457,8 +456,7 @@ public class RunTask extends EMFTVMTask {
 			final String u = m.getUri();
 			final URI uri = u == null ? URI.createPlatformResourceURI(m.getWspath(), true) : URI.createURI(u);
 			final Resource r = rs.createResource(uri);
-			final Model model = EmftvmFactory.eINSTANCE.createModel();
-			model.setResource(r);
+			final Model model = EmftvmFactory.eINSTANCE.createModel(r);
 			model.setAllowInterModelReferences(m.isAllowInterModelReferences());
 			setModel(m.getName(), model);
 			env.registerOutputModel(getModelKey(m), model);
@@ -481,9 +479,7 @@ public class RunTask extends EMFTVMTask {
 			throw new IllegalArgumentException(
 					String.format("Model with filename %s could not be found", resource.getName()));
 		}
-		final Model m = EmftvmFactory.eINSTANCE.createModel();
-		m.setResource(r);
-		return m;
+		return EmftvmFactory.eINSTANCE.createModel(r);
 	}
 
 	private Model createFromResource(final File dir, final org.apache.tools.ant.types.Resource resource) {
@@ -492,8 +488,6 @@ public class RunTask extends EMFTVMTask {
 		}
 		final ResourceSet rs = getResourceSet();
 		final Resource r = rs.createResource(URI.createFileURI(new File(dir, resource.getName()).getPath()));
-		final Model m = EmftvmFactory.eINSTANCE.createModel();
-		m.setResource(r);
-		return m;
+		return EmftvmFactory.eINSTANCE.createModel(r);
 	}
 }

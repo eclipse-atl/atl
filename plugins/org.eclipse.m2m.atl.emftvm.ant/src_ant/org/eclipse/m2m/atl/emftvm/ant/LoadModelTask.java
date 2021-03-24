@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -95,11 +96,13 @@ public class LoadModelTask extends EMFTVMTask {
 	}
 
 	/**
-	 * Creates a new {@link Model} instance.
+	 * Creates a new {@link Model} instance for the given {@link Resource}.
+	 *
+	 * @param resource the {@link Resource}
 	 * @return a new {@link Model}.
 	 */
-	protected Model createModel() {
-		return EmftvmFactory.eINSTANCE.createModel();
+	protected Model createModel(Resource resource) {
+		return EmftvmFactory.eINSTANCE.createModel(resource);
 	}
 
 	/**
@@ -128,8 +131,7 @@ public class LoadModelTask extends EMFTVMTask {
 		if (r == null) {
 			throw new IllegalArgumentException(String.format("Model with uri %s could not be found", uri));
 		}
-		final Model m = createModel();
-		m.setResource(r);
+		final Model m = createModel(r);
 		setModel(getName(), m);
 	}
 
