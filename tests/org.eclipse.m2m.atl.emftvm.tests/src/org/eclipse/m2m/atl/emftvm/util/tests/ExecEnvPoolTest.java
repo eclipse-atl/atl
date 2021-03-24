@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Dennis Wagelaar.
+ * Copyright (c) 2013, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
@@ -35,7 +36,7 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 
 /**
  * Tests {@link ExecEnvPool}.
- * 
+ *
  * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class ExecEnvPoolTest extends EMFTVMTest {
@@ -57,7 +58,7 @@ public class ExecEnvPoolTest extends EMFTVMTest {
 		try {
 			pool.registerMetaModel("otherMetamodel", metamodel);
 			fail("Expected IllegalStateException");
-		} catch (IllegalStateException e) {
+		} catch (final IllegalStateException e) {
 			// expected
 		}
 	}
@@ -77,7 +78,7 @@ public class ExecEnvPoolTest extends EMFTVMTest {
 		try {
 			pool.loadModule("EcoreCopy");
 			fail("Expected IllegalStateException");
-		} catch (IllegalStateException e) {
+		} catch (final IllegalStateException e) {
 			// expected
 		}
 	}
@@ -109,14 +110,14 @@ public class ExecEnvPoolTest extends EMFTVMTest {
 		try {
 			pool.returnExecEnv(EmftvmFactory.eINSTANCE.createExecEnv());
 			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			// expected
 		}
 	}
 
 	/**
 	 * Tests the performance of EcoreCopy.emftvm.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	public void testEcoreCopyPerformance() throws InterruptedException {
@@ -139,10 +140,11 @@ public class ExecEnvPoolTest extends EMFTVMTest {
 
 					final TimingData td = new TimingData();
 					final ResourceSet rs = new ResourceSetImpl();
-					final Model in = EmftvmFactory.eINSTANCE.createModel();
-					in.setResource(rs.getResource(URI.createPlatformPluginURI(EMFTVM_PLUGIN_ID + "/model/emftvm.ecore", true), true));
-					final Model out = EmftvmFactory.eINSTANCE.createModel();
-					out.setResource(rs.createResource(URI.createURI("out.ecore")));
+					final Resource inRes = rs.getResource(
+							URI.createPlatformPluginURI(EMFTVM_PLUGIN_ID + "/model/emftvm.ecore", true), true);
+					final Model in = EmftvmFactory.eINSTANCE.createModel(inRes);
+					final Resource outRes = rs.createResource(URI.createURI("out.ecore"));
+					final Model out = EmftvmFactory.eINSTANCE.createModel(outRes);
 
 					assertFalse(env.getInputModels().containsKey("IN"));
 					assertFalse(env.getOutputModels().containsKey("OUT"));

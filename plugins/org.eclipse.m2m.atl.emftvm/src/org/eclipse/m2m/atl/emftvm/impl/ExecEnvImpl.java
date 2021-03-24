@@ -117,7 +117,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @author Dennis Wagelaar <dennis.wagelaar@vub.ac.be>
 	 */
 	abstract class QueueEntry {
-		
+
 		/**
 		 * The stack frame context in which to perform the queued operation.
 		 */
@@ -155,9 +155,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		 * Performs the queued operation.
 		 */
 		protected abstract void perform();
-		
+
 	}
-	
+
 	/**
 	 * Hold data for element deletion.
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
@@ -181,7 +181,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 		/**
 		 * {@inheritDoc}
-		 * 
+		 *
 		 * @throws UnsupportedOperationException
 		 */
 		@Override
@@ -191,7 +191,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 		/**
 		 * {@inheritDoc}
-		 * 
+		 *
 		 * Performs the actual deletion of the element from its model.
 		 */
 		@Override
@@ -208,7 +208,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 		/**
 		 * Performs the queued operation for the given <code>ref</code>.
-		 * 
+		 *
 		 * @param o
 		 *            the object for which to delete from <code>ref</code>
 		 * @param ref
@@ -230,7 +230,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		}
 
 	}
-	
+
 	/**
 	 * Holds data for a queued remap() operation.
 	 * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
@@ -249,7 +249,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 		/**
 		 * Creates a new {@link RemapEntry}.
-		 * 
+		 *
 		 * @param source
 		 *            the source element to remap
 		 * @param target
@@ -265,7 +265,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 		/**
 		 * {@inheritDoc}
-		 * 
+		 *
 		 * @throws UnsupportedOperationException
 		 */
 		@Override
@@ -275,7 +275,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 		/**
 		 * Performs the queued operation for the given <code>ref</code>.
-		 * 
+		 *
 		 * @param o
 		 *            the object for which to remap <code>ref</code>
 		 * @param ref
@@ -297,7 +297,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 
 		/**
 		 * Performs the queued operation for the given <code>ref</code> and <code>index</code>.
-		 * 
+		 *
 		 * @param o
 		 *            the object for which to remap <code>ref</code>
 		 * @param ref
@@ -447,7 +447,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	/**
 	 * The internal value of the '{@link #getMetaModels() <em>Meta Models</em>}' attribute.
 	 */
-	protected final Map<String, Metamodel> internalMetaModels = 
+	protected final Map<String, Metamodel> internalMetaModels =
 			Collections.synchronizedMap(new HashMap<String, Metamodel>());
 
 	/**
@@ -479,7 +479,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * Intended for keeping track of cyclic imports.
 	 */
 	protected final Set<String> loadedModules = new HashSet<String>();
-	
+
 	/**
 	 * The chain of '<code>main()</code>' operations to be executed after the automatic rules.
 	 */
@@ -491,7 +491,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	protected final EList<Operation> initChain = new BasicEList<Operation>();
 
 	/**
-	 * Field storage and lookup. 
+	 * Field storage and lookup.
 	 */
 	protected final FieldContainer fieldContainer = new FieldContainer();
 
@@ -501,8 +501,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * eventually pointing to an {@link Operation}.
 	 * Example: for argcount = 2: (name -> (2 -> (context -> (arg1 -> (arg2 -> op)))))
 	 */
-	protected final Map<String, Map<Integer, TypeMap<Object, Object>>> operations = 
-		new HashMap<String, Map<Integer,TypeMap<Object,Object>>>();
+	protected final Map<String, Map<Integer, TypeMap<Object, Object>>> operations =
+			new HashMap<String, Map<Integer,TypeMap<Object,Object>>>();
 
 	/**
 	 * Lookup table for static operations: (name -> (argcount -> (context -> ?)))
@@ -510,8 +510,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * eventually pointing to an {@link Operation}.
 	 * Example: for argcount = 2: (name -> (2 -> (context -> (arg1 -> (arg2 -> op)))))
 	 */
-	protected final Map<String, Map<Integer, TypeMap<Object, Object>>> staticOperations = 
-		new HashMap<String, Map<Integer,TypeMap<Object,Object>>>();
+	protected final Map<String, Map<Integer, TypeMap<Object, Object>>> staticOperations =
+			new HashMap<String, Map<Integer,TypeMap<Object,Object>>>();
 
 	/**
 	 * Lookup table for rules: (name -> rule).
@@ -579,7 +579,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * queue entry per source value to remap is supported.
 	 */
 	protected final Map<EObject, RemapEntry> remapQueue = new HashMap<EObject, RemapEntry>();
-	
+
 	/**
 	 * Code block stack level validator.
 	 */
@@ -631,7 +631,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @param type field type model and name
 	 * @param initialiser field initialiser codeblock
 	 */
-	private void createField(final String name, final boolean isStatic, 
+	private void createField(final String name, final boolean isStatic,
 			final String[] context, final String[] type, final CodeBlock initialiser) {
 		final Field f = EMFTVMUtil.createField(name, isStatic, context, type, initialiser);
 		registerFeature(f);
@@ -1221,7 +1221,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	public Module loadModule(final ModuleResolver resolver, final String name) {
 		return loadModule(resolver, name, true);
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
@@ -1268,7 +1268,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			return module;
 		} catch (final Exception e) {
 			throw new VMException(null, String.format(
-					"Error during module loading: %s", 
+					"Error during module loading: %s",
 					e.getMessage()), e);
 		}
 	}
@@ -1283,8 +1283,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		if (diag.getSeverity() != Diagnostic.OK) {
 			return diag;
 		}
-		final Model mmodel = EmftvmFactory.eINSTANCE.createModel();
-		mmodel.setResource(module.eResource());
+		final Model mmodel = EmftvmFactory.eINSTANCE.createModel(module.eResource());
 		for (final EObject eObject : mmodel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
 			final CodeBlock cb = (CodeBlock) eObject;
 			if (!cbStackValidator.validate(cb)) {
@@ -1436,8 +1435,8 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @return <code>true</code> iff the types of <pre>first</pre> are more specific than the types of <pre>second</pre>
 	 */
 	private static boolean isMoreSpecific(
-			final EList<Parameter> first, 
-			final EList<Parameter> second, 
+			final EList<Parameter> first,
+			final EList<Parameter> second,
 			final int index) {
 		assert first.size() == second.size();
 		final EClassifier f = first.get(index).getEType();
@@ -1470,7 +1469,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @return <code>true</code> iff the types of <pre>first</pre> are more specific than the types of <pre>second</pre>
 	 */
 	private static boolean isMoreSpecific(
-			final Operation first, 
+			final Operation first,
 			final Operation second) {
 		final EClassifier f = first.getEContext();
 		final EClassifier s = second.getEContext();
@@ -1506,7 +1505,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			final Rule oldRule = rules.get(rName);
 			if (r.getMode() != oldRule.getMode()) {
 				throw new IllegalArgumentException(String.format(
-						"Rule %s with mode %s cannot redefine existing rule with mode %s", 
+						"Rule %s with mode %s cannot redefine existing rule with mode %s",
 						rName, r.getMode(), oldRule.getMode()));
 			}
 		}
@@ -1559,7 +1558,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			//check rule type consistency
 			if (superRule.getMode() != rule.getMode()) {
 				throw new IllegalArgumentException(String.format(
-						"Rule %s with mode %s cannot inherit from super-rule %s with mode %s", 
+						"Rule %s with mode %s cannot inherit from super-rule %s with mode %s",
 						rule.getName(), rule.getMode(), superRule.getName(), superRule.getMode()));
 			}
 			//check type consistency of rule element declarations
@@ -1570,10 +1569,10 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 							throw new IllegalArgumentException(String.format(
 									"Output element %s of type %s in rule %s is not compatible with element %s of type %s in super-rule %s",
 									re.getName(),
-									EMFTVMUtil.toPrettyString(re.getEType(), this), 
+									EMFTVMUtil.toPrettyString(re.getEType(), this),
 									rule.getName(),
 									sre.getName(),
-									EMFTVMUtil.toPrettyString(sre.getEType(), this), 
+									EMFTVMUtil.toPrettyString(sre.getEType(), this),
 									superRule.getName()));
 						}
 					}
@@ -1651,7 +1650,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			// There are operations with the given name
 			final int argCount = parameterTypes.length;
 			final TypeMap<Object, Object> ctxMap = argcountOpsMap.get(argCount);
-			
+
 			if (ctxMap != null) {
 				// There are operations with argCount arguments
 				// First try to find with direct types
@@ -1682,7 +1681,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				}
 			}
 		}
-		
+
 		return op;
 	}
 
@@ -1699,7 +1698,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		if (argcountOpsMap != null) {
 			// There are operations with the given name
 			final TypeMap<Object, Object> ctxMap = argcountOpsMap.get(0);
-			
+
 			if (ctxMap != null) {
 				// There are operations with 0 arguments
 				// First try to find with direct type
@@ -1717,7 +1716,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				}
 			}
 		}
-		
+
 		return op;
 	}
 
@@ -1735,7 +1734,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		if (argcountOpsMap != null) {
 			// There are operations with the given name
 			final TypeMap<Object, Object> ctxMap = argcountOpsMap.get(1);
-			
+
 			if (ctxMap != null) {
 				// There are operations with 1 argument
 				// First try to find with direct types
@@ -1771,7 +1770,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				}
 			}
 		}
-		
+
 		return op;
 	}
 
@@ -1804,7 +1803,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			// There are operations with the given name
 			final int argCount = parameterTypes.length;
 			final TypeMap<Object, Object> ctxMap = argcountOpsMap.get(argCount);
-			
+
 			if (ctxMap != null) {
 				// There are operations with argCount arguments
 				// Static operations must be defined in exact context type
@@ -1825,7 +1824,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				}
 			}
 		}
-		
+
 		return op;
 	}
 
@@ -1842,14 +1841,14 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		if (argcountOpsMap != null) {
 			// There are operations with the given name
 			final TypeMap<Object, Object> ctxMap = argcountOpsMap.get(0);
-			
+
 			if (ctxMap != null) {
 				// There are operations with 0 arguments
 				// Static operations must be defined in exact context type
 				op = (Operation)ctxMap.get(context);
 			}
 		}
-		
+
 		return op;
 	}
 
@@ -1867,7 +1866,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 		if (argcountOpsMap != null) {
 			// There are operations with the given name
 			final TypeMap<Object, Object> ctxMap = argcountOpsMap.get(1);
-			
+
 			if (ctxMap != null) {
 				// There are operations with 1 argument
 				// Static operations must be defined in exact context type
@@ -1898,7 +1897,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				}
 			}
 		}
-		
+
 		return op;
 	}
 
@@ -1924,12 +1923,12 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @return the operation, or <code>null</code>
 	 */
 	@SuppressWarnings("unchecked")
-	private static Operation findOperationDirect(final TypeMap<Object, Object> typeMap, final Object[] parameterTypes, 
+	private static Operation findOperationDirect(final TypeMap<Object, Object> typeMap, final Object[] parameterTypes,
 			final int argIndex) {
 		final int argCount = parameterTypes.length;
 		assert argIndex >= 0 && argIndex < argCount;
 		final Object argType = parameterTypes[argIndex];
-		
+
 		if (argIndex < argCount - 1) {
 			final TypeMap<Object, Object> nestedTypeMap = (TypeMap<Object, Object>)typeMap.get(argType);
 			if (nestedTypeMap != null) {
@@ -1949,14 +1948,14 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	 * @param argIndex
 	 */
 	@SuppressWarnings("unchecked")
-	private static void findOperations(final TypeMap<Object, Object> typeMap, final Object[] parameterTypes, 
+	private static void findOperations(final TypeMap<Object, Object> typeMap, final Object[] parameterTypes,
 			final Set<Operation> ops, final int argIndex) {
 		final int argCount = parameterTypes.length;
 		assert argIndex >= 0 && argIndex < argCount;
 		final Object argType = parameterTypes[argIndex];
 		final Set<Object> argTypeKeys = new HashSet<Object>();
 		typeMap.findAllKeys(argType, argTypeKeys);
-		
+
 		if (argIndex < argCount - 1) {
 			for (final Object argTypeKey : argTypeKeys) {
 				// There are operations defined on the given parameter type so far...
@@ -2282,41 +2281,41 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	private void matchAllRecursive(final StackFrame frame, final TimingData timingData) {
 		final List<Rule> rules = getRules();
 		final Set<Rule> matchedRules = new LinkedHashSet<Rule>();
-		
+
 		boolean outerMatch;
 		do {
 			outerMatch = false;
-			
+
 			// Match automatic recursive rules
 			matchedRules.clear();
 			boolean match;
 			MATCHER:
-			do {
-				match = false;
-				for (final Rule rule : rules) {
-					// Only match rules for which all super-rules have already been matched
-					if (!matchedRules.contains(rule) && matchedRules.containsAll(rule.getESuperRules())) {
-						final boolean[] matchResult = rule.matchRecursive(frame);
-						if (matchResult[1]) { // Guaranteed final match
-							outerMatch = true;
-							matchedRules.add(rule);
-							break MATCHER;
-						} else if (matchResult[0]) {
-							match = true;
-							matchedRules.add(rule);
-							outerMatch |= !rule.isAbstract();
+				do {
+					match = false;
+					for (final Rule rule : rules) {
+						// Only match rules for which all super-rules have already been matched
+						if (!matchedRules.contains(rule) && matchedRules.containsAll(rule.getESuperRules())) {
+							final boolean[] matchResult = rule.matchRecursive(frame);
+							if (matchResult[1]) { // Guaranteed final match
+								outerMatch = true;
+								matchedRules.add(rule);
+								break MATCHER;
+							} else if (matchResult[0]) {
+								match = true;
+								matchedRules.add(rule);
+								outerMatch |= !rule.isAbstract();
+							}
 						}
 					}
-				}
-			} while (match);
+				} while (match);
 
 			for (final Rule rule : matchedRules) {
 				if (rule.applyFirst(frame)) {
 					break;
 				}
 			}
-			
-		} while (outerMatch);		
+
+		} while (outerMatch);
 
 		if (timingData != null) {
 			timingData.finishRecursive();
@@ -2485,28 +2484,28 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	@Override
 	public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
 		switch (featureID) {
-			case EmftvmPackage.EXEC_ENV__META_MODELS:
-				return getMetaModels();
-			case EmftvmPackage.EXEC_ENV__INPUT_MODELS:
-				return getInputModels();
-			case EmftvmPackage.EXEC_ENV__INOUT_MODELS:
-				return getInoutModels();
-			case EmftvmPackage.EXEC_ENV__OUTPUT_MODELS:
-				return getOutputModels();
-			case EmftvmPackage.EXEC_ENV__MODULES:
-				return getModules();
-			case EmftvmPackage.EXEC_ENV__MATCHES:
-				if (resolve) return getMatches();
-				return basicGetMatches();
-			case EmftvmPackage.EXEC_ENV__TRACES:
-				if (resolve) return getTraces();
-				return basicGetTraces();
-			case EmftvmPackage.EXEC_ENV__UNIQUE_RESULTS:
-				return getUniqueResults();
-			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
-				return isJitDisabled();
-			case EmftvmPackage.EXEC_ENV__CURRENT_PHASE:
-				return getCurrentPhase();
+		case EmftvmPackage.EXEC_ENV__META_MODELS:
+			return getMetaModels();
+		case EmftvmPackage.EXEC_ENV__INPUT_MODELS:
+			return getInputModels();
+		case EmftvmPackage.EXEC_ENV__INOUT_MODELS:
+			return getInoutModels();
+		case EmftvmPackage.EXEC_ENV__OUTPUT_MODELS:
+			return getOutputModels();
+		case EmftvmPackage.EXEC_ENV__MODULES:
+			return getModules();
+		case EmftvmPackage.EXEC_ENV__MATCHES:
+			if (resolve) return getMatches();
+			return basicGetMatches();
+		case EmftvmPackage.EXEC_ENV__TRACES:
+			if (resolve) return getTraces();
+			return basicGetTraces();
+		case EmftvmPackage.EXEC_ENV__UNIQUE_RESULTS:
+			return getUniqueResults();
+		case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
+			return isJitDisabled();
+		case EmftvmPackage.EXEC_ENV__CURRENT_PHASE:
+			return getCurrentPhase();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -2519,9 +2518,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	@Override
 	public void eSet(final int featureID, final Object newValue) {
 		switch (featureID) {
-			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
-				setJitDisabled((Boolean)newValue);
-				return;
+		case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
+			setJitDisabled((Boolean)newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -2534,9 +2533,9 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	@Override
 	public void eUnset(final int featureID) {
 		switch (featureID) {
-			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
-				setJitDisabled(JIT_DISABLED_EDEFAULT);
-				return;
+		case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
+			setJitDisabled(JIT_DISABLED_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -2550,26 +2549,26 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 	@Override
 	public boolean eIsSet(final int featureID) {
 		switch (featureID) {
-			case EmftvmPackage.EXEC_ENV__META_MODELS:
-				return metaModels != null;
-			case EmftvmPackage.EXEC_ENV__INPUT_MODELS:
-				return inputModels != null;
-			case EmftvmPackage.EXEC_ENV__INOUT_MODELS:
-				return inoutModels != null;
-			case EmftvmPackage.EXEC_ENV__OUTPUT_MODELS:
-				return outputModels != null;
-			case EmftvmPackage.EXEC_ENV__MODULES:
-				return modules != null;
-			case EmftvmPackage.EXEC_ENV__MATCHES:
-				return matches != null;
-			case EmftvmPackage.EXEC_ENV__TRACES:
-				return traces != null;
-			case EmftvmPackage.EXEC_ENV__UNIQUE_RESULTS:
-				return uniqueResults != null;
-			case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
-				return jitDisabled != JIT_DISABLED_EDEFAULT;
-			case EmftvmPackage.EXEC_ENV__CURRENT_PHASE:
-				return currentPhase != CURRENT_PHASE_EDEFAULT;
+		case EmftvmPackage.EXEC_ENV__META_MODELS:
+			return metaModels != null;
+		case EmftvmPackage.EXEC_ENV__INPUT_MODELS:
+			return inputModels != null;
+		case EmftvmPackage.EXEC_ENV__INOUT_MODELS:
+			return inoutModels != null;
+		case EmftvmPackage.EXEC_ENV__OUTPUT_MODELS:
+			return outputModels != null;
+		case EmftvmPackage.EXEC_ENV__MODULES:
+			return modules != null;
+		case EmftvmPackage.EXEC_ENV__MATCHES:
+			return matches != null;
+		case EmftvmPackage.EXEC_ENV__TRACES:
+			return traces != null;
+		case EmftvmPackage.EXEC_ENV__UNIQUE_RESULTS:
+			return uniqueResults != null;
+		case EmftvmPackage.EXEC_ENV__JIT_DISABLED:
+			return jitDisabled != JIT_DISABLED_EDEFAULT;
+		case EmftvmPackage.EXEC_ENV__CURRENT_PHASE:
+			return currentPhase != CURRENT_PHASE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

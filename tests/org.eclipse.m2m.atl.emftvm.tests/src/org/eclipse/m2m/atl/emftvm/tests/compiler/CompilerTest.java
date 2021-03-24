@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Dennis Wagelaar.
+ * Copyright (c) 2013, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,7 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
  * Tests the ATL-to-EMFTVM compiler.
- * 
+ *
  * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class CompilerTest extends EMFTVMTest {
@@ -95,8 +95,8 @@ public class CompilerTest extends EMFTVMTest {
 		assertEquals(null, validate(outModel));
 		final List<EObject> news = outModel.allInstancesOf(EmftvmPackage.eINSTANCE.getNew());
 		assertFalse(news.isEmpty());
-		for (EObject object : news) {
-			New new_ = (New) object;
+		for (final EObject object : news) {
+			final New new_ = (New) object;
 			assertEquals("EXISTING", new_.getModelname());
 		}
 	}
@@ -131,9 +131,9 @@ public class CompilerTest extends EMFTVMTest {
 		final Model refModel = loadTestModel(new ResourceSetImpl(), "/test-data/Regression/Bug425492.emftvm");
 		assertEquals(refModel.getResource(), outModel.getResource());
 	}
-	
+
 	/**
-	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=429745">Bug # 429745</a>: 
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=429745">Bug # 429745</a>:
 	 * EMFTVM compiler crashes on reference to target element in rule "from" clause.
 	 */
 	public void testBug429745() {
@@ -144,8 +144,8 @@ public class CompilerTest extends EMFTVMTest {
 
 	/**
 	 * Tests detection of character set encoding by the compiler.
-	 * @throws CoreException 
-	 * @throws IOException 
+	 * @throws CoreException
+	 * @throws IOException
 	 */
 	public void testCharEncoding() throws CoreException, IOException {
 		final IWorkspaceRoot wr = ResourcesPlugin.getWorkspace().getRoot();
@@ -205,7 +205,7 @@ public class CompilerTest extends EMFTVMTest {
 
 	/**
 	 * Tests the compilation of a compiler module.
-	 * 
+	 *
 	 * @param compilerModule
 	 *            the compiler module name
 	 */
@@ -220,7 +220,7 @@ public class CompilerTest extends EMFTVMTest {
 
 	/**
 	 * Compiles the given ATL module.
-	 * 
+	 *
 	 * @param moduleURI
 	 *            the module URI
 	 * @return the compiled module
@@ -234,32 +234,29 @@ public class CompilerTest extends EMFTVMTest {
 		// Load models
 		{
 			final Resource inRes = rs.getResource(moduleURI, true);
-			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-			inModel.setResource(inRes);
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 			env.registerInputModel("IN", inModel);
 		}
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.emftvm"));
-		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-		outModel.setResource(outRes);
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel(outRes);
 		env.registerOutputModel("OUT", outModel);
 		assertEquals(outModel, env.getOutputModels().get("OUT"));
 
 		final Resource pbsRes = rs.createResource(URI.createFileURI("pbs.xmi"));
-		final Model pbsModel = EmftvmFactory.eINSTANCE.createModel();
-		pbsModel.setResource(pbsRes);
+		final Model pbsModel = EmftvmFactory.eINSTANCE.createModel(pbsRes);
 		env.registerOutputModel("PBS", pbsModel);
 		assertEquals(pbsModel, env.getOutputModels().get("PBS"));
 
 		{
-			final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
-			atlmm.setResource(rs.getResource(URI.createURI("http://www.eclipse.org/gmt/2005/ATL"), true));
+			final Resource atlres = rs.getResource(URI.createURI("http://www.eclipse.org/gmt/2005/ATL"), true);
+			final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel(atlres);
 			env.registerMetaModel("ATL", atlmm);
 		}
 
 		{
-			final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
-			pbmm.setResource(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
+			final Metamodel pbmm = EmftvmFactory.eINSTANCE
+					.createMetamodel(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
 			env.registerMetaModel("Problem", pbmm);
 		}
 
@@ -289,7 +286,7 @@ public class CompilerTest extends EMFTVMTest {
 		}
 
 		// CodeBlocks passed into a native operation have their parentFrame property set - clear this property:
-		for (EObject cb : outModel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
+		for (final EObject cb : outModel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
 			((CodeBlock) cb).setParentFrame(null);
 		}
 
@@ -298,25 +295,25 @@ public class CompilerTest extends EMFTVMTest {
 
 	/**
 	 * Validates the bytecode of <code>module</code>.
-	 * 
+	 *
 	 * @param mmodel
 	 *            the module model to validate
 	 * @return <code>null</code> if <code>module</code> is valid, otherwise the first invalid object
 	 */
-	protected Object validate(Model mmodel) {
-		for (EObject eObject : mmodel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
-			CodeBlock cb = (CodeBlock) eObject;
+	protected Object validate(final Model mmodel) {
+		for (final EObject eObject : mmodel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
+			final CodeBlock cb = (CodeBlock) eObject;
 			if (!cbStackValidator.validate(cb)) {
 				return cb;
 			}
-			for (Instruction i : cb.getCode()) {
+			for (final Instruction i : cb.getCode()) {
 				if (!instrStackValidator.validate(i)) {
 					return i;
 				}
 			}
 		}
-		for (EObject eObject : mmodel.getResource().getContents()) {
-			Diagnostic diag = Diagnostician.INSTANCE.validate(eObject);
+		for (final EObject eObject : mmodel.getResource().getContents()) {
+			final Diagnostic diag = Diagnostician.INSTANCE.validate(eObject);
 			if (diag.getSeverity() != Diagnostic.OK) {
 				return diag;
 			}
@@ -326,7 +323,7 @@ public class CompilerTest extends EMFTVMTest {
 
 	/**
 	 * Checks the given ATL module against the ATL well-formedness rules.
-	 * 
+	 *
 	 * @param moduleURI
 	 *            the module URI
 	 * @return the problems model
@@ -338,26 +335,24 @@ public class CompilerTest extends EMFTVMTest {
 		// Load models
 		{
 			final Resource inRes = rs.getResource(moduleURI, true);
-			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-			inModel.setResource(inRes);
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 			env.registerInputModel("IN", inModel);
 		}
 
 		final Resource pbsRes = rs.createResource(URI.createFileURI("pbs.xmi"));
-		final Model pbsModel = EmftvmFactory.eINSTANCE.createModel();
-		pbsModel.setResource(pbsRes);
+		final Model pbsModel = EmftvmFactory.eINSTANCE.createModel(pbsRes);
 		env.registerOutputModel("OUT", pbsModel);
 		assertEquals(pbsModel, env.getOutputModels().get("OUT"));
 
 		{
-			final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
-			atlmm.setResource(rs.getResource(URI.createURI("http://www.eclipse.org/gmt/2005/ATL"), true));
+			final Resource atlres = rs.getResource(URI.createURI("http://www.eclipse.org/gmt/2005/ATL"), true);
+			final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel(atlres);
 			env.registerMetaModel("ATL", atlmm);
 		}
 
 		{
-			final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
-			pbmm.setResource(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
+			final Metamodel pbmm = EmftvmFactory.eINSTANCE
+					.createMetamodel(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
 			env.registerMetaModel("Problem", pbmm);
 		}
 

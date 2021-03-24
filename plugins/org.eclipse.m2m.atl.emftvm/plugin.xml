@@ -3,11 +3,11 @@
 
 <!--
  (C) 2011, Vrije Universiteit Brussel
-
- $Id: plugin.xml,v 1.3 2012/01/02 11:49:41 dwagelaar Exp $
+ (C) 2021, Dennis Wagelaar
 -->
 
 <plugin>
+   <extension-point id="modelfactory" name="ATL/EMFTVM Model Factory" schema="schema/modelfactory.exsd"/>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
@@ -102,6 +102,13 @@
             category="org.eclipse.m2m.atl.emftvm.constraintCategory"
             context="org.eclipse.m2m.atl.emftvm.clientContext">
       </binding>
+   </extension>
+   <extension
+         id="default"
+         point="org.eclipse.m2m.atl.emftvm.modelfactory">
+      <modelfactory
+            class="org.eclipse.m2m.atl.emftvm.impl.ModelFactoryImpl">
+      </modelfactory>
    </extension>
 
 </plugin>
