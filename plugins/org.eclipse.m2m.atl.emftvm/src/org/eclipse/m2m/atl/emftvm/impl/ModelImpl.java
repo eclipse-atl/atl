@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2012, 2013, 2018, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,10 +76,12 @@ public class ModelImpl extends EObjectImpl implements Model {
 			 */
 			@Override
 			public boolean hasNext() {
-				if (i < cache.size()) {
-					return true;
-				} else if (dataSource == null) {
-					return false;
+				synchronized (cache) {
+					if (i < cache.size()) {
+						return true;
+					} else if (dataSource == null) {
+						return false;
+					}
 				}
 				if (!nextSet && inner.hasNext()) {
 					next = inner.next(); // support null values for next
@@ -109,12 +112,7 @@ public class ModelImpl extends EObjectImpl implements Model {
 					next = inner.next();
 				}
 				assert !nextSet && type.isInstance(next);
-				if (++i > cache.size()) {
-					assert dataSource != null; // cache not complete
-					cache.add(next);
-				} else {
-					assert cache.contains(next);
-				}
+				updateCache(next);
 				return next;
 			}
 		}
@@ -126,7 +124,7 @@ public class ModelImpl extends EObjectImpl implements Model {
 		 * @param dataSource
 		 * @param type the type of which to return the instances
 		 */
-		public InstanceOfList(Iterable<EObject> dataSource, EClass type) {
+		public InstanceOfList(final Iterable<EObject> dataSource, final EClass type) {
 			super(dataSource);
 			this.type = type;
 		}
@@ -146,7 +144,7 @@ public class ModelImpl extends EObjectImpl implements Model {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean remove(Object o) {
+		public boolean remove(final Object o) {
 			// try to remove from cache - if not contained, nothing needs to be done
 			return cache.remove(o);
 		}
@@ -155,7 +153,7 @@ public class ModelImpl extends EObjectImpl implements Model {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean add(EObject o) {
+		public boolean add(final EObject o) {
 			// add to cache only if complete - if not contained, it will show up on the next iteration
 			synchronized (cache) {
 				if (dataSource == null) { // cache complete
@@ -215,7 +213,7 @@ public class ModelImpl extends EObjectImpl implements Model {
 	/**
 	 * Cache of allInstancesOf().
 	 */
-	protected Map<EClass, InstanceOfList> allInstancesMap = new HashMap<EClass, InstanceOfList>();
+	protected final Map<EClass, LazyList<EObject>> allInstancesMap = new HashMap<EClass, LazyList<EObject>>();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -255,8 +253,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setResource(Resource newResource) {
-		Resource oldResource = resource;
+	public void setResource(final Resource newResource) {
+		final Resource oldResource = resource;
 		resource = newResource;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.MODEL__RESOURCE, oldResource, resource));
@@ -278,8 +276,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setAllowInterModelReferences(boolean newAllowInterModelReferences) {
-		boolean oldAllowInterModelReferences = allowInterModelReferences;
+	public void setAllowInterModelReferences(final boolean newAllowInterModelReferences) {
+		final boolean oldAllowInterModelReferences = allowInterModelReferences;
 		allowInterModelReferences = newAllowInterModelReferences;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES, oldAllowInterModelReferences, allowInterModelReferences));
@@ -313,7 +311,7 @@ public class ModelImpl extends EObjectImpl implements Model {
 
 	/**
 	 * Adds <code>element</code> to the "allInstances" list for the given type and all its supertypes.
-	 * 
+	 *
 	 * @param element
 	 *            the element to add
 	 * @param type
@@ -323,7 +321,7 @@ public class ModelImpl extends EObjectImpl implements Model {
 		if (allInstancesMap.containsKey(type)) {
 			allInstancesMap.get(type).add(element);
 		}
-		for (EClass superType : type.getESuperTypes()) {
+		for (final EClass superType : type.getESuperTypes()) {
 			addElement(element, superType);
 		}
 	}
@@ -339,17 +337,17 @@ public class ModelImpl extends EObjectImpl implements Model {
 		if (!resContents.remove(element)) {
 			throw new IllegalArgumentException(String.format("Element %s not contained as a root element in this model", element));
 		}
-		for (EObject child : new ArrayList<EObject>(element.eContents())) {
+		for (final EObject child : new ArrayList<EObject>(element.eContents())) {
 			assert child.eResource() == null;
 			// adding children to a container removes them from their previous container
-			resContents.add(child); 
+			resContents.add(child);
 		}
 		deleteElement(element, element.eClass());
 	}
 
 	/**
 	 * Deletes <code>element</code> from the "allInstances" list for the given type and all its supertypes.
-	 * 
+	 *
 	 * @param element
 	 *            the element to delete
 	 * @param type
@@ -359,7 +357,7 @@ public class ModelImpl extends EObjectImpl implements Model {
 		if (allInstancesMap.containsKey(type)) {
 			allInstancesMap.get(type).remove(element);
 		}
-		for (EClass superType : type.getESuperTypes()) {
+		for (final EClass superType : type.getESuperTypes()) {
 			deleteElement(element, superType);
 		}
 	}
@@ -371,12 +369,12 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * @generated
 	 */
 	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
 		switch (featureID) {
-			case EmftvmPackage.MODEL__RESOURCE:
-				return getResource();
-			case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
-				return isAllowInterModelReferences();
+		case EmftvmPackage.MODEL__RESOURCE:
+			return getResource();
+		case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
+			return isAllowInterModelReferences();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -388,14 +386,14 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * @generated
 	 */
 	@Override
-	public void eSet(int featureID, Object newValue) {
+	public void eSet(final int featureID, final Object newValue) {
 		switch (featureID) {
-			case EmftvmPackage.MODEL__RESOURCE:
-				setResource((Resource)newValue);
-				return;
-			case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
-				setAllowInterModelReferences((Boolean)newValue);
-				return;
+		case EmftvmPackage.MODEL__RESOURCE:
+			setResource((Resource)newValue);
+			return;
+		case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
+			setAllowInterModelReferences((Boolean)newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -407,14 +405,14 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * @generated
 	 */
 	@Override
-	public void eUnset(int featureID) {
+	public void eUnset(final int featureID) {
 		switch (featureID) {
-			case EmftvmPackage.MODEL__RESOURCE:
-				setResource(RESOURCE_EDEFAULT);
-				return;
-			case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
-				setAllowInterModelReferences(ALLOW_INTER_MODEL_REFERENCES_EDEFAULT);
-				return;
+		case EmftvmPackage.MODEL__RESOURCE:
+			setResource(RESOURCE_EDEFAULT);
+			return;
+		case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
+			setAllowInterModelReferences(ALLOW_INTER_MODEL_REFERENCES_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -426,12 +424,12 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * @generated
 	 */
 	@Override
-	public boolean eIsSet(int featureID) {
+	public boolean eIsSet(final int featureID) {
 		switch (featureID) {
-			case EmftvmPackage.MODEL__RESOURCE:
-				return RESOURCE_EDEFAULT == null ? resource != null : !RESOURCE_EDEFAULT.equals(resource);
-			case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
-				return allowInterModelReferences != ALLOW_INTER_MODEL_REFERENCES_EDEFAULT;
+		case EmftvmPackage.MODEL__RESOURCE:
+			return RESOURCE_EDEFAULT == null ? resource != null : !RESOURCE_EDEFAULT.equals(resource);
+		case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
+			return allowInterModelReferences != ALLOW_INTER_MODEL_REFERENCES_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -446,7 +444,7 @@ public class ModelImpl extends EObjectImpl implements Model {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		final StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (resource: ");
 		result.append(resource.getURI() == null ? resource : resource.getURI());
 		result.append(')');

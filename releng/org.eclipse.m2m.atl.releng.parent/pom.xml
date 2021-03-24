@@ -90,6 +90,8 @@
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm</module>
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm-feature</module>
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm.ant</module>
+		<module>../../plugins/org.eclipse.m2m.atl.emftvm.cdo</module>
+		<module>../../plugins/org.eclipse.m2m.atl.emftvm.cdo-feature</module>
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm.compiler</module>
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm.edit</module>
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm.editor</module>

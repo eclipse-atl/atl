@@ -1,10 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2007, 2012 Obeo.
+ * Copyright (c) 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     Obeo - ATL tester
  *     Dennis Wagelaar
@@ -57,10 +58,11 @@ import org.eclipse.uml2.uml.resource.UMLResource;
 
 /**
  * Specifies TestNonRegressionTransfo for the EMFTVM.
- * 
+ *
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
+@SuppressWarnings("restriction")
 public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 
 	public static final String COMPILER_PLUGIN_ID = "org.eclipse.m2m.atl.emftvm.compiler";
@@ -68,7 +70,7 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 
 	class CompilingModuleResolver implements ModuleResolver {
 
-		public Module resolveModule(String name) throws ModuleNotFoundException {
+		public Module resolveModule(final String name) throws ModuleNotFoundException {
 			final URI uri = URI.createURI(name, true);
 			final Model model = compile(uri);
 			return (Module) model.getResource().getContents().get(0);
@@ -76,10 +78,8 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 
 	}
 
-	protected final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
-	{
-		pbmm.setResource(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
-	}
+	protected final Metamodel pbmm = EmftvmFactory.eINSTANCE
+			.createMetamodel(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
 
 	/**
 	 * {@inheritDoc}
@@ -93,16 +93,16 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.tests.unit.TestNonRegressionTransfo#setUp()
 	 */
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		Properties properties = new Properties();	
+		final Properties properties = new Properties();
 		properties.load(TestNonRegressionEMFTVM.class.getResourceAsStream("TestNonRegressionEMFTVM.properties")); //$NON-NLS-1$
 		setProperties(properties);
-		
+
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				new UMLResourceFactoryImpl());
 		EPackage.Registry.INSTANCE.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
@@ -110,29 +110,30 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 		EPackage.Registry.INSTANCE.put("http://www.eclipse.org/uml2/2.0.0/UML", UMLPackage.eINSTANCE); //$NON-NLS-1$
 		EPackage.Registry.INSTANCE.put("http://www.eclipse.org/uml2/2.1.0/UML", UMLPackage.eINSTANCE); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Launch a transformation.
-	 * 
+	 *
 	 * @return pureExecutionTime, i.e. the execution time without loading/saving models
 	 */
+	@Override
 	protected double launch() throws ATLCoreException, IOException {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		final ModuleResolver mr = new CompilingModuleResolver();
 		final ResourceSet rs = new ResourceSetImpl();
 
 		// Launch configuration analysis
-		URL asmURL = launchParser.getAsmUrl();
-		Map<String, String> unsortedSourceModels = launchParser.getInput();
-		Map<String, String> unsortedTargetModels = launchParser.getOutput();
-		Map<String, String> modelPaths = launchParser.getPath();
-		Map<String, URL> libs = launchParser.getLibsFromConfig();
-		List<URL> superimps = launchParser.getSuperimpose();
-		Map<String, Object> options = launchParser.getOptions();
+		final URL asmURL = launchParser.getAsmUrl();
+		final Map<String, String> unsortedSourceModels = launchParser.getInput();
+		final Map<String, String> unsortedTargetModels = launchParser.getOutput();
+		final Map<String, String> modelPaths = launchParser.getPath();
+		final Map<String, URL> libs = launchParser.getLibsFromConfig();
+		final List<URL> superimps = launchParser.getSuperimpose();
+		final Map<String, Object> options = launchParser.getOptions();
 
 		// WARNING only atl2006 compiler refining mode is supported
 		boolean isRefiningTraceMode = false;
-		Object refiningOption = options.get(ATLLaunchConstants.IS_REFINING);
+		final Object refiningOption = options.get(ATLLaunchConstants.IS_REFINING);
 		if (refiningOption != null) {
 			isRefiningTraceMode = new Boolean(refiningOption.toString());
 		}
@@ -141,64 +142,64 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 			fail("Refining trace mode not supported on EMFTVM");
 		}
 
-		Map<String, String> modelHandlers = launchParser.getModelHandler();
+		final Map<String, String> modelHandlers = launchParser.getModelHandler();
 		options.put("modelHandlers", modelHandlers); //$NON-NLS-1$
 
 		// Metamodels
 		final Set<String> metamodels = new LinkedHashSet<String>();
 		metamodels.addAll(unsortedSourceModels.values());
 		metamodels.addAll(unsortedTargetModels.values());
-		for (String metamodel : metamodels) {
+		for (final String metamodel : metamodels) {
 			loadMetaModel(env, rs, metamodel, modelPaths.get(metamodel));
 		}
 
 		EMFTVMUtil.registerEPackages(rs);
 
 		// Libraries
-		for (Entry<String, URL> entry : libs.entrySet()) {
+		for (final Entry<String, URL> entry : libs.entrySet()) {
 			env.loadModule(mr, moduleName(entry.getValue()));
 		}
 
 		env.loadModule(mr, moduleName(asmURL));
 
 		// API extensions management
-		for (URL url : superimps) {
+		for (final URL url : superimps) {
 			env.loadModule(mr, moduleName(url));
 		}
 
-		long startTime = System.currentTimeMillis();
+		final long startTime = System.currentTimeMillis();
 
 		// Input models
-		for (String key : unsortedSourceModels.keySet()) {
+		for (final String key : unsortedSourceModels.keySet()) {
 			loadModel(env, rs, key, modelPaths.get(key), false);
 		}
 
 		// Output models
-		for (String key : unsortedTargetModels.keySet()) {
+		for (final String key : unsortedTargetModels.keySet()) {
 			createModel(env, rs, key, modelPaths.get(key), false);
 		}
 
 		try {
 			env.run(null);
-		} catch (VMException e) {
+		} catch (final VMException e) {
 			fail(asmURL.toString(), e);
 		}
 
 		// Output models
 		final Map<String, String> saveOptions = new HashMap<String, String>();
 		saveOptions.put(XMLResource.OPTION_ENCODING, "ISO-8859-1");
-		for (Model outModel : env.getOutputModels().values()) {
+		for (final Model outModel : env.getOutputModels().values()) {
 			outModel.getResource().save(saveOptions);
 		}
 
-		long endTime = System.currentTimeMillis();
+		final long endTime = System.currentTimeMillis();
 
 		return (endTime - startTime) / 1000.;
 	}
 
-	private static void loadModel(final ExecEnv env, final ResourceSet rs, final String name, final String path, boolean inOut) {
-		Model model = EmftvmFactory.eINSTANCE.createModel();
-		model.setResource(rs.getResource(uri(path), true));
+	private static void loadModel(final ExecEnv env, final ResourceSet rs, final String name, final String path, final boolean inOut) {
+		final Resource resource = rs.getResource(uri(path), true);
+		final Model model = EmftvmFactory.eINSTANCE.createModel(resource);
 		if (inOut) {
 			env.registerInOutModel(name, model);
 		} else {
@@ -207,18 +208,18 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 	}
 
 	private static void loadMetaModel(final ExecEnv env, final ResourceSet rs, final String name, final String path) {
-		Metamodel model = EmftvmFactory.eINSTANCE.createMetamodel();
+		final Metamodel model;
 		if ("#EMF".equals(path)) {
-			model.setResource(EcorePackage.eINSTANCE.eResource());
+			model = EmftvmFactory.eINSTANCE.createMetamodel(EcorePackage.eINSTANCE.eResource());
 		} else {
-			model.setResource(rs.getResource(uri(path), true));
+			model = EmftvmFactory.eINSTANCE.createMetamodel(rs.getResource(uri(path), true));
 		}
 		env.registerMetaModel(name, model);
 	}
 
-	private static void createModel(final ExecEnv env, final ResourceSet rs, final String name, final String path, boolean inOut) {
-		Model model = EmftvmFactory.eINSTANCE.createModel();
-		model.setResource(rs.createResource(uri(path)));
+	private static void createModel(final ExecEnv env, final ResourceSet rs, final String name, final String path, final boolean inOut) {
+		final Resource resource = rs.createResource(uri(path));
+		final Model model = EmftvmFactory.eINSTANCE.createModel(resource);
 		if (inOut) {
 			env.registerInOutModel(name, model);
 		} else {
@@ -238,7 +239,7 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 
 	/**
 	 * Compiles the given ATL module.
-	 * 
+	 *
 	 * @param moduleURI
 	 *            the module URI
 	 * @return the compiled module
@@ -253,32 +254,29 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 		// Load models
 		{
 			final Resource inRes = rs.getResource(moduleURI, true);
-			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-			inModel.setResource(inRes);
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 			env.registerInputModel("IN", inModel);
 		}
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.emftvm"));
-		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-		outModel.setResource(outRes);
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel(outRes);
 		env.registerOutputModel("OUT", outModel);
 		assertEquals(outModel, env.getOutputModels().get("OUT"));
 
 		final Resource pbsRes = rs.createResource(URI.createFileURI("pbs.xmi"));
-		final Model pbsModel = EmftvmFactory.eINSTANCE.createModel();
-		pbsModel.setResource(pbsRes);
+		final Model pbsModel = EmftvmFactory.eINSTANCE.createModel(pbsRes);
 		env.registerOutputModel("PBS", pbsModel);
 		assertEquals(pbsModel, env.getOutputModels().get("PBS"));
 
 		{
-			final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
-			atlmm.setResource(rs.getResource(URI.createURI("http://www.eclipse.org/gmt/2005/ATL"), true));
+			final Resource atlres = rs.getResource(URI.createURI("http://www.eclipse.org/gmt/2005/ATL"), true);
+			final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel(atlres);
 			env.registerMetaModel("ATL", atlmm);
 		}
 
 		{
-			final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
-			pbmm.setResource(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
+			final Resource pbres = ((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource();
+			final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel(pbres);
 			env.registerMetaModel("Problem", pbmm);
 		}
 
@@ -307,7 +305,7 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 		}
 
 		// CodeBlocks passed into a native operation have their parentFrame property set - clear this property:
-		for (EObject cb : outModel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
+		for (final EObject cb : outModel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock())) {
 			((CodeBlock) cb).setParentFrame(null);
 		}
 
@@ -316,7 +314,7 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 
 	/**
 	 * Checks the given ATL module against the ATL well-formedness rules.
-	 * 
+	 *
 	 * @param moduleURI
 	 *            the module URI
 	 * @return the problems model
@@ -328,20 +326,18 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 		// Load models
 		{
 			final Resource inRes = rs.getResource(moduleURI, true);
-			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-			inModel.setResource(inRes);
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 			env.registerInputModel("IN", inModel);
 		}
 
 		final Resource pbsRes = rs.createResource(URI.createFileURI("pbs.xmi"));
-		final Model pbsModel = EmftvmFactory.eINSTANCE.createModel();
-		pbsModel.setResource(pbsRes);
+		final Model pbsModel = EmftvmFactory.eINSTANCE.createModel(pbsRes);
 		env.registerOutputModel("OUT", pbsModel);
 		assertEquals(pbsModel, env.getOutputModels().get("OUT"));
 
 		{
-			final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
-			atlmm.setResource(rs.getResource(URI.createURI("http://www.eclipse.org/gmt/2005/ATL"), true));
+			final Resource atlres = rs.getResource(URI.createURI("http://www.eclipse.org/gmt/2005/ATL"), true);
+			final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel(atlres);
 			env.registerMetaModel("ATL", atlmm);
 		}
 
@@ -363,20 +359,20 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 
 	/**
 	 * Retrieves problem elements from <code>problems</code>.
-	 * 
+	 *
 	 * @param problems
 	 *            the problems model
 	 * @param pbElements
 	 *            the collection of problem elements to augment
 	 * @return the number of error problems
 	 */
-	protected int getProblems(Model problems, Collection<EObject> pbElements) {
-		final Collection<EObject> pbs = (Collection<EObject>) problems.allInstancesOf((EClass) pbmm.findType("Problem")); //$NON-NLS-1$
+	protected int getProblems(final Model problems, final Collection<EObject> pbElements) {
+		final Collection<EObject> pbs = problems.allInstancesOf((EClass) pbmm.findType("Problem")); //$NON-NLS-1$
 
 		int nbErrors = 0;
 		if (pbs != null) {
-			for (EObject pb : pbs) {
-				EStructuralFeature severityFeature = pb.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
+			for (final EObject pb : pbs) {
+				final EStructuralFeature severityFeature = pb.eClass().getEStructuralFeature("severity"); //$NON-NLS-1$
 				if (severityFeature != null && "error".equals(((Enumerator) pb.eGet(severityFeature)).getName())) { //$NON-NLS-1$
 					nbErrors++;
 				}

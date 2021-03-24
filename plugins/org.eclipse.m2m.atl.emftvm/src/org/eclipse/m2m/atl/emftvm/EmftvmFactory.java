@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
+ * Copyright (c) 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +13,7 @@
 package org.eclipse.m2m.atl.emftvm;
 
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
  * <!-- begin-user-doc -->
@@ -622,5 +624,23 @@ public interface EmftvmFactory extends EFactory {
 	 * @return a new {@link Instruction} instance for the given <pre>opcode</pre>.
 	 */
 	Instruction createInstruction(Opcode opcode);
+
+	/**
+	 * Creates a new {@link Model} for the given {@link Resource}, and sets the
+	 * {@link Resource}.
+	 *
+	 * @param resource the {@link Resource} to wrap
+	 * @return a new {@link Model}
+	 */
+	Model createModel(Resource resource);
+
+	/**
+	 * Creates a new {@link Metamodel} for the given {@link Resource}, and sets the
+	 * {@link Resource}.
+	 *
+	 * @param resource the {@link Resource} to wrap
+	 * @return a new {@link Metamodel}
+	 */
+	Metamodel createMetamodel(Resource resource);
 
 } //EmftvmFactory

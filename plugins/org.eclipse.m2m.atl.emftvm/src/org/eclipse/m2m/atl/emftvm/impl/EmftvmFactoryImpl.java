@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
+ * Copyright (c) 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,13 +14,20 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 
 import java.lang.reflect.Method;
+import java.util.logging.Level;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.emftvm.Add;
 import org.eclipse.m2m.atl.emftvm.Allinst;
 import org.eclipse.m2m.atl.emftvm.AllinstIn;
@@ -69,6 +77,7 @@ import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
 import org.eclipse.m2m.atl.emftvm.ModelDeclarationTag;
+import org.eclipse.m2m.atl.emftvm.ModelFactory;
 import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.New;
 import org.eclipse.m2m.atl.emftvm.NewS;
@@ -101,6 +110,8 @@ import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
+import org.eclipse.m2m.atl.emftvm.util.TypeHashMap;
+import org.eclipse.m2m.atl.emftvm.util.TypeMap;
 
 /**
  * <!-- begin-user-doc -->
@@ -110,6 +121,13 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
  * @generated
  */
 public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
+
+	private static final String MODELFACTORY_EXTENSION_POINT = "org.eclipse.m2m.atl.emftvm.modelfactory";
+
+	protected final ModelFactory defaultModelFactory = new ModelFactoryImpl();
+
+	private TypeMap<Class<?>, ModelFactory> modelFactoryRegistry;
+
 	/**
 	 * Creates an instance of the factory.
 	 * <!-- begin-user-doc -->
@@ -129,12 +147,12 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 */
 	public static EmftvmFactory init() {
 		try {
-			EmftvmFactory theEmftvmFactory = (EmftvmFactory)EPackage.Registry.INSTANCE.getEFactory(EmftvmPackage.eNS_URI);
+			final EmftvmFactory theEmftvmFactory = (EmftvmFactory)EPackage.Registry.INSTANCE.getEFactory(EmftvmPackage.eNS_URI);
 			if (theEmftvmFactory != null) {
 				return theEmftvmFactory;
 			}
 		}
-		catch (Exception exception) {
+		catch (final Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
 		return new EmftvmFactoryImpl();
@@ -147,74 +165,74 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	@Override
-	public EObject create(EClass eClass) {
+	public EObject create(final EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case EmftvmPackage.EXEC_ENV: return createExecEnv();
-			case EmftvmPackage.MODEL: return createModel();
-			case EmftvmPackage.METAMODEL: return createMetamodel();
-			case EmftvmPackage.MODULE: return createModule();
-			case EmftvmPackage.MODEL_DECLARATION: return createModelDeclaration();
-			case EmftvmPackage.FIELD: return createField();
-			case EmftvmPackage.OPERATION: return createOperation();
-			case EmftvmPackage.PARAMETER: return createParameter();
-			case EmftvmPackage.LINE_NUMBER: return createLineNumber();
-			case EmftvmPackage.LOCAL_VARIABLE: return createLocalVariable();
-			case EmftvmPackage.RULE: return createRule();
-			case EmftvmPackage.INPUT_RULE_ELEMENT: return createInputRuleElement();
-			case EmftvmPackage.OUTPUT_RULE_ELEMENT: return createOutputRuleElement();
-			case EmftvmPackage.CODE_BLOCK: return createCodeBlock();
-			case EmftvmPackage.PUSH: return createPush();
-			case EmftvmPackage.PUSHT: return createPusht();
-			case EmftvmPackage.PUSHF: return createPushf();
-			case EmftvmPackage.POP: return createPop();
-			case EmftvmPackage.LOAD: return createLoad();
-			case EmftvmPackage.STORE: return createStore();
-			case EmftvmPackage.SET: return createSet();
-			case EmftvmPackage.GET: return createGet();
-			case EmftvmPackage.GET_TRANS: return createGetTrans();
-			case EmftvmPackage.SET_STATIC: return createSetStatic();
-			case EmftvmPackage.GET_STATIC: return createGetStatic();
-			case EmftvmPackage.FINDTYPE: return createFindtype();
-			case EmftvmPackage.FINDTYPE_S: return createFindtypeS();
-			case EmftvmPackage.NEW: return createNew();
-			case EmftvmPackage.NEW_S: return createNewS();
-			case EmftvmPackage.DELETE: return createDelete();
-			case EmftvmPackage.DUP: return createDup();
-			case EmftvmPackage.DUP_X1: return createDupX1();
-			case EmftvmPackage.SWAP: return createSwap();
-			case EmftvmPackage.SWAP_X1: return createSwapX1();
-			case EmftvmPackage.IF: return createIf();
-			case EmftvmPackage.IFN: return createIfn();
-			case EmftvmPackage.GOTO: return createGoto();
-			case EmftvmPackage.ITERATE: return createIterate();
-			case EmftvmPackage.ENDITERATE: return createEnditerate();
-			case EmftvmPackage.INVOKE: return createInvoke();
-			case EmftvmPackage.INVOKE_SUPER: return createInvokeSuper();
-			case EmftvmPackage.INVOKE_STATIC: return createInvokeStatic();
-			case EmftvmPackage.ALLINST: return createAllinst();
-			case EmftvmPackage.ALLINST_IN: return createAllinstIn();
-			case EmftvmPackage.ISNULL: return createIsnull();
-			case EmftvmPackage.GETENVTYPE: return createGetenvtype();
-			case EmftvmPackage.NOT: return createNot();
-			case EmftvmPackage.AND: return createAnd();
-			case EmftvmPackage.OR: return createOr();
-			case EmftvmPackage.XOR: return createXor();
-			case EmftvmPackage.IMPLIES: return createImplies();
-			case EmftvmPackage.IFTE: return createIfte();
-			case EmftvmPackage.RETURN: return createReturn();
-			case EmftvmPackage.GETCB: return createGetcb();
-			case EmftvmPackage.INVOKE_ALL_CBS: return createInvokeAllCbs();
-			case EmftvmPackage.INVOKE_CB: return createInvokeCb();
-			case EmftvmPackage.INVOKE_CB_S: return createInvokeCbS();
-			case EmftvmPackage.MATCH: return createMatch();
-			case EmftvmPackage.MATCH_S: return createMatchS();
-			case EmftvmPackage.ADD: return createAdd();
-			case EmftvmPackage.REMOVE: return createRemove();
-			case EmftvmPackage.INSERT: return createInsert();
-			case EmftvmPackage.GET_SUPER: return createGetSuper();
-			case EmftvmPackage.GETENV: return createGetenv();
-			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		case EmftvmPackage.EXEC_ENV: return createExecEnv();
+		case EmftvmPackage.MODEL: return createModel();
+		case EmftvmPackage.METAMODEL: return createMetamodel();
+		case EmftvmPackage.MODULE: return createModule();
+		case EmftvmPackage.MODEL_DECLARATION: return createModelDeclaration();
+		case EmftvmPackage.FIELD: return createField();
+		case EmftvmPackage.OPERATION: return createOperation();
+		case EmftvmPackage.PARAMETER: return createParameter();
+		case EmftvmPackage.LINE_NUMBER: return createLineNumber();
+		case EmftvmPackage.LOCAL_VARIABLE: return createLocalVariable();
+		case EmftvmPackage.RULE: return createRule();
+		case EmftvmPackage.INPUT_RULE_ELEMENT: return createInputRuleElement();
+		case EmftvmPackage.OUTPUT_RULE_ELEMENT: return createOutputRuleElement();
+		case EmftvmPackage.CODE_BLOCK: return createCodeBlock();
+		case EmftvmPackage.PUSH: return createPush();
+		case EmftvmPackage.PUSHT: return createPusht();
+		case EmftvmPackage.PUSHF: return createPushf();
+		case EmftvmPackage.POP: return createPop();
+		case EmftvmPackage.LOAD: return createLoad();
+		case EmftvmPackage.STORE: return createStore();
+		case EmftvmPackage.SET: return createSet();
+		case EmftvmPackage.GET: return createGet();
+		case EmftvmPackage.GET_TRANS: return createGetTrans();
+		case EmftvmPackage.SET_STATIC: return createSetStatic();
+		case EmftvmPackage.GET_STATIC: return createGetStatic();
+		case EmftvmPackage.FINDTYPE: return createFindtype();
+		case EmftvmPackage.FINDTYPE_S: return createFindtypeS();
+		case EmftvmPackage.NEW: return createNew();
+		case EmftvmPackage.NEW_S: return createNewS();
+		case EmftvmPackage.DELETE: return createDelete();
+		case EmftvmPackage.DUP: return createDup();
+		case EmftvmPackage.DUP_X1: return createDupX1();
+		case EmftvmPackage.SWAP: return createSwap();
+		case EmftvmPackage.SWAP_X1: return createSwapX1();
+		case EmftvmPackage.IF: return createIf();
+		case EmftvmPackage.IFN: return createIfn();
+		case EmftvmPackage.GOTO: return createGoto();
+		case EmftvmPackage.ITERATE: return createIterate();
+		case EmftvmPackage.ENDITERATE: return createEnditerate();
+		case EmftvmPackage.INVOKE: return createInvoke();
+		case EmftvmPackage.INVOKE_SUPER: return createInvokeSuper();
+		case EmftvmPackage.INVOKE_STATIC: return createInvokeStatic();
+		case EmftvmPackage.ALLINST: return createAllinst();
+		case EmftvmPackage.ALLINST_IN: return createAllinstIn();
+		case EmftvmPackage.ISNULL: return createIsnull();
+		case EmftvmPackage.GETENVTYPE: return createGetenvtype();
+		case EmftvmPackage.NOT: return createNot();
+		case EmftvmPackage.AND: return createAnd();
+		case EmftvmPackage.OR: return createOr();
+		case EmftvmPackage.XOR: return createXor();
+		case EmftvmPackage.IMPLIES: return createImplies();
+		case EmftvmPackage.IFTE: return createIfte();
+		case EmftvmPackage.RETURN: return createReturn();
+		case EmftvmPackage.GETCB: return createGetcb();
+		case EmftvmPackage.INVOKE_ALL_CBS: return createInvokeAllCbs();
+		case EmftvmPackage.INVOKE_CB: return createInvokeCb();
+		case EmftvmPackage.INVOKE_CB_S: return createInvokeCbS();
+		case EmftvmPackage.MATCH: return createMatch();
+		case EmftvmPackage.MATCH_S: return createMatchS();
+		case EmftvmPackage.ADD: return createAdd();
+		case EmftvmPackage.REMOVE: return createRemove();
+		case EmftvmPackage.INSERT: return createInsert();
+		case EmftvmPackage.GET_SUPER: return createGetSuper();
+		case EmftvmPackage.GETENV: return createGetenv();
+		default:
+			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
 	}
 
@@ -225,52 +243,52 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	@Override
-	public Object createFromString(EDataType eDataType, String initialValue) {
+	public Object createFromString(final EDataType eDataType, final String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case EmftvmPackage.MODEL_DECLARATION_TAG:
-				return createModelDeclarationTagFromString(eDataType, initialValue);
-			case EmftvmPackage.FEATURE_TAG:
-				return createFeatureTagFromString(eDataType, initialValue);
-			case EmftvmPackage.OPCODE:
-				return createOpcodeFromString(eDataType, initialValue);
-			case EmftvmPackage.RULE_MODE:
-				return createRuleModeFromString(eDataType, initialValue);
-			case EmftvmPackage.CONSTANT_TAG:
-				return createConstantTagFromString(eDataType, initialValue);
-			case EmftvmPackage.MODULE_RESOLVER:
-				return createModuleResolverFromString(eDataType, initialValue);
-			case EmftvmPackage.ENUM_LITERAL:
-				return createEnumLiteralFromString(eDataType, initialValue);
-			case EmftvmPackage.STACK_FRAME:
-				return createStackFrameFromString(eDataType, initialValue);
-			case EmftvmPackage.METHOD:
-				return createMethodFromString(eDataType, initialValue);
-			case EmftvmPackage.TIMING_DATA:
-				return createTimingDataFromString(eDataType, initialValue);
-			case EmftvmPackage.LAZY_COLLECTION:
-				return createLazyCollectionFromString(eDataType, initialValue);
-			case EmftvmPackage.LAZY_BAG:
-				return createLazyBagFromString(eDataType, initialValue);
-			case EmftvmPackage.LAZY_LIST:
-				return createLazyListFromString(eDataType, initialValue);
-			case EmftvmPackage.LAZY_ORDERED_SET:
-				return createLazyOrderedSetFromString(eDataType, initialValue);
-			case EmftvmPackage.LAZY_SET:
-				return createLazySetFromString(eDataType, initialValue);
-			case EmftvmPackage.EJAVA_OBJECT_ARRAY:
-				return createEJavaObjectArrayFromString(eDataType, initialValue);
-			case EmftvmPackage.EOBJECT_ARRAY:
-				return createEObjectArrayFromString(eDataType, initialValue);
-			case EmftvmPackage.EBOOLEAN_ARRAY:
-				return createEBooleanArrayFromString(eDataType, initialValue);
-			case EmftvmPackage.EJAVA_SET:
-				return createEJavaSetFromString(eDataType, initialValue);
-			case EmftvmPackage.EJAVA_ITERABLE:
-				return createEJavaIterableFromString(eDataType, initialValue);
-			case EmftvmPackage.CLASS_NOT_FOUND_EXCEPTION:
-				return createClassNotFoundExceptionFromString(eDataType, initialValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		case EmftvmPackage.MODEL_DECLARATION_TAG:
+			return createModelDeclarationTagFromString(eDataType, initialValue);
+		case EmftvmPackage.FEATURE_TAG:
+			return createFeatureTagFromString(eDataType, initialValue);
+		case EmftvmPackage.OPCODE:
+			return createOpcodeFromString(eDataType, initialValue);
+		case EmftvmPackage.RULE_MODE:
+			return createRuleModeFromString(eDataType, initialValue);
+		case EmftvmPackage.CONSTANT_TAG:
+			return createConstantTagFromString(eDataType, initialValue);
+		case EmftvmPackage.MODULE_RESOLVER:
+			return createModuleResolverFromString(eDataType, initialValue);
+		case EmftvmPackage.ENUM_LITERAL:
+			return createEnumLiteralFromString(eDataType, initialValue);
+		case EmftvmPackage.STACK_FRAME:
+			return createStackFrameFromString(eDataType, initialValue);
+		case EmftvmPackage.METHOD:
+			return createMethodFromString(eDataType, initialValue);
+		case EmftvmPackage.TIMING_DATA:
+			return createTimingDataFromString(eDataType, initialValue);
+		case EmftvmPackage.LAZY_COLLECTION:
+			return createLazyCollectionFromString(eDataType, initialValue);
+		case EmftvmPackage.LAZY_BAG:
+			return createLazyBagFromString(eDataType, initialValue);
+		case EmftvmPackage.LAZY_LIST:
+			return createLazyListFromString(eDataType, initialValue);
+		case EmftvmPackage.LAZY_ORDERED_SET:
+			return createLazyOrderedSetFromString(eDataType, initialValue);
+		case EmftvmPackage.LAZY_SET:
+			return createLazySetFromString(eDataType, initialValue);
+		case EmftvmPackage.EJAVA_OBJECT_ARRAY:
+			return createEJavaObjectArrayFromString(eDataType, initialValue);
+		case EmftvmPackage.EOBJECT_ARRAY:
+			return createEObjectArrayFromString(eDataType, initialValue);
+		case EmftvmPackage.EBOOLEAN_ARRAY:
+			return createEBooleanArrayFromString(eDataType, initialValue);
+		case EmftvmPackage.EJAVA_SET:
+			return createEJavaSetFromString(eDataType, initialValue);
+		case EmftvmPackage.EJAVA_ITERABLE:
+			return createEJavaIterableFromString(eDataType, initialValue);
+		case EmftvmPackage.CLASS_NOT_FOUND_EXCEPTION:
+			return createClassNotFoundExceptionFromString(eDataType, initialValue);
+		default:
+			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
 	}
 
@@ -281,52 +299,52 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	@Override
-	public String convertToString(EDataType eDataType, Object instanceValue) {
+	public String convertToString(final EDataType eDataType, final Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case EmftvmPackage.MODEL_DECLARATION_TAG:
-				return convertModelDeclarationTagToString(eDataType, instanceValue);
-			case EmftvmPackage.FEATURE_TAG:
-				return convertFeatureTagToString(eDataType, instanceValue);
-			case EmftvmPackage.OPCODE:
-				return convertOpcodeToString(eDataType, instanceValue);
-			case EmftvmPackage.RULE_MODE:
-				return convertRuleModeToString(eDataType, instanceValue);
-			case EmftvmPackage.CONSTANT_TAG:
-				return convertConstantTagToString(eDataType, instanceValue);
-			case EmftvmPackage.MODULE_RESOLVER:
-				return convertModuleResolverToString(eDataType, instanceValue);
-			case EmftvmPackage.ENUM_LITERAL:
-				return convertEnumLiteralToString(eDataType, instanceValue);
-			case EmftvmPackage.STACK_FRAME:
-				return convertStackFrameToString(eDataType, instanceValue);
-			case EmftvmPackage.METHOD:
-				return convertMethodToString(eDataType, instanceValue);
-			case EmftvmPackage.TIMING_DATA:
-				return convertTimingDataToString(eDataType, instanceValue);
-			case EmftvmPackage.LAZY_COLLECTION:
-				return convertLazyCollectionToString(eDataType, instanceValue);
-			case EmftvmPackage.LAZY_BAG:
-				return convertLazyBagToString(eDataType, instanceValue);
-			case EmftvmPackage.LAZY_LIST:
-				return convertLazyListToString(eDataType, instanceValue);
-			case EmftvmPackage.LAZY_ORDERED_SET:
-				return convertLazyOrderedSetToString(eDataType, instanceValue);
-			case EmftvmPackage.LAZY_SET:
-				return convertLazySetToString(eDataType, instanceValue);
-			case EmftvmPackage.EJAVA_OBJECT_ARRAY:
-				return convertEJavaObjectArrayToString(eDataType, instanceValue);
-			case EmftvmPackage.EOBJECT_ARRAY:
-				return convertEObjectArrayToString(eDataType, instanceValue);
-			case EmftvmPackage.EBOOLEAN_ARRAY:
-				return convertEBooleanArrayToString(eDataType, instanceValue);
-			case EmftvmPackage.EJAVA_SET:
-				return convertEJavaSetToString(eDataType, instanceValue);
-			case EmftvmPackage.EJAVA_ITERABLE:
-				return convertEJavaIterableToString(eDataType, instanceValue);
-			case EmftvmPackage.CLASS_NOT_FOUND_EXCEPTION:
-				return convertClassNotFoundExceptionToString(eDataType, instanceValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		case EmftvmPackage.MODEL_DECLARATION_TAG:
+			return convertModelDeclarationTagToString(eDataType, instanceValue);
+		case EmftvmPackage.FEATURE_TAG:
+			return convertFeatureTagToString(eDataType, instanceValue);
+		case EmftvmPackage.OPCODE:
+			return convertOpcodeToString(eDataType, instanceValue);
+		case EmftvmPackage.RULE_MODE:
+			return convertRuleModeToString(eDataType, instanceValue);
+		case EmftvmPackage.CONSTANT_TAG:
+			return convertConstantTagToString(eDataType, instanceValue);
+		case EmftvmPackage.MODULE_RESOLVER:
+			return convertModuleResolverToString(eDataType, instanceValue);
+		case EmftvmPackage.ENUM_LITERAL:
+			return convertEnumLiteralToString(eDataType, instanceValue);
+		case EmftvmPackage.STACK_FRAME:
+			return convertStackFrameToString(eDataType, instanceValue);
+		case EmftvmPackage.METHOD:
+			return convertMethodToString(eDataType, instanceValue);
+		case EmftvmPackage.TIMING_DATA:
+			return convertTimingDataToString(eDataType, instanceValue);
+		case EmftvmPackage.LAZY_COLLECTION:
+			return convertLazyCollectionToString(eDataType, instanceValue);
+		case EmftvmPackage.LAZY_BAG:
+			return convertLazyBagToString(eDataType, instanceValue);
+		case EmftvmPackage.LAZY_LIST:
+			return convertLazyListToString(eDataType, instanceValue);
+		case EmftvmPackage.LAZY_ORDERED_SET:
+			return convertLazyOrderedSetToString(eDataType, instanceValue);
+		case EmftvmPackage.LAZY_SET:
+			return convertLazySetToString(eDataType, instanceValue);
+		case EmftvmPackage.EJAVA_OBJECT_ARRAY:
+			return convertEJavaObjectArrayToString(eDataType, instanceValue);
+		case EmftvmPackage.EOBJECT_ARRAY:
+			return convertEObjectArrayToString(eDataType, instanceValue);
+		case EmftvmPackage.EBOOLEAN_ARRAY:
+			return convertEBooleanArrayToString(eDataType, instanceValue);
+		case EmftvmPackage.EJAVA_SET:
+			return convertEJavaSetToString(eDataType, instanceValue);
+		case EmftvmPackage.EJAVA_ITERABLE:
+			return convertEJavaIterableToString(eDataType, instanceValue);
+		case EmftvmPackage.CLASS_NOT_FOUND_EXCEPTION:
+			return convertClassNotFoundExceptionToString(eDataType, instanceValue);
+		default:
+			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
 	}
 
@@ -337,7 +355,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Module createModule() {
-		ModuleImpl module = new ModuleImpl();
+		final ModuleImpl module = new ModuleImpl();
 		return module;
 	}
 
@@ -348,7 +366,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public ModelDeclaration createModelDeclaration() {
-		ModelDeclarationImpl modelDeclaration = new ModelDeclarationImpl();
+		final ModelDeclarationImpl modelDeclaration = new ModelDeclarationImpl();
 		return modelDeclaration;
 	}
 
@@ -359,7 +377,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Field createField() {
-		FieldImpl field = new FieldImpl();
+		final FieldImpl field = new FieldImpl();
 		return field;
 	}
 
@@ -370,7 +388,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Operation createOperation() {
-		OperationImpl operation = new OperationImpl();
+		final OperationImpl operation = new OperationImpl();
 		return operation;
 	}
 
@@ -381,7 +399,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Parameter createParameter() {
-		ParameterImpl parameter = new ParameterImpl();
+		final ParameterImpl parameter = new ParameterImpl();
 		return parameter;
 	}
 
@@ -392,7 +410,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public LineNumber createLineNumber() {
-		LineNumberImpl lineNumber = new LineNumberImpl();
+		final LineNumberImpl lineNumber = new LineNumberImpl();
 		return lineNumber;
 	}
 
@@ -403,7 +421,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public LocalVariable createLocalVariable() {
-		LocalVariableImpl localVariable = new LocalVariableImpl();
+		final LocalVariableImpl localVariable = new LocalVariableImpl();
 		return localVariable;
 	}
 
@@ -414,7 +432,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Rule createRule() {
-		RuleImpl rule = new RuleImpl();
+		final RuleImpl rule = new RuleImpl();
 		return rule;
 	}
 
@@ -425,7 +443,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public InputRuleElement createInputRuleElement() {
-		InputRuleElementImpl inputRuleElement = new InputRuleElementImpl();
+		final InputRuleElementImpl inputRuleElement = new InputRuleElementImpl();
 		return inputRuleElement;
 	}
 
@@ -436,7 +454,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public OutputRuleElement createOutputRuleElement() {
-		OutputRuleElementImpl outputRuleElement = new OutputRuleElementImpl();
+		final OutputRuleElementImpl outputRuleElement = new OutputRuleElementImpl();
 		return outputRuleElement;
 	}
 
@@ -447,7 +465,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public CodeBlock createCodeBlock() {
-		CodeBlockImpl codeBlock = new CodeBlockImpl();
+		final CodeBlockImpl codeBlock = new CodeBlockImpl();
 		return codeBlock;
 	}
 
@@ -458,7 +476,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Push createPush() {
-		PushImpl push = new PushImpl();
+		final PushImpl push = new PushImpl();
 		return push;
 	}
 
@@ -469,7 +487,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Pusht createPusht() {
-		PushtImpl pusht = new PushtImpl();
+		final PushtImpl pusht = new PushtImpl();
 		return pusht;
 	}
 
@@ -480,7 +498,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Pushf createPushf() {
-		PushfImpl pushf = new PushfImpl();
+		final PushfImpl pushf = new PushfImpl();
 		return pushf;
 	}
 
@@ -491,7 +509,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Pop createPop() {
-		PopImpl pop = new PopImpl();
+		final PopImpl pop = new PopImpl();
 		return pop;
 	}
 
@@ -502,7 +520,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Load createLoad() {
-		LoadImpl load = new LoadImpl();
+		final LoadImpl load = new LoadImpl();
 		return load;
 	}
 
@@ -513,7 +531,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Store createStore() {
-		StoreImpl store = new StoreImpl();
+		final StoreImpl store = new StoreImpl();
 		return store;
 	}
 
@@ -524,7 +542,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Set createSet() {
-		SetImpl set = new SetImpl();
+		final SetImpl set = new SetImpl();
 		return set;
 	}
 
@@ -535,7 +553,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Get createGet() {
-		GetImpl get = new GetImpl();
+		final GetImpl get = new GetImpl();
 		return get;
 	}
 
@@ -546,7 +564,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public GetTrans createGetTrans() {
-		GetTransImpl getTrans = new GetTransImpl();
+		final GetTransImpl getTrans = new GetTransImpl();
 		return getTrans;
 	}
 
@@ -557,7 +575,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public SetStatic createSetStatic() {
-		SetStaticImpl setStatic = new SetStaticImpl();
+		final SetStaticImpl setStatic = new SetStaticImpl();
 		return setStatic;
 	}
 
@@ -568,7 +586,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public GetStatic createGetStatic() {
-		GetStaticImpl getStatic = new GetStaticImpl();
+		final GetStaticImpl getStatic = new GetStaticImpl();
 		return getStatic;
 	}
 
@@ -579,7 +597,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Findtype createFindtype() {
-		FindtypeImpl findtype = new FindtypeImpl();
+		final FindtypeImpl findtype = new FindtypeImpl();
 		return findtype;
 	}
 
@@ -590,7 +608,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public FindtypeS createFindtypeS() {
-		FindtypeSImpl findtypeS = new FindtypeSImpl();
+		final FindtypeSImpl findtypeS = new FindtypeSImpl();
 		return findtypeS;
 	}
 
@@ -601,7 +619,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public New createNew() {
-		NewImpl new_ = new NewImpl();
+		final NewImpl new_ = new NewImpl();
 		return new_;
 	}
 
@@ -612,7 +630,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public NewS createNewS() {
-		NewSImpl newS = new NewSImpl();
+		final NewSImpl newS = new NewSImpl();
 		return newS;
 	}
 
@@ -623,7 +641,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Delete createDelete() {
-		DeleteImpl delete = new DeleteImpl();
+		final DeleteImpl delete = new DeleteImpl();
 		return delete;
 	}
 
@@ -634,7 +652,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Dup createDup() {
-		DupImpl dup = new DupImpl();
+		final DupImpl dup = new DupImpl();
 		return dup;
 	}
 
@@ -645,7 +663,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public DupX1 createDupX1() {
-		DupX1Impl dupX1 = new DupX1Impl();
+		final DupX1Impl dupX1 = new DupX1Impl();
 		return dupX1;
 	}
 
@@ -656,7 +674,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Swap createSwap() {
-		SwapImpl swap = new SwapImpl();
+		final SwapImpl swap = new SwapImpl();
 		return swap;
 	}
 
@@ -667,7 +685,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public SwapX1 createSwapX1() {
-		SwapX1Impl swapX1 = new SwapX1Impl();
+		final SwapX1Impl swapX1 = new SwapX1Impl();
 		return swapX1;
 	}
 
@@ -678,7 +696,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public If createIf() {
-		IfImpl if_ = new IfImpl();
+		final IfImpl if_ = new IfImpl();
 		return if_;
 	}
 
@@ -689,7 +707,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Ifn createIfn() {
-		IfnImpl ifn = new IfnImpl();
+		final IfnImpl ifn = new IfnImpl();
 		return ifn;
 	}
 
@@ -700,7 +718,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Goto createGoto() {
-		GotoImpl goto_ = new GotoImpl();
+		final GotoImpl goto_ = new GotoImpl();
 		return goto_;
 	}
 
@@ -711,7 +729,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Iterate createIterate() {
-		IterateImpl iterate = new IterateImpl();
+		final IterateImpl iterate = new IterateImpl();
 		return iterate;
 	}
 
@@ -722,7 +740,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Enditerate createEnditerate() {
-		EnditerateImpl enditerate = new EnditerateImpl();
+		final EnditerateImpl enditerate = new EnditerateImpl();
 		return enditerate;
 	}
 
@@ -733,7 +751,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Invoke createInvoke() {
-		InvokeImpl invoke = new InvokeImpl();
+		final InvokeImpl invoke = new InvokeImpl();
 		return invoke;
 	}
 
@@ -744,7 +762,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public InvokeSuper createInvokeSuper() {
-		InvokeSuperImpl invokeSuper = new InvokeSuperImpl();
+		final InvokeSuperImpl invokeSuper = new InvokeSuperImpl();
 		return invokeSuper;
 	}
 
@@ -755,7 +773,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public InvokeStatic createInvokeStatic() {
-		InvokeStaticImpl invokeStatic = new InvokeStaticImpl();
+		final InvokeStaticImpl invokeStatic = new InvokeStaticImpl();
 		return invokeStatic;
 	}
 
@@ -766,7 +784,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Allinst createAllinst() {
-		AllinstImpl allinst = new AllinstImpl();
+		final AllinstImpl allinst = new AllinstImpl();
 		return allinst;
 	}
 
@@ -777,7 +795,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public AllinstIn createAllinstIn() {
-		AllinstInImpl allinstIn = new AllinstInImpl();
+		final AllinstInImpl allinstIn = new AllinstInImpl();
 		return allinstIn;
 	}
 
@@ -788,7 +806,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Match createMatch() {
-		MatchImpl match = new MatchImpl();
+		final MatchImpl match = new MatchImpl();
 		return match;
 	}
 
@@ -799,7 +817,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public MatchS createMatchS() {
-		MatchSImpl matchS = new MatchSImpl();
+		final MatchSImpl matchS = new MatchSImpl();
 		return matchS;
 	}
 
@@ -810,7 +828,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Add createAdd() {
-		AddImpl add = new AddImpl();
+		final AddImpl add = new AddImpl();
 		return add;
 	}
 
@@ -821,7 +839,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Remove createRemove() {
-		RemoveImpl remove = new RemoveImpl();
+		final RemoveImpl remove = new RemoveImpl();
 		return remove;
 	}
 
@@ -832,7 +850,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Insert createInsert() {
-		InsertImpl insert = new InsertImpl();
+		final InsertImpl insert = new InsertImpl();
 		return insert;
 	}
 
@@ -842,7 +860,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public GetSuper createGetSuper() {
-		GetSuperImpl getSuper = new GetSuperImpl();
+		final GetSuperImpl getSuper = new GetSuperImpl();
 		return getSuper;
 	}
 
@@ -852,7 +870,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Getenv createGetenv() {
-		GetenvImpl getenv = new GetenvImpl();
+		final GetenvImpl getenv = new GetenvImpl();
 		return getenv;
 	}
 
@@ -863,7 +881,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Return createReturn() {
-		ReturnImpl return_ = new ReturnImpl();
+		final ReturnImpl return_ = new ReturnImpl();
 		return return_;
 	}
 
@@ -874,7 +892,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Getcb createGetcb() {
-		GetcbImpl getcb = new GetcbImpl();
+		final GetcbImpl getcb = new GetcbImpl();
 		return getcb;
 	}
 
@@ -885,7 +903,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public InvokeAllCbs createInvokeAllCbs() {
-		InvokeAllCbsImpl invokeAllCbs = new InvokeAllCbsImpl();
+		final InvokeAllCbsImpl invokeAllCbs = new InvokeAllCbsImpl();
 		return invokeAllCbs;
 	}
 
@@ -896,7 +914,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public InvokeCb createInvokeCb() {
-		InvokeCbImpl invokeCb = new InvokeCbImpl();
+		final InvokeCbImpl invokeCb = new InvokeCbImpl();
 		return invokeCb;
 	}
 
@@ -907,7 +925,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public InvokeCbS createInvokeCbS() {
-		InvokeCbSImpl invokeCbS = new InvokeCbSImpl();
+		final InvokeCbSImpl invokeCbS = new InvokeCbSImpl();
 		return invokeCbS;
 	}
 
@@ -917,8 +935,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ModelDeclarationTag createModelDeclarationTagFromString(EDataType eDataType, String initialValue) {
-		ModelDeclarationTag result = ModelDeclarationTag.get(initialValue);
+	public ModelDeclarationTag createModelDeclarationTagFromString(final EDataType eDataType, final String initialValue) {
+		final ModelDeclarationTag result = ModelDeclarationTag.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
@@ -929,7 +947,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertModelDeclarationTagToString(EDataType eDataType, Object instanceValue) {
+	public String convertModelDeclarationTagToString(final EDataType eDataType, final Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 
@@ -940,7 +958,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Not createNot() {
-		NotImpl not = new NotImpl();
+		final NotImpl not = new NotImpl();
 		return not;
 	}
 
@@ -951,7 +969,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public And createAnd() {
-		AndImpl and = new AndImpl();
+		final AndImpl and = new AndImpl();
 		return and;
 	}
 
@@ -962,7 +980,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Or createOr() {
-		OrImpl or = new OrImpl();
+		final OrImpl or = new OrImpl();
 		return or;
 	}
 
@@ -973,7 +991,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Xor createXor() {
-		XorImpl xor = new XorImpl();
+		final XorImpl xor = new XorImpl();
 		return xor;
 	}
 
@@ -984,7 +1002,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Implies createImplies() {
-		ImpliesImpl implies = new ImpliesImpl();
+		final ImpliesImpl implies = new ImpliesImpl();
 		return implies;
 	}
 
@@ -995,7 +1013,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Ifte createIfte() {
-		IfteImpl ifte = new IfteImpl();
+		final IfteImpl ifte = new IfteImpl();
 		return ifte;
 	}
 
@@ -1006,7 +1024,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Isnull createIsnull() {
-		IsnullImpl isnull = new IsnullImpl();
+		final IsnullImpl isnull = new IsnullImpl();
 		return isnull;
 	}
 
@@ -1017,7 +1035,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Getenvtype createGetenvtype() {
-		GetenvtypeImpl getenvtype = new GetenvtypeImpl();
+		final GetenvtypeImpl getenvtype = new GetenvtypeImpl();
 		return getenvtype;
 	}
 
@@ -1027,8 +1045,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FeatureTag createFeatureTagFromString(EDataType eDataType, String initialValue) {
-		FeatureTag result = FeatureTag.get(initialValue);
+	public FeatureTag createFeatureTagFromString(final EDataType eDataType, final String initialValue) {
+		final FeatureTag result = FeatureTag.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
@@ -1039,7 +1057,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertFeatureTagToString(EDataType eDataType, Object instanceValue) {
+	public String convertFeatureTagToString(final EDataType eDataType, final Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 
@@ -1050,7 +1068,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public ExecEnv createExecEnv() {
-		ExecEnvImpl execEnv = new ExecEnvImpl();
+		final ExecEnvImpl execEnv = new ExecEnvImpl();
 		return execEnv;
 	}
 
@@ -1061,7 +1079,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Model createModel() {
-		ModelImpl model = new ModelImpl();
+		final ModelImpl model = new ModelImpl();
 		return model;
 	}
 
@@ -1072,7 +1090,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * @generated
 	 */
 	public Metamodel createMetamodel() {
-		MetamodelImpl metamodel = new MetamodelImpl();
+		final MetamodelImpl metamodel = new MetamodelImpl();
 		return metamodel;
 	}
 
@@ -1082,8 +1100,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Opcode createOpcodeFromString(EDataType eDataType, String initialValue) {
-		Opcode result = Opcode.get(initialValue);
+	public Opcode createOpcodeFromString(final EDataType eDataType, final String initialValue) {
+		final Opcode result = Opcode.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
@@ -1094,7 +1112,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertOpcodeToString(EDataType eDataType, Object instanceValue) {
+	public String convertOpcodeToString(final EDataType eDataType, final Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 
@@ -1104,8 +1122,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RuleMode createRuleModeFromString(EDataType eDataType, String initialValue) {
-		RuleMode result = RuleMode.get(initialValue);
+	public RuleMode createRuleModeFromString(final EDataType eDataType, final String initialValue) {
+		final RuleMode result = RuleMode.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
@@ -1116,7 +1134,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertRuleModeToString(EDataType eDataType, Object instanceValue) {
+	public String convertRuleModeToString(final EDataType eDataType, final Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 
@@ -1126,8 +1144,8 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ConstantTag createConstantTagFromString(EDataType eDataType, String initialValue) {
-		ConstantTag result = ConstantTag.get(initialValue);
+	public ConstantTag createConstantTagFromString(final EDataType eDataType, final String initialValue) {
+		final ConstantTag result = ConstantTag.get(initialValue);
 		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
@@ -1138,7 +1156,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertConstantTagToString(EDataType eDataType, Object instanceValue) {
+	public String convertConstantTagToString(final EDataType eDataType, final Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 
@@ -1148,7 +1166,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public StackFrame createStackFrameFromString(EDataType eDataType, String initialValue) {
+	public StackFrame createStackFrameFromString(final EDataType eDataType, final String initialValue) {
 		return (StackFrame)super.createFromString(eDataType, initialValue);
 	}
 
@@ -1158,7 +1176,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertStackFrameToString(EDataType eDataType, Object instanceValue) {
+	public String convertStackFrameToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -1168,7 +1186,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Method createMethodFromString(EDataType eDataType, String initialValue) {
+	public Method createMethodFromString(final EDataType eDataType, final String initialValue) {
 		return (Method)super.createFromString(eDataType, initialValue);
 	}
 
@@ -1178,7 +1196,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertMethodToString(EDataType eDataType, Object instanceValue) {
+	public String convertMethodToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -1188,7 +1206,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TimingData createTimingDataFromString(EDataType eDataType, String initialValue) {
+	public TimingData createTimingDataFromString(final EDataType eDataType, final String initialValue) {
 		return (TimingData)super.createFromString(eDataType, initialValue);
 	}
 
@@ -1198,7 +1216,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertTimingDataToString(EDataType eDataType, Object instanceValue) {
+	public String convertTimingDataToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -1208,7 +1226,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public LazyCollection<?> createLazyCollectionFromString(EDataType eDataType, String initialValue) {
+	public LazyCollection<?> createLazyCollectionFromString(final EDataType eDataType, final String initialValue) {
 		return (LazyCollection<?>)super.createFromString(initialValue);
 	}
 
@@ -1218,7 +1236,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertLazyCollectionToString(EDataType eDataType, Object instanceValue) {
+	public String convertLazyCollectionToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 
@@ -1228,7 +1246,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public LazyBag<?> createLazyBagFromString(EDataType eDataType, String initialValue) {
+	public LazyBag<?> createLazyBagFromString(final EDataType eDataType, final String initialValue) {
 		return (LazyBag<?>)super.createFromString(initialValue);
 	}
 
@@ -1238,7 +1256,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertLazyBagToString(EDataType eDataType, Object instanceValue) {
+	public String convertLazyBagToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 
@@ -1248,7 +1266,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public LazyList<?> createLazyListFromString(EDataType eDataType, String initialValue) {
+	public LazyList<?> createLazyListFromString(final EDataType eDataType, final String initialValue) {
 		return (LazyList<?>)super.createFromString(initialValue);
 	}
 
@@ -1258,7 +1276,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertLazyListToString(EDataType eDataType, Object instanceValue) {
+	public String convertLazyListToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 
@@ -1268,7 +1286,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public LazyOrderedSet<?> createLazyOrderedSetFromString(EDataType eDataType, String initialValue) {
+	public LazyOrderedSet<?> createLazyOrderedSetFromString(final EDataType eDataType, final String initialValue) {
 		return (LazyOrderedSet<?>)super.createFromString(initialValue);
 	}
 
@@ -1278,7 +1296,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertLazyOrderedSetToString(EDataType eDataType, Object instanceValue) {
+	public String convertLazyOrderedSetToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 
@@ -1288,7 +1306,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public LazySet<?> createLazySetFromString(EDataType eDataType, String initialValue) {
+	public LazySet<?> createLazySetFromString(final EDataType eDataType, final String initialValue) {
 		return (LazySet<?>)super.createFromString(initialValue);
 	}
 
@@ -1298,7 +1316,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertLazySetToString(EDataType eDataType, Object instanceValue) {
+	public String convertLazySetToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 
@@ -1307,7 +1325,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Object[] createEJavaObjectArrayFromString(EDataType eDataType, String initialValue) {
+	public Object[] createEJavaObjectArrayFromString(final EDataType eDataType, final String initialValue) {
 		return (Object[])super.createFromString(initialValue);
 	}
 
@@ -1316,7 +1334,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertEJavaObjectArrayToString(EDataType eDataType, Object instanceValue) {
+	public String convertEJavaObjectArrayToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 
@@ -1325,7 +1343,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EObject[] createEObjectArrayFromString(EDataType eDataType, String initialValue) {
+	public EObject[] createEObjectArrayFromString(final EDataType eDataType, final String initialValue) {
 		return (EObject[])super.createFromString(initialValue);
 	}
 
@@ -1334,7 +1352,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertEObjectArrayToString(EDataType eDataType, Object instanceValue) {
+	public String convertEObjectArrayToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 
@@ -1343,7 +1361,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean[] createEBooleanArrayFromString(EDataType eDataType, String initialValue) {
+	public boolean[] createEBooleanArrayFromString(final EDataType eDataType, final String initialValue) {
 		return (boolean[])super.createFromString(initialValue);
 	}
 
@@ -1352,7 +1370,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertEBooleanArrayToString(EDataType eDataType, Object instanceValue) {
+	public String convertEBooleanArrayToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 
@@ -1361,7 +1379,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public java.util.Set<?> createEJavaSetFromString(EDataType eDataType, String initialValue) {
+	public java.util.Set<?> createEJavaSetFromString(final EDataType eDataType, final String initialValue) {
 		return (java.util.Set<?>)super.createFromString(initialValue);
 	}
 
@@ -1370,7 +1388,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertEJavaSetToString(EDataType eDataType, Object instanceValue) {
+	public String convertEJavaSetToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 
@@ -1379,7 +1397,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Iterable<?> createEJavaIterableFromString(EDataType eDataType, String initialValue) {
+	public Iterable<?> createEJavaIterableFromString(final EDataType eDataType, final String initialValue) {
 		return (Iterable<?>)super.createFromString(initialValue);
 	}
 
@@ -1388,7 +1406,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertEJavaIterableToString(EDataType eDataType, Object instanceValue) {
+	public String convertEJavaIterableToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(instanceValue);
 	}
 
@@ -1397,7 +1415,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ClassNotFoundException createClassNotFoundExceptionFromString(EDataType eDataType, String initialValue) {
+	public ClassNotFoundException createClassNotFoundExceptionFromString(final EDataType eDataType, final String initialValue) {
 		return (ClassNotFoundException)super.createFromString(eDataType, initialValue);
 	}
 
@@ -1406,7 +1424,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertClassNotFoundExceptionToString(EDataType eDataType, Object instanceValue) {
+	public String convertClassNotFoundExceptionToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -1416,7 +1434,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ModuleResolver createModuleResolverFromString(EDataType eDataType, String initialValue) {
+	public ModuleResolver createModuleResolverFromString(final EDataType eDataType, final String initialValue) {
 		return (ModuleResolver)super.createFromString(eDataType, initialValue);
 	}
 
@@ -1426,7 +1444,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertModuleResolverToString(EDataType eDataType, Object instanceValue) {
+	public String convertModuleResolverToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -1436,7 +1454,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EnumLiteral createEnumLiteralFromString(EDataType eDataType, String initialValue) {
+	public EnumLiteral createEnumLiteralFromString(final EDataType eDataType, final String initialValue) {
 		return (EnumLiteral)super.createFromString(eDataType, initialValue);
 	}
 
@@ -1446,7 +1464,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertEnumLiteralToString(EDataType eDataType, Object instanceValue) {
+	public String convertEnumLiteralToString(final EDataType eDataType, final Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -1475,7 +1493,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Instruction createInstruction(Opcode opcode) {
+	public Instruction createInstruction(final Opcode opcode) {
 		switch (opcode) {
 		case PUSH: return createPush();
 		case PUSHT: return createPusht();
@@ -1530,6 +1548,67 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 		default:
 			throw new IllegalArgumentException("The opcode '" + opcode.getName() + "' does not have a valid classifier");
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Model createModel(final Resource resource) {
+		final TypeMap<Class<?>, ModelFactory> modelFactoryRegistry = getModelFactoryRegistry();
+		final Object key = modelFactoryRegistry.findKey(resource.getClass());
+		if (key != null) {
+			return modelFactoryRegistry.get(key).createModel(resource);
+		}
+		return defaultModelFactory.createModel(resource);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public Metamodel createMetamodel(final Resource resource) {
+		final TypeMap<Class<?>, ModelFactory> modelFactoryRegistry = getModelFactoryRegistry();
+		final Object key = modelFactoryRegistry.findKey(resource.getClass());
+		if (key != null) {
+			return modelFactoryRegistry.get(key).createMetamodel(resource);
+		}
+		return defaultModelFactory.createMetamodel(resource);
+	}
+
+	/**
+	 * @return the modelFactoryRegistry
+	 */
+	protected TypeMap<Class<?>, ModelFactory> getModelFactoryRegistry() {
+		if (modelFactoryRegistry == null) {
+			modelFactoryRegistry = createModelFactoryRegistry();
+		}
+		return modelFactoryRegistry;
+	}
+
+	private TypeMap<Class<?>, ModelFactory> createModelFactoryRegistry() {
+		final TypeMap<Class<?>, ModelFactory> modelFactoryRegistry = new TypeHashMap<Class<?>, ModelFactory>();
+		if (Platform.isRunning()) {
+			final IExtension[] extensions = Platform.getExtensionRegistry()
+					.getExtensionPoint(MODELFACTORY_EXTENSION_POINT).getExtensions();
+			for (int i = 0; i < extensions.length; i++) {
+				final IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
+				for (int j = 0; j < configElements.length; j++) {
+					final String resourceType = configElements[j].getAttribute("resourceType");
+					if (resourceType != null && resourceType.length() > 0) {
+						try {
+							final Class<?> resourceClass = Class.forName(resourceType);
+							final ModelFactory modelFactory = (ModelFactory) configElements[j]
+									.createExecutableExtension("class");
+							modelFactoryRegistry.put(resourceClass, modelFactory);
+						} catch (final ClassNotFoundException e) {
+							ATLLogger.log(Level.WARNING, "Cannot find specified resourceType", e);
+						} catch (final CoreException e) {
+							ATLLogger.log(Level.WARNING, "Cannot create instance of specified class", e);
+						}
+					}
+				}
+			}
+		}
+		return modelFactoryRegistry;
 	}
 
 } //EmftvmFactoryImpl

@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,8 +57,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  * Launches EMFTVM transformation modules.
  * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
  */
-public class EMFTVMLaunchConfigurationDelegate implements
-		ILaunchConfigurationDelegate {
+public class EMFTVMLaunchConfigurationDelegate implements ILaunchConfigurationDelegate {
 
 	/**
 	 * Creates a new {@link EMFTVMLaunchConfigurationDelegate}.
@@ -69,6 +69,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void launch(final ILaunchConfiguration configuration, final String mode,
 			final ILaunch launch, final IProgressMonitor monitor) throws CoreException {
 		ATLConsole.findConsole(); // force ATL console startup
@@ -88,20 +89,20 @@ public class EMFTVMLaunchConfigurationDelegate implements
 				try {
 					try {
 						internalLaunch(configuration, mode, launch, monitor);
-					} catch (CoreException e) {
+					} catch (final CoreException e) {
 						EmftvmLauncherPlugin.log(e.getStatus());
-					} catch (VMException e) {
+					} catch (final VMException e) {
 						ATLLogger.severe(e.toString());
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						ATLLogger.severe(e.toString());
 						EmftvmLauncherPlugin.log(e);
-					} catch (AssertionError e) {
+					} catch (final AssertionError e) {
 						ATLLogger.severe(e.toString());
 						EmftvmLauncherPlugin.log(e);
 					} finally {
 						target.terminate();
 					}
-				} catch (CoreException e) {
+				} catch (final CoreException e) {
 					EmftvmLauncherPlugin.log(e.getStatus());
 				}
 			}
@@ -114,7 +115,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		launch.addDebugTarget(target);
 		monitor.done();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void internalLaunch(final ILaunchConfiguration configuration, final String mode,
 			final ILaunch launch, final IProgressMonitor monitor) throws CoreException, IOException {
@@ -133,21 +134,21 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		env.setJitDisabled(configuration.getAttribute(EMFTVMLaunchConstants.DISABLE_JIT, false));
 		env.setMonitor(vmmon);
 		final ResourceSet rs = new ResourceSetImpl();
-		
+
 		final Map<String, String> metamodelLocations = configuration.getAttribute(EMFTVMLaunchConstants.METAMODELS, Collections.EMPTY_MAP);
 		final Map<String, String> metamodelOptions = configuration.getAttribute(EMFTVMLaunchConstants.METAMODEL_OPTIONS, Collections.EMPTY_MAP);
 		loadFileMetaModels(rs, metamodelLocations, metamodelOptions, env);
 		EMFTVMUtil.registerEPackages(rs);
-		
+
 		final Map<String, String> inputModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODELS, Collections.EMPTY_MAP);
 		final Map<String, String> inputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INPUT_MODEL_OPTIONS, Collections.EMPTY_MAP);
 		loadInputModels(rs, inputModelLocations, inputModelOptions, env);
-		
+
 		final Map<String, String> inoutModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODELS, Collections.EMPTY_MAP);
 		final Map<String, String> inoutModelOutLocations = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_OUT_MODELS, Collections.EMPTY_MAP);
 		final Map<String, String> inoutModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.INOUT_MODEL_OPTIONS, Collections.EMPTY_MAP);
 		loadInOutModels(rs, inoutModelLocations, inoutModelOptions, env);
-		
+
 		final Map<String, String> outputModelLocations = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODELS, Collections.EMPTY_MAP);
 		final Map<String, String> outputModelOptions = configuration.getAttribute(EMFTVMLaunchConstants.OUTPUT_MODEL_OPTIONS, Collections.EMPTY_MAP);
 		createOutputModels(rs, outputModelLocations, outputModelOptions, env);
@@ -181,7 +182,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		final Map<String, String> emptyMap = Collections.emptyMap();
 		saveModels(env.getOutputModels(), outputModelOptions, emptyMap);
 	}
-	
+
 	/**
 	 * Loads all metamodels that have a file or platform URI from <code>modelLocations</code> into <code>env</code>.
 	 * @param rs the resource set to use
@@ -189,11 +190,11 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 * @param modelOptions map of additional model options
 	 * @param env the {@link ExecEnv} to register the metamodels in
 	 */
-	private void loadFileMetaModels(final ResourceSet rs, final Map<String, String> modelLocations, 
+	private void loadFileMetaModels(final ResourceSet rs, final Map<String, String> modelLocations,
 			final Map<String, String> modelOptions,
 			final ExecEnv env) {
-		for (Entry<String, String> entry : modelLocations.entrySet()) {
-			URI uri = URI.createURI((String)entry.getValue());
+		for (final Entry<String, String> entry : modelLocations.entrySet()) {
+			final URI uri = URI.createURI(entry.getValue());
 			if (uri.isFile() || uri.isPlatform()) {
 				Resource r;
 				if (getBoolOption(modelOptions, entry.getKey(), EMFTVMLaunchConstants.OPT_IS_METAMETAMODEL)) {
@@ -201,9 +202,8 @@ public class EMFTVMLaunchConfigurationDelegate implements
 				} else {
 					r = rs.getResource(uri, true);
 				}
-				Metamodel m = EmftvmFactory.eINSTANCE.createMetamodel();
-				m.setResource(r);
-				env.registerMetaModel((String)entry.getKey(), m);
+				final Metamodel m = EmftvmFactory.eINSTANCE.createMetamodel(r);
+				env.registerMetaModel(entry.getKey(), m);
 			}
 		}
 	}
@@ -215,11 +215,11 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 * @param modelOptions map of additional model options
 	 * @param env the {@link ExecEnv} to register the metamodels in
 	 */
-	private void loadOtherMetaModels(final ResourceSet rs, final Map<String, String> modelLocations, 
+	private void loadOtherMetaModels(final ResourceSet rs, final Map<String, String> modelLocations,
 			final Map<String, String> modelOptions,
 			final ExecEnv env) {
-		for (Entry<String, String> entry : modelLocations.entrySet()) {
-			URI uri = URI.createURI((String)entry.getValue());
+		for (final Entry<String, String> entry : modelLocations.entrySet()) {
+			final URI uri = URI.createURI(entry.getValue());
 			if (!uri.isFile() && !uri.isPlatform()) {
 				Resource r;
 				if (getBoolOption(modelOptions, entry.getKey(), EMFTVMLaunchConstants.OPT_IS_METAMETAMODEL)) {
@@ -227,9 +227,8 @@ public class EMFTVMLaunchConfigurationDelegate implements
 				} else {
 					r = rs.getResource(uri, true);
 				}
-				Metamodel m = EmftvmFactory.eINSTANCE.createMetamodel();
-				m.setResource(r);
-				env.registerMetaModel((String)entry.getKey(), m);
+				final Metamodel m = EmftvmFactory.eINSTANCE.createMetamodel(r);
+				env.registerMetaModel(entry.getKey(), m);
 			}
 		}
 	}
@@ -241,26 +240,25 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 * @param modelOptions the map of model options
 	 * @return the loaded {@link Model}
 	 */
-	private Model loadModel(final ResourceSet rs, final Entry<String, String> entry, 
+	private Model loadModel(final ResourceSet rs, final Entry<String, String> entry,
 			final Map<String, String> modelOptions) {
 		final Resource r;
 		if (getBoolOption(
-				modelOptions, 
-				entry.getKey(), 
+				modelOptions,
+				entry.getKey(),
 				EMFTVMLaunchConstants.OPT_CREATE_NEW_MODEL)) {
 			r = rs.createResource(URI.createURI(entry.getValue()));
 		} else {
 			r = rs.getResource(URI.createURI(entry.getValue()), true);
 		}
-		final Model m = EmftvmFactory.eINSTANCE.createModel();
-		m.setResource(r);
+		final Model m = EmftvmFactory.eINSTANCE.createModel(r);
 		m.setAllowInterModelReferences(getBoolOption(
-				modelOptions, 
-				entry.getKey(), 
+				modelOptions,
+				entry.getKey(),
 				EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
 		return m;
 	}
-	
+
 	/**
 	 * Loads all models from <code>modelLocations</code> into <code>env</code>.
 	 * @param rs the resource set to use
@@ -271,11 +269,11 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	private void loadInputModels(final ResourceSet rs, final Map<String, String> modelLocations,
 			final Map<String, String> modelOptions,
 			final ExecEnv env) {
-		for (Entry<String, String> entry : modelLocations.entrySet()) {
+		for (final Entry<String, String> entry : modelLocations.entrySet()) {
 			env.registerInputModel(entry.getKey(), loadModel(rs, entry, modelOptions));
 		}
 	}
-	
+
 	/**
 	 * Loads all models from <code>modelLocations</code> into <code>env</code>.
 	 * @param rs the resource set to use
@@ -286,11 +284,11 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	private void loadInOutModels(final ResourceSet rs, final Map<String, String> modelLocations,
 			final Map<String, String> modelOptions,
 			final ExecEnv env) {
-		for (Entry<String, String> entry : modelLocations.entrySet()) {
+		for (final Entry<String, String> entry : modelLocations.entrySet()) {
 			env.registerInOutModel(entry.getKey(), loadModel(rs, entry, modelOptions));
 		}
 	}
-	
+
 	/**
 	 * Creates new models for all models from <code>modelLocations</code> in <code>env</code>.
 	 * @param rs the resource set to use
@@ -298,16 +296,15 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 * @param modelOptions map of additional model options
 	 * @param env the {@link ExecEnv} to register the models in
 	 */
-	private void createOutputModels(final ResourceSet rs, final Map<String, String> modelLocations, 
+	private void createOutputModels(final ResourceSet rs, final Map<String, String> modelLocations,
 			final Map<String, String> modelOptions,
 			final ExecEnv env) {
-		for (Entry<String, String> entry : modelLocations.entrySet()) {
-			Resource r = rs.createResource(URI.createURI(entry.getValue()));
-			Model m = EmftvmFactory.eINSTANCE.createModel();
-			m.setResource(r);
+		for (final Entry<String, String> entry : modelLocations.entrySet()) {
+			final Resource r = rs.createResource(URI.createURI(entry.getValue()));
+			final Model m = EmftvmFactory.eINSTANCE.createModel(r);
 			m.setAllowInterModelReferences(getBoolOption(
-					modelOptions, 
-					entry.getKey(), 
+					modelOptions,
+					entry.getKey(),
 					EMFTVMLaunchConstants.OPT_ALLOW_INTER_MODEL_REFERENCES));
 			env.registerOutputModel(entry.getKey(), m);
 		}
@@ -318,26 +315,26 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 * @param models
 	 * @param modelOptions map of additional model options
 	 * @param modelLocations map of alternative model output locations
-	 * @throws IOException 
-	 * @throws CoreException 
+	 * @throws IOException
+	 * @throws CoreException
 	 */
 	@SuppressWarnings("deprecation")
-	private void saveModels(final Map<String, Model> models, 
+	private void saveModels(final Map<String, Model> models,
 			final Map<String, String> modelOptions,
 			final Map<String, String> modelLocations) throws IOException, CoreException {
 		final IWorkspaceRoot wr = ResourcesPlugin.getWorkspace().getRoot();
-		for (Entry<String, Model> model : models.entrySet()) {
+		for (final Entry<String, Model> model : models.entrySet()) {
 			if (modelLocations.containsKey(model.getKey())) {
 				model.getValue().getResource().setURI(URI.createURI(modelLocations.get(model.getKey())));
 			}
 			model.getValue().getResource().save(Collections.emptyMap());
-			URI uri = model.getValue().getResource().getURI();
+			final URI uri = model.getValue().getResource().getURI();
 			if (uri.isPlatformResource()) {
-				IResource r = wr.findMember(uri.toPlatformString(true));
+				final IResource r = wr.findMember(uri.toPlatformString(true));
 				if (r instanceof IFile && getBoolOption(
-							modelOptions, 
-							model.getKey(), 
-							EMFTVMLaunchConstants.OPT_DERIVED_FILE)) {
+						modelOptions,
+						model.getKey(),
+						EMFTVMLaunchConstants.OPT_DERIVED_FILE)) {
 					((IFile)r).setDerived(true);
 				}
 			}
@@ -375,7 +372,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 			modelOptions.put(modelName, (options + ' ' + option).trim());
 		}
 	}
-	
+
 	/**
 	 * Unsets the boolean value of <code>option</code> for <code>modelName</code> from <code>modelOptions</code>.
 	 * @param modelOptions the model options map
@@ -396,7 +393,7 @@ public class EMFTVMLaunchConfigurationDelegate implements
 	 * @return the {@link NetworkDebugger} port.
 	 * @throws CoreException
 	 */
-	public static int getPort(ILaunch launch) throws CoreException {
+	public static int getPort(final ILaunch launch) throws CoreException {
 		String portOption = ""; //$NON-NLS-1$
 		if (launch != null) {
 			portOption = launch.getLaunchConfiguration().getAttribute(ATLLaunchConstants.PORT,
@@ -419,5 +416,5 @@ public class EMFTVMLaunchConfigurationDelegate implements
 		}
 		return resolver;
 	}
-	
+
 }
