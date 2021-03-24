@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011 Vrije Universiteit Brussel.
- * Copyright (c) 2017-2018 Dennis Wagelaar.
+ * Copyright (c) 2017, 2018, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,13 +58,13 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
  * Invokes the ATL to EMFTVM compiler.
- * 
+ *
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 
 	protected final ResourceSet rs = new ResourceSetImpl();
-	protected final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
+	protected final Metamodel pbmm;
 	protected final ExecEnvPool atlWfrPool = new ExecEnvPool();
 	protected final ExecEnvPool atlToEmftvmPool = new ExecEnvPool();
 	protected final ExecEnvPool inlineCodeblocksPool = new ExecEnvPool();
@@ -80,9 +80,10 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 		 */
 		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("emftvm", new EMFTVMResourceFactoryImpl());
 
-		final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
-		atlmm.setResource(((EMFReferenceModel) AtlParser.getDefault().getAtlMetamodel()).getResource());
-		pbmm.setResource(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
+		final Metamodel atlmm = EmftvmFactory.eINSTANCE
+				.createMetamodel(((EMFReferenceModel) AtlParser.getDefault().getAtlMetamodel()).getResource());
+		pbmm = EmftvmFactory.eINSTANCE
+				.createMetamodel(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
 		final ModuleResolverFactory mrf = createModuleResolverFactory();
 
 		atlWfrPool.setModuleResolverFactory(mrf);
@@ -102,7 +103,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 
 	/**
 	 * Creates a new {@link ModuleResolverFactory}.
-	 * 
+	 *
 	 * @return a new {@link ModuleResolverFactory}
 	 */
 	protected ModuleResolverFactory createModuleResolverFactory() {
@@ -115,7 +116,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 				public ModuleResolver createModuleResolver() {
 					return new ClassModuleResolver(getClass()) {
 						@Override
-						public Module resolveModule(String module) throws ModuleNotFoundException {
+						public Module resolveModule(final String module) throws ModuleNotFoundException {
 							return super.resolveModule("/transformations/" + module);
 						}
 					};
@@ -211,16 +212,13 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 	public EObject[] compileWithProblemModel(final IModel atlModel, final OutputStream outputStream) {
 		final List<EObject> pbs = new ArrayList<EObject>();
 
-		final Model atlm = EmftvmFactory.eINSTANCE.createModel();
-		atlm.setResource(((EMFModel) atlModel).getResource());
+		final Model atlm = EmftvmFactory.eINSTANCE.createModel(((EMFModel) atlModel).getResource());
 
 		final Resource pr = rs.createResource(URI.createFileURI("problems.xmi"));
-		final Model pbm = EmftvmFactory.eINSTANCE.createModel();
-		pbm.setResource(pr);
+		final Model pbm = EmftvmFactory.eINSTANCE.createModel(pr);
 
 		final Resource r = rs.createResource(URI.createFileURI("out.emftvm"), "org.eclipse.m2m.atl.emftvm");
-		final Model emftvmm = EmftvmFactory.eINSTANCE.createModel();
-		emftvmm.setResource(r);
+		final Model emftvmm = EmftvmFactory.eINSTANCE.createModel(r);
 
 		final ExecEnv atlWfrEnv = atlWfrPool.getExecEnv();
 		final ExecEnv atlToEmftvmEnv = atlToEmftvmPool.getExecEnv();
@@ -281,7 +279,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 
 	/**
 	 * Retrieves problem elements from <code>problems</code>.
-	 * 
+	 *
 	 * @param problems
 	 *            the problems model
 	 * @param pbElements
@@ -309,7 +307,7 @@ public class AtlToEmftvmCompiler implements AtlStandaloneCompiler {
 
 	/**
 	 * Retrieves problem elements from <code>problems</code>.
-	 * 
+	 *
 	 * @param problems
 	 *            the problems model
 	 * @param pbElements

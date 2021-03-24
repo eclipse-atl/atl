@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
+ * Copyright (c) 2013-2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,7 +79,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
-	public synchronized EClassifier findType(String typeName) {
+	public synchronized EClassifier findType(final String typeName) {
 		if (types == null) {
 			types = createTypeTable(ambiguousTypes);
 		}
@@ -113,10 +114,10 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	 * @param ignore the set of objects to ignore
 	 * @param ambiguousTypes the set of ambiguous type names (more than one occurrence)
 	 */
-	private static void registerTypeChain(
-			final Map<String, EClassifier> types, 
+	public static void registerTypeChain(
+			final Map<String, EClassifier> types,
 			final Resource res,
-			final String ns, 
+			final String ns,
 			final Set<Object> ignore,
 			final Set<String> ambiguousTypes) {
 		if (res != null && !ignore.contains(res)) {
@@ -134,12 +135,12 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	 * @param ambiguousTypes the set of ambiguous type names (more than one occurrence)
 	 */
 	private static void registerTypeChain(
-			final Map<String, EClassifier> types, 
+			final Map<String, EClassifier> types,
 			final EList<? extends EObject> objects,
-			final String ns, 
+			final String ns,
 			final Set<Object> ignore,
 			final Set<String> ambiguousTypes) {
-		for (EObject o : objects) {
+		for (final EObject o : objects) {
 			switch (o.eClass().getClassifierID()) {
 			case EcorePackage.EPACKAGE:
 				String pname = ((EPackage)o).getName();
@@ -148,7 +149,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 				}
 				registerTypeChain(types, o.eContents(), pname, ignore, ambiguousTypes);
 				break;
-			// Fix for bug # 423597: switch on all concrete EClassifier sub-types
+				// Fix for bug # 423597: switch on all concrete EClassifier sub-types
 			case EcorePackage.EDATA_TYPE:
 			case EcorePackage.EENUM:
 			case EcorePackage.ECLASS:
@@ -173,9 +174,9 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	 * @param ambiguousTypes the set of ambiguous type names (more than one occurrence)
 	 */
 	private static void registerTypeChain(
-			final Map<String, EClassifier> types, 
+			final Map<String, EClassifier> types,
 			final EClassifier type,
-			final String ns, 
+			final String ns,
 			final Set<Object> ignore,
 			final Set<String> ambiguousTypes) {
 		if (ignore.contains(type)) {
@@ -186,25 +187,25 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 		registerSingleType(types, type.getName(), type, ambiguousTypes);
 		if (type instanceof EClass) {
 			final EClass cls = (EClass)type;
-			for (EStructuralFeature sf : cls.getEStructuralFeatures()) {
-				EClassifier eType = sf.getEType();
+			for (final EStructuralFeature sf : cls.getEStructuralFeatures()) {
+				final EClassifier eType = sf.getEType();
 				if (eType != null) {
 					registerTypeChain(types, eType.eResource(), null, ignore, ambiguousTypes);
 				}
 			}
-			for (EOperation op : cls.getEOperations()) {
+			for (final EOperation op : cls.getEOperations()) {
 				EClassifier eType = op.getEType();
 				if (eType != null) {
 					registerTypeChain(types, eType.eResource(), null, ignore, ambiguousTypes);
 				}
-				for (EParameter p : op.getEParameters()) {
+				for (final EParameter p : op.getEParameters()) {
 					eType = p.getEType();
 					if (eType != null) {
 						registerTypeChain(types, eType.eResource(), null, ignore, ambiguousTypes);
 					}
 				}
 			}
-			for (EClass superCls : cls.getESuperTypes()) {
+			for (final EClass superCls : cls.getESuperTypes()) {
 				registerTypeChain(types, superCls.eResource(), null, ignore, ambiguousTypes);
 			}
 		}
@@ -218,7 +219,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	 * @param ambiguousTypes the set of ambiguous type names (more than one occurrence)
 	 */
 	private static void registerSingleType(
-			final Map<String, EClassifier> types, 
+			final Map<String, EClassifier> types,
 			final String typeName,
 			final EClassifier type,
 			final Set<String> ambiguousTypes) {

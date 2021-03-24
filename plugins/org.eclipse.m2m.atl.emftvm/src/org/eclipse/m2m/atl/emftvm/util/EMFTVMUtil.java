@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2011-2018 Dennis Wagelaar, Vrije Universiteit Brussel.
+ * Copyright (c) 2011, 2012 Vrije Universiteit Brussel.
+ * Copyright (c) 2012-2019, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -85,7 +86,7 @@ public final class EMFTVMUtil {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Object defaultCase(EObject object) {
+		public Object defaultCase(final EObject object) {
 			throw new IllegalArgumentException("Unsupported type: " + object);
 		}
 
@@ -93,7 +94,7 @@ public final class EMFTVMUtil {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Object caseEClass(EClass object) {
+		public Object caseEClass(final EClass object) {
 			return object;
 		}
 
@@ -101,7 +102,7 @@ public final class EMFTVMUtil {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Object caseEClassifier(EClassifier object) {
+		public Object caseEClassifier(final EClassifier object) {
 			final Class<?> ic = object.getInstanceClass();
 			if (ic == null) {
 				throw new IllegalArgumentException(String.format("Primitive EMF type without instance class %s", object));
@@ -113,7 +114,7 @@ public final class EMFTVMUtil {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Object caseEEnum(EEnum object) {
+		public Object caseEEnum(final EEnum object) {
 			return EnumLiteral.class;
 		}
 
@@ -278,8 +279,7 @@ public final class EMFTVMUtil {
 	 */
 	public static synchronized Metamodel getEcoreMetamodel() {
 		if (ecoreMetamodel == null) {
-			ecoreMetamodel = EmftvmFactory.eINSTANCE.createMetamodel();
-			ecoreMetamodel.setResource(EcorePackage.eINSTANCE.eResource());
+			ecoreMetamodel = EmftvmFactory.eINSTANCE.createMetamodel(EcorePackage.eINSTANCE.eResource());
 		}
 		return ecoreMetamodel;
 	}
@@ -291,8 +291,7 @@ public final class EMFTVMUtil {
 	 */
 	public static synchronized Metamodel getEmfTvmMetamodel() {
 		if (emfTvmMetamodel == null) {
-			emfTvmMetamodel = EmftvmFactory.eINSTANCE.createMetamodel();
-			emfTvmMetamodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+			emfTvmMetamodel = EmftvmFactory.eINSTANCE.createMetamodel(EmftvmPackage.eINSTANCE.eResource());
 		}
 		return emfTvmMetamodel;
 	}
@@ -304,8 +303,7 @@ public final class EMFTVMUtil {
 	 */
 	public static synchronized Metamodel getTraceMetamodel() {
 		if (traceMetamodel == null) {
-			traceMetamodel = EmftvmFactory.eINSTANCE.createMetamodel();
-			traceMetamodel.setResource(TracePackage.eINSTANCE.eResource());
+			traceMetamodel = EmftvmFactory.eINSTANCE.createMetamodel(TracePackage.eINSTANCE.eResource());
 		}
 		return traceMetamodel;
 	}
@@ -2224,6 +2222,8 @@ public final class EMFTVMUtil {
 		} catch (final IllegalAccessException e) {
 			ATLLogger.fine(e.getMessage());
 		} catch (final ClassNotFoundException e) {
+			ATLLogger.fine(e.getMessage());
+		} catch (final NoClassDefFoundError e) {
 			ATLLogger.fine(e.getMessage());
 		}
 		ATLLogger.info("Could not find workspace root; falling back to native java.io.File path resolution");

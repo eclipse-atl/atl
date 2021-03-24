@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
+ * Copyright (c) 2012-2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,9 +47,10 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 
 		/**
 		 * Creates a {@link NonCachingList} around <code>dataSource</code>.
-		 * @param dataSource the underlying {@link LazyList}
+		 *
+		 * @param dataSource the underlying (lazy) collection
 		 */
-		public NonCachingList(final LazyList<E> dataSource) {
+		public NonCachingList(final Iterable<E> dataSource) {
 			super(dataSource);
 			assert dataSource != null;
 		}
@@ -96,7 +98,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public E get(int index) {
+		public E get(final int index) {
 			final int size = ((List<E>)dataSource).size();
 			return index < size ? ((List<E>)dataSource).get(index) : s.get(index - size);
 		}
@@ -105,7 +107,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int indexOf(Object o) {
+		public int indexOf(final Object o) {
 			final int indexOf = ((List<E>)dataSource).indexOf(o);
 			if (indexOf > -1) {
 				return indexOf;
@@ -126,7 +128,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int lastIndexOf(Object o) {
+		public int lastIndexOf(final Object o) {
 			final int lastIndexOf = s.lastIndexOf(o);
 			if (lastIndexOf > -1) {
 				return ((List<E>)dataSource).size() + lastIndexOf;
@@ -147,7 +149,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public ListIterator<E> listIterator(int index) {
+		public ListIterator<E> listIterator(final int index) {
 			return new UnionListIterator(s, index);
 		}
 
@@ -155,7 +157,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean contains(Object o) {
+		public boolean contains(final Object o) {
 			return ((Collection<E>)dataSource).contains(o) ||
 					s.contains(o);
 		}
@@ -164,7 +166,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Object object) {
+		public int count(final Object object) {
 			return ((LazyCollection<E>)dataSource).count(object) + s.count(object);
 		}
 
@@ -207,16 +209,16 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class AppendListIterator extends WrappedListIterator {
-		
+
 			protected boolean beforeTail = true;
-		
+
 			/**
 			 * Creates a new {@link AppendListIterator}.
 			 */
 			public AppendListIterator() {
 				super();
 			}
-		
+
 			/**
 			 * Creates a new {@link AppendListIterator}.
 			 * @param index the iterator starting index.
@@ -227,7 +229,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 					next();
 				}
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -236,7 +238,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				assert beforeTail || !inner.hasNext(); // not beforeTail implies not inner.hasNext()
 				return beforeTail;
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -250,7 +252,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				}
 				throw new NoSuchElementException();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -258,7 +260,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			public int nextIndex() {
 				return inner.nextIndex() + (beforeTail ? 0 : 1);
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -266,7 +268,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			public boolean hasPrevious() {
 				return !beforeTail || inner.hasPrevious();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -278,7 +280,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				}
 				return inner.previous();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -286,7 +288,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			public int previousIndex() {
 				return inner.previousIndex() + (beforeTail ? 0 : 1);
 			}
-			
+
 		}
 
 		/**
@@ -355,7 +357,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 */
 		@Override
 		public boolean contains(final Object o) {
-			return (object == null ? o == null : object.equals(o)) || 
+			return (object == null ? o == null : object.equals(o)) ||
 					((Collection<E>)dataSource).contains(o);
 		}
 
@@ -364,7 +366,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 */
 		@Override
 		public int count(final Object o) {
-			return (object == null ? o == null : object.equals(o)) ? 1 : 0 + 
+			return (object == null ? o == null : object.equals(o)) ? 1 : 0 +
 					((LazyCollection<E>)dataSource).count(o);
 		}
 
@@ -407,7 +409,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		public ListIterator<E> listIterator(final int index) {
 			return new AppendListIterator(index);
 		}
-		
+
 	}
 
 	/**
@@ -423,16 +425,16 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class PrependIterator extends WrappedIterator {
-		
+
 			protected boolean beforeHead = true;
-		
+
 			/**
 			 * Creates a new {@link PrependIterator}.
 			 */
 			public PrependIterator() {
 				super();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -440,7 +442,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			public boolean hasNext() {
 				return beforeHead || inner.hasNext();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -459,16 +461,16 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class PrependListIterator extends WrappedListIterator {
-		
+
 			protected boolean beforeHead = true;
-		
+
 			/**
 			 * Creates a new {@link PrependListIterator}.
 			 */
 			public PrependListIterator() {
 				super();
 			}
-		
+
 			/**
 			 * Creates a new {@link PrependListIterator}.
 			 * @param index the iterator starting index.
@@ -477,7 +479,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				super(index < 1 ? index : index - 1);
 				this.beforeHead = index < 1;
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -485,7 +487,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			public boolean hasNext() {
 				return beforeHead || inner.hasNext();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -497,7 +499,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				}
 				return inner.next();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -508,7 +510,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				}
 				return inner.nextIndex() + 1;
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -517,7 +519,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				assert beforeHead || !inner.hasPrevious(); // not beforeHead implies not inner.hasPrevious()
 				return !beforeHead;
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -531,7 +533,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				}
 				throw new NoSuchElementException();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -542,7 +544,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				}
 				return inner.previousIndex() + 1;
 			}
-			
+
 		}
 
 		/**
@@ -602,7 +604,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int lastIndexOf(Object o) {
+		public int lastIndexOf(final Object o) {
 			final int lastIndex = ((List<E>)dataSource).lastIndexOf(o) + 1;
 			if (lastIndex > 0) {
 				return lastIndex;
@@ -630,10 +632,10 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public ListIterator<E> listIterator(int index) {
+		public ListIterator<E> listIterator(final int index) {
 			return new PrependListIterator(index);
 		}
-		
+
 	}
 
 	/**
@@ -651,16 +653,16 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class InsertAtIterator extends WrappedIterator {
-		
+
 			protected int i = -1;
-		
+
 			/**
 			 * Creates a new {@link InsertAtIterator}.
 			 */
 			public InsertAtIterator() {
 				super();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -668,7 +670,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			public boolean hasNext() {
 				return i < index || inner.hasNext();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -687,16 +689,16 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class InsertAtListIterator extends WrappedListIterator {
-		
+
 			protected int i = -1;
-		
+
 			/**
 			 * Creates a new {@link InsertAtListIterator}.
 			 */
 			public InsertAtListIterator() {
 				super();
 			}
-		
+
 			/**
 			 * Creates a new {@link InsertAtListIterator}.
 			 * @param index the iterator starting index, starting from 0 instead of 1.
@@ -705,7 +707,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				super(index < InsertAtList.this.index ? index : index - 1);
 				this.i = index - 1;
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -713,7 +715,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			public boolean hasNext() {
 				return i < index || inner.hasNext();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -724,7 +726,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				}
 				return inner.next();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -732,7 +734,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			public int nextIndex() {
 				return i + 1;
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -740,7 +742,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			public boolean hasPrevious() {
 				return i >= index || inner.hasPrevious();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -751,7 +753,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				}
 				return inner.previous();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -759,7 +761,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			public int previousIndex() {
 				return i;
 			}
-			
+
 		}
 
 		protected final int index;
@@ -887,7 +889,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		public ListIterator<E> listIterator(final int index) {
 			return new InsertAtListIterator(index);
 		}
-		
+
 	}
 
 	/**
@@ -1010,7 +1012,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		public ListIterator<E> listIterator(final int index) {
 			return new SubListListIterator(fromIndex, toIndex, index);
 		}
-		
+
 	}
 
 	/**
@@ -1028,7 +1030,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			super(dataSource);
 			this.last = dataSource.size() - 1;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1044,7 +1046,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		public E last() {
 			return ((List<E>)dataSource).get(0);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1052,7 +1054,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		public E get(final int index) {
 			return ((List<E>)dataSource).get(last - index);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1064,7 +1066,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			}
 			return -1;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1076,7 +1078,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			}
 			return -1;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1084,7 +1086,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		public boolean contains(final Object o) {
 			return ((List<E>)dataSource).contains(o);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1092,7 +1094,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		public boolean isEmpty() {
 			return ((List<E>)dataSource).isEmpty();
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1100,7 +1102,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		public Iterator<E> iterator() {
 			return new ReverseIterator(last);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1108,7 +1110,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		public int size() {
 			return last + 1;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1116,7 +1118,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		public ListIterator<E> listIterator() {
 			return new ReverseListIterator(last);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1124,12 +1126,12 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		public ListIterator<E> listIterator(final int index) {
 			return new ReverseListIterator(last, index);
 		}
-		
+
 	}
 
 	/**
 	 * {@link LazyList} that represents a range running from a first to last {@link Integer}.
-	 * 
+	 *
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static class IntegerRangeList extends LazyList<Integer> {
@@ -1139,7 +1141,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 
 		/**
 		 * Creates a new {@link IntegerRangeList}.
-		 * 
+		 *
 		 * @param first
 		 *            the first object of the range to include
 		 * @param last
@@ -1175,7 +1177,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Integer get(int index) {
+		public Integer get(final int index) {
 			final int element = first + index;
 			if (element > last) {
 				throw new IndexOutOfBoundsException(Integer.toString(index));
@@ -1187,7 +1189,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int indexOf(Object o) {
+		public int indexOf(final Object o) {
 			if (contains(o)) {
 				return (Integer) o - first;
 			}
@@ -1206,7 +1208,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int lastIndexOf(Object o) {
+		public int lastIndexOf(final Object o) {
 			// All elements of a range are unique
 			return indexOf(o);
 		}
@@ -1223,7 +1225,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public ListIterator<Integer> listIterator(int index) {
+		public ListIterator<Integer> listIterator(final int index) {
 			return new IntegerRangeListIterator(first, last, index);
 		}
 
@@ -1231,7 +1233,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean contains(Object o) {
+		public boolean contains(final Object o) {
 			if (o instanceof Integer) {
 				final Integer obj = (Integer) o;
 				return (obj >= first && obj <= last);
@@ -1243,7 +1245,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Object object) {
+		public int count(final Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -1277,7 +1279,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 
 	/**
 	 * {@link LazyList} that represents a range running from a first to last {@link Long}.
-	 * 
+	 *
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static class LongRangeList extends LazyList<Long> {
@@ -1287,7 +1289,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 
 		/**
 		 * Creates a new {@link LongRangeList}.
-		 * 
+		 *
 		 * @param first
 		 *            the first object of the range to include
 		 * @param last
@@ -1323,7 +1325,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Long get(int index) {
+		public Long get(final int index) {
 			final long element = first + index;
 			if (element > last) {
 				throw new IndexOutOfBoundsException(Integer.toString(index));
@@ -1335,7 +1337,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int indexOf(Object o) {
+		public int indexOf(final Object o) {
 			if (contains(o)) {
 				return (int) ((Long) o - first);
 			}
@@ -1354,7 +1356,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int lastIndexOf(Object o) {
+		public int lastIndexOf(final Object o) {
 			// All elements of a range are unique
 			return indexOf(o);
 		}
@@ -1371,7 +1373,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public ListIterator<Long> listIterator(int index) {
+		public ListIterator<Long> listIterator(final int index) {
 			return new LongRangeListIterator(first, last, index);
 		}
 
@@ -1379,7 +1381,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean contains(Object o) {
+		public boolean contains(final Object o) {
 			if (o instanceof Long) {
 				final Long obj = (Long) o;
 				return (obj >= first && obj <= last);
@@ -1391,7 +1393,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Object object) {
+		public int count(final Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -1425,7 +1427,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 
 	/**
 	 * {@link ListIterator} that returns first the elements of the underlying collection, then the elements of the other collection.
-	 * 
+	 *
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public class UnionListIterator extends WrappedListIterator {
@@ -1549,9 +1551,9 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			}
 			return inner.previousIndex();
 		}
-		
+
 	}
-	
+
 	/**
 	 * {@link LazyList} that implements the {@link LazyList#collect(CodeBlock)} function.
 	 * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
@@ -1559,7 +1561,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * @param <E> the element type
 	 */
 	public static class CollectList<E> extends LazyList<E> {
-		
+
 		/**
 		 * Creates a {@link CollectList} around <code>dataSource</code>.
 		 * @param dataSource the underlying {@link LazyList}
@@ -1568,7 +1570,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			super(dataSource);
 			assert dataSource != null;
 		}
-		
+
 	}
 
 	/**
@@ -1631,7 +1633,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 			return ((List<E>)cache).get(index);
 		}
 		int i = 0;
-		for (E e : this) {
+		for (final E e : this) {
 			if (i == index) {
 				return e;
 			}
@@ -1650,12 +1652,12 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		}
 		int i = 0;
 		if (o == null) {
-			for (E e : this) {
+			for (final E e : this) {
 				if (e == null) return i;
 				i++;
 			}
 		} else {
-			for (E e : this) {
+			for (final E e : this) {
 				if (o.equals(e)) return i;
 				i++;
 			}
@@ -1673,12 +1675,12 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		int i = 0;
 		int lastIndex = -1;
 		if (o == null) {
-			for (E e : this) {
+			for (final E e : this) {
 				if (e == null) lastIndex = i;
 				i++;
 			}
 		} else {
-			for (E e : this) {
+			for (final E e : this) {
 				if (e.equals(o)) lastIndex = i;
 				i++;
 			}
@@ -1737,23 +1739,23 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * Unsupported in this implementation.
 
 	 * @throws UnsupportedOperationException
 	 */
-	public void move(int newPosition, E object) {
+	public void move(final int newPosition, final E object) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * Unsupported in this implementation.
 
 	 * @throws UnsupportedOperationException
 	 */
-	public E move(int newPosition, int oldPosition) {
+	public E move(final int newPosition, final int oldPosition) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -1763,18 +1765,18 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	@Override
 	public boolean equals(final Object o) {
 		if (o == this) {
-		    return true;
+			return true;
 		}
 		if (!(o instanceof List<?>)) {
-		    return false;
+			return false;
 		}
 		final Iterator<E> e1 = iterator();
 		final Iterator<?> e2 = ((Collection<?>)o).iterator();
 		while (e1.hasNext() && e2.hasNext()) {
-		    E o1 = e1.next();
-		    Object o2 = e2.next();
-		    if (!(o1 == null ? o2 == null : o1.equals(o2)))
-			return false;
+			final E o1 = e1.next();
+			final Object o2 = e2.next();
+			if (!(o1 == null ? o2 == null : o1.equals(o2)))
+				return false;
 		}
 		return !(e1.hasNext() || e2.hasNext());
 	}
@@ -1785,8 +1787,8 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	@Override
 	public int hashCode() {
 		int hashCode = 1;
-		for (E obj : this) {
-		    hashCode = 31 * hashCode + (obj == null ? 0 : obj.hashCode());
+		for (final E obj : this) {
+			hashCode = 31 * hashCode + (obj == null ? 0 : obj.hashCode());
 		}
 		return hashCode;
 	}
@@ -1794,13 +1796,14 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String asString(final ExecEnv env) {
 		return appendElements(new StringBuffer("Sequence{"), env).append('}').toString();
 	}
 
 	/**
 	 * Returns the <code>i</code>-th element of this list. List index starts at 1.
-	 * 
+	 *
 	 * @param i
 	 *            the element index
 	 * @return The <code>i</code>-th element of this list.
@@ -1897,7 +1900,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param s
 	 *            the list to union with this
 	 * @param index
@@ -1917,7 +1920,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @return <b>if</b> self.type.elementType.oclIsKindOf(CollectionType) <b>then</b><br>
 	 *         &nbsp;&nbsp;self-&gt;iterate(c; acc : Sequence() = Sequence{} |<br>
 	 *         &nbsp;&nbsp;&nbsp;&nbsp;acc-&gt;union(c-&gt;asSequence() ) )<br>
@@ -1973,7 +1976,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * <p><i>Lazy operation.</i></p>
 	 * @param lower the sub-list lower bound, inclusive
 	 * @param upper the sub-list upper bound, inclusive
-	 * @return the sub-list of this list. 
+	 * @return the sub-list of this list.
 	 */
 	public LazyList<E> subSequence(final int lower, final int upper) {
 		return new SubList<E>(lower - 1, upper, this);
@@ -1985,6 +1988,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * @param object the object to include
 	 * @return The sequence containing all elements of self plus <code>object</code> added as the last element.
 	 */
+	@Override
 	public LazyList<E> including(final E object) {
 		return append(object);
 	}
@@ -1994,7 +1998,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param object
 	 *            the object to include
 	 * @param index
@@ -2015,7 +2019,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param coll
 	 *            the collection to include
 	 * @return The collection containing all elements of self plus <code>coll</code>.
@@ -2030,7 +2034,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param coll
 	 *            the collection to include
 	 * @param index
@@ -2051,11 +2055,12 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param object
 	 *            the object to exclude
 	 * @return The sequence containing all elements of self apart from all occurrences of <code>object</code>.
 	 */
+	@Override
 	public LazyList<E> excluding(final Object object) {
 		return new LazyList<E>(this) {
 			@Override
@@ -2063,7 +2068,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 				if (dataSource == null) {
 					return Collections.unmodifiableCollection(cache).iterator();
 				}
-				return new ExcludingIterator(object); 
+				return new ExcludingIterator(object);
 			}
 		};
 	}
@@ -2073,7 +2078,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param coll
 	 *            the collection to exclude
 	 * @return The collection containing all elements of self minus <code>coll</code>.
@@ -2096,7 +2101,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @return The sequence containing the same elements but with the opposite order.
 	 */
 	public LazyList<E> reverse() {
@@ -2104,7 +2109,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	}
 
 	/**
-	 * Returns the Sequence identical to the object itself. This operation exists for convenience reasons. 
+	 * Returns the Sequence identical to the object itself. This operation exists for convenience reasons.
 	 * <p><i>Lazy operation.</i></p>
 	 * @return The Sequence identical to the object itself. This operation exists for convenience reasons.
 	 */
@@ -2119,7 +2124,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param first
 	 *            the first object of the range to include
 	 * @param last
@@ -2127,6 +2132,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * @return The sequence containing all elements of self plus the sequence of <code>first</code> running to <code>last</code> added as
 	 *         the last elements
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public LazyList<E> includingRange(final E first, final E last) {
 		if (first instanceof Integer && last instanceof Integer) {
@@ -2246,12 +2252,12 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 					final Iterator<Comparable<Object>> sortingKeys = new CollectIterator<Comparable<Object>>(inner, body, parentFrame);
 					final Object[] innerCopy = inner.toArray();
 					final Map<Object, Comparable<Object>> elementsToKeys = new HashMap<Object, Comparable<Object>>(innerCopy.length);
-					for (Object o : innerCopy) {
+					for (final Object o : innerCopy) {
 						elementsToKeys.put(o, sortingKeys.next());
 					}
 					assert !sortingKeys.hasNext();
 					Arrays.sort(innerCopy, new Comparator<Object>() {
-						public int compare(Object o1, Object o2) {
+						public int compare(final Object o1, final Object o2) {
 							return elementsToKeys.get(o1).compareTo(elementsToKeys.get(o2));
 						}
 					});
