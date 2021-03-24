@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import junit.textui.TestRunner;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -55,6 +54,8 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 import org.eclipse.m2m.atl.emftvm.util.Types;
 import org.eclipse.m2m.atl.emftvm.util.VMException;
 import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
+
+import junit.textui.TestRunner;
 
 
 /**
@@ -128,7 +129,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  * @generated NOT
  */
 public class ExecEnvTest extends EMFTVMTest {
-	
+
 	private static final Logger LOG = Logger.getLogger(ExecEnvTest.class.getName());
 
 	/**
@@ -144,7 +145,7 @@ public class ExecEnvTest extends EMFTVMTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		TestRunner.run(ExecEnvTest.class);
 	}
 
@@ -154,7 +155,7 @@ public class ExecEnvTest extends EMFTVMTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ExecEnvTest(String name) {
+	public ExecEnvTest(final String name) {
 		super(name);
 	}
 
@@ -164,7 +165,7 @@ public class ExecEnvTest extends EMFTVMTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void setFixture(ExecEnv fixture) {
+	protected void setFixture(final ExecEnv fixture) {
 		this.fixture = fixture;
 	}
 
@@ -342,16 +343,16 @@ public class ExecEnvTest extends EMFTVMTest {
 				assertEquals(this, env.getMonitor());
 				terminated = true;
 			}
-			public void step(StackFrame frame) {
+			public void step(final StackFrame frame) {
 			}
-			public void leave(StackFrame frame) {
+			public void leave(final StackFrame frame) {
 			}
 			public boolean isTerminated() {
 				return terminated;
 			}
-			public void error(StackFrame frame, String msg, Exception e) {
+			public void error(final StackFrame frame, final String msg, final Exception e) {
 			}
-			public void enter(StackFrame frame) {
+			public void enter(final StackFrame frame) {
 			}
 		};
 
@@ -359,7 +360,7 @@ public class ExecEnvTest extends EMFTVMTest {
 		final Module dummyModule = createDummyModule();
 		// Load module
 		final ModuleResolver mr = new ModuleResolver() {
-			public Module resolveModule(String name) throws ModuleNotFoundException {
+			public Module resolveModule(final String name) throws ModuleNotFoundException {
 				return dummyModule;
 			}
 		};
@@ -385,16 +386,16 @@ public class ExecEnvTest extends EMFTVMTest {
 		final VMMonitor monitor = new VMMonitor() {
 			public void terminated() {
 			}
-			public void step(StackFrame frame) {
+			public void step(final StackFrame frame) {
 			}
-			public void leave(StackFrame frame) {
+			public void leave(final StackFrame frame) {
 			}
 			public boolean isTerminated() {
 				return false;
 			}
-			public void error(StackFrame frame, String msg, Exception e) {
+			public void error(final StackFrame frame, final String msg, final Exception e) {
 			}
-			public void enter(StackFrame frame) {
+			public void enter(final StackFrame frame) {
 			}
 		};
 		getFixture().setMonitor(monitor);
@@ -414,8 +415,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load metamodel
 		final Resource portsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true), true);
-		final Metamodel metaModel = EmftvmFactory.eINSTANCE.createMetamodel();
-		metaModel.setResource(portsRes);
+		final Metamodel metaModel = EmftvmFactory.eINSTANCE.createMetamodel(portsRes);
 		env.registerMetaModel("PORTS", metaModel);
 
 		assertTrue(env.getMetaModels().containsKey("PORTS"));
@@ -435,8 +435,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load and register model
 		final Resource res = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
-		final Model model = EmftvmFactory.eINSTANCE.createModel();
-		model.setResource(res);
+		final Model model = EmftvmFactory.eINSTANCE.createModel(res);
 		env.registerInputModel("M", model);
 
 		assertTrue(env.getInputModels().containsKey("M"));
@@ -455,25 +454,23 @@ public class ExecEnvTest extends EMFTVMTest {
 		final ResourceSet rs = new ResourceSetImpl();
 
 		{
-		// Load and register model
-		final Resource res = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
-		final Model model = EmftvmFactory.eINSTANCE.createModel();
-		model.setResource(res);
-		env.registerInOutModel("M", model);
+			// Load and register model
+			final Resource res = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
+			final Model model = EmftvmFactory.eINSTANCE.createModel(res);
+			env.registerInOutModel("M", model);
 
-		assertTrue(env.getInoutModels().containsKey("M"));
-		assertEquals(model, env.getInoutModels().get("M"));
+			assertTrue(env.getInoutModels().containsKey("M"));
+			assertEquals(model, env.getInoutModels().get("M"));
 		}
 
 		{
-		// Load and register model
-		final Resource res = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
-		final Model model = EmftvmFactory.eINSTANCE.createModel();
-		model.setResource(res);
-		env.registerInOutModel("M", model);
+			// Load and register model
+			final Resource res = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
+			final Model model = EmftvmFactory.eINSTANCE.createModel(res);
+			env.registerInOutModel("M", model);
 
-		assertTrue(env.getInoutModels().containsKey("M"));
-		assertEquals(model, env.getInoutModels().get("M"));
+			assertTrue(env.getInoutModels().containsKey("M"));
+			assertEquals(model, env.getInoutModels().get("M"));
 		}
 	}
 
@@ -490,26 +487,23 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load and register input model
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInputModel("IN", inModel);
 		assertTrue(env.getInputModels().containsKey("IN"));
 		assertEquals(inModel, env.getInputModels().get("IN"));
 		// Load and register in/out model
 		final Resource inOutRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestLib.emftvm", true), true);
-		final Model inOutModel = EmftvmFactory.eINSTANCE.createModel();
-		inOutModel.setResource(inOutRes);
+		final Model inOutModel = EmftvmFactory.eINSTANCE.createModel(inOutRes);
 		env.registerInOutModel("INOUT", inOutModel);
 		assertTrue(env.getInoutModels().containsKey("INOUT"));
 		assertEquals(inOutModel, env.getInoutModels().get("INOUT"));
 		// Create and register output model
 		final Resource outRes = rs.createResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/out.xmi", true));
-		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-		outModel.setResource(outRes);
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel(outRes);
 		env.registerOutputModel("OUT", outModel);
 		assertTrue(env.getOutputModels().containsKey("OUT"));
 		assertEquals(outModel, env.getOutputModels().get("OUT"));
-		
+
 		env.clearModels();
 		assertFalse(env.getInputModels().containsKey("IN"));
 		assertFalse(env.getInoutModels().containsKey("INOUT"));
@@ -529,8 +523,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Create and register model
 		final Resource res = rs.createResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/out.xmi", true));
-		final Model model = EmftvmFactory.eINSTANCE.createModel();
-		model.setResource(res);
+		final Model model = EmftvmFactory.eINSTANCE.createModel(res);
 		env.registerOutputModel("M", model);
 
 		assertTrue(env.getOutputModels().containsKey("M"));
@@ -550,8 +543,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load metamodel
 		final Resource portsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true), true);
-		final Metamodel metaModel = EmftvmFactory.eINSTANCE.createMetamodel();
-		metaModel.setResource(portsRes);
+		final Metamodel metaModel = EmftvmFactory.eINSTANCE.createMetamodel(portsRes);
 		env.registerMetaModel("PORTS", metaModel);
 
 		final Metamodel mm = env.getMetaModel(portsRes);
@@ -573,18 +565,17 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInOutModel("IN", inModel);
-		
+
 		final CodeBlock element = (CodeBlock) inModel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock()).first();
 
 		env.queueForSet(EmftvmPackage.eINSTANCE.getCodeBlock_MaxLocals(), element, 2, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
-		
+
 		assertFalse(element.getMaxLocals() == 2);
-		
+
 		env.setQueue();
-		
+
 		assertEquals(2, element.getMaxLocals());
 	}
 
@@ -601,22 +592,21 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInOutModel("IN", inModel);
-		
+
 		// Load module with some fields
 		env.loadModule(new DefaultModuleResolver(PLUGIN_URI + "/test-data/", rs), "TestQuery");
-		
+
 		final Operation element = (Operation) inModel.allInstancesOf(EmftvmPackage.eINSTANCE.getOperation()).first();
 		final Field field = env.findField(element.eClass(), "testProp");
 
 		env.queueForSet(field, element, Boolean.FALSE, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
-		
+
 		assertNull(field.getValue(element));
-		
+
 		env.setQueue();
-		
+
 		assertEquals(Boolean.FALSE, field.getValue(element));
 	}
 
@@ -633,19 +623,18 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInOutModel("IN", inModel);
-		
+
 		final EObject element = inModel.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).first();
 		final String xmiID = "_a01";
 
 		env.queueXmiIDForSet(element, xmiID, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
-		
+
 		assertNull(((XMIResource)inRes).getID(element));
-		
+
 		env.setQueue();
-		
+
 		assertEquals(xmiID, ((XMIResource)inRes).getID(element));
 	}
 
@@ -662,8 +651,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.createResource(URI.createURI("local.xmi"));
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInOutModel("IN", inModel);
 
 		final CodeBlock element = EmftvmFactory.eINSTANCE.createCodeBlock();
@@ -712,7 +700,7 @@ public class ExecEnvTest extends EMFTVMTest {
 		try {
 			env.setQueue();
 			fail("Expected VMException");
-		} catch (VMException e) {
+		} catch (final VMException e) {
 			// expected
 			assertTrue(e.getCause() instanceof IndexOutOfBoundsException);
 		}
@@ -722,7 +710,7 @@ public class ExecEnvTest extends EMFTVMTest {
 		try {
 			env.setQueue();
 			fail("Expected VMException");
-		} catch (VMException e) {
+		} catch (final VMException e) {
 			// expected
 			assertTrue(e.getCause() instanceof IllegalArgumentException);
 		}
@@ -732,7 +720,7 @@ public class ExecEnvTest extends EMFTVMTest {
 	 * Tests the '
 	 * {@link org.eclipse.m2m.atl.emftvm.ExecEnv#queueForAdd(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, int, org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 * <em>Queue For Add</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#queueForAdd(org.eclipse.m2m.atl.emftvm.Field, java.lang.Object, java.lang.Object, int,
 	 *      org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 * @generated NOT
@@ -745,21 +733,17 @@ public class ExecEnvTest extends EMFTVMTest {
 			// Load models
 			final Resource portsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true),
 					true);
-			final Metamodel portsModel = EmftvmFactory.eINSTANCE.createMetamodel();
-			portsModel.setResource(portsRes);
+			final Metamodel portsModel = EmftvmFactory.eINSTANCE.createMetamodel(portsRes);
 			env.registerMetaModel("Ports", portsModel);
 			final Resource pinsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Pins.ecore", true),
 					true);
-			final Metamodel pinsModel = EmftvmFactory.eINSTANCE.createMetamodel();
-			pinsModel.setResource(pinsRes);
+			final Metamodel pinsModel = EmftvmFactory.eINSTANCE.createMetamodel(pinsRes);
 			env.registerMetaModel("Pins", pinsModel);
 			final Resource inRes = rs.createResource(URI.createURI("local.xmi"));
-			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-			inModel.setResource(inRes);
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 			env.registerInOutModel("IN", inModel);
 			final Resource outRes = rs.createResource(URI.createURI("local2.xmi"));
-			final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-			outModel.setResource(outRes);
+			final Model outModel = EmftvmFactory.eINSTANCE.createModel(outRes);
 			env.registerInOutModel("OUT", outModel);
 
 			// Load module with some fields
@@ -785,8 +769,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 			// Load models
 			final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
-			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-			inModel.setResource(inRes);
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 			env.registerInOutModel("IN", inModel);
 
 			// Load module with some fields
@@ -800,7 +783,7 @@ public class ExecEnvTest extends EMFTVMTest {
 			try {
 				env.setQueue();
 				fail("Expected VMException");
-			} catch (VMException e) {
+			} catch (final VMException e) {
 				// expected
 				assertTrue(e.getCause() instanceof IllegalArgumentException);
 				// field has been lazily initialised
@@ -829,8 +812,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInOutModel("IN", inModel);
 
 		final EObject element = inModel.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).first();
@@ -858,8 +840,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.createResource(URI.createURI("local.xmi"));
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInOutModel("IN", inModel);
 
 		final CodeBlock element = EmftvmFactory.eINSTANCE.createCodeBlock();
@@ -921,21 +902,17 @@ public class ExecEnvTest extends EMFTVMTest {
 			// Load models
 			final Resource portsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true),
 					true);
-			final Metamodel portsModel = EmftvmFactory.eINSTANCE.createMetamodel();
-			portsModel.setResource(portsRes);
+			final Metamodel portsModel = EmftvmFactory.eINSTANCE.createMetamodel(portsRes);
 			env.registerMetaModel("Ports", portsModel);
 			final Resource pinsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Pins.ecore", true),
 					true);
-			final Metamodel pinsModel = EmftvmFactory.eINSTANCE.createMetamodel();
-			pinsModel.setResource(pinsRes);
+			final Metamodel pinsModel = EmftvmFactory.eINSTANCE.createMetamodel(pinsRes);
 			env.registerMetaModel("Pins", pinsModel);
 			final Resource inRes = rs.createResource(URI.createURI("local.xmi"));
-			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-			inModel.setResource(inRes);
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 			env.registerInOutModel("IN", inModel);
 			final Resource outRes = rs.createResource(URI.createURI("local2.xmi"));
-			final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-			outModel.setResource(outRes);
+			final Model outModel = EmftvmFactory.eINSTANCE.createModel(outRes);
 			env.registerInOutModel("OUT", outModel);
 
 			// Load module with some fields
@@ -968,8 +945,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 			// Load models
 			final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
-			final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-			inModel.setResource(inRes);
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 			env.registerInOutModel("IN", inModel);
 
 			// Load module with some fields
@@ -1007,8 +983,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInOutModel("IN", inModel);
 
 		final EObject element = inModel.allInstancesOf(EcorePackage.eINSTANCE.getEClass()).first();
@@ -1048,8 +1023,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInOutModel("IN", inModel);
 
 		final CodeBlock element = (CodeBlock) inModel.allInstancesOf(EmftvmPackage.eINSTANCE.getCodeBlock()).first();
@@ -1074,7 +1048,7 @@ public class ExecEnvTest extends EMFTVMTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#remapQueue() <em>Remap Queue</em>}' operation. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#remapQueue()
 	 * @generated NOT
 	 */
@@ -1120,7 +1094,7 @@ public class ExecEnvTest extends EMFTVMTest {
 		try {
 			env.loadModule(mr, "AbstractTargetClass");
 			fail("Expected VMException");
-		} catch (VMException e) {
+		} catch (final VMException e) {
 			// Expected
 			ATLLogger.info(e.getMessage());
 		}
@@ -1208,13 +1182,13 @@ public class ExecEnvTest extends EMFTVMTest {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 
 		// Create and register operation
-		final Operation op = EMFTVMUtil.createOperation(true, "test", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE, 
+		final Operation op = EMFTVMUtil.createOperation(true, "test", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE,
 				new String[][][]{}, new NativeCodeBlock());
 		final Module module = EmftvmFactory.eINSTANCE.createModule();
 		module.setName("testmodule");
 		module.getFeatures().add(op);
 		env.loadModule(new ModuleResolver() {
-			public Module resolveModule(String name) throws ModuleNotFoundException {
+			public Module resolveModule(final String name) throws ModuleNotFoundException {
 				return module;
 			}
 		}, "testmodule");
@@ -1235,13 +1209,13 @@ public class ExecEnvTest extends EMFTVMTest {
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 
 		// Create and register operation
-		final Operation op = EMFTVMUtil.createOperation(true, "test", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE, 
+		final Operation op = EMFTVMUtil.createOperation(true, "test", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE,
 				new String[][][]{{{"var"}, Types.OCL_ANY_TYPE}}, new NativeCodeBlock());
 		final Module module = EmftvmFactory.eINSTANCE.createModule();
 		module.setName("testmodule");
 		module.getFeatures().add(op);
 		env.loadModule(new ModuleResolver() {
-			public Module resolveModule(String name) throws ModuleNotFoundException {
+			public Module resolveModule(final String name) throws ModuleNotFoundException {
 				return module;
 			}
 		}, "testmodule");
@@ -1287,7 +1261,7 @@ public class ExecEnvTest extends EMFTVMTest {
 		assertNull(env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "field"));
 
 		env.loadModule(new ModuleResolver() {
-			public Module resolveModule(String name) throws ModuleNotFoundException {
+			public Module resolveModule(final String name) throws ModuleNotFoundException {
 				return m;
 			}
 		}, "test");
@@ -1319,7 +1293,7 @@ public class ExecEnvTest extends EMFTVMTest {
 		assertNull(env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "field"));
 
 		env.loadModule(new ModuleResolver() {
-			public Module resolveModule(String name) throws ModuleNotFoundException {
+			public Module resolveModule(final String name) throws ModuleNotFoundException {
 				return m;
 			}
 		}, "test");
@@ -1379,7 +1353,7 @@ public class ExecEnvTest extends EMFTVMTest {
 		assertNull(env.findField(EmftvmPackage.eINSTANCE.getExecEnv(), "rule"));
 
 		env.loadModule(new ModuleResolver() {
-			public Module resolveModule(String name) throws ModuleNotFoundException {
+			public Module resolveModule(final String name) throws ModuleNotFoundException {
 				return m;
 			}
 		}, "test");
@@ -1401,7 +1375,7 @@ public class ExecEnvTest extends EMFTVMTest {
 		try {
 			final Object type = env.findType("EMFTVM", "ExecEnv");
 			assertEquals(EmftvmPackage.eINSTANCE.getExecEnv(), type);
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
@@ -1420,85 +1394,81 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		{
-		final Resource inRes = rs.getResource(
-				URI.createURI("../../plugins/" + COMPILER_PLUGIN_ID + "/transformations/ATLtoEMFTVM.atl", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
-		env.registerInputModel("IN", inModel);
+			final Resource inRes = rs.getResource(
+					URI.createURI("../../plugins/" + COMPILER_PLUGIN_ID + "/transformations/ATLtoEMFTVM.atl", true), true);
+			final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
+			env.registerInputModel("IN", inModel);
 		}
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
-		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-		outModel.setResource(outRes);
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel(outRes);
 		env.registerOutputModel("OUT", outModel);
 		assertEquals(outModel, env.getOutputModels().get("OUT"));
 
 		final Resource pbsRes = rs.createResource(URI.createFileURI("pbs.xmi"));
-		final Model pbsModel = EmftvmFactory.eINSTANCE.createModel();
-		pbsModel.setResource(pbsRes);
+		final Model pbsModel = EmftvmFactory.eINSTANCE.createModel(pbsRes);
 		env.registerOutputModel("PBS", pbsModel);
 		assertEquals(pbsModel, env.getOutputModels().get("PBS"));
 
 		{
-		final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
-		atlmm.setResource(rs.getResource(URI.createURI("http://www.eclipse.org/gmt/2005/ATL"), true));
-		env.registerMetaModel("ATL", atlmm);
+			final Resource atlres = rs.getResource(URI.createURI("http://www.eclipse.org/gmt/2005/ATL"), true);
+			final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel(atlres);
+			env.registerMetaModel("ATL", atlmm);
 		}
 
 		{
-		final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
-		pbmm.setResource(rs.getResource(URI.createPlatformPluginURI(COMMON_PLUGIN_ID + "/model/Problem.ecore", true), true));
-		env.registerMetaModel("Problem", pbmm);
+			final Resource pbres = rs
+					.getResource(URI.createPlatformPluginURI(COMMON_PLUGIN_ID + "/model/Problem.ecore", true), true);
+			final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel(pbres);
+			env.registerMetaModel("Problem", pbmm);
 		}
 
 		// Load and run module
 		{
-		final ModuleResolver mr = new DefaultModuleResolver(COMPILER_PLUGIN_URI + "/transformations/", rs);
-		final TimingData td = new TimingData();
-		env.loadModule(mr, "ATLtoEMFTVM");
-		td.finishLoading();
-		env.run(td);
-		td.finish();
-		LOG.info("ExecEnvText#testRun__TimingData " + td.toString());
+			final ModuleResolver mr = new DefaultModuleResolver(COMPILER_PLUGIN_URI + "/transformations/", rs);
+			final TimingData td = new TimingData();
+			env.loadModule(mr, "ATLtoEMFTVM");
+			td.finishLoading();
+			env.run(td);
+			td.finish();
+			LOG.info("ExecEnvText#testRun__TimingData " + td.toString());
 		}
 
 		// Create another output model, and run the transformation again
 		final Resource outRes2 = rs.createResource(URI.createFileURI("out2.xmi"));
-		final Model outModel2 = EmftvmFactory.eINSTANCE.createModel();
-		outModel2.setResource(outRes2);
+		final Model outModel2 = EmftvmFactory.eINSTANCE.createModel(outRes2);
 		env.registerOutputModel("OUT", outModel2);
 		assertEquals(outModel2, env.getOutputModels().get("OUT"));
 
 		final Resource pbsRes2 = rs.createResource(URI.createFileURI("pbs2.xmi"));
-		final Model pbsModel2 = EmftvmFactory.eINSTANCE.createModel();
-		pbsModel2.setResource(pbsRes2);
+		final Model pbsModel2 = EmftvmFactory.eINSTANCE.createModel(pbsRes2);
 		env.registerOutputModel("PBS", pbsModel2);
 		assertEquals(pbsModel2, env.getOutputModels().get("PBS"));
 
 		{
-		final TimingData td2 = new TimingData();
-		td2.finishLoading();
-		env.run(td2);
-		td2.finish();
-		LOG.info("ExecEnvText#testRun__TimingData 2nd run " + td2.toString());
+			final TimingData td2 = new TimingData();
+			td2.finishLoading();
+			env.run(td2);
+			td2.finish();
+			LOG.info("ExecEnvText#testRun__TimingData 2nd run " + td2.toString());
 		}
-		
+
 		// Compare results
 		assertEquals(outRes, outRes2);
 		assertEquals(pbsRes, pbsRes2);
-		
+
 		// Run once more
 		outRes2.getContents().clear();
 		pbsRes2.getContents().clear();
 
 		{
-		final TimingData td2 = new TimingData();
-		td2.finishLoading();
-		env.run(td2);
-		td2.finish();
-		LOG.info("ExecEnvText#testRun__TimingData 3rd run " + td2.toString());
+			final TimingData td2 = new TimingData();
+			td2.finishLoading();
+			env.run(td2);
+			td2.finish();
+			LOG.info("ExecEnvText#testRun__TimingData 3rd run " + td2.toString());
 		}
-		
+
 		// Compare results
 		assertEquals(outRes, outRes2);
 		assertEquals(pbsRes, pbsRes2);
@@ -1507,7 +1477,7 @@ public class ExecEnvTest extends EMFTVMTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData) <em>Run</em>}' operation. <!--
 	 * begin-user-doc --> Refining mode test. <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#run(org.eclipse.m2m.atl.emftvm.util.TimingData)
 	 * @generated NOT
 	 */
@@ -1518,19 +1488,16 @@ public class ExecEnvTest extends EMFTVMTest {
 		// Load models
 		final Resource inRes = rs.getResource(
 				URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/RefiningModeTest/EMFTVMCopy.trace", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInputModel("IN", inModel);
 
 		final Resource inoutRes = rs.getResource(
 				URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/RefiningModeTest/RefiningModeTest.emftvm", true), true);
-		final Model inoutModel = EmftvmFactory.eINSTANCE.createModel();
-		inoutModel.setResource(inoutRes);
+		final Model inoutModel = EmftvmFactory.eINSTANCE.createModel(inoutRes);
 		env.registerInOutModel("INOUT", inoutModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("RefiningModeTest.ecore"));
-		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-		outModel.setResource(outRes);
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel(outRes);
 		env.registerOutputModel("OUT", outModel);
 		assertEquals(outModel, env.getOutputModels().get("OUT"));
 
@@ -1559,7 +1526,7 @@ public class ExecEnvTest extends EMFTVMTest {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.ExecEnv#getRules() <em>Get Rules</em>}' operation. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.ExecEnv#getRules()
 	 * @generated NOT
 	 */
@@ -1576,7 +1543,7 @@ public class ExecEnvTest extends EMFTVMTest {
 		assertTrue(env.getRules().isEmpty());
 
 		env.loadModule(new ModuleResolver() {
-			public Module resolveModule(String name) throws ModuleNotFoundException {
+			public Module resolveModule(final String name) throws ModuleNotFoundException {
 				return m;
 			}
 		}, "test");
@@ -1598,22 +1565,20 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInputModel("IN", inModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
-		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-		outModel.setResource(outRes);
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel(outRes);
 		env.registerOutputModel("OUT", outModel);
-		
+
 		// Get an object, and retrieve its model
 		final EObject object = inRes.getContents().get(0);
 		final Model model = env.getModelOf(object);
 
 		assertNotNull(model);
 		assertEquals(inModel, model);
-		
+
 		assertNull(env.getModelOf(env));
 	}
 
@@ -1630,15 +1595,13 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInputModel("IN", inModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
-		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-		outModel.setResource(outRes);
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel(outRes);
 		env.registerOutputModel("OUT", outModel);
-		
+
 		final String modelID = env.getModelID(inModel);
 
 		assertNotNull(modelID);
@@ -1658,8 +1621,7 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load metamodel
 		final Resource portsRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/PortsToPins/Ports.ecore", true), true);
-		final Metamodel metaModel = EmftvmFactory.eINSTANCE.createMetamodel();
-		metaModel.setResource(portsRes);
+		final Metamodel metaModel = EmftvmFactory.eINSTANCE.createMetamodel(portsRes);
 		env.registerMetaModel("PORTS", metaModel);
 
 		final String id = env.getMetaModelID(metaModel);
@@ -1681,22 +1643,21 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inOutRes = rs.createResource(URI.createFileURI("out.xmi"));
-		final Model inOutModel = EmftvmFactory.eINSTANCE.createModel();
-		inOutModel.setResource(inOutRes);
+		final Model inOutModel = EmftvmFactory.eINSTANCE.createModel(inOutRes);
 		env.registerInOutModel("INOUT", inOutModel);
-		
+
 		// Create output element
 		final EObject element = inOutModel.newElement(EmftvmPackage.eINSTANCE.getModule());
-		
+
 		assertFalse(inOutRes.getContents().isEmpty());
 		assertEquals(element, inOutRes.getContents().get(0));
-		
+
 		env.queueForDelete(element, new StackFrame(env, EmftvmFactory.eINSTANCE.createCodeBlock()));
-		
+
 		assertFalse(inOutRes.getContents().isEmpty());
-		
+
 		env.deleteQueue();
-		
+
 		assertTrue(inOutRes.getContents().isEmpty());
 	}
 
@@ -1724,22 +1685,20 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInputModel("IN", inModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
-		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-		outModel.setResource(outRes);
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel(outRes);
 		env.registerOutputModel("OUT", outModel);
-		
+
 		// Get an object, and retrieve its model
 		final EObject object = inRes.getContents().get(0);
 		final Model model = env.getInputModelOf(object);
 
 		assertNotNull(model);
 		assertEquals(inModel, model);
-		
+
 		assertNull(env.getInputModelOf(env));
 	}
 
@@ -1756,22 +1715,20 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInOutModel("IN", inModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
-		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-		outModel.setResource(outRes);
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel(outRes);
 		env.registerOutputModel("OUT", outModel);
-		
+
 		// Get an object, and retrieve its model
 		final EObject object = inRes.getContents().get(0);
 		final Model model = env.getInoutModelOf(object);
 
 		assertNotNull(model);
 		assertEquals(inModel, model);
-		
+
 		assertNull(env.getInoutModelOf(env));
 	}
 
@@ -1788,22 +1745,20 @@ public class ExecEnvTest extends EMFTVMTest {
 
 		// Load models
 		final Resource inRes = rs.getResource(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/TestQuery.emftvm", true), true);
-		final Model inModel = EmftvmFactory.eINSTANCE.createModel();
-		inModel.setResource(inRes);
+		final Model inModel = EmftvmFactory.eINSTANCE.createModel(inRes);
 		env.registerInputModel("IN", inModel);
 
 		final Resource outRes = rs.createResource(URI.createFileURI("out.xmi"));
-		final Model outModel = EmftvmFactory.eINSTANCE.createModel();
-		outModel.setResource(outRes);
+		final Model outModel = EmftvmFactory.eINSTANCE.createModel(outRes);
 		env.registerOutputModel("OUT", outModel);
-		
+
 		// Create output element, and retrieve its model
 		final EObject element = outModel.newElement(EmftvmPackage.eINSTANCE.getModule());
 		final Model model = env.getOutputModelOf(element);
 
 		assertNotNull(model);
 		assertEquals(outModel, model);
-		
+
 		assertNull(env.getOutputModelOf(env));
 	}
 

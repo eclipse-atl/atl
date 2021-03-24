@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016-2017 Dennis Wagelaar.
+ * Copyright (c) 2016, 2017, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -353,20 +353,16 @@ public class EMFTVMUtilTest extends TestCase {
 		final EmftvmFactory ef = EmftvmFactory.eINSTANCE;
 		final ExecEnv env = ef.createExecEnv();
 
-		final Metamodel metamodel = ef.createMetamodel();
-		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		final Metamodel metamodel = ef.createMetamodel(EcorePackage.eINSTANCE.eResource());
 		env.registerMetaModel("ECORE", metamodel);
 
-		final Model inmodel = ef.createModel();
-		inmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model inmodel = ef.createModel(EmftvmPackage.eINSTANCE.eResource());
 		env.registerInputModel("IN", inmodel);
 
-		final Model inoutmodel = ef.createModel();
-		inoutmodel.setResource(TracePackage.eINSTANCE.eResource());
+		final Model inoutmodel = ef.createModel(TracePackage.eINSTANCE.eResource());
 		env.registerInOutModel("INOUT", inoutmodel);
 
-		final Model outmodel = ef.createModel();
-		outmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model outmodel = ef.createModel(EmftvmPackage.eINSTANCE.eResource());
 		env.registerOutputModel("OUT", outmodel);
 
 		final EClass eClass = EcorePackage.eINSTANCE.getEClass();
@@ -384,20 +380,16 @@ public class EMFTVMUtilTest extends TestCase {
 		final EmftvmFactory ef = EmftvmFactory.eINSTANCE;
 		final ExecEnv env = ef.createExecEnv();
 
-		final Metamodel metamodel = ef.createMetamodel();
-		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		final Metamodel metamodel = ef.createMetamodel(EcorePackage.eINSTANCE.eResource());
 		env.registerMetaModel("ECORE", metamodel);
 
-		final Model inmodel = ef.createModel();
-		inmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model inmodel = ef.createModel(EmftvmPackage.eINSTANCE.eResource());
 		env.registerInputModel("IN", inmodel);
 
-		final Model inoutmodel = ef.createModel();
-		inoutmodel.setResource(TracePackage.eINSTANCE.eResource());
+		final Model inoutmodel = ef.createModel(TracePackage.eINSTANCE.eResource());
 		env.registerInOutModel("INOUT", inoutmodel);
 
-		final Model outmodel = ef.createModel();
-		outmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model outmodel = ef.createModel(EmftvmPackage.eINSTANCE.eResource());
 		env.registerOutputModel("OUT", outmodel);
 
 		final EClass eClass = EcorePackage.eINSTANCE.getEClass();
@@ -414,20 +406,16 @@ public class EMFTVMUtilTest extends TestCase {
 		final EmftvmFactory ef = EmftvmFactory.eINSTANCE;
 		final ExecEnv env = ef.createExecEnv();
 
-		final Metamodel metamodel = ef.createMetamodel();
-		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		final Metamodel metamodel = ef.createMetamodel(EcorePackage.eINSTANCE.eResource());
 		env.registerMetaModel("ECORE", metamodel);
 
-		final Model inmodel = ef.createModel();
-		inmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model inmodel = ef.createModel(EmftvmPackage.eINSTANCE.eResource());
 		env.registerInputModel("IN", inmodel);
 
-		final Model inoutmodel = ef.createModel();
-		inoutmodel.setResource(TracePackage.eINSTANCE.eResource());
+		final Model inoutmodel = ef.createModel(TracePackage.eINSTANCE.eResource());
 		env.registerInOutModel("INOUT", inoutmodel);
 
-		final Model outmodel = ef.createModel();
-		outmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model outmodel = ef.createModel(EmftvmPackage.eINSTANCE.eResource());
 		env.registerOutputModel("OUT", outmodel);
 
 		final EClass eClass = EcorePackage.eINSTANCE.getEClass();
@@ -444,20 +432,16 @@ public class EMFTVMUtilTest extends TestCase {
 		final EmftvmFactory ef = EmftvmFactory.eINSTANCE;
 		final ExecEnv env = ef.createExecEnv();
 
-		final Metamodel metamodel = ef.createMetamodel();
-		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		final Metamodel metamodel = ef.createMetamodel(EcorePackage.eINSTANCE.eResource());
 		env.registerMetaModel("ECORE", metamodel);
 
-		final Model inmodel = ef.createModel();
-		inmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model inmodel = ef.createModel(EmftvmPackage.eINSTANCE.eResource());
 		env.registerInputModel("IN", inmodel);
 
-		final Model inoutmodel = ef.createModel();
-		inoutmodel.setResource(TracePackage.eINSTANCE.eResource());
+		final Model inoutmodel = ef.createModel(TracePackage.eINSTANCE.eResource());
 		env.registerInOutModel("INOUT", inoutmodel);
 
-		final Model outmodel = ef.createModel();
-		outmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model outmodel = ef.createModel(EmftvmPackage.eINSTANCE.eResource());
 		env.registerOutputModel("OUT", outmodel);
 
 		final EClass eClass = EcorePackage.eINSTANCE.getEClass();
@@ -478,20 +462,16 @@ public class EMFTVMUtilTest extends TestCase {
 		final EmftvmFactory ef = EmftvmFactory.eINSTANCE;
 		final ExecEnv env = ef.createExecEnv();
 
-		final Metamodel metamodel = ef.createMetamodel();
-		metamodel.setResource(EcorePackage.eINSTANCE.eResource());
+		final Metamodel metamodel = ef.createMetamodel(EcorePackage.eINSTANCE.eResource());
 		env.registerMetaModel("ECORE", metamodel);
 
-		final Model inmodel = ef.createModel();
-		inmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model inmodel = ef.createModel(EmftvmPackage.eINSTANCE.eResource());
 		env.registerInputModel("IN", inmodel);
 
-		final Model inoutmodel = ef.createModel();
-		inoutmodel.setResource(TracePackage.eINSTANCE.eResource());
+		final Model inoutmodel = ef.createModel(TracePackage.eINSTANCE.eResource());
 		env.registerInOutModel("INOUT", inoutmodel);
 
-		final Model outmodel = ef.createModel();
-		outmodel.setResource(EmftvmPackage.eINSTANCE.eResource());
+		final Model outmodel = ef.createModel(EmftvmPackage.eINSTANCE.eResource());
 		env.registerOutputModel("OUT", outmodel);
 
 		final EClass eClass = EcorePackage.eINSTANCE.getEClass();

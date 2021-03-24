@@ -1,10 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2009, 2012, 2014 Obeo.
+ * Copyright (c) 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  *     Dennis Wagelaar
@@ -32,21 +33,18 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EcoreFactoryImpl;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.core.IModel;
 import org.eclipse.m2m.atl.core.emf.EMFModel;
 import org.eclipse.m2m.atl.dsls.tcs.injector.ModelAdapter;
 import org.eclipse.m2m.atl.dsls.tcs.injector.ParserLauncher;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
-import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 
 /**
  * A wrapper which allow to create {@link IModel} from text with TCS.
- * 
+ *
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
@@ -87,20 +85,20 @@ public class EMFTCSInjector {
 		super();
 	}
 
-	public Object inject(EMFModel target, InputStream source, Map params) throws IOException {
+	public Object inject(final EMFModel target, final InputStream source, final Map params) throws IOException {
 		return inject(target, new InputStreamReader(source), params);
 	}
 
-	public Object inject(EMFModel target, Reader source, Map params) throws IOException {
-		ModelAdapter targetModelAdapter = new EMFInjectorAdapter(target);
+	public Object inject(final EMFModel target, final Reader source, final Map params) throws IOException {
+		final ModelAdapter targetModelAdapter = new EMFInjectorAdapter(target);
 
-		EMFModel problems = (EMFModel)params.get("problems");
+		final EMFModel problems = (EMFModel)params.get("problems");
 		if (problems != null) {
-			ModelAdapter problemsModelAdapter = new EMFInjectorAdapter(problems);
+			final ModelAdapter problemsModelAdapter = new EMFInjectorAdapter(problems);
 			params.put("problems", problemsModelAdapter);
 		}
 
-		EObject root = (EObject)new ParserLauncher().parse(targetModelAdapter, source, params);
+		final EObject root = (EObject)new ParserLauncher().parse(targetModelAdapter, source, params);
 		target.commitToResource();
 		if(problems != null)
 			problems.commitToResource();
@@ -117,29 +115,28 @@ public class EMFTCSInjector {
 		private final Model model;
 		private final Metamodel metamodel;
 
-		public EMFInjectorAdapter(Object model) {
+		public EMFInjectorAdapter(final Object model) {
 			this.emfModel = (EMFModel)model;
-			this.model = EmftvmFactory.eINSTANCE.createModel();
 			if (emfModel.getResource() == null) {
 				// Trigger resource creation
-				Object element = emfModel.newElement(EcorePackage.eINSTANCE.getEClass());
+				final Object element = emfModel.newElement(EcorePackage.eINSTANCE.getEClass());
 				emfModel.getResource().getContents().remove(element);
 			}
-			this.model.setResource(emfModel.getResource());
-			this.metamodel = EmftvmFactory.eINSTANCE.createMetamodel();
-			this.metamodel.setResource(emfModel.getReferenceModel().getResource());
+			this.model = EmftvmFactory.eINSTANCE.createModel(emfModel.getResource());
+			this.metamodel = EmftvmFactory.eINSTANCE
+					.createMetamodel(emfModel.getReferenceModel().getResource());
 		}
 
 		public Object getModel() {
 			return this.emfModel;
 		}
 
-		public Object get(Object modelElement, String name) {
+		public Object get(final Object modelElement, final String name) {
 			if (modelElement == null) {
 				return null;
 			} else {
-				EObject eo = (EObject)modelElement;
-				EStructuralFeature sf = eo.eClass().getEStructuralFeature(name);
+				final EObject eo = (EObject)modelElement;
+				final EStructuralFeature sf = eo.eClass().getEStructuralFeature(name);
 				if (sf == null) {
 					return null;
 				}
@@ -147,15 +144,15 @@ public class EMFTCSInjector {
 			}
 		}
 
-		public Object createElement(String typeName) {
+		public Object createElement(final String typeName) {
 			return model.newElement(getTypeByName(typeName));
 		}
 
-		public Set getElementsByType(String typeName) {
+		public Set getElementsByType(final String typeName) {
 			return model.allInstancesOf(getTypeByName(typeName)).asSet();
 		}
 
-		public void set(Object modelElement, String name, Object value) {
+		public void set(final Object modelElement, final String name, Object value) {
 			if (value == null) {
 				return;
 			}
@@ -170,23 +167,23 @@ public class EMFTCSInjector {
 
 			// makes it possible to use an integer to set a floating point property
 			if (value instanceof Integer) {
-				String targetType = feature.getEType().getInstanceClassName();
+				final String targetType = feature.getEType().getInstanceClassName();
 				if ("java.lang.Double".equals(targetType) || "java.lang.Float".equals(targetType)) { //$NON-NLS-1$ //$NON-NLS-2$
 					value = new Double(((Integer)value).doubleValue());
 				}
 			}
 
-			EClassifier type = feature.getEType();
-			boolean targetIsEnum = type instanceof EEnum;
+			final EClassifier type = feature.getEType();
+			final boolean targetIsEnum = type instanceof EEnum;
 
-			Object oldValue = eo.eGet(feature);
+			final Object oldValue = eo.eGet(feature);
 			if (oldValue instanceof Collection) {
-				Collection oldCol = (Collection)oldValue;
+				final Collection oldCol = (Collection)oldValue;
 				if (value instanceof Collection) {
 					if (targetIsEnum) {
-						EEnum eenum = (EEnum)type;
-						for (Iterator i = ((Collection)value).iterator(); i.hasNext();) {
-							Object v = i.next();
+						final EEnum eenum = (EEnum)type;
+						for (final Iterator i = ((Collection)value).iterator(); i.hasNext();) {
+							final Object v = i.next();
 							oldCol.add(eenum.getEEnumLiteralByLiteral(v.toString()).getInstance());
 						}
 					} else {
@@ -194,7 +191,7 @@ public class EMFTCSInjector {
 					}
 				} else {
 					if (targetIsEnum) {
-						EEnum eenum = (EEnum)type;
+						final EEnum eenum = (EEnum)type;
 						oldCol.add(eenum.getEEnumLiteralByLiteral(value.toString()).getInstance());
 					} else {
 						oldCol.add(value);
@@ -202,7 +199,7 @@ public class EMFTCSInjector {
 				}
 			} else {
 				if (value instanceof Collection) {
-					Collection c = (Collection)value;
+					final Collection c = (Collection)value;
 					if (!c.isEmpty()) {
 						value = c.iterator().next();
 					} else {
@@ -210,9 +207,9 @@ public class EMFTCSInjector {
 					}
 				}
 				if (targetIsEnum) {
-					EEnum eenum = (EEnum)type;
+					final EEnum eenum = (EEnum)type;
 					if (value != null) {
-						EEnumLiteral literal = eenum.getEEnumLiteral(value.toString());
+						final EEnumLiteral literal = eenum.getEEnumLiteral(value.toString());
 						if (literal != null) {
 							eo.eSet(feature, literal.getInstance());
 						} else {
@@ -225,11 +222,11 @@ public class EMFTCSInjector {
 			}
 		}
 
-		public boolean isCandidate(Object ame, String typeName) {
+		public boolean isCandidate(final Object ame, final String typeName) {
 			boolean ret = false;
-			Object valueType = getTypeByName(typeName);
+			final Object valueType = getTypeByName(typeName);
 
-			Object type = getType(ame);
+			final Object type = getType(ame);
 
 			if (valueType instanceof EObject) {
 				final EObject o = (EObject)valueType;
@@ -238,7 +235,7 @@ public class EMFTCSInjector {
 				if ((o instanceof EClass) && (t instanceof EClass)) {
 					try {
 						ret = o.equals(t) || ((EClass)o).isSuperTypeOf((EClass)t);
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 				}
@@ -246,7 +243,7 @@ public class EMFTCSInjector {
 			return ret;
 		}
 
-		public Object getType(Object value) {
+		public Object getType(final Object value) {
 			if (value instanceof EObject) {
 				return ((EObject)value).eClass();
 			} else if (value instanceof EList) {
@@ -256,21 +253,21 @@ public class EMFTCSInjector {
 			}
 		}
 
-		public boolean isAModelElement(Object me) {
+		public boolean isAModelElement(final Object me) {
 			return me instanceof EObject;
 		}
 
-		public String getString(Object ame, String propName) {
+		public String getString(final Object ame, final String propName) {
 			return get(ame, propName).toString();
 		}
 
-		public Object createEnumLiteral(String name) {
-			EEnumLiteral ret = EcoreFactoryImpl.eINSTANCE.createEEnumLiteral();
+		public Object createEnumLiteral(final String name) {
+			final EEnumLiteral ret = EcoreFactoryImpl.eINSTANCE.createEEnumLiteral();
 			ret.setName(name);
 			return ret;
 		}
 
-		private EClass getTypeByName(String typeName) {
+		private EClass getTypeByName(final String typeName) {
 			final EClassifier type = metamodel.findType(typeName);
 			return type instanceof EClass ? (EClass)type : null;
 		}

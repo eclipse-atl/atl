@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Dennis Wagelaar.
+ * Copyright (c) 2014, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.atl.core.emf.EMFReferenceModel;
@@ -30,7 +31,7 @@ import org.eclipse.m2m.atl.engine.parser.AtlParser;
 
 /**
  * EMFTVM performance test suite for <code>EcoreCopy.atl</code>.
- * 
+ *
  * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class ATLtoEMFTVMPerformanceTest extends PerformanceTest {
@@ -39,7 +40,7 @@ public class ATLtoEMFTVMPerformanceTest extends PerformanceTest {
 
 	/**
 	 * Tests EMFTVM performance of <code>ATLtoEMFTVM.atl</code>.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public void testEMFTVM_ATLtoEMFTVM() throws IOException {
@@ -48,7 +49,7 @@ public class ATLtoEMFTVMPerformanceTest extends PerformanceTest {
 
 	/**
 	 * Tests EMFTVM performance of <code>ATLtoEMFTVM.atl</code> without JIT.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public void testEMFTVM_NoJIT_ATLtoEMFTVM() throws IOException {
@@ -57,14 +58,14 @@ public class ATLtoEMFTVMPerformanceTest extends PerformanceTest {
 
 	/**
 	 * Runs the EMFTVM performance test of <code>ATLtoEMFTVM.atl</code>.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	protected void runTestEMFTVM_ATLtoEMFTVM(final String prefix, final boolean jitDisabled) throws IOException {
-		final Metamodel atlmm = EmftvmFactory.eINSTANCE.createMetamodel();
-		atlmm.setResource(((EMFReferenceModel) AtlParser.getDefault().getAtlMetamodel()).getResource());
-		final Metamodel pbmm = EmftvmFactory.eINSTANCE.createMetamodel();
-		pbmm.setResource(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
+		final Metamodel atlmm = EmftvmFactory.eINSTANCE
+				.createMetamodel(((EMFReferenceModel) AtlParser.getDefault().getAtlMetamodel()).getResource());
+		final Metamodel pbmm = EmftvmFactory.eINSTANCE
+				.createMetamodel(((EMFReferenceModel) AtlParser.getDefault().getProblemMetamodel()).getResource());
 
 		final ExecEnvPool pool = new ExecEnvPool();
 		pool.setModuleResolverFactory(new DefaultModuleResolverFactory(COMPILER_PLUGIN_URI + "/transformations/"));
@@ -75,12 +76,13 @@ public class ATLtoEMFTVMPerformanceTest extends PerformanceTest {
 		// JIT warmup
 		for (int i = 0; i < TEST_COUNT / 10; i++) {
 			final ResourceSet rs = new ResourceSetImpl();
-			final Model in = EmftvmFactory.eINSTANCE.createModel();
-			in.setResource(rs.getResource(URI.createPlatformPluginURI(COMPILER_PLUGIN_ID + "/transformations/ATLtoEMFTVM.atl", true), true));
-			final Model out = EmftvmFactory.eINSTANCE.createModel();
-			out.setResource(rs.createResource(URI.createURI("ATLtoEMFTVM.emftvm")));
-			final Model pbsModel = EmftvmFactory.eINSTANCE.createModel();
-			pbsModel.setResource(rs.createResource(URI.createFileURI("pbs.xmi")));
+			final Resource inRes = rs.getResource(
+					URI.createPlatformPluginURI(COMPILER_PLUGIN_ID + "/transformations/ATLtoEMFTVM.atl", true), true);
+			final Model in = EmftvmFactory.eINSTANCE.createModel(inRes);
+			final Resource outRes = rs.createResource(URI.createURI("ATLtoEMFTVM.emftvm"));
+			final Model out = EmftvmFactory.eINSTANCE.createModel(outRes);
+			final Resource pbsRes = rs.createResource(URI.createFileURI("pbs.xmi"));
+			final Model pbsModel = EmftvmFactory.eINSTANCE.createModel(pbsRes);
 
 			final ExecEnv env = pool.getExecEnv();
 			env.setJitDisabled(jitDisabled);
@@ -97,12 +99,13 @@ public class ATLtoEMFTVMPerformanceTest extends PerformanceTest {
 		for (int i = 0; i < TEST_COUNT; i++) {
 			final TimingData td = new TimingData();
 			final ResourceSet rs = new ResourceSetImpl();
-			final Model in = EmftvmFactory.eINSTANCE.createModel();
-			in.setResource(rs.getResource(URI.createPlatformPluginURI(COMPILER_PLUGIN_ID + "/transformations/ATLtoEMFTVM.atl", true), true));
-			final Model out = EmftvmFactory.eINSTANCE.createModel();
-			out.setResource(rs.createResource(URI.createURI("ATLtoEMFTVM.emftvm")));
-			final Model pbsModel = EmftvmFactory.eINSTANCE.createModel();
-			pbsModel.setResource(rs.createResource(URI.createFileURI("pbs.xmi")));
+			final Resource inRes = rs.getResource(
+					URI.createPlatformPluginURI(COMPILER_PLUGIN_ID + "/transformations/ATLtoEMFTVM.atl", true), true);
+			final Model in = EmftvmFactory.eINSTANCE.createModel(inRes);
+			final Resource outRes = rs.createResource(URI.createURI("ATLtoEMFTVM.emftvm"));
+			final Model out = EmftvmFactory.eINSTANCE.createModel(outRes);
+			final Resource pbsRes = rs.createResource(URI.createFileURI("pbs.xmi"));
+			final Model pbsModel = EmftvmFactory.eINSTANCE.createModel(pbsRes);
 
 			final ExecEnv env = pool.getExecEnv();
 			env.setJitDisabled(jitDisabled);
