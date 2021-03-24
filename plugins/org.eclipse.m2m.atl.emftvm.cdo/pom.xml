@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) 2012 Obeo.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+   
+    Contributors:
+        Obeo - initial creator
+ -->
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>m2m.atl-parent</artifactId>
+		<groupId>org.eclipse.m2m.atl</groupId>
+		<version>4.4.0-SNAPSHOT</version>
+		<relativePath>../../releng/org.eclipse.m2m.atl.releng.parent</relativePath>
+	</parent>
+	<groupId>org.eclipse.m2m.atl</groupId>
+	<artifactId>org.eclipse.m2m.atl.emftvm.cdo</artifactId>
+	<version>4.4.0-SNAPSHOT</version>
+	<packaging>eclipse-plugin</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>stable</id>
+			<activation>
+				<property>
+					<name>BUILD_TYPE</name>
+					<value>S</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-deploy-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>deploy-custom</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>deploy-file</goal>
+								</goals>
+								<configuration>
+									<file>${project.build.directory}/${project.artifactId}-${project.version}.jar</file>
+									<files>${project.build.directory}/${project.artifactId}-${project.version}-sources.jar</files>
+									<classifiers>sources</classifiers>
+									<repositoryId>${project.distributionManagement.snapshotRepository.id}</repositoryId>
+									<url>${project.distributionManagement.snapshotRepository.url}</url>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>${project.artifactId}</artifactId>
+									<version>${project.version}</version>
+									<packaging>jar</packaging>
+									<pomFile>${project.basedir}/deploy/snapshot/pom.xml</pomFile>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>release</id>
+			<activation>
+				<property>
+					<name>BUILD_TYPE</name>
+					<value>R</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-deploy-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>deploy-custom</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>deploy-file</goal>
+								</goals>
+								<configuration>
+									<file>${project.build.directory}/${project.artifactId}-${project.version}.jar</file>
+									<files>${project.build.directory}/${project.artifactId}-${project.version}-sources.jar</files>
+									<classifiers>sources</classifiers>
+									<repositoryId>${project.distributionManagement.repository.id}</repositoryId>
+									<url>${project.distributionManagement.repository.url}</url>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>${project.artifactId}</artifactId>
+									<version>${project.releaseVersion}</version>
+									<packaging>jar</packaging>
+									<pomFile>${project.basedir}/deploy/release/pom.xml</pomFile>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

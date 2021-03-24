@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013-2014 Dennis Wagelaar.
+ * Copyright (c) 2013, 2014, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,16 +45,16 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 
 /**
  * EMFTVM performance test suite for <code>EcoreCopy.atl</code>.
- * 
+ *
  * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class EcoreCopyPerformanceTest extends PerformanceTest {
 
 	private static final int TEST_COUNT = 500;
-	
+
 	/**
 	 * Tests EMFTVM performance of <code>EcoreCopy.atl</code>.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public void testEMFTVM_EcoreCopy() throws IOException {
@@ -64,7 +64,7 @@ public class EcoreCopyPerformanceTest extends PerformanceTest {
 
 	/**
 	 * Tests EMFTVM performance of <code>EcoreCopy.atl</code> without JIT.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public void testEMFTVM_NoJIT_EcoreCopy() throws IOException {
@@ -75,7 +75,7 @@ public class EcoreCopyPerformanceTest extends PerformanceTest {
 
 	/**
 	 * Runs the EMFTVM performance test of <code>EcoreCopy.atl</code>.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	protected void runTestEMFTVM_EcoreCopy(final ExecEnv env, final String prefix) throws IOException {
@@ -85,10 +85,11 @@ public class EcoreCopyPerformanceTest extends PerformanceTest {
 		// JIT warmup
 		for (int i = 0; i < TEST_COUNT / 10; i++) {
 			final ResourceSet rs = new ResourceSetImpl();
-			final Model in = EmftvmFactory.eINSTANCE.createModel();
-			in.setResource(rs.getResource(URI.createPlatformPluginURI(EMFTVM_PLUGIN_ID + "/model/emftvm.ecore", true), true));
-			final Model out = EmftvmFactory.eINSTANCE.createModel();
-			out.setResource(rs.createResource(URI.createURI("out.ecore")));
+			final Resource inRes = rs
+					.getResource(URI.createPlatformPluginURI(EMFTVM_PLUGIN_ID + "/model/emftvm.ecore", true), true);
+			final Model in = EmftvmFactory.eINSTANCE.createModel(inRes);
+			final Resource outRes = rs.createResource(URI.createURI("out.ecore"));
+			final Model out = EmftvmFactory.eINSTANCE.createModel(outRes);
 
 			env.registerInputModel("IN", in);
 			env.registerOutputModel("OUT", out);
@@ -101,10 +102,11 @@ public class EcoreCopyPerformanceTest extends PerformanceTest {
 		for (int i = 0; i < TEST_COUNT; i++) {
 			final TimingData td = new TimingData();
 			final ResourceSet rs = new ResourceSetImpl();
-			final Model in = EmftvmFactory.eINSTANCE.createModel();
-			in.setResource(rs.getResource(URI.createPlatformPluginURI(EMFTVM_PLUGIN_ID + "/model/emftvm.ecore", true), true));
-			final Model out = EmftvmFactory.eINSTANCE.createModel();
-			out.setResource(rs.createResource(URI.createURI("out.ecore")));
+			final Resource inRes = rs
+					.getResource(URI.createPlatformPluginURI(EMFTVM_PLUGIN_ID + "/model/emftvm.ecore", true), true);
+			final Model in = EmftvmFactory.eINSTANCE.createModel(inRes);
+			final Resource outRes = rs.createResource(URI.createURI("out.ecore"));
+			final Model out = EmftvmFactory.eINSTANCE.createModel(outRes);
 
 			env.registerInputModel("IN", in);
 			env.registerOutputModel("OUT", out);
@@ -125,7 +127,7 @@ public class EcoreCopyPerformanceTest extends PerformanceTest {
 
 	/**
 	 * Tests EMFVM performance of <code>EcoreCopyASM.atl</code>.
-	 * 
+	 *
 	 * @throws ATLCoreException
 	 * @throws IOException
 	 */
@@ -135,7 +137,7 @@ public class EcoreCopyPerformanceTest extends PerformanceTest {
 
 	/**
 	 * Tests Regular VM performance of <code>EcoreCopyASM.atl</code>.
-	 * 
+	 *
 	 * @throws ATLCoreException
 	 * @throws IOException
 	 */
@@ -145,7 +147,7 @@ public class EcoreCopyPerformanceTest extends PerformanceTest {
 
 	/**
 	 * Tests Regular VM performance of <code>EcoreCopyASM.atl</code>.
-	 * 
+	 *
 	 * @throws ATLCoreException
 	 * @throws IOException
 	 */

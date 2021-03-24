@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Dennis Wagelaar.
+ * Copyright (c) 2013, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,7 +37,7 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 
 /**
  * Tests the <code>pojo.ecore</code> model using {@link Set} and {@link List} for collections instead of {@link EList}.
- * 
+ *
  * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class PojoModelTest extends EMFTVMTest {
@@ -49,21 +49,20 @@ public class PojoModelTest extends EMFTVMTest {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		pojo = EmftvmFactory.eINSTANCE.createMetamodel();
-		pojo.setResource(PojoPackage.eINSTANCE.eResource());
+		pojo = EmftvmFactory.eINSTANCE.createMetamodel(PojoPackage.eINSTANCE.eResource());
 		moduleResolver = new DefaultModuleResolver(URI.createPlatformPluginURI(PLUGIN_ID + "/test-data/POJOModel/", true).toString(),
 				new ResourceSetImpl());
 	}
 
 	/**
 	 * Creates a new POJO model.
-	 * 
+	 *
 	 * @return a new POJO model
 	 */
 	protected Resource createPojoModel() {
@@ -82,7 +81,7 @@ public class PojoModelTest extends EMFTVMTest {
 
 	/**
 	 * Creates a new Ecore model.
-	 * 
+	 *
 	 * @return a new Ecore model
 	 */
 	protected Resource createEcoreModel() {
@@ -100,10 +99,8 @@ public class PojoModelTest extends EMFTVMTest {
 	 * Test method for <code>POJOToEcore.atl</code>.
 	 */
 	public void testPOJOToEcore() {
-		final Model in = EmftvmFactory.eINSTANCE.createModel();
-		in.setResource(createPojoModel());
-		final Model out = EmftvmFactory.eINSTANCE.createModel();
-		out.setResource(new ResourceImpl(URI.createURI("out.ecore")));
+		final Model in = EmftvmFactory.eINSTANCE.createModel(createPojoModel());
+		final Model out = EmftvmFactory.eINSTANCE.createModel(new ResourceImpl(URI.createURI("out.ecore")));
 
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		env.registerMetaModel("POJO", pojo);
@@ -124,10 +121,8 @@ public class PojoModelTest extends EMFTVMTest {
 	 * Test method for <code>EcoreToPOJO.atl</code>.
 	 */
 	public void testEcoreToPOJO() {
-		final Model in = EmftvmFactory.eINSTANCE.createModel();
-		in.setResource(createEcoreModel());
-		final Model out = EmftvmFactory.eINSTANCE.createModel();
-		out.setResource(new ResourceImpl(URI.createURI("out.pojo")));
+		final Model in = EmftvmFactory.eINSTANCE.createModel(createEcoreModel());
+		final Model out = EmftvmFactory.eINSTANCE.createModel(new ResourceImpl(URI.createURI("out.pojo")));
 
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		env.registerMetaModel("POJO", pojo);
@@ -160,8 +155,7 @@ public class PojoModelTest extends EMFTVMTest {
 	 * Test method for <code>POJOToPOJO.atl</code>.
 	 */
 	public void testPOJOToPOJO() {
-		final Model in = EmftvmFactory.eINSTANCE.createModel();
-		in.setResource(createPojoModel());
+		final Model in = EmftvmFactory.eINSTANCE.createModel(createPojoModel());
 
 		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
 		env.registerMetaModel("POJO", pojo);
