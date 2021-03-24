@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,8 +36,7 @@ public class NewModelTask extends LoadModelTask {
 		if (r == null) {
 			throw new IllegalArgumentException(String.format("Model with uri %s could not be created", uri));
 		}
-		final Model m = createModel();
-		m.setResource(r);
+		final Model m = createModel(r);
 		setModel(getName(), m);
 	}
 

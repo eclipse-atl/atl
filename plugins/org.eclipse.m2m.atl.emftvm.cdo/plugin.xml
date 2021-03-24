@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.eclipse.m2m.atl.emftvm.cdo.impl.CDOModelFactory"
+         point="org.eclipse.m2m.atl.emftvm.modelfactory">
+      <modelfactory
+            class="org.eclipse.m2m.atl.emftvm.cdo.impl.CDOModelFactoryImpl"
+            resourceType="org.eclipse.emf.cdo.eresource.CDOResource">
+      </modelfactory>
+   </extension>
+
+</plugin>

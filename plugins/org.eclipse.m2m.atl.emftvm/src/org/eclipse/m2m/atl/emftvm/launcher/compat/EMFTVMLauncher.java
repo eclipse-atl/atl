@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2017 Dennis Wagelaar.
+ * Copyright (c) 2017, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     Dennis Wagelaar - initial API and implementation
  *******************************************************************************/
@@ -51,7 +51,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
 
 /**
  * The EMFVM implementation of the {@link ILauncher} interface.
- * 
+ *
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class EMFTVMLauncher implements ILauncher {
@@ -84,7 +84,7 @@ public class EMFTVMLauncher implements ILauncher {
 
 	/**
 	 * Adds any model to the local map.
-	 * 
+	 *
 	 * @param model
 	 *            the {@link IModel}
 	 * @param name
@@ -93,7 +93,7 @@ public class EMFTVMLauncher implements ILauncher {
 	 *            the model reference model name
 	 * @return the EMFTVM {@link Model}
 	 */
-	protected Model addModel(IModel model, String name, String referenceModelName) {
+	protected Model addModel(final IModel model, final String name, final String referenceModelName) {
 		final Model emftvmModel;
 		if (models.containsKey(name)) {
 			ATLLogger.warning(Messages.getString("EMFTVMLauncher.MODEL_REGISTERED", name)); //$NON-NLS-1$
@@ -106,18 +106,17 @@ public class EMFTVMLauncher implements ILauncher {
 				final EMFInjector emfInjector;
 				try {
 					emfInjector = (EMFInjector) CoreService.getInjector(MODEL_FACTORY_NAME);
-				} catch (ATLCoreException e) {
+				} catch (final ATLCoreException e) {
 					throw new VMException(null, e.getLocalizedMessage(), e);
 				}
 				emfInjector.inject(emfModel, outputResourceSet.createResource(URI.createURI(name + ".xmi"))); //$NON-NLS-1$
 			}
-			emftvmModel = EmftvmFactory.eINSTANCE.createModel();
-			emftvmModel.setResource(emfModel.getResource()); 
+			emftvmModel = EmftvmFactory.eINSTANCE.createModel(emfModel.getResource());
 		}
 		if (!models.containsKey(referenceModelName)) {
 			models.put(referenceModelName, model.getReferenceModel());
-			final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel();
-			metamodel.setResource(((EMFReferenceModel) model.getReferenceModel()).getResource());
+			final Metamodel metamodel = EmftvmFactory.eINSTANCE
+					.createMetamodel(((EMFReferenceModel) model.getReferenceModel()).getResource());
 			execEnv.registerMetaModel(referenceModelName, metamodel);
 		}
 		return emftvmModel;
@@ -125,11 +124,11 @@ public class EMFTVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addInModel(org.eclipse.m2m.atl.core.IModel,
 	 *      java.lang.String, java.lang.String)
 	 */
-	public void addInModel(IModel model, String name, String referenceModelName) {
+	public void addInModel(final IModel model, final String name, final String referenceModelName) {
 		model.setIsTarget(false);
 		final Model emftvmModel = addModel(model, name, referenceModelName);
 		if (emftvmModel != null) {
@@ -139,11 +138,11 @@ public class EMFTVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addInOutModel(org.eclipse.m2m.atl.core.IModel,
 	 *      java.lang.String, java.lang.String)
 	 */
-	public void addInOutModel(IModel model, String name, String referenceModelName) {
+	public void addInOutModel(final IModel model, final String name, final String referenceModelName) {
 		model.setIsTarget(true);
 		final Model emftvmModel = addModel(model, name, referenceModelName);
 		if (emftvmModel != null) {
@@ -153,11 +152,11 @@ public class EMFTVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addOutModel(org.eclipse.m2m.atl.core.IModel,
 	 *      java.lang.String, java.lang.String)
 	 */
-	public void addOutModel(IModel model, String name, String referenceModelName) {
+	public void addOutModel(final IModel model, final String name, final String referenceModelName) {
 		model.setIsTarget(true);
 		final Model emftvmModel = addModel(model, name, referenceModelName);
 		if (emftvmModel != null) {
@@ -167,11 +166,11 @@ public class EMFTVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#addLibrary(java.lang.String,
 	 *      java.lang.Object)
 	 */
-	public void addLibrary(String name, Object library) {
+	public void addLibrary(final String name, final Object library) {
 		if (libraries.containsKey(name)) {
 			ATLLogger.warning(Messages.getString("EMFTVMLauncher.LIBRARY_REGISTERED", name)); //$NON-NLS-1$
 		} else {
@@ -181,10 +180,10 @@ public class EMFTVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#initialize(java.util.Map)
 	 */
-	public void initialize(Map<String, Object> parameters) {
+	public void initialize(final Map<String, Object> parameters) {
 		models = new HashMap<String, IModel>();
 		libraries = new HashMap<String, Module>();
 		moduleResourceSet = new ResourceSetImpl();
@@ -196,7 +195,7 @@ public class EMFTVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#launch(java.lang.String,
 	 *      org.eclipse.core.runtime.IProgressMonitor, java.util.Map,
 	 *      java.lang.Object[])
@@ -208,7 +207,7 @@ public class EMFTVMLauncher implements ILauncher {
 
 	/**
 	 * Launches the transformation with preloaded modules.
-	 * 
+	 *
 	 * @param tool
 	 *            the execution tool
 	 * @param monitor
@@ -220,13 +219,13 @@ public class EMFTVMLauncher implements ILauncher {
 	 * @return the execution result
 	 */
 	protected Object internalLaunch(final VMMonitor tool, final IProgressMonitor monitor,
-			final Map<String, Object> options, Object... modules) {
+			final Map<String, Object> options, final Object... modules) {
 		getModuleFromObject(modules[0]);
 		for (int i = 1; i < modules.length; i++) {
 			getModuleFromObject(modules[i]);
 		}
 
-		for (Model model : LazyCollections.asLazySet(execEnv.getInoutModels().values())
+		for (final Model model : LazyCollections.asLazySet(execEnv.getInoutModels().values())
 				.union(LazyCollections.asLazySet(execEnv.getOutputModels().values()))) {
 			model.setAllowInterModelReferences(
 					LauncherService.getBooleanOption(options.get("allowInterModelReferences"), false)); //$NON-NLS-1$
@@ -235,7 +234,7 @@ public class EMFTVMLauncher implements ILauncher {
 		execEnv.setMonitor(tool);
 		execEnv.setJitDisabled(LauncherService.getBooleanOption(options.get("jitDisabled"), false)); //$NON-NLS-1$
 		timingData.finishLoading();
-		
+
 		final Object result = execEnv.run(timingData);
 
 		timingData.finish();
@@ -247,7 +246,7 @@ public class EMFTVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#loadModule(java.io.InputStream)
 	 */
 	public Module loadModule(final InputStream inputStream) {
@@ -261,19 +260,19 @@ public class EMFTVMLauncher implements ILauncher {
 			resource.setURI(URI.createURI(EMF_URI_PREFIX + path + DefaultModuleResolver.FILE_EXT));
 			execEnv.loadModule(moduleResolver, module.getName());
 			return module;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new VMException(null, e.getLocalizedMessage(), e);
 		}
 	}
 
 	/**
 	 * Load a module if necessary.
-	 * 
+	 *
 	 * @param module
 	 *            the given {@link Module} or {@link InputStream}.
 	 * @return the {@link Module}
 	 */
-	protected Module getModuleFromObject(Object module) {
+	protected Module getModuleFromObject(final Object module) {
 		if (module instanceof InputStream) {
 			return loadModule((InputStream) module);
 		} else if (module instanceof Module) {
@@ -284,24 +283,24 @@ public class EMFTVMLauncher implements ILauncher {
 
 	/**
 	 * Finds the first module in {@link Resource}
-	 * 
+	 *
 	 * <pre>
 	 * r
 	 * </pre>
-	 * 
+	 *
 	 * .
-	 * 
+	 *
 	 * @param r
 	 * @return the module with the given name inside
-	 * 
+	 *
 	 *         <pre>
 	 *         r
 	 *         </pre>
-	 * 
+	 *
 	 *         , or <code>null</code>
 	 */
 	private Module findModule(final Resource r) throws ModuleNotFoundException {
-		for (EObject o : r.getContents()) {
+		for (final EObject o : r.getContents()) {
 			if (o instanceof Module) {
 				return (Module) o;
 			}
@@ -311,25 +310,25 @@ public class EMFTVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getModel(java.lang.String)
 	 */
-	public IModel getModel(String modelName) {
+	public IModel getModel(final String modelName) {
 		return models.get(modelName);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getLibrary(java.lang.String)
 	 */
-	public Object getLibrary(String libraryName) {
+	public Object getLibrary(final String libraryName) {
 		return libraries.get(libraryName);
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getDefaultModelFactoryName()
 	 */
 	public String getDefaultModelFactoryName() {
@@ -338,7 +337,7 @@ public class EMFTVMLauncher implements ILauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.core.launch.ILauncher#getModes()
 	 */
 	public String[] getModes() {
