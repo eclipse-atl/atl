@@ -11,7 +11,10 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.cdo.impl;
 
+import org.eclipse.emf.cdo.common.protocol.CDOProtocolConstants;
 import org.eclipse.emf.cdo.eresource.CDOResource;
+import org.eclipse.emf.cdo.view.CDOQuery;
+import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.net4j.util.collection.CloseableIterator;
@@ -46,7 +49,11 @@ public class CDOInstanceOfIterable implements Iterable<EObject> {
 	 * {@inheritDoc}
 	 */
 	public CloseableIterator<EObject> iterator() {
-		return res.cdoView().queryInstancesAsync(type);
+		final CDOView cdoView = res.cdoView();
+		final CDOQuery query = cdoView.createQuery(CDOProtocolConstants.QUERY_LANGUAGE_INSTANCES, null);
+		query.setParameter(CDOProtocolConstants.QUERY_LANGUAGE_INSTANCES_TYPE, type);
+		query.setParameter(CDOProtocolConstants.QUERY_LANGUAGE_INSTANCES_EXACT, false);
+		return query.getResultAsync();
 	}
 
 }
