@@ -23,6 +23,9 @@ import org.eclipse.net4j.util.collection.CloseableIterator;
  * Makes the instances of the given {@link EClass} in a {@link CDOResource}
  * available as an {@link Iterable}.
  *
+ * Inspired by Epsilon's
+ * <a href="https://github.com/epsilonlabs/emc-cdo">emc-cdo</a>.
+ *
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class CDOInstanceOfIterable implements Iterable<EObject> {
