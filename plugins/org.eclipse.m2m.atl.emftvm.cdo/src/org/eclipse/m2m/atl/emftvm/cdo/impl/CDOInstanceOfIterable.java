@@ -11,10 +11,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.cdo.impl;
 
-import org.eclipse.emf.cdo.common.protocol.CDOProtocolConstants;
 import org.eclipse.emf.cdo.eresource.CDOResource;
-import org.eclipse.emf.cdo.view.CDOQuery;
-import org.eclipse.emf.cdo.view.CDOView;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.net4j.util.collection.CloseableIterator;
@@ -22,6 +19,9 @@ import org.eclipse.net4j.util.collection.CloseableIterator;
 /**
  * Makes the instances of the given {@link EClass} in a {@link CDOResource}
  * available as an {@link Iterable}.
+ *
+ * Inspired by Epsilon's
+ * <a href="https://github.com/epsilonlabs/emc-cdo">emc-cdo</a>.
  *
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
@@ -46,11 +46,7 @@ public class CDOInstanceOfIterable implements Iterable<EObject> {
 	 * {@inheritDoc}
 	 */
 	public CloseableIterator<EObject> iterator() {
-		final CDOView cdoView = res.cdoView();
-		final CDOQuery query = cdoView.createQuery(CDOProtocolConstants.QUERY_LANGUAGE_INSTANCES, null);
-		query.setParameter(CDOProtocolConstants.QUERY_LANGUAGE_INSTANCES_TYPE, type);
-		query.setParameter(CDOProtocolConstants.QUERY_LANGUAGE_INSTANCES_EXACT, false);
-		return query.getResultAsync();
+		return res.cdoView().queryInstancesAsync(type);
 	}
 
 }
