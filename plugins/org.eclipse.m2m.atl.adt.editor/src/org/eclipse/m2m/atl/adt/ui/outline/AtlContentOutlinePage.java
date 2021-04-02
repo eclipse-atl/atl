@@ -53,7 +53,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		 * @see org.eclipse.ui.IPerspectiveListener#perspectiveActivated(org.eclipse.ui.IWorkbenchPage,
 		 *      org.eclipse.ui.IPerspectiveDescriptor)
 		 */
-		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
+		public void perspectiveActivated(final IWorkbenchPage page, final IPerspectiveDescriptor perspective) {
 			final IPageSite site = getSite();
 			if (site != null && page == site.getPage()) {
 				final int newDepth = computeDepth(perspective);
@@ -68,8 +68,8 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		 * @see org.eclipse.ui.IPerspectiveListener#perspectiveChanged(org.eclipse.ui.IWorkbenchPage,
 		 *      org.eclipse.ui.IPerspectiveDescriptor, java.lang.String)
 		 */
-		public void perspectiveChanged(IWorkbenchPage page, IPerspectiveDescriptor perspective,
-				String changeId) {
+		public void perspectiveChanged(final IWorkbenchPage page, final IPerspectiveDescriptor perspective,
+				final String changeId) {
 			// do nothing
 		}
 
@@ -85,7 +85,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 
 	/**
 	 * A description of the current cursor position of the associated editor
-	 * 
+	 *
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#getCursorPosition()
 	 */
 	private String cursorPosition;
@@ -104,7 +104,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * <code>AtlNbCharFile</code> class is useful to get index char start and index char end from the location
 	 * string
 	 * </p>
-	 * 
+	 *
 	 * @see AtlNbCharFile
 	 */
 	private static AtlNbCharFile help;
@@ -153,8 +153,8 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * @param editorInput
 	 * @param documentProvider
 	 */
-	public AtlContentOutlinePage(ITextEditor textEditor, IEditorInput editorInput,
-			IDocumentProvider documentProvider) {
+	public AtlContentOutlinePage(final ITextEditor textEditor, final IEditorInput editorInput,
+			final IDocumentProvider documentProvider) {
 		super();
 		this.textEditor = (AtlEditor)textEditor;
 	}
@@ -167,22 +167,22 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * This is useful when some parameters need to be adjusted according to the current perspective. In the
 	 * present case the <code>depth</code> is different in the debug perspective.
 	 * </p>
-	 * 
+	 *
 	 * @param l
 	 *            the perspective listener to add
 	 */
-	private void addPerspectiveListener(IPerspectiveListener l) {
+	private void addPerspectiveListener(final IPerspectiveListener l) {
 		getSite().getPage().getWorkbenchWindow().addPerspectiveListener(l);
 	}
 
 	/**
 	 * computes the <code>depth</code> for the current perspective. The depth varies according to the
 	 * perspective
-	 * 
+	 *
 	 * @param ipd
 	 *            the perspective for which to compute the depth
 	 */
-	private int computeDepth(IPerspectiveDescriptor ipd) {
+	private int computeDepth(final IPerspectiveDescriptor ipd) {
 		if (IDebugUIConstants.ID_DEBUG_PERSPECTIVE.equals(ipd.getId())) {
 			return -1;
 		}
@@ -198,7 +198,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		cutAction = new Action("Cut") { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 * 
+			 *
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -211,7 +211,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		copyAction = new Action("Copy") { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 * 
+			 *
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -224,7 +224,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		pasteAction = new Action("Paste") { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 * 
+			 *
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -237,7 +237,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		addBreakPointAction = new Action("Toggle breakpoint") { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 * 
+			 *
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -270,7 +270,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		filterHelperAction = new Action("Hide Helpers", Action.AS_CHECK_BOX) { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 * 
+			 *
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -284,7 +284,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		filterRuleAction = new Action("Hide rules", Action.AS_CHECK_BOX) { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 * 
+			 *
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -298,7 +298,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		sorterAction = new Action("Alphabetical sort", Action.AS_CHECK_BOX) { //$NON-NLS-1$
 			/**
 			 * {@inheritDoc}
-			 * 
+			 *
 			 * @see org.eclipse.jface.action.Action#run()
 			 */
 			@Override
@@ -318,7 +318,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		final MenuManager menuMgr = new MenuManager();
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
-			public void menuAboutToShow(IMenuManager mgr) {
+			public void menuAboutToShow(final IMenuManager mgr) {
 				fillContextMenu(mgr);
 			}
 		});
@@ -331,11 +331,11 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.adt.ui.outline.AtlOutlinePage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	public void createControl(Composite arg0) {
+	public void createControl(final Composite arg0) {
 		super.createControl(arg0);
 		root = new Root();
 		// Add all listeners that were added when the tree viewer was null
@@ -395,32 +395,38 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 		mgr.add(sorterAction);
 	}
 
-	private void doSetSelection(String currentCursorPosition) {
+	private void doSetSelection(final String currentCursorPosition) {
 		if (!(currentCursorPosition == null || treeViewer.getTree().isDisposed())) {
 			this.cursorPosition = currentCursorPosition;
 			final Root input = (Root)treeViewer.getInput();
 			if (input != null) {
 				final EObject unit = input.getUnit();
-				final int cursorIndexChar = help.getIndex(currentCursorPosition);
-				if (cursorIndexChar == -1) {
-					return;
+				try {
+					final int cursorIndexChar = help.getIndex(currentCursorPosition);
+					if (cursorIndexChar == -1) {
+						return;
+					}
+					this.selectedEo = unit;
+					setSelection(unit, cursorIndexChar, 0);
+					treeViewer.collapseAll();
+					treeViewer.expandToLevel(2);
+					showItem(selectedEo);
+				} catch (final NumberFormatException nfe) {
+					// do nothing
+				} catch (final IndexOutOfBoundsException ioobe) {
+					// do nothing
 				}
-				this.selectedEo = unit;
-				setSelection(unit, cursorIndexChar, 0);
-				treeViewer.collapseAll();
-				treeViewer.expandToLevel(2);
-				showItem(selectedEo);
 			}
 		}
 	}
 
 	/**
 	 * Fills the context menu with actions that were previously created.
-	 * 
+	 *
 	 * @param mgr
 	 *            the menu manager
 	 */
-	private void fillContextMenu(IMenuManager mgr) {
+	private void fillContextMenu(final IMenuManager mgr) {
 		mgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
 		mgr.add(cutAction);
 		mgr.add(copyAction);
@@ -435,7 +441,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 
 	/**
 	 * Returns the perspective descriptor of the current perspective.
-	 * 
+	 *
 	 * @return the perspective descriptor of the current perspective
 	 */
 	private IPerspectiveDescriptor getCurrentPerspective() {
@@ -444,13 +450,13 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 
 	/**
 	 * Return an array with two value. first value : index of start char second value : index of end char.
-	 * 
+	 *
 	 * @param eo
 	 *            The EObject for which to compute index of end/start char
 	 * @return return an array with two value. first value : index of start char second value : index of end
 	 *         char
 	 */
-	private static int[] getPos(EObject eo) {
+	private static int[] getPos(final EObject eo) {
 		final String location = (String)eo.eGet(AtlEMFConstants.sfLocation);
 		if (location == null) {
 			return null;
@@ -463,7 +469,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	 * Initializes the <code>AtlNbCharFile</code> object used to convert the location string and passes it to
 	 * the <code>DefaultSorter</code> object.
 	 */
-	private void initAtlNbCharFile(String content) {
+	private void initAtlNbCharFile(final String content) {
 		help = new AtlNbCharFile(toInputStream(content));
 		((DefaultSorter)defaultSorter).setHelp(help);
 		textEditor.setHelp(help);
@@ -490,7 +496,7 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 	/**
 	 * Updates the tree viewer selection according to the editor cursor position.
 	 */
-	private void setSelection(EObject input, int cursorIndexChar, int currentLevel) {
+	private void setSelection(final EObject input, final int cursorIndexChar, final int currentLevel) {
 		if (input == null || input.eContents() == null || input.eContents().isEmpty()) {
 			return;
 		}
@@ -518,22 +524,22 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 
 	/**
 	 * Sets the selection to the given cursorPosition.
-	 * 
+	 *
 	 * @param currentCursorPosition
 	 *            the cursor position
 	 */
-	public void setSelection(String currentCursorPosition) {
+	public void setSelection(final String currentCursorPosition) {
 		doSetSelection(currentCursorPosition);
 	}
 
 	/**
 	 * Highlights the given item in the tree viewer and makes it visible to the user, scrolling the tree
 	 * viewer if necessary. And adjusts the highlighted range in the associated editor.
-	 * 
+	 *
 	 * @param element
 	 *            the element to show in the tree viewer
 	 */
-	private void showItem(EObject element) {
+	private void showItem(final EObject element) {
 		final int[] pos = getPos(element);
 		if (pos != null) {
 			if (pos[1] - pos[0] > 0) {
@@ -545,22 +551,22 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 
 	/**
 	 * Converts from <code>String</code> to <code>InputStream</code>.
-	 * 
+	 *
 	 * @param contents
 	 *            the <code>String</code> to convert
 	 * @return the created InputStream
 	 */
-	private InputStream toInputStream(String contents) {
+	private InputStream toInputStream(final String contents) {
 		return new ByteArrayInputStream(contents.getBytes());
 	}
 
 	/**
 	 * Updates the filters of the tree viewer Multiple filters can be enabled at a time.
-	 * 
+	 *
 	 * @param actionParam
 	 *            the action
 	 */
-	protected void updateFilters(Action actionParam) {
+	protected void updateFilters(final Action actionParam) {
 		if (actionParam == filterHelperAction) {
 			if (actionParam.isChecked()) {
 				treeViewer.addFilter(helperFilter);
@@ -578,11 +584,11 @@ public class AtlContentOutlinePage extends AtlOutlinePage {
 
 	/**
 	 * Updates the sorter of the tree viewer One sorter can be enabled at a time.
-	 * 
+	 *
 	 * @param actionParam
 	 *            the action
 	 */
-	protected void updateSorter(Action actionParam) {
+	protected void updateSorter(final Action actionParam) {
 		if (actionParam == sorterAction) {
 			if (actionParam.isChecked()) {
 				treeViewer.setComparator(alphabeticalSorter);

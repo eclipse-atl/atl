@@ -21,7 +21,7 @@ import java.util.logging.Level;
 /**
  * This class is used by a stackframe to compute char position in a file With the file name and project name,
  * this structure build a list for each line the position of its first char and the position of the tabs.
- * 
+ *
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 public class AtlNbCharFile {
@@ -31,7 +31,7 @@ public class AtlNbCharFile {
 	/**
 	 * This class corresponding to the structure Line : for each line : index of first char and position of
 	 * tabs.
-	 * 
+	 *
 	 * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
 	 */
 	class Line {
@@ -47,7 +47,7 @@ public class AtlNbCharFile {
 		 */
 		List<Integer> tabsWidth;
 
-		public Line(int indexFirstChar, List<Integer> indexTabs, List<Integer> tabsWidth) {
+		public Line(final int indexFirstChar, final List<Integer> indexTabs, final List<Integer> tabsWidth) {
 			this.indexFirstChar = indexFirstChar;
 			this.indexTabs = indexTabs;
 			this.tabsWidth = tabsWidth;
@@ -61,22 +61,22 @@ public class AtlNbCharFile {
 
 	/**
 	 * The AtlNbCharFile constructor.
-	 * 
+	 *
 	 * @param in
 	 *            the input stream
 	 */
-	public AtlNbCharFile(InputStream in) {
+	public AtlNbCharFile(final InputStream in) {
 		computePosition(in);
 	}
 
 	/**
 	 * This is the main method which compute for each line of the file the index of the first char and the
 	 * index of the tabs.
-	 * 
+	 *
 	 * @param is
 	 *            the input stream
 	 */
-	private void computePosition(InputStream is) {
+	private void computePosition(final InputStream is) {
 		lines = new ArrayList<Line>();
 
 		try {
@@ -121,7 +121,7 @@ public class AtlNbCharFile {
 	 * With the current line and index of the column this method returns the position to select in the file
 	 * For example, the debugUI needs to know the index the start char and the last char of the current
 	 * AtlStackFrame To compute start char and last char, AtlStackFrame calls this method.
-	 * 
+	 *
 	 * @param lineNumber
 	 *            the line number
 	 * @param column
@@ -129,8 +129,9 @@ public class AtlNbCharFile {
 	 * @param tabWidth
 	 *            the width of the tab
 	 * @return the position to select in the file
+	 * @throws IndexOutOfBoundsException
 	 */
-	private int getIndexChar(int lineNumber, int column, int tabWidth) {
+	private int getIndexChar(final int lineNumber, final int column, final int tabWidth) {
 		int ret = 0;
 
 		if (!((lineNumber == 1) && (column == 1))) {
@@ -161,18 +162,18 @@ public class AtlNbCharFile {
 
 	/**
 	 * Returns the index char in the source location.
-	 * 
+	 *
 	 * @param sourceLocation
 	 *            the source
 	 * @return the index char in the source location
 	 */
-	public int[] getIndexChar(String sourceLocation) {
+	public int[] getIndexChar(final String sourceLocation) {
 		return getIndexChar(sourceLocation, ANTLR_TAB_WIDTH);
 	}
 
 	/**
 	 * Returns an array of int: first element is startChar, second element is endChar. *
-	 * 
+	 *
 	 * @param sourceLocation
 	 *            the string representing "startLine:startColumn-endLine:endColumn" the location given by
 	 *            antlr (tabs are 8 chars long)
@@ -180,7 +181,7 @@ public class AtlNbCharFile {
 	 *            the width of the tab
 	 * @return An array of int: first element is startChar, second element is endChar
 	 */
-	public int[] getIndexChar(String sourceLocation, int tabWidth) {
+	public int[] getIndexChar(final String sourceLocation, final int tabWidth) {
 		final int[] ret = new int[2];
 		int currentTabWidth = tabWidth;
 		if (currentTabWidth < 0) {
@@ -205,13 +206,15 @@ public class AtlNbCharFile {
 	/**
 	 * Returns computes the char start position from the string "cursorLine:cursorColumn" given by Eclipse
 	 * (tabs are 4 chars long by default, but it is user-configurable).
-	 * 
+	 *
 	 * @param cursorPosition
 	 *            the string representing the cursor position
 	 * @return computes the char start position from the string "cursorLine:cursorColumn" given by Eclipse
 	 *         (tabs are 4 chars long by default, but it is user-configurable)
+	 * @throws NumberFormatException
+	 * @throws IndexOutOfBoundsException
 	 */
-	public int getIndex(String cursorPosition) {
+	public int getIndex(final String cursorPosition) {
 		int ret = 0;
 		final String[] starts = cursorPosition.split(":"); //$NON-NLS-1$
 		final int startLine = Integer.parseInt(starts[0].trim());
