@@ -616,6 +616,59 @@ public final class OCLOperations {
 					}
 				});
 		/////////////////////////////////////////////////////////////////////
+		// Bag
+		/////////////////////////////////////////////////////////////////////
+		createOperation(false, "-", Types.BAG_TYPE, Types.BAG_TYPE,
+				new String[][][] { { { "coll" }, Types.COLLECTION_TYPE } }, new NativeCodeBlock() {
+					@SuppressWarnings("unchecked")
+					@Override
+					public Object execute(final StackFrame frame) {
+						final LazyBag<Object> self = (LazyBag<Object>) frame.getLocal(0, 0);
+						final LazyCollection<Object> coll = (LazyCollection<Object>) frame.getLocal(0, 1);
+						return self.excludingAll(coll);
+					}
+				});
+		/////////////////////////////////////////////////////////////////////
+		// OrderedSet
+		/////////////////////////////////////////////////////////////////////
+		createOperation(false, "-", Types.ORDERED_SET_TYPE, Types.ORDERED_SET_TYPE,
+				new String[][][] { { { "coll" }, Types.COLLECTION_TYPE } }, new NativeCodeBlock() {
+					@SuppressWarnings("unchecked")
+					@Override
+					public Object execute(final StackFrame frame) {
+						final LazyOrderedSet<Object> self = (LazyOrderedSet<Object>) frame.getLocal(0, 0);
+						final LazyCollection<Object> coll = (LazyCollection<Object>) frame.getLocal(0, 1);
+						return self.excludingAll(coll);
+					}
+				});
+		/////////////////////////////////////////////////////////////////////
+		// Sequence
+		/////////////////////////////////////////////////////////////////////
+		createOperation(false, "-", Types.SEQUENCE_TYPE, Types.SEQUENCE_TYPE,
+				new String[][][] { { { "coll" }, Types.COLLECTION_TYPE } }, new NativeCodeBlock() {
+					@SuppressWarnings("unchecked")
+					@Override
+					public Object execute(final StackFrame frame) {
+						final LazyList<Object> self = (LazyList<Object>) frame.getLocal(0, 0);
+						final LazyCollection<Object> coll = (LazyCollection<Object>) frame.getLocal(0, 1);
+						return self.excludingAll(coll);
+					}
+				});
+		/////////////////////////////////////////////////////////////////////
+		// Set
+		/////////////////////////////////////////////////////////////////////
+		createOperation(false, "-", Types.SET_TYPE, Types.SET_TYPE,
+				new String[][][] { { { "coll" }, Types.COLLECTION_TYPE } },
+				new NativeCodeBlock() {
+					@SuppressWarnings("unchecked")
+					@Override
+					public Object execute(final StackFrame frame) {
+						final LazySet<Object> self = (LazySet<Object>) frame.getLocal(0, 0);
+						final LazyCollection<Object> coll = (LazyCollection<Object>) frame.getLocal(0, 1);
+						return self.excludingAll(coll);
+					}
+				});
+		/////////////////////////////////////////////////////////////////////
 		// JavaCollection
 		/////////////////////////////////////////////////////////////////////
 		createOperation(false, "resolve", Types.JAVA_COLLECTION_TYPE, Types.SEQUENCE_TYPE,

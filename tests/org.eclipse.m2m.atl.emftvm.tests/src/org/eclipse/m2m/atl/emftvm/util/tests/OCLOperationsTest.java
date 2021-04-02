@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Dennis Wagelaar.
+ * Copyright (c) 2013, 2019, 2021 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,25 +13,29 @@ package org.eclipse.m2m.atl.emftvm.util.tests;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-
-import junit.framework.TestCase;
 
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.Feature;
 import org.eclipse.m2m.atl.emftvm.Operation;
 import org.eclipse.m2m.atl.emftvm.Parameter;
+import org.eclipse.m2m.atl.emftvm.util.LazyBag;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
+import org.eclipse.m2m.atl.emftvm.util.LazyOrderedSet;
+import org.eclipse.m2m.atl.emftvm.util.LazySet;
 import org.eclipse.m2m.atl.emftvm.util.OCLOperations;
 import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 import org.eclipse.m2m.atl.emftvm.util.Tuple;
 import org.eclipse.m2m.atl.emftvm.util.Types;
 
+import junit.framework.TestCase;
+
 /**
  * Tests {@link OCLOperations}.
- * 
+ *
  * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class OCLOperationsTest extends TestCase {
@@ -118,7 +122,7 @@ public class OCLOperationsTest extends TestCase {
 
 	/**
 	 * Tests Date::toString(format : String).
-	 * 
+	 *
 	 * @throws ParseException
 	 */
 	public void testDateToString() throws ParseException {
@@ -133,7 +137,7 @@ public class OCLOperationsTest extends TestCase {
 
 	/**
 	 * Tests Date::toString(format : String, locale : String).
-	 * 
+	 *
 	 * @throws ParseException
 	 */
 	public void testDateToString_Format_Locale() throws ParseException {
@@ -205,28 +209,84 @@ public class OCLOperationsTest extends TestCase {
 	}
 
 	/**
+	 * Tests Bag::-(coll : Collection).
+	 */
+	public void testMinus_Bag() {
+		final Operation minus = findOperation("-", Types.BAG_TYPE, new String[][] { Types.COLLECTION_TYPE }, false);
+		assertNotNull(minus);
+		final LazyBag<String> self = new LazyBag<String>(Arrays.asList("one", "two", "two", "three"));
+		final LazyList<String> coll = new LazyList<String>(Arrays.asList("two"));
+		final StackFrame frame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), minus.getBody());
+		frame.setLocals(new Object[] { self, coll });
+		final LazyBag<?> result = (LazyBag<?>) minus.getBody().execute(frame);
+		assertEquals(new LazyBag<String>(Arrays.asList("one", "three")), result);
+	}
+
+	/**
+	 * Tests OrderedSet::-(coll : Collection).
+	 */
+	public void testMinus_OrderedSet() {
+		final Operation minus = findOperation("-", Types.ORDERED_SET_TYPE, new String[][] { Types.COLLECTION_TYPE },
+				false);
+		assertNotNull(minus);
+		final LazyOrderedSet<String> self = new LazyOrderedSet<String>(Arrays.asList("two", "one", "three"));
+		final LazyBag<String> coll = new LazyBag<String>(Arrays.asList("one", "one"));
+		final StackFrame frame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), minus.getBody());
+		frame.setLocals(new Object[] { self, coll });
+		final LazyOrderedSet<?> result = (LazyOrderedSet<?>) minus.getBody().execute(frame);
+		assertEquals(new LazyOrderedSet<String>(Arrays.asList("two", "three")), result);
+	}
+
+	/**
+	 * Tests Sequence::-(coll : Collection).
+	 */
+	public void testMinus_Sequence() {
+		final Operation minus = findOperation("-", Types.SEQUENCE_TYPE, new String[][] { Types.COLLECTION_TYPE },
+				false);
+		assertNotNull(minus);
+		final LazyList<String> self = new LazyList<String>(Arrays.asList("two", "two", "one", "one", "three"));
+		final LazyBag<String> coll = new LazyBag<String>(Arrays.asList("one"));
+		final StackFrame frame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), minus.getBody());
+		frame.setLocals(new Object[] { self, coll });
+		final LazyList<?> result = (LazyList<?>) minus.getBody().execute(frame);
+		assertEquals(new LazyList<String>(Arrays.asList("two", "two", "three")), result);
+	}
+
+	/**
+	 * Tests Set::-(coll : Collection).
+	 */
+	public void testMinus_Set() {
+		final Operation minus = findOperation("-", Types.SET_TYPE, new String[][] { Types.COLLECTION_TYPE },
+				false);
+		assertNotNull(minus);
+		final LazySet<String> self = new LazySet<String>(Arrays.asList("one", "two", "three"));
+		final LazyBag<String> coll = new LazyBag<String>(Arrays.asList("two", "two"));
+		final StackFrame frame = new StackFrame(EmftvmFactory.eINSTANCE.createExecEnv(), minus.getBody());
+		frame.setLocals(new Object[] { self, coll });
+		final LazySet<?> result = (LazySet<?>) minus.getBody().execute(frame);
+		assertEquals(new LazySet<String>(Arrays.asList("one", "three")), result);
+	}
+
+	/**
 	 * Finds the {@link Operation} with the given details.
-	 * 
-	 * @param name
-	 *            the operation name
-	 * @param context
-	 *            the context model and type
-	 * @param parameters
-	 *            the array of parameter models and types
-	 * @param isStatic
-	 *            whether the operation is static
-	 * @return the {@link Operation} with the given details or <code>null</code> if not found
+	 *
+	 * @param name       the operation name
+	 * @param context    the context model and type
+	 * @param parameters the array of parameter models and types
+	 * @param isStatic   whether the operation is static
+	 * @return the {@link Operation} with the given details or <code>null</code> if
+	 *         not found
 	 */
 	protected Operation findOperation(final String name, final String[] context, final String[][] parameters, final boolean isStatic) {
 		final OCLOperations oclOps = OCLOperations.getInstance();
-		for (Feature f : oclOps.getOclModule().getFeatures()) {
+		for (final Feature f : oclOps.getOclModule().getFeatures()) {
 			if (f instanceof Operation) {
-				Operation op = (Operation) f;
+				final Operation op = (Operation) f;
 				if (op.getName().equals(name) && op.isStatic() == isStatic && op.getContextModel().equals(context[0])
 						&& op.getContext().equals(context[1]) && op.getParameters().size() == parameters.length) {
 					boolean parMatch = true;
 					for (int i = 0; i < op.getParameters().size(); i++) {
-						Parameter p = op.getParameters().get(i);
+						final Parameter p = op.getParameters().get(i);
 						if (!p.getTypeModel().equals(parameters[i][0]) || !p.getType().equals(parameters[i][1])) {
 							parMatch = false;
 							break;
