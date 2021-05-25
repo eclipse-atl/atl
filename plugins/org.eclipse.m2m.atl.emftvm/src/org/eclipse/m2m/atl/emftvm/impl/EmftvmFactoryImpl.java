@@ -14,6 +14,7 @@ package org.eclipse.m2m.atl.emftvm.impl;
 
 
 import java.lang.reflect.Method;
+import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -1589,13 +1590,15 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 			peUtil = (PluginExtensionUtil) Class.forName(PLUGIN_EXTENSION_UTIL_IMPL).newInstance();
 			return peUtil.createModelFactoryRegistry();
 		} catch (final InstantiationException e) {
-			ATLLogger.fine(e.getMessage());
+			ATLLogger.log(Level.FINE, e.getMessage(), e);
 		} catch (final IllegalAccessException e) {
-			ATLLogger.fine(e.getMessage());
+			ATLLogger.log(Level.FINE, e.getMessage(), e);
 		} catch (final ClassNotFoundException e) {
-			ATLLogger.fine(e.getMessage());
+			ATLLogger.log(Level.FINE, e.getMessage(), e);
+		} catch (final SecurityException e) {
+			ATLLogger.log(Level.FINE, e.getMessage(), e);
 		} catch (final NoClassDefFoundError e) {
-			ATLLogger.fine(e.getMessage());
+			ATLLogger.log(Level.FINE, e.getMessage(), e);
 		}
 		return new TypeHashMap<Class<?>, ModelFactory>();
 	}

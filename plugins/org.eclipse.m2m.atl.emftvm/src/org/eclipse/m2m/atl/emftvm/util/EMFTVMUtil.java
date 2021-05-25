@@ -37,6 +37,7 @@ import java.util.StringTokenizer;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.EList;
@@ -2218,13 +2219,15 @@ public final class EMFTVMUtil {
 				return new File(wsPath);
 			}
 		} catch (final InstantiationException e) {
-			ATLLogger.fine(e.getMessage());
+			ATLLogger.log(Level.FINE, e.getMessage(), e);
 		} catch (final IllegalAccessException e) {
-			ATLLogger.fine(e.getMessage());
+			ATLLogger.log(Level.FINE, e.getMessage(), e);
 		} catch (final ClassNotFoundException e) {
-			ATLLogger.fine(e.getMessage());
+			ATLLogger.log(Level.FINE, e.getMessage(), e);
+		} catch (final SecurityException e) {
+			ATLLogger.log(Level.FINE, e.getMessage(), e);
 		} catch (final NoClassDefFoundError e) {
-			ATLLogger.fine(e.getMessage());
+			ATLLogger.log(Level.FINE, e.getMessage(), e);
 		}
 		ATLLogger.info("Could not find workspace root; falling back to native java.io.File path resolution");
 		return new File(path);
