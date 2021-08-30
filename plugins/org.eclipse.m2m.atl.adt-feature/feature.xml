@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.m2m.atl.adt"
-      label="ATL Development Tools"
-      version="2.0.0.qualifier"
+      label="%featureName"
+      version="4.5.0.qualifier"
       provider-name="Eclipse.org">
 
    <description>
-      ATL Development Toolkit Feature
+      %description
    </description>
 
 <url>
@@ -23,6 +23,13 @@
    </license>
 
    <plugin
+         id="org.eclipse.m2m.atl.adt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.m2m.atl.adt.debug"
          download-size="0"
          install-size="0"
@@ -31,6 +38,41 @@
 
    <plugin
          id="org.eclipse.m2m.atl.adt.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.adt.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.core.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.core.ui.vm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.engine.emfvm.launch"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.m2m.atl.debug.core"
          download-size="0"
          install-size="0"
          version="0.0.0"

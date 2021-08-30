@@ -42,8 +42,8 @@
 		<buildId>${buildType}${buildTimestamp}</buildId>
 		<buildType>${env.BUILD_TYPE}</buildType>
 
-		<tycho-version>1.4.0</tycho-version>
-		<tycho-extras-version>1.4.0</tycho-extras-version>
+		<tycho-version>1.7.0</tycho-version>
+		<tycho-extras-version>1.7.0</tycho-extras-version>
 		<tycho.scmUrl>scm:git:https://git.eclipse.org/c/mmt/org.eclipse.atl.git</tycho.scmUrl>
 
 		<!-- Properties to enable jacoco code coverage analysis -->
@@ -74,6 +74,7 @@
 		<module>../../plugins/org.eclipse.m2m.atl</module>
 		<module>../../plugins/org.eclipse.m2m.atl-feature</module>
 		<module>../../plugins/org.eclipse.m2m.atl.adt</module>
+		<module>../../plugins/org.eclipse.m2m.atl.adt-feature</module>
 		<module>../../plugins/org.eclipse.m2m.atl.adt.debug</module>
 		<module>../../plugins/org.eclipse.m2m.atl.adt.editor</module>
 		<module>../../plugins/org.eclipse.m2m.atl.adt.ui</module>
@@ -95,13 +96,16 @@
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm.compiler</module>
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm.edit</module>
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm.editor</module>
+		<module>../../plugins/org.eclipse.m2m.atl.emftvm.engine-feature</module>
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm.launcher</module>
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm.trace</module>
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm.trace.edit</module>
 		<module>../../plugins/org.eclipse.m2m.atl.emftvm.trace.editor</module>
 		<module>../../plugins/org.eclipse.m2m.atl.engine</module>
+		<module>../../plugins/org.eclipse.m2m.atl.engine-feature</module>
 		<module>../../plugins/org.eclipse.m2m.atl.engine.emfvm</module>
 		<module>../../plugins/org.eclipse.m2m.atl.engine.emfvm.launch</module>
+		<module>../../plugins/org.eclipse.m2m.atl.emftvm.ui-feature</module>
 		<module>../../plugins/org.eclipse.m2m.atl.engine.vm</module>
 		<module>../../plugins/org.eclipse.m2m.atl.profiler-feature</module>
 		<module>../../plugins/org.eclipse.m2m.atl.profiler.core</module>
@@ -183,26 +187,6 @@
 					</environments>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.5</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-						<configuration>
-							<!-- Where to put jacoco coverage report -->
-							<destFile>${sonar.jacoco.reportPath}</destFile>
-							<includes>
-								<include>org.eclipse.m2m.atl.*</include>
-							</includes>
-							<append>true</append>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -235,6 +219,11 @@
 							</goals>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-surefire-plugin</artifactId>
+					<version>${tycho-version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
