@@ -682,7 +682,7 @@ if(debugws) out.debug("</block>");
 				ret.append("\\b");
 			} else if(c == '\f') {
 				ret.append("\\f");
-			} else if((c < ' ') || ((c > '~') && (c < 'ก'))) {
+			} else if((c < ' ') || ((c > '~') && (c < 'ยก'))) {
 				ret.append("\\");
 				if(c < 010)
 					ret.append("0");
