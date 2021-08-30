@@ -40,7 +40,7 @@
 				</executions>
 				<configuration>
 					<outputDirectory>${project.build.directory}/../references/javadoc</outputDirectory>
-					<tocFile>${project.build.directory}/../references/Reference-toc.xml</tocFile>
+					<tocFile>${project.build.directory}/../Reference-toc.xml</tocFile>
 					<javadocOptions>
 						<ignoreError>true</ignoreError>
 						<encoding>UTF-8</encoding>

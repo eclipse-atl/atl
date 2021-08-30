@@ -14,7 +14,7 @@
 		<link toc="guide/tutorials/ATL Tutorials-toc.xml"/>
 	</topic>
 	<topic label="API Reference" href="references/javadoc/overview-summary.html">
-		<link toc="references/Reference-toc.xml"/>
+		<link toc="Reference-toc.xml"/>
 	</topic>
 	<topic label="Online Docs">		
 		<topic label="ATL wiki" href="http://wiki.eclipse.org/index.php/ATL" />
