@@ -13,14 +13,12 @@
 	<topic href="guide/tutorials/ATL Tutorials.html" label="Tutorials">
 		<link toc="guide/tutorials/ATL Tutorials-toc.xml"/>
 	</topic>
-	<topic label="API Reference" href="references/javadoc/overview-summary.html">
-		<link toc="Reference-toc.xml"/>
-	</topic>
 	<topic label="Online Docs">		
 		<topic label="ATL wiki" href="http://wiki.eclipse.org/index.php/ATL" />
 		<topic label="ATL basic examples" href="http://www.eclipse.org/m2m/atl/basicExamples_Patterns/" />
 		<topic label="ATL use cases" href="http://www.eclipse.org/m2m/atl/usecases/" />
 		<topic label="ATL transformation zoo" href="http://www.eclipse.org/m2m/atl/atlTransformations/" />
 	</topic>
+	<link toc="Reference-toc.xml"/>
 	<anchor id="additions"/>
 </toc>

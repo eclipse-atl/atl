@@ -24,14 +24,52 @@
           file="guide/tutorials/ATL Tutorials-toc.xml"
           primary="false">
     </toc>
+    <toc
+          file="Reference-toc.xml"
+          primary="false">
+    </toc>
   </extension>
 
 <!-- ============================================================================= -->
 <!-- Define Javadoc locations                                                      -->
 <!-- ============================================================================= -->
    <extension point="org.eclipse.pde.core.javadoc">
-       <javadoc path="doc.zip!/references/javadoc" archive="true">
-       		<plugin id="org.eclipse.m2m.atl.common"/>
+       <javadoc path="references/javadoc">
+			<plugin id="org.eclipse.m2m.atl.adt"/>
+			<plugin id="org.eclipse.m2m.atl.adt.debug"/>
+			<plugin id="org.eclipse.m2m.atl.adt.editor"/>
+			<plugin id="org.eclipse.m2m.atl.adt.ui"/>
+			<plugin id="org.eclipse.m2m.atl.common"/>
+			<plugin id="org.eclipse.m2m.atl.core"/>
+			<plugin id="org.eclipse.m2m.atl.core.ant"/>
+			<plugin id="org.eclipse.m2m.atl.core.emf"/>
+			<plugin id="org.eclipse.m2m.atl.core.ui"/>
+			<plugin id="org.eclipse.m2m.atl.core.ui.vm"/>
+			<plugin id="org.eclipse.m2m.atl.debug.core"/>
+			<plugin id="org.eclipse.m2m.atl.drivers.emf4atl"/>
+			<plugin id="org.eclipse.m2m.atl.drivers.uml24atl"/>
+			<plugin id="org.eclipse.m2m.atl.dsls"/>
+			<plugin id="org.eclipse.m2m.atl.emftvm"/>
+			<plugin id="org.eclipse.m2m.atl.emftvm.ant"/>
+			<plugin id="org.eclipse.m2m.atl.emftvm.cdo"/>
+			<plugin id="org.eclipse.m2m.atl.emftvm.compiler"/>
+			<plugin id="org.eclipse.m2m.atl.emftvm.edit"/>
+			<plugin id="org.eclipse.m2m.atl.emftvm.editor"/>
+			<plugin id="org.eclipse.m2m.atl.emftvm.launcher"/>
+			<plugin id="org.eclipse.m2m.atl.emftvm.trace"/>
+			<plugin id="org.eclipse.m2m.atl.emftvm.trace.edit"/>
+			<plugin id="org.eclipse.m2m.atl.emftvm.trace.editor"/>
+			<plugin id="org.eclipse.m2m.atl.engine"/>
+			<plugin id="org.eclipse.m2m.atl.engine.emfvm"/>
+			<plugin id="org.eclipse.m2m.atl.engine.emfvm.launch"/>
+			<plugin id="org.eclipse.m2m.atl.engine.vm"/>
+			<plugin id="org.eclipse.m2m.atl.profiler.core"/>
+			<plugin id="org.eclipse.m2m.atl.profiler.emfvm"/>
+			<plugin id="org.eclipse.m2m.atl.profiler.exportmodel"/>
+			<plugin id="org.eclipse.m2m.atl.profiler.exportmodel.editor"/>
+			<plugin id="org.eclipse.m2m.atl.profiler.model"/>
+			<plugin id="org.eclipse.m2m.atl.profiler.ui"/>
+			<plugin id="org.eclipse.m2m.atl.profiler.vm"/>
        </javadoc>
    </extension>
 
