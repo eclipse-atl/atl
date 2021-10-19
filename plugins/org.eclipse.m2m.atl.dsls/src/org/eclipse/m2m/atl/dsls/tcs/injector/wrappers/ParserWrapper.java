@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     INRIA - initial API and implementation
  *     Dennis Wagelaar
@@ -30,8 +30,9 @@ public abstract class ParserWrapper {
 	protected int TT_COMMENT = -1;
 	protected final String pack = "org.eclipse.m2m.atl.dsls.tcs.injector."; //$NON-NLS-1$
 	protected TCSRuntime runtime;
-	
-	public abstract Object parse(int tabSize, String name, String productionRule, Reader in, Map params) throws Exception;
+
+	public abstract Object parse(int tabSize, String name, String productionRule, Reader in,
+			Map<?, ?> params) throws Exception;
 
 	public abstract void reportError(Exception re);
 
@@ -47,7 +48,7 @@ public abstract class ParserWrapper {
 
 	public abstract int getEndOffset(Object token);
 
-	public void setRuntime(TCSRuntime runtime) {
+	public void setRuntime(final TCSRuntime runtime) {
 		this.runtime = runtime;
 	}
 }

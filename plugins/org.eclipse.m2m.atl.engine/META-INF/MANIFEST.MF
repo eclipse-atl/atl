@@ -19,5 +19,5 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.m2m.atl.engine.emfvm,
  org.eclipse.m2m.atl.engine.emfvm.launch
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: org.eclipse.m2m.atl.engine

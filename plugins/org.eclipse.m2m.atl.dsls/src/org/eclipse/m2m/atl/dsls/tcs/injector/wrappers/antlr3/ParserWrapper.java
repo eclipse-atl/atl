@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     INRIA - initial API and implementation
  *     Dennis Wagelaar
@@ -13,7 +13,6 @@
  */
 package org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.antlr3;
 
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -41,18 +40,20 @@ import org.eclipse.m2m.atl.dsls.tcs.injector.TCSClassLoader;
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class ParserWrapper extends org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.ParserWrapper {
-	
+
 	private Parser parser;
 	private Lexer lexer;
-	
+
 	public ParserWrapper() {
 	}
-	
-	public Object parse(int tabSize, String name, String productionRule, Reader isr, Map params) throws Exception {
-		Class lexerClass = (Class)params.get("lexerClass");
-		Class parserClass = (Class)params.get("parserClass");
+
+	@Override
+	public Object parse(final int tabSize, final String name, final String productionRule, final Reader isr,
+			final Map<?, ?> params) throws Exception {
+		Class<?> lexerClass = (Class<?>)params.get("lexerClass");
+		Class<?> parserClass = (Class<?>)params.get("parserClass");
 		if((lexerClass == null) || (parserClass == null)) {
-			URL extraClasspath[] = (URL[])params.get("extraClasspath");
+			final URL extraClasspath[] = (URL[])params.get("extraClasspath");
 			ClassLoader cl = ParserWrapper.class.getClassLoader();
 			if(extraClasspath != null) {
 				cl = new TCSClassLoader(extraClasspath, cl);
@@ -60,14 +61,14 @@ public class ParserWrapper extends org.eclipse.m2m.atl.dsls.tcs.injector.wrapper
 			if(lexerClass == null) {
 				try {
 					lexerClass = cl.loadClass(pack + name + "_ANTLR3Lexer");
-				} catch (ClassNotFoundException e) {
+				} catch (final ClassNotFoundException e) {
 					throw new IllegalArgumentException("Unable to locate lexer class with name " + name);
 				}
 			}
 			if(parserClass == null) {
 				try {
 					parserClass = cl.loadClass(pack + name + "_ANTLR3Parser");
-				} catch (ClassNotFoundException e) {
+				} catch (final ClassNotFoundException e) {
 					//throw new IllegalArgumentException("Unable to locate parser class with name " + name, e);
 					throw new IllegalArgumentException("Unable to locate parser class with name " + name);
 				}
@@ -75,30 +76,30 @@ public class ParserWrapper extends org.eclipse.m2m.atl.dsls.tcs.injector.wrapper
 		}
 
 
-		ANTLRReaderStream stream = new ANTLRReaderStream(isr);
-		
+		final ANTLRReaderStream stream = new ANTLRReaderStream(isr);
+
 		lexer = (Lexer)lexerClass.getDeclaredConstructor(new Class[] {CharStream.class}).newInstance(new Object[] {stream});
-		
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+		final CommonTokenStream tokens = new CommonTokenStream(lexer);
 		try {
 			TT_NL = ((Integer)parserClass.getField("NL").get(null)).intValue();
 			tokens.setTokenTypeChannel(TT_NL, 99);
 			//tokens.discardTokenType(TT_NL);
-		} catch(Exception e) {
+		} catch(final Exception e) {
 		}
 		try {
 			TT_WS = ((Integer)parserClass.getField("WS").get(null)).intValue();
 			tokens.discardTokenType(TT_WS);
-		} catch(Exception e) {
+		} catch(final Exception e) {
 		}
 		try {
 			TT_COMMENT = ((Integer)parserClass.getField("COMMENT").get(null)).intValue();
 			tokens.setTokenTypeChannel(TT_COMMENT, 99);
 			//tokens.discardTokenType(TT_COMMENT);
-		} catch(Exception e) {
+		} catch(final Exception e) {
 		}
 
-		parser = (Parser)parserClass.getDeclaredConstructor(new Class[] {TokenStream.class}).newInstance(new Object[] {tokens});	
+		parser = (Parser)parserClass.getDeclaredConstructor(new Class[] {TokenStream.class}).newInstance(new Object[] {tokens});
 
 		Field f = parserClass.getField("ei");
 		f.set(parser, runtime);
@@ -106,27 +107,28 @@ public class ParserWrapper extends org.eclipse.m2m.atl.dsls.tcs.injector.wrapper
 		f = lexerClass.getField("ei");
 		f.set(lexer, runtime);
 
-		Method m = parserClass.getMethod(productionRule, new Class[] {});
+		final Method m = parserClass.getMethod(productionRule, new Class[] {});
 		Object ret = null;
 		try {
 			ret = m.invoke(parser, new Object[] {});
-		} catch(java.lang.reflect.InvocationTargetException ite) {
+		} catch(final java.lang.reflect.InvocationTargetException ite) {
 			ite.getCause().printStackTrace(System.out);
-		}		
-		
+		}
+
 		return ret;
 	}
 
-	public void reportError(Exception e) {
-		RecognitionException re = (RecognitionException)e;
+	@Override
+	public void reportError(final Exception e) {
+		final RecognitionException re = (RecognitionException)e;
 		String msg = null;
 		if(re.input instanceof ANTLRStringStream) {
-			msg = lexer.getErrorMessage(re, lexer.getTokenNames());			
+			msg = lexer.getErrorMessage(re, lexer.getTokenNames());
 		} else  {
-			msg = parser.getErrorMessage(re, parser.getTokenNames());			
+			msg = parser.getErrorMessage(re, parser.getTokenNames());
 		}
 		// TODO: try to use re.token to get a complete location (may not always be possible, like for lexer errors)
-		runtime.reportProblem("Error", msg, re.line + ":" + (re.charPositionInLine + 1));			
+		runtime.reportProblem("Error", msg, re.line + ":" + (re.charPositionInLine + 1));
 	}
 
 	/**
@@ -135,62 +137,64 @@ public class ParserWrapper extends org.eclipse.m2m.atl.dsls.tcs.injector.wrapper
 	 * @param index
 	 * @return
 	 */
-	private List setTokenListBefore (TokenStream input, int index ){
-		List cb = new ArrayList();
+	private List<Token> setTokenListBefore(final TokenStream input, final int index) {
+		final List<Token> cb = new ArrayList<>();
 		if (index - 1 > 0 ) {
 			for (int i = index - 1 ; i >= 0 && (
 					input.get(i).getType() == TT_COMMENT || input.get(i).getType() == TT_NL) ; i--)  {
 				cb.add(input.get(i));
-			} 
+			}
 		}
-		return cb;		
+		return cb;
 	}
-	
+
 	/**
 	 * sets the comments before a model element.
 	 * the input is the current stream. the index is the index of the current token
 	 */
-	public void setCommentsBefore(Object ame, Object params_) {
+	@Override
+	public void setCommentsBefore(final Object ame, final Object params_) {
 		if(params_ instanceof Object[]) {
-			Object params[] = (Object[])params_;
+			final Object params[] = (Object[])params_;
 			if((params[0] == null) || (params[1] == null)) return;
-			TokenStream input = (TokenStream)params[0];
-			int index = ((Token)params[1]).getTokenIndex();
+			final TokenStream input = (TokenStream)params[0];
+			final int index = ((Token)params[1]).getTokenIndex();
 
 			setComments(setTokenListBefore(input, index), ame, true, "commentsBefore");
 		}
 	}
 	/**
-	 * set us a list with the comments after a model element. 
+	 * set us a list with the comments after a model element.
 	 * @param input
 	 * @param index
 	 * @return set of tokens
 	 */
-	private List setTokenListAfter (TokenStream input, int index){
-		List ca = new ArrayList();
+	private List<Token> setTokenListAfter(final TokenStream input, final int index) {
+		final List<Token> ca = new ArrayList<>();
 		if (index + 1 > 0 ) {
-			for (int i = index + 1; 
-			i < input.size() && (
-					input.get(i).getType() == TT_COMMENT || input.get(i).getType() == TT_NL)   	
+			for (int i = index + 1;
+					i < input.size() && (
+							input.get(i).getType() == TT_COMMENT || input.get(i).getType() == TT_NL)
 					; i++)  {
 				ca.add(input.get(i));
-			}           
+			}
 		}
-		return ca;		
-	}		
+		return ca;
+	}
 	/**
-	 * 
+	 *
 	 * @param commentList a list with a set of tokens
 	 * @param ame an ASM model element
 	 * @param inverseOrder indicates if the elements of the list should be created in a normal order or on the inverse order
 	 * @param elementName the name of the element that stores the comments
 	 */
-	private void setComments (List commentList, Object ame, boolean inverseOrder, String elementName){
+	private void setComments(final List<Token> commentList, final Object ame, final boolean inverseOrder,
+			final String elementName) {
 		if(runtime.isKeepComments()) {
 			if(commentList.size() > 0) {
-				List aList = new ArrayList();
-				for (Iterator tokens = commentList.iterator(); tokens.hasNext();) {
-					Token token = (Token) tokens.next();
+				final List<String> aList = new ArrayList<>();
+				for (final Iterator<Token> tokens = commentList.iterator(); tokens.hasNext();) {
+					final Token token = tokens.next();
 					if(token.getType() == TT_COMMENT) {
 						if (inverseOrder)
 							aList.add(0, token.getText());
@@ -206,21 +210,22 @@ public class ParserWrapper extends org.eclipse.m2m.atl.dsls.tcs.injector.wrapper
 				}
 				try {
 					runtime.getTargetModelAdapter().set(ame, elementName, aList);
-				} catch(Exception e) {
+				} catch(final Exception e) {
 					runtime.reportProblem("Warning", "could not set comments of " + ame + ", disabling further comments setting", ame);
 					runtime.setKeepComments(false);
 				}
 			}
 		}
-		
+
 	}
-	public void setCommentsAfter(Object ame, Object params_) {
+	@Override
+	public void setCommentsAfter(final Object ame, final Object params_) {
 		if(params_ instanceof Object[]) {
-			Object params[] = (Object[])params_;
+			final Object params[] = (Object[])params_;
 			if((params[0] == null) || (params[1] == null)) return;
 
-			TokenStream input = (TokenStream)params[0];
-			int index = ((Token)params[1]).getTokenIndex();
+			final TokenStream input = (TokenStream)params[0];
+			final int index = ((Token)params[1]).getTokenIndex();
 
 			setComments(setTokenListAfter(input, index), ame, false,"commentsAfter");
 
@@ -228,21 +233,25 @@ public class ParserWrapper extends org.eclipse.m2m.atl.dsls.tcs.injector.wrapper
 		}
 	}
 
-	public String getLocation(Object token) {
-		ANTLR3LocationToken lt = ((ANTLR3LocationToken)token);
+	@Override
+	public String getLocation(final Object token) {
+		final ANTLR3LocationToken lt = ((ANTLR3LocationToken)token);
 		return lt.getLine() + ":" + (lt.getCharPositionInLine() + 1) + "-" + lt.getEndLine() + ":" + (lt.getEndColumn() + 1);
-	}		
+	}
 
-	public int getStartOffset(Object token) {
-		CommonToken t = ((CommonToken)token);
+	@Override
+	public int getStartOffset(final Object token) {
+		final CommonToken t = ((CommonToken)token);
 		return t.getStartIndex();
 	}
-	
-	public int getEndOffset(Object token) {
-		CommonToken t = ((CommonToken)token);
+
+	@Override
+	public int getEndOffset(final Object token) {
+		final CommonToken t = ((CommonToken)token);
 		return t.getStopIndex();
 	}
 
+	@Override
 	public Object getLastToken() {
 		return parser.getTokenStream().LT(-1);
 	}

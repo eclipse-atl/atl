@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     INRIA - initial API and implementation
  *
@@ -15,14 +15,15 @@ package org.eclipse.m2m.atl.dsls.tcs.injector;
 import java.util.List;
 
 /**
- * 
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
- *
  */
 public interface CompletionInformation {
 
 	public int getOffset();
-	public List getProposals();
+
+	public List<Object> getProposals();
+
 	public void setPrefix(String prefix);
+
 	public String getPrefix();
 }

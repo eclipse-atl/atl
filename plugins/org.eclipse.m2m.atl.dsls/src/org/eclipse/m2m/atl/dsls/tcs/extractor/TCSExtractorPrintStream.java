@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     INRIA - initial API and implementation
  *
@@ -16,67 +16,79 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 /**
- * 
+ *
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  *
  */
 public class TCSExtractorPrintStream implements TCSExtractorStream {
 
-	private PrintStream out;
-	
-	public TCSExtractorPrintStream(OutputStream target) {
+	private final PrintStream out;
+
+	public TCSExtractorPrintStream(final OutputStream target) {
 		out = new PrintStream(target);
 	}
 
+	@Override
 	public void close() {
 		out.close();
 	}
 
-	public void debug(String string) {
+	@Override
+	public void debug(final String string) {
 		out.print(string);
 	}
 
-	public void printBoolean(boolean v) {
+	@Override
+	public void printBoolean(final boolean v) {
 		out.print(v);
 	}
 
-	public void printComment(String c) {
+	@Override
+	public void printComment(final String c) {
 		out.print(c);
 	}
 
-	public void printEscapedIdentifier(String identEscStart, String ident, String identEscEnd) {
+	@Override
+	public void printEscapedIdentifier(final String identEscStart, final String ident, final String identEscEnd) {
 		out.print(identEscStart);
 		out.print(ident);
 		out.print(identEscEnd);
 	}
 
-	public void printIdentifier(String ident) {
+	@Override
+	public void printIdentifier(final String ident) {
 		out.print(ident);
 	}
 
-	public void printInteger(int v) {
+	@Override
+	public void printInteger(final int v) {
 		out.print(v);
 	}
 
-	public void printKeyword(String keyword) {
+	@Override
+	public void printKeyword(final String keyword) {
 		out.print(keyword);
 	}
 
-	public void printReal(String string) {
+	@Override
+	public void printReal(final String string) {
 		out.print(string);
 	}
 
-	public void printString(String stringDelim, String v) {
+	@Override
+	public void printString(final String stringDelim, final String v) {
 		out.print(stringDelim);
 		out.print(v);
 		out.print(stringDelim);
 	}
 
-	public void printSymbol(String symbol) {
+	@Override
+	public void printSymbol(final String symbol) {
 		out.print(symbol);
 	}
 
-	public void printWhiteSpace(String ws) {
+	@Override
+	public void printWhiteSpace(final String ws) {
 		out.print(ws);
 	}
 

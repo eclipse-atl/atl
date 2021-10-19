@@ -34,7 +34,7 @@ import org.osgi.framework.Bundle;
 
 /**
  * The DSL resource provider.
- * 
+ *
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class DSLResourceProvider {
@@ -43,36 +43,36 @@ public class DSLResourceProvider {
 
 	private static String resourcesRoot = "resources/"; //$NON-NLS-1$
 
-	private static Map resourcesById = new HashMap();
+	private static Map<String, Resource> resourcesById = new HashMap<>();
 
 	/**
 	 * Returns the default DSL provider.
-	 * 
+	 *
 	 * @return the default DSL provider
 	 */
 	public static DSLResourceProvider getDefault() {
 		if (instance == null) {
 			instance = new DSLResourceProvider();
 			instance.initResources();
-			IExtensionRegistry registry = Platform.getExtensionRegistry();
+			final IExtensionRegistry registry = Platform.getExtensionRegistry();
 			if (registry == null) {
 				ATLLogger.log(Level.SEVERE,Messages.getString("DSLResourceProvider.EXTENSIONREGISTRYNOTFOUND"),null); //$NON-NLS-1$
 				return null;
 			}
 
-			IExtensionPoint point = registry
+			final IExtensionPoint point = registry
 					.getExtensionPoint("org.eclipse.m2m.atl.dsls.dslresourceprovider"); //$NON-NLS-1$
 
-			IExtension[] extensions = point.getExtensions();
+			final IExtension[] extensions = point.getExtensions();
 			extensions: for (int i = 0; i < extensions.length; i++) {
-				IConfigurationElement[] elements = extensions[i].getConfigurationElements();
+				final IConfigurationElement[] elements = extensions[i].getConfigurationElements();
 				for (int j = 0; j < elements.length; j++) {
 					try {
-						DSLResourceProvider resourceProvider = (DSLResourceProvider)elements[j]
+						final DSLResourceProvider resourceProvider = (DSLResourceProvider)elements[j]
 								.createExecutableExtension("class"); //$NON-NLS-1$
 						resourceProvider.initResources();
 						break extensions;
-					} catch (CoreException e) {
+					} catch (final CoreException e) {
 						ATLLogger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 					}
 				}
@@ -84,17 +84,17 @@ public class DSLResourceProvider {
 
 	/**
 	 * Returns the resource by id.
-	 * 
+	 *
 	 * @param id the resource Id
 	 * @return the resource by id
 	 */
-	public Resource getResource(String id) {
-		return (Resource)resourcesById.get(id);
+	public Resource getResource(final String id) {
+		return resourcesById.get(id);
 	}
 
 	private void initResources() {
 		try {
-			BufferedReader in = new URLTextSource(getURL("contents.list")).openBufferedReader(); //$NON-NLS-1$
+			final BufferedReader in = new URLTextSource(getURL("contents.list")).openBufferedReader(); //$NON-NLS-1$
 			String line;
 			while ((line = in.readLine()) != null) {
 				if (!(line.trim().length() == 0)) {
@@ -103,35 +103,38 @@ public class DSLResourceProvider {
 					// before creating the Resource to make sure the resource exists
 
 					resourcesById.put(line.intern(), new Resource() {
+						@Override
 						public TextSource asTextSource() {
 							return new URLTextSource(url);
 						}
 
+						@Override
 						public URL asURL() {
 							return url;
 						}
 
+						@Override
 						public URI asEMFURI() {
 							// The following line is not compatible with Eclipse 2.2.x
 							// return URI.createPlatformPluginURI("/" + pluginId + "/" + resourcesRoot + path,
 							// true);
 							try {
 								return URI.createURI(FileLocator.resolve(url).toString());
-							} catch (IOException e) {
+							} catch (final IOException e) {
 								return null;
 							}
 						}
 					});
 				}
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			ATLLogger.log(Level.SEVERE,Messages.getString("DSLResourceProvider.LOADINGERROR"), e); //$NON-NLS-1$
 		}
 	}
 
-	private URL getURL(String path) {
-		Bundle bundle = getBundle();
-		URL url = FileLocator.find(bundle, new Path(resourcesRoot + path), Collections.EMPTY_MAP);
+	private URL getURL(final String path) {
+		final Bundle bundle = getBundle();
+		final URL url = FileLocator.find(bundle, new Path(resourcesRoot + path), Collections.emptyMap());
 		if (url != null) {
 			return url;
 		} else {
@@ -143,7 +146,7 @@ public class DSLResourceProvider {
 	/**
 	 * Returns the bundle.
 	 * Must be redefined in sub-classes.
-	 * 
+	 *
 	 * @return the bundle
 	 */
 	protected Bundle getBundle() {
@@ -153,7 +156,7 @@ public class DSLResourceProvider {
 	/**
 	 * Returns the plugin Id.
 	 * Must be redefined in sub-classes.
-	 * 
+	 *
 	 * @return the plugin Id
 	 */
 	protected String getPluginId() {

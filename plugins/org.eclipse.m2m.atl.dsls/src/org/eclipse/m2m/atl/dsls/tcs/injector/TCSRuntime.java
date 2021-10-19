@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     INRIA - initial API and implementation
  *
@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 
@@ -33,50 +34,53 @@ import org.eclipse.m2m.atl.dsls.tcs.injector.wrappers.ParserWrapper;
 public class TCSRuntime {
 
 	// begin arguments
-	private ModelAdapter targetModelAdapter;
-	private ModelAdapter problemsModelAdapter;
-		
+	private final ModelAdapter targetModelAdapter;
+	private final ModelAdapter problemsModelAdapter;
+
 	private boolean keepLocation;
-	private boolean keepNL;
+	private final boolean keepNL;
 	private boolean keepComments;
-	
-	private Map locationByElement;
-	private Map hyperlinks;
-	private Map trace;
+
+	private final Map<Object, String> locationByElement;
+	private final Map<String, String> hyperlinks;
+	private final Map<Object, ElementTrace> trace;
 	// end arguments
-		
-	private ParserWrapper parserWrapper;
+
+	private final ParserWrapper parserWrapper;
 	private Context currentContext;
-	private Map contextByElement;
-	private Stack previousElement;
+	private final Map<Object, Context> contextByElement;
+	private final Stack<?> previousElement;
 	private boolean lastWasCreation;
-	private List refSettings;
+	private final List<RefSetting> refSettings;
 	private Object lastToken;
 	private CompletionInformation completionInformation = null;
 	private int nbErrors = 0;
 
 
-	public TCSRuntime(ModelAdapter targetModelAdapter, ParserWrapper parserWrapper, List refSettings, Map arguments) {
-		this.targetModelAdapter = targetModelAdapter;	
+	@SuppressWarnings("unchecked")
+	public TCSRuntime(final ModelAdapter targetModelAdapter, final ParserWrapper parserWrapper,
+			final List<RefSetting> refSettings, final Map<?, ?> arguments) {
+		this.targetModelAdapter = targetModelAdapter;
 		this.problemsModelAdapter = (ModelAdapter)arguments.get("problems");
 		this.parserWrapper = parserWrapper;
 		this.refSettings = refSettings;
-		
+
 		this.keepNL = ("true".equals(arguments.get("keepNL"))) ? true : false;
 		this.keepLocation  = ("false".equals(arguments.get("keepLocation"))) ? false : true;
 		this.keepComments = ("false".equals(arguments.get("keepComments"))) ? false : true;
 		this.completionInformation = (CompletionInformation)arguments.get("completionInformation");
-		
+
 		// hyperlinks can be null
-		this.hyperlinks = (Map)arguments.get("hyperlinks");
+		this.hyperlinks = (Map<String, String>)arguments.get("hyperlinks");
 		// trace can be null
-		this.trace = (Map)arguments.get("trace");
-		this.locationByElement = arguments.get("locationByElement") == null ? new HashMap() : (Map)arguments.get("locationByElement");
-		
-		previousElement = new Stack();
+		this.trace = (Map<Object, ElementTrace>)arguments.get("trace");
+		this.locationByElement = arguments.get("locationByElement") == null ? new HashMap<>()
+				: (Map<Object, String>)arguments.get("locationByElement");
+
+		previousElement = new Stack<>();
 		currentContext = new Context();
-		contextByElement = new HashMap();
-		
+		contextByElement = new HashMap<Object, Context>();
+
 		lastWasCreation = true;
 	}
 
@@ -95,11 +99,11 @@ public class TCSRuntime {
 		return keepNL;
 	}
 
-	public Object createEnumLiteral(String name) {
+	public Object createEnumLiteral(final String name) {
 		return getTargetModelAdapter().createEnumLiteral(name);
 	}
 
-	public Object create(String name, boolean context, boolean addToContext) {
+	public Object create(final String name, final boolean context, final boolean addToContext) {
 		Object ret = null;
 
 		if(debug) debug("creating " + name);
@@ -110,7 +114,7 @@ public class TCSRuntime {
 		if(context) currentContext = currentContext.enterContext(ret);
 		if(lastWasCreation) {
 			previousElement.push(null);
-//			prevType.push(name);
+			//			prevType.push(name);
 		}/* else {
 			prevType.pop();
 			prevType.push(name);
@@ -120,16 +124,16 @@ public class TCSRuntime {
 		return ret;
 	}
 
-	public void leaveContext(boolean leave) {
+	public void leaveContext(final boolean leave) {
 		if(leave) currentContext = currentContext.parent();
 	}
 
 	// Usefull? at least, it is called by grammars
-	public void addToContext(Object ame, boolean addToContext) {
-		if(addToContext) currentContext.add(ame);		
+	public void addToContext(final Object ame, final boolean addToContext) {
+		if(addToContext) currentContext.add(ame);
 	}
 
-	public void setLocation(Object ame, String location) {
+	public void setLocation(final Object ame, String location) {
 		if(location.matches("^0:0-.+")) {
 			location = location.split("-")[1];
 			location = location + "-" + location;
@@ -138,44 +142,44 @@ public class TCSRuntime {
 		if(keepLocation) {
 			try {
 				getTargetModelAdapter().set(ame, "location", location);
-			} catch(Exception e) {
+			} catch(final Exception e) {
 				reportProblem("Warning", "could not set location of " + ame + ", disabling further location settings", location);
 				keepLocation = false;
 			}
 		}
 	}
 
-	public void setCommentsBefore(Object ame, Object token) {
+	public void setCommentsBefore(final Object ame, final Object token) {
 		parserWrapper.setCommentsBefore(ame, token);
 	}
 
-	public void setCommentsAfter(Object ame, Object token) {
+	public void setCommentsAfter(final Object ame, final Object token) {
 		parserWrapper.setCommentsAfter(ame, token);
 	}
 
-	public void set(Object ame, String prop, Object value) {
+	public void set(final Object ame, final String prop, final Object value) {
 		getTargetModelAdapter().set(ame, prop, value);
 		if(trace != null) {
-			ElementTrace et = (ElementTrace)trace.get(ame);
+			ElementTrace et = trace.get(ame);
 			if(et == null) {
 				et = new ElementTrace(ame);
 				trace.put(ame, et);
 			}
-			Object lastToken = parserWrapper.getLastToken();
+			final Object lastToken = parserWrapper.getLastToken();
 			et.addPropertyLocation(prop, parserWrapper.getLocation(lastToken));
 		}
 	}
 
-	public void setRef(Object object,
-			String propertyName,
-			String valueTypeName,
-			String keyName,
-			Object keyValue,
-			String lookIn,
-			String autoCreate,
-			String createAs,
-			boolean importContext,
-			String createIn) {
+	public void setRef(final Object object,
+			final String propertyName,
+			final String valueTypeName,
+			final String keyName,
+			final Object keyValue,
+			final String lookIn,
+			final String autoCreate,
+			final String createAs,
+			final boolean importContext,
+			final String createIn) {
 		if(keyValue == null) return;
 
 		new RefSetting(currentContext,
@@ -191,50 +195,50 @@ public class TCSRuntime {
 				createIn, lastToken);
 	}
 
-	public void reportProblem(String severity, String msg, Object ame) {
+	public void reportProblem(final String severity, final String msg, final Object ame) {
 		String location = "<unknown location>";
-//		if(keepLocation) {
-//		try {
-//		location = targetModelAdapter.getString(ame, "location");
-//		} catch(Exception e) {
-//		e.printStackTrace();
-//		}
-//		}
+		//		if(keepLocation) {
+		//		try {
+		//		location = targetModelAdapter.getString(ame, "location");
+		//		} catch(Exception e) {
+		//		e.printStackTrace();
+		//		}
+		//		}
 		if(locationByElement.containsKey(ame))
-			location = (String)locationByElement.get(ame);
+			location = locationByElement.get(ame);
 		reportProblem(severity, msg, location);
 	}
 
-	public void reportProblem(String severity, String msg, String location) {
+	public void reportProblem(final String severity, final String msg, final String location) {
 		if("error".equals(severity.toLowerCase())) {
 			nbErrors++;
 		}
 		if(problemsModelAdapter == null) {
 			System.err.println(severity + ": " + location + ": " + msg + ".");
 		} else {
-			Object ame = problemsModelAdapter.createElement("Problem");
+			final Object ame = problemsModelAdapter.createElement("Problem");
 			problemsModelAdapter.set(ame, "severity", problemsModelAdapter.createEnumLiteral(severity.toLowerCase()));
 			problemsModelAdapter.set(ame, "location", location);
 			problemsModelAdapter.set(ame, "description", msg);
 		}
 	}
 
-	public void reportError(Exception re) {
+	public void reportError(final Exception re) {
 		parserWrapper.reportError(re);
 	}
 
-	public void reportError(String msg) {
+	public void reportError(final String msg) {
 		reportProblem("Error", msg, "?");
 	}
 
-	public void reportWarning(String msg) {
+	public void reportWarning(final String msg) {
 		reportProblem("Warning", msg, "?");
 	}
 
 	protected class Context {
 
-		public Context enterContext(Object element) {
-			Context ret = new Context(element, this);
+		public Context enterContext(final Object element) {
+			final Context ret = new Context(element, this);
 
 			contextByElement.put(element, ret);
 
@@ -246,52 +250,54 @@ public class TCSRuntime {
 			this.parent = null;
 		}
 
-		private Context(Object element, Context parent) {
+		private Context(final Object element, final Context parent) {
 			this.parent = parent;
 			this.element = element;
 		}
 
 		// cannot be called once RefSettings have started populating mapByTypeAndKey,
 		// add(Object, String, Object) must be called instead
-		public void add(Object e) {
+		public void add(final Object e) {
 			if(debug) debug("adding " + e + "to context");
 			contents.add(e);
 		}
 
 		// to add an element after population of mapByTypeAndKey has started,
 		// Note that the element does not get added in imported contexts
-		public void add(Object e, String valueTypeName, String keyName, Object keyVal) {
+		public void add(final Object e, final String valueTypeName, final String keyName, final Object keyVal) {
 			add(e);	// might be necessary
-			Map elementByVal = getElementByVal(valueTypeName, keyName);
+			final Map<Object, Object> elementByVal = getElementByVal(valueTypeName, keyName);
 			addElementByVal(elementByVal, e, keyVal);
 		}
 
-		private void addElementByVal(Map elementByVal, Object ame, Object val) {
-			Object element = elementByVal.get(val);
+		@SuppressWarnings("unchecked")
+		private void addElementByVal(final Map<Object, Object> elementByVal, final Object ame,
+				final Object val) {
+			final Object element = elementByVal.get(val);
 			if(element == null) {
 				elementByVal.put(val, ame);
 			} else if(element instanceof Collection){
-				((Collection)element).add(ame);
+				((Collection<Object>)element).add(ame);
 			} else {
-				Collection c = new ArrayList();
+				final Collection<Object> c = new ArrayList<Object>();
 				c.add(element);
 				c.add(ame);
 				elementByVal.put(val, c);
 			}
 		}
-//		public ContextIterator iterator() {
-//			return new ContextIterator(this, contents.iterator(), importedContexts);
-//		}
+		//		public ContextIterator iterator() {
+		//			return new ContextIterator(this, contents.iterator(), importedContexts);
+		//		}
 
-//		public ContextIterator iterator(Set traversed) {
-//			return new ContextIterator(traversed, this, contents.iterator(), importedContexts);
-//		}
+		//		public ContextIterator iterator(Set traversed) {
+		//			return new ContextIterator(traversed, this, contents.iterator(), importedContexts);
+		//		}
 
 		public Context parent() {
 			return parent;
 		}
 
-		public void importContext(Context c) {
+		public void importContext(final Context c) {
 			importedContexts.add(c);
 		}
 
@@ -300,34 +306,35 @@ public class TCSRuntime {
 		}
 
 		private Object element;
-		private Context parent;
-		private Set contents = new HashSet();
-		private Set importedContexts = new HashSet();
+		private final Context parent;
+		private final Set<Object> contents = new HashSet<Object>();
+		private final Set<Context> importedContexts = new HashSet<Context>();
 
-		private Map mapByTypeAndKey = new HashMap();
+		private final Map<String, Map<Object, Object>> mapByTypeAndKey = new HashMap<>();
 		/**
 		 * @param valueTypeName
 		 * @param keyName
 		 */
-		public Map getElementByVal(String valueTypeName, String keyName) {
-			String key = "__" + valueTypeName + "_" + keyName;
-			Map elementByVal = (Map)mapByTypeAndKey.get(key);
+		public Map<Object, Object> getElementByVal(final String valueTypeName, final String keyName) {
+			final String key = "__" + valueTypeName + "_" + keyName;
+			Map<Object, Object> elementByVal = mapByTypeAndKey.get(key);
 			if(elementByVal == null) {
-				elementByVal = new HashMap();
-				for(Iterator i = contents.iterator() ; i.hasNext() ; ) {
-					Object ame = i.next();
-//					if(debug) debug("\t" + ame + " : " + getTargetModelAdapter().get(getTargetModelAdapter().getType(ame), "name"));
+				elementByVal = new HashMap<>();
+				for(final Iterator<Object> i = contents.iterator() ; i.hasNext() ; ) {
+					final Object ame = i.next();
+					//					if(debug) debug("\t" + ame + " : " + getTargetModelAdapter().get(getTargetModelAdapter().getType(ame), "name"));
 					if(isCandidate(ame, valueTypeName)) {	// check type
-						Object val = getTargetModelAdapter().get(ame, keyName);
+						final Object val = getTargetModelAdapter().get(ame, keyName);
 						addElementByVal(elementByVal, ame, val);
 					}
 				}
 				mapByTypeAndKey.put(key, elementByVal);
-				for(Iterator i = importedContexts.iterator() ; i.hasNext() ; ) {
-					Context importedContext = (Context)i.next();
-					Map map = importedContext.getElementByVal(valueTypeName, keyName);
-					for(Iterator j = map.entrySet().iterator() ; j.hasNext() ; ) {
-						Map.Entry entry = (Map.Entry)j.next();
+				for(final Iterator<Context> i = importedContexts.iterator() ; i.hasNext() ; ) {
+					final Context importedContext = i.next();
+					final Map<Object, Object> map = importedContext.getElementByVal(valueTypeName, keyName);
+					for (final Iterator<Map.Entry<Object, Object>> j = map.entrySet().iterator(); j
+							.hasNext();) {
+						final Entry<Object, Object> entry = j.next();
 						if(!elementByVal.containsKey(entry.getKey())) {
 							elementByVal.put(entry.getKey(), entry.getValue());
 						}
@@ -335,77 +342,77 @@ public class TCSRuntime {
 				}
 			}
 			return elementByVal;
-		} 
+		}
 
-		private boolean isCandidate(Object ame, String valueTypeName) {
+		private boolean isCandidate(final Object ame, final String valueTypeName) {
 			return getTargetModelAdapter().isCandidate(ame, valueTypeName);
 		}
 	}
 
-//	protected class ContextIterator implements Iterator {
-//
-//		private Iterator i;
-//		private ContextIterator currentIterator = null;
-//		private Iterator importedContexts;
-//		private Set traversed;
-//		private boolean finishCurrent = false;
-//
-//		public void finishCurrent() {
-//			finishCurrent = true;
-//			if(currentIterator != null)
-//				currentIterator.finishCurrent();
-//		}
-//
-//		public ContextIterator(Context c, Iterator i, Set imported) {
-//			this(new HashSet(), c, i, imported);
-//		}
-//
-//		public ContextIterator(Set traversed, Context c, Iterator i, Set imported) {
-//			this.traversed = traversed;
-//			traversed.add(c);
-//			this.i = i;
-//			this.importedContexts = imported.iterator();
-//		}
-//
-//		public boolean hasNext() {
-//			while(importedContexts.hasNext() && (!i.hasNext()) && !finishCurrent){
-//				Context c = (Context)importedContexts.next();
-//				if(!traversed.contains(c)) {
-//					traversed.add(c);
-//					currentIterator = c.iterator(traversed);
-//					i = currentIterator;
-//				} else {
-//					System.out.println("ERROR: recursive contexts");
-//				}
-//			}
-//
-//			return i.hasNext();
-//		}
-//
-//		public Object next() {
-//			return i.next();
-//		}
-//
-//		public void remove() {
-//			throw new UnsupportedOperationException();
-//		}
-//	}
+	//	protected class ContextIterator implements Iterator {
+	//
+	//		private Iterator i;
+	//		private ContextIterator currentIterator = null;
+	//		private Iterator importedContexts;
+	//		private Set traversed;
+	//		private boolean finishCurrent = false;
+	//
+	//		public void finishCurrent() {
+	//			finishCurrent = true;
+	//			if(currentIterator != null)
+	//				currentIterator.finishCurrent();
+	//		}
+	//
+	//		public ContextIterator(Context c, Iterator i, Set imported) {
+	//			this(new HashSet(), c, i, imported);
+	//		}
+	//
+	//		public ContextIterator(Set traversed, Context c, Iterator i, Set imported) {
+	//			this.traversed = traversed;
+	//			traversed.add(c);
+	//			this.i = i;
+	//			this.importedContexts = imported.iterator();
+	//		}
+	//
+	//		public boolean hasNext() {
+	//			while(importedContexts.hasNext() && (!i.hasNext()) && !finishCurrent){
+	//				Context c = (Context)importedContexts.next();
+	//				if(!traversed.contains(c)) {
+	//					traversed.add(c);
+	//					currentIterator = c.iterator(traversed);
+	//					i = currentIterator;
+	//				} else {
+	//					System.out.println("ERROR: recursive contexts");
+	//				}
+	//			}
+	//
+	//			return i.hasNext();
+	//		}
+	//
+	//		public Object next() {
+	//			return i.next();
+	//		}
+	//
+	//		public void remove() {
+	//			throw new UnsupportedOperationException();
+	//		}
+	//	}
 
 	protected class RefSetting {
 
 		public RefSetting(
-				Context currentContext,
-				Object object,
-				String propertyName,
-				String valueTypeName,
-				String keyName,
-				Object keyValue,
-				String lookIn,
-				String autoCreate,
-				String createAs,
-				boolean importContext,
-				String createIn,
-				Object token) {
+				final Context currentContext,
+				final Object object,
+				final String propertyName,
+				final String valueTypeName,
+				final String keyName,
+				final Object keyValue,
+				final String lookIn,
+				final String autoCreate,
+				final String createAs,
+				final boolean importContext,
+				final String createIn,
+				final Object token) {
 			this.currentContext = currentContext;
 			this.object = object;
 			this.propertyName = propertyName;
@@ -424,12 +431,12 @@ public class TCSRuntime {
 
 		private boolean doItForContext(Context context) {
 			boolean done = false;
-			Object keyVal = keyValue;
+			final Object keyVal = keyValue;
 
-			Map elementByVal = context.getElementByVal(valueTypeName, keyName);
+			final Map<Object, Object> elementByVal = context.getElementByVal(valueTypeName, keyName);
 
 			int offset = -1;
-			Collection proposals = null;
+			Collection<Object> proposals = null;
 			if(completionInformation != null) {
 				offset = completionInformation.getOffset();
 				if(
@@ -440,39 +447,39 @@ public class TCSRuntime {
 					if(completionInformation.getPrefix() == null) {
 						if(keyVal instanceof String) {
 							completionInformation.setPrefix(
-								((String)keyVal).substring(0, offset - parserWrapper.getStartOffset(token) + 1)
-							);
+									((String)keyVal).substring(0, offset - parserWrapper.getStartOffset(token) + 1)
+									);
 						}
 					}
 				}
 			}
 
-			Object ame = elementByVal.get(keyVal);
+			final Object ame = elementByVal.get(keyVal);
 			if(ame instanceof Collection) {
-				for(Iterator i = ((Collection)ame).iterator() ; i.hasNext() ; ) {
+				for (final Iterator<?> i = ((Collection<?>)ame).iterator(); i.hasNext();) {
 					reportProblem("Error", "found several " + valueTypeName + " with the same " + keyName + " equals to " + keyVal, i.next());
 				}
 				done = true;
 			} else if(ame != null) {
 				realValue = ame;
 				getTargetModelAdapter().set(object, propertyName, ame);
-//				if(keepLocation && (hyperlinks != null)) {
-//					try {
-//						String location = parserWrapper.getLocation(token);
-//						hyperlinks.put(location, targetModelAdapter.getString(ame, "location"));
-//					} catch(Exception e) {}
-//				}
+				//				if(keepLocation && (hyperlinks != null)) {
+				//					try {
+				//						String location = parserWrapper.getLocation(token);
+				//						hyperlinks.put(location, targetModelAdapter.getString(ame, "location"));
+				//					} catch(Exception e) {}
+				//				}
 				if(hyperlinks != null) {
-					String location = parserWrapper.getLocation(token);
+					final String location = parserWrapper.getLocation(token);
 					hyperlinks.put(location, locationByElement.get(ame));
 				}
 				if(trace != null) {
-					ElementTrace et = (ElementTrace)trace.get(object);
+					ElementTrace et = trace.get(object);
 					if(et == null) {
 						et = new ElementTrace(object);
 						trace.put(object, et);
 					}
-					ReferenceLocation location = new ReferenceLocation(parserWrapper.getLocation(token), ame);
+					final ReferenceLocation location = new ReferenceLocation(parserWrapper.getLocation(token), ame);
 					et.addPropertyLocation(propertyName, location);
 				}
 				done = true;
@@ -494,44 +501,44 @@ public class TCSRuntime {
 				ro = getTargetModelAdapter().createElement(valueTypeName);
 			}
 			realValue = ro;
-//			do not need this with the model handler
-//			ASMOclAny realKeyValue = null;
-//			if(keyValue instanceof String) {
-//			realKeyValue = new ASMString((String)keyValue);
-//			} else {
-//			realKeyValue = (ASMOclAny)keyValue;
-//			}
+			//			do not need this with the model handler
+			//			ASMOclAny realKeyValue = null;
+			//			if(keyValue instanceof String) {
+			//			realKeyValue = new ASMString((String)keyValue);
+			//			} else {
+			//			realKeyValue = (ASMOclAny)keyValue;
+			//			}
 			getTargetModelAdapter().set(ro, keyName, keyValue);
 			getTargetModelAdapter().set(object, propertyName, ro);
 			try {
-				String location = parserWrapper.getLocation(token);
+				final String location = parserWrapper.getLocation(token);
 				setLocation(ro, location);
-			} catch(Exception e) {}
+			} catch(final Exception e) {}
 
 			if(createIn != null) {
-				String path[] = createIn.split("\\.");
-				Object e = navigateLookIn(path, false);
+				final String path[] = createIn.split("\\.");
+				final Object e = navigateLookIn(path, false);
 				if(e != null) {
 					getTargetModelAdapter().set(e, path[path.length - 1], ro);
 					currentContext.add(ro, valueTypeName, keyName, keyValue);
 				}
 			} else if((lookIn != null) &&  !lookIn.equals("#all")) {
-				String path[] = lookIn.split("\\.");
-				Object e = navigateLookIn(path, false);
+				final String path[] = lookIn.split("\\.");
+				final Object e = navigateLookIn(path, false);
 				if(e != null) {
 					getTargetModelAdapter().set(e, path[path.length - 1], ro);
 					currentContext.add(ro, valueTypeName, keyName, keyValue);
 				}
-			}			
+			}
 		}
 
-		private Object navigateLookIn(String path[], boolean navigateLast) {
+		private Object navigateLookIn(final String path[], final boolean navigateLast) {
 			Object ret = object;
 			for(int i = 0 ; (i < path.length - (navigateLast ? 0 : 1)) && (ret != null) ; i++) {
 				if(path[i].equals("#context")) {
 					ret = currentContext.getElement();
 				} else {
-					Object v = getTargetModelAdapter().get(ret, path[i]);
+					final Object v = getTargetModelAdapter().get(ret, path[i]);
 					if(getTargetModelAdapter().isAModelElement(v)) {
 						ret = v;
 					} else {
@@ -554,7 +561,7 @@ public class TCSRuntime {
 					keyValue + ", " +
 					lookIn + ", " +
 					autoCreate + ") : "
-			);
+					);
 
 			if(autoCreate.equals("always")) {
 				create();
@@ -563,8 +570,9 @@ public class TCSRuntime {
 				Context context = currentContext;
 				if("#all".equals(lookIn)) {
 					Object val = null;
-					for(Iterator i = getTargetModelAdapter().getElementsByType(valueTypeName).iterator() ; i.hasNext() && (val == null) ; ) {
-						Object ame = i.next();
+					for (final Iterator<?> i = getTargetModelAdapter().getElementsByType(valueTypeName)
+							.iterator(); i.hasNext() && (val == null);) {
+						final Object ame = i.next();
 						if(debug) debug("\t" + ame + " : " + getTargetModelAdapter().get(getTargetModelAdapter().getType(ame), "name"));
 						//if(targetModelAdapter.get(ame, keyName).equals(new ASMString((String)keyValue))) {
 						// this may not work (we should have to override equals of ASMString to compare it to a String)
@@ -579,17 +587,17 @@ public class TCSRuntime {
 						done = true;
 					}
 				} else if((lookIn != null) && !lookIn.equals("#all")) {
-					String path[] = lookIn.split("\\.");
-					Object e = navigateLookIn(path, true);
+					final String path[] = lookIn.split("\\.");
+					final Object e = navigateLookIn(path, true);
 
 					if(e != null) {
-						context = (Context)contextByElement.get(e);
+						context = contextByElement.get(e);
 						done = doItForContext(context);
 					}
 				} else {
-					done = doItForContext(context);				
+					done = doItForContext(context);
 				}
-			}	
+			}
 			if(!done) {
 				if(debug) debug("not found");
 
@@ -601,101 +609,101 @@ public class TCSRuntime {
 			}
 
 			if(realValue != null) {
-				Context context = (Context)contextByElement.get(realValue);
+				final Context context = contextByElement.get(realValue);
 				if(importContext && (context != null)) {
-					((Context)contextByElement.get(object)).importContext(context);
-				}					
+					contextByElement.get(object).importContext(context);
+				}
 			}
 		}
 
-		private Context currentContext;
-		private Object object;
-		private String propertyName;
-		private String valueTypeName;
-		private String keyName;
-		private Object keyValue;
-		private String lookIn;
-		private String autoCreate;
-		private String createAs;
+		private final Context currentContext;
+		private final Object object;
+		private final String propertyName;
+		private final String valueTypeName;
+		private final String keyName;
+		private final Object keyValue;
+		private final String lookIn;
+		private final String autoCreate;
+		private final String createAs;
 		protected boolean importContext;
-		private String createIn;
-		private Object token;
+		private final String createIn;
+		private final Object token;
 
 		private Object realValue = null;
 	}
 
-	public void setToken(Object token) {
+	public void setToken(final Object token) {
 		lastToken = token;
 	}
 
 	// TODO: remove once TCS-importer.jar is bootstrapped
-//	public void setToken(Token token) {
-//	lastToken = token;
-//	}
+	//	public void setToken(Token token) {
+	//	lastToken = token;
+	//	}
 
-	public String unescapeString(String s, int delimLength) {
-		StringBuffer ret = new StringBuffer();
+	public String unescapeString(String s, final int delimLength) {
+		final StringBuffer ret = new StringBuffer();
 		// get rid of the starting and ending delimiters (e.g., '\'', '"')
 		s = s.substring(delimLength, s.length()-(delimLength * 2 - 1));
 
-		CharacterIterator ci = new StringCharacterIterator(s);
+		final CharacterIterator ci = new StringCharacterIterator(s);
 		char c = ci.first();
 		while(c != CharacterIterator.DONE) {
 			char tc = 0;
 			switch(c) {
-			case '\\':
-				c = ci.next();
-				switch(c) {
-				case 'n':
-					tc = '\n';
-					break;
-				case 'r':
-					tc = '\r';
-					break;
-				case 't':
-					tc = '\t';
-					break;
-				case 'b':
-					tc = '\b';
-					break;
-				case 'f':
-					tc = '\f';
-					break;
-				case '"':
-					tc = '"';
-					break;
-				case '\'':
-					tc = '\'';
-					break;
 				case '\\':
-					tc = '\\';
+					c = ci.next();
+					switch(c) {
+						case 'n':
+							tc = '\n';
+							break;
+						case 'r':
+							tc = '\r';
+							break;
+						case 't':
+							tc = '\t';
+							break;
+						case 'b':
+							tc = '\b';
+							break;
+						case 'f':
+							tc = '\f';
+							break;
+						case '"':
+							tc = '"';
+							break;
+						case '\'':
+							tc = '\'';
+							break;
+						case '\\':
+							tc = '\\';
+							break;
+						case '0':
+						case '1':
+						case '2':
+						case '3':
+							throw new RuntimeException("octal escape sequences not supported yet");
+						default:
+							throw new RuntimeException("unknown escape sequence: '\\" + c + "'");
+					}
 					break;
-				case '0':
-				case '1':
-				case '2':
-				case '3':
-					throw new RuntimeException("octal escape sequences not supported yet");
 				default:
-					throw new RuntimeException("unknown escape sequence: '\\" + c + "'");
-				}
-				break;
-			default:
-				tc = c;
-			break;
+					tc = c;
+					break;
 			}
 			ret.append(tc);
 			c = ci.next();
 		}
 		return ret.toString();
 	}
-	
-	
+
+
 	private final static boolean debug = false;
-	private void debug(String msg) {
+	private void debug(final String msg) {
 		System.out.println(msg);
 	}
 
-	public void setKeepComments(boolean keepComments) {
+	public void setKeepComments(final boolean keepComments) {
 		this.keepComments = keepComments;
 	}
 
@@ -703,7 +711,7 @@ public class TCSRuntime {
 		return keepComments;
 	}
 
-	public void setLastWasCreation(boolean lastWasCreation) {
+	public void setLastWasCreation(final boolean lastWasCreation) {
 		this.lastWasCreation = lastWasCreation;
 	}
 }

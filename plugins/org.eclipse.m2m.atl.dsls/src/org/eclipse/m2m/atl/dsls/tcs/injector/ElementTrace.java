@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     INRIA - initial API and implementation
  *
@@ -23,25 +23,26 @@ import java.util.Map;
  */
 public class ElementTrace {
 
-	private Object element;
+	private final Object element;
 	private Object location;
-	private Map propertyLocations = null;
+	private Map<String, Object> propertyLocations = null;
 
-	public ElementTrace(Object element) {
+	public ElementTrace(final Object element) {
 		this.element = element;
 	}
 
-	public void addPropertyLocation(String propertyName, Object location) {
+	@SuppressWarnings("unchecked")
+	public void addPropertyLocation(final String propertyName, final Object location) {
 		if(propertyLocations == null) {
-			propertyLocations = new HashMap();
+			propertyLocations = new HashMap<>();
 		}
-		Object previousLocation = propertyLocations.get(propertyName);
+		final Object previousLocation = propertyLocations.get(propertyName);
 		if(previousLocation == null) {
 			propertyLocations.put(propertyName, location);
 		} else if(previousLocation instanceof Collection) {
-			((Collection)previousLocation).add(location);
+			((Collection<Object>)previousLocation).add(location);
 		} else {
-			Collection c = new ArrayList();
+			final Collection<Object> c = new ArrayList<>();
 			c.add(previousLocation);
 			c.add(location);
 			propertyLocations.put(propertyName, c);
@@ -52,7 +53,7 @@ public class ElementTrace {
 		return element;
 	}
 
-	public void setLocation(Object location) {
+	public void setLocation(final Object location) {
 		this.location = location;
 	}
 
@@ -60,7 +61,7 @@ public class ElementTrace {
 		return location;
 	}
 
-	public Object getPropertyLocation(String propertyName) {
+	public Object getPropertyLocation(final String propertyName) {
 		return propertyLocations.get(propertyName);
 	}
 }

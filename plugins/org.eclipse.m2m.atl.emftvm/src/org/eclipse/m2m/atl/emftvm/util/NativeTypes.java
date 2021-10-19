@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -41,11 +42,11 @@ public final class NativeTypes {
 		INTEGER("Integer", Integer.class),
 		REAL("Real", Double.class),
 		STRING("String", String.class);
-		
+
 		private final String name;
 		private final Class<?> type;
-		
-		private NativeType(String name, Class<?> type) {
+
+		private NativeType(final String name, final Class<?> type) {
 			this.name = name;
 			this.type = type;
 		}
@@ -72,7 +73,7 @@ public final class NativeTypes {
 	private static final Map<Class<?>, Class<?>> primitiveTypes = new HashMap<Class<?>, Class<?>>();
 
 	static {
-		for (NativeType type : NativeType.values()) {
+		for (final NativeType type : NativeType.values()) {
 			typeNames.put(type.getName(), type);
 			types.put(type.getType(), type);
 		}
@@ -136,13 +137,19 @@ public final class NativeTypes {
 
 	/**
 	 * Creates a new instance of <code>type</code>.
+	 *
 	 * @param type the type to instantiate
 	 * @return a new instance of <code>type</code>
-	 * @throws InstantiationException if the type cannot be instantiated
-	 * @throws IllegalAccessException if the type cannot be accessed
+	 * @throws InstantiationException    if the type cannot be instantiated
+	 * @throws IllegalAccessException    if the type cannot be accessed
+	 * @throws NoSuchMethodException     if a parameterless constructor cannot be
+	 *                                   found
+	 * @throws InvocationTargetException if the constructor of the type throws an
+	 *                                   exception
 	 */
 	public static Object newInstance(final Class<?> type)
-	throws InstantiationException, IllegalAccessException {
+			throws InstantiationException, IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
 		if (types.containsKey(type)) {
 			switch (types.get(type)) {
 			case BAG:
@@ -160,16 +167,16 @@ public final class NativeTypes {
 			case BOOLEAN:
 				return Boolean.FALSE;
 			case INTEGER:
-				return new Integer(0);
+				return Integer.valueOf(0);
 			case REAL:
-				return new Double(0.0);
+				return Double.valueOf(0.0);
 			case STRING:
 				return new String();
 			default:
 				throw new InstantiationException(type.getName());
 			}
 		}
-		return type.newInstance();
+		return type.getDeclaredConstructor().newInstance();
 	}
 
 	/**
@@ -187,7 +194,7 @@ public final class NativeTypes {
 
 	/**
 	 * Returns the boxed EMFTVM type for the given type.
-	 * 
+	 *
 	 * @param type
 	 *            the Java type for which to return the boxed type
 	 * @return the boxed EMFTVM type for the given type

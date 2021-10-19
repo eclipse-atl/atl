@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
@@ -28,12 +28,12 @@ import org.eclipse.m2m.atl.dsls.tcs.extractor.PrettyPrinter;
 
 /**
  * A wrapper which allow to generate text from {@link IModel} with TCS.
- * 
+ *
  * @author <a href="mailto:william.piers@obeo.fr">William Piers</a>
  */
 public class EMFTCSExtractor {
 
-	private static Map parameterTypes = new HashMap();
+	private static Map<String, String> parameterTypes = new HashMap<>();
 
 	static {
 		parameterTypes.put("format", "Model:TCS"); // required
@@ -41,7 +41,7 @@ public class EMFTCSExtractor {
 		parameterTypes.put("standardSeparator", "String"); // optional, default = " "
 		parameterTypes.put("kwCheckIgnoreCase", "String"); // optional, default = false
 		parameterTypes.put("identEsc", "String"); // optional, default = "\"", has priority over the two
-													// others below
+		// others below
 		parameterTypes.put("identEscStart", "String"); // optional, default = "\""
 		parameterTypes.put("identEscEnd", "String"); // optional, default = "\""
 		parameterTypes.put("stringDelim", "String"); // optional, default = "\'"
@@ -51,10 +51,10 @@ public class EMFTCSExtractor {
 		parameterTypes.put("usePrimitiveTemplates", "String"); // optional, default = false
 		parameterTypes.put("decimalFormat", "String"); // optional, default = "0.##############"
 		parameterTypes.put("stream", "TCSExtractorStream");// optional, default = new
-															// TCSExtractorPrintStream(target);
+		// TCSExtractorPrintStream(target);
 	}
 
-	public Map getParameterTypes() {
+	public Map<String, String> getParameterTypes() {
 		return parameterTypes;
 	}
 
@@ -66,18 +66,19 @@ public class EMFTCSExtractor {
 		super();
 	}
 
-	public void extract(EMFModel source, OutputStream target, Map params) {
+	public void extract(final EMFModel source, final OutputStream target, final Map<String, ?> params) {
 		new PrettyPrinter().prettyPrint(source, new EMFExtractorAdapter(), target, params);
 	}
 
 	public class EMFExtractorAdapter implements ModelAdapter {
 
-		public Object get(Object modelElement, String name) {
+		@Override
+		public Object get(final Object modelElement, final String name) {
 			if (modelElement == null) {
 				return null;
 			} else {
-				EObject eo = (EObject)modelElement;
-				EStructuralFeature sf = eo.eClass().getEStructuralFeature(name);
+				final EObject eo = (EObject)modelElement;
+				final EStructuralFeature sf = eo.eClass().getEStructuralFeature(name);
 				if (sf == null) {
 					return null;
 				}
@@ -85,54 +86,62 @@ public class EMFTCSExtractor {
 			}
 		}
 
-		public boolean getBool(Object me, String propName) {
+		@Override
+		public boolean getBool(final Object me, final String propName) {
 			boolean ret = false;
 			try {
 				ret = ((Boolean)get(me, propName)).booleanValue();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				throw new RuntimeException("could not read property \"" + propName + "\" of element " + me
 						+ " : " + getTypeName(me), e);
 			}
 			return ret;
 		}
 
-		public boolean getBoolUndefinedIsFalse(Object me, String propName) {
+		@Override
+		public boolean getBoolUndefinedIsFalse(final Object me, final String propName) {
 			boolean ret = false;
-			Object v = get(me, propName);
+			final Object v = get(me, propName);
 			if (v instanceof Boolean)
 				ret = ((Boolean)v).booleanValue();
 
 			return ret;
 		}
 
-		public Iterator getCol(Object me, String propName) {
-			return ((Collection)get(me, propName)).iterator();
+		@Override
+		public Iterator<?> getCol(final Object me, final String propName) {
+			return ((Collection<?>)get(me, propName)).iterator();
 		}
 
-		public Set getElementsByType(Object model, String typeName) {
-			EMFReferenceModel metamodel = ((EMFModel)model).getReferenceModel();
+		@Override
+		public Set<?> getElementsByType(final Object model, final String typeName) {
+			final EMFReferenceModel metamodel = ((EMFModel)model).getReferenceModel();
 			return ((EMFModel)model).getElementsByType(metamodel.getMetaElementByName(typeName));
 		}
 
-		public int getInt(Object me, String propName) {
+		@Override
+		public int getInt(final Object me, final String propName) {
 			return ((Integer)get(me, propName)).intValue();
 		}
 
-		public Object getME(Object me, String propName) {
+		@Override
+		public Object getME(final Object me, final String propName) {
 			return get(me, propName);
 		}
 
-		public Object getMetaobject(Object me) {
+		@Override
+		public Object getMetaobject(final Object me) {
 			return ((EObject)me).eClass();
 		}
 
-		public String getString(Object me, String propName) {
+		@Override
+		public String getString(final Object me, final String propName) {
 			String ret = null;
 			Object v = get(me, propName);
 
 			if (v != null) {
-				if ((v instanceof Collection) && (((Collection)v).size() == 1)) {
-					v = ((Collection)v).iterator().next();
+				if ((v instanceof Collection) && (((Collection<?>)v).size() == 1)) {
+					v = ((Collection<?>)v).iterator().next();
 				}
 
 				if (v instanceof String) {
@@ -145,43 +154,52 @@ public class EMFTCSExtractor {
 			return ret;
 		}
 
-		public String getTypeName(Object me) {
+		@Override
+		public String getTypeName(final Object me) {
 			return getName(((EObject)me).eClass());
 		}
 
-		public String getName(Object ame) {
+		@Override
+		public String getName(final Object ame) {
 			return getString(ame, "name");
 		}
 
-		public Object refImmediateComposite(Object me) {
+		@Override
+		public Object refImmediateComposite(final Object me) {
 			return ((EObject)me).eContainer();
 		}
 
-		public boolean isAModelElement(Object o) {
+		@Override
+		public boolean isAModelElement(final Object o) {
 			return (o instanceof EObject);
 		}
 
-		public Object getPropertyType(Object f, String propName) {
-			Object res = get(f, propName);
+		@Override
+		public Object getPropertyType(final Object f, final String propName) {
+			final Object res = get(f, propName);
 			if (res instanceof EObject) {
 				return get(res, "eType");
 			}
 			return null;
 		}
 
-		public boolean isPrimitive(Object value) {
+		@Override
+		public boolean isPrimitive(final Object value) {
 			return ((value instanceof String) || (value instanceof Boolean) || (value instanceof Double) || (value instanceof Integer));
 		}
 
-		public boolean isEnumLiteral(Object value) {
+		@Override
+		public boolean isEnumLiteral(final Object value) {
 			return (value instanceof EEnumLiteral);
 		}
 
-		public String getEnumLiteralName(Object me) {
+		@Override
+		public String getEnumLiteralName(final Object me) {
 			return getName(me).toString();
 		}
 
-		public String nextString(Iterator i) {
+		@Override
+		public String nextString(final Iterator<?> i) {
 			return i.next().toString();
 		}
 
