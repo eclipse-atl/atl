@@ -50,7 +50,7 @@ import org.eclipse.m2m.atl.emftvm.Model;
  */
 public class EMFTCSInjector {
 
-	private static Map parameterTypes = new HashMap();
+	private static Map<String, String> parameterTypes = new HashMap<>();
 
 	static {
 		parameterTypes.put("name", "String"); // required
@@ -69,7 +69,7 @@ public class EMFTCSInjector {
 		parameterTypes.put("parserClass", "Class"); // optional, default = null
 	}
 
-	public Map getParameterTypes() {
+	public Map<String, String> getParameterTypes() {
 		return parameterTypes;
 	}
 
@@ -85,11 +85,13 @@ public class EMFTCSInjector {
 		super();
 	}
 
-	public Object inject(final EMFModel target, final InputStream source, final Map params) throws IOException {
+	public Object inject(final EMFModel target, final InputStream source, final Map<Object, Object> params)
+			throws IOException {
 		return inject(target, new InputStreamReader(source), params);
 	}
 
-	public Object inject(final EMFModel target, final Reader source, final Map params) throws IOException {
+	public Object inject(final EMFModel target, final Reader source,
+			final Map<Object, Object> params) throws IOException {
 		final ModelAdapter targetModelAdapter = new EMFInjectorAdapter(target);
 
 		final EMFModel problems = (EMFModel)params.get("problems");
@@ -127,10 +129,12 @@ public class EMFTCSInjector {
 					.createMetamodel(emfModel.getReferenceModel().getResource());
 		}
 
+		@Override
 		public Object getModel() {
 			return this.emfModel;
 		}
 
+		@Override
 		public Object get(final Object modelElement, final String name) {
 			if (modelElement == null) {
 				return null;
@@ -144,14 +148,17 @@ public class EMFTCSInjector {
 			}
 		}
 
+		@Override
 		public Object createElement(final String typeName) {
 			return model.newElement(getTypeByName(typeName));
 		}
 
-		public Set getElementsByType(final String typeName) {
+		@Override
+		public Set<?> getElementsByType(final String typeName) {
 			return model.allInstancesOf(getTypeByName(typeName)).asSet();
 		}
 
+		@Override
 		public void set(final Object modelElement, final String name, Object value) {
 			if (value == null) {
 				return;
@@ -169,7 +176,7 @@ public class EMFTCSInjector {
 			if (value instanceof Integer) {
 				final String targetType = feature.getEType().getInstanceClassName();
 				if ("java.lang.Double".equals(targetType) || "java.lang.Float".equals(targetType)) { //$NON-NLS-1$ //$NON-NLS-2$
-					value = new Double(((Integer)value).doubleValue());
+					value = Double.valueOf(((Integer)value).doubleValue());
 				}
 			}
 
@@ -178,16 +185,18 @@ public class EMFTCSInjector {
 
 			final Object oldValue = eo.eGet(feature);
 			if (oldValue instanceof Collection) {
-				final Collection oldCol = (Collection)oldValue;
+				@SuppressWarnings("unchecked")
+				final Collection<Object> oldCol = (Collection<Object>)oldValue;
 				if (value instanceof Collection) {
 					if (targetIsEnum) {
 						final EEnum eenum = (EEnum)type;
-						for (final Iterator i = ((Collection)value).iterator(); i.hasNext();) {
+						for (@SuppressWarnings("unchecked")
+						final Iterator<Object> i = ((Collection<Object>)value).iterator(); i.hasNext();) {
 							final Object v = i.next();
 							oldCol.add(eenum.getEEnumLiteralByLiteral(v.toString()).getInstance());
 						}
 					} else {
-						oldCol.addAll((Collection)value);
+						oldCol.addAll((Collection<?>)value);
 					}
 				} else {
 					if (targetIsEnum) {
@@ -199,7 +208,7 @@ public class EMFTCSInjector {
 				}
 			} else {
 				if (value instanceof Collection) {
-					final Collection c = (Collection)value;
+					final Collection<?> c = (Collection<?>)value;
 					if (!c.isEmpty()) {
 						value = c.iterator().next();
 					} else {
@@ -222,6 +231,7 @@ public class EMFTCSInjector {
 			}
 		}
 
+		@Override
 		public boolean isCandidate(final Object ame, final String typeName) {
 			boolean ret = false;
 			final Object valueType = getTypeByName(typeName);
@@ -243,6 +253,7 @@ public class EMFTCSInjector {
 			return ret;
 		}
 
+		@Override
 		public Object getType(final Object value) {
 			if (value instanceof EObject) {
 				return ((EObject)value).eClass();
@@ -253,14 +264,17 @@ public class EMFTCSInjector {
 			}
 		}
 
+		@Override
 		public boolean isAModelElement(final Object me) {
 			return me instanceof EObject;
 		}
 
+		@Override
 		public String getString(final Object ame, final String propName) {
 			return get(ame, propName).toString();
 		}
 
+		@Override
 		public Object createEnumLiteral(final String name) {
 			final EEnumLiteral ret = EcoreFactoryImpl.eINSTANCE.createEEnumLiteral();
 			ret.setName(name);

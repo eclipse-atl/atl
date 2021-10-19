@@ -13,6 +13,7 @@
 package org.eclipse.m2m.atl.emftvm.impl;
 
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 
@@ -354,6 +355,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Module createModule() {
 		final ModuleImpl module = new ModuleImpl();
 		return module;
@@ -365,6 +367,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ModelDeclaration createModelDeclaration() {
 		final ModelDeclarationImpl modelDeclaration = new ModelDeclarationImpl();
 		return modelDeclaration;
@@ -376,6 +379,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Field createField() {
 		final FieldImpl field = new FieldImpl();
 		return field;
@@ -387,6 +391,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Operation createOperation() {
 		final OperationImpl operation = new OperationImpl();
 		return operation;
@@ -398,6 +403,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Parameter createParameter() {
 		final ParameterImpl parameter = new ParameterImpl();
 		return parameter;
@@ -409,6 +415,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public LineNumber createLineNumber() {
 		final LineNumberImpl lineNumber = new LineNumberImpl();
 		return lineNumber;
@@ -420,6 +427,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public LocalVariable createLocalVariable() {
 		final LocalVariableImpl localVariable = new LocalVariableImpl();
 		return localVariable;
@@ -431,6 +439,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Rule createRule() {
 		final RuleImpl rule = new RuleImpl();
 		return rule;
@@ -442,6 +451,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public InputRuleElement createInputRuleElement() {
 		final InputRuleElementImpl inputRuleElement = new InputRuleElementImpl();
 		return inputRuleElement;
@@ -453,6 +463,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public OutputRuleElement createOutputRuleElement() {
 		final OutputRuleElementImpl outputRuleElement = new OutputRuleElementImpl();
 		return outputRuleElement;
@@ -464,6 +475,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CodeBlock createCodeBlock() {
 		final CodeBlockImpl codeBlock = new CodeBlockImpl();
 		return codeBlock;
@@ -475,6 +487,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Push createPush() {
 		final PushImpl push = new PushImpl();
 		return push;
@@ -486,6 +499,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Pusht createPusht() {
 		final PushtImpl pusht = new PushtImpl();
 		return pusht;
@@ -497,6 +511,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Pushf createPushf() {
 		final PushfImpl pushf = new PushfImpl();
 		return pushf;
@@ -508,6 +523,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Pop createPop() {
 		final PopImpl pop = new PopImpl();
 		return pop;
@@ -519,6 +535,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Load createLoad() {
 		final LoadImpl load = new LoadImpl();
 		return load;
@@ -530,6 +547,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Store createStore() {
 		final StoreImpl store = new StoreImpl();
 		return store;
@@ -541,6 +559,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Set createSet() {
 		final SetImpl set = new SetImpl();
 		return set;
@@ -552,6 +571,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Get createGet() {
 		final GetImpl get = new GetImpl();
 		return get;
@@ -563,6 +583,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public GetTrans createGetTrans() {
 		final GetTransImpl getTrans = new GetTransImpl();
 		return getTrans;
@@ -574,6 +595,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SetStatic createSetStatic() {
 		final SetStaticImpl setStatic = new SetStaticImpl();
 		return setStatic;
@@ -585,6 +607,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public GetStatic createGetStatic() {
 		final GetStaticImpl getStatic = new GetStaticImpl();
 		return getStatic;
@@ -596,6 +619,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Findtype createFindtype() {
 		final FindtypeImpl findtype = new FindtypeImpl();
 		return findtype;
@@ -607,6 +631,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public FindtypeS createFindtypeS() {
 		final FindtypeSImpl findtypeS = new FindtypeSImpl();
 		return findtypeS;
@@ -618,6 +643,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public New createNew() {
 		final NewImpl new_ = new NewImpl();
 		return new_;
@@ -629,6 +655,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public NewS createNewS() {
 		final NewSImpl newS = new NewSImpl();
 		return newS;
@@ -640,6 +667,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Delete createDelete() {
 		final DeleteImpl delete = new DeleteImpl();
 		return delete;
@@ -651,6 +679,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Dup createDup() {
 		final DupImpl dup = new DupImpl();
 		return dup;
@@ -662,6 +691,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public DupX1 createDupX1() {
 		final DupX1Impl dupX1 = new DupX1Impl();
 		return dupX1;
@@ -673,6 +703,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Swap createSwap() {
 		final SwapImpl swap = new SwapImpl();
 		return swap;
@@ -684,6 +715,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SwapX1 createSwapX1() {
 		final SwapX1Impl swapX1 = new SwapX1Impl();
 		return swapX1;
@@ -695,6 +727,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public If createIf() {
 		final IfImpl if_ = new IfImpl();
 		return if_;
@@ -706,6 +739,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Ifn createIfn() {
 		final IfnImpl ifn = new IfnImpl();
 		return ifn;
@@ -717,6 +751,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Goto createGoto() {
 		final GotoImpl goto_ = new GotoImpl();
 		return goto_;
@@ -728,6 +763,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Iterate createIterate() {
 		final IterateImpl iterate = new IterateImpl();
 		return iterate;
@@ -739,6 +775,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Enditerate createEnditerate() {
 		final EnditerateImpl enditerate = new EnditerateImpl();
 		return enditerate;
@@ -750,6 +787,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Invoke createInvoke() {
 		final InvokeImpl invoke = new InvokeImpl();
 		return invoke;
@@ -761,6 +799,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public InvokeSuper createInvokeSuper() {
 		final InvokeSuperImpl invokeSuper = new InvokeSuperImpl();
 		return invokeSuper;
@@ -772,6 +811,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public InvokeStatic createInvokeStatic() {
 		final InvokeStaticImpl invokeStatic = new InvokeStaticImpl();
 		return invokeStatic;
@@ -783,6 +823,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Allinst createAllinst() {
 		final AllinstImpl allinst = new AllinstImpl();
 		return allinst;
@@ -794,6 +835,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public AllinstIn createAllinstIn() {
 		final AllinstInImpl allinstIn = new AllinstInImpl();
 		return allinstIn;
@@ -805,6 +847,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Match createMatch() {
 		final MatchImpl match = new MatchImpl();
 		return match;
@@ -816,6 +859,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public MatchS createMatchS() {
 		final MatchSImpl matchS = new MatchSImpl();
 		return matchS;
@@ -827,6 +871,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Add createAdd() {
 		final AddImpl add = new AddImpl();
 		return add;
@@ -838,6 +883,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Remove createRemove() {
 		final RemoveImpl remove = new RemoveImpl();
 		return remove;
@@ -849,6 +895,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Insert createInsert() {
 		final InsertImpl insert = new InsertImpl();
 		return insert;
@@ -859,6 +906,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public GetSuper createGetSuper() {
 		final GetSuperImpl getSuper = new GetSuperImpl();
 		return getSuper;
@@ -869,6 +917,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Getenv createGetenv() {
 		final GetenvImpl getenv = new GetenvImpl();
 		return getenv;
@@ -880,6 +929,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Return createReturn() {
 		final ReturnImpl return_ = new ReturnImpl();
 		return return_;
@@ -891,6 +941,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Getcb createGetcb() {
 		final GetcbImpl getcb = new GetcbImpl();
 		return getcb;
@@ -902,6 +953,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public InvokeAllCbs createInvokeAllCbs() {
 		final InvokeAllCbsImpl invokeAllCbs = new InvokeAllCbsImpl();
 		return invokeAllCbs;
@@ -913,6 +965,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public InvokeCb createInvokeCb() {
 		final InvokeCbImpl invokeCb = new InvokeCbImpl();
 		return invokeCb;
@@ -924,6 +977,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public InvokeCbS createInvokeCbS() {
 		final InvokeCbSImpl invokeCbS = new InvokeCbSImpl();
 		return invokeCbS;
@@ -957,6 +1011,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Not createNot() {
 		final NotImpl not = new NotImpl();
 		return not;
@@ -968,6 +1023,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public And createAnd() {
 		final AndImpl and = new AndImpl();
 		return and;
@@ -979,6 +1035,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Or createOr() {
 		final OrImpl or = new OrImpl();
 		return or;
@@ -990,6 +1047,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Xor createXor() {
 		final XorImpl xor = new XorImpl();
 		return xor;
@@ -1001,6 +1059,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Implies createImplies() {
 		final ImpliesImpl implies = new ImpliesImpl();
 		return implies;
@@ -1012,6 +1071,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Ifte createIfte() {
 		final IfteImpl ifte = new IfteImpl();
 		return ifte;
@@ -1023,6 +1083,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Isnull createIsnull() {
 		final IsnullImpl isnull = new IsnullImpl();
 		return isnull;
@@ -1034,6 +1095,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Getenvtype createGetenvtype() {
 		final GetenvtypeImpl getenvtype = new GetenvtypeImpl();
 		return getenvtype;
@@ -1067,6 +1129,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ExecEnv createExecEnv() {
 		final ExecEnvImpl execEnv = new ExecEnvImpl();
 		return execEnv;
@@ -1078,6 +1141,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Model createModel() {
 		final ModelImpl model = new ModelImpl();
 		return model;
@@ -1089,6 +1153,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Metamodel createMetamodel() {
 		final MetamodelImpl metamodel = new MetamodelImpl();
 		return metamodel;
@@ -1474,6 +1539,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EmftvmPackage getEmftvmPackage() {
 		return (EmftvmPackage)getEPackage();
 	}
@@ -1493,6 +1559,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Instruction createInstruction(final Opcode opcode) {
 		switch (opcode) {
 		case PUSH: return createPush();
@@ -1553,6 +1620,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Model createModel(final Resource resource) {
 		final TypeMap<Class<?>, ModelFactory> modelFactoryRegistry = getModelFactoryRegistry();
 		final Object key = modelFactoryRegistry.findKey(resource.getClass());
@@ -1565,6 +1633,7 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Metamodel createMetamodel(final Resource resource) {
 		final TypeMap<Class<?>, ModelFactory> modelFactoryRegistry = getModelFactoryRegistry();
 		final Object key = modelFactoryRegistry.findKey(resource.getClass());
@@ -1587,17 +1656,11 @@ public class EmftvmFactoryImpl extends EFactoryImpl implements EmftvmFactory {
 	private TypeMap<Class<?>, ModelFactory> createModelFactoryRegistry() {
 		PluginExtensionUtil peUtil;
 		try {
-			peUtil = (PluginExtensionUtil) Class.forName(PLUGIN_EXTENSION_UTIL_IMPL).newInstance();
+			peUtil = (PluginExtensionUtil) Class.forName(PLUGIN_EXTENSION_UTIL_IMPL).getDeclaredConstructor()
+					.newInstance();
 			return peUtil.createModelFactoryRegistry();
-		} catch (final InstantiationException e) {
-			ATLLogger.log(Level.FINE, e.getMessage(), e);
-		} catch (final IllegalAccessException e) {
-			ATLLogger.log(Level.FINE, e.getMessage(), e);
-		} catch (final ClassNotFoundException e) {
-			ATLLogger.log(Level.FINE, e.getMessage(), e);
-		} catch (final SecurityException e) {
-			ATLLogger.log(Level.FINE, e.getMessage(), e);
-		} catch (final NoClassDefFoundError e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException | ClassNotFoundException e) {
 			ATLLogger.log(Level.FINE, e.getMessage(), e);
 		}
 		return new TypeHashMap<Class<?>, ModelFactory>();

@@ -16,28 +16,29 @@ import java.io.InputStream;
 
 /**
  * Manages a text source in a string.
- * 
+ *
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class StringTextSource extends TextSource {
 
-	private String string;
+	private final String string;
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param string
 	 *            the string text
 	 */
-	public StringTextSource(String string) {
+	public StringTextSource(final String string) {
 		this.string = string;
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.dsls.textsource.TextSource#openStream()
 	 */
+	@Override
 	public InputStream openStream() throws IOException {
 		return new ByteArrayInputStream(string.getBytes());
 	}

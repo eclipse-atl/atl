@@ -19,23 +19,23 @@ import org.eclipse.m2m.atl.dsls.Messages;
 
 /**
  * IFile text utility.
- * 
+ *
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class IFileTextSource extends TextSource {
-	
-	private IFile file;
-	
+
+	private final IFile file;
+
 	public IFile getFile() {
 		return file;
 	}
 
 	/**
 	 * Creates a new IFileTextSource.
-	 * 
+	 *
 	 * @param file the file to manage
 	 */
-	public IFileTextSource(IFile file) {
+	public IFileTextSource(final IFile file) {
 		this.file = file;
 	}
 
@@ -43,11 +43,12 @@ public class IFileTextSource extends TextSource {
 	 *
 	 * @see org.eclipse.m2m.atl.dsls.textsource.TextSource#openStream()
 	 */
+	@Override
 	public InputStream openStream() throws IOException {
 		try {
 			return file.getContents();
-		} catch (CoreException e) {
-			IOException ioe = new IOException(Messages.getString("IFileTextSource.OPENINGPROBLEM")); //$NON-NLS-1$
+		} catch (final CoreException e) {
+			final IOException ioe = new IOException(Messages.getString("IFileTextSource.OPENINGPROBLEM")); //$NON-NLS-1$
 			ioe.initCause(e);
 			throw ioe;
 		}
