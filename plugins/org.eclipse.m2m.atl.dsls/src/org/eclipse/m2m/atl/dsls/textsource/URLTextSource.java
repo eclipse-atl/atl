@@ -17,39 +17,40 @@ import java.net.URL;
 
 /**
  * Manages a text source by url.
- * 
+ *
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class URLTextSource extends TextSource {
 
-	private URL url;
+	private final URL url;
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param url
 	 *            the text source url
 	 */
-	public URLTextSource(URL url) {
+	public URLTextSource(final URL url) {
 		this.url = url;
 	}
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param url
 	 *            the text source url, in a String form
 	 * @throws MalformedURLException
 	 */
-	public URLTextSource(String url) throws MalformedURLException {
+	public URLTextSource(final String url) throws MalformedURLException {
 		this(new URL(url));
 	}
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.dsls.textsource.TextSource#openStream()
 	 */
+	@Override
 	public InputStream openStream() throws IOException {
 		return url.openStream();
 	}

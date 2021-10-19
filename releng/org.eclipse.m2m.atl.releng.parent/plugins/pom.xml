@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>m2m.atl-parent</artifactId>
+		<groupId>org.eclipse.m2m.atl</groupId>
+		<version>4.5.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+
+	<groupId>org.eclipse.m2m.atl</groupId>
+	<artifactId>org.eclipse.m2m.atl.plugins</artifactId>
+	<version>4.5.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<modules>
+	
+		<!-- plugins/ -->
+
+		<module>../../../plugins/org.eclipse.m2m.atl</module>
+		<!-- 
+		<module>../../../plugins/org.eclipse.m2m.atl.adt</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.adt.debug</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.adt.editor</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.adt.ui</module>
+		 -->
+		<module>../../../plugins/org.eclipse.m2m.atl.common</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.core</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.core.ant</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.core.emf</module>
+		<!-- 
+		<module>../../../plugins/org.eclipse.m2m.atl.core.ui</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.core.ui.vm</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.debug.core</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.drivers.emf4atl</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.drivers.uml24atl</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.dsls</module>
+		 -->
+		<module>../../../plugins/org.eclipse.m2m.atl.emftvm</module>
+		<!-- 
+		<module>../../../plugins/org.eclipse.m2m.atl.emftvm.ant</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.emftvm.cdo</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.emftvm.compiler</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.emftvm.edit</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.emftvm.editor</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.emftvm.launcher</module>
+		 -->
+		<module>../../../plugins/org.eclipse.m2m.atl.emftvm.trace</module>
+		<!-- 
+		<module>../../../plugins/org.eclipse.m2m.atl.emftvm.trace.edit</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.emftvm.trace.editor</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.engine</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.engine.emfvm</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.engine.emfvm.launch</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.engine.vm</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.profiler.core</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.profiler.emfvm</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.profiler.exportmodel</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.profiler.exportmodel.editor</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.profiler.model</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.profiler.ui</module>
+		<module>../../../plugins/org.eclipse.m2m.atl.profiler.vm</module>
+		 -->
+
+		<!-- tests/ -->
+
+		<!-- 
+		<module>../../../tests/org.eclipse.m2m.atl.tests</module>
+		<module>../../../tests/org.eclipse.m2m.atl.emftvm.tests</module>
+		<module>../../../tests/org.eclipse.m2m.atl.emftvm.trace.tests</module>
+		 -->
+
+		<!-- doc/ -->
+
+		<!-- 
+		<module>../../../doc/org.eclipse.m2m.atl.cheatsheets</module>
+		<module>../../../doc/org.eclipse.m2m.atl.doc</module>
+		 -->
+
+		<!-- examples/ -->
+
+		<!-- 
+		<module>../../../examples/org.eclipse.m2m.atl.examples</module>
+		 -->
+
+		<!-- releng/ -->
+
+		<!-- 
+		<module>../../../releng/org.eclipse.m2m.atl.update</module>
+		 -->
+
+	</modules>
+
+</project>

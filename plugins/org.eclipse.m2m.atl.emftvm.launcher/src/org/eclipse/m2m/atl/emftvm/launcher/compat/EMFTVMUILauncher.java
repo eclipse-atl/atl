@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * Contributors:
  *     Dennis Wagelaar - initial API and implementation
  *******************************************************************************/
@@ -22,14 +22,14 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
 
 /**
  * The EMFTVM UI extension of the {@link EMFTVMLauncher}, which supports debug.
- * 
+ *
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class EMFTVMUILauncher extends EMFTVMLauncher {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.launcher.compat.EMFTVMLauncher#launch(java.lang.String,
 	 *      org.eclipse.core.runtime.IProgressMonitor, java.util.Map,
 	 *      java.lang.Object[])
@@ -44,12 +44,12 @@ public class EMFTVMUILauncher extends EMFTVMLauncher {
 			} else {
 				return internalLaunch(null, monitor, options, modules);
 			}
-		} catch (CoreException e) {
+		} catch (final CoreException e) {
 			throw new VMException(null, e.getLocalizedMessage(), e);
 		}
 	}
 
-	private int getPort(ILaunch launch) throws CoreException {
+	private int getPort(final ILaunch launch) throws CoreException {
 		String portOption = ""; //$NON-NLS-1$
 		if (launch != null) {
 			portOption = launch.getLaunchConfiguration().getAttribute(ATLLaunchConstants.PORT,
@@ -58,7 +58,7 @@ public class EMFTVMUILauncher extends EMFTVMLauncher {
 		if (portOption.equals("")) { //$NON-NLS-1$
 			portOption = Integer.valueOf(ATLLaunchConstants.DEFAULT_PORT).toString();
 		}
-		return new Integer(portOption).intValue();
+		return Integer.valueOf(portOption).intValue();
 	}
 
 	/**

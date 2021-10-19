@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.m2m.atl.drivers.emf4atl;singleton:=true
-Bundle-Version: 4.5.0.qualifier
+Bundle-Version: 4.6.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.drivers.emf4atl,
@@ -14,6 +14,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2m.atl.engine.vm;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.m2m.atl.common;visibility:=reexport
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: org.eclipse.m2m.atl.drivers.emf4atl
 

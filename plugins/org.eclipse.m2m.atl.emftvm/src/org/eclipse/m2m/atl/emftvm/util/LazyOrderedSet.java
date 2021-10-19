@@ -23,6 +23,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.Spliterator;
 
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
@@ -175,7 +176,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public ListIterator<E> listIterator(final int index) {
 			return new SubListListIterator(fromIndex, toIndex, index);
 		}
-		
+
 	}
 
 	/**
@@ -187,24 +188,24 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @param <E> the collection element type
 	 */
 	public static class AppendOrderedSet<E> extends NonCachingOrderedSet<E> {
-	
+
 		/**
 		 * {@link Iterator} that appends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class AppendOrderedSetIterator extends WrappedIterator {
-		
+
 			protected boolean beforeTail = true;
 			protected boolean innerNext; // cache last inner.hasNext() invocation
-		
+
 			/**
 			 * Creates a new {@link AppendOrderedSetIterator}.
 			 */
 			public AppendOrderedSetIterator() {
 				super();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -217,7 +218,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				assert containsObjectSet;
 				return (beforeTail && !containsObject) || (innerNext = inner.hasNext());
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -240,24 +241,24 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				throw new NoSuchElementException();
 			}
 		}
-	
+
 		/**
 		 * {@link Iterator} that appends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class AppendOrderedSetListIterator extends WrappedListIterator {
-		
+
 			protected boolean beforeTail = true;
 			protected boolean innerNext; // cache last inner.hasNext() invocation
-		
+
 			/**
 			 * Creates a new {@link AppendOrderedSetListIterator}.
 			 */
 			public AppendOrderedSetListIterator() {
 				super();
 			}
-		
+
 			/**
 			 * Creates a new {@link AppendOrderedSetListIterator}.
 			 * @param index the iterator starting index.
@@ -268,7 +269,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 					next();
 				}
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -281,7 +282,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				assert containsObjectSet;
 				return (beforeTail && !containsObject) || (innerNext = inner.hasNext());
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -343,7 +344,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				assert beforeTail || (containsObjectSet && !containsObject); // !beforeTail implies (containsObjectSet && !containsObject)
 				return inner.previousIndex() + (beforeTail ? 0 : 1);
 			}
-			
+
 		}
 
 		protected final E object;
@@ -359,25 +360,25 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			super(dataSource);
 			this.object = object;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean contains(final Object o) {
-			return (object == null ? o == null : object.equals(o)) || 
+			return (object == null ? o == null : object.equals(o)) ||
 					((Collection<E>)dataSource).contains(o);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public int count(final Object o) {
-			return (object == null ? o == null : object.equals(o)) ? 1 : 
-					((LazyCollection<E>)dataSource).count(o);
+			return (object == null ? o == null : object.equals(o)) ? 1 :
+				((LazyCollection<E>)dataSource).count(o);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -385,7 +386,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public boolean isEmpty() {
 			return false;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -393,7 +394,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public Iterator<E> iterator() {
 			return new AppendOrderedSetIterator();
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -472,7 +473,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public ListIterator<E> listIterator(final int index) {
 			return new AppendOrderedSetListIterator(index);
 		}
-	
+
 	}
 
 	/**
@@ -484,16 +485,16 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @param <E> the collection element type
 	 */
 	public static class PrependOrderedSet<E> extends AppendOrderedSet<E> {
-	
+
 		/**
 		 * {@link Iterator} that prepends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class PrependOrderedSetIterator extends WrappedIterator {
-		
+
 			protected boolean beforeHead;
-		
+
 			/**
 			 * Creates a new {@link PrependOrderedSetIterator}.
 			 */
@@ -506,7 +507,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				assert containsObjectSet;
 				beforeHead = !containsObject;
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -516,7 +517,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				assert !beforeHead || !containsObject; // beforeHead implies !containsObject
 				return beforeHead || inner.hasNext();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -531,17 +532,17 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				return inner.next();
 			}
 		}
-	
+
 		/**
 		 * {@link Iterator} that appends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class PrependOrderedSetListIterator extends WrappedListIterator {
-		
+
 			protected boolean beforeHead;
 			protected boolean innerPrev; // cache value of inner.hasPrevious()
-		
+
 			/**
 			 * Creates a new {@link PrependOrderedSetListIterator}.
 			 */
@@ -554,7 +555,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				assert containsObjectSet;
 				this.beforeHead = !containsObject;
 			}
-		
+
 			/**
 			 * Creates a new {@link PrependOrderedSetListIterator}.
 			 * @param index the iterator starting index.
@@ -571,7 +572,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 					next();
 				}
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -581,7 +582,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				assert !beforeHead || !containsObject; // beforeHead implies !containsObject
 				return beforeHead || inner.hasNext();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -595,7 +596,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				}
 				return inner.next();
 			}
-	
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -608,7 +609,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				}
 				return inner.nextIndex() + (containsObject ? 0 : 1);
 			}
-	
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -619,7 +620,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				assert beforeHead || !inner.hasPrevious(); // not beforeHead implies not inner.hasPrevious()
 				return !beforeHead && (!containsObject || (innerPrev = inner.hasPrevious()));
 			}
-	
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -637,7 +638,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				}
 				throw new NoSuchElementException();
 			}
-	
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -650,7 +651,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				}
 				return inner.previousIndex() + (containsObject ? 0 : 1);
 			}
-			
+
 		}
 
 		/**
@@ -661,7 +662,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public PrependOrderedSet(final E object, final LazyOrderedSet<E> dataSource) {
 			super(object, dataSource);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -679,7 +680,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public E first() {
 			return ((List<E>)dataSource).get(size() - 1);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -698,7 +699,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			}
 			throw new NoSuchElementException();
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -719,7 +720,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				return ((List<E>)dataSource).get(index);
 			}
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -739,7 +740,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			final int index = ((List<E>)dataSource).indexOf(o);
 			return (index > -1) ? index + 1 : -1;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -747,7 +748,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public ListIterator<E> listIterator() {
 			return new PrependOrderedSetListIterator();
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -755,7 +756,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public ListIterator<E> listIterator(final int index) {
 			return new PrependOrderedSetListIterator(index);
 		}
-	
+
 	}
 
 	/**
@@ -768,7 +769,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @param <E> the collection element type
 	 */
 	public static class InsertAtOrderedSet<E> extends AppendOrderedSet<E> {
-	
+
 		/**
 		 * {@link Iterator} that appends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
@@ -776,16 +777,16 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class InsertAtOrderedSetIterator extends WrappedIterator {
-		
+
 			protected int i = -1;
-		
+
 			/**
 			 * Creates a new {@link InsertAtOrderedSetIterator}.
 			 */
 			public InsertAtOrderedSetIterator() {
 				super();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -794,7 +795,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				// next() will throw exception when index is out of bounds
 				return i < index || inner.hasNext();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -813,24 +814,24 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				return inner.next();
 			}
 		}
-	
+
 		/**
 		 * {@link Iterator} that appends an object to the underlying
 		 * collection, except when it already occurs in the underlying collection.
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class InsertAtOrderedSetListIterator extends WrappedListIterator {
-		
+
 			protected int i = -1;
 			protected boolean innerNext; // cache last inner.hasNext() invocation
-		
+
 			/**
 			 * Creates a new {@link InsertAtOrderedSetListIterator}.
 			 */
 			public InsertAtOrderedSetListIterator() {
 				super();
 			}
-		
+
 			/**
 			 * Creates a new {@link InsertAtOrderedSetListIterator}.
 			 * @param index the iterator starting index.
@@ -843,7 +844,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 					next();
 				}
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -852,7 +853,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				// next() will throw exception when index is out of bounds
 				return i < index || inner.hasNext();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -870,7 +871,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				}
 				return inner.next();
 			}
-	
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -878,7 +879,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			public int nextIndex() {
 				return i + 1;
 			}
-	
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -887,7 +888,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				// previous() will throw exception when index is out of bounds
 				return i >= index || inner.hasPrevious();
 			}
-	
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -905,7 +906,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				}
 				return inner.previous();
 			}
-	
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -913,11 +914,11 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			public int previousIndex() {
 				return i;
 			}
-			
+
 		}
-	
+
 		protected final int index;
-	
+
 		/**
 		 * Creates a new {@link InsertAtOrderedSet}.
 		 * @param object the object to insert
@@ -931,7 +932,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				throw new IndexOutOfBoundsException(String.valueOf(index));
 			}
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -982,7 +983,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			}
 			throw new IndexOutOfBoundsException(String.valueOf(index));
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1014,7 +1015,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			}
 			throw new IndexOutOfBoundsException(String.valueOf(index));
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1048,7 +1049,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			}
 			return -1;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1056,7 +1057,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public ListIterator<E> listIterator() {
 			return new InsertAtOrderedSetListIterator();
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1064,7 +1065,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public ListIterator<E> listIterator(final int index) {
 			return new InsertAtOrderedSetListIterator(index);
 		}
-	
+
 	}
 
 	/**
@@ -1075,24 +1076,24 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @param <E> the collection element type
 	 */
 	public static class ExcludingOrderedSet<E> extends NonCachingOrderedSet<E> {
-	
+
 		/**
 		 * {@link Iterator} that excludes a given object.
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class ExcludingOrderedSetIterator extends WrappedIterator {
-		
+
 			protected int i = -1;
 			protected E next;
 			protected boolean nextSet;
-		
+
 			/**
 			 * Creates a new {@link ExcludingOrderedSetIterator}.
 			 */
 			public ExcludingOrderedSetIterator() {
 				super();
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -1117,7 +1118,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				}
 				return hasNext;
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -1138,26 +1139,26 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				return next;
 			}
 		}
-	
+
 		/**
 		 * {@link ListIterator} that excludes a given object.
 		 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 		 */
 		public class ExcludingOrderedSetListIterator extends WrappedListIterator {
-		
+
 			protected int i = -1;
 			protected E next;
 			protected boolean nextSet;
 			protected E prev;
 			protected boolean prevSet;
-		
+
 			/**
 			 * Creates a new {@link ExcludingIterator}.
 			 */
 			public ExcludingOrderedSetListIterator() {
 				super();
 			}
-		
+
 			/**
 			 * Creates a new {@link ExcludingIterator}.
 			 * @param index the iterator starting index.
@@ -1171,7 +1172,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 					this.i = index - 1;
 				}
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -1196,7 +1197,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				}
 				return hasNext;
 			}
-		
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -1292,25 +1293,25 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			super(dataSource);
 			this.object = object;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public boolean contains(final Object o) {
-			return !(object == null ? o == null : object.equals(o)) && 
+			return !(object == null ? o == null : object.equals(o)) &&
 					((Collection<E>)dataSource).contains(o);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public int count(final Object o) {
-			return (object == null ? o == null : object.equals(o)) ? 0 : 
-					((LazyCollection<E>)dataSource).count(o);
+			return (object == null ? o == null : object.equals(o)) ? 0 :
+				((LazyCollection<E>)dataSource).count(o);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1318,7 +1319,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public boolean isEmpty() {
 			return !iterator().hasNext();
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1329,7 +1330,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			}
 			return new ExcludingOrderedSetIterator();
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1425,7 +1426,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			}
 			return new ExcludingOrderedSetListIterator(index);
 		}
-	
+
 	}
 
 	/**
@@ -1443,7 +1444,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			super(dataSource);
 			this.last = dataSource.size() - 1;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1459,7 +1460,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public E last() {
 			return ((List<E>)dataSource).get(0);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1467,7 +1468,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public E get(final int index) {
 			return ((List<E>)dataSource).get(last - index);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1479,7 +1480,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			}
 			return -1;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1491,7 +1492,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 			}
 			return -1;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1499,7 +1500,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public boolean contains(final Object o) {
 			return ((List<E>)dataSource).contains(o);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1507,7 +1508,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public boolean isEmpty() {
 			return ((List<E>)dataSource).isEmpty();
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1515,7 +1516,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public Iterator<E> iterator() {
 			return new ReverseIterator(last);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1523,7 +1524,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public int size() {
 			return last + 1;
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1531,7 +1532,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public ListIterator<E> listIterator() {
 			return new ReverseListIterator(last);
 		}
-	
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -1539,12 +1540,12 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		public ListIterator<E> listIterator(final int index) {
 			return new ReverseListIterator(last, index);
 		}
-		
+
 	}
 
 	/**
 	 * {@link LazyOrderedSet} that represents a range running from a first to last {@link Integer}.
-	 * 
+	 *
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static class IntegerRangeOrderedSet extends LazyOrderedSet<Integer> {
@@ -1554,7 +1555,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 
 		/**
 		 * Creates a new {@link IntegerRangeOrderedSet}.
-		 * 
+		 *
 		 * @param first
 		 *            the first object of the range to include
 		 * @param last
@@ -1590,7 +1591,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Integer get(int index) {
+		public Integer get(final int index) {
 			final int element = first + index;
 			if (element > last) {
 				throw new IndexOutOfBoundsException(Integer.toString(index));
@@ -1602,7 +1603,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int indexOf(Object o) {
+		public int indexOf(final Object o) {
 			if (contains(o)) {
 				return (Integer) o - first;
 			}
@@ -1621,7 +1622,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int lastIndexOf(Object o) {
+		public int lastIndexOf(final Object o) {
 			// All elements of a range are unique
 			return indexOf(o);
 		}
@@ -1638,7 +1639,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public ListIterator<Integer> listIterator(int index) {
+		public ListIterator<Integer> listIterator(final int index) {
 			return new IntegerRangeListIterator(first, last, index);
 		}
 
@@ -1646,7 +1647,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean contains(Object o) {
+		public boolean contains(final Object o) {
 			if (o instanceof Integer) {
 				final Integer obj = (Integer) o;
 				return (obj >= first && obj <= last);
@@ -1658,7 +1659,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Object object) {
+		public int count(final Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -1692,7 +1693,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 
 	/**
 	 * {@link LazyOrderedSet} that represents a range running from a first to last {@link Long}.
-	 * 
+	 *
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static class LongRangeOrderedSet extends LazyOrderedSet<Long> {
@@ -1702,7 +1703,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 
 		/**
 		 * Creates a new {@link LongRangeList}.
-		 * 
+		 *
 		 * @param first
 		 *            the first object of the range to include
 		 * @param last
@@ -1738,7 +1739,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public Long get(int index) {
+		public Long get(final int index) {
 			final long element = first + index;
 			if (element > last) {
 				throw new IndexOutOfBoundsException(Integer.toString(index));
@@ -1750,7 +1751,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int indexOf(Object o) {
+		public int indexOf(final Object o) {
 			if (contains(o)) {
 				return (int) ((Long) o - first);
 			}
@@ -1769,7 +1770,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int lastIndexOf(Object o) {
+		public int lastIndexOf(final Object o) {
 			// All elements of a range are unique
 			return indexOf(o);
 		}
@@ -1786,7 +1787,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public ListIterator<Long> listIterator(int index) {
+		public ListIterator<Long> listIterator(final int index) {
 			return new LongRangeListIterator(first, last, index);
 		}
 
@@ -1794,7 +1795,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean contains(Object o) {
+		public boolean contains(final Object o) {
 			if (o instanceof Integer) {
 				final Integer obj = (Integer) o;
 				return (obj >= first && obj <= last);
@@ -1806,7 +1807,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Object object) {
+		public int count(final Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -1886,7 +1887,8 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @param element the object to add
 	 * @throws UnsupportedOperationException
 	 */
-	public void add(int index, E element) {
+	@Override
+	public void add(final int index, final E element) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -1897,19 +1899,21 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
-	public boolean addAll(int index, Collection<? extends E> c) {
+	@Override
+	public boolean addAll(final int index, final Collection<? extends E> c) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public E get(int index) {
+	@Override
+	public E get(final int index) {
 		if (index < cache.size()) {
 			return ((List<E>)cache).get(index);
 		}
 		int i = 0;
-		for (E e : this) {
+		for (final E e : this) {
 			if (i == index) {
 				return e;
 			}
@@ -1921,13 +1925,14 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	/**
 	 * {@inheritDoc}
 	 */
-	public int indexOf(Object o) {
+	@Override
+	public int indexOf(final Object o) {
 		final int index = ((List<E>)cache).indexOf(o);
 		if (index > -1 || dataSource == null) { // cache complete
 			return index;
 		}
 		int i = 0;
-		for (E e : this) {
+		for (final E e : this) {
 			if (e == o) {
 				return i;
 			}
@@ -1939,13 +1944,15 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	/**
 	 * {@inheritDoc}
 	 */
-	public int lastIndexOf(Object o) {
+	@Override
+	public int lastIndexOf(final Object o) {
 		return indexOf(o); // elements occur only once
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ListIterator<E> listIterator() {
 		if (dataSource == null) { // cache complete
 			return Collections.unmodifiableList((List<E>)cache).listIterator();
@@ -1956,7 +1963,8 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	/**
 	 * {@inheritDoc}
 	 */
-	public ListIterator<E> listIterator(int index) {
+	@Override
+	public ListIterator<E> listIterator(final int index) {
 		if (dataSource == null) { // cache complete
 			return Collections.unmodifiableList((List<E>)cache).listIterator(index);
 		}
@@ -1969,7 +1977,8 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
-	public E remove(int index) {
+	@Override
+	public E remove(final int index) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -1980,7 +1989,8 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
-	public E set(int index, E element) {
+	@Override
+	public E set(final int index, final E element) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -1988,6 +1998,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p><i>Lazy implementation of {@link List#subList(int, int)}.</i></p>
 	 * {@inheritDoc}
 	 */
+	@Override
 	public LazyOrderedSet<E> subList(final int fromIndex, final int toIndex) {
 		return new SubOrderedSet<E>(fromIndex, toIndex, this);
 	}
@@ -1998,18 +2009,18 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	@Override
 	public boolean equals(final Object o) {
 		if (o == this) {
-		    return true;
+			return true;
 		}
 		if (!(o instanceof List<?> && o instanceof Set<?>)) {
-		    return false;
+			return false;
 		}
 		final Iterator<E> e1 = iterator();
 		final Iterator<?> e2 = ((Collection<?>)o).iterator();
 		while (e1.hasNext() && e2.hasNext()) {
-		    E o1 = e1.next();
-		    Object o2 = e2.next();
-		    if (!(o1 == null ? o2 == null : o1.equals(o2)))
-			return false;
+			final E o1 = e1.next();
+			final Object o2 = e2.next();
+			if (!(o1 == null ? o2 == null : o1.equals(o2)))
+				return false;
 		}
 		return !(e1.hasNext() || e2.hasNext());
 	}
@@ -2021,14 +2032,14 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	public int hashCode() {
 		// List hashcode (shifted)
 		int hashCode = 1;
-		for (E obj : this) {
-		    hashCode = 31 * hashCode + (obj == null ? 0 : obj.hashCode());
+		for (final E obj : this) {
+			hashCode = 31 * hashCode + (obj == null ? 0 : obj.hashCode());
 		}
 		// Set hashcode (to distinguish from plain Lists)
-		for (E obj : this) {
-            if (obj != null) {
-                hashCode += obj.hashCode();
-            }
+		for (final E obj : this) {
+			if (obj != null) {
+				hashCode += obj.hashCode();
+			}
 		}
 		return hashCode;
 	}
@@ -2036,6 +2047,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String asString(final ExecEnv env) {
 		return appendElements(new StringBuffer("OrderedSet{"), env).append('}').toString();
 	}
@@ -2043,11 +2055,12 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	/**
 	 * Returns the number of occurrences of <code>object</code> in self.<br>
 	 * <code>post: result &lt;= 1</code>
-	 * 
+	 *
 	 * @param o
 	 *            the object to count
 	 * @return The number of occurrences of <code>object</code> in self.
 	 */
+	@Override
 	public int count(final Object o) {
 		return contains(o) ? 1 : 0;
 	}
@@ -2159,7 +2172,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param s
 	 *            the ordered set to union with this
 	 * @param index
@@ -2178,7 +2191,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param s
 	 *            the collection to union with self
 	 * @return The union of self and <code>s</code>.
@@ -2301,6 +2314,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @param object the element to include
 	 * @return The set containing all elements of self plus <code>object</code>
 	 */
+	@Override
 	public LazyOrderedSet<E> including(final E object) {
 		return append(object);
 	}
@@ -2310,7 +2324,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param object
 	 *            the object to include
 	 * @param index
@@ -2331,7 +2345,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param coll
 	 *            the collection to include
 	 * @return The collection containing all elements of self plus <code>coll</code>.
@@ -2346,7 +2360,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param coll
 	 *            the collection to include
 	 * @param index
@@ -2367,11 +2381,12 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param object
 	 *            the element to exclude
 	 * @return The set containing all elements of self without <code>object</code>.
 	 */
+	@Override
 	public LazyOrderedSet<E> excluding(final Object object) {
 		return new ExcludingOrderedSet<E>(object, this);
 	}
@@ -2381,7 +2396,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param coll
 	 *            the collection to exclude
 	 * @return The collection containing all elements of self minus <code>coll</code>.
@@ -2404,7 +2419,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param s
 	 *            the collection to perform the symmetric difference with
 	 * @return The set containing all the elements that are in self or <code>s</code>, but not in both.
@@ -2428,6 +2443,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	public LazyOrderedSet<?> flatten() {
 		final LazyOrderedSet<E> inner = this;
 		return new LazyOrderedSet<Object>(new Iterable<Object>() {
+			@Override
 			public Iterator<Object> iterator() {
 				return new FlattenSetIterator(inner);
 			}
@@ -2472,7 +2488,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p><i>Lazy operation.</i></p>
 	 * @param lower the sub-range lower bound, inclusive
 	 * @param upper the sub-range upper bound, inclusive
-	 * @return The sub-set of self starting at number <code>lower</code>, up to and including element number <code>upper</code>. 
+	 * @return The sub-set of self starting at number <code>lower</code>, up to and including element number <code>upper</code>.
 	 */
 	public LazyOrderedSet<E> subSequence(final int lower, final int upper) {
 		return new SubOrderedSet<E>(lower - 1, upper, this);
@@ -2502,7 +2518,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param first
 	 *            the first object of the range to include
 	 * @param last
@@ -2510,6 +2526,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @return The OrderedSet containing all elements of self plus the OrderedSet of <code>first</code> running to <code>last</code> added
 	 *         as the last elements
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public LazyOrderedSet<E> includingRange(final E first, final E last) {
 		if (first instanceof Integer && last instanceof Integer) {
@@ -2581,6 +2598,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		function.setParentFrame(null);
 		final LazyOrderedSet<E> inner = this;
 		return new LazyList<T>(new Iterable<T>() {
+			@Override
 			public Iterator<T> iterator() {
 				return new CollectIterator<T>(inner, function, parentFrame);
 			}
@@ -2604,12 +2622,13 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 					final Iterator<Comparable<Object>> sortingKeys = new CollectIterator<Comparable<Object>>(inner, body, parentFrame);
 					final Object[] innerCopy = inner.toArray();
 					final Map<Object, Comparable<Object>> elementsToKeys = new HashMap<Object, Comparable<Object>>(innerCopy.length);
-					for (Object o : innerCopy) {
+					for (final Object o : innerCopy) {
 						elementsToKeys.put(o, sortingKeys.next());
 					}
 					assert !sortingKeys.hasNext();
 					Arrays.sort(innerCopy, new Comparator<Object>() {
-						public int compare(Object o1, Object o2) {
+						@Override
+						public int compare(final Object o1, final Object o2) {
 							return elementsToKeys.get(o1).compareTo(elementsToKeys.get(o2));
 						}
 					});
@@ -2626,6 +2645,14 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				return ((Collection<E>) dataSource).size();
 			}
 		};
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Spliterator<E> spliterator() {
+		return List.super.spliterator();
 	}
 
 	//TODO provide other iterator operations: collectNested

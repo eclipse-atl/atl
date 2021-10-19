@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.m2m.atl.emftvm.editor;singleton:=true
-Bundle-Version: 4.5.0.qualifier
+Bundle-Version: 4.6.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.m2m.atl.emftvm.presentation.EmftvmEditorPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.eclipse.m2m.atl.emftvm.presentation
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit.ui;visibility:=reexport,
  org.eclipse.ui.ide;visibility:=reexport,
  org.eclipse.emf.ecore.edit;visibility:=reexport,
- org.eclipse.emf.validation;bundle-version="1.4.0",
+ org.eclipse.emf.validation,
  org.eclipse.m2m.atl.emftvm.trace.edit;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: org.eclipse.m2m.atl.emftvm.editor

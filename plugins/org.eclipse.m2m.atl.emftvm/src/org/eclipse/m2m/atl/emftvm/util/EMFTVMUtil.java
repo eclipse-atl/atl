@@ -2213,21 +2213,17 @@ public final class EMFTVMUtil {
 	 */
 	public static File getFile(final String path) {
 		try {
-			final WorkspaceUtil wsUtil = (WorkspaceUtil) Class.forName(WORKSPACE_UTIL_IMPL).newInstance();
+			final WorkspaceUtil wsUtil = (WorkspaceUtil) Class.forName(WORKSPACE_UTIL_IMPL).getDeclaredConstructor()
+					.newInstance();
 			final String wsPath = wsUtil.getWorkspaceLocation(path);
 			if (wsPath != null) {
 				return new File(wsPath);
 			}
-		} catch (final InstantiationException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException | ClassNotFoundException e) {
 			ATLLogger.log(Level.FINE, e.getMessage(), e);
-		} catch (final IllegalAccessException e) {
-			ATLLogger.log(Level.FINE, e.getMessage(), e);
-		} catch (final ClassNotFoundException e) {
-			ATLLogger.log(Level.FINE, e.getMessage(), e);
-		} catch (final SecurityException e) {
-			ATLLogger.log(Level.FINE, e.getMessage(), e);
-		} catch (final NoClassDefFoundError e) {
-			ATLLogger.log(Level.FINE, e.getMessage(), e);
+		} finally {
+
 		}
 		ATLLogger.info("Could not find workspace root; falling back to native java.io.File path resolution");
 		return new File(path);

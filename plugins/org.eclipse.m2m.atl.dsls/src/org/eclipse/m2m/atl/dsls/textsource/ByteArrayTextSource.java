@@ -16,19 +16,19 @@ import java.io.InputStream;
 
 /**
  * Text utility.
- * 
+ *
  * @author <a href="mailto:frederic.jouault@univ-nantes.fr">Frederic Jouault</a>
  */
 public class ByteArrayTextSource extends TextSource {
 
-	private byte[] bs;
-	
+	private final byte[] bs;
+
 	/**
 	 * Creates a new ByteArrayTextSource.
-	 * 
+	 *
 	 * @param bs the byte array
 	 */
-	public ByteArrayTextSource(byte[] bs) {
+	public ByteArrayTextSource(final byte[] bs) {
 		this.bs = bs;
 	}
 
@@ -37,6 +37,7 @@ public class ByteArrayTextSource extends TextSource {
 	 *
 	 * @see org.eclipse.m2m.atl.dsls.textsource.TextSource#openStream()
 	 */
+	@Override
 	public InputStream openStream() throws IOException {
 		return new ByteArrayInputStream(bs);
 	}

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.m2m.atl.core.ui;singleton:=true
-Bundle-Version: 4.5.0.qualifier
+Bundle-Version: 4.6.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Export-Package: org.eclipse.m2m.atl.core.ui,
@@ -23,5 +23,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2m.atl.adt.ui
 Bundle-Activator: org.eclipse.m2m.atl.core.ui.ATLCoreUIPlugin
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: org.eclipse.m2m.atl.core.ui
