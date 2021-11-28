@@ -55,6 +55,9 @@
 					<finalName>${project.groupId}-${unqualifiedVersion}.${buildId}</finalName>
 					<compress>true</compress>
 					<repositoryName>ATL ${unqualifiedVersion}.${buildId}</repositoryName>
+					<extraArtifactRepositoryProperties>
+						<p2.statsURI>https://download.eclipse.org/stats/</p2.statsURI>
+					</extraArtifactRepositoryProperties>
 				</configuration>
 			</plugin>
 			<plugin>
