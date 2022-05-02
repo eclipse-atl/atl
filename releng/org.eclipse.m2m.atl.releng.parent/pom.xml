@@ -339,7 +339,7 @@
 		</profile>
 
 		<profile>
-			<id>2021-03</id>
+			<id>2022-03</id>
 			<repositories>
 				<repository>
 					<id>releasetrain</id>
@@ -360,7 +360,7 @@
 		</profile>
 
 		<profile>
-			<id>2019-12</id>
+			<id>2021-03</id>
 			<repositories>
 				<repository>
 					<id>releasetrain</id>
