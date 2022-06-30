@@ -37,6 +37,7 @@ import org.eclipse.m2m.atl.common.ATLLogger;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
+import org.eclipse.m2m.atl.emftvm.Field;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.Operation;
@@ -864,6 +865,115 @@ public final class OCLOperations {
 							rule, name, EMFTVMUtil.toPrettyString(object, frame.getEnv())));
 				}
 			});
+		createOperation(true, "refGetValue", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE,
+				new String[][][]{{{"propname"}, Types.STRING_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						final ExecEnv env = frame.getEnv();
+						final String propname = (String) frame.getLocal(0, 0);
+						final Field field = env.findStaticField(EXEC_ENV, propname);
+						if (field != null) {
+							return field.getStaticValue(frame);
+						}
+						throw new VMException(frame,
+								String.format("Cannot find property %s::%s",
+										EMFTVMUtil.toPrettyString(EXEC_ENV, env), propname));
+					}
+				});
+		createOperation(false, "refGetValue", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE,
+				new String[][][]{{{"propname"}, Types.STRING_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						final ExecEnv env = (ExecEnv) frame.getLocal(0, 0);
+						final String propname = (String) frame.getLocal(0, 1);
+						final Field field = env.findStaticField(EXEC_ENV, propname);
+						if (field != null) {
+							return field.getStaticValue(frame);
+						}
+						throw new VMException(frame,
+								String.format("Cannot find property %s::%s",
+										EMFTVMUtil.toPrettyString(EXEC_ENV, env), propname));
+					}
+				});
+		createOperation(true, "refSetValue", Types.EXEC_ENV_TYPE, Types.EXEC_ENV_TYPE,
+				new String[][][]{{{"propname"}, Types.STRING_TYPE}, {{"value"}, Types.OCL_ANY_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						final ExecEnv env = frame.getEnv();
+						final String propname = (String) frame.getLocal(0, 0);
+						final Object value = frame.getLocal(0, 1);
+						final Field field = env.findStaticField(EXEC_ENV, propname);
+						if (field != null) {
+							field.setStaticValue(value);
+							return env;
+						}
+						throw new VMException(frame,
+								String.format("Cannot find property %s::%s",
+										EMFTVMUtil.toPrettyString(EXEC_ENV, env), propname));
+					}
+				});
+		createOperation(false, "refSetValue", Types.EXEC_ENV_TYPE, Types.EXEC_ENV_TYPE,
+				new String[][][] { { { "propname" }, Types.STRING_TYPE }, { { "value" }, Types.OCL_ANY_TYPE } },
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						final ExecEnv env = (ExecEnv) frame.getLocal(0, 0);
+						final String propname = (String) frame.getLocal(0, 1);
+						final Object value = frame.getLocal(0, 2);
+						final Field field = env.findStaticField(EXEC_ENV, propname);
+						if (field != null) {
+							field.setStaticValue(value);
+							return env;
+						}
+						throw new VMException(frame, String.format("Cannot find property %s::%s",
+								EMFTVMUtil.toPrettyString(EXEC_ENV, env), propname));
+					}
+				});
+		createOperation(true, "refUnsetValue", Types.EXEC_ENV_TYPE, Types.EXEC_ENV_TYPE,
+				new String[][][]{{{"propname"}, Types.STRING_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						final ExecEnv env = frame.getEnv();
+						final String propname = (String) frame.getLocal(0, 0);
+						final Field field = env.findStaticField(EXEC_ENV, propname);
+						if (field != null) {
+							field.clear();
+							return env;
+						}
+						throw new VMException(frame,
+								String.format("Cannot find property %s::%s",
+										EMFTVMUtil.toPrettyString(EXEC_ENV, env), propname));
+					}
+				});
+		createOperation(false, "refUnsetValue", Types.EXEC_ENV_TYPE, Types.EXEC_ENV_TYPE,
+				new String[][][]{{{"propname"}, Types.STRING_TYPE}},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						final ExecEnv env = (ExecEnv) frame.getLocal(0, 0);
+						final String propname = (String) frame.getLocal(0, 1);
+						final Field field = env.findStaticField(EXEC_ENV, propname);
+						if (field != null) {
+							field.clear();
+							return env;
+						}
+						throw new VMException(frame,
+								String.format("Cannot find property %s::%s",
+										EMFTVMUtil.toPrettyString(EXEC_ENV, env), propname));
+					}
+				});
+		createOperation(true, "getEnv", Types.EXEC_ENV_TYPE, Types.EXEC_ENV_TYPE,
+				new String[][][] {},
+				new NativeCodeBlock() {
+					@Override
+					public Object execute(final StackFrame frame) {
+						return frame.getEnv();
+					}
+				});
 		/////////////////////////////////////////////////////////////////////
 		// Class
 		/////////////////////////////////////////////////////////////////////

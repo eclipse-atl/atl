@@ -425,6 +425,28 @@ public class IntegrationTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=580300">Bug # 580300</a>.
+	 */
+	public void testBug580300() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel(EcorePackage.eINSTANCE.eResource());
+		final Model out = createTestModel(rs, "/test-data/Regression/Bug441027-out.xmi");
+		env.registerMetaModel("ECORE", metamodel);
+		env.registerInputModel("IN", metamodel);
+		env.registerOutputModel("OUT", out);
+		env.loadModule(createTestModuleResolver(), "Regression::Bug580300");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug580300-out.ecore");
+		assertEquals(refOut.getResource(), out.getResource());
+	}
+
+	/**
 	 * Tests the ATL metamodel API.
 	 */
 	public void testATLAPI() throws Exception {

@@ -1,0 +1,42 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module "Regression::Bug580300";
+
+create OUT : ECORE from IN : ECORE;
+
+helper def: diff2 : Integer = 0;
+
+-- This helper increments diff2 value
+-- CONTEXT: thisModule
+-- RETURN:  Integer
+helper def: incDiff2() : Integer =
+	thisModule.refSetValue('diff2', thisModule.diff2+1).refGetValue('diff2');
+
+rule EPackage {
+	from
+		s : ECORE!EPackage
+	to
+		t : ECORE!EPackage (
+			name <- s.name + 'Counter',
+			eClassifiers <- s.eClassifiers->select(c | c.oclIsKindOf(ECORE!EClass)),
+			eSubpackages <- s.eSubpackages
+		)
+}
+
+rule EClass {
+	from
+		s : ECORE!EClass
+	to
+		t : ECORE!EClass (
+			name <- thisModule.incDiff2().toString()
+		)
+}
+
+endpoint rule After() {
+	do {
+		thisModule.refUnsetValue('diff2');
+		thisModule.getEnv().debug('getEnv')
+			.findStaticField(EMFTVM!ExecEnv, 'diff2').debug('findField')
+			.getStaticValue().debug('getStaticValue');
+	}
+}
