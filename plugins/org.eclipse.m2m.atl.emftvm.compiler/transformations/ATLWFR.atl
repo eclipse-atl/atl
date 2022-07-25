@@ -379,6 +379,26 @@ helper context ATL!LocatedElement def: getRootComposite() : OclAny =
 		endif
 	endif;
 
+-- This helper returns the rule (container) of the contextual
+-- OclExpression, or OclUndefined if the OclExpression is not
+-- contained in a rule.
+-- CONTEXT:	ATL!LocatedElement
+-- RETURN:	OclAny
+helper context ATL!LocatedElement def: getRule() : OclAny =
+	let container : OclAny = self.refImmediateComposite()
+	in
+	if container.oclIsUndefined()
+	then
+		OclUndefined
+	else
+		if container.oclIsKindOf(ATL!Rule) 
+		then
+			container
+		else
+			container.getRule()
+		endif
+	endif;
+
 -- These helpers check for value equality of OclTypes.
 -- The base case evaluates to "false", and covers the case of
 -- comparing to OclUndefined.
@@ -938,5 +958,20 @@ nodefault rule NoOutPatternElementReferenceInInPattern {
 			severity <- #error,
 			location <- s.location,
 			description <- 'Cannot refer to target element \'' + s.referredVariable.varName + '\' in a \'from\' clause'
+		) 
+}
+
+nodefault rule NoSuperRuleVariableReference {
+	from
+		s : ATL!VariableExp (
+			not s.referredVariable.getRule().oclIsUndefined() and
+			not s.getRule().oclIsUndefined() and
+			s.referredVariable.getRule() <> s.getRule()
+		)
+	to
+		t : Problem!Problem (
+			severity <- #error,
+			location <- s.location,
+			description <- 'Cannot refer to \'' + s.referredVariable.varName + '\' from another rule'
 		) 
 }
