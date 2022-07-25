@@ -1,0 +1,28 @@
+-- @atlcompiler emftvm
+module "Regression::Bug580448";
+create OUT : OUTMM from IN : INMM;
+
+abstract rule Super {
+	from
+		a: INMM!A
+	using {
+		var: OUTMM!D = a.getD();		
+	}
+	to
+		b: OUTMM!B
+}
+
+rule Sub extends Super {
+	from
+		a: INMM!A(
+			a.isSpecialCase()
+		)
+	to
+		b: OUTMM!B(
+			dataType <- dataType
+		),
+		dataType: OUTMM!"Integer"
+	do {
+		b.d <- var;
+	}
+}
