@@ -143,6 +143,16 @@ public class CompilerTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=580448">Bug # 429745</a>:
+	 * EMFTVM compilation of some modules fails with unclear exception.
+	 */
+	public void testBug580448() {
+		final Model outModel = atlwfr(URI.createURI("test-data/Regression/Bug580448.atl", true));
+		final Resource pbs = outModel.getResource();
+		assertEquals(1, pbs.getContents().size());
+	}
+
+	/**
 	 * Tests detection of character set encoding by the compiler.
 	 * @throws CoreException
 	 * @throws IOException
