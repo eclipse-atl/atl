@@ -1,0 +1,2 @@
+-- @atlcompiler emftvm
+query "Regression::Bug581595" = Sequence{1, 2, 3}->first();

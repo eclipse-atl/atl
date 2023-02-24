@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011 Vrije Universiteit Brussel.
+ * Copyright (c) 2023 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,8 +54,8 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean contains(Object o) {
-			return (object == null ? o == null : object.equals(o)) || 
+		public boolean contains(final Object o) {
+			return (object == null ? o == null : object.equals(o)) ||
 					((Collection<E>)dataSource).contains(o);
 		}
 
@@ -62,9 +63,9 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Object o) {
-			return (object == null ? o == null : object.equals(o)) ? 1 : 0 + 
-					((LazyCollection<E>)dataSource).count(o);
+		public int count(final Object o) {
+			return ((object == null ? o == null : object.equals(o)) ? 1 : 0)
+					+ ((LazyCollection<E>) dataSource).count(o);
 		}
 
 		/**
@@ -114,7 +115,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean contains(Object o) {
+		public boolean contains(final Object o) {
 			return ((Collection<E>)dataSource).contains(o) || other.contains(o);
 		}
 
@@ -122,7 +123,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Object object) {
+		public int count(final Object object) {
 			return ((LazyCollection<E>)dataSource).count(object) + other.count(object);
 		}
 
@@ -154,7 +155,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 
 	/**
 	 * {@link LazyBag} that represents a range running from a first to last {@link Integer}.
-	 * 
+	 *
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static class IntegerRangeBag extends LazyBag<Integer> {
@@ -164,7 +165,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 
 		/**
 		 * Creates a new {@link IntegerRangeBag}.
-		 * 
+		 *
 		 * @param first
 		 *            the first object of the range to include
 		 * @param last
@@ -192,7 +193,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean contains(Object o) {
+		public boolean contains(final Object o) {
 			if (o instanceof Integer) {
 				final Integer obj = (Integer) o;
 				return (obj >= first && obj <= last);
@@ -204,7 +205,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Object object) {
+		public int count(final Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -238,7 +239,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 
 	/**
 	 * {@link LazyBag} that represents a range running from a first to last {@link Long}.
-	 * 
+	 *
 	 * @author <a href="mailto:dennis.wagelaar@vub.ac.be">Dennis Wagelaar</a>
 	 */
 	public static class LongRangeBag extends LazyBag<Long> {
@@ -248,7 +249,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 
 		/**
 		 * Creates a new {@link LongRangeBag}.
-		 * 
+		 *
 		 * @param first
 		 *            the first object of the range to include
 		 * @param last
@@ -276,7 +277,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public boolean contains(Object o) {
+		public boolean contains(final Object o) {
 			if (o instanceof Long) {
 				final Long obj = (Long) o;
 				return (obj >= first && obj <= last);
@@ -288,7 +289,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
-		public int count(Object object) {
+		public int count(final Object object) {
 			// All elements of a range are unique
 			return contains(object) ? 1 : 0;
 		}
@@ -343,7 +344,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 				sOcc = new HashMap<E, Integer>(s.occurrences);
 			} else {
 				sOcc = new HashMap<E, Integer>();
-				for (E e : s) {
+				for (final E e : s) {
 					if (sOcc.containsKey(e)) {
 						sOcc.put(e, sOcc.get(e) + 1);
 					} else {
@@ -356,6 +357,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public boolean hasNext() {
 			synchronized (cache) {
 				if (i < cache.size()) {
@@ -382,6 +384,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public E next() {
 			if (!nextSet) {
 				next = inner.next(); // support null values for next
@@ -396,7 +399,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 			updateCache(next);
 			return next;
 		}
-		
+
 	}
 
 	/**
@@ -410,7 +413,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * Creates a {@link LazyBag} around <code>dataSource</code>.
 	 * @param dataSource the underlying collection
 	 */
-	public LazyBag(Iterable<E> dataSource) {
+	public LazyBag(final Iterable<E> dataSource) {
 		super(dataSource);
 	}
 
@@ -436,25 +439,25 @@ public class LazyBag<E> extends LazyCollection<E> {
 	@Override
 	public boolean equals(final Object o) {
 		if (o == this) {
-		    return true;
+			return true;
 		}
 		if (!(o instanceof LazyCollection<?>)) {
-		    return false;
+			return false;
 		}
-        try {
-        	final LazyCollection<E> other = (LazyCollection<E>)o;
-        	final LazySet<E> keys = asSet().union(other.asSet());
-            for (E e : keys) {
-            	if (count(e) != other.count(e)) {
-            		return false;
-            	}
-            }
-            return true;
-        } catch (ClassCastException unused) {
-            return false;
-        } catch (NullPointerException unused) {
-            return false;
-        }
+		try {
+			final LazyCollection<E> other = (LazyCollection<E>)o;
+			final LazySet<E> keys = asSet().union(other.asSet());
+			for (final E e : keys) {
+				if (count(e) != other.count(e)) {
+					return false;
+				}
+			}
+			return true;
+		} catch (final ClassCastException unused) {
+			return false;
+		} catch (final NullPointerException unused) {
+			return false;
+		}
 	}
 
 	/**
@@ -463,10 +466,10 @@ public class LazyBag<E> extends LazyCollection<E> {
 	@Override
 	public int hashCode() {
 		int hashCode = 0;
-		for (E obj : this) {
-            if (obj != null) {
-                hashCode += obj.hashCode();
-            }
+		for (final E obj : this) {
+			if (obj != null) {
+				hashCode += obj.hashCode();
+			}
 		}
 		return hashCode;
 	}
@@ -474,6 +477,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String asString(final ExecEnv env) {
 		return appendElements(new StringBuffer("Bag{"), env).append('}').toString();
 	}
@@ -547,6 +551,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * @param object the object to include
 	 * @return The bag containing all elements of self plus <code>object</code>.
 	 */
+	@Override
 	public LazyBag<E> including(final E object) {
 		return new IncludingBag<E>(object, this);
 	}
@@ -556,7 +561,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param object
 	 *            the object to include
 	 * @param index
@@ -573,7 +578,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param coll
 	 *            the collection to include
 	 * @return The collection containing all elements of self plus <code>coll</code>.
@@ -588,7 +593,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param coll
 	 *            the collection to include
 	 * @param index
@@ -606,11 +611,12 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param object
 	 *            the object to exclude
 	 * @return The bag containing all elements of self apart from all occurrences of <code>object</code>.
 	 */
+	@Override
 	public LazyBag<E> excluding(final Object object) {
 		return new LazyBag<E>(this) {
 			@Override
@@ -618,7 +624,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 				if (dataSource == null) {
 					return Collections.unmodifiableCollection(cache).iterator();
 				}
-				return new ExcludingIterator(object); 
+				return new ExcludingIterator(object);
 			}
 		};
 	}
@@ -628,7 +634,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param coll
 	 *            the collection to exclude
 	 * @return The collection containing all elements of self minus <code>coll</code>.
@@ -652,7 +658,7 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @return <b>if</b> self.type.elementType.oclIsKindOf(CollectionType) <b>then</b><br>
 	 *         &nbsp;&nbsp;self-&gt;iterate(c; acc : Bag() = Bag{} |<br>
 	 *         &nbsp;&nbsp;&nbsp;&nbsp;acc-&gt;union(c-&gt;asBag() ) )<br>
@@ -684,13 +690,14 @@ public class LazyBag<E> extends LazyCollection<E> {
 	 * <p>
 	 * <i>Lazy operation.</i>
 	 * </p>
-	 * 
+	 *
 	 * @param first
 	 *            the first object of the range to include
 	 * @param last
 	 *            the last object of the range to include
 	 * @return The bag containing all elements of self plus the bag of <code>first</code> running to <code>last</code>
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public LazyBag<E> includingRange(final E first, final E last) {
 		if (first instanceof Integer && last instanceof Integer) {
@@ -785,12 +792,12 @@ public class LazyBag<E> extends LazyCollection<E> {
 					final Iterator<Comparable<Object>> sortingKeys = new CollectIterator<Comparable<Object>>(inner, body, parentFrame);
 					final Object[] innerCopy = inner.toArray();
 					final Map<Object, Comparable<Object>> elementsToKeys = new HashMap<Object, Comparable<Object>>(innerCopy.length);
-					for (Object o : innerCopy) {
+					for (final Object o : innerCopy) {
 						elementsToKeys.put(o, sortingKeys.next());
 					}
 					assert !sortingKeys.hasNext();
 					Arrays.sort(innerCopy, new Comparator<Object>() {
-						public int compare(Object o1, Object o2) {
+						public int compare(final Object o1, final Object o2) {
 							return elementsToKeys.get(o1).compareTo(elementsToKeys.get(o2));
 						}
 					});

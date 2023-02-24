@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
+ * Copyright (c) 2023 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,12 +19,16 @@ import org.eclipse.m2m.atl.emftvm.tests.performance.ATLtoEMFTVMPerformanceTest;
 import org.eclipse.m2m.atl.emftvm.tests.performance.EcoreCopyPerformanceTest;
 import org.eclipse.m2m.atl.emftvm.tests.pojo.PojoModelTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.ExecEnvPoolTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.LazyBagNoCacheTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyBagOnCollectionTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyBagTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.LazyListNoCacheTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyListOnCollectionTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyListOnListTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyListTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.LazyOrderedSetNoCacheTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazyOrderedSetTest;
+import org.eclipse.m2m.atl.emftvm.util.tests.LazySetNoCacheTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazySetOnSetTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.LazySetTest;
 import org.eclipse.m2m.atl.emftvm.util.tests.OCLOperationsTest;
@@ -48,7 +53,7 @@ public class EmftvmAllTests extends TestSuite {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		TestRunner.run(suite());
 	}
 
@@ -58,16 +63,20 @@ public class EmftvmAllTests extends TestSuite {
 	 * @generated NOT
 	 */
 	public static Test suite() {
-		TestSuite suite = new EmftvmAllTests("Emftvm Tests");
+		final TestSuite suite = new EmftvmAllTests("Emftvm Tests");
 		suite.addTest(EmftvmTests.suite());
 		suite.addTestSuite(LazyListTest.class);
+		suite.addTestSuite(LazyListNoCacheTest.class);
 		suite.addTestSuite(LazyListOnCollectionTest.class);
 		suite.addTestSuite(LazyListOnListTest.class);
 		suite.addTestSuite(LazyBagTest.class);
+		suite.addTestSuite(LazyBagNoCacheTest.class);
 		suite.addTestSuite(LazyBagOnCollectionTest.class);
 		suite.addTestSuite(LazySetTest.class);
+		suite.addTestSuite(LazySetNoCacheTest.class);
 		suite.addTestSuite(LazySetOnSetTest.class);
 		suite.addTestSuite(LazyOrderedSetTest.class);
+		suite.addTestSuite(LazyOrderedSetNoCacheTest.class);
 		suite.addTestSuite(ExecEnvPoolTest.class);
 		suite.addTestSuite(OCLOperationsTest.class);
 		suite.addTestSuite(StackFrameTest.class);
@@ -86,7 +95,7 @@ public class EmftvmAllTests extends TestSuite {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EmftvmAllTests(String name) {
+	public EmftvmAllTests(final String name) {
 		super(name);
 	}
 

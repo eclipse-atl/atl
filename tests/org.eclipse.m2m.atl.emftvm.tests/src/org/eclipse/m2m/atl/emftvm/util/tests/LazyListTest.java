@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Dennis Wagelaar.
+ * Copyright (c) 2012, 2023 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,7 @@ import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 
 /**
  * Tests {@link LazyList}.
- * 
+ *
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class LazyListTest extends LazyCollectionTest {
@@ -80,7 +80,7 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			list.add(0, "Four");
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 	}
@@ -93,7 +93,7 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			list.addAll(0, getDataSource());
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 	}
@@ -106,7 +106,7 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			list.move(0, 1);
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 	}
@@ -119,7 +119,7 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			list.move(1, list.first());
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 	}
@@ -143,15 +143,15 @@ public class LazyListTest extends LazyCollectionTest {
 		assertEquals(getDataSource().get(0), list.at(1));
 		assertEquals(getDataSource().get(getDataSource().size() - 1), list.at(getDataSource().size()));
 		try {
-			String at = list.at(0);
+			final String at = list.at(0);
 			fail("Expected IndexOutOfBoundsException, but got \"" + at + "\"");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 		try {
-			String at = list.at(getDataSource().size() + 1);
+			final String at = list.at(getDataSource().size() + 1);
 			fail("Expected IndexOutOfBoundsException, but got \"" + at + "\"");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 	}
@@ -214,9 +214,9 @@ public class LazyListTest extends LazyCollectionTest {
 		assertEquals(getDataSource().get(0), list.first());
 
 		try {
-			String first = new LazyList<String>().first();
+			final String first = new LazyList<String>().first();
 			fail("Expected NoSuchElementException, but got \"" + first + "\"");
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			// expected
 		}
 	}
@@ -248,15 +248,15 @@ public class LazyListTest extends LazyCollectionTest {
 		assertEquals(getDataSource().get(0), list.get(0));
 		assertEquals(getDataSource().get(getDataSource().size() - 1), list.get(getDataSource().size() - 1));
 		try {
-			String at = list.get(-1);
+			final String at = list.get(-1);
 			fail("Expected IndexOutOfBoundsException, but got \"" + at + "\"");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 		try {
-			String at = list.get(getDataSource().size());
+			final String at = list.get(getDataSource().size());
 			fail("Expected IndexOutOfBoundsException, but got \"" + at + "\"");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 	}
@@ -303,13 +303,13 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			final int index = list.indexOf2("NotContained");
 			fail("Expected IndexOutOfBoundsException, but got " + index);
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 		try {
 			final int index = list.indexOf2(null);
 			fail("Expected IndexOutOfBoundsException, but got " + index);
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 	}
@@ -346,13 +346,13 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			list.insertAt(0, "Four");
 			fail("Expected IndexOutOfBoundsException");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 		try {
 			list.insertAt(list.size() + 2, "Four").last();
 			fail("Expected IndexOutOfBoundsException");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 	}
@@ -365,9 +365,9 @@ public class LazyListTest extends LazyCollectionTest {
 		assertSame(getDataSource().get(getDataSource().size() - 1), list.last());
 
 		try {
-			String last = new LazyList<String>().last();
+			final String last = new LazyList<String>().last();
 			fail("Expected NoSuchElementException, but got \"" + last + "\"");
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			// expected
 		}
 	}
@@ -395,13 +395,13 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			final int index = list.lastIndexOf2("NotContained");
 			fail("Expected IndexOutOfBoundsException, but got " + index);
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 		try {
 			final int index = list.lastIndexOf2(null);
 			fail("Expected IndexOutOfBoundsException, but got " + index);
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 	}
@@ -422,25 +422,25 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			listIt.remove();
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 		try {
 			listIt.add("Four");
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 		try {
 			listIt.set("Four");
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 		try {
 			listIt.next();
 			fail("Expected NoSuchElementException");
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			// expected
 		}
 		assertEquals(list.size(), listIt.nextIndex());
@@ -453,7 +453,7 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			listIt.previous();
 			fail("Expected NoSuchElementException");
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			// expected
 		}
 		assertEquals(-1, listIt.previousIndex());
@@ -466,16 +466,16 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			getTestLazyCollection().listIterator(-1);
 			fail("Expected IndexOutOfBoundsException");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 		try {
 			final LazyList<String> list = getTestLazyCollection();
 			list.listIterator(list.size() + 1);
 			fail("Expected IndexOutOfBoundsException");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			// expected
 		}
 
@@ -491,7 +491,7 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			listIt.previous();
 			fail("Expected NoSuchElementException");
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			// expected
 		}
 		assertEquals(-1, listIt.previousIndex());
@@ -504,25 +504,25 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			listIt.remove();
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 		try {
 			listIt.add("Four");
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 		try {
 			listIt.set("Four");
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 		try {
 			listIt.next();
 			fail("Expected NoSuchElementException");
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			// expected
 		}
 		assertEquals(list.size(), listIt.nextIndex());
@@ -595,7 +595,7 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			list.remove(1);
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 	}
@@ -607,7 +607,7 @@ public class LazyListTest extends LazyCollectionTest {
 		final LazyList<String> list = getTestLazyCollection();
 		final LazyList<String> reverse = list.reverse();
 		final ListIterator<String> listIt = list.listIterator(list.size());
-		for (String s : reverse) {
+		for (final String s : reverse) {
 			assertTrue(listIt.hasPrevious());
 			assertSame(listIt.previous(), s);
 		}
@@ -633,7 +633,7 @@ public class LazyListTest extends LazyCollectionTest {
 		});
 		assertEquals(list.count(list.first()), selected.size());
 		assertTrue(selected.contains(list.first()));
-		for (String s : selected) {
+		for (final String s : selected) {
 			assertEquals(list.first(), s);
 		}
 
@@ -672,7 +672,7 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			list.set(0, "Four");
 			fail("Expected UnsupportedOperationException");
-		} catch (UnsupportedOperationException e) {
+		} catch (final UnsupportedOperationException e) {
 			// expected
 		}
 	}
@@ -689,21 +689,21 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			list.subList(-1, list.size());
 			fail("Expected IndexOutOfBoundsException");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 		try {
 			list.subList(list.size(), list.size() - 1);
 			fail("Expected IndexOutOfBoundsException");
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			// expected
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 		try {
 			list.subList(0, list.size() + 1).get(list.size());
 			fail("Expected IndexOutOfBoundsException");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 	}
@@ -720,19 +720,19 @@ public class LazyListTest extends LazyCollectionTest {
 		try {
 			list.subSequence(0, list.size());
 			fail("Expected IndexOutOfBoundsException");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 		try {
 			list.subSequence(list.size() + 1, list.size() - 1);
 			fail("Expected IndexOutOfBoundsException");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 		try {
 			list.subSequence(1, list.size() + 1).at(list.size() + 1);
 			fail("Expected IndexOutOfBoundsException");
-		} catch (IndexOutOfBoundsException e) {
+		} catch (final IndexOutOfBoundsException e) {
 			// expected
 		}
 	}
@@ -745,11 +745,11 @@ public class LazyListTest extends LazyCollectionTest {
 		final LazyList<String> union = list.union(list);
 		assertEquals(list.size() * 2, union.size());
 		final Iterator<String> unionIt = union.iterator();
-		for (String s : list) {
+		for (final String s : list) {
 			assertTrue(unionIt.hasNext());
 			assertSame(s, unionIt.next());
 		}
-		for (String s : list) {
+		for (final String s : list) {
 			assertTrue(unionIt.hasNext());
 			assertSame(s, unionIt.next());
 		}
@@ -778,10 +778,10 @@ public class LazyListTest extends LazyCollectionTest {
 
 		});
 		assertEquals(expected, sortedList);
-		
+
 		final List<Object> data = new ArrayList<Object>();
 		for (int i = 1; i < 100; i++) {
-			Iterator<EObject> contents = EmftvmPackage.eINSTANCE.eResource().getAllContents();
+			final Iterator<EObject> contents = EmftvmPackage.eINSTANCE.eResource().getAllContents();
 			while (contents.hasNext()) {
 				data.add(contents.next());
 			}
@@ -802,8 +802,8 @@ public class LazyListTest extends LazyCollectionTest {
 		};
 		final long refStart2 = System.nanoTime();
 		Collections.sort(expected2, new Comparator<Object>() {
-			public int compare(Object o1, Object o2) {
-				return ((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o1))).compareTo( 
+			public int compare(final Object o1, final Object o2) {
+				return ((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o1))).compareTo(
 						((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o2))));
 			}
 		});
@@ -812,7 +812,7 @@ public class LazyListTest extends LazyCollectionTest {
 		sortedList2.last(); // force eval
 		final long lazyEnd2 = System.nanoTime();
 		assertEquals(expected2, sortedList2);
-		ATLLogger.info(String.format("Collections.sort() : %d ms, LazyList.sortedBy() : %d ms", (refEnd2 - refStart2) / 1000000L, (lazyEnd2 - refEnd2) / 1000000L)); 
+		ATLLogger.info(String.format("Collections.sort() : %d ms, LazyList.sortedBy() : %d ms", (refEnd2 - refStart2) / 1000000L, (lazyEnd2 - refEnd2) / 1000000L));
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2021 Dennis Wagelaar.
+ * Copyright (c) 2013, 2021, 2023 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -444,6 +444,23 @@ public class IntegrationTest extends EMFTVMTest {
 		final ResourceSet refRs = new ResourceSetImpl();
 		final Model refOut = loadTestModel(refRs, "/test-data/Regression/Bug580300-out.ecore");
 		assertEquals(refOut.getResource(), out.getResource());
+	}
+
+	/**
+	 * Tests regression of
+	 * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=580300">Bug #
+	 * 580300</a>.
+	 */
+	public void testBug581595() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.loadModule(createTestModuleResolver(), "Regression::Bug581595");
+		td.finishLoading();
+		td.finishLoading();
+		final Object result = env.run(td);
+		td.finish();
+
+		assertEquals(1, result);
 	}
 
 	/**

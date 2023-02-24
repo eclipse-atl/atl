@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
- * Copyright (c) 2012-2021 Dennis Wagelaar.
+ * Copyright (c) 2012-2023 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,6 +62,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		protected void createCache() {
 			//no caching
 		}
+
 	}
 
 	/**
@@ -310,6 +311,14 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 * {@inheritDoc}
 		 */
 		@Override
+		public E first() {
+			return ((LazyList<E>) dataSource).isEmpty() ? object : ((LazyList<E>) dataSource).first();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
 		public E last() {
 			return object;
 		}
@@ -366,8 +375,8 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 */
 		@Override
 		public int count(final Object o) {
-			return (object == null ? o == null : object.equals(o)) ? 1 : 0 +
-					((LazyCollection<E>)dataSource).count(o);
+			return ((object == null ? o == null : object.equals(o)) ? 1 : 0)
+					+ ((LazyCollection<E>) dataSource).count(o);
 		}
 
 		/**
@@ -1646,7 +1655,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * {@inheritDoc}
 	 */
 	public int indexOf(final Object o) {
-		final int index = ((List<E>)cache).indexOf(o);
+		final int index = ((List<E>) cache).indexOf(o);
 		if (index > -1 || dataSource == null) { // cache complete
 			return index;
 		}
@@ -1852,7 +1861,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 */
 	public E first() {
 		if (cache.size() > 0) {
-			return ((List<E>)cache).get(0);
+			return ((List<E>) cache).get(0);
 		}
 		return iterator().next();
 	}
