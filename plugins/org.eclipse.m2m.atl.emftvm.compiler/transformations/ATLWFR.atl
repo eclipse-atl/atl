@@ -384,7 +384,7 @@ helper context ATL!LocatedElement def: getRootComposite() : OclAny =
 -- contained in a rule.
 -- CONTEXT:	ATL!LocatedElement
 -- RETURN:	OclAny
-helper context ATL!LocatedElement def: getRule() : OclAny =
+helper context ATL!LocatedElement def: "rule" : OclAny =
 	let container : OclAny = self.refImmediateComposite()
 	in
 	if container.oclIsUndefined()
@@ -395,7 +395,7 @@ helper context ATL!LocatedElement def: getRule() : OclAny =
 		then
 			container
 		else
-			container.getRule()
+			container."rule"
 		endif
 	endif;
 
@@ -964,9 +964,9 @@ nodefault rule NoOutPatternElementReferenceInInPattern {
 nodefault rule NoSuperRuleVariableReference {
 	from
 		s : ATL!VariableExp (
-			not s.referredVariable.getRule().oclIsUndefined() and
-			not s.getRule().oclIsUndefined() and
-			s.referredVariable.getRule() <> s.getRule()
+			not s.referredVariable."rule".oclIsUndefined() and
+			not s."rule".oclIsUndefined() and
+			s.referredVariable."rule" <> s."rule"
 		)
 	to
 		t : Problem!Problem (
