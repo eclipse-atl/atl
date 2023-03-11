@@ -69,10 +69,26 @@ public class CompilerTest extends EMFTVMTest {
 	public void testBindingStat() {
 		final Model outModel = compile(URI.createURI("test-data/BindingStatTest.atl", true));
 		assertEquals(null, validate(outModel));
+
+		final Model refModel = loadTestModel(new ResourceSetImpl(), "/test-data/BindingStatTest.emftvm");
+		assertEquals(refModel.getResource(), outModel.getResource());
 	}
 
 	/**
-	 * Tests regression of <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=405673">Bug # 405673</a>.
+	 * Tests the compilation output for "SearchPlanTest.atl".
+	 */
+	public void testSearchPlanTest() {
+		final Model outModel = compile(URI.createURI("test-data/SearchPlanTest.atl", true));
+		assertEquals(null, validate(outModel));
+
+		final Model refModel = loadTestModel(new ResourceSetImpl(), "/test-data/SearchPlanTest.emftvm");
+		assertEquals(refModel.getResource(), outModel.getResource());
+	}
+
+	/**
+	 * Tests regression of
+	 * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=405673">Bug #
+	 * 405673</a>.
 	 */
 	public void testBug405673() {
 		final Model outModel = compile(URI.createURI("test-data/Regression/Bug405673.atl", true));
@@ -216,8 +232,7 @@ public class CompilerTest extends EMFTVMTest {
 	/**
 	 * Tests the compilation of a compiler module.
 	 *
-	 * @param compilerModule
-	 *            the compiler module name
+	 * @param compilerModule the compiler module name
 	 */
 	protected void runCompilerModuleTest(final String compilerModule) {
 		final Model outModel = compile(URI

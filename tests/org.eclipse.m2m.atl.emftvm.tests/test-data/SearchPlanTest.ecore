@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="SearchPlanTest" nsURI="SearchPlanTest" nsPrefix="SearchPlanTest">
+  <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData"/>
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel"/>
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassA"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassB"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractClassC" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InterfaceD" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="DataTypeE" instanceClassName="java.lang.String"/>
+  <eSubpackages name="SubPackage1" nsURI="SubPackage1" nsPrefix="SubPackage1">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData1"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel1"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore1"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ClassA1"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ClassB1"/>
+    <eClassifiers xsi:type="ecore:EClass" name="AbstractClassC1" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="InterfaceD1" abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="DataTypeE1" instanceClassName="java.lang.String"/>
+  </eSubpackages>
+  <eSubpackages name="SubPackage2" nsURI="SubPackage2" nsPrefix="SubPackage2">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData2"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel2"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore2"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ClassA2"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ClassB2"/>
+    <eClassifiers xsi:type="ecore:EClass" name="AbstractClassC2" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="InterfaceD2" abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="DataTypeE2" instanceClassName="java.lang.String"/>
+  </eSubpackages>
+  <eSubpackages name="SubPackage3" nsURI="SubPackage2" nsPrefix="SubPackage2">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData3"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel3"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore3"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ClassA3"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ClassB3"/>
+    <eClassifiers xsi:type="ecore:EClass" name="AbstractClassC3" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="InterfaceD3" abstract="true" interface="true"/>
+    <eClassifiers xsi:type="ecore:EDataType" name="DataTypeE3" instanceClassName="java.lang.String"/>
+  </eSubpackages>
+</ecore:EPackage>

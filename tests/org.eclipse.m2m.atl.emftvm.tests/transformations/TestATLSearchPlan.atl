@@ -1,0 +1,84 @@
+-- @atlcompiler emftvm
+-- @path ATL=/org.eclipse.m2m.atl.common/model/ATL.ecore
+query TestATLSearchPlan = ('canBindWith for all OclExpressions:\n\n' +
+	ATL!OclExpression.allInstances()
+	->iterate(exp; acc: String = '' |
+		let conj : Sequence(ATL!OclExpression) = exp.asConjunction in
+		let conjStr : String =  conj->collect(ce | 
+			Tuple{element=ce, location=ce.location, canBindWith=ce.canBindWith}
+		).toString()
+		in
+		if acc = '' then
+			conjStr
+		else
+			acc + '\n' + conjStr
+	    endif
+	) +
+	'\n\nbindings for all InPatternElements:\n\n' +
+	ATL!InPatternElement.allInstances()
+	->iterate(ipe; acc: String = '' |
+		let bindings : Sequence(ATL!OclExpression) = ipe.bindings in
+		let bindingStr : String = Tuple{element=ipe.qualifiedName, bindings=bindings->collect(binding |
+			Tuple{b=binding, loc=binding.location, ref=binding.references
+				->reject(r | r = binding.canBindWith)
+				->collect(r | r.referredVariable.qualifiedName + '@' + r.location)
+			}
+		)}.toString()
+		in
+		if acc = '' then
+			bindingStr
+		else
+			acc + '\n' + bindingStr
+	    endif
+	) +
+	'\n\nisBinding for all OclExpressions:\n\n' +
+	ATL!OclExpression.allInstances()
+	->iterate(exp; acc: String = '' |
+		let expStr : String =  Tuple{
+			element=exp, 
+			location=exp.location, 
+			isBinding=exp.isBinding,
+			partOfBinding=exp.partOfBinding,
+			partOfBindingFor=exp.partOfBindingFor.qualifiedName,
+			containsBinding=exp.containsBinding,
+			_firstNonBindingExp=exp.firstNonBindingExp
+		}.toString()
+		in
+		if acc = '' then
+			expStr
+		else
+			acc + '\n' + expStr
+	    endif
+	) +
+	'\n\nFirst non-binding filter expression for all MatchedRules with filters:\n\n' +
+	ATL!MatchedRule.allInstances()->reject(r | r.inPattern.filter.oclIsUndefined())
+	->iterate(r; acc: String = '' |
+		let rStr : String =  Tuple{
+			"rule"=r, 
+			location=r.location, 
+			firstNonBindingExp=
+				let nbe : ATL!OclExpression = r.inPattern.filter.firstNonBindingExp in
+				if nbe.oclIsUndefined() then
+					'OclUndefined'
+				else
+					nbe.toString() + '@' + nbe.location
+				endif
+		}.toString()
+		in
+		if acc = '' then
+			rStr
+		else
+			acc + '\n' + rStr
+	    endif
+	)).debug();
+
+uses ATLSearchPlan;
+
+helper context OclAny def : qualifiedName : String =
+	'OclUndefined';
+
+helper context ATL!VariableDeclaration def : qualifiedName : String =
+	self.varName;
+
+helper context ATL!InPatternElement def : qualifiedName : String =
+	self.inPattern."rule".name + '::' + self.varName;

@@ -10,7 +10,7 @@
     <mapAttribute key="Inout Models Output Locations"/>
     <mapAttribute key="Input Model Options"/>
     <mapAttribute key="Input Models">
-        <mapEntry key="IN" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/RefiningModeTest.atl"/>
+        <mapEntry key="IN" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/SearchPlanTest.atl"/>
     </mapAttribute>
     <mapAttribute key="Metamodel Options">
         <mapEntry key="ATL" value=""/>
@@ -18,7 +18,7 @@
     <mapAttribute key="Metamodels">
         <mapEntry key="ATL" value="http://www.eclipse.org/gmt/2005/ATL"/>
         <mapEntry key="EMFTVM" value="http://www.eclipse.org/m2m/atl/2011/EMFTVM"/>
-        <mapEntry key="Problem" value="platform:/plugin/org.eclipse.m2m.atl.common/org/eclipse/m2m/atl/common/resources/Problem.ecore"/>
+        <mapEntry key="Problem" value="platform:/resource/org.eclipse.m2m.atl.common/model/Problem.ecore"/>
     </mapAttribute>
     <stringAttribute key="Module Name" value="ATLtoEMFTVM"/>
     <stringAttribute key="Module Path" value="/org.eclipse.m2m.atl.emftvm.compiler/transformations/"/>
@@ -27,8 +27,8 @@
         <mapEntry key="PBS" value="derivedFile"/>
     </mapAttribute>
     <mapAttribute key="Output Models">
-        <mapEntry key="OUT" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/RefiningModeTest.emftvm"/>
-        <mapEntry key="PBS" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/RefiningModeTest-problems.xmi"/>
+        <mapEntry key="OUT" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/SearchPlanTest.emftvm"/>
+        <mapEntry key="PBS" value="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/SearchPlanTest-problems.xmi"/>
     </mapAttribute>
     <listAttribute key="Superimpose">
         <listEntry value="//org.eclipse.m2m.atl.emftvm.compiler/transformations/OCLtoEMFTVM.asm"/>

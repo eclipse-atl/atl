@@ -1,0 +1,151 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module SearchPlanTest;
+
+create OUT : ECORE from IN : ECORE;
+
+rule PackageClass {
+	from
+		p : ECORE!EPackage,
+		c : ECORE!EClass (
+			p.eClassifiers->select(e | e.oclIsKindOf(ECORE!EClass) and not e."abstract")->includes(c)
+			and
+			c.ePackage = p
+			and
+			p = c.ePackage
+			and
+			c = c
+		)
+	to
+		t : ECORE!EPackage (
+			name <- p.name + '_' + c.name,
+			eClassifiers <- Sequence{thisModule.Class(c)}
+		)
+}
+
+rule PackageAbstractClass {
+	from
+		p : ECORE!EPackage,
+		ac : ECORE!EClass (
+			ac.ePackage = p
+			and
+			p = ac.ePackage
+			and
+			ac."abstract"
+		)
+	to
+		t : ECORE!EPackage (
+			name <- p.name + '_' + ac.name,
+			eClassifiers <- Sequence{thisModule.Class(ac)}
+		)
+}
+
+rule PackageDataType {
+	from
+		p : ECORE!EPackage,
+		d : ECORE!EDataType (
+			d.ePackage = p
+			and
+			d.instanceClassName <> ''
+		)
+	to
+		t : ECORE!EPackage (
+			name <- p.name + '_' + d.name,
+			eClassifiers <- Sequence{thisModule.DataType(d)}
+		)
+}
+
+rule PackageAnnotation {
+	from
+		p : ECORE!EPackage,
+		a : ECORE!EAnnotation (
+			p.eAnnotations->includes(a)
+		)
+	to
+		t : ECORE!EPackage (
+			name <- p.name + '_' + a.source,
+			eAnnotations <- Sequence{thisModule.Annotation(a)}
+		)
+}
+
+nodefault rule PackageAnnotation3 {
+	from
+		p : ECORE!EPackage,
+		a1 : ECORE!EAnnotation,
+		a2 : ECORE!EAnnotation,
+		a3 : ECORE!EAnnotation (
+			p.eAnnotations->includes(a1)
+			and
+			p.eAnnotations->includes(a2)
+			and
+			p.eAnnotations->includes(a3)
+		)
+	to
+		t : ECORE!EPackage (
+			name <- p.name + '_' + a1.source + '_' + a2.source + '_' + a3.source,
+			eAnnotations <- Sequence{
+				thisModule.Annotation(a1),
+				thisModule.Annotation(a2),
+				thisModule.Annotation(a3)
+			}
+		)
+}
+
+rule PackageAnnotation3plus {
+	from
+		p : ECORE!EPackage,
+		a1 : ECORE!EAnnotation,
+		a2 : ECORE!EAnnotation,
+		a3 : ECORE!EAnnotation (
+			a1 <> a3
+			and
+			p.eAnnotations->includes(a1)
+			and
+			a1 <> a2
+			and
+			p.eAnnotations->includes(a2)
+			and
+			p.eAnnotations->includes(a3)
+			and
+			a2 <> a3
+		)
+	to
+		t : ECORE!EPackage (
+			name <- p.name + '_' + a1.source + '_' + a2.source + '_' + a3.source,
+			eAnnotations <- Sequence{
+				thisModule.Annotation(a1),
+				thisModule.Annotation(a2),
+				thisModule.Annotation(a3)
+			}
+		)
+}
+
+unique lazy rule Class {
+	from
+		s : ECORE!EClass
+	to
+		t : ECORE!EClass (
+			"abstract" <- s."abstract",
+			interface <- s.interface,
+			name <- s.name
+		)
+}
+
+unique lazy rule DataType {
+	from
+		s : ECORE!EDataType
+	to
+		t : ECORE!EDataType (
+			name <- s.name,
+			instanceClassName <- s.instanceClassName
+		)
+}
+
+lazy rule Annotation {
+	from
+		s : ECORE!EAnnotation
+	to
+		t : ECORE!EAnnotation (
+			source <- s.source
+		)
+}

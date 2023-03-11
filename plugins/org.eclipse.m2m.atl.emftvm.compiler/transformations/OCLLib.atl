@@ -1,0 +1,75 @@
+-- @atlcompiler emftvm
+-- @path ATL=/org.eclipse.m2m.atl.common/model/ATL.ecore
+-- OCL helpers
+library OCLLib;
+
+--- Returns 'true' if self is considered static, 'false' otherwise.
+helper context ATL!OclFeatureDefinition def : isStatic : String =
+	self.context_.oclIsUndefined();
+
+--- Returns 'true' if self is considered static, 'false' otherwise.
+helper context ATL!OclFeature def : isStatic : String =
+	self.definition.isStatic;
+
+--- Returns 'true' if self is considered static, 'false' otherwise.
+helper context ATL!PropertyCallExp def : isStatic : Boolean =
+	if self.source.oclIsKindOf(ATL!VariableExp) then
+		self.source.referredVariable.varName = 'thisModule'
+	else self.source.oclIsUndefined() endif;
+
+--- Returns self if it refers to an InPatternElement, or OclUndefined
+helper context OclAny def : inPatternElement : ATL!InPatternElement =
+	OclUndefined;
+
+--- Returns the InPatternElement that self can use as an InputRuleElement.binding, or OclUndefined
+helper context OclAny def : canBindWith : ATL!InPatternElement =
+	OclUndefined;
+
+--- Returns the sub-expression of this OclExpression that should be evaluated for the InputRuleElement.binding, or self
+helper context OclAny def : bindingSubExp : ATL!OclExpression =
+	self;
+
+--- Returns the InputRuleElement for which this OCL expression is part of its binding, or OclUndefined.
+helper context OclAny def : partOfBindingFor : ATL!InPatternElement =
+	OclUndefined;
+
+--- Returns 'true' if this OCL expression is part of an InputRuleElement binding.
+helper context OclAny def : partOfBinding : Boolean =
+	not self.partOfBindingFor.oclIsUndefined();
+
+--- Returns 'true' if this OCL expression contains an InputRuleElement binding.
+helper context OclAny def : containsBinding : Boolean =
+	false;
+
+--- Returns 'true' if this OCL expression is part of or contains an InputRuleElement binding.
+helper context OclAny def : isBinding : Boolean =
+	self.partOfBinding or self.containsBinding;
+
+--- Returns the first contained OclExpression that is not an InputRuleElement binding.
+helper context ATL!OclExpression def : firstNonBindingExp : ATL!OclExpression =
+	if self.partOfBinding then
+		OclUndefined
+	else
+		self
+	endif;
+
+--- Returns the first contained OclExpression that is not an InputRuleElement binding.
+helper context ATL!OperatorCallExp def : firstNonBindingExp : ATL!OclExpression =
+	if not self.isStatic and self.operationName = 'and' then
+		if self.source.firstNonBindingExp.oclIsUndefined() then
+			if self.arguments->first().firstNonBindingExp.oclIsUndefined() then
+				OclUndefined
+			else
+				self.arguments->first()
+			endif
+		else
+			if self.arguments->first().firstNonBindingExp.oclIsUndefined() then
+				self.source
+			else
+				self
+			endif
+		endif
+	else
+		super.firstNonBindingExp
+	endif;
+	

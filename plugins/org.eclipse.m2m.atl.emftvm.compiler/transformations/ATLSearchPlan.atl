@@ -1,0 +1,138 @@
+-- @atlcompiler emftvm
+-- @path ATL=/org.eclipse.m2m.atl.common/model/ATL.ecore
+-- Helpers for generating ATL local search plans
+library ATLSearchPlan;
+
+uses OCLLib;
+
+--- Returns this OclExpression as a Sequence of sub-expressions to be combined in a conjuction (and)
+helper context OclAny def : asConjunction : Sequence(ATL!OclExpression) =
+	Sequence{};
+
+--- Returns this OclExpression as a Sequence of sub-expressions to be combined in a conjuction (and)
+helper context ATL!OclExpression def : asConjunction : Sequence(ATL!OclExpression) =
+	Sequence{self};
+
+--- Returns this OclExpression as a Sequence of sub-expressions to be combined in a conjuction (and)
+helper context ATL!OperatorCallExp def : asConjunction : Sequence(ATL!OclExpression) =
+	if not self.isStatic and self.operationName = 'and' then
+		Sequence{self.source.asConjunction, self.arguments->first().asConjunction}->flatten()
+	else
+		super.asConjunction
+	endif;
+
+--- Returns the VariableExp that self can use as an InputRuleElement.binding, or OclUndefined
+helper context ATL!CollectionOperationCallExp def : canBindWith : ATL!InPatternElement =
+	if not self.isStatic and self.operationName = 'includes' and self.arguments->size() = 1 then
+		self.arguments->first().inPatternElement
+	else
+		super.canBindWith
+	endif;
+
+--- Returns the VariableExp that self can use as an InputRuleElement.binding, or OclUndefined
+helper context ATL!OperatorCallExp def : canBindWith : ATL!InPatternElement =
+	if not self.isStatic and self.operationName = '=' and self.arguments->size() = 1 then
+		if self.source.inPatternElement.oclIsUndefined() then
+			self.arguments->first().inPatternElement
+		else
+			self.source.inPatternElement
+		endif
+	else
+		super.canBindWith
+	endif;
+
+--- Returns the sub-expression of this OclExpression that should be evaluated for the InputRuleElement.binding, or OclUndefined
+helper context ATL!CollectionOperationCallExp def : bindingSubExp : ATL!OclExpression =
+	if self.canBindWith.oclIsUndefined() then
+		super.bindingSubExp
+	else
+		self.source
+	endif;
+
+--- Returns the sub-expression of this OclExpression that should be evaluated for the InputRuleElement.binding, or OclUndefined
+helper context ATL!OperatorCallExp def : bindingSubExp : ATL!OclExpression =
+	if self.canBindWith.oclIsUndefined() then
+		super.bindingSubExp
+	else
+		if self.source.inPatternElement.oclIsUndefined() then
+			self.source
+		else
+			self.arguments->first()
+		endif
+	endif;
+
+--- Returns the contained VariableExp instances that reference InPatternElements
+helper context OclAny def : references : Set(ATL!VariableExp) =
+	Set{};
+
+--- Returns the contained VariableExp instances that reference InPatternElements
+helper context ATL!OclExpression def : references : Set(ATL!VariableExp) =
+	self.eContents()->collect(c | c.references)->flatten();
+
+--- Returns the contained VariableExp instances that reference InPatternElements
+helper context ATL!VariableExp def : references : Set(ATL!VariableExp) =
+	if self.inPatternElement.oclIsUndefined() then
+		super.references
+	else
+		Set{self.inPatternElement}
+	endif;
+
+--- Returns the InPatternElement that self refers to, or OclUndefined
+helper context ATL!VariableExp def : inPatternElement : ATL!InPatternElement =
+	if self.referredVariable.oclIsKindOf(ATL!InPatternElement) then
+		self
+	else
+		OclUndefined
+	endif;
+
+--- Returns all possible InputRuleElement bindings for self
+helper context ATL!InPatternElement def : bindings : Sequence(ATL!OclExpression) =
+	let successors : Sequence(ATL!InPatternElement) =
+		self.inPattern.elements
+			->subSequence(self.inPattern.elements->indexOf(self), self.inPattern.elements->size())
+			->select(s | s = self or s.bindings->notEmpty())
+	in
+	self.inPattern.filter.asConjunction
+		->reject(exp | exp.canBindWith.oclIsUndefined())
+		->reject(exp |
+			let otherReferences : Set(ATL!VariableExp) =
+				exp.references->excluding(exp.canBindWith)
+			in
+				otherReferences->exists(r | successors->includes(r.referredVariable))
+		)
+		->select(exp | exp.canBindWith.referredVariable = self);
+
+--- Returns the containing ATL rule, or OclUndefined.
+helper context OclAny def : containingRule : ATL!Rule =
+	let parent : OclAny = self.refImmediateComposite() in
+	if parent.oclIsKindOf(ATL!Rule) then parent
+	else if not parent.oclIsUndefined() then parent.containingRule
+	else OclUndefined
+	endif endif;
+
+--- Returns all InputRuleElement bindings for this rule.
+helper context ATL!MatchedRule def : allBindings : Map(ATL!OclExpression, ATL!InPatternElement) =
+	self.inPattern.elements
+		->select(e | e.bindings->notEmpty())
+		->mappedBySingle(e | e.bindings->first());
+
+--- Returns the InputRuleElement for which this OCL expression is part of its binding, or OclUndefined.
+helper context ATL!OclExpression def : partOfBindingFor : ATL!InPatternElement =
+	if self.containingRule.oclIsTypeOf(ATL!MatchedRule) then
+		let ipe : ATL!InPatternElement = self.containingRule.allBindings.get(self) in
+		if ipe.oclIsUndefined() then
+			self.refImmediateComposite().partOfBindingFor
+		else
+			ipe
+		endif
+	else
+		super.partOfBindingFor
+	endif;
+
+--- Returns 'true' if this OCL expression contains an InputRuleElement binding.
+helper context ATL!OperatorCallExp def : containsBinding : Boolean =
+	if not self.isStatic and self.operationName = 'and' then
+		self.source.isBinding or self.arguments->first().isBinding
+	else
+		super.containsBinding
+	endif;

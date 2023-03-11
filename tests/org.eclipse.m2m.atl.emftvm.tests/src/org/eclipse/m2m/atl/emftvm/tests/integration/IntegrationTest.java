@@ -115,6 +115,27 @@ public class IntegrationTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests "SearchPlanTest.atl".
+	 */
+	public void testSearchPlanTest() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Model in = loadTestModel(rs, "/test-data/SearchPlanTest.ecore");
+		final Model out = createTestModel(rs, "/test-data/SearchPlanTest-out.ecore");
+		env.registerInputModel("IN", in);
+		env.registerOutputModel("OUT", out);
+		env.loadModule(createTestModuleResolver(), "SearchPlanTest");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/SearchPlanTest-out.ecore");
+		assertEquals(refOut.getResource(), out.getResource());
+	}
+
+	/**
 	 * Tests regression of
 	 * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=408391">Bug #
 	 * 408391</a>.

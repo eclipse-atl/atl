@@ -7,6 +7,8 @@ module OCLtoEMFTVM;
 
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
 
+uses OCLLib;
+
 -- ======================================================================
 -- helpers begin
 -- ======================================================================
@@ -79,12 +81,6 @@ helper context ATL!OclFeatureDefinition def : isAttribute : Boolean =
 helper context ATL!OclFeatureDefinition def : isOperation : Boolean =
 	self.definition.feature.oclIsKindOf(ATL!Operation);
 
-helper context ATL!OclFeatureDefinition def : isStatic : String =
-	self.context_.oclIsUndefined();
-
-helper context ATL!OclFeature def : isStatic : String =
-	self.definition.isStatic;
-
 helper context ATL!OclFeatureDefinition def : contextType : ATL!"OclType" =
 	self.context_.context_;
 
@@ -119,11 +115,6 @@ helper context OclAny def : parentFeatureDef : ATL!OclFeatureDefinition =
 	else if not parent.oclIsUndefined() then parent.parentFeatureDef
 	else self.debug('Self variable not found in')
 	endif endif;
-
-helper context ATL!PropertyCallExp def : isStatic : Boolean =
-	if self.source.oclIsKindOf(ATL!VariableExp) then
-		self.source.referredVariable.varName = 'thisModule'
-	else self.source.oclIsUndefined() endif;
 
 helper context ATL!OclExpression def : parentIterators : Sequence(ATL!Iterator) =
 	if self.loopExp.oclIsUndefined() then Sequence{}
@@ -171,30 +162,6 @@ helper context ATL!OclExpression def : isFilterExpression : Boolean =
 	let parent : OclAny = self.refImmediateComposite() in
 	(parent.oclIsKindOf(ATL!InPattern) and parent.filter = self)
 	or parent.isFilterExpression;
-
---- Returns 'true' if this OCL expression is a rule search plan.
-helper context OclAny def : isSearchPlan : Boolean =
-	false;
-
---- Returns 'true' if this OCL expression is a rule search plan.
-helper context ATL!OperationCallExp def : isSearchPlan : Boolean =
-	not self.isStatic and ( 
-		(
-			(self.operationName = '=' or self.operationName = 'includes') and
-			self.arguments->includes(a | 
-				a.oclIsKindOf(ATL!VariableExp) and a.referredVariable.isMatchedRuleField
-			)
-		) or (
-			self.operationName = 'and' and
-			self.arguments->includes(a | 
-				a.isSearchPlan
-			)
-		)
-	);
-
---- Returns 'true' if this OCL expression is part of a rule search plan.
-helper context ATL!NavigationOrAttributeCallExp def : isSearchPlanExpression : Boolean =
-	not self.isStatic and self.refImmediateComposite().isSearchPlanExpression;
 
 -- ======================================================================
 -- helpers end
@@ -345,7 +312,7 @@ rule IterateResult {
 -------------- OclExpressions -----------------
 
 abstract rule OclExpression {
-	from s : ATL!OclExpression in IN
+	from s : ATL!OclExpression in IN (s.partOfBinding implies s.refImmediateComposite().partOfBinding)
 	to cb : EMFTVM!CodeBlock (
 		localVariables <- s.parentIterators->union(s.parentAccumulators),
 		lineNumbers <:= Sequence{ln}),
@@ -397,14 +364,15 @@ rule SuperNavigationOrAttributeCallExp extends OclExpression {
 
 rule OperationCallExp extends OclExpression {
 	from s : ATL!OperationCallExp in IN (
-		not s.isStatic and 
+		not s.isStatic and
 		not s.source.oclIsKindOf(ATL!SuperExp) and
 		s.operationName <> 'not' and
 		s.operationName <> 'and' and
 		s.operationName <> 'or' and
 		s.operationName <> 'xor' and
 		s.operationName <> 'implies' and
-		s.operationName <> 'oclIsUndefined')
+		s.operationName <> 'oclIsUndefined' and
+		(not s.partOfBinding or s.canBindWith.oclIsUndefined()))
 	to cb : EMFTVM!CodeBlock (
 		nested <- s.arguments->prepend(s.source),
 		code <:= Sequence{invokeAllCbs, invoke}),
@@ -414,6 +382,34 @@ rule OperationCallExp extends OclExpression {
 	   invoke : EMFTVM!Invoke (												-- [..., result]
 	   	opname <- s.operationName, 
 		argcount <- s.arguments->size())
+}
+
+rule BindingOperationCallExp extends OclExpression {
+	from s : ATL!OperationCallExp in IN (
+		not s.isStatic and
+		not s.source.oclIsKindOf(ATL!SuperExp) and
+		s.operationName <> 'not' and
+		s.operationName <> 'and' and
+		s.operationName <> 'or' and
+		s.operationName <> 'xor' and
+		s.operationName <> 'implies' and
+		s.operationName <> 'oclIsUndefined' and
+		s.partOfBinding and
+		not s.canBindWith.oclIsUndefined())
+	using {
+		inPatternExp : ATL!OclExpression =
+			if s.source.inPatternElement.oclIsUndefined() then
+				s.arguments->first()
+			else
+				s.source
+			endif;
+	}
+	to cb : EMFTVM!CodeBlock (
+		nested <- Sequence{inPatternExp},
+		code <:= Sequence{invokeAllCbs}),
+	   ln : EMFTVM!LineNumber (
+	   	instructions <:= Sequence{invokeAllCbs}),
+	   invokeAllCbs : EMFTVM!InvokeAllCbs									-- [..., inPatternExp]
 }
 
 rule NotOperationCallExp extends OclExpression {
@@ -430,7 +426,7 @@ rule NotOperationCallExp extends OclExpression {
 
 rule AndOperationCallExp extends OclExpression {
 	from s : ATL!OperationCallExp in IN (
-		not s.isStatic and s.operationName = 'and')
+		not s.isStatic and s.operationName = 'and' and (s.partOfBinding or s.firstNonBindingExp = s))
 	to cb : EMFTVM!CodeBlock (
 		nested <- s.arguments->prepend(s.source),
 		code <:= Sequence{invokeCb, _and}),
@@ -438,6 +434,19 @@ rule AndOperationCallExp extends OclExpression {
 	   	instructions <:= Sequence{invokeCb, _and}),
 	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.source, argcount <- 0),	-- [..., source]
 	   _and : EMFTVM!And (codeBlock <- s.arguments->first())				-- [..., result]
+}
+
+rule BindingAndOperationCallExp extends OclExpression {
+	from s : ATL!OperationCallExp in IN (
+		not s.isStatic and s.operationName = 'and' and not s.partOfBinding and
+		not s.firstNonBindingExp.oclIsUndefined() and s.firstNonBindingExp <> s and
+		not s.refImmediateComposite().oclIsKindOf(ATL!InPattern))
+	to cb : EMFTVM!CodeBlock (
+		nested <- Sequence{s.firstNonBindingExp},
+		code <:= Sequence{invokeCb}),
+	   ln : EMFTVM!LineNumber (
+	   	instructions <:= Sequence{invokeCb}),
+	   invokeCb : EMFTVM!InvokeCb (codeBlock <- s.firstNonBindingExp, argcount <- 0)	-- [..., firstNonBindingExp]
 }
 
 rule OrOperationCallExp extends OclExpression {
@@ -578,10 +587,22 @@ abstract rule VariableExp extends OclExpression {
 
 rule NotSelfVariableExp extends VariableExp {
 	from s : ATL!VariableExp in IN (
-		s.referredVariable.varName <> 'self')
+		s.referredVariable.varName <> 'self' and
+		not (s.referredVariable.oclIsKindOf(ATL!InPatternElement) and s.partOfBinding))
 	to cb : EMFTVM!CodeBlock,
 	   load : EMFTVM!Load (
 	   	localVariable <- s.localVariable())
+}
+
+rule InPatternElementBindingVariableExp extends VariableExp {
+	from s : ATL!VariableExp in IN (
+		s.referredVariable.varName <> 'self' and
+		s.referredVariable.oclIsKindOf(ATL!InPatternElement) and
+		s.partOfBinding and
+		s.referredVariable <> s.partOfBindingFor)
+	to cb : EMFTVM!CodeBlock,
+	   load : EMFTVM!Load (
+	   	localVariable <- thisModule.InPatternElementBindingVariable(s.partOfBindingFor, s.referredVariable))
 }
 
 rule SelfVariableExp extends VariableExp {
@@ -866,6 +887,15 @@ lazy rule TuplePart {
 	do {
 		Sequence{dup, pushKey, invokeValue, invoke, pop};
 	}
+}
+
+unique lazy rule InPatternElementBindingVariable {
+	from s : ATL!InPatternElement,
+	     ipe : ATL!InPatternElement
+	to lv : EMFTVM!LocalVariable (
+	   	name <- ipe.varName,
+		type <- ipe.type.typeName,
+		typeModel <- ipe.type.modelName)
 }
 
 -- ======================================================================

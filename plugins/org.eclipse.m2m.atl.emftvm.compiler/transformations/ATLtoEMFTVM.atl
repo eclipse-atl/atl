@@ -8,6 +8,7 @@ module ATLtoEMFTVM;
 create OUT : EMFTVM, PBS : Problem from IN : ATL;
 
 uses OCLtoEMFTVM;
+uses ATLSearchPlan;
 
 -- ======================================================================
 -- helpers begin
@@ -434,12 +435,37 @@ rule InPatternElement {
 
 rule InPatternElementWithFilter extends InPatternElement {
 	from s : ATL!InPatternElement in IN (
-		not s.inPattern.filter.oclIsUndefined())
+		not s.inPattern.filter.oclIsUndefined() and
+		not s.inPattern.filter.firstNonBindingExp.oclIsUndefined())
 	to re : EMFTVM!InputRuleElement,
 	   lv : EMFTVM!LocalVariable (
 	   	name <- s.varName,
 		type <- s.type.typeName,
 		typeModel <- s.type.modelName)
+}
+
+rule InPatternElementWithBinding extends InPatternElement {
+	from s : ATL!InPatternElement in IN (
+		not s.inPattern.filter.oclIsUndefined() and
+		s.bindings->notEmpty())
+	using {
+		bindingLoc : ATL!LocatedElement = s.bindings->first().bindingSubExp;
+	}
+	to re : EMFTVM!InputRuleElement (
+		binding <- ieb),
+	   ieb : EMFTVM!CodeBlock (
+	   	lineNumbers <:= Sequence{iebln},
+	   	localVariables <- s.inPattern.elements
+			->collect(e|thisModule.InPatternElementBindingVariable(s, e)),
+	   	nested <- Sequence{bindingLoc},
+	   	code <:= Sequence{invokeCb}),
+	   iebln : EMFTVM!LineNumber (
+	   	startLine <- bindingLoc.startLine,
+		startColumn <- bindingLoc.startColumn,
+		endLine <- bindingLoc.endLine,
+		endColumn <- bindingLoc.endColumn,
+	   	instructions <:= Sequence{invokeCb}),
+	   invokeCb : EMFTVM!InvokeCb  (codeBlock <- bindingLoc)
 }
 
 rule InPatternElementWithAction extends InPatternElement {
@@ -452,9 +478,26 @@ rule InPatternElementWithAction extends InPatternElement {
 		typeModel <- s.type.modelName)
 }
 
+-- @extends InPatternElementWithFilter, InPatternElementWithBinding
+rule InPatternElementWithBindingFilter {
+	from s : ATL!InPatternElement in IN
+	to re : EMFTVM!InputRuleElement
+}
 
 -- @extends InPatternElementWithFilter, InPatternElementWithAction
 rule InPatternElementWithFilterAndAction {
+	from s : ATL!InPatternElement in IN
+	to re : EMFTVM!InputRuleElement
+}
+
+-- @extends InPatternElementWithBinding, InPatternElementWithAction
+rule InPatternElementWithBindingAndAction {
+	from s : ATL!InPatternElement in IN
+	to re : EMFTVM!InputRuleElement
+}
+
+-- @extends InPatternElementWithBindingFilter, InPatternElementWithFilterAndAction, InPatternElementWithBindingAndAction
+rule InPatternElementWithBindingFilterAndAction {
 	from s : ATL!InPatternElement in IN
 	to re : EMFTVM!InputRuleElement
 }
@@ -721,16 +764,17 @@ rule MatchedRule {
 
 rule MatchedRuleWithFilter extends MatchedRule {
 	from s : ATL!MatchedRule in IN (
-		not s.inPattern.filter.oclIsUndefined())
+		not s.inPattern.filter.oclIsUndefined() and
+		not s.inPattern.filter.firstNonBindingExp.oclIsUndefined())
 	using {
-		matchLoc : ATL!LocatedElement = s.inPattern.filter;
+		matchLoc : ATL!LocatedElement = s.inPattern.filter.firstNonBindingExp;
 	}
 	to t : EMFTVM!Rule (
 		matcher <- m),
 	   m : EMFTVM!CodeBlock (
 	   	lineNumbers <:= Sequence{mln},
 	   	localVariables <- s.inPattern.elements->collect(e|thisModule.resolveTemp(e, 'lv')),
-	   	nested <- Sequence{s.inPattern.filter},
+	   	nested <- Sequence{matchLoc},
 	   	code <:= Sequence{invokeCb}),
 	   mln : EMFTVM!LineNumber (
 	   	startLine <- matchLoc.startLine,
@@ -738,7 +782,7 @@ rule MatchedRuleWithFilter extends MatchedRule {
 		endLine <- matchLoc.endLine,
 		endColumn <- matchLoc.endColumn,
 	   	instructions <:= Sequence{invokeCb}),
-	   invokeCb : EMFTVM!InvokeCb  (codeBlock <- s.inPattern.filter)
+	   invokeCb : EMFTVM!InvokeCb  (codeBlock <- matchLoc)
 }
 
 rule MatchedRuleWithAction extends MatchedRule {
