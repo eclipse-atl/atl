@@ -447,7 +447,8 @@ rule InPatternElementWithFilter extends InPatternElement {
 rule InPatternElementWithBinding extends InPatternElement {
 	from s : ATL!InPatternElement in IN (
 		not s.inPattern.filter.oclIsUndefined() and
-		s.bindings->notEmpty())
+		s.bindings->notEmpty() and
+		s.inPattern."rule".allBindings.containsValue(s))
 	using {
 		bindingLoc : ATL!LocatedElement = s.bindings->first().bindingSubExp;
 	}

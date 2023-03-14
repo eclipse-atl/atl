@@ -112,8 +112,21 @@ helper context OclAny def : containingRule : ATL!Rule =
 
 --- Returns all InputRuleElement bindings for this rule.
 helper context ATL!MatchedRule def : allBindings : Map(ATL!OclExpression, ATL!InPatternElement) =
-	self.inPattern.elements
-		->select(e | e.bindings->notEmpty())
+	let filter : Sequence(ATL!OclExpression) = self.inPattern.filter.asConjunction in
+	let inPatternElementsWithBindings : Sequence(ATL!InPatternElement) =
+		self.inPattern.elements
+			->select(e | e.bindings->notEmpty()) in
+	let allBindings : Set(ATL!OclExpression) =
+		inPatternElementsWithBindings
+			->collect(e | e.bindings->first())
+			->asSet() in
+	let allBindingsReduced : Set(ATL!OclExpression) =
+		allBindings->reject(exp |
+			let expIndex : Integer = filter->indexOf(exp) in
+			filter->exists(o | not allBindings->includes(o) and filter->indexOf(o) < expIndex)
+		) in
+	inPatternElementsWithBindings
+		->select(e | allBindingsReduced->includes(e.bindings->first()))
 		->mappedBySingle(e | e.bindings->first());
 
 --- Returns the InputRuleElement for which this OCL expression is part of its binding, or OclUndefined.

@@ -757,4 +757,124 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel3"/>
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData3"/>
   </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SearchPlanTest_http:///org/eclipse/emf/ecore/util/ExtendedMetaData_http://www.eclipse.org/emf/2002/GenModel_http://www.eclipse.org/emf/2002/Ecore">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SearchPlanTest_http:///org/eclipse/emf/ecore/util/ExtendedMetaData_http://www.eclipse.org/emf/2002/Ecore_http://www.eclipse.org/emf/2002/GenModel">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SearchPlanTest_http://www.eclipse.org/emf/2002/GenModel_http:///org/eclipse/emf/ecore/util/ExtendedMetaData_http://www.eclipse.org/emf/2002/Ecore">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SearchPlanTest_http://www.eclipse.org/emf/2002/GenModel_http://www.eclipse.org/emf/2002/Ecore_http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SearchPlanTest_http://www.eclipse.org/emf/2002/Ecore_http:///org/eclipse/emf/ecore/util/ExtendedMetaData_http://www.eclipse.org/emf/2002/GenModel">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SearchPlanTest_http://www.eclipse.org/emf/2002/Ecore_http://www.eclipse.org/emf/2002/GenModel_http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage1_http:///org/eclipse/emf/ecore/util/ExtendedMetaData1_http://www.eclipse.org/emf/2002/GenModel1_http://www.eclipse.org/emf/2002/Ecore1">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData1"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel1"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore1"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage1_http:///org/eclipse/emf/ecore/util/ExtendedMetaData1_http://www.eclipse.org/emf/2002/Ecore1_http://www.eclipse.org/emf/2002/GenModel1">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData1"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore1"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel1"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage1_http://www.eclipse.org/emf/2002/GenModel1_http:///org/eclipse/emf/ecore/util/ExtendedMetaData1_http://www.eclipse.org/emf/2002/Ecore1">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel1"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData1"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore1"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage1_http://www.eclipse.org/emf/2002/GenModel1_http://www.eclipse.org/emf/2002/Ecore1_http:///org/eclipse/emf/ecore/util/ExtendedMetaData1">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel1"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore1"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData1"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage1_http://www.eclipse.org/emf/2002/Ecore1_http:///org/eclipse/emf/ecore/util/ExtendedMetaData1_http://www.eclipse.org/emf/2002/GenModel1">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore1"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData1"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel1"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage1_http://www.eclipse.org/emf/2002/Ecore1_http://www.eclipse.org/emf/2002/GenModel1_http:///org/eclipse/emf/ecore/util/ExtendedMetaData1">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore1"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel1"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData1"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage2_http:///org/eclipse/emf/ecore/util/ExtendedMetaData2_http://www.eclipse.org/emf/2002/GenModel2_http://www.eclipse.org/emf/2002/Ecore2">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData2"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel2"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore2"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage2_http:///org/eclipse/emf/ecore/util/ExtendedMetaData2_http://www.eclipse.org/emf/2002/Ecore2_http://www.eclipse.org/emf/2002/GenModel2">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData2"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore2"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel2"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage2_http://www.eclipse.org/emf/2002/GenModel2_http:///org/eclipse/emf/ecore/util/ExtendedMetaData2_http://www.eclipse.org/emf/2002/Ecore2">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel2"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData2"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore2"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage2_http://www.eclipse.org/emf/2002/GenModel2_http://www.eclipse.org/emf/2002/Ecore2_http:///org/eclipse/emf/ecore/util/ExtendedMetaData2">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel2"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore2"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData2"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage2_http://www.eclipse.org/emf/2002/Ecore2_http:///org/eclipse/emf/ecore/util/ExtendedMetaData2_http://www.eclipse.org/emf/2002/GenModel2">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore2"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData2"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel2"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage2_http://www.eclipse.org/emf/2002/Ecore2_http://www.eclipse.org/emf/2002/GenModel2_http:///org/eclipse/emf/ecore/util/ExtendedMetaData2">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore2"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel2"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData2"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage3_http:///org/eclipse/emf/ecore/util/ExtendedMetaData3_http://www.eclipse.org/emf/2002/GenModel3_http://www.eclipse.org/emf/2002/Ecore3">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData3"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel3"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore3"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage3_http:///org/eclipse/emf/ecore/util/ExtendedMetaData3_http://www.eclipse.org/emf/2002/Ecore3_http://www.eclipse.org/emf/2002/GenModel3">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData3"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore3"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel3"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage3_http://www.eclipse.org/emf/2002/GenModel3_http:///org/eclipse/emf/ecore/util/ExtendedMetaData3_http://www.eclipse.org/emf/2002/Ecore3">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel3"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData3"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore3"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage3_http://www.eclipse.org/emf/2002/GenModel3_http://www.eclipse.org/emf/2002/Ecore3_http:///org/eclipse/emf/ecore/util/ExtendedMetaData3">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel3"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore3"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData3"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage3_http://www.eclipse.org/emf/2002/Ecore3_http:///org/eclipse/emf/ecore/util/ExtendedMetaData3_http://www.eclipse.org/emf/2002/GenModel3">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore3"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData3"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel3"/>
+  </ecore:EPackage>
+  <ecore:EPackage name="NoSearch SubPackage3_http://www.eclipse.org/emf/2002/Ecore3_http://www.eclipse.org/emf/2002/GenModel3_http:///org/eclipse/emf/ecore/util/ExtendedMetaData3">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore3"/>
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel3"/>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData3"/>
+  </ecore:EPackage>
 </xmi:XMI>

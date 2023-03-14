@@ -97,17 +97,17 @@ rule PackageAnnotation3plus {
 		a1 : ECORE!EAnnotation,
 		a2 : ECORE!EAnnotation,
 		a3 : ECORE!EAnnotation (
-			a1 <> a3
-			and
 			p.eAnnotations->includes(a1)
-			and
-			a1 <> a2
 			and
 			p.eAnnotations->includes(a2)
 			and
 			p.eAnnotations->includes(a3)
 			and
+			a1 <> a2
+			and
 			a2 <> a3
+			and
+			a1 <> a3
 		)
 	to
 		t : ECORE!EPackage (
@@ -117,6 +117,48 @@ rule PackageAnnotation3plus {
 				thisModule.Annotation(a2),
 				thisModule.Annotation(a3)
 			}
+		)
+}
+
+nodefault rule PackageAnnotation3plusNoSearch {
+	from
+		p : ECORE!EPackage,
+		a1 : ECORE!EAnnotation,
+		a2 : ECORE!EAnnotation,
+		a3 : ECORE!EAnnotation (
+			a1 <> a2
+			and
+			p.eAnnotations->includes(a1)
+			and
+			a2 <> a3
+			and
+			p.eAnnotations->includes(a2)
+			and
+			a1 <> a3
+			and
+			p.eAnnotations->includes(a3)
+		)
+	to
+		t : ECORE!EPackage (
+			name <- 'NoSearch ' + p.name + '_' + a1.source + '_' + a2.source + '_' + a3.source,
+			eAnnotations <- Sequence{
+				thisModule.Annotation(a1),
+				thisModule.Annotation(a2),
+				thisModule.Annotation(a3)
+			}
+		)
+}
+
+rule AttributeTypeParameter {
+	from
+		a : ECORE!EAttribute,
+		tp : ECORE!ETypeParameter (
+			not a.eAttributeType.oclIsUndefined() and
+			a.eAttributeType.eTypeParameters->includes(tp)
+		)
+	to
+		t : ECORE!EPackage (
+			name <- 'EAtttribute ' + a.name + '_' + tp.name
 		)
 }
 
