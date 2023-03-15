@@ -1,5 +1,6 @@
 -- @atlcompiler emftvm
 -- @path ATL=/org.eclipse.m2m.atl.common/model/ATL.ecore
+-- @lib OCLLib=/org.eclipse.m2m.atl.emftvm.compiler/transformations/OCLLib.atl
 -- Helpers for generating ATL local search plans
 library ATLSearchPlan;
 
