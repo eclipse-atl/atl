@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    name="RecursiveTest" nsURI="RecursiveTest" nsPrefix="RecursiveTest">
+  <eSubpackages name="RecursiveTest_nested" nsURI="RecursiveTest_nested" nsPrefix="RecursiveTest_nested">
+    <eSubpackages name="RecursiveTest_nested_nested" nsURI="RecursiveTest_nested_nested"
+        nsPrefix="RecursiveTest_nested_nested">
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+    </eSubpackages>
+    <eSubpackages name="RecursiveTest_nested_nested" nsURI="RecursiveTest_nested_nested"
+        nsPrefix="RecursiveTest_nested_nested">
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+    </eSubpackages>
+    <eSubpackages name="RecursiveTest_nested_nested" nsURI="RecursiveTest_nested_nested"
+        nsPrefix="RecursiveTest_nested_nested">
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+    </eSubpackages>
+  </eSubpackages>
+  <eSubpackages name="RecursiveTest_nested" nsURI="RecursiveTest_nested" nsPrefix="RecursiveTest_nested">
+    <eSubpackages name="RecursiveTest_nested_nested" nsURI="RecursiveTest_nested_nested"
+        nsPrefix="RecursiveTest_nested_nested">
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+    </eSubpackages>
+    <eSubpackages name="RecursiveTest_nested_nested" nsURI="RecursiveTest_nested_nested"
+        nsPrefix="RecursiveTest_nested_nested">
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+    </eSubpackages>
+    <eSubpackages name="RecursiveTest_nested_nested" nsURI="RecursiveTest_nested_nested"
+        nsPrefix="RecursiveTest_nested_nested">
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+    </eSubpackages>
+  </eSubpackages>
+  <eSubpackages name="RecursiveTest_nested" nsURI="RecursiveTest_nested" nsPrefix="RecursiveTest_nested">
+    <eSubpackages name="RecursiveTest_nested_nested" nsURI="RecursiveTest_nested_nested"
+        nsPrefix="RecursiveTest_nested_nested">
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+    </eSubpackages>
+    <eSubpackages name="RecursiveTest_nested_nested" nsURI="RecursiveTest_nested_nested"
+        nsPrefix="RecursiveTest_nested_nested">
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+    </eSubpackages>
+    <eSubpackages name="RecursiveTest_nested_nested" nsURI="RecursiveTest_nested_nested"
+        nsPrefix="RecursiveTest_nested_nested">
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+      <eSubpackages name="RecursiveTest_nested_nested_nested" nsURI="RecursiveTest_nested_nested_nested"
+          nsPrefix="RecursiveTest_nested_nested_nested"/>
+    </eSubpackages>
+  </eSubpackages>
+</ecore:EPackage>

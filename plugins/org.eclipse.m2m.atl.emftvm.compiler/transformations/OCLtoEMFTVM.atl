@@ -2,6 +2,7 @@
 -- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
 -- @path ATL=/org.eclipse.m2m.atl.common/model/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.common/model/Problem.ecore
+-- @lib OCLLib=/org.eclipse.m2m.atl.emftvm.compiler/transformations/OCLLib.atl
 -- Transforms ATL modules into EMFTVM modules
 module OCLtoEMFTVM;
 

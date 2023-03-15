@@ -136,6 +136,25 @@ public class IntegrationTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests "SearchPlanTest.atl".
+	 */
+	public void testRecursiveTest() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Model in = loadTestModel(rs, "/test-data/RecursiveTest.ecore");
+		env.registerInOutModel("IN", in);
+		env.loadModule(createTestModuleResolver(), "RecursiveTest");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/RecursiveTest-out.ecore");
+		assertEquals(refOut.getResource(), in.getResource());
+	}
+
+	/**
 	 * Tests regression of
 	 * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=408391">Bug #
 	 * 408391</a>.

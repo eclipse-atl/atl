@@ -21,12 +21,15 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
+import org.eclipse.m2m.atl.common.Problem.ProblemPackage;
+import org.eclipse.m2m.atl.common.Problem.Severity;
 import org.eclipse.m2m.atl.core.emf.EMFReferenceModel;
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
@@ -83,6 +86,45 @@ public class CompilerTest extends EMFTVMTest {
 
 		final Model refModel = loadTestModel(new ResourceSetImpl(), "/test-data/SearchPlanTest.emftvm");
 		assertEquals(refModel.getResource(), outModel.getResource());
+	}
+
+	/**
+	 * Tests the compilation output for "RecursiveTest.atl".
+	 */
+	public void testRecursiveTest() {
+		final Model outModel = compile(URI.createURI("test-data/RecursiveTest.atl", true));
+		assertEquals(null, validate(outModel));
+
+		final Model refModel = loadTestModel(new ResourceSetImpl(), "/test-data/RecursiveTest.emftvm");
+		assertEquals(refModel.getResource(), outModel.getResource());
+	}
+
+	/**
+	 * Tests the compilation output for "RecursiveTest2.atl".
+	 */
+	public void testRecursiveTest2() {
+		final EList<EObject> problems = atlwfr(URI.createURI("test-data/RecursiveTest2.atl", true)).getResource()
+				.getContents();
+		assertEquals(1, problems.size());
+		assertEquals("Recursive rules are only allowed in refining mode",
+				problems.get(0).eGet(ProblemPackage.eINSTANCE.getProblem_Description()));
+		assertEquals("9:1-21:2",
+				problems.get(0).eGet(ProblemPackage.eINSTANCE.getProblem_Location()));
+		assertEquals(Severity.ERROR,
+				problems.get(0).eGet(ProblemPackage.eINSTANCE.getProblem_Severity()));
+	}
+
+	/**
+	 * Tests the compilation output for "DoubleExtendsTest.atl".
+	 */
+	public void testDoubleExtendsTest() {
+		final EList<EObject> problems = atlwfr(URI.createURI("test-data/DoubleExtendsTest.atl", true)).getResource()
+				.getContents();
+		assertEquals(1, problems.size());
+		assertEquals("Cannot combine the '@extends' annotation with the 'extends' keyword",
+				problems.get(0).eGet(ProblemPackage.eINSTANCE.getProblem_Description()));
+		assertEquals("18:1-26:2", problems.get(0).eGet(ProblemPackage.eINSTANCE.getProblem_Location()));
+		assertEquals(Severity.ERROR, problems.get(0).eGet(ProblemPackage.eINSTANCE.getProblem_Severity()));
 	}
 
 	/**

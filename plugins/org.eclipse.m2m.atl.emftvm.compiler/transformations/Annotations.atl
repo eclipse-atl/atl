@@ -1,0 +1,37 @@
+-- @atlcompiler emftvm
+-- @path ATL=/org.eclipse.m2m.atl.common/model/ATL.ecore
+library Annotations;
+
+--- Support for multiple rule inheritance, including rules outside same module
+helper context String def : isAnn(ann : String) : Boolean =
+	self.substring(3).trim().startsWith('@' + ann);
+
+--- Returns the '@extends' values for a given annotation string.
+helper context String def : annValues(ann : String) : Sequence(String) =
+	if self.isAnn(ann) then
+		self.split('@' + ann)
+			->at(2).trim().split(',')
+			->collect(s | s.trim())
+	else
+		Sequence{}
+	endif;
+
+--- Returns whether self is annotated with '@<ann>'.
+helper context ATL!LocatedElement def : isAnn(ann : String) : Boolean =
+	self.commentsBefore->exists(c | c.isAnn(ann));
+
+--- Returns the '@<ann>' values for a given annotation string.
+helper context ATL!LocatedElement def : annValues(ann : String) : Sequence(String) =
+	self.commentsBefore->collect(c | c.annValues(ann))->flatten();
+
+--- Returns the '@extends' values for a given annotation string.
+helper context ATL!LocatedElement def : extendsAnnValues : Sequence(String) =
+	self.annValues('extends');
+
+--- Returns whether self is annotated with '@recursive'.
+helper context ATL!LocatedElement def : isRecursive : Boolean =
+	self.isAnn('recursive');
+
+--- Returns whether self is annotated with '@recursive'.
+helper context ATL!LocatedElement def : isDistinct : Boolean =
+	self.isAnn('distinct');

@@ -1,0 +1,26 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module DoubleExtendsTest;
+
+create OUT : ECORE from IN : ECORE;
+
+abstract rule NamedElement {
+	from
+		s : ECORE!ENamedElement
+	to
+		t : ECORE!ENamedElement (
+			eAnnotations <- s.eAnnotations,
+			name <- s.name
+		)
+}
+
+-- @extends NamedElement
+rule Package extends NamedElement {
+	from
+		s : ECORE!EPackage
+	to
+		t : ECORE!EPackage (
+			nsPrefix <- s.nsPrefix,
+			nsURI <- s.nsURI
+		)
+}

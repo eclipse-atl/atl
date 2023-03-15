@@ -2,6 +2,9 @@
 -- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
 -- @path ATL=/org.eclipse.m2m.atl.common/model/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.common/model/Problem.ecore
+-- @lib OCLtoEMFTVM=/org.eclipse.m2m.atl.emftvm.compiler/transformations/OCLtoEMFTVM.atl
+-- @lib ATLSearchPlan=/org.eclipse.m2m.atl.emftvm.compiler/transformations/ATLSearchPlan.atl
+-- @lib Annotations=/org.eclipse.m2m.atl.emftvm.compiler/transformations/Annotations.atl
 -- Transforms ATL modules into EMFTVM modules
 module ATLtoEMFTVM;
 
@@ -9,6 +12,7 @@ create OUT : EMFTVM, PBS : Problem from IN : ATL;
 
 uses OCLtoEMFTVM;
 uses ATLSearchPlan;
+uses Annotations;
 
 -- ======================================================================
 -- helpers begin
@@ -137,21 +141,6 @@ helper context ATL!Rule def : applyLoc : ATL!LocatedElement =
 	else
 		self.outPattern
 	endif;
-
---- Support for multiple rule inheritance, including rules outside same module
-helper context String def : isExtendsAnn : Boolean =
-	self.substring(3).trim().startsWith('@extends');
-
---- Returns the '@extends' values for a given annotation string.
-helper context String def : extendsAnnValues : Sequence(String) =
-	if self.isExtendsAnn then
-		self.split('@extends')
-			->at(2).trim().split(',')
-			->collect(s | s.trim())
-	else
-		Sequence{}
-	endif;
-
 
 --- Returns 'true' if self is an output model that refines an input model in a refining mode module.
 helper context ATL!OclModel def : isRefiningModel : Boolean =
@@ -704,7 +693,7 @@ rule MatchedRule {
 		"abstract" <- s.isAbstract,
 		superRules <- 
 			if s.superRule.oclIsUndefined() then
-				s.commentsBefore->collect(c | c.extendsAnnValues)->flatten()
+				s.extendsAnnValues
 			else
 				Sequence{s.superRule.name}
 			endif,
@@ -717,12 +706,14 @@ rule MatchedRule {
 		mode <- 
 			if s.oclIsKindOf(ATL!LazyMatchedRule) then
 				#manual
+			else if s.isRecursive then
+				#automaticRecursive
 			else
 				#automaticSingle
-			endif,
-		default <- s.isDefault,
+			endif endif,
+		default <- s.isDefault and not s.isRecursive,
 		"unique" <- (s.oclIsKindOf(ATL!LazyMatchedRule) and	s.isUnique) or s.isNoDefault,
-		distinctElements <- false,
+		distinctElements <- s.isDistinct,
 		inputElements <- s.inPattern.elements,
 		fields <- s.variables,
 		applier <- a),

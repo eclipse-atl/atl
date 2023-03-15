@@ -1,0 +1,21 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module RecursiveTest2;
+
+create OUT : ECORE from IN : ECORE;
+
+-- @recursive
+-- @distinct
+rule AddNestedPackages {
+	from
+		s : ECORE!EPackage (
+			s.eSubpackages->size() < 3 and
+			s.name.size() < 30)
+	to
+		t : ECORE!EPackage (
+			eSubpackages <- s.eSubpackages->append(n)),
+		n : ECORE!EPackage (
+			name <- s.name + '_nested',
+			nsPrefix <- s.nsPrefix + '_nested',
+			nsURI <- s.nsURI + '_nested')
+}

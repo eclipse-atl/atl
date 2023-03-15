@@ -1,8 +1,11 @@
 -- @atlcompiler emftvm
 -- @path ATL=/org.eclipse.m2m.atl.common/model/ATL.ecore
 -- @path Problem=/org.eclipse.m2m.atl.common/model/Problem.ecore
+-- @lib Annotations=/org.eclipse.m2m.atl.emftvm.compiler/transformations/Annotations.atl
 module ATLWFR;
 create OUT : Problem from IN : ATL;
+
+uses Annotations;
 
 -------------------------------------------------------------------------------
 -- HELPERS --------------------------------------------------------------------
@@ -947,6 +950,20 @@ nodefault rule RefiningRuleInRegularMode {
 		) 
 }
 
+nodefault rule RecursiveRuleInRegularMode {
+	from
+		s : ATL!MatchedRule (
+			s.isRecursive and
+			not s."module".isRefining
+		)
+	to
+		t : Problem!Problem (
+			severity <- #error,
+			location <- s.location,
+			description <- 'Recursive rules are only allowed in refining mode'
+		) 
+}
+
 nodefault rule NoOutPatternElementReferenceInInPattern {
 	from
 		s : ATL!VariableExp (
@@ -973,5 +990,19 @@ nodefault rule NoSuperRuleVariableReference {
 			severity <- #error,
 			location <- s.location,
 			description <- 'Cannot refer to \'' + s.referredVariable.varName + '\' from another rule'
+		) 
+}
+
+nodefault rule ExtendsAnnotationWithExtendsKeyword {
+	from
+		s : ATL!MatchedRule (
+			not s.superRule.oclIsUndefined() and
+			s.extendsAnnValues->notEmpty()
+		)
+	to
+		t : Problem!Problem (
+			severity <- #error,
+			location <- s.location,
+			description <- 'Cannot combine the \'@extends\' annotation with the \'extends\' keyword'
 		) 
 }
