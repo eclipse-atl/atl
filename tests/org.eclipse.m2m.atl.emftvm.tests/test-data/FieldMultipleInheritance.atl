@@ -1,0 +1,8 @@
+-- @atlcompiler emftvm
+-- @nsURI UML=http://www.eclipse.org/uml2/5.0.0/UML
+query FieldMultipleInheritance =
+	UML!Association.allInstances()->first().testField and
+	UML!Class.allInstances()->first().testField and
+	UML!AssociationClass.allInstances()->first().testField;
+
+helper context UML!Element def : testField : Boolean = true;
