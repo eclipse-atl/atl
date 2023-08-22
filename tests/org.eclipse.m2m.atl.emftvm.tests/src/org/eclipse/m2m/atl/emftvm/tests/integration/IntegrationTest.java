@@ -37,6 +37,7 @@ import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
+import org.eclipse.uml2.uml.UMLPackage;
 
 /**
  * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
@@ -496,11 +497,31 @@ public class IntegrationTest extends EMFTVMTest {
 		final TimingData td = new TimingData();
 		env.loadModule(createTestModuleResolver(), "Regression::Bug581595");
 		td.finishLoading();
-		td.finishLoading();
 		final Object result = env.run(td);
 		td.finish();
 
 		assertEquals(1, result);
+	}
+
+	/**
+	 * Tests regression of
+	 * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=582322">Bug #
+	 * 582322</a>.
+	 */
+	public void testFieldMultipleInheritance() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel(UMLPackage.eINSTANCE.eResource());
+		final Model in = loadTestModel(rs, "/test-data/FieldMultipleInheritance.uml");
+		env.registerMetaModel("UML", metamodel);
+		env.registerInputModel("IN", in);
+		env.loadModule(createTestModuleResolver(), "FieldMultipleInheritance");
+		td.finishLoading();
+		final Object result = env.run(td);
+		td.finish();
+
+		assertEquals(true, result);
 	}
 
 	/**

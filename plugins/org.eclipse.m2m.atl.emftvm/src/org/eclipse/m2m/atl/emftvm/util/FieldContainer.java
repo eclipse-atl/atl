@@ -28,14 +28,14 @@ public final class FieldContainer {
 	/**
 	 * Lookup table for fields: (name -> (context -> field)).
 	 */
-	protected final Map<String, TypeMap<Object, Field>> fields = 
-		new HashMap<String, TypeMap<Object,Field>>();
+	protected final Map<String, TypeMap<Object, Field>> fields =
+			new HashMap<String, TypeMap<Object,Field>>();
 
 	/**
 	 * Lookup table for static fields: (name -> (context -> field)).
 	 */
-	protected final Map<String, TypeMap<Object, Field>> staticFields = 
-		new HashMap<String, TypeMap<Object,Field>>();
+	protected final Map<String, TypeMap<Object, Field>> staticFields =
+			new HashMap<String, TypeMap<Object,Field>>();
 
 	/**
 	 * Set of all fields (for clearing values).
@@ -92,8 +92,6 @@ public final class FieldContainer {
 				if (ctxKey != null) {
 					f = fieldreg.get(ctxKey);
 					assert f != null;
-					// Now register directly under context type
-					fieldreg.put(context, f);
 				}
 			}
 			return f;
@@ -120,7 +118,7 @@ public final class FieldContainer {
 	 * @return the corresponding field, or <code>null</code> if not found
 	 * @throws DuplicateEntryException if there is a field conflict
 	 */
-	public Field findStaticField(Object context, String name) throws DuplicateEntryException {
+	public Field findStaticField(final Object context, final String name) throws DuplicateEntryException {
 		final TypeMap<Object, Field> fieldreg = staticFields.get(name);
 		if (fieldreg != null) {
 			// Static fields must be defined in exact context type
@@ -145,7 +143,7 @@ public final class FieldContainer {
 	 * Clears the values of all registered fields.
 	 */
 	public void clear() {
-		for (Field f : allFields) {
+		for (final Field f : allFields) {
 			f.clear();
 		}
 	}
