@@ -104,7 +104,7 @@ ARCHIVE=${params.ARCHIVE}
                 promotion_argument='-Dpromote=false -Dorg.eclipse.justj.p2.manager.args='
               fi
               mvn  \
-                -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml
+                -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml \
                 --fail-at-end \
                 --no-transfer-progress \
                 $promotion_argument \
