@@ -223,7 +223,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	@Override
 	public MethodVisitor casePusht(final Pusht object) {
 		iconst_1(); // true
-		invokeStat(Boolean.class, "valueOf", Boolean.class, Type.BOOLEAN_TYPE); // Boolean.valueOf(true) 
+		invokeStat(Boolean.class, "valueOf", Boolean.class, Type.BOOLEAN_TYPE); // Boolean.valueOf(true)
 		return super.casePusht(object);
 	}
 
@@ -233,7 +233,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	@Override
 	public MethodVisitor casePushf(final Pushf object) {
 		iconst_0(); // false
-		invokeStat(Boolean.class, "valueOf", Boolean.class, Type.BOOLEAN_TYPE); // Boolean.valueOf(false) 
+		invokeStat(Boolean.class, "valueOf", Boolean.class, Type.BOOLEAN_TYPE); // Boolean.valueOf(false)
 		return super.casePushf(object);
 	}
 
@@ -255,11 +255,11 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		if (object.getCbOffset() > 0) {
 			generatePushInt(object.getCbOffset()); // [..., frame, cbOffset]
 			generatePushInt(object.getSlot()); // [..., frame, cbOffset, slot]
-			invokeVirt(StackFrame.class, "getLocal", Object.class, // frame.getLocal(cbOffset, slot) 
+			invokeVirt(StackFrame.class, "getLocal", Object.class, // frame.getLocal(cbOffset, slot)
 					Type.INT_TYPE, Type.INT_TYPE);
 		} else {
 			generatePushInt(object.getSlot()); // [..., frame, slot]
-			invokeVirt(StackFrame.class, "getLocal", Object.class, // frame.getLocal(slot) 
+			invokeVirt(StackFrame.class, "getLocal", Object.class, // frame.getLocal(slot)
 					Type.INT_TYPE);
 		}
 		return super.caseLoad(object);
@@ -398,7 +398,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 					ldc(Type.getType(type)); // [..., type]
 				}
 				return super.caseFindtype(object);
-			} catch (ClassNotFoundException e) {
+			} catch (final ClassNotFoundException e) {
 				// fall back - will generate same exception anyway
 			}
 		}
@@ -553,9 +553,9 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		final Label hasNext = new Label();
 		// Instructions
 		checkcast(Collection.class); // [..., collection]
-		invokeIface(Collection.class, "iterator", Iterator.class); // collection.iterator(): [..., iterator] 
+		invokeIface(Collection.class, "iterator", Iterator.class); // collection.iterator(): [..., iterator]
 		dup(); // [..., iterator, iterator]
-		invokeIface(Iterator.class, "hasNext", Type.BOOLEAN_TYPE); // iterator.hasNext(): [..., iterator, boolean] 
+		invokeIface(Iterator.class, "hasNext", Type.BOOLEAN_TYPE); // iterator.hasNext(): [..., iterator, boolean]
 		ifne(hasNext); // jump if hasNext bool != 0: [..., iterator]
 		// has no next
 		pop(); // [...]
@@ -563,7 +563,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		// has next
 		label(hasNext);
 		dup(); // [..., iterator, iterator]
-		invokeIface(Iterator.class, "next", Object.class); // iterator.next(): [..., iterator, object] 
+		invokeIface(Iterator.class, "next", Object.class); // iterator.next(): [..., iterator, object]
 		return super.caseIterate(object);
 	}
 
@@ -577,11 +577,11 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		final Label hasNoNext = new Label();
 		// Instructions
 		dup(); // [..., iterator, iterator]
-		invokeIface(Iterator.class, "hasNext", Type.BOOLEAN_TYPE); // iterator.hasNext(): [..., iterator, boolean] 
+		invokeIface(Iterator.class, "hasNext", Type.BOOLEAN_TYPE); // iterator.hasNext(): [..., iterator, boolean]
 		ifeq(hasNoNext); // jump if hasNext bool == 0: [..., iterator]
 		// has next
 		dup(); // [..., iterator, iterator]
-		invokeIface(Iterator.class, "next", Object.class); // iterator.next(): [..., iterator, object] 
+		invokeIface(Iterator.class, "next", Object.class); // iterator.next(): [..., iterator, object]
 		goto_(ls.getFromSource(object)); // jump over ITERATE
 		// has no next
 		label(hasNoNext); // [..., iterator]
@@ -599,7 +599,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		switch (argcount) {
 		case 0:  generateInvoke0(object); break;
 		case 1:  generateInvoke1(object); break;
-		default: generateInvokeN(object, argcount);	break;	
+		default: generateInvokeN(object, argcount);	break;
 		}
 		return super.caseInvoke(object);
 	}
@@ -707,8 +707,8 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 				}
 			}
 			mv.visitMethodInsn(opcode, // self.<method>(): [..., ?]
-					Type.getInternalName(dc), 
-					method.getName(), 
+					Type.getInternalName(dc),
+					method.getName(),
 					Type.getMethodDescriptor(method),
 					dc.isInterface());
 			// Check if method returned anything
@@ -912,8 +912,8 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 				}
 			}
 			mv.visitMethodInsn(opcode, // self.<method>(arg): [..., ?]
-					Type.getInternalName(dc), 
-					method.getName(), 
+					Type.getInternalName(dc),
+					method.getName(),
 					Type.getMethodDescriptor(method),
 					dc.isInterface());
 			// Check if method returned anything
@@ -1083,7 +1083,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			localVariable("method", Method.class, selfStart, selfEnd, methodIdx);
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1162,7 +1162,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 				invokeStat(JITCodeBlock.class, "invokeSuper", Object.class, // invokeSuper(self, array, context, frame, opname)
 						Object.class, Object[].class, EClass.class, StackFrame.class, String.class);
 			}
-			break;	
+			break;
 		}
 		return super.caseInvokeSuper(object);
 	}
@@ -1201,7 +1201,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			ldc(object.getOpname()); // [..., type, array, frame, opname]
 			invokeStat(JITCodeBlock.class, "invokeStatic", Object.class, // invokeStatic(type, array, frame, opname)
 					Object.class, Object[].class, StackFrame.class, String.class);
-			break;	
+			break;
 		}
 		return super.caseInvokeStatic(object);
 	}
@@ -1228,7 +1228,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		swap(); // [..., modelName, type]
 		checkcast(EClass.class); // [..., modelName, type]
 		aload(2); // env: [..., modelName, type, env]
-		invokeStat( // EMFTVMUtil.findAllInstances(modelName, type, env) 
+		invokeStat( // EMFTVMUtil.findAllInstances(modelName, type, env)
 				EMFTVMUtil.class, "findAllInstIn", LazyList.class,
 				Object.class, EClass.class, ExecEnv.class);
 		return super.caseAllinstIn(object);
@@ -1263,7 +1263,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			ldc(object.getRulename()); // [..., array, frame, rulename]
 			invokeStat(JITCodeBlock.class, "matchOne", Object.class, // matchOne(array, frame, rulename)
 					Object[].class, StackFrame.class, String.class);
-			break;	
+			break;
 		}
 		return super.caseMatch(object);
 	}
@@ -1299,7 +1299,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			aload(1); // frame: [..., array, rule, frame]
 			invokeStat(JITCodeBlock.class, "matchOne", Object.class, // matchOne(array, rule, frame)
 					Object[].class, Rule.class, StackFrame.class);
-			break;	
+			break;
 		}
 		return super.caseMatchS(object);
 	}
@@ -1542,7 +1542,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			pop(); // remove nested: [..., results]
 			// Create local variable table entry
 			localVariable("args", Object[].class, argStart, loopEnd, 5);
-			break;	
+			break;
 		}
 		// Create local variable table entry
 		localVariable("ncb", CodeBlock.class, loopStart, loopEnd, 4);
@@ -1644,11 +1644,11 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			label(ncbEnd);
 			// Create local variable table entry
 			localVariable("args", Object[].class, argStart, ncbEnd, 5);
-			break;	
+			break;
 		}
 		// Create local variable table entry
 		localVariable("ncb", CodeBlock.class, ncbStart, ncbEnd, 4);
-		return caseInvokeCb(object);
+		return super.caseInvokeCb(object);
 	}
 
 	/**
@@ -1744,11 +1744,11 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 			label(ncbEnd);
 			// Create local variable table entry
 			localVariable("args", Object[].class, argStart, ncbEnd, 5);
-			break;	
+			break;
 		}
 		// Create local variable table entry
 		localVariable("ncb", CodeBlock.class, ncbStart, ncbEnd, 4);
-		return caseInvokeCbS(object);
+		return super.caseInvokeCbS(object);
 	}
 
 	/**
@@ -1810,7 +1810,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		label(ifEnd);
 		// Create local variable table entry
 		localVariable("ncb", CodeBlock.class, ncbStart, ncbEnd, 4);
-		return caseAnd(object);
+		return super.caseAnd(object);
 	}
 
 	/**
@@ -2002,7 +2002,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	 * {@inheritDoc}
 	 */
 	@Override
-	public MethodVisitor caseGetenvtype(Getenvtype object) {
+	public MethodVisitor caseGetenvtype(final Getenvtype object) {
 		getStatic(JITCodeBlock.class, "EXEC_ENV", EClass.class); // [..., ExecEnv]
 		return super.caseGetenvtype(object);
 	}
@@ -2058,7 +2058,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 		} else if (cls == Double.TYPE) {
 			invokeStat(Double.class, "valueOf", Double.class, Type.DOUBLE_TYPE); // Double.valueOf(val): [..., Double]
 		} else if (Enumerator.class.isAssignableFrom(cls)) {
-			invokeVirt(Object.class, "toString", String.class); // val.toString(): [..., String] 
+			invokeVirt(Object.class, "toString", String.class); // val.toString(): [..., String]
 			new_(EnumLiteral.class); // new EnumLiteral: [..., String, enum]
 			dup_x1(); // [..., enum, String, enum]
 			swap(); // [..., enum, enum, Stringl]
@@ -2076,7 +2076,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 					aload(2); // env: [..., enumlist, env]
 					aload(4); // self: [..., enumlist, env, self]
 					invokeIface(ExecEnv.class, "getInoutModelOf", Model.class, EObject.class); // env.getInoutModelOf(self): [..., enumlist,
-																								// model]
+					// model]
 					ifnull(ifModelNull); // jump if model == null: [..., enumlist]
 					invokeVirt(EnumConversionList.class, "cache", EnumConversionList.class); // enumlist.cache(): [..., enumlist]
 					label(ifModelNull); // [..., enumlist]
@@ -2105,7 +2105,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 					aload(2); // env: [..., enumlist, env]
 					aload(4); // self: [..., enumlist, env, self]
 					invokeIface(ExecEnv.class, "getInoutModelOf", Model.class, EObject.class); // env.getInoutModelOf(self): [..., enumlist,
-																								// model]
+					// model]
 					ifnull(ifModelNull); // jump if model == null: [..., enumlist]
 					invokeVirt(EnumConversionList.class, "cache", EnumConversionList.class); // enumlist.cache(): [..., enumlist]
 					label(ifModelNull); // [..., enumlist]
@@ -2270,37 +2270,37 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	 * @param retType the method return type {@link Class} or {@link Type}
 	 * @param argTypes the method argument type {@link Class}es or {@link Type}s
 	 */
-	protected void invoke(final int opcode, final Class<?> owner, final String name, 
+	protected void invoke(final int opcode, final Class<?> owner, final String name,
 			final Object retType, final Object... argTypes) {
 		final Type[] ats = new Type[argTypes.length];
 		for (int i = 0; i < argTypes.length; i++) {
 			ats[i] = argTypes[i] instanceof Type ? (Type)argTypes[i] : Type.getType((Class<?>)argTypes[i]);
 		}
-		mv.visitMethodInsn(opcode, 
-				Type.getInternalName(owner), 
-				name, 
+		mv.visitMethodInsn(opcode,
+				Type.getInternalName(owner),
+				name,
 				Type.getMethodDescriptor(
-						retType instanceof Type ? (Type)retType : Type.getType((Class<?>)retType), 
-						ats),
+						retType instanceof Type ? (Type)retType : Type.getType((Class<?>)retType),
+								ats),
 				owner.isInterface());
 	}
 
-	protected void invokeIface(final Class<?> owner, final String name, 
+	protected void invokeIface(final Class<?> owner, final String name,
 			final Object retType, final Object... argTypes) {
 		invoke(INVOKEINTERFACE, owner, name, retType, argTypes);
 	}
 
-	protected void invokeVirt(final Class<?> owner, final String name, 
+	protected void invokeVirt(final Class<?> owner, final String name,
 			final Object retType, final Object... argTypes) {
 		invoke(INVOKEVIRTUAL, owner, name, retType, argTypes);
 	}
 
-	protected void invokeStat(final Class<?> owner, final String name, 
+	protected void invokeStat(final Class<?> owner, final String name,
 			final Object retType, final Object... argTypes) {
 		invoke(INVOKESTATIC, owner, name, retType, argTypes);
 	}
 
-	protected void invokeSpec(final Class<?> owner, final String name, 
+	protected void invokeSpec(final Class<?> owner, final String name,
 			final Object retClass, final Object... argClasses) {
 		invoke(INVOKESPECIAL, owner, name, retClass, argClasses);
 	}
@@ -2316,12 +2316,12 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	 * @param name the field name
 	 * @param type the field {@link Class} or {@link Type}
 	 */
-	protected void field(final int opcode, final Class<?> owner, final String name, 
+	protected void field(final int opcode, final Class<?> owner, final String name,
 			final Object type) {
-		mv.visitFieldInsn(opcode, Type.getInternalName(owner), name, 
-				type instanceof Type ? 
-						((Type)type).getDescriptor() : 
-						Type.getDescriptor((Class<?>) type));
+		mv.visitFieldInsn(opcode, Type.getInternalName(owner), name,
+				type instanceof Type ?
+						((Type)type).getDescriptor() :
+							Type.getDescriptor((Class<?>) type));
 	}
 
 	protected void getField(final Class<?> owner, final String name, final Object type) {
@@ -2373,7 +2373,7 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	 * @param index the local variable's index.
 	 * @throws IllegalArgumentException if one of the labels has not already been visited by this visitor (by the {@link MethodVisitor#visitLabel} method).
 	 */
-	protected void localVariable(final String name, final Class<?> type, 
+	protected void localVariable(final String name, final Class<?> type,
 			final Label start, final Label end, final int index) {
 		mv.visitLocalVariable(name, Type.getDescriptor(type), null, start, end, index);
 	}
@@ -2386,11 +2386,11 @@ public class ByteCodeSwitch extends EmftvmSwitch<MethodVisitor> implements Opcod
 	 * @param type internal name of the type of exceptions handled by the handler, or null to catch any exceptions (for "finally" blocks).
 	 * @throws IllegalArgumentException if one of the labels has already been visited by this visitor (by the {@link MethodVisitor#visitLabel} method).
 	 */
-	protected void tryCatchBlock(final Label start, final Label end, 
+	protected void tryCatchBlock(final Label start, final Label end,
 			final Label handler, final Class<?> type) {
 		mv.visitTryCatchBlock(start, end, handler, Type.getInternalName(type));
 	}
-	
+
 	/**
 	 * Returns the next instruction for the given instruction, or <code>null</code>.
 	 * @param instruction the instruction
