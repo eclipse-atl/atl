@@ -15,6 +15,7 @@ package org.eclipse.m2m.atl.emftvm.tests;
 import org.eclipse.m2m.atl.emftvm.tests.compiler.AtlResourceTest;
 import org.eclipse.m2m.atl.emftvm.tests.compiler.CompilerTest;
 import org.eclipse.m2m.atl.emftvm.tests.integration.IntegrationTest;
+import org.eclipse.m2m.atl.emftvm.tests.jit.ByteCodeSwitchTest;
 import org.eclipse.m2m.atl.emftvm.tests.performance.ATLtoEMFTVMPerformanceTest;
 import org.eclipse.m2m.atl.emftvm.tests.performance.EcoreCopyPerformanceTest;
 import org.eclipse.m2m.atl.emftvm.tests.pojo.PojoModelTest;
@@ -81,6 +82,7 @@ public class EmftvmAllTests extends TestSuite {
 		suite.addTestSuite(OCLOperationsTest.class);
 		suite.addTestSuite(StackFrameTest.class);
 		suite.addTestSuite(TupleTest.class);
+		suite.addTestSuite(ByteCodeSwitchTest.class);
 		suite.addTestSuite(PojoModelTest.class);
 		suite.addTestSuite(CompilerTest.class);
 		suite.addTestSuite(AtlResourceTest.class);

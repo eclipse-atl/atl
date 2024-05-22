@@ -9,10 +9,8 @@
  *     Dennis Wagelaar - initial API and
  *         implementation and/or initial documentation
  *******************************************************************************/
-package org.eclipse.m2m.atl.emftvm.jit;
+package org.eclipse.m2m.atl.emftvm.tests.jit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -77,6 +75,9 @@ import org.eclipse.m2m.atl.emftvm.Store;
 import org.eclipse.m2m.atl.emftvm.Swap;
 import org.eclipse.m2m.atl.emftvm.SwapX1;
 import org.eclipse.m2m.atl.emftvm.Xor;
+import org.eclipse.m2m.atl.emftvm.jit.ByteCodeSwitch;
+import org.eclipse.m2m.atl.emftvm.jit.CodeBlockJIT;
+import org.eclipse.m2m.atl.emftvm.jit.LabelSwitch;
 import org.junit.Before;
 import org.junit.Test;
 import org.objectweb.asm.Label;
@@ -84,11 +85,13 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import junit.framework.TestCase;
+
 /**
  * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  *
  */
-public class ByteCodeSwitchTest {
+public class ByteCodeSwitchTest extends TestCase {
 
 	protected ByteCodeSwitch fixture;
 
@@ -100,6 +103,7 @@ public class ByteCodeSwitchTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		codeBlockJITMock = mock(CodeBlockJIT.class);
