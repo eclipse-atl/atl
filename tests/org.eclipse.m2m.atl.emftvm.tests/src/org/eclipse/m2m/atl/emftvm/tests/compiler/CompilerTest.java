@@ -211,7 +211,22 @@ public class CompilerTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests regression of <a href="https://github.com/eclipse-atl/atl/issues/2">Bug
+	 * #2</a>: Specifying a matched rule input element from an undeclared metamodel
+	 * will attempt to delete that input element in EMFTVM.
+	 */
+	public void testBug2() {
+		final Model outModel = compile(URI.createURI("test-data/Regression/Bug2.atl", true));
+		assertEquals(null, validate(outModel));
+
+		final Resource refModel = new ResourceSetImpl().getResource(
+				URI.createURI("test-data/Regression/Bug2.emftvm", true), true);
+		assertEquals(refModel, outModel.getResource());
+	}
+
+	/**
 	 * Tests detection of character set encoding by the compiler.
+	 *
 	 * @throws CoreException
 	 * @throws IOException
 	 */
