@@ -97,8 +97,8 @@ SPDX-License-Identifier: EPL-2.0
                 -timestamp ${build.timestamp}
                 -type ${build.type}
                 -body-image https://www.eclipse.org/atl/images/logo/logoATL-transparent.png
-                -breadcrumb "Modeling https://www.eclipse.org/modeling"
                 -breadcrumb "MMT https://www.eclipse.org/mmt"
+                -breadcrumb "ATL https://www.eclipse.org/atl"
                 -mapping atl->ATL
                 ${org.eclipse.justj.p2.manager.extra.args}
               </appArgLine>
