@@ -405,6 +405,18 @@
 			</pluginRepositories>
 		</profile>
 
+		<profile>
+			<id>promote</id>
+			<activation>
+				<property>
+					<name>promote</name>
+					<value>!false</value>
+				</property>
+			</activation>
+			<modules>
+				<module>promotion</module>
+			</modules>
+		</profile>
 	</profiles>
 
 </project>

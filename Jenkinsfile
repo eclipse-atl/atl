@@ -31,7 +31,7 @@ pipeline {
     )
 
     booleanParam(
-      name: 'BUILD_SIGN',
+      name: 'ECLIPSE_SIGN',
       defaultValue: false,
       description: '''
         Choose whether or not the bundles will be signed.
@@ -40,7 +40,7 @@ pipeline {
     )
  
     booleanParam(
-      name: 'BUILD_PROMOTE',
+      name: 'PROMOTE',
       defaultValue: false,
       description: 'Whether to promote the build to the download server.'
     )
@@ -57,13 +57,13 @@ pipeline {
       steps {
         script {
           env.BUILD_TYPE = params.BUILD_TYPE
-          env.BUILD_SIGN = params.BUILD_SIGN
-          env.BUILD_PROMOTE = params.BUILD_PROMOTE && env.BUILD_SIGN
+          env.ECLIPSE_SIGN = params.ECLIPSE_SIGN
+          env.PROMOTE = params.PROMOTE && env.ECLIPSE_SIGN
           def description = """
 BUILD_TYPE=${env.BUILD_TYPE}
-BUILD_PROMOTE=${env.BUILD_PROMOTE}
+PROMOTE=${env.PROMOTE}
 BUILD_TIMESTAMP=${env.BUILD_TIMESTAMP}
-BUILD_SIGN=${env.BUILD_SIGN}
+ECLIPSE_SIGN=${env.ECLIPSE_SIGN}
 ARCHIVE=${params.ARCHIVE}
 """.trim()
           echo description
@@ -111,7 +111,7 @@ ARCHIVE=${params.ARCHIVE}
                 -Dmaven.artifact.threads=16 \
                 -Dbuild.id=${BUILD_TIMESTAMP} \
                 -Dcommit.id=$GIT_COMMIT \
-                -DBUILD_SIGN=${BUILD_SIGN} \
+                -DECLIPSE_SIGN=${ECLIPSE_SIGN} \
                 -Dbuild.type=$BUILD_TYPE \
                 -Dtarget-platform=2024-06 \
                 -Dorg.eclipse.justj.p2.manager.build.url=$JOB_URL \
