@@ -58,7 +58,7 @@ pipeline {
         script {
           env.BUILD_TYPE = params.BUILD_TYPE
           env.ECLIPSE_SIGN = params.ECLIPSE_SIGN
-          env.PROMOTE = params.PROMOTE && env.BUILD_SIGN
+          env.PROMOTE = params.PROMOTE && env.ECLIPSE_SIGN
           def description = """
 BUILD_TYPE=${env.BUILD_TYPE}
 PROMOTE=${env.PROMOTE}
