@@ -116,8 +116,7 @@ ARCHIVE=${params.ARCHIVE}
                 -Dorg.eclipse.justj.p2.manager.build.url=$JOB_URL \
                 -Dorg.eclipse.justj.p2.manager.relative=$PUBLISH_LOCATION \
                 clean \
-                deploy \
-                -P2021-03
+                deploy
               '''
           }
         }
