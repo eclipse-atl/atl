@@ -367,7 +367,7 @@
 			<id>sign</id>
 			<activation>
 				<property>
-					<name>BUILD_SIGN</name>
+					<name>ECLIPSE_SIGN</name>
 					<value>true</value>
 				</property>
 			</activation>
