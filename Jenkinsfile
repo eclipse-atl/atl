@@ -113,6 +113,7 @@ ARCHIVE=${params.ARCHIVE}
                 -Dcommit.id=$GIT_COMMIT \
                 -DBUILD_SIGN=${BUILD_SIGN} \
                 -Dbuild.type=$BUILD_TYPE \
+                -Dtarget-platform=2024-06 \
                 -Dorg.eclipse.justj.p2.manager.build.url=$JOB_URL \
                 -Dorg.eclipse.justj.p2.manager.relative=$PUBLISH_LOCATION \
                 clean \
