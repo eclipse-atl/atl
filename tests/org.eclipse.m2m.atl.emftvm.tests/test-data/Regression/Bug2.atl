@@ -1,0 +1,17 @@
+-- @atlcompiler emftvm
+module "Regression::Bug2";
+
+create OUT: MM from IN: MyProfile;
+
+helper context UML!Package def : test : Boolean = true;
+
+rule forPackage {
+	from
+		src: UML!Package (src.isInScope())
+		
+	to
+		tgt: MM!Package(
+			name <- src.name
+			,subPackages <- src.packagedElement->select(p | p.oclIsKindOf(UML!Package))
+		)
+}

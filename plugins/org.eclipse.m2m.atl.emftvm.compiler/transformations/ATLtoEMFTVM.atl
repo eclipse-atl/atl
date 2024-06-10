@@ -681,6 +681,7 @@ rule MatchedRule {
 		deletedSourceElements : Sequence(ATL!InPatternElement) =
 			s.inPattern.elements->select(e|
 				(s.isDefault or s.isRefining) and
+				e.actualModels->notEmpty() and
 				e.actualModels->forAll(m|m.isRefinedModel) and
 				(e.actualMapsToElement.oclIsUndefined() or
 				not e.actualMapsToElement.isRefiningElement));
