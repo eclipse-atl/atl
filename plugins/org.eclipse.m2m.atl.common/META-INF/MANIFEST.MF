@@ -19,5 +19,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.osgi
 Bundle-ClassPath: .
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: org.eclipse.m2m.atl.common

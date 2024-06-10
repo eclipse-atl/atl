@@ -316,9 +316,9 @@ public class FieldImpl extends FeatureImpl implements Field {
 			if (currentVal instanceof List<?>) {
 				if (currentVal instanceof LazyCollection<?>) {
 					if (value instanceof Collection<?>) {
-						addValue(context, (Collection<Object>) value, index, (LazyCollection<Object>) currentVal);
+						addCollectionValue(context, (Collection<Object>) value, index, (LazyCollection<Object>) currentVal);
 					} else {
-						addValue(context, value, index, (LazyCollection<Object>) currentVal);
+						addSingleValue(context, value, index, (LazyCollection<Object>) currentVal);
 					}
 				} else {
 					if (value instanceof Collection<?>) {
@@ -342,9 +342,9 @@ public class FieldImpl extends FeatureImpl implements Field {
 				}
 				if (currentVal instanceof LazyCollection<?>) {
 					if (value instanceof Collection<?>) {
-						addValue(context, (Collection<Object>) value, (LazyCollection<Object>) currentVal);
+						addCollectionValue(context, (Collection<Object>) value, (LazyCollection<Object>) currentVal);
 					} else {
-						addValue(context, value, (LazyCollection<Object>) currentVal);
+						addSingleValue(context, value, (LazyCollection<Object>) currentVal);
 					}
 				} else {
 					if (value instanceof Collection<?>) {
@@ -365,19 +365,19 @@ public class FieldImpl extends FeatureImpl implements Field {
 		}
 	}
 
-	private <T> void addValue(final Object context, final Collection<T> value, final int index, final LazyCollection<T> currentVal) {
+	private <T> void addCollectionValue(final Object context, final Collection<T> value, final int index, final LazyCollection<T> currentVal) {
 		setValue(context, currentVal.includingAll(value, index + 1));
 	}
 
-	private <T> void addValue(final Object context, final T value, final int index, final LazyCollection<T> currentVal) {
+	private <T> void addSingleValue(final Object context, final T value, final int index, final LazyCollection<T> currentVal) {
 		setValue(context, currentVal.including(value, index + 1));
 	}
 
-	private <T> void addValue(final Object context, final Collection<T> value, final LazyCollection<T> currentVal) {
+	private <T> void addCollectionValue(final Object context, final Collection<T> value, final LazyCollection<T> currentVal) {
 		setValue(context, currentVal.includingAll(value));
 	}
 
-	private <T> void addValue(final Object context, final T value, final LazyCollection<T> currentVal) {
+	private <T> void addSingleValue(final Object context, final T value, final LazyCollection<T> currentVal) {
 		setValue(context, currentVal.including(value));
 	}
 
@@ -393,9 +393,9 @@ public class FieldImpl extends FeatureImpl implements Field {
 		if (currentVal instanceof Collection<?>) {
 			if (currentVal instanceof LazyCollection<?>) {
 				if (value instanceof Collection<?>) {
-					removeValue(context, (Collection<Object>) value, (LazyCollection<Object>) currentVal);
+					removeCollectionValue(context, (Collection<Object>) value, (LazyCollection<Object>) currentVal);
 				} else {
-					removeValue(context, value, (LazyCollection<Object>) currentVal);
+					removeSingleValue(context, value, (LazyCollection<Object>) currentVal);
 				}
 			} else {
 				if (value instanceof Collection<?>) {
@@ -412,11 +412,11 @@ public class FieldImpl extends FeatureImpl implements Field {
 		}
 	}
 
-	private <T> void removeValue(final Object context, final Collection<T> value, final LazyCollection<T> currentVal) {
+	private <T> void removeCollectionValue(final Object context, final Collection<T> value, final LazyCollection<T> currentVal) {
 		setValue(context, currentVal.excludingAll(value));
 	}
 
-	private <T> void removeValue(final Object context, final T value, final LazyCollection<T> currentVal) {
+	private <T> void removeSingleValue(final Object context, final T value, final LazyCollection<T> currentVal) {
 		setValue(context, currentVal.excluding(value));
 	}
 

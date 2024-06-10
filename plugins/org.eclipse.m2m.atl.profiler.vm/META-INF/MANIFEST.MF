@@ -16,5 +16,5 @@ Require-Bundle: org.eclipse.m2m.atl.profiler.core,
  org.eclipse.m2m.atl.engine
 Export-Package: org.eclipse.m2m.atl.profiler.vm;uses:="org.eclipse.m2m.atl.engine.vm,org.eclipse.emf.ecore"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: org.eclipse.m2m.atl.profiler.vm
