@@ -1,5 +1,5 @@
 def defaultPromote = false
-if (env.BRANCH_NAME == 'master')
+if (env.BRANCH_NAME == 'default_promote_on_master')
 {
   defaultPromote = true
 }
