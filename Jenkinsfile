@@ -23,7 +23,6 @@ pipeline {
     PUBLISH_LOCATION = 'builds'
     BUILD_TIMESTAMP = sh(returnStdout: true, script: 'date +%Y%m%d%H%M').trim()
     CHECKOUT = 'false'
-    DEFAULT_PROMOTE = defaultPromote
   }
 
   parameters {
@@ -38,7 +37,7 @@ pipeline {
 
     booleanParam(
       name: 'ECLIPSE_SIGN',
-      defaultValue: ${env.DEFAULT_PROMOTE},
+      defaultValue: defaultPromote,
       description: '''
         Choose whether or not the bundles will be signed.
         This is relevant only for nightly and milestone builds.
@@ -47,7 +46,7 @@ pipeline {
  
     booleanParam(
       name: 'PROMOTE',
-      defaultValue: ${env.DEFAULT_PROMOTE},
+      defaultValue: defaultPromote,
       description: 'Whether to promote the build to the download server.'
     )
 
@@ -62,6 +61,7 @@ pipeline {
     stage('Display Parameters') {
       steps {
         script {
+          env.DEFAULT_PROMOTE = defaultPromote
           env.BUILD_TYPE = params.BUILD_TYPE
           env.ECLIPSE_SIGN = params.ECLIPSE_SIGN
           env.PROMOTE = params.PROMOTE && env.ECLIPSE_SIGN
