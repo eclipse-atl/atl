@@ -1,3 +1,8 @@
+def defaultDeploy = false
+if (env.BRANCH_NAME == 'master')
+{
+  defaultDeploy = true
+}
 pipeline {
   agent {
     label 'centos-latest'
@@ -32,7 +37,7 @@ pipeline {
 
     booleanParam(
       name: 'ECLIPSE_SIGN',
-      defaultValue: false,
+      defaultValue: defaultDeploy,
       description: '''
         Choose whether or not the bundles will be signed.
         This is relevant only for nightly and milestone builds.
@@ -41,7 +46,7 @@ pipeline {
  
     booleanParam(
       name: 'PROMOTE',
-      defaultValue: false,
+      defaultValue: defaultDeploy,
       description: 'Whether to promote the build to the download server.'
     )
 
