@@ -1,5 +1,5 @@
 def defaultDeploy = false
-if ( BRANCH_NAME == "master" )
+if (env.BRANCH_NAME == 'master')
 {
   defaultDeploy = true
 }
