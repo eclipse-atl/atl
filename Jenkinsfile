@@ -61,13 +61,10 @@ pipeline {
     stage('Display Parameters') {
       steps {
         script {
-          env.DEFAULT_PROMOTE = defaultPromote
           env.BUILD_TYPE = params.BUILD_TYPE
           env.ECLIPSE_SIGN = params.ECLIPSE_SIGN
           env.PROMOTE = params.PROMOTE && env.ECLIPSE_SIGN
           def description = """
-BRANCH_NAME=${env.BRANCH_NAME}
-DEFAULT_PROMOTE=${env.DEFAULT_PROMOTE}
 BUILD_TYPE=${env.BUILD_TYPE}
 PROMOTE=${env.PROMOTE}
 BUILD_TIMESTAMP=${env.BUILD_TIMESTAMP}
