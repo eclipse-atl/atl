@@ -1,7 +1,7 @@
-def defaultDeploy = false
+def defaultPromote = false
 if (env.BRANCH_NAME == 'master')
 {
-  defaultDeploy = true
+  defaultPromote = true
 }
 pipeline {
   agent {
@@ -37,7 +37,7 @@ pipeline {
 
     booleanParam(
       name: 'ECLIPSE_SIGN',
-      defaultValue: defaultDeploy,
+      defaultValue: defaultPromote,
       description: '''
         Choose whether or not the bundles will be signed.
         This is relevant only for nightly and milestone builds.
@@ -46,7 +46,7 @@ pipeline {
  
     booleanParam(
       name: 'PROMOTE',
-      defaultValue: defaultDeploy,
+      defaultValue: defaultPromote,
       description: 'Whether to promote the build to the download server.'
     )
 
@@ -105,7 +105,7 @@ ARCHIVE=${params.ARCHIVE}
         sshagent(['projects-storage.eclipse.org-bot-ssh']) {
           dir('.') {
             sh '''
-              if [[ $BUILD_PROMOTE == false ]]; then
+              if [[ $PROMOTE == false ]]; then
                 promotion_argument='-Dpromote=false -Dorg.eclipse.justj.p2.manager.args='
               fi
               mvn  \
