@@ -11,4 +11,4 @@ Developed on top of the Eclipse platform, the ATL Integrated Environnement (IDE)
 
 # Contributing
 
-See [CONTRIBUTING](CONTRIBUTING) for details.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
