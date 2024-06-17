@@ -3,6 +3,14 @@ if (env.BRANCH_NAME == 'master')
 {
   defaultPromote = true
 }
+
+def targetPlatformToJavaVersionMap = [
+  '2024-09' : '21',
+  '2024-06' : '17',
+]
+
+def targetPlatforms = targetPlatformToJavaVersionMap.keySet() as List
+
 pipeline {
   agent {
     label 'centos-latest'
@@ -16,7 +24,7 @@ pipeline {
 
   tools {
     maven 'apache-maven-latest'
-    jdk 'temurin-jdk17-latest'
+    jdk 'temurin-jdk21-latest'
   }
 
   environment {
@@ -32,6 +40,15 @@ pipeline {
       description: '''
         Choose the type of build.
         Note that a release build will not promote the build, but rather will promote the most recent milestone build.
+        '''
+    )
+
+    choice(
+      name: 'TARGET_PLATFORM',
+      choices: targetPlatforms,
+      description: '''
+        Choose the named target platform against which to compile and test.
+        This is relevant only for nightly and milestone builds.
         '''
     )
 
@@ -62,10 +79,14 @@ pipeline {
       steps {
         script {
           env.BUILD_TYPE = params.BUILD_TYPE
+          env.TARGET_PLATFORM = params.TARGET_PLATFORM
+          env.JAVA_VERSION = targetPlatformToJavaVersionMap[params.TARGET_PLATFORM]
           env.ECLIPSE_SIGN = params.ECLIPSE_SIGN
           env.PROMOTE = params.PROMOTE && env.ECLIPSE_SIGN
           def description = """
 BUILD_TYPE=${env.BUILD_TYPE}
+TARGET_PLATFORM=${env.TARGET_PLATFORM}
+JAVA_VERSION=${env.JAVA_VERSION}
 PROMOTE=${env.PROMOTE}
 BUILD_TIMESTAMP=${env.BUILD_TIMESTAMP}
 ECLIPSE_SIGN=${env.ECLIPSE_SIGN}
@@ -117,8 +138,9 @@ ARCHIVE=${params.ARCHIVE}
                 -Dbuild.id=${BUILD_TIMESTAMP} \
                 -Dcommit.id=$GIT_COMMIT \
                 -DECLIPSE_SIGN=${ECLIPSE_SIGN} \
+                -Dtarget-platform=${TARGET_PLATFORM} \
+                -DjavaVersion=${JAVA_VERSION} \
                 -Dbuild.type=$BUILD_TYPE \
-                -Dtarget-platform=2024-06 \
                 -Dorg.eclipse.justj.p2.manager.build.url=$JOB_URL \
                 -Dorg.eclipse.justj.p2.manager.relative=$PUBLISH_LOCATION \
                 clean \
