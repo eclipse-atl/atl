@@ -36,11 +36,11 @@
 
 	<profiles>
 		<profile>
-			<id>stable</id>
+			<id>milestone</id>
 			<activation>
 				<property>
 					<name>BUILD_TYPE</name>
-					<value>S</value>
+					<value>milestone</value>
 				</property>
 			</activation>
 			<build>
@@ -77,7 +77,7 @@
 			<activation>
 				<property>
 					<name>BUILD_TYPE</name>
-					<value>R</value>
+					<value>release</value>
 				</property>
 			</activation>
 			<build>
