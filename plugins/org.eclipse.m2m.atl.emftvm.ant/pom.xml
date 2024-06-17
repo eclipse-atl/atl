@@ -120,7 +120,7 @@
 			<id>milestone</id>
 			<activation>
 				<property>
-					<name>BUILD_TYPE</name>
+					<name>build.type</name>
 					<value>milestone</value>
 				</property>
 			</activation>
@@ -157,7 +157,7 @@
 			<id>release</id>
 			<activation>
 				<property>
-					<name>BUILD_TYPE</name>
+					<name>build.type</name>
 					<value>release</value>
 				</property>
 			</activation>
