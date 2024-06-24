@@ -1,0 +1,17 @@
+-- @atlcompiler emftvm
+-- @nsURI UML=http://www.eclipse.org/uml2/5.0.0/UML
+query OperationMultipleInheritance =
+	UML!Association.allInstances()->first().testOperation() and
+	UML!Association.allInstances()->first().testOperation(UML!Association.allInstances()->first(), UML!Association.allInstances()->first().name) and
+	UML!Class.allInstances()->first().testOperation() and
+	UML!Class.allInstances()->first().testOperation(UML!Class.allInstances()->first(), UML!Class.allInstances()->first().name) and
+	UML!AssociationClass.allInstances()->first().testOperation(UML!AssociationClass.allInstances()->first(), UML!AssociationClass.allInstances()->first().name) and
+	UML!AssociationClass.allInstances()->first().testOperation();
+
+helper context UML!Element def : testOperation() : Boolean = true;
+
+helper context UML!Element def : testOperation(param1 : UML!Element, param2 : String) : Boolean = true;
+
+helper context UML!Element def : testOperation(param1 : UML!NamedElement, param2 : String) : Boolean = true;
+
+helper context UML!Element def : testOperation(param1 : UML!Package, param2 : String) : Boolean = true;

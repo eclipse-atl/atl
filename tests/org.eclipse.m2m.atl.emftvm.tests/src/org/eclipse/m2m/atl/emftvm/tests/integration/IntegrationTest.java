@@ -525,6 +525,26 @@ public class IntegrationTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests regression of
+	 * <a href="https://github.com/eclipse-atl/atl/issues/14">Bug # 14</a>.
+	 */
+	public void testOperationMultipleInheritance() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel(UMLPackage.eINSTANCE.eResource());
+		final Model in = loadTestModel(rs, "/test-data/FieldMultipleInheritance.uml");
+		env.registerMetaModel("UML", metamodel);
+		env.registerInputModel("IN", in);
+		env.loadModule(createTestModuleResolver(), "OperationMultipleInheritance");
+		td.finishLoading();
+		final Object result = env.run(td);
+		td.finish();
+
+		assertEquals(true, result);
+	}
+
+	/**
 	 * Tests the ATL metamodel API.
 	 */
 	public void testATLAPI() throws Exception {
