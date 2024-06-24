@@ -24,7 +24,7 @@ pipeline {
 
   tools {
     maven 'apache-maven-latest'
-    jdk 'temurin-jdk21-latest'
+    jdk 'temurin-jdk${targetPlatformToJavaVersionMap[params.TARGET_PLATFORM]}-latest'
   }
 
   environment {
