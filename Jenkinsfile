@@ -5,8 +5,8 @@ if (env.BRANCH_NAME == 'master')
 }
 
 def targetPlatformToJavaVersionMap = [
-  '2024-09' : '21',
   '2024-06' : '17',
+  '2024-09' : '21',
 ]
 
 def targetPlatforms = targetPlatformToJavaVersionMap.keySet() as List
@@ -46,7 +46,6 @@ pipeline {
     choice(
       name: 'TARGET_PLATFORM',
       choices: targetPlatforms,
-      defaultValue: '2024-06',
       description: '''
         Choose the named target platform against which to compile and test.
         This is relevant only for nightly and milestone builds.
