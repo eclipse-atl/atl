@@ -16,8 +16,8 @@
   <license url="%licenseURL">%license</license>
 
 	<url>
-      <update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
-      <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
+      <update label="%UpdateSiteName" url="https://download.eclipse.org/mmt/atl/builds/release"/>
+      <discovery label="%UpdateSiteName" url="https://download.eclipse.org/mmt/atl/builds/release"/>
    </url>
 
    <plugin
