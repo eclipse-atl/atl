@@ -1669,15 +1669,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 						findOperations(argMap, parameterTypes, ops, 0);
 					}
 					op = findMostSpecificOperation(ops);
-					if (op != null) {
-						// Now register directly under context type
-						argMap = (TypeMap<Object, Object>)ctxMap.get(context);
-						if (argMap == null) {
-							argMap = new TypeHashMap<Object, Object>();
-							ctxMap.put(context, argMap);
-						}
-						registerOperationByArgTypes(op, argMap, parameterTypes, 0);
-					}
 				}
 			}
 		}
@@ -1710,8 +1701,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 						// There is an operation with the given context type
 						op = (Operation)ctxMap.get(ctxKey);
 						assert op != null;
-						// Now register directly under context type
-						ctxMap.put(context, op);
 					}
 				}
 			}
@@ -1758,15 +1747,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 						}
 					}
 					op = findMostSpecificOperation(ops);
-					if (op != null) {
-						// Now register directly under context type
-						argMap = (TypeMap<Object, Object>)ctxMap.get(context);
-						if (argMap == null) {
-							argMap = new TypeHashMap<Object, Object>();
-							ctxMap.put(context, argMap);
-						}
-						argMap.put(parameterType, op);
-					}
 				}
 			}
 		}
@@ -1816,10 +1796,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 						final Set<Operation> ops = new LinkedHashSet<Operation>();
 						findOperations(argMap, parameterTypes, ops, 0);
 						op = findMostSpecificOperation(ops);
-						if (op != null) {
-							// Now register directly under context type
-							registerOperationByArgTypes(op, argMap, parameterTypes, 0);
-						}
 					}
 				}
 			}
@@ -1870,7 +1846,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			if (ctxMap != null) {
 				// There are operations with 1 argument
 				// Static operations must be defined in exact context type
-				TypeMap<Object, Object> argMap = (TypeMap<Object, Object>)ctxMap.get(context);
+				final TypeMap<Object, Object> argMap = (TypeMap<Object, Object>)ctxMap.get(context);
 				if (argMap != null) {
 					// First try to find with direct types
 					op = (Operation)argMap.get(parameterType);
@@ -1884,15 +1860,6 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 							ops.add((Operation)argMap.get(argTypeKey));
 						}
 						op = findMostSpecificOperation(ops);
-						if (op != null) {
-							// Now register directly under context type
-							argMap = (TypeMap<Object, Object>)ctxMap.get(context);
-							if (argMap == null) {
-								argMap = new TypeHashMap<Object, Object>();
-								ctxMap.put(context, argMap);
-							}
-							argMap.put(parameterType, op);
-						}
 					}
 				}
 			}
