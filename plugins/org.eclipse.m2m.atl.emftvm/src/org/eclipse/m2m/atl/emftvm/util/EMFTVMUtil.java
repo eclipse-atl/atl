@@ -51,6 +51,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreSwitch;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -1048,12 +1049,16 @@ public final class EMFTVMUtil {
 	 *            the value of the {@link EReference} that has just been modified
 	 */
 	private static void updateResource(final EObject eo, final EObject v) {
-		if (eo.eResource() == null) {
+		final Resource eoResource = eo.eResource();
+		final Resource vResource = v.eResource();
+		if (eoResource == null) {
 			assert eo.eContainer() == null;
-			v.eResource().getContents().add(eo);
-		} else if (v.eResource() == null) {
+			vResource.getContents().add(eo);
+			assert eo.eResource() == vResource;
+		} else if (vResource == null) {
 			assert v.eContainer() == null;
-			eo.eResource().getContents().add(v);
+			eoResource.getContents().add(v);
+			assert v.eResource() == eoResource;
 		}
 		if (eo.eContainer() != null) {
 			eo.eResource().getContents().remove(eo);

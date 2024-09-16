@@ -1124,7 +1124,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 					}
 					for (final EReference ref : o.eClass().getEAllReferences()) {
 						// Only change changeable references that are not the reverse of a containment reference
-						if (ref.isChangeable() && !ref.isContainer()) {
+						if (ref.isChangeable() && !ref.isDerived() && !ref.isContainer()) {
 							final Object val = o.eGet(ref);
 							if (val instanceof Collection<?>) {
 								if (val instanceof List<?>) {
@@ -2370,7 +2370,7 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 				for (final EObject o : eObjects) {
 					for (final EReference ref : o.eClass().getEAllReferences()) {
 						// Only change changeable references that are not the reverse of a containment reference
-						if (ref.isChangeable() && !ref.isContainer()) {
+						if (ref.isChangeable() && !ref.isDerived() && !ref.isContainer()) {
 							final Object val = o.eGet(ref);
 							if (val instanceof Collection<?>) {
 								final List<DeletionEntry> deletionEntries = new ArrayList<DeletionEntry>();

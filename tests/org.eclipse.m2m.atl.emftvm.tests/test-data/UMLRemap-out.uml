@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_do2hAHM8Ee-HytrHT20AYQ" name="UMLRemove">
+  <ownedComment xmi:id="_vuOyAHM8Ee-HytrHT20AYQ">
+    <body>UMLRemove</body>
+  </ownedComment>
+  <packagedElement xmi:type="uml:Model" xmi:id="_H9bEwHRMEe-jlM0HfXDtag" name="toplevel">
+    <ownedComment xmi:id="_xNj2wHM8Ee-HytrHT20AYQ">
+      <body>toplevel</body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Model" xmi:id="_MC1a8HRMEe-jlM0HfXDtag" name="nestedA">
+      <ownedComment xmi:id="_y01WkHM8Ee-HytrHT20AYQ">
+        <body>nestedA</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Model" xmi:id="_R51qkHRMEe-jlM0HfXDtag" name="nestedAA">
+        <ownedComment xmi:id="_0U6CMHM8Ee-HytrHT20AYQ">
+          <body>nestedAA</body>
+        </ownedComment>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Model" xmi:id="_NiZwQHRMEe-jlM0HfXDtag" name="nestedB">
+      <ownedComment xmi:id="_2WF20HM8Ee-HytrHT20AYQ">
+        <body>nestedB</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Model" xmi:id="_TeFrkHRMEe-jlM0HfXDtag" name="nestedBB">
+        <ownedComment xmi:id="_4IRmIHM8Ee-HytrHT20AYQ">
+          <body>nestedBB</body>
+        </ownedComment>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>
