@@ -1,0 +1,18 @@
+-- @atlcompiler emftvm
+-- @nsURI UML=http://www.eclipse.org/uml2/5.0.0/UML
+module UMLRemove;
+create OUT : UML refining IN : UML;
+
+helper context OclAny def : isInScope() : Boolean =
+	true;
+
+helper context UML!Comment def : isInScope() : Boolean =
+	false;
+
+helper context UML!Package def : isInScope() : Boolean =
+	self.nestingPackage.oclIsUndefined() or
+	self.nestingPackage.oclIsKindOf(UML!Model);
+
+rule removes {
+	from src: UML!Element ((not src.isInScope()).debug('removes ' + src.toString()))
+}

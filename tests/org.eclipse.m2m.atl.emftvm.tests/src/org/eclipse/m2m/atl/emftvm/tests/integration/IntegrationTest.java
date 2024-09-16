@@ -545,6 +545,50 @@ public class IntegrationTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests regression of
+	 * <a href="https://github.com/eclipse-atl/atl/issues/20">Bug # 20</a>.
+	 */
+	public void testNestedContainerDelete() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel(UMLPackage.eINSTANCE.eResource());
+		final Model in = loadTestModel(rs, "/test-data/UMLRemove.uml");
+		env.registerMetaModel("UML", metamodel);
+		env.registerInOutModel("IN", in);
+		env.loadModule(createTestModuleResolver(), "UMLRemove");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/UMLRemove-out.uml");
+		assertEquals(refOut.getResource(), in.getResource());
+	}
+
+	/**
+	 * Tests regression of
+	 * <a href="https://github.com/eclipse-atl/atl/issues/20">Bug # 20</a>.
+	 */
+	public void testNestedContainerRemap() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Metamodel metamodel = EmftvmFactory.eINSTANCE.createMetamodel(UMLPackage.eINSTANCE.eResource());
+		final Model in = loadTestModel(rs, "/test-data/UMLRemap.uml");
+		env.registerMetaModel("UML", metamodel);
+		env.registerInOutModel("IN", in);
+		env.loadModule(createTestModuleResolver(), "UMLRemap");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/UMLRemap-out.uml");
+		assertEquals(refOut.getResource(), in.getResource());
+	}
+
+	/**
 	 * Tests the ATL metamodel API.
 	 */
 	public void testATLAPI() throws Exception {
