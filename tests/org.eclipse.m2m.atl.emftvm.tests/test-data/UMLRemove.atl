@@ -13,6 +13,18 @@ helper context UML!Package def : isInScope() : Boolean =
 	self.nestingPackage.oclIsUndefined() or
 	self.nestingPackage.oclIsKindOf(UML!Model);
 
+helper context UML!Stereotype def : isInScope() : Boolean =
+	false;
+
+helper context UML!Extension def : isInScope() : Boolean =
+	false;
+
+helper context UML!ExtensionEnd def : isInScope() : Boolean =
+	false;
+
+helper context UML!ValueSpecification def : isInScope() : Boolean =
+	self.refImmediateComposite().isInScope();
+
 rule removes {
 	from src: UML!Element ((not src.isInScope()).debug('removes ' + src.toString()))
 }
