@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.m2m.atl.profiler.exportmodel.provider.ExportmodelEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.m2m.atl.profiler.exportmodel,
  org.eclipse.m2m.atl.profiler.exportmodel.impl,
  org.eclipse.m2m.atl.profiler.exportmodel.provider,

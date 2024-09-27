@@ -6,7 +6,7 @@ Bundle-Version: 4.11.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.m2m.atl.emftvm.trace.tests
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2m.atl.emftvm.trace;visibility:=reexport,

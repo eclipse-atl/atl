@@ -4,4 +4,4 @@ Bundle-Name: Adaptation
 Bundle-SymbolicName: Adaptation
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.m2m.atl.engine.emfvm,org.eclipse.emf.ecore,org.eclipse.m2m.atl.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
