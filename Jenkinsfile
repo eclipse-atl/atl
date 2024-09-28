@@ -5,9 +5,9 @@ if (env.BRANCH_NAME == 'master')
 }
 
 def targetPlatformToJavaVersionMap = [
+  '2024-12' : '17',
+  '2024-09' : '17',
   '2024-06' : '17',
-  '2024-09' : '21',
-  '2024-12' : '21',
 ]
 
 def targetPlatforms = targetPlatformToJavaVersionMap.keySet() as List
