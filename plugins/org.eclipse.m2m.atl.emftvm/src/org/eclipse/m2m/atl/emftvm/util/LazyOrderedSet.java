@@ -24,6 +24,8 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 
 import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
@@ -1926,6 +1928,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @param element the object to add
 	 * @throws UnsupportedOperationException
 	 */
+	@Override
 	public void add(final int index, final E element) {
 		throw new UnsupportedOperationException();
 	}
@@ -1937,6 +1940,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
+	@Override
 	public boolean addAll(final int index, final Collection<? extends E> c) {
 		throw new UnsupportedOperationException();
 	}
@@ -1944,6 +1948,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public E get(final int index) {
 		if (index < cache.size()) {
 			return ((List<E>)cache).get(index);
@@ -1961,6 +1966,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int indexOf(final Object o) {
 		final int index = ((List<E>)cache).indexOf(o);
 		if (index > -1 || dataSource == null) { // cache complete
@@ -1979,6 +1985,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int lastIndexOf(final Object o) {
 		return indexOf(o); // elements occur only once
 	}
@@ -1986,6 +1993,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ListIterator<E> listIterator() {
 		if (dataSource == null) { // cache complete
 			return Collections.unmodifiableList((List<E>)cache).listIterator();
@@ -1996,6 +2004,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ListIterator<E> listIterator(final int index) {
 		if (dataSource == null) { // cache complete
 			return Collections.unmodifiableList((List<E>)cache).listIterator(index);
@@ -2009,6 +2018,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
+	@Override
 	public E remove(final int index) {
 		throw new UnsupportedOperationException();
 	}
@@ -2020,6 +2030,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
+	@Override
 	public E set(final int index, final E element) {
 		throw new UnsupportedOperationException();
 	}
@@ -2028,6 +2039,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	 * <p><i>Lazy implementation of {@link List#subList(int, int)}.</i></p>
 	 * {@inheritDoc}
 	 */
+	@Override
 	public LazyOrderedSet<E> subList(final int fromIndex, final int toIndex) {
 		return new SubOrderedSet<E>(fromIndex, toIndex, this);
 	}
@@ -2472,6 +2484,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 	public LazyOrderedSet<?> flatten() {
 		final LazyOrderedSet<E> inner = this;
 		return new LazyOrderedSet<Object>(new Iterable<Object>() {
+			@Override
 			public Iterator<Object> iterator() {
 				return new FlattenSetIterator(inner);
 			}
@@ -2626,6 +2639,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 		function.setParentFrame(null);
 		final LazyOrderedSet<E> inner = this;
 		return new LazyList<T>(new Iterable<T>() {
+			@Override
 			public Iterator<T> iterator() {
 				return new CollectIterator<T>(inner, function, parentFrame);
 			}
@@ -2654,6 +2668,7 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 					}
 					assert !sortingKeys.hasNext();
 					Arrays.sort(innerCopy, new Comparator<Object>() {
+						@Override
 						public int compare(final Object o1, final Object o2) {
 							return elementsToKeys.get(o1).compareTo(elementsToKeys.get(o2));
 						}
@@ -2671,6 +2686,14 @@ public class LazyOrderedSet<E> extends LazyCollection<E> implements Set<E>, List
 				return ((Collection<E>) dataSource).size();
 			}
 		};
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Spliterator<E> spliterator() {
+		return Spliterators.spliterator(this, Spliterator.ORDERED + Spliterator.DISTINCT);
 	}
 
 	//TODO provide other iterator operations: collectNested

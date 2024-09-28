@@ -11,5 +11,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.m2m.atl.research.aml.utils,
  org.eclipse.gmt.weaver
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %providerName
