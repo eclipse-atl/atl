@@ -84,7 +84,8 @@ public abstract class EMFTVMTest extends TestCase {
 			if (diff instanceof ReferenceChange && ((ReferenceChange) diff).getKind() == DifferenceKind.CHANGE) {
 				assertEquals(diff.getMatch().getLeft(), diff.getMatch().getRight(), ((ReferenceChange) diff).getReference());
 			} else {
-				fail("Difference found: " + diff);
+				fail("Difference found: " + diff + ", left: " + diff.getMatch().getLeft() + ", right: "
+						+ diff.getMatch().getRight());
 			}
 		}
 	}

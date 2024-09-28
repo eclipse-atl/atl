@@ -1033,7 +1033,7 @@ public final class EMFTVMUtil {
 	private static void removeRefValue(final EReference ref, final EObject eo, final Collection<Object> values, final EObject v) {
 		assert eo.eResource() != null;
 		assert v.eResource() != null;
-		if (values.remove(v) && (ref.isContainment() || ref.isContainer())) {
+		if (values.remove(v) && (eo.eResource() == null || v.eResource() == null)) {
 			updateResource(eo, v);
 		}
 		assert eo.eResource() != null;

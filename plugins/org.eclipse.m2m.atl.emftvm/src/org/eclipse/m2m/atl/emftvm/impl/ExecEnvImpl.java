@@ -224,8 +224,11 @@ public class ExecEnvImpl extends EObjectImpl implements ExecEnv {
 			} catch (final Exception e) {
 				frame.setPc(pc);
 				final ExecEnv env = frame.getEnv();
-				throw new VMException(frame, String.format("Error deleting %s.%s from %s: %s", EMFTVMUtil.toPrettyString(o, env),
-						ref.getName(), EMFTVMUtil.toPrettyString(element, env), e.getMessage()), e);
+				throw new VMException(frame,
+						String.format("Error removing value %s from reference %s.%s: %s",
+								EMFTVMUtil.toPrettyString(element, env), EMFTVMUtil.toPrettyString(o, env),
+								ref.getName(), e.getMessage()),
+						e);
 			}
 		}
 
