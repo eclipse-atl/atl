@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.m2m.atl.research.aml.engine;visibility:=reexport,
  org.eclipse.m2m.atl.research.aml.utils
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.eclipse.m2m.atl.engine
 Bundle-Activator: org.eclipse.m2m.atl.research.aml.builder.Activator
 Export-Package: org.eclipse.m2m.atl.research.aml.builder

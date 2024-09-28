@@ -6,7 +6,7 @@ Bundle-Version: 4.11.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 DynamicImport-Package: *
 Export-Package: org.eclipse.m2m.atl.emftvm,
  org.eclipse.m2m.atl.emftvm.constraints,
