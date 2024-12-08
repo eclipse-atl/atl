@@ -3,13 +3,7 @@
 	<topic href="guide/developer/ATL Developer Guide.html" label="ATL Source Code">
 		<topic href="guide/developer/ATL Developer Guide.html#Plug-ins_organization" label="Plug-ins organization"></topic>
 		<topic href="guide/developer/ATL Developer Guide.html#External_dependencies" label="External dependencies"></topic>
-		<topic href="guide/developer/ATL Developer Guide.html#Install_ATL_from_CVS" label="Install ATL from CVS">
-			<topic href="guide/developer/ATL Developer Guide.html#Import_team_project_set" label="Import team project set">
-				<topic href="guide/developer/ATL Developer Guide.html#ANTLR_installation" label="ANTLR installation"></topic>
-				<topic href="guide/developer/ATL Developer Guide.html#MDR_installation_.28Regular_VM_only.29" label="MDR installation (Regular VM only)"></topic>
-				<topic href="guide/developer/ATL Developer Guide.html#Testing" label="Testing"></topic>
-			</topic>
-		</topic>
+		<topic href="guide/developer/ATL Developer Guide.html#Install_ATL_from_GIT" label="Install ATL from GIT"></topic>
 	</topic>
 	<topic href="guide/developer/ATL-Architecture.html" label="ATL Architecture">
 		<topic href="guide/developer/ATL-Architecture.html#Core" label="Core">
@@ -33,6 +27,5 @@
 			<topic href="guide/developer/ATL-Architecture.html#ACG_.28ATL_VM_Code_Generator.29" label="ACG (ATL VM Code Generator)"></topic>
 		</topic>
 	</topic>
-	<topic href="guide/developer/ATL-Bugzilla.html" label="ATL Bugzilla"></topic>
 	<topic href="guide/developer/Updating-This-Document.html" label="Updating This Document"></topic>
 </toc>
