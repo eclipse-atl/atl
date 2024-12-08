@@ -5,6 +5,7 @@ if (env.BRANCH_NAME == 'master')
 }
 
 def targetPlatformToJavaVersionMap = [
+  '2025-03' : '17',
   '2024-12' : '17',
   '2024-09' : '17',
   '2024-06' : '17',
@@ -61,7 +62,7 @@ pipeline {
         This is relevant only for nightly and milestone builds.
       '''
     )
- 
+
     booleanParam(
       name: 'PROMOTE',
       defaultValue: defaultPromote,
