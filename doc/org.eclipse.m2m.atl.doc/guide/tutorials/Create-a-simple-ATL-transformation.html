@@ -17,34 +17,30 @@
 					</a>
 				</td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right">
-					<a href="Updating-This-Document.html" title="Updating This Document">
-						<img alt="Next" border="0" src="images/images/next.gif"/>
-					</a>
-				</td>
+				<td style="width: 20%" align="right"></td>
 			</tr>
 			<tr>
 				<td style="width: 20%" align="left" valign="top">Introduction</td>
 				<td style="width: 60%" align="center"></td>
-				<td style="width: 20%" align="right" valign="top">Updating This Document</td>
+				<td style="width: 20%" align="right" valign="top"></td>
 			</tr>
 		</table><hr/>
 		<h1 id="Create_a_simple_ATL_transformation">Create a simple ATL transformation</h1>
-		<p>This tutorial shows you how to create your first simple transformation with ATL, through a well-known basic example: 
+		<p>This tutorial shows you how to create your first simple transformation with ATL, through a well-known basic example:
 			<b>Families2Persons</b>.
 		</p>
 		<p>
-			<b>Note:</b> This tutorial is followed step by step in the ATL cheatsheet under eclipse : 
-			<i>ATL Development > Create a simple ATL transformation</i>. Go to the 
+			<b>Note:</b> This tutorial is followed step by step in the ATL cheatsheet under eclipse :
+			<i>ATL Development > Create a simple ATL transformation</i>. Go to the
 			<b>Help > Cheat Sheets...</b> menu to find it.
 		</p>
 		<h2 id="Objectives">Objectives</h2>
-		<p>The objectives of this tutorial are to perform a transformation from a list of 
-			<b>families</b> to a list of 
+		<p>The objectives of this tutorial are to perform a transformation from a list of
+			<b>families</b> to a list of
 			<b>persons</b>.
 		</p>
-		<p>On one side (the source), we have a list of 
-			<b>families</b>. Each family has a last name, and contains a father, a mother and a number of sons and daughters (0, 1 or more) all with a first name. We want to transform this list into a new list of 
+		<p>On one side (the source), we have a list of
+			<b>families</b>. Each family has a last name, and contains a father, a mother and a number of sons and daughters (0, 1 or more) all with a first name. We want to transform this list into a new list of
 			<b>persons</b> (the target), this means that each member of the family will be a person, without differentiating parents from children, and with no link between the members of a same family (except a part of their name). In the end, we must only have a person with its full name (first name &amp; last name), male or female.
 		</p>
 		<h3 id="The_Families">The Families</h3>
@@ -59,7 +55,7 @@
 		<h2 id="Requirements">Requirements</h2>
 		<p>First of all, you will need to install ATL on eclipse. If you already have it installed, just skip this task. Otherwise, follow the few steps bellow:</p>
 		<ul>
-			<li>click on 
+			<li>click on
 				<b>Help > Install</b> New Software...
 			</li>
 		</ul>
@@ -67,7 +63,7 @@
 			<img border="0" src="images/InstallNewSoftware_Menu.jpg"/>
 		</p>
 		<ul>
-			<li>then you have to select an update site, an search for 
+			<li>then you have to select an update site, an search for
 				<b>ATL</b> on the filter field when a list of software is available
 			</li>
 			<li>once you have done this, you should see a line "ATL SDK - ATL Transformation Language SDK" on the list below, under the Modeling node</li>
@@ -76,13 +72,13 @@
 			<img border="0" src="images/ATLInstallation.jpg"/>
 		</p>
 		<ul>
-			<li>check it, click 
+			<li>check it, click
 				<b>Next ></b>, and follow the instructions
 			</li>
 		</ul>
-		<p>You can check if ATL is installed by going to 
-			<b>Help > About Eclipse SDK</b>, then clicking the 
-			<b>Installation Details</b> button, and under the 
+		<p>You can check if ATL is installed by going to
+			<b>Help > About Eclipse SDK</b>, then clicking the
+			<b>Installation Details</b> button, and under the
 			<b>Plug-ins</b> tab you should see several lines with ATL.
 		</p>
 		<p>
@@ -95,25 +91,25 @@
 			<img border="0" src="images/ATLPlugins.jpg"/>
 		</p>
 		<p>
-			<i>If you have any problem, please refer to the 
+			<i>If you have any problem, please refer to the
 				<a href="http://wiki.eclipse.org/ATL/User_Guide_-_Installation" title="ATL/User_Guide_-_Installation">User Guide</a> for further information about ATL installation.
 			</i>
 		</p>
 		<h2 id="Create_a_new_ATL_project">Create a new ATL project</h2>
 		<p>After the theory, let's start creating the project.</p>
-		<p>To create a new ATL project, you need to go to 
+		<p>To create a new ATL project, you need to go to
 			<b>File > New > Other...</b>
 		</p>
 		<p>
 			<img border="0" src="images/FileNewOther_Menu.jpg"/>
 		</p>
-		<p>and then select 
+		<p>and then select
 			<b>ATL > ATL Project...</b>.
 		</p>
 		<p>
 			<img border="0" src="images/ATLProject.jpg"/>
 		</p>
-		<p>Then, click the 
+		<p>Then, click the
 			<b>Next ></b> button. Type a name for the project (say "Families2Persons" for our example).
 		</p>
 		<p>
@@ -121,23 +117,23 @@
 		</p>
 		<p>The project should now appear on your projects list.</p>
 		<p>
-			<i>The User Guide also provides a detailled section for 
+			<i>The User Guide also provides a detailled section for
 				<a href="http://wiki.eclipse.org/ATL/User_Guide_-_The_ATL_Tools#Programming_ATL" title="ATL/User_Guide_-_The_ATL_Tools#Programming_ATL">the creation of a new ATL project</a>.
 			</i>
 		</p>
 		<h2 id="The_metamodels">The metamodels</h2>
-		<p>Now that our project is ready to use, we can fill it. Our first files are the representation of a family and a person, that is to say how we want to symbolize then (like a map symbolize the real world). This is called a 
+		<p>Now that our project is ready to use, we can fill it. Our first files are the representation of a family and a person, that is to say how we want to symbolize then (like a map symbolize the real world). This is called a
 			<b>metamodel</b>, and it corresponds to an Ecore file.
 		</p>
-		<p>To create the Ecore file, go to 
-			<b>File > New > Other...</b>, and then select 
-			<b>Eclipse Modeling Framework > Ecore Model</b> and click 
+		<p>To create the Ecore file, go to
+			<b>File > New > Other...</b>, and then select
+			<b>Eclipse Modeling Framework > Ecore Model</b> and click
 			<b>Next ></b>.
 		</p>
 		<p>
 			<img border="0" src="images/EcoreModel.jpg"/>
 		</p>
-		<p>Select your Families2Persons project on the list, enter a name for the file (Families.ecore for instance), and click 
+		<p>Select your Families2Persons project on the list, enter a name for the file (Families.ecore for instance), and click
 			<b>Finish</b>. An empty file is added to your project. Repeat this task for the Persons.ecore metamodel.
 		</p>
 		<p>
@@ -145,18 +141,18 @@
 		</p>
 		<p>Now we need to fill these files.</p>
 		<p>
-			<i>(Note that the User Guide shows other 
+			<i>(Note that the User Guide shows other
 				<a href="http://wiki.eclipse.org/ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Examples_metamodels" title="ATL/User_Guide_-_Overview_of_the_Atlas_Transformation_Language#Examples_metamodels">metamodels examples</a>.)
 			</i>
 		</p>
 		<h3 id="The_Families_metamodel">The Families metamodel</h3>
-		<p>As we saw in the 
+		<p>As we saw in the
 			<b>Objective</b> part, a family has a last name, and a father, a mother, sons and daughters with a first name. That is what we need to tell to the Families.ecore file.
 		</p>
-		<p>Open it with the default editor (Sample Ecore Model Editor). We will also need the 
-			<b>Properties</b> view, so if it is not already opened, you can show it by going on 
-			<b>Window > Show View > Other...</b>, selecting 
-			<b>General > Properties</b> and clicking 
+		<p>Open it with the default editor (Sample Ecore Model Editor). We will also need the
+			<b>Properties</b> view, so if it is not already opened, you can show it by going on
+			<b>Window > Show View > Other...</b>, selecting
+			<b>General > Properties</b> and clicking
 			<b>OK</b>.
 		</p>
 		<p>
@@ -169,11 +165,11 @@
 		<p>
 			<img border="0" src="images/FamiliesEcore_step1.jpg"/>
 		</p>
-		<p>Click on it, and in the 
+		<p>Click on it, and in the
 			<b>Properties</b> view, enter "Families" in the value of the "Name" property. This node is where we are going to put everything that makes a family.
 		</p>
-		<p>So first we create a class "Family", by right clicking on the 
-			<b>Families node</b>, and clicking on 
+		<p>So first we create a class "Family", by right clicking on the
+			<b>Families node</b>, and clicking on
 			<b>New Child > EClass</b>.
 		</p>
 		<p>
@@ -186,29 +182,29 @@
 		<p>
 			<img border="0" src="images/FamiliesEcore_step3.jpg"/>
 		</p>
-		<p>We want to have one and only one last name per family, so we control its multiplicity: set 1 for the lower bound (that should be set to 0 by default), and 1 for the upper bound (that should already be 1). These bounds can be set the same way than the name, but on the 
-			<b>Lower Bound</b> and 
+		<p>We want to have one and only one last name per family, so we control its multiplicity: set 1 for the lower bound (that should be set to 0 by default), and 1 for the upper bound (that should already be 1). These bounds can be set the same way than the name, but on the
+			<b>Lower Bound</b> and
 			<b>Upper Bound</b> properties. We can specify a type for this attribute, and we want it to be a string. So in the EType property, search for the EString type.
 		</p>
 		<p>
 			<img border="0" src="images/FamiliesEcore_step4.jpg"/>
 		</p>
-		<p>At this moment, we have a family with its last name. Now we need 
+		<p>At this moment, we have a family with its last name. Now we need
 			<b>members</b> for this family. Therefore we are going to create another class (as we created the Family class): "Member". This class will be a Families node's child, as the other Family class. These members have a first name, so we add an attribute "firstName" of type EString, and again a member has one and only one first name (see above if you don't remember how to create an attribute, name it, give it a type and change its multiplicity).
 		</p>
-		<p>Now we have to make the links between the family and the members. In this purpose, you have to create children of the Family of the type 
-			<b>EReference</b>. Name these references "father", "mother", "sons" and "daughters". They will have the EType 
-			<b>Member</b>. About the multiplicity, we have on father and mother for one family (so upper and lower bounds set to 1), but we can have as many sons and daughters as we want, even 0 (so lower bound set to 0, and upper bound set to -1, which means *). And at last, put their 
-			<i>Containment</i> property to 
+		<p>Now we have to make the links between the family and the members. In this purpose, you have to create children of the Family of the type
+			<b>EReference</b>. Name these references "father", "mother", "sons" and "daughters". They will have the EType
+			<b>Member</b>. About the multiplicity, we have on father and mother for one family (so upper and lower bounds set to 1), but we can have as many sons and daughters as we want, even 0 (so lower bound set to 0, and upper bound set to -1, which means *). And at last, put their
+			<i>Containment</i> property to
 			<b>true</b> so that they can contain members.
 		</p>
-		<p>Once these attributes are created and configured, we do the same for the Member class. It also needs references towards the Family class. Just add 4 EReferences to the Member class: "familyFather", "familyMother", "familySon" and "familyDaughter" with EType 
-			<b>Family</b>. This time, each reference should have its multiplicity set to 0..1 (it is by default), because a member is either a father, or a mother, or a son, or a daughter, so the reference that is defined for a member shows its role in the family. Then, in order to tell which member refer to which family member, set their EOpposite field to their reference in the Family class (for example, 
-			<b>familyFather</b> refers to the 
+		<p>Once these attributes are created and configured, we do the same for the Member class. It also needs references towards the Family class. Just add 4 EReferences to the Member class: "familyFather", "familyMother", "familySon" and "familyDaughter" with EType
+			<b>Family</b>. This time, each reference should have its multiplicity set to 0..1 (it is by default), because a member is either a father, or a mother, or a son, or a daughter, so the reference that is defined for a member shows its role in the family. Then, in order to tell which member refer to which family member, set their EOpposite field to their reference in the Family class (for example,
+			<b>familyFather</b> refers to the
 			<b>father</b> reference of the Family class).
 		</p>
 		<p>
-			<a href="src/Families.ecore" title="src/Families.ecore">Families.ecore</a> 
+			<a href="src/Families.ecore" title="src/Families.ecore">Families.ecore</a>
 		</p>
 		<pre>&lt;?xml version="1.0" encoding="ISO-8859-1"?>
 &lt;xmi:XMI xmi:version="2.0"
@@ -247,15 +243,15 @@
 		</p>
 		<p>And here we are with the metamodel for our families!</p>
 		<h3 id="The_Persons_metamodel">The Persons metamodel</h3>
-		<p>The principle is the same for the target metamodel, in less complicated. Open the Persons.ecore file, and name the root child node to "Persons". Then add it a class "Person", with one attribute: "fullName" of EType 
+		<p>The principle is the same for the target metamodel, in less complicated. Open the Persons.ecore file, and name the root child node to "Persons". Then add it a class "Person", with one attribute: "fullName" of EType
 			<b>EString</b> and multiplicity 1..1.
 		</p>
-		<p>Then set the 
-			<b>Abstract</b> attribute of the Person class to "true". We need to do this because we won't directly implement this class, but two other subclasses: "Male" and "Female", according to who was the person in the family, a man or a woman. Create these two classes at the same level than Person. We make them subclasses of Person by setting their 
+		<p>Then set the
+			<b>Abstract</b> attribute of the Person class to "true". We need to do this because we won't directly implement this class, but two other subclasses: "Male" and "Female", according to who was the person in the family, a man or a woman. Create these two classes at the same level than Person. We make them subclasses of Person by setting their
 			<b>ESuper Types</b> property to Person.
 		</p>
 		<p>
-			<a href="src/Persons.ecore" title="src/Persons.ecore">Persons.ecore</a> 
+			<a href="src/Persons.ecore" title="src/Persons.ecore">Persons.ecore</a>
 		</p>
 		<pre>&lt;?xml version="1.0" encoding="ISO-8859-1"?>
 &lt;xmi:XMI xmi:version="2.0"
@@ -276,36 +272,36 @@
 		</p>
 		<p>And our second metamodel is ready!</p>
 		<h2 id="The_ATL_transformation_code">The ATL transformation code</h2>
-		<p>Now that we have represented what we have (Families, the 
-			<b>source</b>) and what we want to obtain (Persons, the 
+		<p>Now that we have represented what we have (Families, the
+			<b>source</b>) and what we want to obtain (Persons, the
 			<b>target</b>), we can concentrate on the core of the transformation: the ATL code. This code is going to match a part of the source with a part of the target.
 		</p>
-		<p>What we want in our example, is to take each 
-			<b>member</b> of each 
-			<b>family</b>, and transform him into a 
-			<b>person</b>. That implies melting his first and last name to have a full name, defining whether it's a man or a woman, and copy these pieces of information into a 
+		<p>What we want in our example, is to take each
+			<b>member</b> of each
+			<b>family</b>, and transform him into a
+			<b>person</b>. That implies melting his first and last name to have a full name, defining whether it's a man or a woman, and copy these pieces of information into a
 			<b>Person</b> object.
 		</p>
-		<p>We first need a file to put this code into. So create a new ATL file, by going to 
-			<b>File > New > Other...</b>, and then 
+		<p>We first need a file to put this code into. So create a new ATL file, by going to
+			<b>File > New > Other...</b>, and then
 			<b>ATL > ATL File</b>.
 		</p>
 		<p>
 			<img border="0" src="images/ATLFile.jpg"/>
 		</p>
-		<p>Name it "Families2Persons.atl" for instance, don't forget to select your project, and then click 
+		<p>Name it "Families2Persons.atl" for instance, don't forget to select your project, and then click
 			<b>Finish</b>.
 		</p>
 		<p>
 			<img border="0" src="images/Families2PersonsATL.jpg"/>
 		</p>
-		<p>If you are asked to open the ATL perspective, click 
+		<p>If you are asked to open the ATL perspective, click
 			<b>Yes</b>.
 		</p>
 		<p>When you open the file, an error is marked (we will see how to fix it below), and it contains a single line:</p>
 		<pre>module Families2Persons;
 </pre>
-		<p>First we add two lines 
+		<p>First we add two lines
 			<b>at the top of the file</b>, one for each metamodel, so that the editor can use the auto-completion and documentation when we type in some code concerning the two metamodels:
 		</p>
 		<pre>-- @path Families=/Families2Persons/Families.ecore
@@ -349,9 +345,9 @@
 			</li>
 			<li>The second one is also called on a member of a family, this time gives us a string (
 				<i>: String</i>) and returns the last name of the member. It must look for it in every reference to the family, to see which one is defined (
-				<i>familyFather</i>, 
-				<i>familyMother</i>, 
-				<i>familySon</i> or 
+				<i>familyFather</i>,
+				<i>familyMother</i>,
+				<i>familySon</i> or
 				<i>familyDaughter</i>)
 			</li>
 		</ul>
@@ -374,23 +370,23 @@
 		)
 }
 </pre>
-		<p>Each rule will be called on the object that respect the filter predicate in the 
+		<p>Each rule will be called on the object that respect the filter predicate in the
 			<b>from</b> part. For instance, the first rule takes each member of each families (
-			<i>from s: Families!Member</i>) that is not a female (using the helper we described above, 
+			<i>from s: Families!Member</i>) that is not a female (using the helper we described above,
 			<i>not s.isFemale()</i>). And then it creates a male person (
-			<i>to t: Persons!Male</i>) and set its 
-			<b>fullName</b> attribute to the first name of the member followed by its last name (using the helper 
+			<i>to t: Persons!Male</i>) and set its
+			<b>fullName</b> attribute to the first name of the member followed by its last name (using the helper
 			<i>familyName</i> we saw above). The principle is the same for the second rule, whereas this time it takes only the female members.
 		</p>
-		<p>You can download the entire file 
-			<a href="src/Families2Persons.atl" title="src/Families2Persons.atl">here</a>. 
+		<p>You can download the entire file
+			<a href="src/Families2Persons.atl" title="src/Families2Persons.atl">here</a>.
 		</p>
-		<p>Note that the ATL editor provides syntax highlighting, and indentation much better than what you can see above. Besides, you can find help on what we saw above on the User Guide, 
-			<a href="http://wiki.eclipse.org/ATL/User_Guide_-_The_ATL_Tools#Content_assist" title="ATL/User_Guide_-_The_ATL_Tools#Content_assist">here</a> and 
+		<p>Note that the ATL editor provides syntax highlighting, and indentation much better than what you can see above. Besides, you can find help on what we saw above on the User Guide,
+			<a href="http://wiki.eclipse.org/ATL/User_Guide_-_The_ATL_Tools#Content_assist" title="ATL/User_Guide_-_The_ATL_Tools#Content_assist">here</a> and
 			<a href="http://wiki.eclipse.org/ATL/User_Guide_-_The_ATL_Language#ATL_Helpers" title="ATL/User_Guide_-_The_ATL_Language#ATL_Helpers">here</a>.
 		</p>
 		<h2 id="The_sample_families_model_file">The sample families model file</h2>
-		<p>The transformation is ready to be used, we just need a sample model to run it on. First create a file in your project in which we will put the code of the model. Go to 
+		<p>The transformation is ready to be used, we just need a sample model to run it on. First create a file in your project in which we will put the code of the model. Go to
 			<b>File > New > File</b>
 		</p>
 		<p>
@@ -402,7 +398,7 @@
 		</p>
 		<p>and open it with a text editor. Here is some code sample:</p>
 		<p>
-			<a href="src/sample-Families.xmi" title="src/sample-Families.xmi">sample-Families.xmi</a> 
+			<a href="src/sample-Families.xmi" title="src/sample-Families.xmi">sample-Families.xmi</a>
 		</p>
 		<pre>&lt;?xml version="1.0" encoding="ISO-8859-1"?>
 &lt;xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="Families">
@@ -423,53 +419,53 @@
 </pre>
 		<h2 id="The_launch_configuration">The launch configuration</h2>
 		<p>We have everything we need to make the transformation, but there is one more step before we launch it, at least the first time: we have to configure the launching.</p>
-		<p>When you are in the ATL file (Families2Persons.atl), click on 
+		<p>When you are in the ATL file (Families2Persons.atl), click on
 			<b>Run > Run</b> (or Ctrl+F11)
 		</p>
 		<p>
 			<img border="0" src="images/RunRun_Menu.jpg"/>
 		</p>
-		<p>A dialog opens. Several pieces of information are already filled in: the ATL module (our transformation file, 
+		<p>A dialog opens. Several pieces of information are already filled in: the ATL module (our transformation file,
 			<b>Families2Persons.atl</b>), the metamodels (
-			<b>Families.ecore</b> and 
+			<b>Families.ecore</b> and
 			<b>Persons.ecore</b>), but we need to complete the page.
 		</p>
 		<p>
 			<img border="0" src="images/RunConfiguration_step1.jpg"/>
 		</p>
-		<p>The 
-			<b>Source Models (IN:, conforms to Families)</b> part is the model we want to transform, that is to say our 
+		<p>The
+			<b>Source Models (IN:, conforms to Families)</b> part is the model we want to transform, that is to say our
 			<b>sample-Families.xmi</b>; browse the workspace to add it.
 		</p>
 		<p>
 			<img border="0" src="images/RunConfiguration_step2.jpg"/>
 		</p>
-		<p>The 
+		<p>The
 			<b>Target Models (Out:, conforms to Persons)</b> part is the model to be generated; browse the workspace to find your project and enter a name for the file (say "sample-Persons.xmi").
 		</p>
 		<p>
 			<img border="0" src="images/RunConfiguration_step3.jpg"/>
 		</p>
-		<p>A useful option can be found in the Common tab of the page: we can save our configuration so that ATL can find it the next time we would want to run it or if the project is exported. If you check 
+		<p>A useful option can be found in the Common tab of the page: we can save our configuration so that ATL can find it the next time we would want to run it or if the project is exported. If you check
 			<b>Shared file</b> and browse within your project, you can save this configuration in a file ("Families2Persons.launch" for example).
 		</p>
 		<p>
 			<img border="0" src="images/RunConfiguration_step4.jpg"/>
 		</p>
 		<p>The launch configuration file can be found
-			<a href="src/Families2Persons.launch" title="src/Families2Persons.launch">here</a> 
+			<a href="src/Families2Persons.launch" title="src/Families2Persons.launch">here</a>
 		</p>
-		<p>You can found help on how to compile an ATL file on the User Guide, 
+		<p>You can found help on how to compile an ATL file on the User Guide,
 			<a href="http://wiki.eclipse.org/ATL/User_Guide_-_The_ATL_Tools#Compiling_an_ATL_file" title="ATL/User_Guide_-_The_ATL_Tools#Compiling_an_ATL_file">here</a>.
 		</p>
 		<h2 id="Running_the_transformation">Running the transformation</h2>
-		<p>At last we can run the transformation by clicking 
-			<b>Run</b> on the configuration page. A file is then generated, named 
+		<p>At last we can run the transformation by clicking
+			<b>Run</b> on the configuration page. A file is then generated, named
 			<b>sample-Persons.xmi</b>, and containing the list of your family members transformed into persons.
 		</p>
 		<p>Here is what you should get if you open it with a text editor:</p>
 		<p>
-			<a href="src/sample-Persons.xmi" title="src/sample-Persons.xmi">sample-Persons.xmi</a> 
+			<a href="src/sample-Persons.xmi" title="src/sample-Persons.xmi">sample-Persons.xmi</a>
 		</p>
 		<pre>&lt;?xml version="1.0" encoding="ISO-8859-1"?>
 &lt;xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="Persons">
@@ -484,15 +480,15 @@
 	&lt;Female fullName="Kelly Sailor"/>
 &lt;/xmi:XMI>
 </pre>
-		<p>Running an ATL launch configuration is explained on the User Guide, 
+		<p>Running an ATL launch configuration is explained on the User Guide,
 			<a href="http://wiki.eclipse.org/ATL/User_Guide_-_The_ATL_Tools#Running_an_ATL_launch_configuration" title="ATL/User_Guide_-_The_ATL_Tools#Running_an_ATL_launch_configuration">here</a>
 		</p>
-		<p>This is the end of this basic example. Further documentation, examples, and help can be found on the ATL website: 
+		<p>This is the end of this basic example. Further documentation, examples, and help can be found on the ATL website:
 			<a href="http://www.eclipse.org/m2m/atl/">http://www.eclipse.org/m2m/atl/</a>.
 		</p>
 		<p><div style="display:none">= See Also =
 </div>
-<div style="display:none">			* 
+<div style="display:none">			*
 			<a href="ATL/___ATLPAGENAME___" title="ATL/___ATLPAGENAME___">List of the tutorials</a>
 </div>
 		</p><hr/>

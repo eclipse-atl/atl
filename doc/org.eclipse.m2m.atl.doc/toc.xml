@@ -13,12 +13,6 @@
 	<topic href="guide/tutorials/ATL Tutorials.html" label="Tutorials">
 		<link toc="guide/tutorials/ATL Tutorials-toc.xml"/>
 	</topic>
-	<topic label="Online Docs">
-		<topic label="ATL wiki" href="https://github.com/eclipse-atl/atl/wiki" />
-		<topic label="ATL basic examples" href="https://eclipse.dev/atl/documentation/basicexamples_patterns/" />
-		<topic label="ATL use cases" href="https://eclipse.dev/atl/usecases/" />
-		<topic label="ATL transformation zoo" href="https://eclipse.dev/atl/atltransformations/" />
-	</topic>
 	<link toc="Reference-toc.xml"/>
 	<anchor id="additions"/>
 </toc>
