@@ -81,7 +81,7 @@ public abstract class EMFTVMTest extends TestCase {
 		new DefaultDiffEngine(new DiffBuilder()).diff(match, monitor);
 		for (final Diff diff : match.getDifferences()) {
 			// allow only certain kinds of diff elements
-			if (diff instanceof ReferenceChange && ((ReferenceChange) diff).getKind() == DifferenceKind.CHANGE) {
+			if (diff instanceof ReferenceChange && diff.getKind() == DifferenceKind.CHANGE) {
 				assertEquals(diff.getMatch().getLeft(), diff.getMatch().getRight(), ((ReferenceChange) diff).getReference());
 			} else {
 				fail("Difference found: " + diff + ", left: " + diff.getMatch().getLeft() + ", right: "
@@ -137,10 +137,14 @@ public abstract class EMFTVMTest extends TestCase {
 	 *            the right-hand value to compare
 	 */
 	private static void assertSameURI(final String errorMsg, final EObject leftValue, final EObject rightValue) {
-		assertEquals(errorMsg, leftValue == null ? null : leftValue.eResource().getURI(),
-				rightValue == null ? null : rightValue.eResource().getURI());
-		assertEquals(errorMsg, leftValue == null ? null : leftValue.eResource().getURIFragment(leftValue),
-				rightValue == null ? null : rightValue.eResource().getURIFragment(rightValue));
+		assertEquals(errorMsg,
+				leftValue == null ? null : leftValue.eResource() == null ? null : leftValue.eResource().getURI(),
+						rightValue == null ? null : rightValue.eResource() == null ? null : rightValue.eResource().getURI());
+		assertEquals(errorMsg,
+				leftValue == null ? null
+						: leftValue.eResource() == null ? null : leftValue.eResource().getURIFragment(leftValue),
+				rightValue == null ? null
+						: rightValue.eResource() == null ? null : rightValue.eResource().getURIFragment(rightValue));
 	}
 
 	/**
