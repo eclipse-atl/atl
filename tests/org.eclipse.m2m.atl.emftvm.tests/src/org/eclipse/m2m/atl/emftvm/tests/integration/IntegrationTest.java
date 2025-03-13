@@ -36,6 +36,7 @@ import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.LazyList;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
+import org.eclipse.m2m.atl.emftvm.util.VMException;
 import org.eclipse.m2m.atl.engine.parser.AtlParser;
 import org.eclipse.uml2.uml.UMLPackage;
 
@@ -94,6 +95,30 @@ public class IntegrationTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests "LazyRuleInheritanceTest.atl".
+	 */
+	public void testUniqueLazyRuleInheritance() throws Exception {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.registerInputModel("IN", loadTestModel(rs, "/test-data/UniqueLazyRuleInheritanceTest.ecore"));
+		env.registerOutputModel("OUT", createTestModel(rs, "/test-data/UniqueLazyRuleInheritanceTest-out.ecore"));
+		env.registerInOutModel("trace", createTestModel(rs, "/test-data/UniqueLazyRuleInheritanceTest-trace.xmi"));
+		env.loadModule(createTestModuleResolver(), "UniqueLazyRuleInheritanceTest");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+		ATLLogger.info("Finished UniqueLazyRuleInheritanceTest:\n" + td.toString());
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		loadTestModel(refRs, "/test-data/UniqueLazyRuleInheritanceTest.ecore");
+		final Model refOut = loadTestModel(refRs, "/test-data/UniqueLazyRuleInheritanceTest-out.ecore");
+		final Model refTrace = loadTestModel(refRs, "/test-data/UniqueLazyRuleInheritanceTest-trace.xmi");
+		assertEquals(refOut.getResource(), env.getOutputModels().get("OUT").getResource());
+		assertEquals(refTrace.getResource(), env.getInoutModels().get("trace").getResource());
+	}
+
+	/**
 	 * Tests "EntryEndPointRuleTest.atl".
 	 */
 	public void testEntryEndPointRule() throws Exception {
@@ -113,6 +138,32 @@ public class IntegrationTest extends EMFTVMTest {
 		final ResourceSet refRs = new ResourceSetImpl();
 		final Model refOut = loadTestModel(refRs, "/test-data/EntryEndPointRuleTest-out.ecore");
 		assertEquals(refOut.getResource(), env.getOutputModels().get("OUT").getResource());
+	}
+
+	/**
+	 * Tests "RecursiveUniqueLazyRuleTest.atl".
+	 */
+	public void testRecursiveUniqueLazyRule() throws Exception {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.registerMetaModel("UML", EmftvmFactory.eINSTANCE.createMetamodel(UMLPackage.eINSTANCE.eResource()));
+		env.registerInputModel("IN", loadTestModel(rs, "/test-data/RecursiveUniqueLazyRuleTest.uml"));
+		env.registerOutputModel("OUT", createTestModel(rs, "/test-data/RecursiveUniqueLazyRuleTest.ecore"));
+		env.loadModule(createTestModuleResolver(), "RecursiveUniqueLazyRuleTest");
+		td.finishLoading();
+		try {
+			env.run(td);
+			fail("Expected VMException due to reentrant invocation of rule with same input parameters");
+		} catch (final VMException e) {
+			td.finishApply();
+			td.finishPostApply();
+			td.finishRecursive();
+			// Expect VMException
+			ATLLogger.log(Level.INFO, e.getMessage(), e);
+		}
+		td.finish();
+		ATLLogger.info("Finished RecursiveUniqueLazyRuleTest:\n" + td.toString());
 	}
 
 	/**

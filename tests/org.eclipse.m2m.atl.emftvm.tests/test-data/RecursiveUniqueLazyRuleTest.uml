@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Package xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_naEdYIo7Ee-GO7myZ-PEXQ" name="P1">
+  <packagedElement xmi:type="uml:Class" xmi:id="_tEzLkIo7Ee-GO7myZ-PEXQ" name="O">
+    <generalization xmi:id="_zSxJsIo7Ee-GO7myZ-PEXQ" general="_wDDFYIo7Ee-GO7myZ-PEXQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_wDDFYIo7Ee-GO7myZ-PEXQ" name="E">
+    <ownedAttribute xmi:id="_2M3jUIo7Ee-GO7myZ-PEXQ" name="subE" type="_wDDFYIo7Ee-GO7myZ-PEXQ" aggregation="composite"/>
+  </packagedElement>
+</uml:Package>

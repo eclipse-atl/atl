@@ -1,0 +1,101 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+-- @nsURI UML=http://www.eclipse.org/uml2/5.0.0/UML
+module RecursiveUniqueLazyRuleTest;
+
+create OUT: ECORE from IN: UML;
+
+rule FromEPackage {
+
+	from src: UML!Package
+
+	to
+		tgt: ECORE!EPackage (
+			name <- src.name
+			,eClassifiers <- src.ownedType->collect(c | thisModule.getENamedElement(c))
+				->reject(c | c.oclIsUndefined())
+		)
+}
+
+
+unique lazy abstract rule getENamedElement {
+	from
+		src: UML!NamedElement
+
+	to
+		tgt: ECORE!ENamedElement (
+			__xmiID__ <- src.__xmiID__
+			,name <- src.name
+		)
+}
+
+unique lazy rule getEClass extends getENamedElement {
+
+	from
+		src: UML!Class
+
+	to
+		tgt: ECORE!EClass (
+			eSuperTypes <- src.general->collect(c | c.getEType())->reject(c | not c.oclIsKindOf(ECORE!EClass))
+			,eStructuralFeatures <- src.ownedAttribute->collect(f | thisModule.fromPropertyToEStructuralFeature(f))
+							->reject(f | f.oclIsUndefined())->asSet()
+		)
+
+	do {
+		tgt;
+	}
+}
+
+unique lazy abstract rule fromPropertyToEStructuralFeature {
+
+	from
+		src: UML!Property
+
+	to
+		tgt: ECORE!EStructuralFeature (
+			name <- src.name
+			,ordered <- src.isOrdered
+			,"unique" <- src.isUnique
+			,lowerBound <- src.lower
+			,upperBound <-src.upper
+			,changeable <- false
+			,volatile <- false
+			,transient <- false
+		)
+
+}
+
+unique lazy rule getEReferenceFromProperty extends fromPropertyToEStructuralFeature {
+
+	from
+		src: UML!Property (not src.type.oclIsUndefined() and src.type.oclIsKindOf(UML!Class))
+
+	using {
+			eType: ECORE!EClassifier = src.type.getEType();
+	}
+
+	to
+		tgt:ECORE!EReference (
+			containment <- true
+	)
+
+	do {
+		tgt.setEType(eType);
+		tgt;
+	}
+}
+
+unique lazy rule getAttributeFromProperty extends fromPropertyToEStructuralFeature {
+
+	from
+		src: UML!Property (not src.type.oclIsUndefined() and src.type.oclIsKindOf(UML!DataType))
+	to
+		tgt: ECORE!EAttribute (
+		)
+}
+
+helper context UML!Class def: getEType(): ECORE!EClass =
+		let eClass : ECORE!EClass = thisModule.getEClass(self) in
+		eClass.name.debug('eClass for ' + self.toString())
+		;
+

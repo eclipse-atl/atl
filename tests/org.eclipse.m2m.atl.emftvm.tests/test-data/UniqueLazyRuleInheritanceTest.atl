@@ -1,0 +1,76 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module UniqueLazyRuleInheritanceTest;
+
+create OUT : ECORE from IN : ECORE;
+
+unique lazy abstract rule EModelElement {
+	from
+		s : ECORE!EModelElement
+	to
+		t : ECORE!EModelElement
+}
+
+unique lazy abstract rule ENamedElement extends EModelElement {
+	from
+		s : ECORE!ENamedElement
+	to
+		t : ECORE!ENamedElement (
+			name <- s.name
+		)
+}
+
+unique lazy rule EPackage extends ENamedElement {
+	from
+		s : ECORE!EPackage
+	to
+		t : ECORE!EPackage (
+			nsPrefix <- s.nsPrefix,
+			nsURI <- s.nsURI,
+			eClassifiers <- s.eClassifiers->collect(c | thisModule.EModelElement(c)),
+			eSubpackages <- s.eSubpackages->collect(c | thisModule.EModelElement(c))
+		)
+}
+
+unique lazy rule MultiEPackage extends EPackage {
+	from
+		s : ECORE!EPackage,
+		x : OclAny
+	to
+		t : ECORE!EPackage
+	do {
+		Sequence{t};
+	}
+}
+
+unique lazy abstract rule EClassifier extends ENamedElement {
+	from
+		s : ECORE!EClassifier
+	to
+		t : ECORE!EClassifier
+}
+
+unique lazy rule EClass extends EClassifier {
+	from
+		s : ECORE!EClass
+	to
+		t : ECORE!EClass (
+			"abstract" <- s."abstract"
+
+		)
+}
+
+endpoint rule map() {
+	using {
+		o1 : EECORE!ModelElement = OclUndefined;
+		o2 : EECORE!ModelElement = OclUndefined;
+	}
+	do {
+		for (p in ECORE!EPackage.allInstances()) {
+			-- Test that calling a unique super- and subrule on the same input will return the same output:
+			o2 <:= thisModule.EPackage(p);
+			o1 <:= thisModule.EModelElement(p);
+			"#native"!"org::junit::Assert".refInvokeStaticOperation('assertSame', Sequence{o1, o2});
+		}
+	}
+}

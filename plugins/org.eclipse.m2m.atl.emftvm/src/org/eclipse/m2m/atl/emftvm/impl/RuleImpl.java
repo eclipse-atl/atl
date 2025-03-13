@@ -357,6 +357,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		 */
 		@Override
 		public Object applyOne(final StackFrame frame, final TraceLink trace) {
+			// Store marker to detect reentrant invocation for the same trace
+			frame.getEnv().getUniqueResults().put(trace, RULE_RETVAL_PENDING);
 			final Object resultValue = super.applyOne(frame, trace);
 			// Store unique result for later retrieval
 			frame.getEnv().getUniqueResults().put(trace, resultValue);
@@ -674,7 +676,13 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			// Reuse existing application result for unique rules
 			final TraceLink trace = getUniqueTrace(frame, values);
 			if (trace != null) {
-				return frame.getEnv().getUniqueResults().get(trace);
+				final Object returnValue = frame.getEnv().getUniqueResults().get(trace);
+				if (returnValue == RULE_RETVAL_PENDING) {
+					throw new VMException(frame, String.format(
+							"Reentrant invocation of rule %s - rule is already executing for the same input values.",
+							RuleImpl.this));
+				}
+				return returnValue;
 			}
 			// Otherwise match as normal
 			final Map<String, Object> valuesMap = createValuesMap(values);
@@ -1363,6 +1371,12 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			return true; // test always passes
 		}
 	}
+
+	/**
+	 * Marker object to indicate that a rule is still executing and its return value
+	 * is pending.
+	 */
+	protected static final Object RULE_RETVAL_PENDING = new Object();
 
 	/**
 	 * The default value of the '{@link #getMode() <em>Mode</em>}' attribute.
