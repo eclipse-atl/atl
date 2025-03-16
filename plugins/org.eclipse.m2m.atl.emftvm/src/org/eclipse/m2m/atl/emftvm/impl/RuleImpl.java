@@ -44,7 +44,6 @@ import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Field;
 import org.eclipse.m2m.atl.emftvm.InputRuleElement;
 import org.eclipse.m2m.atl.emftvm.Model;
-import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.OutputRuleElement;
 import org.eclipse.m2m.atl.emftvm.Rule;
 import org.eclipse.m2m.atl.emftvm.RuleElement;
@@ -637,6 +636,22 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		}
 
 		/**
+		 * Matches {@link #getRule()} manually, if applicable.
+		 * Because this method returns the application trace rather than the return value,
+		 * it can be invoked in a reentrant manner (i.e. while still evaluating the
+		 * previous invocation).
+		 * @param frame the stack frame in which to execute the matcher
+		 * @param values the values to match against
+		 * @return the rule application trace, or <code>null</code> if the rule did not match
+		 * @throws VMException if this is not a {@link RuleMode#MANUAL} rule
+		 */
+		public TraceLink matchManualTrace(final StackFrame frame, final Object[] values) {
+			// base case
+			throw new VMException(frame, String.format(
+					"Rule %s is not a manual rule", this));
+		}
+
+		/**
 		 * Matches this rule against <code>values</code>,
 		 * and records a match in {@link ExecEnv#getMatches()} in case of a match.
 		 * In case of a unique rule, this method will not match if the rule has already
@@ -695,6 +710,37 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 					final Rule subRule = matchedRules.iterator().next();
 					assert !subRule.isAbstract();
 					return subRule.applyOne(frame, valuesMap);
+				default:
+					throw new VMException(frame, String.format("More than one matching sub-rule found for %s: %s",
+							RuleImpl.this, matchedRules));
+				}
+			} else {
+				return null;
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public TraceLink matchManualTrace(final StackFrame frame, final Object[] values) {
+			assert getMode() == RuleMode.MANUAL;
+			// Reuse existing application result for unique rules
+			final TraceLink trace = getUniqueTrace(frame, values);
+			if (trace != null) {
+				return trace;
+			}
+			// Otherwise match as normal
+			final Map<String, Object> valuesMap = createValuesMap(values);
+			if (matchOne(frame, valuesMap)) {
+				final Set<Rule> matchedRules = matchManualSubRules(RuleImpl.this, frame, valuesMap);
+				switch (matchedRules.size()) {
+				case 0:
+					return isAbstract() ? null : applyOneTrace(frame, valuesMap);
+				case 1:
+					final Rule subRule = matchedRules.iterator().next();
+					assert !subRule.isAbstract();
+					return subRule.applyOneTrace(frame, valuesMap);
 				default:
 					throw new VMException(frame, String.format("More than one matching sub-rule found for %s: %s",
 							RuleImpl.this, matchedRules));
@@ -1680,29 +1726,29 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Module getModule() {
+	@Override
+	public org.eclipse.m2m.atl.emftvm.Module getModule() {
 		if (eContainerFeatureID() != EmftvmPackage.RULE__MODULE) return null;
-		return (Module)eInternalContainer();
+		return (org.eclipse.m2m.atl.emftvm.Module)eInternalContainer();
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * @see #setModule(Module)
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetModule(final Module newModule, NotificationChain msgs) {
+	public NotificationChain basicSetModule(final org.eclipse.m2m.atl.emftvm.Module newModule, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newModule, EmftvmPackage.RULE__MODULE, msgs);
 		return msgs;
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setModule(final Module newModule) {
+	@Override
+	public void setModule(final org.eclipse.m2m.atl.emftvm.Module newModule) {
 		if (newModule != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.RULE__MODULE && newModule != null)) {
 			if (EcoreUtil.isAncestor(this, newModule))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -1710,7 +1756,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newModule != null)
-				msgs = ((InternalEObject)newModule).eInverseAdd(this, EmftvmPackage.MODULE__RULES, Module.class, msgs);
+				msgs = ((InternalEObject)newModule).eInverseAdd(this, EmftvmPackage.MODULE__RULES, org.eclipse.m2m.atl.emftvm.Module.class, msgs);
 			msgs = basicSetModule(newModule, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
@@ -1724,6 +1770,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public RuleMode getMode() {
 		return mode;
 	}
@@ -1734,6 +1781,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMode(final RuleMode newMode) {
 		final RuleMode oldMode = mode;
 		mode = newMode == null ? MODE_EDEFAULT : newMode;
@@ -1747,6 +1795,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<InputRuleElement> getInputElements() {
 		if (inputElements == null) {
 			inputElements = new EObjectContainmentWithInverseEList<InputRuleElement>(InputRuleElement.class, this, EmftvmPackage.RULE__INPUT_ELEMENTS, EmftvmPackage.INPUT_RULE_ELEMENT__INPUT_FOR);
@@ -1760,6 +1809,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<OutputRuleElement> getOutputElements() {
 		if (outputElements == null) {
 			outputElements = new EObjectContainmentWithInverseEList<OutputRuleElement>(OutputRuleElement.class, this, EmftvmPackage.RULE__OUTPUT_ELEMENTS, EmftvmPackage.OUTPUT_RULE_ELEMENT__OUTPUT_FOR);
@@ -1773,6 +1823,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Rule> getESuperRules() {
 		if (eSuperRules == null) {
 			eSuperRules = new EObjectWithInverseResolvingEList.ManyInverse<Rule>(Rule.class, this, EmftvmPackage.RULE__ESUPER_RULES, EmftvmPackage.RULE__ESUB_RULES);
@@ -1786,6 +1837,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Rule> getESubRules() {
 		if (eSubRules == null) {
 			eSubRules = new EObjectWithInverseResolvingEList.ManyInverse<Rule>(Rule.class, this, EmftvmPackage.RULE__ESUB_RULES, EmftvmPackage.RULE__ESUPER_RULES);
@@ -1799,6 +1851,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CodeBlock getMatcher() {
 		return matcher;
 	}
@@ -1825,6 +1878,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMatcher(final CodeBlock newMatcher) {
 		if (newMatcher != matcher) {
 			NotificationChain msgs = null;
@@ -1845,6 +1899,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CodeBlock getApplier() {
 		return applier;
 	}
@@ -1871,6 +1926,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setApplier(final CodeBlock newApplier) {
 		if (newApplier != applier) {
 			NotificationChain msgs = null;
@@ -1891,6 +1947,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CodeBlock getPostApply() {
 		return postApply;
 	}
@@ -1917,6 +1974,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setPostApply(final CodeBlock newPostApply) {
 		if (newPostApply != postApply) {
 			NotificationChain msgs = null;
@@ -1937,6 +1995,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<String> getSuperRules() {
 		if (superRules == null) {
 			superRules = new EDataTypeUniqueEList<String>(String.class, this, EmftvmPackage.RULE__SUPER_RULES);
@@ -1950,6 +2009,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isAbstract() {
 		return abstract_;
 	}
@@ -1960,6 +2020,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setAbstract(final boolean newAbstract) {
 		final boolean oldAbstract = abstract_;
 		abstract_ = newAbstract;
@@ -1973,6 +2034,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Field> getFields() {
 		if (fields == null) {
 			fields = new EObjectContainmentWithInverseEList<Field>(Field.class, this, EmftvmPackage.RULE__FIELDS, EmftvmPackage.FIELD__RULE);
@@ -1986,6 +2048,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDefault() {
 		return default_;
 	}
@@ -1996,6 +2059,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDefault(final boolean newDefault) {
 		final boolean oldDefault = default_;
 		default_ = newDefault;
@@ -2009,6 +2073,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDistinctElements() {
 		return distinctElements;
 	}
@@ -2019,6 +2084,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDistinctElements(final boolean newDistinctElements) {
 		final boolean oldDistinctElements = distinctElements;
 		distinctElements = newDistinctElements;
@@ -2032,6 +2098,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isUnique() {
 		return unique;
 	}
@@ -2042,6 +2109,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setUnique(final boolean newUnique) {
 		final boolean oldUnique = unique;
 		unique = newUnique;
@@ -2055,6 +2123,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean isLeaf() {
 		if (!leafSet) {
 			leaf = !isAbstract() && !isWithLeaves();
@@ -2069,6 +2138,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean isWithLeaves() {
 		if (!withLeavesSet) {
 			withLeaves = false;
@@ -2088,6 +2158,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
+	@Override
 	public Field findField(final Object context, final String name) {
 		return fieldContainer.findField(context, name);
 	}
@@ -2098,6 +2169,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean hasField(final String name) {
 		return fieldContainer.hasField(name);
 	}
@@ -2107,6 +2179,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
+	@Override
 	public Field findStaticField(final Object context, final String name) {
 		return fieldContainer.findStaticField(context, name);
 	}
@@ -2117,6 +2190,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean hasStaticField(final String name) {
 		return fieldContainer.hasStaticField(name);
 	}
@@ -2126,6 +2200,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
+	@Override
 	public void registerField(final Field field) {
 		fieldContainer.registerField(field);
 	}
@@ -2136,6 +2211,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean matchSingle(final StackFrame frame) {
 		return ruleModeState.matchSingle(frame);
 	}
@@ -2146,6 +2222,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean[] matchRecursive(final StackFrame frame) {
 		return ruleModeState.matchRecursive(frame);
 	}
@@ -2156,8 +2233,20 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public Object matchManual(final StackFrame frame, final Object[] values) {
 		return ruleModeState.matchManual(frame, values);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public TraceLink matchManualTrace(final StackFrame frame, final Object[] values) {
+		return ruleModeState.matchManualTrace(frame, values);
 	}
 
 	/**
@@ -2166,6 +2255,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean matchOne(final StackFrame frame, final Map<String, Object> valuesMap) {
 		for (final Rule superRule : getESuperRules()) {
 			if (!superRule.matchOne(frame, valuesMap)) {
@@ -2182,6 +2272,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean matchOneOnly(final StackFrame frame, final Map<String, Object> valuesMap) {
 		// Check value types
 		final ExecEnv env = frame.getEnv();
@@ -2236,6 +2327,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void createTraces(final StackFrame frame) {
 		abstractState.createTraces(frame);
 	}
@@ -2246,6 +2338,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean completeTraceFor(final StackFrame frame, final TraceLink trace) {
 		boolean defaultMappingSet = false;
 		final ExecEnv env = frame.getEnv();
@@ -2294,6 +2387,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void apply(final StackFrame frame) {
 		abstractState.apply(frame);
 	}
@@ -2304,6 +2398,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void postApply(final StackFrame frame) {
 		abstractState.postApply(frame);
 	}
@@ -2314,6 +2409,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean applyFirst(final StackFrame frame) {
 		return leafState.applyFirst(frame);
 	}
@@ -2324,8 +2420,22 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public Object applyOne(final StackFrame frame, final Map<String, Object> valuesMap) {
 		return uniqueState.applyOne(frame, createTrace(frame, valuesMap));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * {@inheritDoc}
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public TraceLink applyOneTrace(final StackFrame frame, final Map<String, Object> valuesMap) {
+		final TraceLink traceLink = createTrace(frame, valuesMap);
+		uniqueState.applyOne(frame, traceLink);
+		return traceLink;
 	}
 
 	/**
@@ -2334,6 +2444,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public Object applyFor(final StackFrame frame, final TraceLink trace) {
 		return applierCbState.applyFor(frame, trace);
 	}
@@ -2344,6 +2455,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public Object postApplyFor(final StackFrame frame, final TraceLink trace) {
 		return applierCbState.postApplyFor(frame, trace);
 	}
@@ -2354,6 +2466,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public LazySet<Rule> getAllESuperRules() {
 		if (allESuperRules == null) {
 			final EList<Rule> eSuperRules = getESuperRules();
@@ -2373,6 +2486,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void createUniqueMapping(final TraceLink trace) {
 		uniqueState.createUniqueMapping(trace);
 	}
@@ -2383,6 +2497,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void compileState(final ExecEnv env) {
 		updateDefaultState();
 		updateUniqueState();
@@ -2401,6 +2516,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void resetState() {
 		withLeaves = WITH_LEAVES_EDEFAULT;
 		withLeavesSet = false;
@@ -2418,6 +2534,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void compileIterables(final ExecEnv env) {
 		superRulesState.compileIterables(env);
 	}
@@ -2428,6 +2545,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void clearFields() {
 		fieldContainer.clear();
 	}
@@ -2438,6 +2556,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public InputRuleElement findInputElement(final String name) {
 		for (final InputRuleElement ire : getInputElements()) {
 			if (name.equals(ire.getName())) {
@@ -2458,6 +2577,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public TraceLink getUniqueTrace(final StackFrame frame, final Object[] values) {
 		return uniqueState.getUniqueTrace(frame, values);
 	}
@@ -2475,7 +2595,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 		case EmftvmPackage.RULE__MODULE:
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
-			return basicSetModule((Module)otherEnd, msgs);
+			return basicSetModule((org.eclipse.m2m.atl.emftvm.Module)otherEnd, msgs);
 		case EmftvmPackage.RULE__INPUT_ELEMENTS:
 			return ((InternalEList<InternalEObject>)(InternalEList<?>)getInputElements()).basicAdd(otherEnd, msgs);
 		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
@@ -2543,7 +2663,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	public NotificationChain eBasicRemoveFromContainerFeature(final NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
 		case EmftvmPackage.RULE__MODULE:
-			return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__RULES, Module.class, msgs);
+			return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__RULES, org.eclipse.m2m.atl.emftvm.Module.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -2606,7 +2726,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	public void eSet(final int featureID, final Object newValue) {
 		switch (featureID) {
 		case EmftvmPackage.RULE__MODULE:
-			setModule((Module)newValue);
+			setModule((org.eclipse.m2m.atl.emftvm.Module)newValue);
 			return;
 		case EmftvmPackage.RULE__MODE:
 			setMode((RuleMode)newValue);
@@ -2670,7 +2790,7 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	public void eUnset(final int featureID) {
 		switch (featureID) {
 		case EmftvmPackage.RULE__MODULE:
-			setModule((Module)null);
+			setModule((org.eclipse.m2m.atl.emftvm.Module)null);
 			return;
 		case EmftvmPackage.RULE__MODE:
 			setMode(MODE_EDEFAULT);

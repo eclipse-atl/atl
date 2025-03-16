@@ -469,7 +469,7 @@ public interface CodeBlock extends EObject {
 	 * @model kind="operation"
 	 * @generated
 	 */
-	Module getModule();
+	org.eclipse.m2m.atl.emftvm.Module getModule();
 
 	/**
 	 * <!-- begin-user-doc -->

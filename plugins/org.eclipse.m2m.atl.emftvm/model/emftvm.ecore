@@ -557,6 +557,10 @@
       <eParameters name="frame" eType="#//StackFrame"/>
       <eParameters name="values" eType="#//EJavaObjectArray"/>
     </eOperations>
+    <eOperations name="matchManualTrace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="values" eType="#//EJavaObjectArray"/>
+    </eOperations>
     <eOperations name="matchOne" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
       <eParameters name="frame" eType="#//StackFrame"/>
       <eParameters name="valuesMap">
@@ -594,9 +598,18 @@
     <eOperations name="applyOne" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject">
       <eParameters name="frame" eType="#//StackFrame"/>
       <eParameters name="valuesMap">
-        <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+        <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
           <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+          <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="applyOneTrace" eType="ecore:EClass platform:/plugin/org.eclipse.m2m.atl.emftvm.trace/model/trace.ecore#//TraceLink">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="valuesMap">
+        <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
+          <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+          <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
         </eGenericType>
       </eParameters>
     </eOperations>

@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
-import org.eclipse.m2m.atl.emftvm.Module;
 
 /**
  * <!-- begin-user-doc -->
@@ -153,29 +152,27 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Module getInputModelFor() {
+	public org.eclipse.m2m.atl.emftvm.Module getInputModelFor() {
 		if (eContainerFeatureID() != EmftvmPackage.MODEL_DECLARATION__INPUT_MODEL_FOR) return null;
-		return (Module)eInternalContainer();
+		return (org.eclipse.m2m.atl.emftvm.Module)eInternalContainer();
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetInputModelFor(Module newInputModelFor, NotificationChain msgs) {
+	public NotificationChain basicSetInputModelFor(org.eclipse.m2m.atl.emftvm.Module newInputModelFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newInputModelFor, EmftvmPackage.MODEL_DECLARATION__INPUT_MODEL_FOR, msgs);
 		return msgs;
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setInputModelFor(Module newInputModelFor) {
+	public void setInputModelFor(org.eclipse.m2m.atl.emftvm.Module newInputModelFor) {
 		if (newInputModelFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.MODEL_DECLARATION__INPUT_MODEL_FOR && newInputModelFor != null)) {
 			if (EcoreUtil.isAncestor(this, newInputModelFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -183,7 +180,7 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newInputModelFor != null)
-				msgs = ((InternalEObject)newInputModelFor).eInverseAdd(this, EmftvmPackage.MODULE__INPUT_MODELS, Module.class, msgs);
+				msgs = ((InternalEObject)newInputModelFor).eInverseAdd(this, EmftvmPackage.MODULE__INPUT_MODELS, org.eclipse.m2m.atl.emftvm.Module.class, msgs);
 			msgs = basicSetInputModelFor(newInputModelFor, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
@@ -197,29 +194,27 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Module getInoutModelFor() {
+	public org.eclipse.m2m.atl.emftvm.Module getInoutModelFor() {
 		if (eContainerFeatureID() != EmftvmPackage.MODEL_DECLARATION__INOUT_MODEL_FOR) return null;
-		return (Module)eInternalContainer();
+		return (org.eclipse.m2m.atl.emftvm.Module)eInternalContainer();
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * @see #setInoutModelFor(Module)
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetInoutModelFor(Module newInoutModelFor, NotificationChain msgs) {
+	public NotificationChain basicSetInoutModelFor(org.eclipse.m2m.atl.emftvm.Module newInoutModelFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newInoutModelFor, EmftvmPackage.MODEL_DECLARATION__INOUT_MODEL_FOR, msgs);
 		return msgs;
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setInoutModelFor(Module newInoutModelFor) {
+	public void setInoutModelFor(org.eclipse.m2m.atl.emftvm.Module newInoutModelFor) {
 		if (newInoutModelFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.MODEL_DECLARATION__INOUT_MODEL_FOR && newInoutModelFor != null)) {
 			if (EcoreUtil.isAncestor(this, newInoutModelFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -227,7 +222,7 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newInoutModelFor != null)
-				msgs = ((InternalEObject)newInoutModelFor).eInverseAdd(this, EmftvmPackage.MODULE__INOUT_MODELS, Module.class, msgs);
+				msgs = ((InternalEObject)newInoutModelFor).eInverseAdd(this, EmftvmPackage.MODULE__INOUT_MODELS, org.eclipse.m2m.atl.emftvm.Module.class, msgs);
 			msgs = basicSetInoutModelFor(newInoutModelFor, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
@@ -241,29 +236,27 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Module getOutputModelFor() {
+	public org.eclipse.m2m.atl.emftvm.Module getOutputModelFor() {
 		if (eContainerFeatureID() != EmftvmPackage.MODEL_DECLARATION__OUTPUT_MODEL_FOR) return null;
-		return (Module)eInternalContainer();
+		return (org.eclipse.m2m.atl.emftvm.Module)eInternalContainer();
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * @see #setOutputModelFor(Module)
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetOutputModelFor(Module newOutputModelFor, NotificationChain msgs) {
+	public NotificationChain basicSetOutputModelFor(org.eclipse.m2m.atl.emftvm.Module newOutputModelFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newOutputModelFor, EmftvmPackage.MODEL_DECLARATION__OUTPUT_MODEL_FOR, msgs);
 		return msgs;
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setOutputModelFor(Module newOutputModelFor) {
+	public void setOutputModelFor(org.eclipse.m2m.atl.emftvm.Module newOutputModelFor) {
 		if (newOutputModelFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.MODEL_DECLARATION__OUTPUT_MODEL_FOR && newOutputModelFor != null)) {
 			if (EcoreUtil.isAncestor(this, newOutputModelFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -271,7 +264,7 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newOutputModelFor != null)
-				msgs = ((InternalEObject)newOutputModelFor).eInverseAdd(this, EmftvmPackage.MODULE__OUTPUT_MODELS, Module.class, msgs);
+				msgs = ((InternalEObject)newOutputModelFor).eInverseAdd(this, EmftvmPackage.MODULE__OUTPUT_MODELS, org.eclipse.m2m.atl.emftvm.Module.class, msgs);
 			msgs = basicSetOutputModelFor(newOutputModelFor, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
@@ -291,15 +284,15 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 			case EmftvmPackage.MODEL_DECLARATION__INPUT_MODEL_FOR:
 				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetInputModelFor((Module)otherEnd, msgs);
+				return basicSetInputModelFor((org.eclipse.m2m.atl.emftvm.Module)otherEnd, msgs);
 			case EmftvmPackage.MODEL_DECLARATION__INOUT_MODEL_FOR:
 				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetInoutModelFor((Module)otherEnd, msgs);
+				return basicSetInoutModelFor((org.eclipse.m2m.atl.emftvm.Module)otherEnd, msgs);
 			case EmftvmPackage.MODEL_DECLARATION__OUTPUT_MODEL_FOR:
 				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetOutputModelFor((Module)otherEnd, msgs);
+				return basicSetOutputModelFor((org.eclipse.m2m.atl.emftvm.Module)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -333,11 +326,11 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
 			case EmftvmPackage.MODEL_DECLARATION__INPUT_MODEL_FOR:
-				return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__INPUT_MODELS, Module.class, msgs);
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__INPUT_MODELS, org.eclipse.m2m.atl.emftvm.Module.class, msgs);
 			case EmftvmPackage.MODEL_DECLARATION__INOUT_MODEL_FOR:
-				return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__INOUT_MODELS, Module.class, msgs);
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__INOUT_MODELS, org.eclipse.m2m.atl.emftvm.Module.class, msgs);
 			case EmftvmPackage.MODEL_DECLARATION__OUTPUT_MODEL_FOR:
-				return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__OUTPUT_MODELS, Module.class, msgs);
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__OUTPUT_MODELS, org.eclipse.m2m.atl.emftvm.Module.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -381,13 +374,13 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 				setMetaModelName((String)newValue);
 				return;
 			case EmftvmPackage.MODEL_DECLARATION__INPUT_MODEL_FOR:
-				setInputModelFor((Module)newValue);
+				setInputModelFor((org.eclipse.m2m.atl.emftvm.Module)newValue);
 				return;
 			case EmftvmPackage.MODEL_DECLARATION__INOUT_MODEL_FOR:
-				setInoutModelFor((Module)newValue);
+				setInoutModelFor((org.eclipse.m2m.atl.emftvm.Module)newValue);
 				return;
 			case EmftvmPackage.MODEL_DECLARATION__OUTPUT_MODEL_FOR:
-				setOutputModelFor((Module)newValue);
+				setOutputModelFor((org.eclipse.m2m.atl.emftvm.Module)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -409,13 +402,13 @@ public class ModelDeclarationImpl extends EObjectImpl implements ModelDeclaratio
 				setMetaModelName(META_MODEL_NAME_EDEFAULT);
 				return;
 			case EmftvmPackage.MODEL_DECLARATION__INPUT_MODEL_FOR:
-				setInputModelFor((Module)null);
+				setInputModelFor((org.eclipse.m2m.atl.emftvm.Module)null);
 				return;
 			case EmftvmPackage.MODEL_DECLARATION__INOUT_MODEL_FOR:
-				setInoutModelFor((Module)null);
+				setInoutModelFor((org.eclipse.m2m.atl.emftvm.Module)null);
 				return;
 			case EmftvmPackage.MODEL_DECLARATION__OUTPUT_MODEL_FOR:
-				setOutputModelFor((Module)null);
+				setOutputModelFor((org.eclipse.m2m.atl.emftvm.Module)null);
 				return;
 		}
 		super.eUnset(featureID);

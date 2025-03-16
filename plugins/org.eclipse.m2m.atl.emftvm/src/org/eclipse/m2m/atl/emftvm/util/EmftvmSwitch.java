@@ -68,7 +68,6 @@ import org.eclipse.m2m.atl.emftvm.MatchS;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
-import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.NamedElement;
 import org.eclipse.m2m.atl.emftvm.New;
 import org.eclipse.m2m.atl.emftvm.NewS;
@@ -192,7 +191,7 @@ public class EmftvmSwitch<T> {
 				return result;
 			}
 			case EmftvmPackage.MODULE: {
-				Module module = (Module)theEObject;
+				org.eclipse.m2m.atl.emftvm.Module module = (org.eclipse.m2m.atl.emftvm.Module)theEObject;
 				T result = caseModule(module);
 				if (result == null) result = caseNamedElement(module);
 				if (result == null) result = defaultCase(theEObject);
@@ -737,21 +736,6 @@ public class EmftvmSwitch<T> {
 			}
 			default: return defaultCase(theEObject);
 		}
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Module</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Module</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseModule(Module object) {
-		return null;
 	}
 
 	/**
@@ -1861,6 +1845,21 @@ public class EmftvmSwitch<T> {
 	 * @generated
 	 */
 	public T caseMetamodel(Metamodel object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Module</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Module</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseModule(org.eclipse.m2m.atl.emftvm.Module object) {
 		return null;
 	}
 

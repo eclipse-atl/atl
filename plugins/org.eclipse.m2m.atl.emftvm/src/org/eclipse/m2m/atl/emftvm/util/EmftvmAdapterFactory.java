@@ -67,7 +67,6 @@ import org.eclipse.m2m.atl.emftvm.MatchS;
 import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
-import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.NamedElement;
 import org.eclipse.m2m.atl.emftvm.New;
 import org.eclipse.m2m.atl.emftvm.NewS;
@@ -131,7 +130,7 @@ public class EmftvmAdapterFactory extends AdapterFactoryImpl {
 				return createMetamodelAdapter();
 			}
 			@Override
-			public Adapter caseModule(Module object) {
+			public Adapter caseModule(org.eclipse.m2m.atl.emftvm.Module object) {
 				return createModuleAdapter();
 			}
 			@Override

@@ -169,7 +169,7 @@ public abstract class FieldInstructionImpl extends InstructionImpl implements Fi
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (fieldname: ");
 		result.append(fieldname);
 		result.append(')');

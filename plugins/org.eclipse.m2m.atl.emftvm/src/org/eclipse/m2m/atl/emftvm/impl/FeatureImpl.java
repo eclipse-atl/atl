@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Feature;
-import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.util.EMFTVMUtil;
 
 /**
@@ -251,7 +250,7 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 			case EmftvmPackage.FEATURE__MODULE:
 				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetModule((Module)otherEnd, msgs);
+				return basicSetModule((org.eclipse.m2m.atl.emftvm.Module)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -281,7 +280,7 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
 			case EmftvmPackage.FEATURE__MODULE:
-				return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__FEATURES, Module.class, msgs);
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__FEATURES, org.eclipse.m2m.atl.emftvm.Module.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -326,7 +325,7 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 				setEContext((EClassifier)newValue);
 				return;
 			case EmftvmPackage.FEATURE__MODULE:
-				setModule((Module)newValue);
+				setModule((org.eclipse.m2m.atl.emftvm.Module)newValue);
 				return;
 			case EmftvmPackage.FEATURE__CONTEXT:
 				setContext((String)newValue);
@@ -354,7 +353,7 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 				setEContext((EClassifier)null);
 				return;
 			case EmftvmPackage.FEATURE__MODULE:
-				setModule((Module)null);
+				setModule((org.eclipse.m2m.atl.emftvm.Module)null);
 				return;
 			case EmftvmPackage.FEATURE__CONTEXT:
 				setContext(CONTEXT_EDEFAULT);
@@ -395,29 +394,27 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Module getModule() {
+	public org.eclipse.m2m.atl.emftvm.Module getModule() {
 		if (eContainerFeatureID() != EmftvmPackage.FEATURE__MODULE) return null;
-		return (Module)eInternalContainer();
+		return (org.eclipse.m2m.atl.emftvm.Module)eInternalContainer();
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * @see #setModule(Module)
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetModule(Module newModule, NotificationChain msgs) {
+	public NotificationChain basicSetModule(org.eclipse.m2m.atl.emftvm.Module newModule, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newModule, EmftvmPackage.FEATURE__MODULE, msgs);
 		return msgs;
 	}
 
 	/**
-	 * <!-- begin-user-doc. -->
-	 * {@inheritDoc}
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setModule(Module newModule) {
+	public void setModule(org.eclipse.m2m.atl.emftvm.Module newModule) {
 		if (newModule != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.FEATURE__MODULE && newModule != null)) {
 			if (EcoreUtil.isAncestor(this, newModule))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -425,7 +422,7 @@ public abstract class FeatureImpl extends TypedElementImpl implements Feature {
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newModule != null)
-				msgs = ((InternalEObject)newModule).eInverseAdd(this, EmftvmPackage.MODULE__FEATURES, Module.class, msgs);
+				msgs = ((InternalEObject)newModule).eInverseAdd(this, EmftvmPackage.MODULE__FEATURES, org.eclipse.m2m.atl.emftvm.Module.class, msgs);
 			msgs = basicSetModule(newModule, msgs);
 			if (msgs != null) msgs.dispatch();
 		}

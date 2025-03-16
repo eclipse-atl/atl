@@ -23,7 +23,6 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
-import org.eclipse.m2m.atl.emftvm.Module;
 
 /**
  * This is the item provider adapter for a {@link org.eclipse.m2m.atl.emftvm.Module} object.
@@ -250,7 +249,7 @@ public class ModuleItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Module)object).getName();
+		String label = ((org.eclipse.m2m.atl.emftvm.Module)object).getName();
 		return label == null || label.length() == 0 ?
 			getString("_UI_Module_type") :
 			getString("_UI_Module_type") + " " + label;
@@ -267,7 +266,7 @@ public class ModuleItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Module.class)) {
+		switch (notification.getFeatureID(org.eclipse.m2m.atl.emftvm.Module.class)) {
 			case EmftvmPackage.MODULE__SOURCE_NAME:
 			case EmftvmPackage.MODULE__IMPORTS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

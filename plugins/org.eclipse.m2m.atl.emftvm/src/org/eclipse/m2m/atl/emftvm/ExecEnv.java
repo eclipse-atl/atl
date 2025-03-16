@@ -66,7 +66,7 @@ public interface ExecEnv extends EObject {
 	 * @model required="true" transient="true" changeable="false" derived="true"
 	 * @generated
 	 */
-	Map<String, Module> getModules();
+	Map<String, org.eclipse.m2m.atl.emftvm.Module> getModules();
 
 	/**
 	 * Returns the value of the '<em><b>Matches</b></em>' reference.
@@ -465,7 +465,7 @@ public interface ExecEnv extends EObject {
 	 * @model resolverDataType="org.eclipse.m2m.atl.emftvm.ModuleResolver"
 	 * @generated
 	 */
-	Module loadModule(ModuleResolver resolver, String name);
+	org.eclipse.m2m.atl.emftvm.Module loadModule(ModuleResolver resolver, String name);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -480,7 +480,7 @@ public interface ExecEnv extends EObject {
 	 * @model resolverDataType="org.eclipse.m2m.atl.emftvm.ModuleResolver"
 	 * @generated
 	 */
-	Module loadModule(ModuleResolver resolver, String name, boolean validate);
+	org.eclipse.m2m.atl.emftvm.Module loadModule(ModuleResolver resolver, String name, boolean validate);
 
 	/**
 	 * <!-- begin-user-doc -->

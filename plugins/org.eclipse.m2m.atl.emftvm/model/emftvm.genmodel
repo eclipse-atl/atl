@@ -476,6 +476,10 @@
         <genParameters ecoreParameter="emftvm.ecore#//Rule/matchManual/frame"/>
         <genParameters ecoreParameter="emftvm.ecore#//Rule/matchManual/values"/>
       </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/matchManualTrace">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/matchManualTrace/frame"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/matchManualTrace/values"/>
+      </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/matchOne">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/matchOne/frame"/>
         <genParameters ecoreParameter="emftvm.ecore#//Rule/matchOne/valuesMap"/>
@@ -503,6 +507,10 @@
       <genOperations ecoreOperation="emftvm.ecore#//Rule/applyOne">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/applyOne/frame"/>
         <genParameters ecoreParameter="emftvm.ecore#//Rule/applyOne/valuesMap"/>
+      </genOperations>
+      <genOperations ecoreOperation="emftvm.ecore#//Rule/applyOneTrace">
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyOneTrace/frame"/>
+        <genParameters ecoreParameter="emftvm.ecore#//Rule/applyOneTrace/valuesMap"/>
       </genOperations>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/applyFor">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/applyFor/frame"/>

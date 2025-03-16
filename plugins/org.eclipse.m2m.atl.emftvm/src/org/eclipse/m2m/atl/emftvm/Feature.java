@@ -149,13 +149,13 @@ public interface Feature extends TypedElement {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Module</em>' container reference.
-	 * @see #setModule(Module)
+	 * @see #setModule(org.eclipse.m2m.atl.emftvm.Module)
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getFeature_Module()
 	 * @see org.eclipse.m2m.atl.emftvm.Module#getFeatures
 	 * @model opposite="features" transient="false"
 	 * @generated
 	 */
-	Module getModule();
+	org.eclipse.m2m.atl.emftvm.Module getModule();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.Feature#getModule <em>Module</em>}' container reference.
@@ -165,6 +165,6 @@ public interface Feature extends TypedElement {
 	 * @see #getModule()
 	 * @generated
 	 */
-	void setModule(Module value);
+	void setModule(org.eclipse.m2m.atl.emftvm.Module value);
 
 } // Feature
