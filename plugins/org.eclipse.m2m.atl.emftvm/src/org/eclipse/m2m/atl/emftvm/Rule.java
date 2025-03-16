@@ -63,13 +63,13 @@ public interface Rule extends NamedElement {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Module</em>' container reference.
-	 * @see #setModule(Module)
+	 * @see #setModule(org.eclipse.m2m.atl.emftvm.Module)
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getRule_Module()
 	 * @see org.eclipse.m2m.atl.emftvm.Module#getRules
 	 * @model opposite="rules" transient="false"
 	 * @generated
 	 */
-	Module getModule();
+	org.eclipse.m2m.atl.emftvm.Module getModule();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.Rule#getModule <em>Module</em>}' container reference.
@@ -79,7 +79,7 @@ public interface Rule extends NamedElement {
 	 * @see #getModule()
 	 * @generated
 	 */
-	void setModule(Module value);
+	void setModule(org.eclipse.m2m.atl.emftvm.Module value);
 
 	/**
 	 * Returns the value of the '<em><b>Mode</b></em>' attribute.
@@ -536,6 +536,23 @@ public interface Rule extends NamedElement {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Matches this rule manually, if applicable.
+	 * Call {@link #compileState()} before calling this method.
+	 * Because this method returns the application trace rather than the return value,
+	 * it can be invoked in a reentrant manner (i.e. while still evaluating the
+	 * previous invocation).
+	 * @param frame the stack frame in which to execute the matcher
+	 * @param values the values to match against
+	 * @return the rule application trace, or <code>null</code> if the rule did not match
+	 * @throws VMException if this is not a {@link RuleMode#MANUAL} rule
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame" valuesDataType="org.eclipse.m2m.atl.emftvm.EJavaObjectArray"
+	 * @generated
+	 */
+	TraceLink matchManualTrace(StackFrame frame, Object[] values);
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * Matches rule for <code>valuesMap</code>.
 	 * Call {@link #compileState()} before calling this method.
 	 * @param frame the stack frame in which to execute the matcher
@@ -626,7 +643,7 @@ public interface Rule extends NamedElement {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * Applies this rule to <code>trace</code>
+	 * Applies this rule to <code>valuesMap</code>.
 	 * @param frame the stack frame in which to execute the applier and post-apply
 	 * @param valuesMap the source and target values to which to apply the rule
 	 * @return the rule application result
@@ -635,6 +652,18 @@ public interface Rule extends NamedElement {
 	 * @generated
 	 */
 	Object applyOne(StackFrame frame, Map<String, Object> valuesMap);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Applies this rule to <code>valuesMap</code>.
+	 * @param frame the stack frame in which to execute the applier and post-apply
+	 * @param valuesMap the source and target values to which to apply the rule
+	 * @return the rule application trace
+	 * <!-- end-user-doc -->
+	 * @model frameDataType="org.eclipse.m2m.atl.emftvm.StackFrame"
+	 * @generated
+	 */
+	TraceLink applyOneTrace(StackFrame frame, Map<String, Object> valuesMap);
 
 	/**
 	 * <!-- begin-user-doc -->

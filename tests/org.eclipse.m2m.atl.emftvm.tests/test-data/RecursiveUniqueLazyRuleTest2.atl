@@ -1,7 +1,7 @@
 -- @atlcompiler emftvm
 -- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
 -- @nsURI UML=http://www.eclipse.org/uml2/5.0.0/UML
-module RecursiveUniqueLazyRuleTest;
+module RecursiveUniqueLazyRuleTest2;
 
 create OUT: ECORE from IN: UML;
 
@@ -12,7 +12,7 @@ rule FromEPackage {
 	to
 		tgt: ECORE!EPackage (
 			name <- src.name
-			,eClassifiers <- src.ownedType->collect(c | thisModule.getENamedElement(c))
+			,eClassifiers <- src.ownedType->collect(c | thisModule.resolveApply(c, 'getENamedElement'))
 				->reject(c | c.oclIsUndefined())
 		)
 }
@@ -21,6 +21,11 @@ rule FromEPackage {
 unique lazy abstract rule getENamedElement {
 	from
 		src: UML!NamedElement
+
+	using {
+		recursiveTgt: ECORE!EReference = thisModule.resolveApply(src, 'getENamedElement', 'tgt');
+		recursiveDefault: ECORE!EReference = thisModule.resolveApply(src, 'getENamedElement');
+	}
 
 	to
 		tgt: ECORE!ENamedElement (
@@ -37,7 +42,7 @@ unique lazy rule getEClass extends getENamedElement {
 	to
 		tgt: ECORE!EClass (
 			eSuperTypes <- src.general->collect(c | c.getEType())->reject(c | not c.oclIsKindOf(ECORE!EClass))
-			,eStructuralFeatures <- src.ownedAttribute->collect(f | thisModule.fromPropertyToEStructuralFeature(f))
+			,eStructuralFeatures <- src.ownedAttribute->collect(f | thisModule.resolveApply(Sequence{f, ''}, 'fromPropertyToEStructuralFeature'))
 							->reject(f | f.oclIsUndefined())->asSet()
 		)
 
@@ -49,11 +54,12 @@ unique lazy rule getEClass extends getENamedElement {
 unique lazy abstract rule fromPropertyToEStructuralFeature {
 
 	from
-		src: UML!Property
+		src: UML!Property,
+		prefix: String
 
 	to
 		tgt: ECORE!EStructuralFeature (
-			name <- src.name
+			name <- prefix + src.name
 			,ordered <- src.isOrdered
 			,"unique" <- src.isUnique
 			,lowerBound <- src.lower
@@ -68,14 +74,17 @@ unique lazy abstract rule fromPropertyToEStructuralFeature {
 unique lazy rule getEReferenceFromProperty extends fromPropertyToEStructuralFeature {
 
 	from
-		src: UML!Property (not src.type.oclIsUndefined() and src.type.oclIsKindOf(UML!Class))
+		src: UML!Property,
+		prefix: String (not src.type.oclIsUndefined() and src.type.oclIsKindOf(UML!Class))
 
 	using {
-			eType: ECORE!EClassifier = src.type.getEType();
+		eType: ECORE!EClassifier = src.type.getEType();
+		recursiveTgt: ECORE!EReference = thisModule.resolveApply(Sequence{src, prefix}, 'fromPropertyToEStructuralFeature', 'tgt');
+		recursiveDefault: ECORE!EReference = thisModule.resolveApply(Sequence{src, prefix}, 'fromPropertyToEStructuralFeature');
 	}
 
 	to
-		tgt:ECORE!EReference (
+		tgt: ECORE!EReference (
 			containment <- true
 	)
 
@@ -88,13 +97,14 @@ unique lazy rule getEReferenceFromProperty extends fromPropertyToEStructuralFeat
 unique lazy rule getAttributeFromProperty extends fromPropertyToEStructuralFeature {
 
 	from
-		src: UML!Property (not src.type.oclIsUndefined() and src.type.oclIsKindOf(UML!DataType))
+		src: UML!Property,
+		prefix: String (not src.type.oclIsUndefined() and src.type.oclIsKindOf(UML!DataType))
 	to
 		tgt: ECORE!EAttribute (
 		)
 }
 
 helper context UML!Class def: getEType(): ECORE!EClass =
-		thisModule.getEClass(self)
+		thisModule.resolveApply(self, 'getEClass')
 		;
 

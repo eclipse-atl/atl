@@ -97,13 +97,13 @@ public interface ModelDeclaration extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Input Model For</em>' container reference.
-	 * @see #setInputModelFor(Module)
+	 * @see #setInputModelFor(org.eclipse.m2m.atl.emftvm.Module)
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getModelDeclaration_InputModelFor()
 	 * @see org.eclipse.m2m.atl.emftvm.Module#getInputModels
 	 * @model opposite="inputModels" transient="false"
 	 * @generated
 	 */
-	Module getInputModelFor();
+	org.eclipse.m2m.atl.emftvm.Module getInputModelFor();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.ModelDeclaration#getInputModelFor <em>Input Model For</em>}' container reference.
@@ -113,7 +113,7 @@ public interface ModelDeclaration extends EObject {
 	 * @see #getInputModelFor()
 	 * @generated
 	 */
-	void setInputModelFor(Module value);
+	void setInputModelFor(org.eclipse.m2m.atl.emftvm.Module value);
 
 	/**
 	 * Returns the value of the '<em><b>Inout Model For</b></em>' container reference.
@@ -125,13 +125,13 @@ public interface ModelDeclaration extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Inout Model For</em>' container reference.
-	 * @see #setInoutModelFor(Module)
+	 * @see #setInoutModelFor(org.eclipse.m2m.atl.emftvm.Module)
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getModelDeclaration_InoutModelFor()
 	 * @see org.eclipse.m2m.atl.emftvm.Module#getInoutModels
 	 * @model opposite="inoutModels" transient="false"
 	 * @generated
 	 */
-	Module getInoutModelFor();
+	org.eclipse.m2m.atl.emftvm.Module getInoutModelFor();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.ModelDeclaration#getInoutModelFor <em>Inout Model For</em>}' container reference.
@@ -141,7 +141,7 @@ public interface ModelDeclaration extends EObject {
 	 * @see #getInoutModelFor()
 	 * @generated
 	 */
-	void setInoutModelFor(Module value);
+	void setInoutModelFor(org.eclipse.m2m.atl.emftvm.Module value);
 
 	/**
 	 * Returns the value of the '<em><b>Output Model For</b></em>' container reference.
@@ -153,13 +153,13 @@ public interface ModelDeclaration extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Output Model For</em>' container reference.
-	 * @see #setOutputModelFor(Module)
+	 * @see #setOutputModelFor(org.eclipse.m2m.atl.emftvm.Module)
 	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getModelDeclaration_OutputModelFor()
 	 * @see org.eclipse.m2m.atl.emftvm.Module#getOutputModels
 	 * @model opposite="outputModels" transient="false"
 	 * @generated
 	 */
-	Module getOutputModelFor();
+	org.eclipse.m2m.atl.emftvm.Module getOutputModelFor();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.ModelDeclaration#getOutputModelFor <em>Output Model For</em>}' container reference.
@@ -169,6 +169,6 @@ public interface ModelDeclaration extends EObject {
 	 * @see #getOutputModelFor()
 	 * @generated
 	 */
-	void setOutputModelFor(Module value);
+	void setOutputModelFor(org.eclipse.m2m.atl.emftvm.Module value);
 
 } // ModelDeclaration

@@ -253,8 +253,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setResource(final Resource newResource) {
-		final Resource oldResource = resource;
+	public void setResource(Resource newResource) {
+		Resource oldResource = resource;
 		resource = newResource;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.MODEL__RESOURCE, oldResource, resource));
@@ -276,8 +276,8 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setAllowInterModelReferences(final boolean newAllowInterModelReferences) {
-		final boolean oldAllowInterModelReferences = allowInterModelReferences;
+	public void setAllowInterModelReferences(boolean newAllowInterModelReferences) {
+		boolean oldAllowInterModelReferences = allowInterModelReferences;
 		allowInterModelReferences = newAllowInterModelReferences;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES, oldAllowInterModelReferences, allowInterModelReferences));
@@ -369,12 +369,12 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * @generated
 	 */
 	@Override
-	public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case EmftvmPackage.MODEL__RESOURCE:
-			return getResource();
-		case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
-			return isAllowInterModelReferences();
+			case EmftvmPackage.MODEL__RESOURCE:
+				return getResource();
+			case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
+				return isAllowInterModelReferences();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -386,14 +386,14 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * @generated
 	 */
 	@Override
-	public void eSet(final int featureID, final Object newValue) {
+	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case EmftvmPackage.MODEL__RESOURCE:
-			setResource((Resource)newValue);
-			return;
-		case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
-			setAllowInterModelReferences((Boolean)newValue);
-			return;
+			case EmftvmPackage.MODEL__RESOURCE:
+				setResource((Resource)newValue);
+				return;
+			case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
+				setAllowInterModelReferences((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -405,14 +405,14 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * @generated
 	 */
 	@Override
-	public void eUnset(final int featureID) {
+	public void eUnset(int featureID) {
 		switch (featureID) {
-		case EmftvmPackage.MODEL__RESOURCE:
-			setResource(RESOURCE_EDEFAULT);
-			return;
-		case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
-			setAllowInterModelReferences(ALLOW_INTER_MODEL_REFERENCES_EDEFAULT);
-			return;
+			case EmftvmPackage.MODEL__RESOURCE:
+				setResource(RESOURCE_EDEFAULT);
+				return;
+			case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
+				setAllowInterModelReferences(ALLOW_INTER_MODEL_REFERENCES_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -424,12 +424,12 @@ public class ModelImpl extends EObjectImpl implements Model {
 	 * @generated
 	 */
 	@Override
-	public boolean eIsSet(final int featureID) {
+	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case EmftvmPackage.MODEL__RESOURCE:
-			return RESOURCE_EDEFAULT == null ? resource != null : !RESOURCE_EDEFAULT.equals(resource);
-		case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
-			return allowInterModelReferences != ALLOW_INTER_MODEL_REFERENCES_EDEFAULT;
+			case EmftvmPackage.MODEL__RESOURCE:
+				return RESOURCE_EDEFAULT == null ? resource != null : !RESOURCE_EDEFAULT.equals(resource);
+			case EmftvmPackage.MODEL__ALLOW_INTER_MODEL_REFERENCES:
+				return allowInterModelReferences != ALLOW_INTER_MODEL_REFERENCES_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

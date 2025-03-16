@@ -174,7 +174,7 @@ public abstract class InvokeOperationInstructionImpl extends InvokeInstructionIm
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (opname: ");
 		result.append(opname);
 		result.append(')');

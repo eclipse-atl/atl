@@ -41,6 +41,7 @@ import junit.textui.TestRunner;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#matchSingle(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Match Single</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#matchRecursive(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Match Recursive</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#matchManual(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.lang.Object[]) <em>Match Manual</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#matchManualTrace(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.lang.Object[]) <em>Match Manual Trace</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#matchOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map) <em>Match One</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#matchOneOnly(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map) <em>Match One Only</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#createTraces(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Create Traces</em>}</li>
@@ -49,6 +50,7 @@ import junit.textui.TestRunner;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#postApply(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Post Apply</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#applyFirst(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Apply First</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#applyOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map) <em>Apply One</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#applyOneTrace(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map) <em>Apply One Trace</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#applyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink) <em>Apply For</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#postApplyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink) <em>Post Apply For</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#getAllESuperRules() <em>Get All ESuper Rules</em>}</li>
@@ -70,7 +72,7 @@ public class RuleTest extends NamedElementTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		TestRunner.run(RuleTest.class);
 	}
 
@@ -80,7 +82,7 @@ public class RuleTest extends NamedElementTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RuleTest(String name) {
+	public RuleTest(final String name) {
 		super(name);
 	}
 
@@ -274,6 +276,18 @@ public class RuleTest extends NamedElementTest {
 	}
 
 	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#matchManualTrace(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.lang.Object[]) <em>Match Manual Trace</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#matchManualTrace(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.lang.Object[])
+	 * @generated NOT
+	 */
+	public void testMatchManualTrace__StackFrame_Object() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+	}
+
+	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#matchOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map)
 	 * <em>Match One</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 *
@@ -371,12 +385,23 @@ public class RuleTest extends NamedElementTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#applyOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testApplyOne__StackFrame_Map() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
+	}
 
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#applyOneTrace(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map) <em>Apply One Trace</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#applyOneTrace(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.util.Map)
+	 * @generated NOT
+	 */
+	public void testApplyOneTrace__StackFrame_Map() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
 	}
 
 	/**
@@ -516,12 +541,11 @@ public class RuleTest extends NamedElementTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#getUniqueTrace(org.eclipse.m2m.atl.emftvm.util.StackFrame, java.lang.Object[])
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetUniqueTrace__StackFrame_Object() {
 		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
-
 	}
 
 } //RuleTest

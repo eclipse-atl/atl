@@ -101,6 +101,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
@@ -293,7 +294,8 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 */
 	protected IPartListener partListener =
 			new IPartListener() {
-		public void partActivated(IWorkbenchPart p) {
+		@Override
+		public void partActivated(final IWorkbenchPart p) {
 			if (p instanceof ContentOutline) {
 				if (((ContentOutline)p).getCurrentPage() == contentOutlinePage) {
 					getActionBarContributor().setActiveEditor(EmftvmEditor.this);
@@ -311,16 +313,20 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				handleActivate();
 			}
 		}
-		public void partBroughtToTop(IWorkbenchPart p) {
+		@Override
+		public void partBroughtToTop(final IWorkbenchPart p) {
 			// Ignore.
 		}
-		public void partClosed(IWorkbenchPart p) {
+		@Override
+		public void partClosed(final IWorkbenchPart p) {
 			// Ignore.
 		}
-		public void partDeactivated(IWorkbenchPart p) {
+		@Override
+		public void partDeactivated(final IWorkbenchPart p) {
 			// Ignore.
 		}
-		public void partOpened(IWorkbenchPart p) {
+		@Override
+		public void partOpened(final IWorkbenchPart p) {
 			// Ignore.
 		}
 	};
@@ -376,7 +382,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		protected boolean dispatching;
 
 		@Override
-		public void notifyChanged(Notification notification) {
+		public void notifyChanged(final Notification notification) {
 			if (notification.getNotifier() instanceof Resource) {
 				switch (notification.getFeatureID(Resource.class)) {
 				case Resource.RESOURCE__IS_LOADED:
@@ -405,6 +411,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				dispatching = true;
 				getSite().getShell().getDisplay().asyncExec
 				(new Runnable() {
+					@Override
 					public void run() {
 						dispatching = false;
 						updateProblemIndication();
@@ -414,12 +421,12 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		}
 
 		@Override
-		protected void setTarget(Resource target) {
+		protected void setTarget(final Resource target) {
 			basicSetTarget(target);
 		}
 
 		@Override
-		protected void unsetTarget(Resource target) {
+		protected void unsetTarget(final Resource target) {
 			basicUnsetTarget(target);
 			resourceToDiagnosticMap.remove(target);
 			dispatchUpdateProblemIndication();
@@ -434,7 +441,8 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 */
 	protected IResourceChangeListener resourceChangeListener =
 			new IResourceChangeListener() {
-		public void resourceChanged(IResourceChangeEvent event) {
+		@Override
+		public void resourceChanged(final IResourceChangeEvent event) {
 			final IResourceDelta delta = event.getDelta();
 			try {
 				class ResourceDeltaVisitor implements IResourceDeltaVisitor {
@@ -442,7 +450,8 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 					protected Collection<Resource> changedResources = new ArrayList<Resource>();
 					protected Collection<Resource> removedResources = new ArrayList<Resource>();
 
-					public boolean visit(IResourceDelta delta) {
+					@Override
+					public boolean visit(final IResourceDelta delta) {
 						if (delta.getResource().getType() == IResource.FILE) {
 							if (delta.getKind() == IResourceDelta.REMOVED ||
 									delta.getKind() == IResourceDelta.CHANGED && delta.getFlags() != IResourceDelta.MARKERS) {
@@ -477,6 +486,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				if (!visitor.getRemovedResources().isEmpty()) {
 					getSite().getShell().getDisplay().asyncExec
 					(new Runnable() {
+						@Override
 						public void run() {
 							removedResources.addAll(visitor.getRemovedResources());
 							if (!isDirty()) {
@@ -489,6 +499,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				if (!visitor.getChangedResources().isEmpty()) {
 					getSite().getShell().getDisplay().asyncExec
 					(new Runnable() {
+						@Override
 						public void run() {
 							changedResources.addAll(visitor.getChangedResources());
 							if (getSite().getPage().getActiveEditor() == EmftvmEditor.this) {
@@ -547,8 +558,9 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 */
 	protected void handleChangedResources() {
 		if (!changedResources.isEmpty() && (!isDirty() || handleDirtyConflict())) {
+			final ResourceSet resourceSet = editingDomain.getResourceSet();
 			if (isDirty()) {
-				changedResources.addAll(editingDomain.getResourceSet().getResources());
+				changedResources.addAll(resourceSet.getResources());
 			}
 			editingDomain.getCommandStack().flush();
 
@@ -557,7 +569,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				if (resource.isLoaded()) {
 					resource.unload();
 					try {
-						resource.load(Collections.EMPTY_MAP);
+						resource.load(resourceSet.getLoadOptions());
 					}
 					catch (final IOException exception) {
 						if (!resourceToDiagnosticMap.containsKey(resource)) {
@@ -683,9 +695,11 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		//
 		commandStack.addCommandStackListener
 		(new CommandStackListener() {
+			@Override
 			public void commandStackChanged(final EventObject event) {
 				getContainer().getDisplay().asyncExec
 				(new Runnable() {
+					@Override
 					public void run() {
 						firePropertyChange(IEditorPart.PROP_DIRTY);
 
@@ -697,7 +711,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 						}
 						for (final Iterator<PropertySheetPage> i = propertySheetPages.iterator(); i.hasNext(); ) {
 							final PropertySheetPage propertySheetPage = i.next();
-							if (propertySheetPage.getControl().isDisposed()) {
+							if (propertySheetPage.getControl() == null || propertySheetPage.getControl().isDisposed()) {
 								i.remove();
 							}
 							else {
@@ -721,7 +735,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * @generated
 	 */
 	@Override
-	protected void firePropertyChange(int action) {
+	protected void firePropertyChange(final int action) {
 		super.firePropertyChange(action);
 	}
 
@@ -731,13 +745,14 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setSelectionToViewer(Collection<?> collection) {
+	public void setSelectionToViewer(final Collection<?> collection) {
 		final Collection<?> theSelection = collection;
 		// Make sure it's okay.
 		//
 		if (theSelection != null && !theSelection.isEmpty()) {
 			final Runnable runnable =
 					new Runnable() {
+				@Override
 				public void run() {
 					// Try to select the items in the current content viewer of the editor.
 					//
@@ -758,6 +773,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EditingDomain getEditingDomain() {
 		return editingDomain;
 	}
@@ -773,7 +789,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public ReverseAdapterFactoryContentProvider(AdapterFactory adapterFactory) {
+		public ReverseAdapterFactoryContentProvider(final AdapterFactory adapterFactory) {
 			super(adapterFactory);
 		}
 
@@ -783,7 +799,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		 * @generated
 		 */
 		@Override
-		public Object [] getElements(Object object) {
+		public Object [] getElements(final Object object) {
 			final Object parent = super.getParent(object);
 			return (parent == null ? Collections.EMPTY_SET : Collections.singleton(parent)).toArray();
 		}
@@ -794,7 +810,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		 * @generated
 		 */
 		@Override
-		public Object [] getChildren(Object object) {
+		public Object [] getChildren(final Object object) {
 			final Object parent = super.getParent(object);
 			return (parent == null ? Collections.EMPTY_SET : Collections.singleton(parent)).toArray();
 		}
@@ -805,7 +821,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		 * @generated
 		 */
 		@Override
-		public boolean hasChildren(Object object) {
+		public boolean hasChildren(final Object object) {
 			final Object parent = super.getParent(object);
 			return parent != null;
 		}
@@ -816,7 +832,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		 * @generated
 		 */
 		@Override
-		public Object getParent(Object object) {
+		public Object getParent(final Object object) {
 			return null;
 		}
 	}
@@ -826,7 +842,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setCurrentViewerPane(ViewerPane viewerPane) {
+	public void setCurrentViewerPane(final ViewerPane viewerPane) {
 		if (currentViewerPane != viewerPane) {
 			if (currentViewerPane != null) {
 				currentViewerPane.showFocus(false);
@@ -843,7 +859,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setCurrentViewer(Viewer viewer) {
+	public void setCurrentViewer(final Viewer viewer) {
 		// If it is changing...
 		//
 		if (currentViewer != viewer) {
@@ -854,7 +870,8 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 						new ISelectionChangedListener() {
 					// This just notifies those things that are affected by the section.
 					//
-					public void selectionChanged(SelectionChangedEvent selectionChangedEvent) {
+					@Override
+					public void selectionChanged(final SelectionChangedEvent selectionChangedEvent) {
 						setSelection(selectionChangedEvent.getSelection());
 					}
 				};
@@ -888,6 +905,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Viewer getViewer() {
 		return currentViewer;
 	}
@@ -898,7 +916,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void createContextMenuFor(StructuredViewer viewer) {
+	protected void createContextMenuFor(final StructuredViewer viewer) {
 		final MenuManager contextMenu = new MenuManager("#PopUp");
 		contextMenu.add(new Separator("additions"));
 		contextMenu.setRemoveAllWhenShown(true);
@@ -947,7 +965,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Diagnostic analyzeResourceProblems(Resource resource, Exception exception) {
+	public Diagnostic analyzeResourceProblems(final Resource resource, final Exception exception) {
 		final boolean hasErrors = !resource.getErrors().isEmpty();
 		if (hasErrors || !resource.getWarnings().isEmpty()) {
 			final BasicDiagnostic basicDiagnostic =
@@ -995,7 +1013,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				final ViewerPane viewerPane =
 						new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
 					@Override
-					public Viewer createViewer(Composite composite) {
+					public Viewer createViewer(final Composite composite) {
 						final Tree tree = new Tree(composite, SWT.MULTI);
 						final TreeViewer newTreeViewer = new TreeViewer(tree);
 						return newTreeViewer;
@@ -1030,7 +1048,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				final ViewerPane viewerPane =
 						new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
 					@Override
-					public Viewer createViewer(Composite composite) {
+					public Viewer createViewer(final Composite composite) {
 						final Tree tree = new Tree(composite, SWT.MULTI);
 						final TreeViewer newTreeViewer = new TreeViewer(tree);
 						return newTreeViewer;
@@ -1059,7 +1077,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				final ViewerPane viewerPane =
 						new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
 					@Override
-					public Viewer createViewer(Composite composite) {
+					public Viewer createViewer(final Composite composite) {
 						return new ListViewer(composite);
 					}
 					@Override
@@ -1084,7 +1102,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				final ViewerPane viewerPane =
 						new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
 					@Override
-					public Viewer createViewer(Composite composite) {
+					public Viewer createViewer(final Composite composite) {
 						return new TreeViewer(composite);
 					}
 					@Override
@@ -1111,7 +1129,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				final ViewerPane viewerPane =
 						new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
 					@Override
-					public Viewer createViewer(Composite composite) {
+					public Viewer createViewer(final Composite composite) {
 						return new TableViewer(composite);
 					}
 					@Override
@@ -1154,7 +1172,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				final ViewerPane viewerPane =
 						new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
 					@Override
-					public Viewer createViewer(Composite composite) {
+					public Viewer createViewer(final Composite composite) {
 						return new TreeViewer(composite);
 					}
 					@Override
@@ -1193,8 +1211,11 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 
 			getSite().getShell().getDisplay().asyncExec
 			(new Runnable() {
+				@Override
 				public void run() {
-					setActivePage(0);
+					if (!getContainer().isDisposed()) {
+						setActivePage(0);
+					}
 				}
 			});
 		}
@@ -1206,7 +1227,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		(new ControlAdapter() {
 			boolean guard = false;
 			@Override
-			public void controlResized(ControlEvent event) {
+			public void controlResized(final ControlEvent event) {
 				if (!guard) {
 					guard = true;
 					hideTabs();
@@ -1217,6 +1238,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 
 		getSite().getShell().getDisplay().asyncExec
 		(new Runnable() {
+			@Override
 			public void run() {
 				updateProblemIndication();
 			}
@@ -1234,9 +1256,9 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		if (getPageCount() <= 1) {
 			setPageText(0, "");
 			if (getContainer() instanceof CTabFolder) {
-				((CTabFolder)getContainer()).setTabHeight(1);
 				final Point point = getContainer().getSize();
-				getContainer().setSize(point.x, point.y + 6);
+				final Rectangle clientArea = getContainer().getClientArea();
+				getContainer().setSize(point.x,  2 * point.y - clientArea.height - clientArea.y);
 			}
 		}
 	}
@@ -1252,9 +1274,9 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		if (getPageCount() > 1) {
 			setPageText(0, getString("_UI_SelectionPage_label"));
 			if (getContainer() instanceof CTabFolder) {
-				((CTabFolder)getContainer()).setTabHeight(SWT.DEFAULT);
 				final Point point = getContainer().getSize();
-				getContainer().setSize(point.x, point.y - 6);
+				final Rectangle clientArea = getContainer().getClientArea();
+				getContainer().setSize(point.x, clientArea.height + clientArea.y);
 			}
 		}
 	}
@@ -1266,7 +1288,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * @generated
 	 */
 	@Override
-	protected void pageChange(int pageIndex) {
+	protected void pageChange(final int pageIndex) {
 		super.pageChange(pageIndex);
 
 		if (contentOutlinePage != null) {
@@ -1282,15 +1304,15 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public Object getAdapter(Class key) {
+	public <T> T getAdapter(final Class<T> key) {
 		if (key.equals(IContentOutlinePage.class)) {
-			return showOutlineView() ? getContentOutlinePage() : null;
+			return showOutlineView() ? key.cast(getContentOutlinePage()) : null;
 		}
 		else if (key.equals(IPropertySheetPage.class)) {
-			return getPropertySheetPage();
+			return key.cast(getPropertySheetPage());
 		}
 		else if (key.equals(IGotoMarker.class)) {
-			return this;
+			return key.cast(this);
 		}
 		else {
 			return super.getAdapter(key);
@@ -1309,7 +1331,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 			//
 			class MyContentOutlinePage extends ContentOutlinePage {
 				@Override
-				public void createControl(Composite parent) {
+				public void createControl(final Composite parent) {
 					super.createControl(parent);
 					contentOutlineViewer = getTreeViewer();
 					contentOutlineViewer.addSelectionChangedListener(this);
@@ -1333,13 +1355,13 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				}
 
 				@Override
-				public void makeContributions(IMenuManager menuManager, IToolBarManager toolBarManager, IStatusLineManager statusLineManager) {
+				public void makeContributions(final IMenuManager menuManager, final IToolBarManager toolBarManager, final IStatusLineManager statusLineManager) {
 					super.makeContributions(menuManager, toolBarManager, statusLineManager);
 					contentOutlineStatusLineManager = statusLineManager;
 				}
 
 				@Override
-				public void setActionBars(IActionBars actionBars) {
+				public void setActionBars(final IActionBars actionBars) {
 					super.setActionBars(actionBars);
 					getActionBarContributor().shareGlobalActions(this, actionBars);
 				}
@@ -1353,7 +1375,8 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 			(new ISelectionChangedListener() {
 				// This ensures that we handle selections correctly.
 				//
-				public void selectionChanged(SelectionChangedEvent event) {
+				@Override
+				public void selectionChanged(final SelectionChangedEvent event) {
 					handleContentOutlineSelection(event.getSelection());
 				}
 			});
@@ -1372,13 +1395,13 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		final PropertySheetPage propertySheetPage =
 				new ExtendedPropertySheetPage(editingDomain) {
 			@Override
-			public void setSelectionToViewer(List<?> selection) {
+			public void setSelectionToViewer(final List<?> selection) {
 				EmftvmEditor.this.setSelectionToViewer(selection);
 				EmftvmEditor.this.setFocus();
 			}
 
 			@Override
-			public void setActionBars(IActionBars actionBars) {
+			public void setActionBars(final IActionBars actionBars) {
 				super.setActionBars(actionBars);
 				getActionBarContributor().shareGlobalActions(this, actionBars);
 			}
@@ -1395,7 +1418,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void handleContentOutlineSelection(ISelection selection) {
+	public void handleContentOutlineSelection(final ISelection selection) {
 		if (currentViewerPane != null && !selection.isEmpty() && selection instanceof IStructuredSelection) {
 			final Iterator<?> selectedElements = ((IStructuredSelection)selection).iterator();
 			if (selectedElements.hasNext()) {
@@ -1446,7 +1469,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * @generated
 	 */
 	@Override
-	public void doSave(IProgressMonitor progressMonitor) {
+	public void doSave(final IProgressMonitor progressMonitor) {
 		// Save only resources that have actually changed.
 		//
 		final Map<Object, Object> saveOptions = new HashMap<Object, Object>();
@@ -1459,7 +1482,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 			// This is the method that gets invoked when the operation runs.
 			//
 			@Override
-			public void execute(IProgressMonitor monitor) {
+			public void execute(final IProgressMonitor monitor) {
 				// Save the resources to the file system.
 				//
 				boolean first = true;
@@ -1510,7 +1533,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected boolean isPersisted(Resource resource) {
+	protected boolean isPersisted(final Resource resource) {
 		boolean result = false;
 		try {
 			final InputStream stream = editingDomain.getResourceSet().getURIConverter().createInputStream(resource.getURI());
@@ -1560,7 +1583,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void doSaveAs(URI uri, IEditorInput editorInput) {
+	protected void doSaveAs(final URI uri, final IEditorInput editorInput) {
 		(editingDomain.getResourceSet().getResources().get(0)).setURI(uri);
 		setInputWithNotify(editorInput);
 		setPartName(editorInput.getName());
@@ -1568,7 +1591,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				getActionBars().getStatusLineManager() != null ?
 						getActionBars().getStatusLineManager().getProgressMonitor() :
 							new NullProgressMonitor();
-						doSave(progressMonitor);
+		doSave(progressMonitor);
 	}
 
 	/**
@@ -1576,7 +1599,8 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void gotoMarker(IMarker marker) {
+	@Override
+	public void gotoMarker(final IMarker marker) {
 		final List<?> targetObjects = markerHelper.getTargetObjects(editingDomain, marker);
 		if (!targetObjects.isEmpty()) {
 			setSelectionToViewer(targetObjects);
@@ -1590,7 +1614,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * @generated
 	 */
 	@Override
-	public void init(IEditorSite site, IEditorInput editorInput) {
+	public void init(final IEditorSite site, final IEditorInput editorInput) {
 		setSite(site);
 		setInputWithNotify(editorInput);
 		setPartName(editorInput.getName());
@@ -1620,7 +1644,8 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+	@Override
+	public void addSelectionChangedListener(final ISelectionChangedListener listener) {
 		selectionChangedListeners.add(listener);
 	}
 
@@ -1630,7 +1655,8 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+	@Override
+	public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
 		selectionChangedListeners.remove(listener);
 	}
 
@@ -1640,6 +1666,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ISelection getSelection() {
 		return editorSelection;
 	}
@@ -1651,7 +1678,8 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setSelection(ISelection selection) {
+	@Override
+	public void setSelection(final ISelection selection) {
 		editorSelection = selection;
 
 		for (final ISelectionChangedListener listener : selectionChangedListeners) {
@@ -1665,7 +1693,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setStatusLineManager(ISelection selection) {
+	public void setStatusLineManager(final ISelection selection) {
 		final IStatusLineManager statusLineManager = currentViewer != null && currentViewer == contentOutlineViewer ?
 				contentOutlineStatusLineManager : getActionBars().getStatusLineManager();
 
@@ -1700,7 +1728,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static String getString(String key) {
+	private static String getString(final String key) {
 		return EmftvmEditorPlugin.INSTANCE.getString(key);
 	}
 
@@ -1710,7 +1738,7 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static String getString(String key, Object s1) {
+	private static String getString(final String key, final Object s1) {
 		return EmftvmEditorPlugin.INSTANCE.getString(key, new Object [] { s1 });
 	}
 
@@ -1720,7 +1748,8 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void menuAboutToShow(IMenuManager menuManager) {
+	@Override
+	public void menuAboutToShow(final IMenuManager menuManager) {
 		((IMenuListener)getEditorSite().getActionBarContributor()).menuAboutToShow(menuManager);
 	}
 

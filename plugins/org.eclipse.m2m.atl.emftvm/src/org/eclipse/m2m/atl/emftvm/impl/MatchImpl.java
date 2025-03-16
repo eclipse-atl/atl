@@ -170,7 +170,7 @@ public class MatchImpl extends InvokeInstructionImpl implements Match {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (rulename: ");
 		result.append(rulename);
 		result.append(')');

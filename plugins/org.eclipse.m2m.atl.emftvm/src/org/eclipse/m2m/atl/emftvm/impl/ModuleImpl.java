@@ -28,7 +28,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.m2m.atl.emftvm.EmftvmPackage;
 import org.eclipse.m2m.atl.emftvm.Feature;
 import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
-import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.Rule;
 
 /**
@@ -52,7 +51,7 @@ import org.eclipse.m2m.atl.emftvm.Rule;
  *
  * @generated
  */
-public class ModuleImpl extends NamedElementImpl implements Module {
+public class ModuleImpl extends NamedElementImpl implements org.eclipse.m2m.atl.emftvm.Module {
 	/**
 	 * The default value of the '{@link #getSourceName() <em>Source Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -97,7 +96,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Module> eImports;
+	protected EList<org.eclipse.m2m.atl.emftvm.Module> eImports;
 	/**
 	 * The cached value of the '{@link #getImports() <em>Imports</em>}' attribute list.
 	 * <!-- begin-user-doc -->
@@ -212,9 +211,9 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Module> getEImports() {
+	public EList<org.eclipse.m2m.atl.emftvm.Module> getEImports() {
 		if (eImports == null) {
-			eImports = new EObjectResolvingEList<Module>(Module.class, this, EmftvmPackage.MODULE__EIMPORTS);
+			eImports = new EObjectResolvingEList<org.eclipse.m2m.atl.emftvm.Module>(org.eclipse.m2m.atl.emftvm.Module.class, this, EmftvmPackage.MODULE__EIMPORTS);
 		}
 		return eImports;
 	}
@@ -370,7 +369,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 				return;
 			case EmftvmPackage.MODULE__EIMPORTS:
 				getEImports().clear();
-				getEImports().addAll((Collection<? extends Module>)newValue);
+				getEImports().addAll((Collection<? extends org.eclipse.m2m.atl.emftvm.Module>)newValue);
 				return;
 			case EmftvmPackage.MODULE__IMPORTS:
 				getImports().clear();

@@ -167,6 +167,7 @@ public class EmftvmActionBarContributor
 	 */
 	@Override
 	public void contributeToToolBar(IToolBarManager toolBarManager) {
+		super.contributeToToolBar(toolBarManager);
 		toolBarManager.add(new Separator("emftvm-settings"));
 		toolBarManager.add(new Separator("emftvm-additions"));
 	}

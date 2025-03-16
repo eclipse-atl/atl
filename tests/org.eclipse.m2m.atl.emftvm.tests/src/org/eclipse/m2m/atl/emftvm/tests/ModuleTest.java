@@ -57,8 +57,8 @@ public class ModuleTest extends NamedElementTest {
 	 * @generated
 	 */
 	@Override
-	protected Module getFixture() {
-		return (Module)fixture;
+	protected org.eclipse.m2m.atl.emftvm.Module getFixture() {
+		return (org.eclipse.m2m.atl.emftvm.Module)fixture;
 	}
 
 	/**

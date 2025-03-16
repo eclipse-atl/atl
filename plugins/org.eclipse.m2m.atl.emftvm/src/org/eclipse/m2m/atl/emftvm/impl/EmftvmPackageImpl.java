@@ -80,7 +80,6 @@ import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.ModelDeclaration;
 import org.eclipse.m2m.atl.emftvm.ModelDeclarationTag;
-import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.NamedElement;
 import org.eclipse.m2m.atl.emftvm.New;
 import org.eclipse.m2m.atl.emftvm.NewS;
@@ -834,7 +833,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link EmftvmPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -848,7 +847,8 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		if (isInited) return (EmftvmPackage)EPackage.Registry.INSTANCE.getEPackage(EmftvmPackage.eNS_URI);
 
 		// Obtain or create and register package
-		EmftvmPackageImpl theEmftvmPackage = (EmftvmPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof EmftvmPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new EmftvmPackageImpl());
+		Object registeredEmftvmPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		EmftvmPackageImpl theEmftvmPackage = registeredEmftvmPackage instanceof EmftvmPackageImpl ? (EmftvmPackageImpl)registeredEmftvmPackage : new EmftvmPackageImpl();
 
 		isInited = true;
 
@@ -865,7 +865,6 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		// Mark meta-data to indicate it can't be changed
 		theEmftvmPackage.freeze();
 
-  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(EmftvmPackage.eNS_URI, theEmftvmPackage);
 		return theEmftvmPackage;
@@ -3592,15 +3591,15 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		op = addEOperation(metamodelEClass, theEcorePackage.getEClassifier(), "findType", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "typeName", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(moduleEClass, Module.class, "Module", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getModule_SourceName(), theEcorePackage.getEString(), "sourceName", null, 1, 1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getModule_Features(), this.getFeature(), this.getFeature_Module(), "features", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getModule_Rules(), this.getRule(), this.getRule_Module(), "rules", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getModule_EImports(), this.getModule(), null, "eImports", null, 0, -1, Module.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		initEAttribute(getModule_Imports(), theEcorePackage.getEString(), "imports", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getModule_InputModels(), this.getModelDeclaration(), this.getModelDeclaration_InputModelFor(), "inputModels", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getModule_InoutModels(), this.getModelDeclaration(), this.getModelDeclaration_InoutModelFor(), "inoutModels", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getModule_OutputModels(), this.getModelDeclaration(), this.getModelDeclaration_OutputModelFor(), "outputModels", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(moduleEClass, org.eclipse.m2m.atl.emftvm.Module.class, "Module", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getModule_SourceName(), theEcorePackage.getEString(), "sourceName", null, 1, 1, org.eclipse.m2m.atl.emftvm.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModule_Features(), this.getFeature(), this.getFeature_Module(), "features", null, 0, -1, org.eclipse.m2m.atl.emftvm.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModule_Rules(), this.getRule(), this.getRule_Module(), "rules", null, 0, -1, org.eclipse.m2m.atl.emftvm.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModule_EImports(), this.getModule(), null, "eImports", null, 0, -1, org.eclipse.m2m.atl.emftvm.Module.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getModule_Imports(), theEcorePackage.getEString(), "imports", null, 0, -1, org.eclipse.m2m.atl.emftvm.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModule_InputModels(), this.getModelDeclaration(), this.getModelDeclaration_InputModelFor(), "inputModels", null, 0, -1, org.eclipse.m2m.atl.emftvm.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModule_InoutModels(), this.getModelDeclaration(), this.getModelDeclaration_InoutModelFor(), "inoutModels", null, 0, -1, org.eclipse.m2m.atl.emftvm.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModule_OutputModels(), this.getModelDeclaration(), this.getModelDeclaration_OutputModelFor(), "outputModels", null, 0, -1, org.eclipse.m2m.atl.emftvm.Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(modelDeclarationEClass, ModelDeclaration.class, "ModelDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getModelDeclaration_ModelName(), theEcorePackage.getEString(), "modelName", null, 1, 1, ModelDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3736,6 +3735,10 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getEJavaObjectArray(), "values", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		op = addEOperation(ruleEClass, theTracePackage.getTraceLink(), "matchManualTrace", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getEJavaObjectArray(), "values", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		op = addEOperation(ruleEClass, theEcorePackage.getEBoolean(), "matchOne", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(theEcorePackage.getEMap());
@@ -3772,10 +3775,19 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 
 		op = addEOperation(ruleEClass, theEcorePackage.getEJavaObject(), "applyOne", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
-		g1 = createEGenericType(ecorePackage.getEMap());
+		g1 = createEGenericType(theEcorePackage.getEMap());
 		g2 = createEGenericType(theEcorePackage.getEString());
 		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(ecorePackage.getEJavaObject());
+		g2 = createEGenericType(theEcorePackage.getEJavaObject());
+		g1.getETypeArguments().add(g2);
+		addEParameter(op, g1, "valuesMap", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(ruleEClass, theTracePackage.getTraceLink(), "applyOneTrace", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(theEcorePackage.getEMap());
+		g2 = createEGenericType(theEcorePackage.getEString());
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(theEcorePackage.getEJavaObject());
 		g1.getETypeArguments().add(g2);
 		addEParameter(op, g1, "valuesMap", 0, 1, IS_UNIQUE, IS_ORDERED);
 

@@ -222,7 +222,7 @@ public class FindtypeImpl extends InstructionImpl implements Findtype {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (modelname: ");
 		result.append(modelname);
 		result.append(", typename: ");

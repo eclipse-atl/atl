@@ -167,6 +167,48 @@ public class IntegrationTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests "RecursiveUniqueLazyRuleTest2.atl".
+	 */
+	public void testRecursiveUniqueLazyRule2() throws Exception {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.registerMetaModel("UML", EmftvmFactory.eINSTANCE.createMetamodel(UMLPackage.eINSTANCE.eResource()));
+		env.registerInputModel("IN", loadTestModel(rs, "/test-data/RecursiveUniqueLazyRuleTest.uml"));
+		env.registerOutputModel("OUT", createTestModel(rs, "/test-data/RecursiveUniqueLazyRuleTest2.ecore"));
+		env.loadModule(createTestModuleResolver(), "RecursiveUniqueLazyRuleTest2");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+		ATLLogger.info("Finished RecursiveUniqueLazyRuleTest2:\n" + td.toString());
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/RecursiveUniqueLazyRuleTest2.ecore");
+		assertEquals(refOut.getResource(), env.getOutputModels().get("OUT").getResource());
+	}
+
+	/**
+	 * Tests "RecursiveUniqueLazyRuleTest3.atl".
+	 */
+	public void testRecursiveUniqueLazyRule3() throws Exception {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.registerMetaModel("UML", EmftvmFactory.eINSTANCE.createMetamodel(UMLPackage.eINSTANCE.eResource()));
+		env.registerInputModel("IN", loadTestModel(rs, "/test-data/RecursiveUniqueLazyRuleTest.uml"));
+		env.registerOutputModel("OUT", createTestModel(rs, "/test-data/RecursiveUniqueLazyRuleTest2.ecore"));
+		env.loadModule(createTestModuleResolver(), "RecursiveUniqueLazyRuleTest3");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+		ATLLogger.info("Finished RecursiveUniqueLazyRuleTest3:\n" + td.toString());
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/RecursiveUniqueLazyRuleTest2.ecore");
+		assertEquals(refOut.getResource(), env.getOutputModels().get("OUT").getResource());
+	}
+
+	/**
 	 * Tests "SearchPlanTest.atl".
 	 */
 	public void testSearchPlanTest() {

@@ -41,9 +41,11 @@ import org.eclipse.m2m.atl.emftvm.Field;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.Module;
 import org.eclipse.m2m.atl.emftvm.Operation;
+import org.eclipse.m2m.atl.emftvm.Rule;
 import org.eclipse.m2m.atl.emftvm.trace.SourceElement;
 import org.eclipse.m2m.atl.emftvm.trace.SourceElementList;
 import org.eclipse.m2m.atl.emftvm.trace.TargetElement;
+import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
 import org.eclipse.m2m.atl.emftvm.trace.TraceLinkSet;
 import org.eclipse.m2m.atl.emftvm.trace.TracedRule;
 
@@ -834,10 +836,10 @@ public final class OCLOperations {
 				@Override
 				public Object execute(final StackFrame frame) {
 					final Object object = frame.getLocal(0, 0);
-					final String rule = (String)frame.getLocal(0, 1);
+					final String ruleName = (String)frame.getLocal(0, 1);
 					final String name = (String)frame.getLocal(0, 2);
 					if (object instanceof List<?>) {
-						final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(rule, false);
+						final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(ruleName, false);
 						if (tr != null) {
 							final SourceElementList sel = tr.getUniqueSourceElements((List<?>)object);
 							if (sel != null) {
@@ -849,7 +851,7 @@ public final class OCLOperations {
 							}
 						}
 					} else {
-						final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(rule, false);
+						final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(ruleName, false);
 						if (tr != null) {
 							final SourceElement se = tr.getUniqueSourceElement(object);
 							if (se != null) {
@@ -862,7 +864,144 @@ public final class OCLOperations {
 					}
 					throw new VMException(frame, String.format(
 							"Cannot resolve unique trace target '%s::%s' for %s",
-							rule, name, EMFTVMUtil.toPrettyString(object, frame.getEnv())));
+							ruleName, name, EMFTVMUtil.toPrettyString(object, frame.getEnv())));
+				}
+			});
+		createOperation(true, "resolveApply", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE,
+				new String[][][]{{{"var"}, Types.OCL_ANY_TYPE},
+			{{"rule_name"}, Types.STRING_TYPE},
+			{{"target_pattern_name"}, Types.STRING_TYPE}},
+				new NativeCodeBlock() {
+				@Override
+				public Object execute(final StackFrame frame) {
+					final Object object = frame.getLocal(0, 0);
+					final String ruleName = (String) frame.getLocal(0, 1);
+					final String name = (String) frame.getLocal(0, 2);
+					if (object instanceof List<?>) {
+						final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(ruleName, false);
+						if (tr != null) {
+							final SourceElementList sel = tr.getUniqueSourceElements((List<?>) object);
+							if (sel != null) {
+								assert !sel.getSourceElements().isEmpty();
+								final TargetElement te = sel.getSourceElements().get(0).getSourceOf()
+										.getTargetElement(name);
+								if (te != null) {
+									return te.getObject();
+								}
+							}
+						}
+						final Rule rule = frame.getEnv().findRule(ruleName);
+						if (rule == null) {
+							throw new VMException(frame, String.format("Rule %s not found", ruleName));
+						}
+						final Object[] args = ((List<?>) object).toArray();
+						EMFTVMUtil.checkRuleArgCount(frame, rule, args.length);
+						final TraceLink tl = rule.matchManualTrace(frame, args);
+						if (tl != null) {
+							final TargetElement te = tl.getTargetElement(name);
+							if (te != null) {
+								return te.getObject();
+							}
+							throw new VMException(frame, String.format(
+									"Cannot resolve unique trace target '%s::%s' for %s",
+									ruleName, name, EMFTVMUtil.toPrettyString(object, frame.getEnv())));
+						}
+						return null;
+					} else {
+						final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(ruleName, false);
+						if (tr != null) {
+							final SourceElement se = tr.getUniqueSourceElement(object);
+							if (se != null) {
+								final TargetElement te = se.getSourceOf().getTargetElement(name);
+								if (te != null) {
+									return te.getObject();
+								}
+							}
+						}
+						final Rule rule = frame.getEnv().findRule(ruleName);
+						if (rule == null) {
+							throw new VMException(frame, String.format("Rule %s not found", ruleName));
+						}
+						EMFTVMUtil.checkRuleArgCount(frame, rule, 1);
+						final TraceLink tl = rule.matchManualTrace(frame, new Object[]{object});
+						if (tl != null) {
+							final TargetElement te = tl.getTargetElement(name);
+							if (te != null) {
+								return te.getObject();
+							}
+							throw new VMException(frame, String.format(
+									"Cannot resolve unique trace target '%s::%s' for %s",
+									ruleName, name, EMFTVMUtil.toPrettyString(object, frame.getEnv())));
+						}
+						return null;
+					}
+				}
+			});
+		createOperation(true, "resolveApply", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE,
+				new String[][][]{{{"var"}, Types.OCL_ANY_TYPE},
+			{{"rule_name"}, Types.STRING_TYPE}},
+				new NativeCodeBlock() {
+				@Override
+				public Object execute(final StackFrame frame) {
+					final Object object = frame.getLocal(0, 0);
+					final String ruleName = (String) frame.getLocal(0, 1);
+					if (object instanceof List<?>) {
+						final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(ruleName, false);
+						if (tr != null) {
+							final SourceElementList sel = tr.getUniqueSourceElements((List<?>) object);
+							if (sel != null) {
+								assert !sel.getSourceElements().isEmpty();
+								final SourceElement se = sel.getSourceElements().get(0);
+								assert se.getObject() == ((List<?>) object).get(0);
+								final Object target = resolve(se);
+								if (target != null) {
+									return target;
+								}
+							}
+						}
+						final Rule rule = frame.getEnv().findRule(ruleName);
+						if (rule == null) {
+							throw new VMException(frame, String.format("Rule %s not found", ruleName));
+						}
+						final Object[] args = ((List<?>) object).toArray();
+						EMFTVMUtil.checkRuleArgCount(frame, rule, args.length);
+						final TraceLink tl = rule.matchManualTrace(frame, args);
+						if (tl != null) {
+							final SourceElement se = tl.getSourceElements().get(0);
+							assert se.getObject() == ((List<?>) object).get(0);
+							final Object target = resolve(se);
+							if (target != null) {
+								return target;
+							}
+						}
+					} else {
+						final TracedRule tr = frame.getEnv().getTraces().getLinksByRule(ruleName, false);
+						if (tr != null) {
+							final SourceElement se = tr.getUniqueSourceElement(object);
+							if (se != null) {
+								assert se.getObject() == object;
+								final Object target = resolve(se);
+								if (target != null) {
+									return target;
+								}
+							}
+						}
+						final Rule rule = frame.getEnv().findRule(ruleName);
+						if (rule == null) {
+							throw new VMException(frame, String.format("Rule %s not found", ruleName));
+						}
+						EMFTVMUtil.checkRuleArgCount(frame, rule, 1);
+						final TraceLink tl = rule.matchManualTrace(frame, new Object[]{object});
+						if (tl != null) {
+							final SourceElement se = tl.getSourceElements().get(0);
+							assert se.getObject() == object;
+							final Object target = resolve(se);
+							if (target != null) {
+								return target;
+							}
+						}
+					}
+					return null;
 				}
 			});
 		createOperation(true, "refGetValue", Types.EXEC_ENV_TYPE, Types.OCL_ANY_TYPE,
@@ -1831,5 +1970,31 @@ public final class OCLOperations {
 	 */
 	public Module getOclModule() {
 		return oclModule;
+	}
+
+	/**
+	 * Resolves the default tracing target object for the given source element.
+	 * @param se the tracing source element
+	 * @return the default tracing target
+	 */
+	private Object resolve(final SourceElement se) {
+		if (se != null) {
+			if (se.isMapsToSelf()) {
+				return se.getObject();
+			} else {
+				final EList<TargetElement> seMapsTo = se.getMapsTo();
+				if (!seMapsTo.isEmpty()) {
+					assert seMapsTo.get(0).getObject().eResource() != null;
+					return seMapsTo.get(0).getObject();
+				}
+				for (final TargetElement te : se.getSourceOf().getTargetElements()) {
+					if (te.getMapsTo().isEmpty()) { // default mapping
+						assert te.getObject().eResource() != null;
+						return te.getObject();
+					}
+				}
+			}
+		}
+		return null;
 	}
 }
