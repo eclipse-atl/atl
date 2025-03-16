@@ -67,6 +67,7 @@ import org.eclipse.m2m.atl.emftvm.Metamodel;
 import org.eclipse.m2m.atl.emftvm.Model;
 import org.eclipse.m2m.atl.emftvm.Operation;
 import org.eclipse.m2m.atl.emftvm.Parameter;
+import org.eclipse.m2m.atl.emftvm.Rule;
 import org.eclipse.m2m.atl.emftvm.trace.TracePackage;
 
 /**
@@ -2647,6 +2648,21 @@ public final class EMFTVMUtil {
 	 */
 	public static double getRootMethodCacheHitRate() {
 		return RootMethodCacheAccesses > 0 ? (double) RootMethodCacheHits / (double) RootMethodCacheAccesses : -1.0;
+	}
+
+	/**
+	 * Checks the rule argument count.
+	 * @param frame the current stack frame
+	 * @param rule the rule for which to check
+	 * @param args the arguments to check against the rule
+	 * @throws VMException if the argument count does not match the rule's input elements count
+	 */
+	public static void checkRuleArgCount(final StackFrame frame, final Rule rule, final int argcount) {
+		if (argcount != rule.getInputElements().size()) {
+			throw new VMException(frame, String.format(
+					"Rule %s has different amount of input elements than expected: %d instead of %d",
+					rule.getName(), rule.getInputElements().size(), argcount));
+		}
 	}
 
 }

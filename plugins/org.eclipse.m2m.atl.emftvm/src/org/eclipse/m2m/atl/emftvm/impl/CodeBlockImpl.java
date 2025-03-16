@@ -241,9 +241,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 	private boolean ruleSet;
 	private Rule rule;
-	private Map<Instruction, EList<Instruction>> predecessors = new HashMap<Instruction, EList<Instruction>>();
-	private Map<Instruction, EList<Instruction>> allPredecessors = new HashMap<Instruction, EList<Instruction>>();
-	private Map<Instruction, EList<Instruction>> nlPredecessors = new HashMap<Instruction, EList<Instruction>>();
+	private final Map<Instruction, EList<Instruction>> predecessors = new HashMap<Instruction, EList<Instruction>>();
+	private final Map<Instruction, EList<Instruction>> allPredecessors = new HashMap<Instruction, EList<Instruction>>();
+	private final Map<Instruction, EList<Instruction>> nlPredecessors = new HashMap<Instruction, EList<Instruction>>();
 	private JITCodeBlock jitCodeBlock;
 	private int runcount;
 
@@ -275,9 +275,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public int getMaxLocals() {
 		if (maxLocals == MAX_LOCALS_EDEFAULT) {
-			for (LocalVariable lv : getLocalVariables()) {
+			for (final LocalVariable lv : getLocalVariables()) {
 				maxLocals = Math.max(maxLocals, lv.getSlot());
 			}
 			maxLocals++; // highest index + 1
@@ -291,8 +292,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void setMaxLocals(int newMaxLocals) {
-		int oldMaxLocals = maxLocals;
+	@Override
+	public void setMaxLocals(final int newMaxLocals) {
+		final int oldMaxLocals = maxLocals;
 		maxLocals = newMaxLocals;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.CODE_BLOCK__MAX_LOCALS, oldMaxLocals, maxLocals));
@@ -304,10 +306,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public int getMaxStack() {
 		if (maxStack == MAX_STACK_EDEFAULT) {
 			maxStack = 0;
-			for (Instruction instr : getCode()) {
+			for (final Instruction instr : getCode()) {
 				maxStack = Math.max(maxStack, instr.getStackLevel());
 			}
 		}
@@ -320,8 +323,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void setMaxStack(int newMaxStack) {
-		int oldMaxStack = maxStack;
+	@Override
+	public void setMaxStack(final int newMaxStack) {
+		final int oldMaxStack = maxStack;
 		maxStack = newMaxStack;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.CODE_BLOCK__MAX_STACK, oldMaxStack, maxStack));
@@ -333,6 +337,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Instruction> getCode() {
 		if (code == null) {
 			code = new EObjectContainmentWithInverseEList<Instruction>(Instruction.class, this, EmftvmPackage.CODE_BLOCK__CODE, EmftvmPackage.INSTRUCTION__OWNING_BLOCK);
@@ -346,6 +351,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<LineNumber> getLineNumbers() {
 		if (lineNumbers == null) {
 			lineNumbers = new EObjectContainmentWithInverseEList<LineNumber>(LineNumber.class, this, EmftvmPackage.CODE_BLOCK__LINE_NUMBERS, EmftvmPackage.LINE_NUMBER__OWNING_BLOCK);
@@ -359,6 +365,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<LocalVariable> getLocalVariables() {
 		if (localVariables == null) {
 			localVariables = new EObjectContainmentWithInverseEList<LocalVariable>(LocalVariable.class, this, EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES, EmftvmPackage.LOCAL_VARIABLE__OWNING_BLOCK);
@@ -372,6 +379,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Rule getMatcherFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__MATCHER_FOR) return null;
 		return (Rule)eInternalContainer();
@@ -383,7 +391,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetMatcherFor(Rule newMatcherFor, NotificationChain msgs) {
+	public NotificationChain basicSetMatcherFor(final Rule newMatcherFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newMatcherFor, EmftvmPackage.CODE_BLOCK__MATCHER_FOR, msgs);
 		return msgs;
 	}
@@ -394,7 +402,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMatcherFor(Rule newMatcherFor) {
+	@Override
+	public void setMatcherFor(final Rule newMatcherFor) {
 		if (newMatcherFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__MATCHER_FOR && newMatcherFor != null)) {
 			if (EcoreUtil.isAncestor(this, newMatcherFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -416,6 +425,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Rule getApplierFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__APPLIER_FOR) return null;
 		return (Rule)eInternalContainer();
@@ -427,7 +437,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetApplierFor(Rule newApplierFor, NotificationChain msgs) {
+	public NotificationChain basicSetApplierFor(final Rule newApplierFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newApplierFor, EmftvmPackage.CODE_BLOCK__APPLIER_FOR, msgs);
 		return msgs;
 	}
@@ -438,7 +448,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setApplierFor(Rule newApplierFor) {
+	@Override
+	public void setApplierFor(final Rule newApplierFor) {
 		if (newApplierFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__APPLIER_FOR && newApplierFor != null)) {
 			if (EcoreUtil.isAncestor(this, newApplierFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -460,6 +471,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Rule getPostApplyFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR) return null;
 		return (Rule)eInternalContainer();
@@ -471,7 +483,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPostApplyFor(Rule newPostApplyFor, NotificationChain msgs) {
+	public NotificationChain basicSetPostApplyFor(final Rule newPostApplyFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newPostApplyFor, EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR, msgs);
 		return msgs;
 	}
@@ -482,7 +494,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setPostApplyFor(Rule newPostApplyFor) {
+	@Override
+	public void setPostApplyFor(final Rule newPostApplyFor) {
 		if (newPostApplyFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR && newPostApplyFor != null)) {
 			if (EcoreUtil.isAncestor(this, newPostApplyFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -504,6 +517,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Operation getBodyFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__BODY_FOR) return null;
 		return (Operation)eInternalContainer();
@@ -515,7 +529,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetBodyFor(Operation newBodyFor, NotificationChain msgs) {
+	public NotificationChain basicSetBodyFor(final Operation newBodyFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newBodyFor, EmftvmPackage.CODE_BLOCK__BODY_FOR, msgs);
 		return msgs;
 	}
@@ -526,7 +540,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setBodyFor(Operation newBodyFor) {
+	@Override
+	public void setBodyFor(final Operation newBodyFor) {
 		if (newBodyFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__BODY_FOR && newBodyFor != null)) {
 			if (EcoreUtil.isAncestor(this, newBodyFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -548,6 +563,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Field getInitialiserFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__INITIALISER_FOR) return null;
 		return (Field)eInternalContainer();
@@ -559,7 +575,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetInitialiserFor(Field newInitialiserFor, NotificationChain msgs) {
+	public NotificationChain basicSetInitialiserFor(final Field newInitialiserFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newInitialiserFor, EmftvmPackage.CODE_BLOCK__INITIALISER_FOR, msgs);
 		return msgs;
 	}
@@ -570,7 +586,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setInitialiserFor(Field newInitialiserFor) {
+	@Override
+	public void setInitialiserFor(final Field newInitialiserFor) {
 		if (newInitialiserFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__INITIALISER_FOR && newInitialiserFor != null)) {
 			if (EcoreUtil.isAncestor(this, newInitialiserFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -592,6 +609,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<CodeBlock> getNested() {
 		if (nested == null) {
 			nested = new EObjectContainmentWithInverseEList<CodeBlock>(CodeBlock.class, this, EmftvmPackage.CODE_BLOCK__NESTED, EmftvmPackage.CODE_BLOCK__NESTED_FOR);
@@ -605,6 +623,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public CodeBlock getNestedFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__NESTED_FOR) return null;
 		return (CodeBlock)eInternalContainer();
@@ -616,7 +635,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetNestedFor(CodeBlock newNestedFor, NotificationChain msgs) {
+	public NotificationChain basicSetNestedFor(final CodeBlock newNestedFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newNestedFor, EmftvmPackage.CODE_BLOCK__NESTED_FOR, msgs);
 		return msgs;
 	}
@@ -627,7 +646,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setNestedFor(CodeBlock newNestedFor) {
+	@Override
+	public void setNestedFor(final CodeBlock newNestedFor) {
 		if (newNestedFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__NESTED_FOR && newNestedFor != null)) {
 			if (EcoreUtil.isAncestor(this, newNestedFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -649,6 +669,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public StackFrame getParentFrame() {
 		return parentFrame.get();
 	}
@@ -659,6 +680,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setParentFrame(final StackFrame newParentFrame) {
 		final StackFrame oldParentFrame = parentFrame.get();
 		parentFrame.set(newParentFrame);
@@ -672,6 +694,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public InputRuleElement getBindingFor() {
 		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__BINDING_FOR) return null;
 		return (InputRuleElement)eInternalContainer();
@@ -683,7 +706,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetBindingFor(InputRuleElement newBindingFor, NotificationChain msgs) {
+	public NotificationChain basicSetBindingFor(final InputRuleElement newBindingFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newBindingFor, EmftvmPackage.CODE_BLOCK__BINDING_FOR, msgs);
 		return msgs;
 	}
@@ -694,7 +717,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setBindingFor(InputRuleElement newBindingFor) {
+	@Override
+	public void setBindingFor(final InputRuleElement newBindingFor) {
 		if (newBindingFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__BINDING_FOR && newBindingFor != null)) {
 			if (EcoreUtil.isAncestor(this, newBindingFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -718,6 +742,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public Object execute(final StackFrame frame) {
 		final JITCodeBlock jcb = getJITCodeBlock();
 		if (jcb != null) {
@@ -744,7 +769,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 		try {
 			LOOP: while (pc < codeSize) {
-				Instruction instr = code.get(pc++);
+				final Instruction instr = code.get(pc++);
 				if (monitor != null) {
 					if (monitor.isTerminated()) {
 						throw new VMException(frame, "Execution terminated.");
@@ -914,8 +939,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					// Use Java's left-to-right evaluation semantics:
 					// stack = [..., arg1, arg2]
 					argcount = ((InvokeAllCbs) instr).getArgcount();
-					Object[] args = argcount > 0 ? stack.pop(argcount) : EMPTY;
-					for (CodeBlock ncb : getNested()) {
+					final Object[] args = argcount > 0 ? stack.pop(argcount) : EMPTY;
+					for (final CodeBlock ncb : getNested()) {
 						if (ncb.getStackLevel() > 0) {
 							stack.push(ncb.execute(frame.getSubFrame(ncb, args)));
 						} else {
@@ -951,7 +976,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					argcount = ((Match) instr).getArgcount();
 					stack.push(argcount > 0 ? matchOne(frame, findRule(frame.getEnv(), ((Match) instr).getRulename()),
 							stack.pop(argcount, new EObject[argcount])) : matchOne(frame,
-							findRule(frame.getEnv(), ((Match) instr).getRulename())));
+									findRule(frame.getEnv(), ((Match) instr).getRulename())));
 					break;
 				case MATCH_S:
 					frame.setPc(pc);
@@ -980,9 +1005,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 					throw new VMException(frame, String.format("Unsupported opcode: %s", instr.getOpcode()));
 				} // switch
 			} // while
-		} catch (VMException e) {
+		} catch (final VMException e) {
 			throw e;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			frame.setPc(pc);
 			throw new VMException(frame, e);
 		}
@@ -997,10 +1022,10 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				if (getJITCodeBlock() == null) {
 					try {
 						setJITCodeBlock(jc.jit(this));
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						frame.setPc(pc);
 						throw new VMException(frame, e);
-					} catch (VerifyError e) {
+					} catch (final VerifyError e) {
 						frame.setPc(pc);
 						throw new VMException(frame, e);
 					}
@@ -1017,6 +1042,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public int getStackLevel() {
 		final EList<Instruction> code = getCode();
 		if (code.isEmpty()) {
@@ -1031,6 +1057,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public Module getModule() {
 		final EObject container = eContainer();
 		if (container != null) {
@@ -1058,6 +1085,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public Operation getOperation() {
 		final EObject container = eContainer();
 		if (container != null) {
@@ -1079,6 +1107,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public Field getField() {
 		final EObject container = eContainer();
 		if (container != null) {
@@ -1100,6 +1129,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<Instruction> getPredecessors(final Instruction i) {
 		if (!predecessors.containsKey(i)) {
 			final EList<Instruction> preds = new BasicEList<Instruction>();
@@ -1107,11 +1137,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			final int index = code.indexOf(i);
 			assert index > -1;
 			if (index > 0) {
-				Instruction prev = code.get(index - 1);
+				final Instruction prev = code.get(index - 1);
 				if (!(prev instanceof Goto)) {
 					preds.add(prev);
 				}
-				for (Instruction i2 : code) {
+				for (final Instruction i2 : code) {
 					if (i2 instanceof BranchInstruction && ((BranchInstruction)i2).getTarget() == prev) {
 						preds.add(i2);
 					}
@@ -1128,6 +1158,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<Instruction> getAllPredecessors(final Instruction i) {
 		if (!allPredecessors.containsKey(i)) {
 			final EList<Instruction> predecessors = new BasicEList<Instruction>();
@@ -1145,7 +1176,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	private EList<Instruction> allPredecessors(final Instruction i, final EList<Instruction> currentPreds) {
 		final EList<Instruction> preds = getPredecessors(i);
-		for (Instruction pred : preds) {
+		for (final Instruction pred : preds) {
 			if (!currentPreds.contains(pred)) {
 				currentPreds.add(pred);
 				allPredecessors(pred, currentPreds);
@@ -1160,12 +1191,13 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public EList<Instruction> getNonLoopingPredecessors(Instruction i) {
+	@Override
+	public EList<Instruction> getNonLoopingPredecessors(final Instruction i) {
 		if (!nlPredecessors.containsKey(i)) {
 			final EList<Instruction> code = getCode();
 			final int index = code.indexOf(i);
 			final EList<Instruction> preds = new BasicEList<Instruction>();
-			for (Instruction p : getPredecessors(i)) {
+			for (final Instruction p : getPredecessors(i)) {
 				if (code.indexOf(p) < index || !getAllPredecessors(p).contains(i)) {
 					preds.add(p);
 				}
@@ -1183,44 +1215,44 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case EmftvmPackage.CODE_BLOCK__CODE:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getCode()).basicAdd(otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getLineNumbers()).basicAdd(otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getLocalVariables()).basicAdd(otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetMatcherFor((Rule)otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetApplierFor((Rule)otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetPostApplyFor((Rule)otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetBodyFor((Operation)otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetInitialiserFor((Field)otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__NESTED:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getNested()).basicAdd(otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetNestedFor((CodeBlock)otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetBindingFor((InputRuleElement)otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__CODE:
+			return ((InternalEList<InternalEObject>)(InternalEList<?>)getCode()).basicAdd(otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
+			return ((InternalEList<InternalEObject>)(InternalEList<?>)getLineNumbers()).basicAdd(otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+			return ((InternalEList<InternalEObject>)(InternalEList<?>)getLocalVariables()).basicAdd(otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetMatcherFor((Rule)otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetApplierFor((Rule)otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetPostApplyFor((Rule)otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetBodyFor((Operation)otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetInitialiserFor((Field)otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__NESTED:
+			return ((InternalEList<InternalEObject>)(InternalEList<?>)getNested()).basicAdd(otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetNestedFor((CodeBlock)otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetBindingFor((InputRuleElement)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -1232,30 +1264,30 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID, final NotificationChain msgs) {
 		switch (featureID) {
-			case EmftvmPackage.CODE_BLOCK__CODE:
-				return ((InternalEList<?>)getCode()).basicRemove(otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
-				return ((InternalEList<?>)getLineNumbers()).basicRemove(otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
-				return ((InternalEList<?>)getLocalVariables()).basicRemove(otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-				return basicSetMatcherFor(null, msgs);
-			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-				return basicSetApplierFor(null, msgs);
-			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-				return basicSetPostApplyFor(null, msgs);
-			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-				return basicSetBodyFor(null, msgs);
-			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-				return basicSetInitialiserFor(null, msgs);
-			case EmftvmPackage.CODE_BLOCK__NESTED:
-				return ((InternalEList<?>)getNested()).basicRemove(otherEnd, msgs);
-			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-				return basicSetNestedFor(null, msgs);
-			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-				return basicSetBindingFor(null, msgs);
+		case EmftvmPackage.CODE_BLOCK__CODE:
+			return ((InternalEList<?>)getCode()).basicRemove(otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
+			return ((InternalEList<?>)getLineNumbers()).basicRemove(otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+			return ((InternalEList<?>)getLocalVariables()).basicRemove(otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+			return basicSetMatcherFor(null, msgs);
+		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+			return basicSetApplierFor(null, msgs);
+		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+			return basicSetPostApplyFor(null, msgs);
+		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+			return basicSetBodyFor(null, msgs);
+		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+			return basicSetInitialiserFor(null, msgs);
+		case EmftvmPackage.CODE_BLOCK__NESTED:
+			return ((InternalEList<?>)getNested()).basicRemove(otherEnd, msgs);
+		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+			return basicSetNestedFor(null, msgs);
+		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+			return basicSetBindingFor(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1267,22 +1299,22 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
+	public NotificationChain eBasicRemoveFromContainerFeature(final NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-				return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__MATCHER, Rule.class, msgs);
-			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-				return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__APPLIER, Rule.class, msgs);
-			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-				return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__POST_APPLY, Rule.class, msgs);
-			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-				return eInternalContainer().eInverseRemove(this, EmftvmPackage.OPERATION__BODY, Operation.class, msgs);
-			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-				return eInternalContainer().eInverseRemove(this, EmftvmPackage.FIELD__INITIALISER, Field.class, msgs);
-			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-				return eInternalContainer().eInverseRemove(this, EmftvmPackage.CODE_BLOCK__NESTED, CodeBlock.class, msgs);
-			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-				return eInternalContainer().eInverseRemove(this, EmftvmPackage.INPUT_RULE_ELEMENT__BINDING, InputRuleElement.class, msgs);
+		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+			return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__MATCHER, Rule.class, msgs);
+		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+			return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__APPLIER, Rule.class, msgs);
+		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+			return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__POST_APPLY, Rule.class, msgs);
+		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+			return eInternalContainer().eInverseRemove(this, EmftvmPackage.OPERATION__BODY, Operation.class, msgs);
+		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+			return eInternalContainer().eInverseRemove(this, EmftvmPackage.FIELD__INITIALISER, Field.class, msgs);
+		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+			return eInternalContainer().eInverseRemove(this, EmftvmPackage.CODE_BLOCK__NESTED, CodeBlock.class, msgs);
+		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+			return eInternalContainer().eInverseRemove(this, EmftvmPackage.INPUT_RULE_ELEMENT__BINDING, InputRuleElement.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -1294,36 +1326,36 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
 		switch (featureID) {
-			case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
-				return getMaxLocals();
-			case EmftvmPackage.CODE_BLOCK__MAX_STACK:
-				return getMaxStack();
-			case EmftvmPackage.CODE_BLOCK__CODE:
-				return getCode();
-			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
-				return getLineNumbers();
-			case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
-				return getLocalVariables();
-			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-				return getMatcherFor();
-			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-				return getApplierFor();
-			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-				return getPostApplyFor();
-			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-				return getBodyFor();
-			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-				return getInitialiserFor();
-			case EmftvmPackage.CODE_BLOCK__NESTED:
-				return getNested();
-			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-				return getNestedFor();
-			case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
-				return getParentFrame();
-			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-				return getBindingFor();
+		case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
+			return getMaxLocals();
+		case EmftvmPackage.CODE_BLOCK__MAX_STACK:
+			return getMaxStack();
+		case EmftvmPackage.CODE_BLOCK__CODE:
+			return getCode();
+		case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
+			return getLineNumbers();
+		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+			return getLocalVariables();
+		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+			return getMatcherFor();
+		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+			return getApplierFor();
+		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+			return getPostApplyFor();
+		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+			return getBodyFor();
+		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+			return getInitialiserFor();
+		case EmftvmPackage.CODE_BLOCK__NESTED:
+			return getNested();
+		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+			return getNestedFor();
+		case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
+			return getParentFrame();
+		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+			return getBindingFor();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1336,54 +1368,54 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void eSet(int featureID, Object newValue) {
+	public void eSet(final int featureID, final Object newValue) {
 		switch (featureID) {
-			case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
-				setMaxLocals((Integer)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__MAX_STACK:
-				setMaxStack((Integer)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__CODE:
-				getCode().clear();
-				getCode().addAll((Collection<? extends Instruction>)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
-				getLineNumbers().clear();
-				getLineNumbers().addAll((Collection<? extends LineNumber>)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
-				getLocalVariables().clear();
-				getLocalVariables().addAll((Collection<? extends LocalVariable>)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-				setMatcherFor((Rule)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-				setApplierFor((Rule)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-				setPostApplyFor((Rule)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-				setBodyFor((Operation)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-				setInitialiserFor((Field)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__NESTED:
-				getNested().clear();
-				getNested().addAll((Collection<? extends CodeBlock>)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-				setNestedFor((CodeBlock)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
-				setParentFrame((StackFrame)newValue);
-				return;
-			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-				setBindingFor((InputRuleElement)newValue);
-				return;
+		case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
+			setMaxLocals((Integer)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__MAX_STACK:
+			setMaxStack((Integer)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__CODE:
+			getCode().clear();
+			getCode().addAll((Collection<? extends Instruction>)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
+			getLineNumbers().clear();
+			getLineNumbers().addAll((Collection<? extends LineNumber>)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+			getLocalVariables().clear();
+			getLocalVariables().addAll((Collection<? extends LocalVariable>)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+			setMatcherFor((Rule)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+			setApplierFor((Rule)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+			setPostApplyFor((Rule)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+			setBodyFor((Operation)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+			setInitialiserFor((Field)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__NESTED:
+			getNested().clear();
+			getNested().addAll((Collection<? extends CodeBlock>)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+			setNestedFor((CodeBlock)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
+			setParentFrame((StackFrame)newValue);
+			return;
+		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+			setBindingFor((InputRuleElement)newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1395,50 +1427,50 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public void eUnset(int featureID) {
+	public void eUnset(final int featureID) {
 		switch (featureID) {
-			case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
-				setMaxLocals(MAX_LOCALS_EDEFAULT);
-				return;
-			case EmftvmPackage.CODE_BLOCK__MAX_STACK:
-				setMaxStack(MAX_STACK_EDEFAULT);
-				return;
-			case EmftvmPackage.CODE_BLOCK__CODE:
-				getCode().clear();
-				return;
-			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
-				getLineNumbers().clear();
-				return;
-			case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
-				getLocalVariables().clear();
-				return;
-			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-				setMatcherFor((Rule)null);
-				return;
-			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-				setApplierFor((Rule)null);
-				return;
-			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-				setPostApplyFor((Rule)null);
-				return;
-			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-				setBodyFor((Operation)null);
-				return;
-			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-				setInitialiserFor((Field)null);
-				return;
-			case EmftvmPackage.CODE_BLOCK__NESTED:
-				getNested().clear();
-				return;
-			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-				setNestedFor((CodeBlock)null);
-				return;
-			case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
-				setParentFrame(PARENT_FRAME_EDEFAULT);
-				return;
-			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-				setBindingFor((InputRuleElement)null);
-				return;
+		case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
+			setMaxLocals(MAX_LOCALS_EDEFAULT);
+			return;
+		case EmftvmPackage.CODE_BLOCK__MAX_STACK:
+			setMaxStack(MAX_STACK_EDEFAULT);
+			return;
+		case EmftvmPackage.CODE_BLOCK__CODE:
+			getCode().clear();
+			return;
+		case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
+			getLineNumbers().clear();
+			return;
+		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+			getLocalVariables().clear();
+			return;
+		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+			setMatcherFor((Rule)null);
+			return;
+		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+			setApplierFor((Rule)null);
+			return;
+		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+			setPostApplyFor((Rule)null);
+			return;
+		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+			setBodyFor((Operation)null);
+			return;
+		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+			setInitialiserFor((Field)null);
+			return;
+		case EmftvmPackage.CODE_BLOCK__NESTED:
+			getNested().clear();
+			return;
+		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+			setNestedFor((CodeBlock)null);
+			return;
+		case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
+			setParentFrame(PARENT_FRAME_EDEFAULT);
+			return;
+		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+			setBindingFor((InputRuleElement)null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1450,36 +1482,36 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public boolean eIsSet(int featureID) {
+	public boolean eIsSet(final int featureID) {
 		switch (featureID) {
-			case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
-				return getMaxLocals() != MAX_LOCALS_EDEFAULT;
-			case EmftvmPackage.CODE_BLOCK__MAX_STACK:
-				return getMaxStack() != MAX_STACK_EDEFAULT;
-			case EmftvmPackage.CODE_BLOCK__CODE:
-				return code != null && !code.isEmpty();
-			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
-				return lineNumbers != null && !lineNumbers.isEmpty();
-			case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
-				return localVariables != null && !localVariables.isEmpty();
-			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-				return getMatcherFor() != null;
-			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-				return getApplierFor() != null;
-			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-				return getPostApplyFor() != null;
-			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-				return getBodyFor() != null;
-			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-				return getInitialiserFor() != null;
-			case EmftvmPackage.CODE_BLOCK__NESTED:
-				return nested != null && !nested.isEmpty();
-			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-				return getNestedFor() != null;
-			case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
-				return PARENT_FRAME_EDEFAULT == null ? parentFrame != null : !PARENT_FRAME_EDEFAULT.equals(parentFrame);
-			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-				return getBindingFor() != null;
+		case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
+			return getMaxLocals() != MAX_LOCALS_EDEFAULT;
+		case EmftvmPackage.CODE_BLOCK__MAX_STACK:
+			return getMaxStack() != MAX_STACK_EDEFAULT;
+		case EmftvmPackage.CODE_BLOCK__CODE:
+			return code != null && !code.isEmpty();
+		case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
+			return lineNumbers != null && !lineNumbers.isEmpty();
+		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+			return localVariables != null && !localVariables.isEmpty();
+		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+			return getMatcherFor() != null;
+		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+			return getApplierFor() != null;
+		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+			return getPostApplyFor() != null;
+		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+			return getBodyFor() != null;
+		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+			return getInitialiserFor() != null;
+		case EmftvmPackage.CODE_BLOCK__NESTED:
+			return nested != null && !nested.isEmpty();
+		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+			return getNestedFor() != null;
+		case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
+			return PARENT_FRAME_EDEFAULT == null ? parentFrame != null : !PARENT_FRAME_EDEFAULT.equals(parentFrame);
+		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+			return getBindingFor() != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1488,12 +1520,12 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void eNotify(Notification notification) {
+	public void eNotify(final Notification notification) {
 		super.eNotify(notification);
 		switch (notification.getFeatureID(null)) {
 		case EmftvmPackage.CODE_BLOCK__CODE:
 			codeChanged();
-			for (Instruction i : getCode()) {
+			for (final Instruction i : getCode()) {
 				i.eNotify(notification);
 			}
 			break;
@@ -1523,8 +1555,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
-	
-		StringBuffer result = new StringBuffer();
+
+		final StringBuffer result = new StringBuffer();
 		final EObject container = eContainer();
 		if (container != null) {
 			result.append(container);
@@ -1561,6 +1593,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public JITCodeBlock getJITCodeBlock() {
 		return jitCodeBlock;
 	}
@@ -1568,6 +1601,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setJITCodeBlock(final JITCodeBlock jcb) {
 		this.jitCodeBlock = jcb;
 	}
@@ -1584,6 +1618,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Rule getRule() {
 		if (!ruleSet) {
 			CodeBlock cb = this;
@@ -1606,7 +1641,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param name
 	 * @return The {@link Field} with the given <code>type</code> and <code>name</code>, if any, otherwise <code>null</code>
 	 */
-	private Field findField(final ExecEnv env, Object type, String name) {
+	private Field findField(final ExecEnv env, final Object type, final String name) {
 		final Rule rule = getRule();
 		final Field field;
 		if (rule != null) {
@@ -1627,7 +1662,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param name
 	 * @return The static {@link Field} with the given <code>type</code> and <code>name</code>, if any, otherwise <code>null</code>
 	 */
-	private Field findStaticField(final ExecEnv env, Object type, String name) {
+	private Field findStaticField(final ExecEnv env, final Object type, final String name) {
 		final Rule rule = getRule();
 		final Field field;
 		if (rule != null) {
@@ -1648,12 +1683,12 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param o object
 	 * @param propname the property name
 	 * @param frame the current stack frame
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * @throws NoSuchFieldException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
-	private void set(final Object v, final Object o, final String propname, final StackFrame frame) 
-	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+	private void set(final Object v, final Object o, final String propname, final StackFrame frame)
+			throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		final ExecEnv env = frame.getEnv();
 		if (o instanceof EObject) {
 			final EObject eo = (EObject)o;
@@ -1701,7 +1736,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				}
 				return;
 			}
-			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
+			throw new NoSuchFieldException(String.format("Field %s::%s not found",
 					EMFTVMUtil.toPrettyString(type, env), propname));
 		}
 
@@ -1715,15 +1750,15 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		try {
 			final java.lang.reflect.Field f = type.getField(propname);
 			f.set(o, v);
-		} catch (NoSuchFieldException e) {
-			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
+		} catch (final NoSuchFieldException e) {
+			throw new NoSuchFieldException(String.format("Field %s::%s not found",
 					EMFTVMUtil.toPrettyString(type, env), propname));
 		}
 	}
 
 	/**
 	 * Adds <code>v</code> to <code>o.propname</code>. Implements the ADD and INSERT instructions.
-	 * 
+	 *
 	 * @param index
 	 *            the insertion index (-1 for end)
 	 * @param v
@@ -1739,7 +1774,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @throws IllegalArgumentException
 	 */
 	private void add(final int index, final Object v, final Object o, final String propname, final StackFrame frame)
-	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+			throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		final ExecEnv env = frame.getEnv();
 		if (o instanceof EObject) {
 			final EObject eo = (EObject)o;
@@ -1795,7 +1830,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				}
 				return;
 			}
-			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
+			throw new NoSuchFieldException(String.format("Field %s::%s not found",
 					EMFTVMUtil.toPrettyString(type, env), propname));
 		}
 
@@ -1811,7 +1846,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 	/**
 	 * Implements the REMOVE instruction.
-	 * 
+	 *
 	 * @param v
 	 *            value
 	 * @param o
@@ -1825,7 +1860,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @throws IllegalArgumentException
 	 */
 	private void remove(final Object v, final Object o, final String propname, final StackFrame frame)
-	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+			throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		final ExecEnv env = frame.getEnv();
 		if (o instanceof EObject) {
 			final EObject eo = (EObject)o;
@@ -1878,7 +1913,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				}
 				return;
 			}
-			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
+			throw new NoSuchFieldException(String.format("Field %s::%s not found",
 					EMFTVMUtil.toPrettyString(type, env), propname));
 		}
 
@@ -1894,7 +1929,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 
 	/**
 	 * Implements the GET instruction.
-	 * 
+	 *
 	 * @param propname
 	 * @param env
 	 * @param frame
@@ -1907,7 +1942,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	@SuppressWarnings("unchecked")
 	private Object get(final String propname, final StackFrame frame, final Object o) throws NoSuchFieldException,
-			IllegalArgumentException, IllegalAccessException {
+	IllegalArgumentException, IllegalAccessException {
 		final ExecEnv env = frame.getEnv();
 
 		if (o instanceof EObject) {
@@ -1929,7 +1964,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			if (EMFTVMUtil.XMI_ID_FEATURE.equals(propname) && resource instanceof XMIResource) { //$NON-NLS-1$
 				return ((XMIResource)resource).getID(eo);
 			}
-			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
+			throw new NoSuchFieldException(String.format("Field %s::%s not found",
 					EMFTVMUtil.toPrettyString(type, env), propname));
 		}
 
@@ -1956,8 +1991,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			} else {
 				return result;
 			}
-		} catch (NoSuchFieldException e) {
-			throw new NoSuchFieldException(String.format("Field %s::%s not found", 
+		} catch (final NoSuchFieldException e) {
+			throw new NoSuchFieldException(String.format("Field %s::%s not found",
 					EMFTVMUtil.toPrettyString(type, env), propname));
 		}
 	}
@@ -1967,12 +2002,12 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param propname
 	 * @param env
 	 * @param frame
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * @throws NoSuchFieldException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
 	private Collection<Object> getTrans(final String propname, final StackFrame frame, final Object o) throws NoSuchFieldException,
-			IllegalArgumentException, IllegalAccessException {
+	IllegalArgumentException, IllegalAccessException {
 		final ExecEnv env = frame.getEnv();
 
 		if (o instanceof EObject) {
@@ -1988,7 +2023,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			} else {
 				final EStructuralFeature sf = type.getEStructuralFeature(propname);
 				if (sf == null) {
-					throw new NoSuchFieldException(String.format("Field %s::%s not found", 
+					throw new NoSuchFieldException(String.format("Field %s::%s not found",
 							EMFTVMUtil.toPrettyString(type, env), propname));
 				}
 				return EMFTVMUtil.getTrans(eo, sf, env, new LazyList<Object>());
@@ -2012,9 +2047,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param env
 	 * @param frame
 	 * @return the property value
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * @throws NoSuchFieldException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
 	@SuppressWarnings("unchecked")
 	private Object getSuper(final Field fieldCtx, final String propname, final StackFrame frame, final Object o)
@@ -2043,7 +2078,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final java.util.Set<Object> superFs = new LinkedHashSet<Object>();
 		if (o instanceof EObject) {
 			// o may have EStructuralFeatures
-			for (Object superType : superTypes) {
+			for (final Object superType : superTypes) {
 				Object superF = env.findField(superType, propname);
 				if (superF != null) {
 					superFs.add(superF);
@@ -2056,7 +2091,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 							superF = ((EClass)superType).getInstanceClass().getField(propname);
 							assert superF != null;
 							superFs.add(superF);
-						} catch (NoSuchFieldException e) {
+						} catch (final NoSuchFieldException e) {
 							// not found - skip
 						}
 					}
@@ -2065,14 +2100,14 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 						superF = ((Class<?>)superType).getField(propname);
 						assert superF != null;
 						superFs.add(superF);
-					} catch (NoSuchFieldException e) {
+					} catch (final NoSuchFieldException e) {
 						// not found - skip
 					}
 				}
 			}
 		} else {
 			// o is a regular Java object - may be null
-			for (Object superType : superTypes) {
+			for (final Object superType : superTypes) {
 				Object superF = env.findField(superType, propname);
 				if (superF != null) {
 					superFs.add(superF);
@@ -2081,7 +2116,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 						superF = ((EClass)superType).getInstanceClass().getField(propname);
 						assert superF != null;
 						superFs.add(superF);
-					} catch (NoSuchFieldException e) {
+					} catch (final NoSuchFieldException e) {
 						// not found - skip
 					}
 				} else if (superType instanceof Class<?>) {
@@ -2089,7 +2124,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 						superF = ((Class<?>)superType).getField(propname);
 						assert superF != null;
 						superFs.add(superF);
-					} catch (NoSuchFieldException e) {
+					} catch (final NoSuchFieldException e) {
 						// not found - skip
 					}
 				}
@@ -2129,7 +2164,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			}
 		}
 
-		throw new NoSuchFieldException(String.format("Super-field of %s::%s not found", 
+		throw new NoSuchFieldException(String.format("Super-field of %s::%s not found",
 				EMFTVMUtil.toPrettyString(context, env), propname));
 	}
 
@@ -2139,12 +2174,12 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param o object
 	 * @param propname the property name
 	 * @param env the execution environment
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * @throws NoSuchFieldException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
 	private void setStatic(final Object v, final Object o, final String propname, final ExecEnv env)
-	throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+			throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		final Object ort = EMFTVMUtil.getRegistryType(o);
 
 		if (ort instanceof EClass) {
@@ -2153,25 +2188,25 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			if (field != null) {
 				field.setStaticValue(v);
 			} else {
-				throw new NoSuchFieldException(String.format("Field %s::%s not found", 
+				throw new NoSuchFieldException(String.format("Field %s::%s not found",
 						EMFTVMUtil.toPrettyString(type, env), propname));
 			}
 		} else if (ort instanceof Class<?>) {
 			final Class<?> type = (Class<?>)ort;
 			final Field field = findStaticField(env, type, propname);
 			if (field != null) {
-				field.setValue(ort, v);	
+				field.setValue(ort, v);
 			} else {
 				final java.lang.reflect.Field f = type.getField(propname);
 				if (Modifier.isStatic(f.getModifiers())) {
 					f.set(null, v);
 				} else {
-					throw new NoSuchFieldException(String.format("Field %s::%s not found", 
+					throw new NoSuchFieldException(String.format("Field %s::%s not found",
 							EMFTVMUtil.toPrettyString(type, env), propname));
 				}
 			}
 		} else {
-			throw new IllegalArgumentException(String.format("%s is not a type", 
+			throw new IllegalArgumentException(String.format("%s is not a type",
 					EMFTVMUtil.toPrettyString(ort, env)));
 		}
 	}
@@ -2181,12 +2216,12 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param propname
 	 * @param frame
 	 * @return the property value
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * @throws NoSuchFieldException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
 	private Object getStatic(final String propname, final StackFrame frame, final Object o) throws NoSuchFieldException,
-			IllegalArgumentException, IllegalAccessException {
+	IllegalArgumentException, IllegalAccessException {
 		final ExecEnv env = frame.getEnv();
 		final Object oType = EMFTVMUtil.getRegistryType(o);
 
@@ -2196,7 +2231,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			if (field != null) {
 				return field.getStaticValue(frame);
 			} else {
-				throw new NoSuchFieldException(String.format("Field %s::%s not found", 
+				throw new NoSuchFieldException(String.format("Field %s::%s not found",
 						EMFTVMUtil.toPrettyString(type, env), propname));
 			}
 		} else if (oType instanceof Class<?>) {
@@ -2209,7 +2244,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				if (Modifier.isStatic(f.getModifiers())) {
 					return f.get(null);
 				} else {
-					throw new NoSuchFieldException(String.format("Field %s::%s not found", 
+					throw new NoSuchFieldException(String.format("Field %s::%s not found",
 							EMFTVMUtil.toPrettyString(type, env), propname));
 				}
 			}
@@ -2240,7 +2275,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		} else {
 			try {
 				return NativeTypes.newInstance((Class<?>)type);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				throw new IllegalArgumentException(e);
 			}
 		}
@@ -2255,13 +2290,13 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		final Resource res = element.eResource();
 		if (res == null) {
 			throw new IllegalArgumentException(String.format(
-					"Element %s is cannot be deleted; not contained in a model", 
+					"Element %s is cannot be deleted; not contained in a model",
 					EMFTVMUtil.toPrettyString(element, env)));
 		}
 		final Model model = env.getInputModelOf(element);
 		if (model != null) {
 			throw new IllegalArgumentException(String.format(
-					"Element %s is cannot be deleted; contained in input model %s", 
+					"Element %s is cannot be deleted; contained in input model %s",
 					EMFTVMUtil.toPrettyString(element, env), env.getModelID(model)));
 		}
 		env.queueForDelete(element, frame);
@@ -2272,14 +2307,14 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param instr the INVOKE instruction
 	 * @param frame the current stack frame
 	 * @return the invocation result
-	 * @throws InvocationTargetException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
 	private static Object invoke(final Invoke instr, final StackFrame frame, final Stack stack)
 			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		final String opname = instr.getOpname();
-		final int argcount = instr.getArgcount(); 
+		final int argcount = instr.getArgcount();
 		final Object o;
 		final Operation op;
 		final Method method;
@@ -2304,8 +2339,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				final CodeBlock body = op.getBody();
 				return body.execute(frame.getSubFrame(body, o));
 			}
-			throw new UnsupportedOperationException(String.format("%s::%s()", 
-					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)), 
+			throw new UnsupportedOperationException(String.format("%s::%s()",
+					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)),
 					opname));
 		case 1:
 			// Use Java's left-to-right evaluation semantics:
@@ -2314,7 +2349,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			o = stack.pop();
 			op = frame.getEnv().findOperation(
 					EMFTVMUtil.getArgumentType(o),
-					opname, 
+					opname,
 					EMFTVMUtil.getArgumentType(arg));
 			method = EMFTVMUtil.findNativeMethod(op, o, opname, arg);
 			if (method != null) {
@@ -2329,9 +2364,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				final CodeBlock body = op.getBody();
 				return body.execute(frame.getSubFrame(body, o, arg));
 			}
-			throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
-					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)), 
-					opname, 
+			throw new UnsupportedOperationException(String.format("%s::%s(%s)",
+					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)),
+					opname,
 					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(arg))));
 		default:
 			// Use Java's left-to-right evaluation semantics:
@@ -2341,7 +2376,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			o = stack.pop();
 			op = frame.getEnv().findOperation(
 					EMFTVMUtil.getArgumentType(o),
-					opname, 
+					opname,
 					EMFTVMUtil.getArgumentTypes(args));
 			method = EMFTVMUtil.findNativeMethod(op, o, opname, args);
 			if (method != null) {
@@ -2356,9 +2391,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				final CodeBlock body = op.getBody();
 				return body.execute(frame.getSubFrame(body, o, args));
 			}
-			throw new UnsupportedOperationException(String.format("%s::%s(%s)", 
-					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)), 
-					opname, 
+			throw new UnsupportedOperationException(String.format("%s::%s(%s)",
+					EMFTVMUtil.getTypeName(frame.getEnv(), EMFTVMUtil.getArgumentType(o)),
+					opname,
 					EMFTVMUtil.getTypeNames(frame.getEnv(), EMFTVMUtil.getArgumentTypes(args))));
 		}
 	}
@@ -2369,9 +2404,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param argcount
 	 * @param frame
 	 * @return the invocation result
-	 * @throws InvocationTargetException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
 	private static Object invokeStatic(final String opname, final int argcount, final StackFrame frame, final Stack stack)
 			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
@@ -2403,8 +2438,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			if (type instanceof Class<?>) {
 				return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname);
 			}
-			throw new UnsupportedOperationException(String.format("static %s::%s()", 
-					EMFTVMUtil.getTypeName(env, type), 
+			throw new UnsupportedOperationException(String.format("static %s::%s()",
+					EMFTVMUtil.getTypeName(env, type),
 					opname));
 		case 1:
 			// Use Java's left-to-right evaluation semantics:
@@ -2431,9 +2466,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			if (type instanceof Class<?>) {
 				return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname, arg);
 			}
-			throw new UnsupportedOperationException(String.format("static %s::%s(%s)", 
-					EMFTVMUtil.getTypeName(env, type), 
-					opname, 
+			throw new UnsupportedOperationException(String.format("static %s::%s(%s)",
+					EMFTVMUtil.getTypeName(env, type),
+					opname,
 					EMFTVMUtil.getTypeName(env, EMFTVMUtil.getArgumentType(arg))));
 		default:
 			// Use Java's left-to-right evaluation semantics:
@@ -2461,9 +2496,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			if (type instanceof Class<?>) {
 				return EMFTVMUtil.invokeNativeStatic(frame, (Class<?>)type, opname, args);
 			}
-			throw new UnsupportedOperationException(String.format("static %s::%s(%s)", 
-					EMFTVMUtil.getTypeName(env, type), 
-					opname, 
+			throw new UnsupportedOperationException(String.format("static %s::%s(%s)",
+					EMFTVMUtil.getTypeName(env, type),
+					opname,
 					EMFTVMUtil.getTypeNames(env, EMFTVMUtil.getArgumentTypes(args))));
 		}
 	}
@@ -2475,9 +2510,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param argcount
 	 * @param frame
 	 * @return the invocation result
-	 * @throws InvocationTargetException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
 	private static Object invokeSuper(final Operation op, final String opname, final int argcount, final StackFrame frame, final Stack stack)
 			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
@@ -2512,7 +2547,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			// stack = [..., self, arg1, arg2]
 			o = stack.pop();
 
-			for (Object superType : superTypes) {
+			for (final Object superType : superTypes) {
 				superOp = env.findOperation(superType, opname);
 				if (superOp != null) {
 					ops.add(superOp);
@@ -2536,8 +2571,8 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				return body.execute(frame.getSubFrame(body, o));
 			}
 
-			throw new UnsupportedOperationException(String.format("super %s::%s()", 
-					EMFTVMUtil.getTypeName(env, context), 
+			throw new UnsupportedOperationException(String.format("super %s::%s()",
+					EMFTVMUtil.getTypeName(env, context),
 					opname));
 		case 1:
 			// Use Java's left-to-right evaluation semantics:
@@ -2545,7 +2580,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			final Object arg = stack.pop();
 			o = stack.pop();
 
-			for (Object superType : superTypes) {
+			for (final Object superType : superTypes) {
 				superOp = env.findOperation(superType, opname, EMFTVMUtil.getArgumentType(arg));
 				if (superOp != null) {
 					ops.add(superOp);
@@ -2569,9 +2604,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				return body.execute(frame.getSubFrame(body, o, arg));
 			}
 
-			throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
-					EMFTVMUtil.getTypeName(env, context), 
-					opname, 
+			throw new UnsupportedOperationException(String.format("super %s::%s(%s)",
+					EMFTVMUtil.getTypeName(env, context),
+					opname,
 					EMFTVMUtil.getTypeName(env, EMFTVMUtil.getArgumentType(arg))));
 		default:
 			// Use Java's left-to-right evaluation semantics:
@@ -2579,7 +2614,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			final Object[] args = stack.pop(argcount);
 			o = stack.pop();
 
-			for (Object superType : superTypes) {
+			for (final Object superType : superTypes) {
 				superOp = env.findOperation(superType, opname, EMFTVMUtil.getArgumentTypes(args));
 				if (superOp != null) {
 					ops.add(superOp);
@@ -2603,9 +2638,9 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 				return body.execute(frame.getSubFrame(body, o, args));
 			}
 
-			throw new UnsupportedOperationException(String.format("super %s::%s(%s)", 
-					EMFTVMUtil.getTypeName(env, context), 
-					opname, 
+			throw new UnsupportedOperationException(String.format("super %s::%s(%s)",
+					EMFTVMUtil.getTypeName(env, context),
+					opname,
 					EMFTVMUtil.getTypeNames(env, EMFTVMUtil.getArgumentTypes(args))));
 		}
 	}
@@ -2632,12 +2667,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param args the rule arguments
 	 */
 	private static Object matchOne(final StackFrame frame, final Rule rule, final Object[] args) {
-		final int argcount = args.length;
-		if (argcount != rule.getInputElements().size()) {
-			throw new VMException(frame, String.format(
-					"Rule %s has different amount of input elements than expected: %d instead of %d",
-					rule.getName(), rule.getInputElements().size(), argcount));
-		}
+		EMFTVMUtil.checkRuleArgCount(frame, rule, args.length);
 		return rule.matchManual(frame, args);
 	}
 
@@ -2647,11 +2677,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @param rule the rule
 	 */
 	private static Object matchOne(final StackFrame frame, final Rule rule) {
-		if (rule.getInputElements().size() != 0) {
-			throw new VMException(frame, String.format(
-					"Rule %s has different amount of input elements than expected: %d instead of %d",
-					rule.getName(), rule.getInputElements().size(), 0));
-		}
+		EMFTVMUtil.checkRuleArgCount(frame, rule, 0);
 		return rule.matchManual(frame, EMPTY);
 	}
 
