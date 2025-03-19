@@ -151,6 +151,15 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 */
 		@Override
 		public ListIterator<E> listIterator(final int index) {
+			final int dataSourceSize = ((LazyList<E>) dataSource).size();
+			if (index >= dataSourceSize) {
+				final ListIterator<E> listIterator = dataSourceSize > 0 ? new UnionListIterator(s, dataSourceSize)
+						: new UnionListIterator(s);
+				for (int i = dataSourceSize; i < index; i++) {
+					listIterator.next();
+				}
+				return listIterator;
+			}
 			return new UnionListIterator(s, index);
 		}
 
@@ -297,6 +306,10 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 */
 		protected final E object;
 
+		private Iterable<E> firstNonAppendDatasource = null;
+		private int appendedSize = -1;
+		private LazyList<E> flattenedAppendList = null;
+
 		/**
 		 * Creates a new {@link AppendList}.
 		 * @param object the element to append
@@ -392,7 +405,11 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 */
 		@Override
 		public Iterator<E> iterator() {
-			return new AppendIterator(object);
+			final int sizeCounter = getAppendedSize();
+			if (sizeCounter == 1) {
+				return new AppendIterator(object);
+			}
+			return getFlattenedAppendList().iterator();
 		}
 
 		/**
@@ -400,7 +417,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 */
 		@Override
 		public int size() {
-			return ((Collection<E>)dataSource).size() + 1;
+			return ((Collection<E>) getfirstNonAppendDatasource()).size() + getAppendedSize();
 		}
 
 		/**
@@ -408,7 +425,11 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 */
 		@Override
 		public ListIterator<E> listIterator() {
-			return new AppendListIterator();
+			final int sizeCounter = getAppendedSize();
+			if (sizeCounter == 1) {
+				return new AppendListIterator();
+			}
+			return getFlattenedAppendList().listIterator();
 		}
 
 		/**
@@ -416,7 +437,78 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		 */
 		@Override
 		public ListIterator<E> listIterator(final int index) {
-			return new AppendListIterator(index);
+			final int sizeCounter = getAppendedSize();
+			if (sizeCounter == 1) {
+				return new AppendListIterator(index);
+			}
+			return getFlattenedAppendList().listIterator(index);
+		}
+
+		/**
+		 * Returns the number of chained {@link AppendList} instances.
+		 *
+		 * @return the number of chained {@link AppendList} instances
+		 */
+		protected int getAppendedSize() {
+			if (this.appendedSize == -1) {
+				calculateAppendChain();
+			}
+			assert this.appendedSize != -1;
+			return this.appendedSize;
+		}
+
+		/**
+		 * Returns the first non-{@link AppendList} instance on the chain of
+		 * {@link AppendList} instances.
+		 *
+		 * @return the first non-{@link AppendList} instance on the chain of
+		 *         {@link AppendList} instances
+		 */
+		protected Iterable<E> getfirstNonAppendDatasource() {
+			if (this.firstNonAppendDatasource == null) {
+				calculateAppendChain();
+			}
+			assert this.firstNonAppendDatasource != null;
+			return this.firstNonAppendDatasource;
+		}
+
+		/**
+		 * Calculates the number of chained {@link AppendList} instances.
+		 */
+		private void calculateAppendChain() {
+			Iterable<E> nextDataSource = dataSource;
+			int appendedSize = 1;
+			while (nextDataSource instanceof AppendList<?>) {
+				nextDataSource = ((AppendList<E>) nextDataSource).dataSource;
+				appendedSize++;
+			}
+			this.firstNonAppendDatasource = nextDataSource;
+			this.appendedSize = appendedSize;
+		}
+
+		/**
+		 * Returns the flattened {@link LazyList} of chained {@link AppendList}
+		 * instances appended to the first non-{@link AppendList} instance.
+		 *
+		 * @return the flattenedAppendList
+		 */
+		@SuppressWarnings("unchecked")
+		protected LazyList<E> getFlattenedAppendList() {
+			if (this.flattenedAppendList == null) {
+				int sizeCounter = getAppendedSize();
+				Iterable<E> nextDataSource = dataSource;
+				final Object[] appendedObjects = new Object[sizeCounter];
+				appendedObjects[--sizeCounter] = object;
+				while (sizeCounter > 0) {
+					appendedObjects[--sizeCounter] = ((AppendList<E>) nextDataSource).object;
+					nextDataSource = ((AppendList<E>) nextDataSource).dataSource;
+				}
+				assert !(nextDataSource instanceof AppendList<?>);
+				this.flattenedAppendList = new UnionList<E>(
+						LazyCollections.asLazyList(Arrays.<E>asList((E[]) appendedObjects)),
+						(LazyList<E>) nextDataSource);
+			}
+			return this.flattenedAppendList;
 		}
 
 	}
@@ -1619,6 +1711,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * @param element the element to add
 	 * @throws UnsupportedOperationException
 	 */
+	@Override
 	public void add(final int index, final E element) {
 		throw new UnsupportedOperationException();
 	}
@@ -1630,6 +1723,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
+	@Override
 	public boolean addAll(final int index, final Collection<? extends E> c) {
 		throw new UnsupportedOperationException();
 	}
@@ -1637,6 +1731,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public E get(final int index) {
 		if (index < cache.size()) {
 			return ((List<E>)cache).get(index);
@@ -1654,6 +1749,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int indexOf(final Object o) {
 		final int index = ((List<E>) cache).indexOf(o);
 		if (index > -1 || dataSource == null) { // cache complete
@@ -1677,6 +1773,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int lastIndexOf(final Object o) {
 		if (dataSource == null) { // cache complete
 			return ((List<E>)cache).lastIndexOf(o);
@@ -1700,6 +1797,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ListIterator<E> listIterator() {
 		if (dataSource == null) { // cache complete
 			return Collections.unmodifiableList((List<E>)cache).listIterator();
@@ -1710,6 +1808,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ListIterator<E> listIterator(final int index) {
 		if (dataSource == null) { // cache complete
 			return Collections.unmodifiableList((List<E>)cache).listIterator(index);
@@ -1723,6 +1822,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
+	@Override
 	public E remove(final int index) {
 		throw new UnsupportedOperationException();
 	}
@@ -1734,6 +1834,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * @return nothing
 	 * @throws UnsupportedOperationException
 	 */
+	@Override
 	public E set(final int index, final E element) {
 		throw new UnsupportedOperationException();
 	}
@@ -1742,6 +1843,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	 * <p><i>Lazy implementation of {@link List#subList(int, int)}.</i></p>
 	 * {@inheritDoc}
 	 */
+	@Override
 	public LazyList<E> subList(final int fromIndex, final int toIndex) {
 		return new SubList<E>(fromIndex, toIndex, this);
 	}
@@ -1753,6 +1855,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 
 	 * @throws UnsupportedOperationException
 	 */
+	@Override
 	public void move(final int newPosition, final E object) {
 		throw new UnsupportedOperationException();
 	}
@@ -1764,6 +1867,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 
 	 * @throws UnsupportedOperationException
 	 */
+	@Override
 	public E move(final int newPosition, final int oldPosition) {
 		throw new UnsupportedOperationException();
 	}
@@ -1940,6 +2044,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 	public LazyList<?> flatten() {
 		final LazyList<E> inner = this;
 		return new LazyList<Object>(new Iterable<Object>() {
+			@Override
 			public Iterator<Object> iterator() {
 				return new FlattenIterator(inner);
 			}
@@ -2213,6 +2318,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 		function.setParentFrame(null);
 		final LazyList<E> inner = this;
 		return new LazyList<T>(new Iterable<T>() {
+			@Override
 			public Iterator<T> iterator() {
 				return new CollectIterator<T>(inner, function, parentFrame);
 			}
@@ -2266,6 +2372,7 @@ public class LazyList<E> extends LazyCollection<E> implements EList<E> {
 					}
 					assert !sortingKeys.hasNext();
 					Arrays.sort(innerCopy, new Comparator<Object>() {
+						@Override
 						public int compare(final Object o1, final Object o2) {
 							return elementsToKeys.get(o1).compareTo(elementsToKeys.get(o2));
 						}

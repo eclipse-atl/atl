@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="emftvm" nsURI="http://www.eclipse.org/m2m/atl/2011/EMFTVM" nsPrefix="emftvm">
+  <eAnnotations source="emftvm, emftvm, emftvm, emftvm, emftvm, emftvm, emftvm, emftvm, emftvm, emftvm, emftvm, ExecEnv, ExecEnv, ExecEnv, ExecEnv, ExecEnv, ExecEnv, ExecEnv, ExecEnv, ExecEnv, ExecEnv, ExecEnv, loadModule, loadModule, loadModule, loadModule, loadModule, loadModule, loadModule, loadModule, loadModule, loadModule, loadModule, resolver, resolver, resolver, resolver, resolver, resolver, resolver, resolver, resolver, resolver, resolver, name, name, name, name, name, name, name, name, name, name, name, loadModule, loadModule, loadModule, loadModule, loadModule, loadModule, loadModule, loadModule, loadModule, loadModule, loadModule, resolver, resolver, resolver, resolver, resolver, resolver, resolver, resolver, resolver, resolver, resolver, name, name, name, name, name, name, name, name, name, name, name, validate, validate, validate, validate, validate, validate, validate, validate, validate, validate, validate, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, context, context, context, context, context, context, context, context, context, context, context, name, name, name, name, name, name, name, name, name, name, name, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, context, context, context, context, context, context, context, context, context, context, context, name, name, name, name, name, name, name, name, name, name, name, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, findOperation, context, context, context, context, context, context, context, context, context, context, context, name, name, name, name, name, name, name, name, name, name, name, parameterType, parameterType, parameterType, parameterType, parameterType, parameterType, parameterType, parameterType, parameterType, parameterType, parameterType, hasOperation, hasOperation, hasOperation, hasOperation, hasOperation, hasOperation, hasOperation, hasOperation, hasOperation, hasOperation, hasOperation, name, name, name, name, name, name, name, name, name, name, name, argcount, argcount, argcount, argcount, argcount, argcount, argcount, argcount, argcount, argcount, argcount, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, context, context, context, context, context, context, context, context, context, context, context, name, name, name, name, name, name, name, name, name, name, name, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, parameterTypes, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, context, context, context, context, context, context, context, context, context, context, context, name, name, name, name, name, name, name, name, name, name, name, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, findStaticOperation, context, context, context, context, context, context, context, context, context, context, context, name, name, name, name, name, name, name, name, name, name, name, parameterType, parameterType, parameterType, parameterType, parameterType, parameterType, parameterType, parameterType, parameterType, parameterType, parameterType, hasStaticOperation, hasStaticOperation, hasStaticOperation, hasStaticOperation, hasStaticOperation, hasStaticOperation, hasStaticOperation, hasStaticOperation, hasStaticOperation, hasStaticOperation, hasStaticOperation, name, name, name, name, name, name, name, name, name, name, name, argcount, argcount, argcount, argcount, argcount, argcount, argcount, argcount, argcount, argcount, argcount, findField, findField, findField, findField, findField, findField, findField, findField, findField, findField, findField, context, context, context, context, context, context, context, context, context, context, context, name, name, name, name, name, name, name, name, name, name, name, hasField, hasField, hasField, hasField, hasField, hasField, hasField, hasField, hasField, hasField, hasField, name, name, name, name, name, name, name, name, name, name, name, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, context, context, context, context, context, context, context, context, context, context, context, name, name, name, name, name, name, name, name, name, name, name, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, name, name, name, name, name, name, name, name, name, name, name, findRule, findRule, findRule, findRule, findRule, findRule, findRule, findRule, findRule, findRule, findRule, name, name, name, name, name, name, name, name, name, name, name, findType, findType, findType, findType, findType, findType, findType, findType, findType, findType, findType, modelName, modelName, modelName, modelName, modelName, modelName, modelName, modelName, modelName, modelName, modelName, typeName, typeName, typeName, typeName, typeName, typeName, typeName, typeName, typeName, typeName, typeName, run, run, run, run, run, run, run, run, run, run, run, timingData, timingData, timingData, timingData, timingData, timingData, timingData, timingData, timingData, timingData, timingData, getRules, getRules, getRules, getRules, getRules, getRules, getRules, getRules, getRules, getRules, getRules, getModelOf, getModelOf, getModelOf, getModelOf, getModelOf, getModelOf, getModelOf, getModelOf, getModelOf, getModelOf, getModelOf, object, object, object, object, object, object, object, object, object, object, object, getModelID, getModelID, getModelID, getModelID, getModelID, getModelID, getModelID, getModelID, getModelID, getModelID, getModelID, model, model, model, model, model, model, model, model, model, model, model, getMetaModelID, getMetaModelID, getMetaModelID, getMetaModelID, getMetaModelID, getMetaModelID, getMetaModelID, getMetaModelID, getMetaModelID, getMetaModelID, getMetaModelID, metamodel, metamodel, metamodel, metamodel, metamodel, metamodel, metamodel, metamodel, metamodel, metamodel, metamodel, queueForDelete, queueForDelete, queueForDelete, queueForDelete, queueForDelete, queueForDelete, queueForDelete, queueForDelete, queueForDelete, queueForDelete, queueForDelete, element, element, element, element, element, element, element, element, element, element, element, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, deleteQueue, deleteQueue, deleteQueue, deleteQueue, deleteQueue, deleteQueue, deleteQueue, deleteQueue, deleteQueue, deleteQueue, deleteQueue, getInputModelOf, getInputModelOf, getInputModelOf, getInputModelOf, getInputModelOf, getInputModelOf, getInputModelOf, getInputModelOf, getInputModelOf, getInputModelOf, getInputModelOf, object, object, object, object, object, object, object, object, object, object, object, getInoutModelOf, getInoutModelOf, getInoutModelOf, getInoutModelOf, getInoutModelOf, getInoutModelOf, getInoutModelOf, getInoutModelOf, getInoutModelOf, getInoutModelOf, getInoutModelOf, object, object, object, object, object, object, object, object, object, object, object, getOutputModelOf, getOutputModelOf, getOutputModelOf, getOutputModelOf, getOutputModelOf, getOutputModelOf, getOutputModelOf, getOutputModelOf, getOutputModelOf, getOutputModelOf, getOutputModelOf, object, object, object, object, object, object, object, object, object, object, object, getMonitor, getMonitor, getMonitor, getMonitor, getMonitor, getMonitor, getMonitor, getMonitor, getMonitor, getMonitor, getMonitor, setMonitor, setMonitor, setMonitor, setMonitor, setMonitor, setMonitor, setMonitor, setMonitor, setMonitor, setMonitor, setMonitor, monitor, monitor, monitor, monitor, monitor, monitor, monitor, monitor, monitor, monitor, monitor, registerMetaModel, registerMetaModel, registerMetaModel, registerMetaModel, registerMetaModel, registerMetaModel, registerMetaModel, registerMetaModel, registerMetaModel, registerMetaModel, registerMetaModel, name, name, name, name, name, name, name, name, name, name, name, metamodel, metamodel, metamodel, metamodel, metamodel, metamodel, metamodel, metamodel, metamodel, metamodel, metamodel, registerInputModel, registerInputModel, registerInputModel, registerInputModel, registerInputModel, registerInputModel, registerInputModel, registerInputModel, registerInputModel, registerInputModel, registerInputModel, name, name, name, name, name, name, name, name, name, name, name, model, model, model, model, model, model, model, model, model, model, model, registerInOutModel, registerInOutModel, registerInOutModel, registerInOutModel, registerInOutModel, registerInOutModel, registerInOutModel, registerInOutModel, registerInOutModel, registerInOutModel, registerInOutModel, name, name, name, name, name, name, name, name, name, name, name, model, model, model, model, model, model, model, model, model, model, model, registerOutputModel, registerOutputModel, registerOutputModel, registerOutputModel, registerOutputModel, registerOutputModel, registerOutputModel, registerOutputModel, registerOutputModel, registerOutputModel, registerOutputModel, name, name, name, name, name, name, name, name, name, name, name, model, model, model, model, model, model, model, model, model, model, model, clearModels, clearModels, clearModels, clearModels, clearModels, clearModels, clearModels, clearModels, clearModels, clearModels, clearModels, getMetaModel, getMetaModel, getMetaModel, getMetaModel, getMetaModel, getMetaModel, getMetaModel, getMetaModel, getMetaModel, getMetaModel, getMetaModel, resource, resource, resource, resource, resource, resource, resource, resource, resource, resource, resource, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, feature, feature, feature, feature, feature, feature, feature, feature, feature, feature, feature, object, object, object, object, object, object, object, object, object, object, object, value, value, value, value, value, value, value, value, value, value, value, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, queueForSet, field, field, field, field, field, field, field, field, field, field, field, object, object, object, object, object, object, object, object, object, object, object, value, value, value, value, value, value, value, value, value, value, value, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, queueXmiIDForSet, queueXmiIDForSet, queueXmiIDForSet, queueXmiIDForSet, queueXmiIDForSet, queueXmiIDForSet, queueXmiIDForSet, queueXmiIDForSet, queueXmiIDForSet, queueXmiIDForSet, queueXmiIDForSet, object, object, object, object, object, object, object, object, object, object, object, value, value, value, value, value, value, value, value, value, value, value, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, feature, feature, feature, feature, feature, feature, feature, feature, feature, feature, feature, object, object, object, object, object, object, object, object, object, object, object, value, value, value, value, value, value, value, value, value, value, value, index, index, index, index, index, index, index, index, index, index, index, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, queueForAdd, field, field, field, field, field, field, field, field, field, field, field, object, object, object, object, object, object, object, object, object, object, object, value, value, value, value, value, value, value, value, value, value, value, index, index, index, index, index, index, index, index, index, index, index, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, queueXmiIDForAdd, queueXmiIDForAdd, queueXmiIDForAdd, queueXmiIDForAdd, queueXmiIDForAdd, queueXmiIDForAdd, queueXmiIDForAdd, queueXmiIDForAdd, queueXmiIDForAdd, queueXmiIDForAdd, queueXmiIDForAdd, object, object, object, object, object, object, object, object, object, object, object, value, value, value, value, value, value, value, value, value, value, value, index, index, index, index, index, index, index, index, index, index, index, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, feature, feature, feature, feature, feature, feature, feature, feature, feature, feature, feature, object, object, object, object, object, object, object, object, object, object, object, value, value, value, value, value, value, value, value, value, value, value, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, queueForRemove, field, field, field, field, field, field, field, field, field, field, field, object, object, object, object, object, object, object, object, object, object, object, value, value, value, value, value, value, value, value, value, value, value, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, queueXmiIDForRemove, queueXmiIDForRemove, queueXmiIDForRemove, queueXmiIDForRemove, queueXmiIDForRemove, queueXmiIDForRemove, queueXmiIDForRemove, queueXmiIDForRemove, queueXmiIDForRemove, queueXmiIDForRemove, queueXmiIDForRemove, object, object, object, object, object, object, object, object, object, object, object, value, value, value, value, value, value, value, value, value, value, value, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, setQueue, setQueue, setQueue, setQueue, setQueue, setQueue, setQueue, setQueue, setQueue, setQueue, setQueue, queueForRemap, queueForRemap, queueForRemap, queueForRemap, queueForRemap, queueForRemap, queueForRemap, queueForRemap, queueForRemap, queueForRemap, queueForRemap, source, source, source, source, source, source, source, source, source, source, source, target, target, target, target, target, target, target, target, target, target, target, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, remapQueue, remapQueue, remapQueue, remapQueue, remapQueue, remapQueue, remapQueue, remapQueue, remapQueue, remapQueue, remapQueue, metaModels, metaModels, metaModels, metaModels, metaModels, metaModels, metaModels, metaModels, metaModels, metaModels, metaModels, inputModels, inputModels, inputModels, inputModels, inputModels, inputModels, inputModels, inputModels, inputModels, inputModels, inputModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, outputModels, outputModels, outputModels, outputModels, outputModels, outputModels, outputModels, outputModels, outputModels, outputModels, outputModels, modules, modules, modules, modules, modules, modules, modules, modules, modules, modules, modules, matches, matches, matches, matches, matches, matches, matches, matches, matches, matches, matches, traces, traces, traces, traces, traces, traces, traces, traces, traces, traces, traces, uniqueResults, uniqueResults, uniqueResults, uniqueResults, uniqueResults, uniqueResults, uniqueResults, uniqueResults, uniqueResults, uniqueResults, uniqueResults, jitDisabled, jitDisabled, jitDisabled, jitDisabled, jitDisabled, jitDisabled, jitDisabled, jitDisabled, jitDisabled, jitDisabled, jitDisabled, currentPhase, currentPhase, currentPhase, currentPhase, currentPhase, currentPhase, currentPhase, currentPhase, currentPhase, currentPhase, currentPhase, Model, Model, Model, Model, Model, Model, Model, Model, Model, Model, Model, allInstancesOf, allInstancesOf, allInstancesOf, allInstancesOf, allInstancesOf, allInstancesOf, allInstancesOf, allInstancesOf, allInstancesOf, allInstancesOf, allInstancesOf, type, type, type, type, type, type, type, type, type, type, type, newElement, newElement, newElement, newElement, newElement, newElement, newElement, newElement, newElement, newElement, newElement, type, type, type, type, type, type, type, type, type, type, type, deleteElement, deleteElement, deleteElement, deleteElement, deleteElement, deleteElement, deleteElement, deleteElement, deleteElement, deleteElement, deleteElement, element, element, element, element, element, element, element, element, element, element, element, resource, resource, resource, resource, resource, resource, resource, resource, resource, resource, resource, allowInterModelReferences, allowInterModelReferences, allowInterModelReferences, allowInterModelReferences, allowInterModelReferences, allowInterModelReferences, allowInterModelReferences, allowInterModelReferences, allowInterModelReferences, allowInterModelReferences, allowInterModelReferences, Metamodel, Metamodel, Metamodel, Metamodel, Metamodel, Metamodel, Metamodel, Metamodel, Metamodel, Metamodel, Metamodel, findType, findType, findType, findType, findType, findType, findType, findType, findType, findType, findType, typeName, typeName, typeName, typeName, typeName, typeName, typeName, typeName, typeName, typeName, typeName, Module, Module, Module, Module, Module, Module, Module, Module, Module, Module, Module, sourceName, sourceName, sourceName, sourceName, sourceName, sourceName, sourceName, sourceName, sourceName, sourceName, sourceName, features, features, features, features, features, features, features, features, features, features, features, rules, rules, rules, rules, rules, rules, rules, rules, rules, rules, rules, eImports, eImports, eImports, eImports, eImports, eImports, eImports, eImports, eImports, eImports, eImports, imports, imports, imports, imports, imports, imports, imports, imports, imports, imports, imports, inputModels, inputModels, inputModels, inputModels, inputModels, inputModels, inputModels, inputModels, inputModels, inputModels, inputModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, inoutModels, outputModels, outputModels, outputModels, outputModels, outputModels, outputModels, outputModels, outputModels, outputModels, outputModels, outputModels, ModelDeclaration, ModelDeclaration, ModelDeclaration, ModelDeclaration, ModelDeclaration, ModelDeclaration, ModelDeclaration, ModelDeclaration, ModelDeclaration, ModelDeclaration, ModelDeclaration, modelName, modelName, modelName, modelName, modelName, modelName, modelName, modelName, modelName, modelName, modelName, metaModelName, metaModelName, metaModelName, metaModelName, metaModelName, metaModelName, metaModelName, metaModelName, metaModelName, metaModelName, metaModelName, inputModelFor, inputModelFor, inputModelFor, inputModelFor, inputModelFor, inputModelFor, inputModelFor, inputModelFor, inputModelFor, inputModelFor, inputModelFor, inoutModelFor, inoutModelFor, inoutModelFor, inoutModelFor, inoutModelFor, inoutModelFor, inoutModelFor, inoutModelFor, inoutModelFor, inoutModelFor, inoutModelFor, outputModelFor, outputModelFor, outputModelFor, outputModelFor, outputModelFor, outputModelFor, outputModelFor, outputModelFor, outputModelFor, outputModelFor, outputModelFor, Feature, Feature, Feature, Feature, Feature, Feature, Feature, Feature, Feature, Feature, Feature, static, static, static, static, static, static, static, static, static, static, static, eContext, eContext, eContext, eContext, eContext, eContext, eContext, eContext, eContext, eContext, eContext, module, module, module, module, module, module, module, module, module, module, module, context, context, context, context, context, context, context, context, context, context, context, contextModel, contextModel, contextModel, contextModel, contextModel, contextModel, contextModel, contextModel, contextModel, contextModel, contextModel, Field, Field, Field, Field, Field, Field, Field, Field, Field, Field, Field, getValue, getValue, getValue, getValue, getValue, getValue, getValue, getValue, getValue, getValue, getValue, context, context, context, context, context, context, context, context, context, context, context, setValue, setValue, setValue, setValue, setValue, setValue, setValue, setValue, setValue, setValue, setValue, context, context, context, context, context, context, context, context, context, context, context, value, value, value, value, value, value, value, value, value, value, value, getValue, getValue, getValue, getValue, getValue, getValue, getValue, getValue, getValue, getValue, getValue, context, context, context, context, context, context, context, context, context, context, context, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, getStaticValue, getStaticValue, getStaticValue, getStaticValue, getStaticValue, getStaticValue, getStaticValue, getStaticValue, getStaticValue, getStaticValue, getStaticValue, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, clear, clear, clear, clear, clear, clear, clear, clear, clear, clear, clear, addValue, addValue, addValue, addValue, addValue, addValue, addValue, addValue, addValue, addValue, addValue, context, context, context, context, context, context, context, context, context, context, context, value, value, value, value, value, value, value, value, value, value, value, index, index, index, index, index, index, index, index, index, index, index, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, removeValue, removeValue, removeValue, removeValue, removeValue, removeValue, removeValue, removeValue, removeValue, removeValue, removeValue, context, context, context, context, context, context, context, context, context, context, context, value, value, value, value, value, value, value, value, value, value, value, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, staticValue, staticValue, staticValue, staticValue, staticValue, staticValue, staticValue, staticValue, staticValue, staticValue, staticValue, initialiser, initialiser, initialiser, initialiser, initialiser, initialiser, initialiser, initialiser, initialiser, initialiser, initialiser, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, rule, Operation, Operation, Operation, Operation, Operation, Operation, Operation, Operation, Operation, Operation, Operation, parameters, parameters, parameters, parameters, parameters, parameters, parameters, parameters, parameters, parameters, parameters, query, query, query, query, query, query, query, query, query, query, query, body, body, body, body, body, body, body, body, body, body, body, NamedElement, NamedElement, NamedElement, NamedElement, NamedElement, NamedElement, NamedElement, NamedElement, NamedElement, NamedElement, NamedElement, name, name, name, name, name, name, name, name, name, name, name, Parameter, Parameter, Parameter, Parameter, Parameter, Parameter, Parameter, Parameter, Parameter, Parameter, Parameter, operation, operation, operation, operation, operation, operation, operation, operation, operation, operation, operation, TypedElement, TypedElement, TypedElement, TypedElement, TypedElement, TypedElement, TypedElement, TypedElement, TypedElement, TypedElement, TypedElement, eType, eType, eType, eType, eType, eType, eType, eType, eType, eType, eType, type, type, type, type, type, type, type, type, type, type, type, typeModel, typeModel, typeModel, typeModel, typeModel, typeModel, typeModel, typeModel, typeModel, typeModel, typeModel, Instruction, Instruction, Instruction, Instruction, Instruction, Instruction, Instruction, Instruction, Instruction, Instruction, Instruction, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, opcode, opcode, opcode, opcode, opcode, opcode, opcode, opcode, opcode, opcode, opcode, stackProduction, stackProduction, stackProduction, stackProduction, stackProduction, stackProduction, stackProduction, stackProduction, stackProduction, stackProduction, stackProduction, stackConsumption, stackConsumption, stackConsumption, stackConsumption, stackConsumption, stackConsumption, stackConsumption, stackConsumption, stackConsumption, stackConsumption, stackConsumption, stackLevel, stackLevel, stackLevel, stackLevel, stackLevel, stackLevel, stackLevel, stackLevel, stackLevel, stackLevel, stackLevel, lineNumber, lineNumber, lineNumber, lineNumber, lineNumber, lineNumber, lineNumber, lineNumber, lineNumber, lineNumber, lineNumber, LineNumber, LineNumber, LineNumber, LineNumber, LineNumber, LineNumber, LineNumber, LineNumber, LineNumber, LineNumber, LineNumber, startLine, startLine, startLine, startLine, startLine, startLine, startLine, startLine, startLine, startLine, startLine, startColumn, startColumn, startColumn, startColumn, startColumn, startColumn, startColumn, startColumn, startColumn, startColumn, startColumn, endLine, endLine, endLine, endLine, endLine, endLine, endLine, endLine, endLine, endLine, endLine, endColumn, endColumn, endColumn, endColumn, endColumn, endColumn, endColumn, endColumn, endColumn, endColumn, endColumn, startChar, startChar, startChar, startChar, startChar, startChar, startChar, startChar, startChar, startChar, startChar, endChar, endChar, endChar, endChar, endChar, endChar, endChar, endChar, endChar, endChar, endChar, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, instructions, instructions, instructions, instructions, instructions, instructions, instructions, instructions, instructions, instructions, instructions, LocalVariable, LocalVariable, LocalVariable, LocalVariable, LocalVariable, LocalVariable, LocalVariable, LocalVariable, LocalVariable, LocalVariable, LocalVariable, slot, slot, slot, slot, slot, slot, slot, slot, slot, slot, slot, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, owningBlock, startInstruction, startInstruction, startInstruction, startInstruction, startInstruction, startInstruction, startInstruction, startInstruction, startInstruction, startInstruction, startInstruction, endInstruction, endInstruction, endInstruction, endInstruction, endInstruction, endInstruction, endInstruction, endInstruction, endInstruction, endInstruction, endInstruction, startInstructionIndex, startInstructionIndex, startInstructionIndex, startInstructionIndex, startInstructionIndex, startInstructionIndex, startInstructionIndex, startInstructionIndex, startInstructionIndex, startInstructionIndex, startInstructionIndex, endInstructionIndex, endInstructionIndex, endInstructionIndex, endInstructionIndex, endInstructionIndex, endInstructionIndex, endInstructionIndex, endInstructionIndex, endInstructionIndex, endInstructionIndex, endInstructionIndex, Rule, Rule, Rule, Rule, Rule, Rule, Rule, Rule, Rule, Rule, Rule, findField, findField, findField, findField, findField, findField, findField, findField, findField, findField, findField, context, context, context, context, context, context, context, context, context, context, context, name, name, name, name, name, name, name, name, name, name, name, hasField, hasField, hasField, hasField, hasField, hasField, hasField, hasField, hasField, hasField, hasField, name, name, name, name, name, name, name, name, name, name, name, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, findStaticField, context, context, context, context, context, context, context, context, context, context, context, name, name, name, name, name, name, name, name, name, name, name, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, hasStaticField, name, name, name, name, name, name, name, name, name, name, name, registerField, registerField, registerField, registerField, registerField, registerField, registerField, registerField, registerField, registerField, registerField, field, field, field, field, field, field, field, field, field, field, field, matchSingle, matchSingle, matchSingle, matchSingle, matchSingle, matchSingle, matchSingle, matchSingle, matchSingle, matchSingle, matchSingle, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, matchRecursive, matchRecursive, matchRecursive, matchRecursive, matchRecursive, matchRecursive, matchRecursive, matchRecursive, matchRecursive, matchRecursive, matchRecursive, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, matchManual, matchManual, matchManual, matchManual, matchManual, matchManual, matchManual, matchManual, matchManual, matchManual, matchManual, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, values, values, values, values, values, values, values, values, values, values, values, matchManualTrace, matchManualTrace, matchManualTrace, matchManualTrace, matchManualTrace, matchManualTrace, matchManualTrace, matchManualTrace, matchManualTrace, matchManualTrace, matchManualTrace, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, values, values, values, values, values, values, values, values, values, values, values, matchOne, matchOne, matchOne, matchOne, matchOne, matchOne, matchOne, matchOne, matchOne, matchOne, matchOne, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, matchOneOnly, matchOneOnly, matchOneOnly, matchOneOnly, matchOneOnly, matchOneOnly, matchOneOnly, matchOneOnly, matchOneOnly, matchOneOnly, matchOneOnly, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, createTraces, createTraces, createTraces, createTraces, createTraces, createTraces, createTraces, createTraces, createTraces, createTraces, createTraces, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, completeTraceFor, completeTraceFor, completeTraceFor, completeTraceFor, completeTraceFor, completeTraceFor, completeTraceFor, completeTraceFor, completeTraceFor, completeTraceFor, completeTraceFor, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, trace, trace, trace, trace, trace, trace, trace, trace, trace, trace, trace, apply, apply, apply, apply, apply, apply, apply, apply, apply, apply, apply, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, postApply, postApply, postApply, postApply, postApply, postApply, postApply, postApply, postApply, postApply, postApply, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, applyFirst, applyFirst, applyFirst, applyFirst, applyFirst, applyFirst, applyFirst, applyFirst, applyFirst, applyFirst, applyFirst, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, applyOne, applyOne, applyOne, applyOne, applyOne, applyOne, applyOne, applyOne, applyOne, applyOne, applyOne, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, applyOneTrace, applyOneTrace, applyOneTrace, applyOneTrace, applyOneTrace, applyOneTrace, applyOneTrace, applyOneTrace, applyOneTrace, applyOneTrace, applyOneTrace, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, valuesMap, applyFor, applyFor, applyFor, applyFor, applyFor, applyFor, applyFor, applyFor, applyFor, applyFor, applyFor, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, trace, trace, trace, trace, trace, trace, trace, trace, trace, trace, trace, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, trace, trace, trace, trace, trace, trace, trace, trace, trace, trace, trace, getAllESuperRules, getAllESuperRules, getAllESuperRules, getAllESuperRules, getAllESuperRules, getAllESuperRules, getAllESuperRules, getAllESuperRules, getAllESuperRules, getAllESuperRules, getAllESuperRules, createUniqueMapping, createUniqueMapping, createUniqueMapping, createUniqueMapping, createUniqueMapping, createUniqueMapping, createUniqueMapping, createUniqueMapping, createUniqueMapping, createUniqueMapping, createUniqueMapping, trace, trace, trace, trace, trace, trace, trace, trace, trace, trace, trace, compileState, compileState, compileState, compileState, compileState, compileState, compileState, compileState, compileState, compileState, compileState, env, env, env, env, env, env, env, env, env, env, env, resetState, resetState, resetState, resetState, resetState, resetState, resetState, resetState, resetState, resetState, resetState, compileIterables, compileIterables, compileIterables, compileIterables, compileIterables, compileIterables, compileIterables, compileIterables, compileIterables, compileIterables, compileIterables, env, env, env, env, env, env, env, env, env, env, env, clearFields, clearFields, clearFields, clearFields, clearFields, clearFields, clearFields, clearFields, clearFields, clearFields, clearFields, findInputElement, findInputElement, findInputElement, findInputElement, findInputElement, findInputElement, findInputElement, findInputElement, findInputElement, findInputElement, findInputElement, name, name, name, name, name, name, name, name, name, name, name, getUniqueTrace, getUniqueTrace, getUniqueTrace, getUniqueTrace, getUniqueTrace, getUniqueTrace, getUniqueTrace, getUniqueTrace, getUniqueTrace, getUniqueTrace, getUniqueTrace, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, values, values, values, values, values, values, values, values, values, values, values, module, module, module, module, module, module, module, module, module, module, module, mode, mode, mode, mode, mode, mode, mode, mode, mode, mode, mode, inputElements, inputElements, inputElements, inputElements, inputElements, inputElements, inputElements, inputElements, inputElements, inputElements, inputElements, outputElements, outputElements, outputElements, outputElements, outputElements, outputElements, outputElements, outputElements, outputElements, outputElements, outputElements, eSuperRules, eSuperRules, eSuperRules, eSuperRules, eSuperRules, eSuperRules, eSuperRules, eSuperRules, eSuperRules, eSuperRules, eSuperRules, eSubRules, eSubRules, eSubRules, eSubRules, eSubRules, eSubRules, eSubRules, eSubRules, eSubRules, eSubRules, eSubRules, matcher, matcher, matcher, matcher, matcher, matcher, matcher, matcher, matcher, matcher, matcher, applier, applier, applier, applier, applier, applier, applier, applier, applier, applier, applier, postApply, postApply, postApply, postApply, postApply, postApply, postApply, postApply, postApply, postApply, postApply, superRules, superRules, superRules, superRules, superRules, superRules, superRules, superRules, superRules, superRules, superRules, abstract, abstract, abstract, abstract, abstract, abstract, abstract, abstract, abstract, abstract, abstract, fields, fields, fields, fields, fields, fields, fields, fields, fields, fields, fields, default, default, default, default, default, default, default, default, default, default, default, distinctElements, distinctElements, distinctElements, distinctElements, distinctElements, distinctElements, distinctElements, distinctElements, distinctElements, distinctElements, distinctElements, unique, unique, unique, unique, unique, unique, unique, unique, unique, unique, unique, leaf, leaf, leaf, leaf, leaf, leaf, leaf, leaf, leaf, leaf, leaf, withLeaves, withLeaves, withLeaves, withLeaves, withLeaves, withLeaves, withLeaves, withLeaves, withLeaves, withLeaves, withLeaves, RuleElement, RuleElement, RuleElement, RuleElement, RuleElement, RuleElement, RuleElement, RuleElement, RuleElement, RuleElement, RuleElement, models, models, models, models, models, models, models, models, models, models, models, eModels, eModels, eModels, eModels, eModels, eModels, eModels, eModels, eModels, eModels, eModels, InputRuleElement, InputRuleElement, InputRuleElement, InputRuleElement, InputRuleElement, InputRuleElement, InputRuleElement, InputRuleElement, InputRuleElement, InputRuleElement, InputRuleElement, createIterable, createIterable, createIterable, createIterable, createIterable, createIterable, createIterable, createIterable, createIterable, createIterable, createIterable, env, env, env, env, env, env, env, env, env, env, env, binding, binding, binding, binding, binding, binding, binding, binding, binding, binding, binding, inputFor, inputFor, inputFor, inputFor, inputFor, inputFor, inputFor, inputFor, inputFor, inputFor, inputFor, mapsToSelf, mapsToSelf, mapsToSelf, mapsToSelf, mapsToSelf, mapsToSelf, mapsToSelf, mapsToSelf, mapsToSelf, mapsToSelf, mapsToSelf, OutputRuleElement, OutputRuleElement, OutputRuleElement, OutputRuleElement, OutputRuleElement, OutputRuleElement, OutputRuleElement, OutputRuleElement, OutputRuleElement, OutputRuleElement, OutputRuleElement, mapsTo, mapsTo, mapsTo, mapsTo, mapsTo, mapsTo, mapsTo, mapsTo, mapsTo, mapsTo, mapsTo, outputFor, outputFor, outputFor, outputFor, outputFor, outputFor, outputFor, outputFor, outputFor, outputFor, outputFor, CodeBlock, CodeBlock, CodeBlock, CodeBlock, CodeBlock, CodeBlock, CodeBlock, CodeBlock, CodeBlock, CodeBlock, CodeBlock, execute, execute, execute, execute, execute, execute, execute, execute, execute, execute, execute, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, frame, getStackLevel, getStackLevel, getStackLevel, getStackLevel, getStackLevel, getStackLevel, getStackLevel, getStackLevel, getStackLevel, getStackLevel, getStackLevel, getModule, getModule, getModule, getModule, getModule, getModule, getModule, getModule, getModule, getModule, getModule, getOperation, getOperation, getOperation, getOperation, getOperation, getOperation, getOperation, getOperation, getOperation, getOperation, getOperation, getField, getField, getField, getField, getField, getField, getField, getField, getField, getField, getField, getPredecessors, getPredecessors, getPredecessors, getPredecessors, getPredecessors, getPredecessors, getPredecessors, getPredecessors, getPredecessors, getPredecessors, getPredecessors, i, i, i, i, i, i, i, i, i, i, i, getAllPredecessors, getAllPredecessors, getAllPredecessors, getAllPredecessors, getAllPredecessors, getAllPredecessors, getAllPredecessors, getAllPredecessors, getAllPredecessors, getAllPredecessors, getAllPredecessors, i, i, i, i, i, i, i, i, i, i, i, getNonLoopingPredecessors, getNonLoopingPredecessors, getNonLoopingPredecessors, getNonLoopingPredecessors, getNonLoopingPredecessors, getNonLoopingPredecessors, getNonLoopingPredecessors, getNonLoopingPredecessors, getNonLoopingPredecessors, getNonLoopingPredecessors, getNonLoopingPredecessors, i, i, i, i, i, i, i, i, i, i, i, maxLocals, maxLocals, maxLocals, maxLocals, maxLocals, maxLocals, maxLocals, maxLocals, maxLocals, maxLocals, maxLocals, maxStack, maxStack, maxStack, maxStack, maxStack, maxStack, maxStack, maxStack, maxStack, maxStack, maxStack, code, code, code, code, code, code, code, code, code, code, code, lineNumbers, lineNumbers, lineNumbers, lineNumbers, lineNumbers, lineNumbers, lineNumbers, lineNumbers, lineNumbers, lineNumbers, lineNumbers, localVariables, localVariables, localVariables, localVariables, localVariables, localVariables, localVariables, localVariables, localVariables, localVariables, localVariables, matcherFor, matcherFor, matcherFor, matcherFor, matcherFor, matcherFor, matcherFor, matcherFor, matcherFor, matcherFor, matcherFor, applierFor, applierFor, applierFor, applierFor, applierFor, applierFor, applierFor, applierFor, applierFor, applierFor, applierFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, postApplyFor, bodyFor, bodyFor, bodyFor, bodyFor, bodyFor, bodyFor, bodyFor, bodyFor, bodyFor, bodyFor, bodyFor, initialiserFor, initialiserFor, initialiserFor, initialiserFor, initialiserFor, initialiserFor, initialiserFor, initialiserFor, initialiserFor, initialiserFor, initialiserFor, nested, nested, nested, nested, nested, nested, nested, nested, nested, nested, nested, nestedFor, nestedFor, nestedFor, nestedFor, nestedFor, nestedFor, nestedFor, nestedFor, nestedFor, nestedFor, nestedFor, parentFrame, parentFrame, parentFrame, parentFrame, parentFrame, parentFrame, parentFrame, parentFrame, parentFrame, parentFrame, parentFrame, bindingFor, bindingFor, bindingFor, bindingFor, bindingFor, bindingFor, bindingFor, bindingFor, bindingFor, bindingFor, bindingFor, Push, Push, Push, Push, Push, Push, Push, Push, Push, Push, Push, value, value, value, value, value, value, value, value, value, value, value, stringValue, stringValue, stringValue, stringValue, stringValue, stringValue, stringValue, stringValue, stringValue, stringValue, stringValue, intValue, intValue, intValue, intValue, intValue, intValue, intValue, intValue, intValue, intValue, intValue, doubleValue, doubleValue, doubleValue, doubleValue, doubleValue, doubleValue, doubleValue, doubleValue, doubleValue, doubleValue, doubleValue, byteValue, byteValue, byteValue, byteValue, byteValue, byteValue, byteValue, byteValue, byteValue, byteValue, byteValue, charValue, charValue, charValue, charValue, charValue, charValue, charValue, charValue, charValue, charValue, charValue, floatValue, floatValue, floatValue, floatValue, floatValue, floatValue, floatValue, floatValue, floatValue, floatValue, floatValue, shortValue, shortValue, shortValue, shortValue, shortValue, shortValue, shortValue, shortValue, shortValue, shortValue, shortValue, longValue, longValue, longValue, longValue, longValue, longValue, longValue, longValue, longValue, longValue, longValue, enumValue, enumValue, enumValue, enumValue, enumValue, enumValue, enumValue, enumValue, enumValue, enumValue, enumValue, Pusht, Pusht, Pusht, Pusht, Pusht, Pusht, Pusht, Pusht, Pusht, Pusht, Pusht, Pushf, Pushf, Pushf, Pushf, Pushf, Pushf, Pushf, Pushf, Pushf, Pushf, Pushf, Pop, Pop, Pop, Pop, Pop, Pop, Pop, Pop, Pop, Pop, Pop, LocalVariableInstruction, LocalVariableInstruction, LocalVariableInstruction, LocalVariableInstruction, LocalVariableInstruction, LocalVariableInstruction, LocalVariableInstruction, LocalVariableInstruction, LocalVariableInstruction, LocalVariableInstruction, LocalVariableInstruction, cbOffset, cbOffset, cbOffset, cbOffset, cbOffset, cbOffset, cbOffset, cbOffset, cbOffset, cbOffset, cbOffset, slot, slot, slot, slot, slot, slot, slot, slot, slot, slot, slot, localVariableIndex, localVariableIndex, localVariableIndex, localVariableIndex, localVariableIndex, localVariableIndex, localVariableIndex, localVariableIndex, localVariableIndex, localVariableIndex, localVariableIndex, localVariable, localVariable, localVariable, localVariable, localVariable, localVariable, localVariable, localVariable, localVariable, localVariable, localVariable, Load, Load, Load, Load, Load, Load, Load, Load, Load, Load, Load, Store, Store, Store, Store, Store, Store, Store, Store, Store, Store, Store, FieldInstruction, FieldInstruction, FieldInstruction, FieldInstruction, FieldInstruction, FieldInstruction, FieldInstruction, FieldInstruction, FieldInstruction, FieldInstruction, FieldInstruction, fieldname, fieldname, fieldname, fieldname, fieldname, fieldname, fieldname, fieldname, fieldname, fieldname, fieldname, Set, Set, Set, Set, Set, Set, Set, Set, Set, Set, Set, Get, Get, Get, Get, Get, Get, Get, Get, Get, Get, Get, GetTrans, GetTrans, GetTrans, GetTrans, GetTrans, GetTrans, GetTrans, GetTrans, GetTrans, GetTrans, GetTrans, SetStatic, SetStatic, SetStatic, SetStatic, SetStatic, SetStatic, SetStatic, SetStatic, SetStatic, SetStatic, SetStatic, GetStatic, GetStatic, GetStatic, GetStatic, GetStatic, GetStatic, GetStatic, GetStatic, GetStatic, GetStatic, GetStatic, Findtype, Findtype, Findtype, Findtype, Findtype, Findtype, Findtype, Findtype, Findtype, Findtype, Findtype, modelname, modelname, modelname, modelname, modelname, modelname, modelname, modelname, modelname, modelname, modelname, typename, typename, typename, typename, typename, typename, typename, typename, typename, typename, typename, FindtypeS, FindtypeS, FindtypeS, FindtypeS, FindtypeS, FindtypeS, FindtypeS, FindtypeS, FindtypeS, FindtypeS, FindtypeS, New, New, New, New, New, New, New, New, New, New, New, modelname, modelname, modelname, modelname, modelname, modelname, modelname, modelname, modelname, modelname, modelname, NewS, NewS, NewS, NewS, NewS, NewS, NewS, NewS, NewS, NewS, NewS, Delete, Delete, Delete, Delete, Delete, Delete, Delete, Delete, Delete, Delete, Delete, Dup, Dup, Dup, Dup, Dup, Dup, Dup, Dup, Dup, Dup, Dup, DupX1, DupX1, DupX1, DupX1, DupX1, DupX1, DupX1, DupX1, DupX1, DupX1, DupX1, Swap, Swap, Swap, Swap, Swap, Swap, Swap, Swap, Swap, Swap, Swap, SwapX1, SwapX1, SwapX1, SwapX1, SwapX1, SwapX1, SwapX1, SwapX1, SwapX1, SwapX1, SwapX1, BranchInstruction, BranchInstruction, BranchInstruction, BranchInstruction, BranchInstruction, BranchInstruction, BranchInstruction, BranchInstruction, BranchInstruction, BranchInstruction, BranchInstruction, offset, offset, offset, offset, offset, offset, offset, offset, offset, offset, offset, target, target, target, target, target, target, target, target, target, target, target, If, If, If, If, If, If, If, If, If, If, If, Ifn, Ifn, Ifn, Ifn, Ifn, Ifn, Ifn, Ifn, Ifn, Ifn, Ifn, Goto, Goto, Goto, Goto, Goto, Goto, Goto, Goto, Goto, Goto, Goto, Iterate, Iterate, Iterate, Iterate, Iterate, Iterate, Iterate, Iterate, Iterate, Iterate, Iterate, Enditerate, Enditerate, Enditerate, Enditerate, Enditerate, Enditerate, Enditerate, Enditerate, Enditerate, Enditerate, Enditerate, InvokeInstruction, InvokeInstruction, InvokeInstruction, InvokeInstruction, InvokeInstruction, InvokeInstruction, InvokeInstruction, InvokeInstruction, InvokeInstruction, InvokeInstruction, InvokeInstruction, argcount, argcount, argcount, argcount, argcount, argcount, argcount, argcount, argcount, argcount, argcount, InvokeOperationInstruction, InvokeOperationInstruction, InvokeOperationInstruction, InvokeOperationInstruction, InvokeOperationInstruction, InvokeOperationInstruction, InvokeOperationInstruction, InvokeOperationInstruction, InvokeOperationInstruction, InvokeOperationInstruction, InvokeOperationInstruction, opname, opname, opname, opname, opname, opname, opname, opname, opname, opname, opname, Invoke, Invoke, Invoke, Invoke, Invoke, Invoke, Invoke, Invoke, Invoke, Invoke, Invoke, InvokeSuper, InvokeSuper, InvokeSuper, InvokeSuper, InvokeSuper, InvokeSuper, InvokeSuper, InvokeSuper, InvokeSuper, InvokeSuper, InvokeSuper, InvokeStatic, InvokeStatic, InvokeStatic, InvokeStatic, InvokeStatic, InvokeStatic, InvokeStatic, InvokeStatic, InvokeStatic, InvokeStatic, InvokeStatic, Allinst, Allinst, Allinst, Allinst, Allinst, Allinst, Allinst, Allinst, Allinst, Allinst, Allinst, AllinstIn, AllinstIn, AllinstIn, AllinstIn, AllinstIn, AllinstIn, AllinstIn, AllinstIn, AllinstIn, AllinstIn, AllinstIn, Isnull, Isnull, Isnull, Isnull, Isnull, Isnull, Isnull, Isnull, Isnull, Isnull, Isnull, Getenvtype, Getenvtype, Getenvtype, Getenvtype, Getenvtype, Getenvtype, Getenvtype, Getenvtype, Getenvtype, Getenvtype, Getenvtype, Not, Not, Not, Not, Not, Not, Not, Not, Not, Not, Not, And, And, And, And, And, And, And, And, And, And, And, Or, Or, Or, Or, Or, Or, Or, Or, Or, Or, Or, Xor, Xor, Xor, Xor, Xor, Xor, Xor, Xor, Xor, Xor, Xor, Implies, Implies, Implies, Implies, Implies, Implies, Implies, Implies, Implies, Implies, Implies, Ifte, Ifte, Ifte, Ifte, Ifte, Ifte, Ifte, Ifte, Ifte, Ifte, Ifte, thenCbIndex, thenCbIndex, thenCbIndex, thenCbIndex, thenCbIndex, thenCbIndex, thenCbIndex, thenCbIndex, thenCbIndex, thenCbIndex, thenCbIndex, elseCbIndex, elseCbIndex, elseCbIndex, elseCbIndex, elseCbIndex, elseCbIndex, elseCbIndex, elseCbIndex, elseCbIndex, elseCbIndex, elseCbIndex, thenCb, thenCb, thenCb, thenCb, thenCb, thenCb, thenCb, thenCb, thenCb, thenCb, thenCb, elseCb, elseCb, elseCb, elseCb, elseCb, elseCb, elseCb, elseCb, elseCb, elseCb, elseCb, Return, Return, Return, Return, Return, Return, Return, Return, Return, Return, Return, CodeBlockInstruction, CodeBlockInstruction, CodeBlockInstruction, CodeBlockInstruction, CodeBlockInstruction, CodeBlockInstruction, CodeBlockInstruction, CodeBlockInstruction, CodeBlockInstruction, CodeBlockInstruction, CodeBlockInstruction, cbIndex, cbIndex, cbIndex, cbIndex, cbIndex, cbIndex, cbIndex, cbIndex, cbIndex, cbIndex, cbIndex, codeBlock, codeBlock, codeBlock, codeBlock, codeBlock, codeBlock, codeBlock, codeBlock, codeBlock, codeBlock, codeBlock, Getcb, Getcb, Getcb, Getcb, Getcb, Getcb, Getcb, Getcb, Getcb, Getcb, Getcb, InvokeAllCbs, InvokeAllCbs, InvokeAllCbs, InvokeAllCbs, InvokeAllCbs, InvokeAllCbs, InvokeAllCbs, InvokeAllCbs, InvokeAllCbs, InvokeAllCbs, InvokeAllCbs, InvokeCb, InvokeCb, InvokeCb, InvokeCb, InvokeCb, InvokeCb, InvokeCb, InvokeCb, InvokeCb, InvokeCb, InvokeCb, InvokeCbS, InvokeCbS, InvokeCbS, InvokeCbS, InvokeCbS, InvokeCbS, InvokeCbS, InvokeCbS, InvokeCbS, InvokeCbS, InvokeCbS, Match, Match, Match, Match, Match, Match, Match, Match, Match, Match, Match, rulename, rulename, rulename, rulename, rulename, rulename, rulename, rulename, rulename, rulename, rulename, MatchS, MatchS, MatchS, MatchS, MatchS, MatchS, MatchS, MatchS, MatchS, MatchS, MatchS, Add, Add, Add, Add, Add, Add, Add, Add, Add, Add, Add, Remove, Remove, Remove, Remove, Remove, Remove, Remove, Remove, Remove, Remove, Remove, Insert, Insert, Insert, Insert, Insert, Insert, Insert, Insert, Insert, Insert, Insert, GetSuper, GetSuper, GetSuper, GetSuper, GetSuper, GetSuper, GetSuper, GetSuper, GetSuper, GetSuper, GetSuper, Getenv, Getenv, Getenv, Getenv, Getenv, Getenv, Getenv, Getenv, Getenv, Getenv, Getenv, ModelDeclarationTag, ModelDeclarationTag, ModelDeclarationTag, ModelDeclarationTag, ModelDeclarationTag, ModelDeclarationTag, ModelDeclarationTag, ModelDeclarationTag, ModelDeclarationTag, ModelDeclarationTag, ModelDeclarationTag, input, input, input, input, input, input, input, input, input, input, input, inout, inout, inout, inout, inout, inout, inout, inout, inout, inout, inout, output, output, output, output, output, output, output, output, output, output, output, FeatureTag, FeatureTag, FeatureTag, FeatureTag, FeatureTag, FeatureTag, FeatureTag, FeatureTag, FeatureTag, FeatureTag, FeatureTag, Field, Field, Field, Field, Field, Field, Field, Field, Field, Field, Field, StaticField, StaticField, StaticField, StaticField, StaticField, StaticField, StaticField, StaticField, StaticField, StaticField, StaticField, Operation, Operation, Operation, Operation, Operation, Operation, Operation, Operation, Operation, Operation, Operation, StaticOperation, StaticOperation, StaticOperation, StaticOperation, StaticOperation, StaticOperation, StaticOperation, StaticOperation, StaticOperation, StaticOperation, StaticOperation, QueryOperation, QueryOperation, QueryOperation, QueryOperation, QueryOperation, QueryOperation, QueryOperation, QueryOperation, QueryOperation, QueryOperation, QueryOperation, StaticQueryOperation, StaticQueryOperation, StaticQueryOperation, StaticQueryOperation, StaticQueryOperation, StaticQueryOperation, StaticQueryOperation, StaticQueryOperation, StaticQueryOperation, StaticQueryOperation, StaticQueryOperation, Opcode, Opcode, Opcode, Opcode, Opcode, Opcode, Opcode, Opcode, Opcode, Opcode, Opcode, PUSH, PUSH, PUSH, PUSH, PUSH, PUSH, PUSH, PUSH, PUSH, PUSH, PUSH, PUSHT, PUSHT, PUSHT, PUSHT, PUSHT, PUSHT, PUSHT, PUSHT, PUSHT, PUSHT, PUSHT, PUSHF, PUSHF, PUSHF, PUSHF, PUSHF, PUSHF, PUSHF, PUSHF, PUSHF, PUSHF, PUSHF, POP, POP, POP, POP, POP, POP, POP, POP, POP, POP, POP, LOAD, LOAD, LOAD, LOAD, LOAD, LOAD, LOAD, LOAD, LOAD, LOAD, LOAD, STORE, STORE, STORE, STORE, STORE, STORE, STORE, STORE, STORE, STORE, STORE, SET, SET, SET, SET, SET, SET, SET, SET, SET, SET, SET, GET, GET, GET, GET, GET, GET, GET, GET, GET, GET, GET, GET_TRANS, GET_TRANS, GET_TRANS, GET_TRANS, GET_TRANS, GET_TRANS, GET_TRANS, GET_TRANS, GET_TRANS, GET_TRANS, GET_TRANS, SET_STATIC, SET_STATIC, SET_STATIC, SET_STATIC, SET_STATIC, SET_STATIC, SET_STATIC, SET_STATIC, SET_STATIC, SET_STATIC, SET_STATIC, GET_STATIC, GET_STATIC, GET_STATIC, GET_STATIC, GET_STATIC, GET_STATIC, GET_STATIC, GET_STATIC, GET_STATIC, GET_STATIC, GET_STATIC, FINDTYPE, FINDTYPE, FINDTYPE, FINDTYPE, FINDTYPE, FINDTYPE, FINDTYPE, FINDTYPE, FINDTYPE, FINDTYPE, FINDTYPE, FINDTYPE_S, FINDTYPE_S, FINDTYPE_S, FINDTYPE_S, FINDTYPE_S, FINDTYPE_S, FINDTYPE_S, FINDTYPE_S, FINDTYPE_S, FINDTYPE_S, FINDTYPE_S, NEW, NEW, NEW, NEW, NEW, NEW, NEW, NEW, NEW, NEW, NEW, NEW_S, NEW_S, NEW_S, NEW_S, NEW_S, NEW_S, NEW_S, NEW_S, NEW_S, NEW_S, NEW_S, DELETE, DELETE, DELETE, DELETE, DELETE, DELETE, DELETE, DELETE, DELETE, DELETE, DELETE, DUP, DUP, DUP, DUP, DUP, DUP, DUP, DUP, DUP, DUP, DUP, DUP_X1, DUP_X1, DUP_X1, DUP_X1, DUP_X1, DUP_X1, DUP_X1, DUP_X1, DUP_X1, DUP_X1, DUP_X1, SWAP, SWAP, SWAP, SWAP, SWAP, SWAP, SWAP, SWAP, SWAP, SWAP, SWAP, SWAP_X1, SWAP_X1, SWAP_X1, SWAP_X1, SWAP_X1, SWAP_X1, SWAP_X1, SWAP_X1, SWAP_X1, SWAP_X1, SWAP_X1, IF, IF, IF, IF, IF, IF, IF, IF, IF, IF, IF, IFN, IFN, IFN, IFN, IFN, IFN, IFN, IFN, IFN, IFN, IFN, GOTO, GOTO, GOTO, GOTO, GOTO, GOTO, GOTO, GOTO, GOTO, GOTO, GOTO, ITERATE, ITERATE, ITERATE, ITERATE, ITERATE, ITERATE, ITERATE, ITERATE, ITERATE, ITERATE, ITERATE, ENDITERATE, ENDITERATE, ENDITERATE, ENDITERATE, ENDITERATE, ENDITERATE, ENDITERATE, ENDITERATE, ENDITERATE, ENDITERATE, ENDITERATE, INVOKE, INVOKE, INVOKE, INVOKE, INVOKE, INVOKE, INVOKE, INVOKE, INVOKE, INVOKE, INVOKE, INVOKE_SUPER, INVOKE_SUPER, INVOKE_SUPER, INVOKE_SUPER, INVOKE_SUPER, INVOKE_SUPER, INVOKE_SUPER, INVOKE_SUPER, INVOKE_SUPER, INVOKE_SUPER, INVOKE_SUPER, INVOKE_STATIC, INVOKE_STATIC, INVOKE_STATIC, INVOKE_STATIC, INVOKE_STATIC, INVOKE_STATIC, INVOKE_STATIC, INVOKE_STATIC, INVOKE_STATIC, INVOKE_STATIC, INVOKE_STATIC, ALLINST, ALLINST, ALLINST, ALLINST, ALLINST, ALLINST, ALLINST, ALLINST, ALLINST, ALLINST, ALLINST, ALLINST_IN, ALLINST_IN, ALLINST_IN, ALLINST_IN, ALLINST_IN, ALLINST_IN, ALLINST_IN, ALLINST_IN, ALLINST_IN, ALLINST_IN, ALLINST_IN, ISNULL, ISNULL, ISNULL, ISNULL, ISNULL, ISNULL, ISNULL, ISNULL, ISNULL, ISNULL, ISNULL, GETENVTYPE, GETENVTYPE, GETENVTYPE, GETENVTYPE, GETENVTYPE, GETENVTYPE, GETENVTYPE, GETENVTYPE, GETENVTYPE, GETENVTYPE, GETENVTYPE, NOT, NOT, NOT, NOT, NOT, NOT, NOT, NOT, NOT, NOT, NOT, AND, AND, AND, AND, AND, AND, AND, AND, AND, AND, AND, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, XOR, XOR, XOR, XOR, XOR, XOR, XOR, XOR, XOR, XOR, XOR, IMPLIES, IMPLIES, IMPLIES, IMPLIES, IMPLIES, IMPLIES, IMPLIES, IMPLIES, IMPLIES, IMPLIES, IMPLIES, IFTE, IFTE, IFTE, IFTE, IFTE, IFTE, IFTE, IFTE, IFTE, IFTE, IFTE, RETURN, RETURN, RETURN, RETURN, RETURN, RETURN, RETURN, RETURN, RETURN, RETURN, RETURN, GETCB, GETCB, GETCB, GETCB, GETCB, GETCB, GETCB, GETCB, GETCB, GETCB, GETCB, INVOKE_ALL_CBS, INVOKE_ALL_CBS, INVOKE_ALL_CBS, INVOKE_ALL_CBS, INVOKE_ALL_CBS, INVOKE_ALL_CBS, INVOKE_ALL_CBS, INVOKE_ALL_CBS, INVOKE_ALL_CBS, INVOKE_ALL_CBS, INVOKE_ALL_CBS, INVOKE_CB, INVOKE_CB, INVOKE_CB, INVOKE_CB, INVOKE_CB, INVOKE_CB, INVOKE_CB, INVOKE_CB, INVOKE_CB, INVOKE_CB, INVOKE_CB, INVOKE_CB_S, INVOKE_CB_S, INVOKE_CB_S, INVOKE_CB_S, INVOKE_CB_S, INVOKE_CB_S, INVOKE_CB_S, INVOKE_CB_S, INVOKE_CB_S, INVOKE_CB_S, INVOKE_CB_S, MATCH, MATCH, MATCH, MATCH, MATCH, MATCH, MATCH, MATCH, MATCH, MATCH, MATCH, MATCH_S, MATCH_S, MATCH_S, MATCH_S, MATCH_S, MATCH_S, MATCH_S, MATCH_S, MATCH_S, MATCH_S, MATCH_S, ADD, ADD, ADD, ADD, ADD, ADD, ADD, ADD, ADD, ADD, ADD, REMOVE, REMOVE, REMOVE, REMOVE, REMOVE, REMOVE, REMOVE, REMOVE, REMOVE, REMOVE, REMOVE, INSERT, INSERT, INSERT, INSERT, INSERT, INSERT, INSERT, INSERT, INSERT, INSERT, INSERT, GET_SUPER, GET_SUPER, GET_SUPER, GET_SUPER, GET_SUPER, GET_SUPER, GET_SUPER, GET_SUPER, GET_SUPER, GET_SUPER, GET_SUPER, GETENV, GETENV, GETENV, GETENV, GETENV, GETENV, GETENV, GETENV, GETENV, GETENV, GETENV, RuleMode, RuleMode, RuleMode, RuleMode, RuleMode, RuleMode, RuleMode, RuleMode, RuleMode, RuleMode, RuleMode, manual, manual, manual, manual, manual, manual, manual, manual, manual, manual, manual, automaticSingle, automaticSingle, automaticSingle, automaticSingle, automaticSingle, automaticSingle, automaticSingle, automaticSingle, automaticSingle, automaticSingle, automaticSingle, automaticRecursive, automaticRecursive, automaticRecursive, automaticRecursive, automaticRecursive, automaticRecursive, automaticRecursive, automaticRecursive, automaticRecursive, automaticRecursive, automaticRecursive, ConstantTag, ConstantTag, ConstantTag, ConstantTag, ConstantTag, ConstantTag, ConstantTag, ConstantTag, ConstantTag, ConstantTag, ConstantTag, String, String, String, String, String, String, String, String, String, String, String, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Double, Byte, Byte, Byte, Byte, Byte, Byte, Byte, Byte, Byte, Byte, Byte, Character, Character, Character, Character, Character, Character, Character, Character, Character, Character, Character, Float, Float, Float, Float, Float, Float, Float, Float, Float, Float, Float, Short, Short, Short, Short, Short, Short, Short, Short, Short, Short, Short, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, Null, Null, Null, Null, Null, Null, Null, Null, Null, Null, Null, ModuleResolver, ModuleResolver, ModuleResolver, ModuleResolver, ModuleResolver, ModuleResolver, ModuleResolver, ModuleResolver, ModuleResolver, ModuleResolver, ModuleResolver, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, EnumLiteral, StackFrame, StackFrame, StackFrame, StackFrame, StackFrame, StackFrame, StackFrame, StackFrame, StackFrame, StackFrame, StackFrame, Method, Method, Method, Method, Method, Method, Method, Method, Method, Method, Method, TimingData, TimingData, TimingData, TimingData, TimingData, TimingData, TimingData, TimingData, TimingData, TimingData, TimingData, VMMonitor, VMMonitor, VMMonitor, VMMonitor, VMMonitor, VMMonitor, VMMonitor, VMMonitor, VMMonitor, VMMonitor, VMMonitor, LazyCollection, LazyCollection, LazyCollection, LazyCollection, LazyCollection, LazyCollection, LazyCollection, LazyCollection, LazyCollection, LazyCollection, LazyCollection, E, E, E, E, E, E, E, E, E, E, E, LazyBag, LazyBag, LazyBag, LazyBag, LazyBag, LazyBag, LazyBag, LazyBag, LazyBag, LazyBag, LazyBag, E, E, E, E, E, E, E, E, E, E, E, LazyList, LazyList, LazyList, LazyList, LazyList, LazyList, LazyList, LazyList, LazyList, LazyList, LazyList, E, E, E, E, E, E, E, E, E, E, E, LazyOrderedSet, LazyOrderedSet, LazyOrderedSet, LazyOrderedSet, LazyOrderedSet, LazyOrderedSet, LazyOrderedSet, LazyOrderedSet, LazyOrderedSet, LazyOrderedSet, LazyOrderedSet, E, E, E, E, E, E, E, E, E, E, E, LazySet, LazySet, LazySet, LazySet, LazySet, LazySet, LazySet, LazySet, LazySet, LazySet, LazySet, E, E, E, E, E, E, E, E, E, E, E, EJavaObjectArray, EJavaObjectArray, EJavaObjectArray, EJavaObjectArray, EJavaObjectArray, EJavaObjectArray, EJavaObjectArray, EJavaObjectArray, EJavaObjectArray, EJavaObjectArray, EJavaObjectArray, EObjectArray, EObjectArray, EObjectArray, EObjectArray, EObjectArray, EObjectArray, EObjectArray, EObjectArray, EObjectArray, EObjectArray, EObjectArray, EBooleanArray, EBooleanArray, EBooleanArray, EBooleanArray, EBooleanArray, EBooleanArray, EBooleanArray, EBooleanArray, EBooleanArray, EBooleanArray, EBooleanArray, EJavaSet, EJavaSet, EJavaSet, EJavaSet, EJavaSet, EJavaSet, EJavaSet, EJavaSet, EJavaSet, EJavaSet, EJavaSet, E, E, E, E, E, E, E, E, E, E, E, EJavaIterable, EJavaIterable, EJavaIterable, EJavaIterable, EJavaIterable, EJavaIterable, EJavaIterable, EJavaIterable, EJavaIterable, EJavaIterable, EJavaIterable, E, E, E, E, E, E, E, E, E, E, E, ClassNotFoundException, ClassNotFoundException, ClassNotFoundException, ClassNotFoundException, ClassNotFoundException, ClassNotFoundException, ClassNotFoundException, ClassNotFoundException, ClassNotFoundException, ClassNotFoundException, ClassNotFoundException"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExecEnv">
+    <eOperations name="loadModule" eType="#//Module">
+      <eParameters name="resolver" eType="#//ModuleResolver"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="loadModule" eType="#//Module">
+      <eParameters name="resolver" eType="#//ModuleResolver"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="validate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eOperations>
+    <eOperations name="findOperation" eType="#//Operation">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="parameterTypes" eType="#//EJavaObjectArray"/>
+    </eOperations>
+    <eOperations name="findOperation" eType="#//Operation">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="findOperation" eType="#//Operation">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="parameterType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eOperations>
+    <eOperations name="hasOperation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="argcount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eOperations name="findStaticOperation" eType="#//Operation">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="parameterTypes" eType="#//EJavaObjectArray"/>
+    </eOperations>
+    <eOperations name="findStaticOperation" eType="#//Operation">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="findStaticOperation" eType="#//Operation">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="parameterType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eOperations>
+    <eOperations name="hasStaticOperation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="argcount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eOperations>
+    <eOperations name="findField" eType="#//Field">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="hasField" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="findStaticField" eType="#//Field">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="hasStaticField" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="findRule" eType="#//Rule">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="findType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
+        eExceptions="#//ClassNotFoundException">
+      <eParameters name="modelName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="typeName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="run" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject">
+      <eParameters name="timingData" eType="#//TimingData"/>
+    </eOperations>
+    <eOperations name="getRules">
+      <eGenericType eClassifier="#//LazyList">
+        <eTypeArguments eClassifier="#//Rule"/>
+      </eGenericType>
+    </eOperations>
+    <eOperations name="getModelOf" eType="#//Model">
+      <eParameters name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
+    <eOperations name="getModelID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eParameters name="model" eType="#//Model"/>
+    </eOperations>
+    <eOperations name="getMetaModelID" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eParameters name="metamodel" eType="#//Metamodel"/>
+    </eOperations>
+    <eOperations name="queueForDelete">
+      <eParameters name="element" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="deleteQueue"/>
+    <eOperations name="getInputModelOf" eType="#//Model">
+      <eParameters name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
+    <eOperations name="getInoutModelOf" eType="#//Model">
+      <eParameters name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
+    <eOperations name="getOutputModelOf" eType="#//Model">
+      <eParameters name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
+    <eOperations name="getMonitor" eType="#//VMMonitor"/>
+    <eOperations name="setMonitor">
+      <eParameters name="monitor" eType="#//VMMonitor"/>
+    </eOperations>
+    <eOperations name="registerMetaModel">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="metamodel" eType="#//Metamodel"/>
+    </eOperations>
+    <eOperations name="registerInputModel">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="model" eType="#//Model"/>
+    </eOperations>
+    <eOperations name="registerInOutModel">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="model" eType="#//Model"/>
+    </eOperations>
+    <eOperations name="registerOutputModel">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="model" eType="#//Model"/>
+    </eOperations>
+    <eOperations name="clearModels"/>
+    <eOperations name="getMetaModel" eType="#//Metamodel">
+      <eParameters name="resource" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EResource"/>
+    </eOperations>
+    <eOperations name="queueForSet">
+      <eParameters name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+      <eParameters name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueForSet">
+      <eParameters name="field" eType="#//Field"/>
+      <eParameters name="object" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueXmiIDForSet">
+      <eParameters name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueForAdd">
+      <eParameters name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+      <eParameters name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueForAdd">
+      <eParameters name="field" eType="#//Field"/>
+      <eParameters name="object" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueXmiIDForAdd">
+      <eParameters name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueForRemove">
+      <eParameters name="feature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+      <eParameters name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueForRemove">
+      <eParameters name="field" eType="#//Field"/>
+      <eParameters name="object" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="queueXmiIDForRemove">
+      <eParameters name="object" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="setQueue"/>
+    <eOperations name="queueForRemap">
+      <eParameters name="source" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eParameters name="target" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="remapQueue"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metaModels" lowerBound="1"
+        changeable="false" transient="true" defaultValueLiteral="" derived="true">
+      <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+        <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        <eTypeArguments eClassifier="#//Metamodel"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="inputModels" lowerBound="1"
+        changeable="false" transient="true" defaultValueLiteral="" derived="true">
+      <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+        <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        <eTypeArguments eClassifier="#//Model"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="inoutModels" lowerBound="1"
+        changeable="false" transient="true" defaultValueLiteral="" derived="true">
+      <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+        <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        <eTypeArguments eClassifier="#//Model"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputModels" lowerBound="1"
+        changeable="false" transient="true" defaultValueLiteral="" derived="true">
+      <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+        <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        <eTypeArguments eClassifier="#//Model"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modules" lowerBound="1"
+        changeable="false" transient="true" derived="true">
+      <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+        <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+        <eTypeArguments eClassifier="#//Module"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="matches" lowerBound="1"
+        eType="ecore:EClass http://www.eclipse.org/m2m/atl/emftvm/2011/Trace#//TraceLinkSet"
+        changeable="false" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="traces" lowerBound="1"
+        eType="ecore:EClass http://www.eclipse.org/m2m/atl/emftvm/2011/Trace#//TraceLinkSet"
+        changeable="false" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uniqueResults" lowerBound="1"
+        changeable="false" transient="true" derived="true">
+      <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+        <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/m2m/atl/emftvm/2011/Trace#//TraceLink"/>
+        <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jitDisabled" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentPhase" eType="#//RuleMode"
+        changeable="false" transient="true" defaultValueLiteral="manual"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Model">
+    <eOperations name="allInstancesOf">
+      <eGenericType eClassifier="#//LazyList">
+        <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eGenericType>
+      <eParameters name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    </eOperations>
+    <eOperations name="newElement" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject">
+      <eParameters name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    </eOperations>
+    <eOperations name="deleteElement">
+      <eParameters name="element" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resource" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EResource"
+        transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="allowInterModelReferences"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        transient="true" defaultValueLiteral="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Metamodel" eSuperTypes="#//Model">
+    <eOperations name="findType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier">
+      <eParameters name="typeName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Module" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
+        eType="#//Feature" containment="true" resolveProxies="false" eOpposite="#//Feature/module"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rules" upperBound="-1"
+        eType="#//Rule" containment="true" resolveProxies="false" eOpposite="#//Rule/module"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eImports" upperBound="-1"
+        eType="#//Module" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imports" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputModels" upperBound="-1"
+        eType="#//ModelDeclaration" containment="true" resolveProxies="false" eOpposite="#//ModelDeclaration/inputModelFor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inoutModels" upperBound="-1"
+        eType="#//ModelDeclaration" containment="true" resolveProxies="false" eOpposite="#//ModelDeclaration/inoutModelFor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outputModels" upperBound="-1"
+        eType="#//ModelDeclaration" containment="true" resolveProxies="false" eOpposite="#//ModelDeclaration/outputModelFor"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ModelDeclaration">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="metaModelName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputModelFor" eType="#//Module"
+        resolveProxies="false" eOpposite="#//Module/inputModels"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inoutModelFor" eType="#//Module"
+        resolveProxies="false" eOpposite="#//Module/inoutModels"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outputModelFor" eType="#//Module"
+        resolveProxies="false" eOpposite="#//Module/outputModels"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Feature" abstract="true" eSuperTypes="#//TypedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="static" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eContext" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"
+        transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//Module"
+        resolveProxies="false" eOpposite="#//Module/features"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="context" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="contextModel" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Field" eSuperTypes="#//Feature">
+    <eOperations name="getValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eOperations>
+    <eOperations name="setValue">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eOperations>
+    <eOperations name="getValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="getStaticValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="clear"/>
+    <eOperations name="addValue">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="removeValue">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="staticValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
+        transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="initialiser" lowerBound="1"
+        eType="#//CodeBlock" containment="true" resolveProxies="false" eOpposite="#//CodeBlock/initialiserFor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rule" eType="#//Rule" resolveProxies="false"
+        eOpposite="#//Rule/fields"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Operation" eSuperTypes="#//Feature">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//Parameter" containment="true" resolveProxies="false" eOpposite="#//Parameter/operation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//CodeBlock"
+        containment="true" resolveProxies="false" eOpposite="#//CodeBlock/bodyFor"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter" eSuperTypes="#//TypedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operation" eType="#//Operation"
+        resolveProxies="false" eOpposite="#//Operation/parameters"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TypedElement" abstract="true" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"
+        transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeModel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Instruction" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="owningBlock" lowerBound="1"
+        eType="#//CodeBlock" resolveProxies="false" eOpposite="#//CodeBlock/code"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="opcode" lowerBound="1"
+        eType="#//Opcode" changeable="false" transient="true" defaultValueLiteral="PUSH"
+        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stackProduction" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" changeable="false"
+        transient="true" defaultValueLiteral="0" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stackConsumption" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" changeable="false"
+        transient="true" defaultValueLiteral="0" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stackLevel" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" changeable="false"
+        transient="true" defaultValueLiteral="0" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lineNumber" eType="#//LineNumber"
+        eOpposite="#//LineNumber/instructions"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LineNumber">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="startLine" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="startColumn" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="endLine" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="endColumn" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="startChar" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="endChar" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="owningBlock" lowerBound="1"
+        eType="#//CodeBlock" resolveProxies="false" eOpposite="#//CodeBlock/lineNumbers"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instructions" upperBound="-1"
+        eType="#//Instruction" eOpposite="#//Instruction/lineNumber"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LocalVariable" eSuperTypes="#//TypedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="slot" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        volatile="true" defaultValueLiteral="-1" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="owningBlock" lowerBound="1"
+        eType="#//CodeBlock" resolveProxies="false" eOpposite="#//CodeBlock/localVariables"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="startInstruction" eType="#//Instruction"
+        transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="endInstruction" eType="#//Instruction"
+        transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="startInstructionIndex"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" volatile="true"
+        defaultValueLiteral="-1" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="endInstructionIndex" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        volatile="true" defaultValueLiteral="-1" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Rule" eSuperTypes="#//NamedElement">
+    <eOperations name="findField" eType="#//Field">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="hasField" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="findStaticField" eType="#//Field">
+      <eParameters name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="hasStaticField" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="registerField">
+      <eParameters name="field" eType="#//Field"/>
+    </eOperations>
+    <eOperations name="matchSingle" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="matchRecursive" eType="#//EBooleanArray">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="matchManual" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="values" eType="#//EJavaObjectArray"/>
+    </eOperations>
+    <eOperations name="matchManualTrace" eType="ecore:EClass http://www.eclipse.org/m2m/atl/emftvm/2011/Trace#//TraceLink">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="values" eType="#//EJavaObjectArray"/>
+    </eOperations>
+    <eOperations name="matchOne" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="valuesMap">
+        <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="matchOneOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="valuesMap">
+        <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="createTraces">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="completeTraceFor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="trace" eType="ecore:EClass http://www.eclipse.org/m2m/atl/emftvm/2011/Trace#//TraceLink"/>
+    </eOperations>
+    <eOperations name="apply">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="postApply">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="applyFirst" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="applyOne" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="valuesMap">
+        <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="applyOneTrace" eType="ecore:EClass http://www.eclipse.org/m2m/atl/emftvm/2011/Trace#//TraceLink">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="valuesMap">
+        <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eOperations name="applyFor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="trace" eType="ecore:EClass http://www.eclipse.org/m2m/atl/emftvm/2011/Trace#//TraceLink"/>
+    </eOperations>
+    <eOperations name="postApplyFor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="trace" eType="ecore:EClass http://www.eclipse.org/m2m/atl/emftvm/2011/Trace#//TraceLink"/>
+    </eOperations>
+    <eOperations name="getAllESuperRules">
+      <eGenericType eClassifier="#//LazySet">
+        <eTypeArguments eClassifier="#//Rule"/>
+      </eGenericType>
+    </eOperations>
+    <eOperations name="createUniqueMapping">
+      <eParameters name="trace" eType="ecore:EClass http://www.eclipse.org/m2m/atl/emftvm/2011/Trace#//TraceLink"/>
+    </eOperations>
+    <eOperations name="compileState">
+      <eParameters name="env" eType="#//ExecEnv"/>
+    </eOperations>
+    <eOperations name="resetState"/>
+    <eOperations name="compileIterables">
+      <eParameters name="env" eType="#//ExecEnv"/>
+    </eOperations>
+    <eOperations name="clearFields"/>
+    <eOperations name="findInputElement" eType="#//InputRuleElement">
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="getUniqueTrace" eType="ecore:EClass http://www.eclipse.org/m2m/atl/emftvm/2011/Trace#//TraceLink">
+      <eParameters name="frame" eType="#//StackFrame"/>
+      <eParameters name="values" eType="#//EJavaObjectArray"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//Module"
+        resolveProxies="false" eOpposite="#//Module/rules"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mode" lowerBound="1" eType="#//RuleMode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputElements" upperBound="-1"
+        eType="#//InputRuleElement" containment="true" resolveProxies="false" eOpposite="#//InputRuleElement/inputFor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outputElements" upperBound="-1"
+        eType="#//OutputRuleElement" containment="true" resolveProxies="false" eOpposite="#//OutputRuleElement/outputFor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eSuperRules" upperBound="-1"
+        eType="#//Rule" transient="true" derived="true" eOpposite="#//Rule/eSubRules"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eSubRules" upperBound="-1"
+        eType="#//Rule" transient="true" derived="true" eOpposite="#//Rule/eSuperRules"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="matcher" eType="#//CodeBlock"
+        containment="true" resolveProxies="false" eOpposite="#//CodeBlock/matcherFor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="applier" eType="#//CodeBlock"
+        containment="true" resolveProxies="false" eOpposite="#//CodeBlock/applierFor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="postApply" eType="#//CodeBlock"
+        containment="true" resolveProxies="false" eOpposite="#//CodeBlock/postApplyFor"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="superRules" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fields" upperBound="-1"
+        eType="#//Field" containment="true" resolveProxies="false" eOpposite="#//Field/rule"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="default" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="distinctElements" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="leaf" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        changeable="false" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="withLeaves" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" changeable="false"
+        transient="true" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RuleElement" abstract="true" eSuperTypes="#//TypedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="models" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eModels" upperBound="-1"
+        eType="#//Model" transient="true" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InputRuleElement" eSuperTypes="#//RuleElement">
+    <eOperations name="createIterable">
+      <eGenericType eClassifier="#//EJavaIterable">
+        <eTypeArguments eClassifier="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+      </eGenericType>
+      <eParameters name="env" eType="#//ExecEnv"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//CodeBlock"
+        containment="true" resolveProxies="false" eOpposite="#//CodeBlock/bindingFor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputFor" eType="#//Rule"
+        resolveProxies="false" eOpposite="#//Rule/inputElements"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mapsToSelf" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OutputRuleElement" eSuperTypes="#//RuleElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapsTo" upperBound="-1"
+        eType="#//InputRuleElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outputFor" eType="#//Rule"
+        resolveProxies="false" eOpposite="#//Rule/outputElements"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CodeBlock">
+    <eOperations name="execute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject">
+      <eParameters name="frame" eType="#//StackFrame"/>
+    </eOperations>
+    <eOperations name="getStackLevel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eOperations name="getModule" eType="#//Module"/>
+    <eOperations name="getOperation" eType="#//Operation"/>
+    <eOperations name="getField" eType="#//Field"/>
+    <eOperations name="getPredecessors" upperBound="-1" eType="#//Instruction">
+      <eParameters name="i" eType="#//Instruction"/>
+    </eOperations>
+    <eOperations name="getAllPredecessors" upperBound="-1" eType="#//Instruction">
+      <eParameters name="i" eType="#//Instruction"/>
+    </eOperations>
+    <eOperations name="getNonLoopingPredecessors" upperBound="-1" eType="#//Instruction">
+      <eParameters name="i" eType="#//Instruction"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxLocals" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" volatile="true"
+        defaultValueLiteral="-1" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxStack" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" volatile="true"
+        defaultValueLiteral="-1" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="code" upperBound="-1" eType="#//Instruction"
+        containment="true" resolveProxies="false" eOpposite="#//Instruction/owningBlock"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lineNumbers" upperBound="-1"
+        eType="#//LineNumber" containment="true" resolveProxies="false" eOpposite="#//LineNumber/owningBlock"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="localVariables" upperBound="-1"
+        eType="#//LocalVariable" containment="true" resolveProxies="false" eOpposite="#//LocalVariable/owningBlock"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="matcherFor" eType="#//Rule"
+        resolveProxies="false" eOpposite="#//Rule/matcher"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="applierFor" eType="#//Rule"
+        resolveProxies="false" eOpposite="#//Rule/applier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="postApplyFor" eType="#//Rule"
+        resolveProxies="false" eOpposite="#//Rule/postApply.1"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bodyFor" eType="#//Operation"
+        resolveProxies="false" eOpposite="#//Operation/body"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="initialiserFor" eType="#//Field"
+        resolveProxies="false" eOpposite="#//Field/initialiser"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nested" upperBound="-1"
+        eType="#//CodeBlock" containment="true" resolveProxies="false" eOpposite="#//CodeBlock/nestedFor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nestedFor" eType="#//CodeBlock"
+        resolveProxies="false" eOpposite="#//CodeBlock/nested"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="parentFrame" eType="#//StackFrame"
+        transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bindingFor" eType="#//InputRuleElement"
+        resolveProxies="false" eOpposite="#//InputRuleElement/binding"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Push" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
+        transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stringValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="intValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
+        defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="doubleValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDoubleObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="byteValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EByteObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="charValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ECharacterObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="floatValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloatObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shortValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EShortObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="longValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELongObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Pusht" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Pushf" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Pop" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LocalVariableInstruction" abstract="true"
+      eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cbOffset" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" volatile="true"
+        defaultValueLiteral="-1" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="slot" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        changeable="false" volatile="true" transient="true" defaultValueLiteral="-1"
+        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="localVariableIndex" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" volatile="true"
+        defaultValueLiteral="-1" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="localVariable" lowerBound="1"
+        eType="#//LocalVariable" volatile="true" transient="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Load" eSuperTypes="#//LocalVariableInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Store" eSuperTypes="#//LocalVariableInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FieldInstruction" abstract="true" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fieldname" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Set" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Get" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GetTrans" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SetStatic" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GetStatic" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Findtype" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelname" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typename" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FindtypeS" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="New" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelname" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NewS" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Delete" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Dup" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DupX1" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Swap" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SwapX1" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="BranchInstruction" abstract="true" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="offset" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" volatile="true"
+        defaultValueLiteral="-1" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//Instruction" volatile="true" transient="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="If" eSuperTypes="#//BranchInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Ifn" eSuperTypes="#//BranchInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Goto" eSuperTypes="#//BranchInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Iterate" eSuperTypes="#//BranchInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Enditerate" eSuperTypes="#//BranchInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvokeInstruction" abstract="true" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="argcount" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InvokeOperationInstruction" abstract="true"
+      eSuperTypes="#//InvokeInstruction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="opname" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Invoke" eSuperTypes="#//InvokeOperationInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvokeSuper" eSuperTypes="#//InvokeOperationInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvokeStatic" eSuperTypes="#//InvokeOperationInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Allinst" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AllinstIn" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Isnull" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Getenvtype" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Not" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="And" eSuperTypes="#//CodeBlockInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Or" eSuperTypes="#//CodeBlockInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Xor" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Implies" eSuperTypes="#//CodeBlockInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Ifte" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="thenCbIndex" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" volatile="true"
+        defaultValueLiteral="-1" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elseCbIndex" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" volatile="true"
+        defaultValueLiteral="-1" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="thenCb" lowerBound="1"
+        eType="#//CodeBlock" volatile="true" transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elseCb" lowerBound="1"
+        eType="#//CodeBlock" volatile="true" transient="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Return" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CodeBlockInstruction" abstract="true"
+      eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cbIndex" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" volatile="true"
+        defaultValueLiteral="-1" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="codeBlock" lowerBound="1"
+        eType="#//CodeBlock" volatile="true" transient="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Getcb" eSuperTypes="#//CodeBlockInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvokeAllCbs" eSuperTypes="#//InvokeInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvokeCb" eSuperTypes="#//CodeBlockInstruction #//InvokeInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="InvokeCbS" eSuperTypes="#//InvokeInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Match" eSuperTypes="#//InvokeInstruction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rulename" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MatchS" eSuperTypes="#//InvokeInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Add" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Remove" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Insert" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GetSuper" eSuperTypes="#//FieldInstruction"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Getenv" eSuperTypes="#//Instruction"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="ModelDeclarationTag">
+    <eLiterals name="input"/>
+    <eLiterals name="inout" value="1"/>
+    <eLiterals name="output" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="FeatureTag">
+    <eLiterals name="Field"/>
+    <eLiterals name="StaticField" value="1"/>
+    <eLiterals name="Operation" value="2"/>
+    <eLiterals name="StaticOperation" value="3"/>
+    <eLiterals name="QueryOperation" value="4"/>
+    <eLiterals name="StaticQueryOperation" value="5"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Opcode">
+    <eLiterals name="PUSH"/>
+    <eLiterals name="PUSHT" value="1"/>
+    <eLiterals name="PUSHF" value="2"/>
+    <eLiterals name="POP" value="3"/>
+    <eLiterals name="LOAD" value="4"/>
+    <eLiterals name="STORE" value="5"/>
+    <eLiterals name="SET" value="6"/>
+    <eLiterals name="GET" value="7"/>
+    <eLiterals name="GET_TRANS" value="8"/>
+    <eLiterals name="SET_STATIC" value="9"/>
+    <eLiterals name="GET_STATIC" value="10"/>
+    <eLiterals name="FINDTYPE" value="11"/>
+    <eLiterals name="FINDTYPE_S" value="12"/>
+    <eLiterals name="NEW" value="13"/>
+    <eLiterals name="NEW_S" value="14"/>
+    <eLiterals name="DELETE" value="15"/>
+    <eLiterals name="DUP" value="16"/>
+    <eLiterals name="DUP_X1" value="17"/>
+    <eLiterals name="SWAP" value="18"/>
+    <eLiterals name="SWAP_X1" value="19"/>
+    <eLiterals name="IF" value="20"/>
+    <eLiterals name="IFN" value="21"/>
+    <eLiterals name="GOTO" value="22"/>
+    <eLiterals name="ITERATE" value="23"/>
+    <eLiterals name="ENDITERATE" value="24"/>
+    <eLiterals name="INVOKE" value="25"/>
+    <eLiterals name="INVOKE_SUPER" value="26"/>
+    <eLiterals name="INVOKE_STATIC" value="27"/>
+    <eLiterals name="ALLINST" value="28"/>
+    <eLiterals name="ALLINST_IN" value="29"/>
+    <eLiterals name="ISNULL" value="30"/>
+    <eLiterals name="GETENVTYPE" value="31"/>
+    <eLiterals name="NOT" value="32"/>
+    <eLiterals name="AND" value="33"/>
+    <eLiterals name="OR" value="34"/>
+    <eLiterals name="XOR" value="35"/>
+    <eLiterals name="IMPLIES" value="36"/>
+    <eLiterals name="IFTE" value="37"/>
+    <eLiterals name="RETURN" value="38"/>
+    <eLiterals name="GETCB" value="39"/>
+    <eLiterals name="INVOKE_ALL_CBS" value="40"/>
+    <eLiterals name="INVOKE_CB" value="41"/>
+    <eLiterals name="INVOKE_CB_S" value="42"/>
+    <eLiterals name="MATCH" value="43"/>
+    <eLiterals name="MATCH_S" value="44"/>
+    <eLiterals name="ADD" value="45"/>
+    <eLiterals name="REMOVE" value="46"/>
+    <eLiterals name="INSERT" value="47"/>
+    <eLiterals name="GET_SUPER" value="48"/>
+    <eLiterals name="GETENV" value="49"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RuleMode">
+    <eLiterals name="manual"/>
+    <eLiterals name="automaticSingle" value="1"/>
+    <eLiterals name="automaticRecursive" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ConstantTag">
+    <eLiterals name="String"/>
+    <eLiterals name="Integer" value="1"/>
+    <eLiterals name="Double" value="2"/>
+    <eLiterals name="Byte" value="3"/>
+    <eLiterals name="Character" value="4"/>
+    <eLiterals name="Float" value="5"/>
+    <eLiterals name="Short" value="6"/>
+    <eLiterals name="Long" value="7"/>
+    <eLiterals name="EnumLiteral" value="8"/>
+    <eLiterals name="Null" value="9"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ModuleResolver" instanceClassName="org.eclipse.m2m.atl.emftvm.util.ModuleResolver"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="EnumLiteral" instanceClassName="org.eclipse.m2m.atl.emftvm.util.EnumLiteral"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="StackFrame" instanceClassName="org.eclipse.m2m.atl.emftvm.util.StackFrame"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Method" instanceClassName="java.lang.reflect.Method"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="TimingData" instanceClassName="org.eclipse.m2m.atl.emftvm.util.TimingData"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="VMMonitor" instanceClassName="org.eclipse.m2m.atl.emftvm.util.VMMonitor"
+      serializable="false"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="LazyCollection" instanceClassName="org.eclipse.m2m.atl.emftvm.util.LazyCollection">
+    <eTypeParameters name="E"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="LazyBag" instanceClassName="org.eclipse.m2m.atl.emftvm.util.LazyBag">
+    <eTypeParameters name="E"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="LazyList" instanceClassName="org.eclipse.m2m.atl.emftvm.util.LazyList">
+    <eTypeParameters name="E"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="LazyOrderedSet" instanceClassName="org.eclipse.m2m.atl.emftvm.util.LazyOrderedSet">
+    <eTypeParameters name="E"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="LazySet" instanceClassName="org.eclipse.m2m.atl.emftvm.util.LazySet">
+    <eTypeParameters name="E"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="EJavaObjectArray" instanceClassName="java.lang.Object[]"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="EObjectArray" instanceClassName="org.eclipse.emf.ecore.EObject[]"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="EBooleanArray" instanceClassName="boolean[]"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="EJavaSet" instanceClassName="java.util.Set">
+    <eTypeParameters name="E"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="EJavaIterable" instanceClassName="java.lang.Iterable">
+    <eTypeParameters name="E"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ClassNotFoundException" instanceClassName="java.lang.ClassNotFoundException"/>
+</ecore:EPackage>
