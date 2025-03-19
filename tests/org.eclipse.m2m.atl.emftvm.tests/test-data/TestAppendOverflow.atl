@@ -1,0 +1,40 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module TestAppendOverflow;
+
+create OUT : ECORE refining IN : ECORE;
+
+helper def : namedElementNames : Sequence(String) =
+	Sequence{};
+
+rule ENamedElement {
+	from
+		s : ECORE!ENamedElement
+	to
+		t : ECORE!ENamedElement
+	do {
+		for (i in Sequence{}->includingRange(0, 10)) {
+			thisModule.namedElementNames <:= thisModule.namedElementNames->append(s.name);
+		}
+	}
+}
+
+endpoint rule AddAnnotation() {
+	using {
+		root : ECORE!EPackage = ECORE!EPackage.allInstancesFrom('IN')->first();
+	}
+	do {
+		root.eAnnotations <:= root.eAnnotations->append(thisModule.CreateEAnnotation(
+			thisModule.namedElementNames->iterate(e; acc: String = '' | if acc = '' then e else acc + ', ' + e endif)
+		));
+	}
+}
+
+lazy rule CreateEAnnotation {
+	from
+		s : String
+	to
+		t : ECORE!EAnnotation (
+			source <- s
+		)
+}

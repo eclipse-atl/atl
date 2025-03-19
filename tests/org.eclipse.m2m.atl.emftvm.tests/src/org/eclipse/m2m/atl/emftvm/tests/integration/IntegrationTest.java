@@ -682,6 +682,26 @@ public class IntegrationTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests regression of
+	 * <a href="https://github.com/eclipse-atl/atl/issues/39">Bug # 39</a>.
+	 */
+	public void testAppendOverflow() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		final Model in = loadTestModel(rs, "/test-data/TestAppendOverflow-in.ecore");
+		env.registerInOutModel("IN", in);
+		env.loadModule(createTestModuleResolver(), "TestAppendOverflow");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		final Model refOut = loadTestModel(refRs, "/test-data/TestAppendOverflow-out.ecore");
+		assertEquals(refOut.getResource(), in.getResource());
+	}
+
+	/**
 	 * Tests the ATL metamodel API.
 	 */
 	public void testATLAPI() throws Exception {
