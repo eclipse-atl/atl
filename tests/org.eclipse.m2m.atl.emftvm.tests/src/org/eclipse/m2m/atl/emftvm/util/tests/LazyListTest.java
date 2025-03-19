@@ -133,6 +133,55 @@ public class LazyListTest extends LazyCollectionTest {
 		assertEquals(list.size() + 1, appended.size());
 		assertTrue(appended.contains("Four"));
 		assertEquals("Four", appended.get(appended.size() - 1));
+
+		ListIterator<String> listIterator = appended.listIterator();
+		int count = 0;
+		while (listIterator.hasNext()) {
+			listIterator.next();
+			count++;
+		}
+		assertEquals(appended.size(), count);
+
+		listIterator = appended.listIterator(1);
+		count = 1;
+		while (listIterator.hasNext()) {
+			listIterator.next();
+			count++;
+		}
+		assertEquals(appended.size(), count);
+	}
+
+	/**
+	 * Tests {@link LazyList#append(Object)} with many elements.
+	 */
+	public void testAppend_Many() {
+		final LazyList<String> list = getTestLazyCollection();
+		LazyList<String> appended = list;
+		for (int i = 0; i < 100000; i++) {
+			appended = appended.append("Four");
+		}
+		assertEquals(list.size() + 100000, appended.size());
+		assertTrue(appended.contains("Four"));
+		assertEquals("Four", appended.get(appended.size() - 1));
+
+		final List<String> copyList = new ArrayList<String>(appended);
+		assertEquals(appended, copyList);
+
+		ListIterator<String> listIterator = appended.listIterator();
+		int count = 0;
+		while (listIterator.hasNext()) {
+			listIterator.next();
+			count++;
+		}
+		assertEquals(appended.size(), count);
+
+		listIterator = appended.listIterator(1);
+		count = 1;
+		while (listIterator.hasNext()) {
+			listIterator.next();
+			count++;
+		}
+		assertEquals(appended.size(), count);
 	}
 
 	/**
@@ -802,6 +851,7 @@ public class LazyListTest extends LazyCollectionTest {
 		};
 		final long refStart2 = System.nanoTime();
 		Collections.sort(expected2, new Comparator<Object>() {
+			@Override
 			public int compare(final Object o1, final Object o2) {
 				return ((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o1))).compareTo(
 						((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o2))));
