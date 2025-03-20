@@ -179,6 +179,10 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 				// created the destination project for this zip.
 				final File file = new File(project.getLocation().toString(), zipEntry.getName().replaceFirst(
 						"^" + regexedProjectName + "/", "")); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+				final File normalizedFile = file.toPath().normalize().toFile();
+				if (!normalizedFile.toPath().startsWith(project.getLocation().toString())) {
+					throw new IOException("Bad zip entry: " + zipEntry.getName());
+				}
 
 				if (!zipEntry.isDirectory()) {
 
