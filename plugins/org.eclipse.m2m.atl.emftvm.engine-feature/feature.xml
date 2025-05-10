@@ -3,7 +3,8 @@
       id="org.eclipse.m2m.atl.emftvm.engine"
       label="%featureName"
       version="4.12.0.qualifier"
-      provider-name="%providerName">
+      provider-name="%providerName"
+      plugin="org.eclipse.m2m.atl.emftvm">
 
    <description>
       %description
