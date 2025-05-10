@@ -3,16 +3,12 @@
       id="org.eclipse.m2m.atl.adt"
       label="%featureName"
       version="4.12.0.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="Eclipse.org"
+      plugin="org.eclipse.m2m.atl.adt">
 
    <description>
       %description
    </description>
-
-<url>
-	<update label="%UpdateSiteName" url="https://download.eclipse.org/mmt/atl/builds/release"/>
-	<discovery label="%UpdateSiteName" url="https://download.eclipse.org/mmt/atl/builds/release"/>
-</url>
 
    <copyright url="%copyrightURL">
       %copyright
@@ -22,60 +18,41 @@
       %license
    </license>
 
+   <url>
+      <update label="%UpdateSiteName" url="https://download.eclipse.org/mmt/atl/builds/release"/>
+      <discovery label="%UpdateSiteName" url="https://download.eclipse.org/mmt/atl/builds/release"/>
+   </url>
+
    <plugin
          id="org.eclipse.m2m.atl.adt"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.m2m.atl.adt.debug"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.m2m.atl.adt.editor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.m2m.atl.adt.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.m2m.atl.core.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.m2m.atl.core.ui.vm"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.m2m.atl.engine.emfvm.launch"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.m2m.atl.debug.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
 </feature>
