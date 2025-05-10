@@ -4,7 +4,7 @@
       label="%featureName"
       version="4.12.0.qualifier"
       provider-name="%providerName"
-      plugin="org.eclipse.m2m.atl.emftvm.edit">
+      plugin="org.eclipse.m2m.atl.emftvm.launcher">
 
    <description>
       %description
