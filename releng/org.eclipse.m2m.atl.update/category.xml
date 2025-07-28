@@ -27,6 +27,9 @@
    <feature id="org.eclipse.m2m.atl.emftvm.engine" version="0.0.0">
       <category name="atl-headless"/>
    </feature>
+   <bundle
+         id="org.antlr.runtime"
+         version="3.2.0.v20230929-1400"/>
    <category-def name="atl" label="ATL">
       <description>
          ATL features.
