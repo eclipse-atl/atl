@@ -46,7 +46,7 @@
 		<tycho-extras-version>4.0.8</tycho-extras-version>
 		<tycho.scmUrl>scm:git:https://github.com/eclipse-atl/atl.git</tycho.scmUrl>
 		<jarsigner-version>1.4.3</jarsigner-version>
-		<target-platform>2025-06</target-platform>
+		<target-platform>2025-09</target-platform>
 		<javaVersion>21</javaVersion>
 		<os-jvm-flags />
 
