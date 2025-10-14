@@ -449,6 +449,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/unique"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/leaf"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//Rule/withLeaves"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference emftvm.ecore#//Rule/inlinedApplier"/>
       <genOperations ecoreOperation="emftvm.ecore#//Rule/findField">
         <genParameters ecoreParameter="emftvm.ecore#//Rule/findField/context"/>
         <genParameters ecoreParameter="emftvm.ecore#//Rule/findField/name"/>
@@ -571,6 +572,7 @@
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/nestedFor"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute emftvm.ecore#//CodeBlock/parentFrame"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/bindingFor"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference emftvm.ecore#//CodeBlock/inlinedApplierFor"/>
       <genOperations ecoreOperation="emftvm.ecore#//CodeBlock/execute">
         <genParameters ecoreParameter="emftvm.ecore#//CodeBlock/execute/frame"/>
       </genOperations>

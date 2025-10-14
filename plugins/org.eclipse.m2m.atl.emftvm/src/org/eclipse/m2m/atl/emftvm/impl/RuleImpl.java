@@ -87,6 +87,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.RuleImpl#isUnique <em>Unique</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.RuleImpl#isLeaf <em>Leaf</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.RuleImpl#isWithLeaves <em>With Leaves</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.RuleImpl#getInlinedApplier <em>Inlined Applier</em>}</li>
  * </ul>
  *
  * @generated
@@ -1632,6 +1633,16 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	 */
 	protected boolean withLeaves = WITH_LEAVES_EDEFAULT;
 	/**
+	 * The cached value of the '{@link #getInlinedApplier() <em>Inlined Applier</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInlinedApplier()
+	 * @generated
+	 * @ordered
+	 */
+	protected CodeBlock inlinedApplier;
+
+	/**
 	 * Field storage and lookup.
 	 */
 	protected FieldContainer fieldContainer = new FieldContainer();
@@ -2154,6 +2165,51 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public CodeBlock getInlinedApplier() {
+		return inlinedApplier;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetInlinedApplier(final CodeBlock newInlinedApplier, NotificationChain msgs) {
+		final CodeBlock oldInlinedApplier = inlinedApplier;
+		inlinedApplier = newInlinedApplier;
+		if (eNotificationRequired()) {
+			final ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__INLINED_APPLIER, oldInlinedApplier, newInlinedApplier);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setInlinedApplier(final CodeBlock newInlinedApplier) {
+		if (newInlinedApplier != inlinedApplier) {
+			NotificationChain msgs = null;
+			if (inlinedApplier != null)
+				msgs = ((InternalEObject)inlinedApplier).eInverseRemove(this, EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR, CodeBlock.class, msgs);
+			if (newInlinedApplier != null)
+				msgs = ((InternalEObject)newInlinedApplier).eInverseAdd(this, EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR, CodeBlock.class, msgs);
+			msgs = basicSetInlinedApplier(newInlinedApplier, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.RULE__INLINED_APPLIER, newInlinedApplier, newInlinedApplier));
+	}
+
+	/**
 	 * <!-- begin-user-doc. -->
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
@@ -2592,32 +2648,36 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case EmftvmPackage.RULE__MODULE:
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			return basicSetModule((org.eclipse.m2m.atl.emftvm.Module)otherEnd, msgs);
-		case EmftvmPackage.RULE__INPUT_ELEMENTS:
-			return ((InternalEList<InternalEObject>)(InternalEList<?>)getInputElements()).basicAdd(otherEnd, msgs);
-		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
-			return ((InternalEList<InternalEObject>)(InternalEList<?>)getOutputElements()).basicAdd(otherEnd, msgs);
-		case EmftvmPackage.RULE__ESUPER_RULES:
-			return ((InternalEList<InternalEObject>)(InternalEList<?>)getESuperRules()).basicAdd(otherEnd, msgs);
-		case EmftvmPackage.RULE__ESUB_RULES:
-			return ((InternalEList<InternalEObject>)(InternalEList<?>)getESubRules()).basicAdd(otherEnd, msgs);
-		case EmftvmPackage.RULE__MATCHER:
-			if (matcher != null)
-				msgs = ((InternalEObject)matcher).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__MATCHER, null, msgs);
-			return basicSetMatcher((CodeBlock)otherEnd, msgs);
-		case EmftvmPackage.RULE__APPLIER:
-			if (applier != null)
-				msgs = ((InternalEObject)applier).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__APPLIER, null, msgs);
-			return basicSetApplier((CodeBlock)otherEnd, msgs);
-		case EmftvmPackage.RULE__POST_APPLY:
-			if (postApply != null)
-				msgs = ((InternalEObject)postApply).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__POST_APPLY, null, msgs);
-			return basicSetPostApply((CodeBlock)otherEnd, msgs);
-		case EmftvmPackage.RULE__FIELDS:
-			return ((InternalEList<InternalEObject>)(InternalEList<?>)getFields()).basicAdd(otherEnd, msgs);
+			case EmftvmPackage.RULE__MODULE:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetModule((org.eclipse.m2m.atl.emftvm.Module)otherEnd, msgs);
+			case EmftvmPackage.RULE__INPUT_ELEMENTS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getInputElements()).basicAdd(otherEnd, msgs);
+			case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getOutputElements()).basicAdd(otherEnd, msgs);
+			case EmftvmPackage.RULE__ESUPER_RULES:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getESuperRules()).basicAdd(otherEnd, msgs);
+			case EmftvmPackage.RULE__ESUB_RULES:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getESubRules()).basicAdd(otherEnd, msgs);
+			case EmftvmPackage.RULE__MATCHER:
+				if (matcher != null)
+					msgs = ((InternalEObject)matcher).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__MATCHER, null, msgs);
+				return basicSetMatcher((CodeBlock)otherEnd, msgs);
+			case EmftvmPackage.RULE__APPLIER:
+				if (applier != null)
+					msgs = ((InternalEObject)applier).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__APPLIER, null, msgs);
+				return basicSetApplier((CodeBlock)otherEnd, msgs);
+			case EmftvmPackage.RULE__POST_APPLY:
+				if (postApply != null)
+					msgs = ((InternalEObject)postApply).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__POST_APPLY, null, msgs);
+				return basicSetPostApply((CodeBlock)otherEnd, msgs);
+			case EmftvmPackage.RULE__FIELDS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getFields()).basicAdd(otherEnd, msgs);
+			case EmftvmPackage.RULE__INLINED_APPLIER:
+				if (inlinedApplier != null)
+					msgs = ((InternalEObject)inlinedApplier).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmftvmPackage.RULE__INLINED_APPLIER, null, msgs);
+				return basicSetInlinedApplier((CodeBlock)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -2631,24 +2691,26 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID, final NotificationChain msgs) {
 		switch (featureID) {
-		case EmftvmPackage.RULE__MODULE:
-			return basicSetModule(null, msgs);
-		case EmftvmPackage.RULE__INPUT_ELEMENTS:
-			return ((InternalEList<?>)getInputElements()).basicRemove(otherEnd, msgs);
-		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
-			return ((InternalEList<?>)getOutputElements()).basicRemove(otherEnd, msgs);
-		case EmftvmPackage.RULE__ESUPER_RULES:
-			return ((InternalEList<?>)getESuperRules()).basicRemove(otherEnd, msgs);
-		case EmftvmPackage.RULE__ESUB_RULES:
-			return ((InternalEList<?>)getESubRules()).basicRemove(otherEnd, msgs);
-		case EmftvmPackage.RULE__MATCHER:
-			return basicSetMatcher(null, msgs);
-		case EmftvmPackage.RULE__APPLIER:
-			return basicSetApplier(null, msgs);
-		case EmftvmPackage.RULE__POST_APPLY:
-			return basicSetPostApply(null, msgs);
-		case EmftvmPackage.RULE__FIELDS:
-			return ((InternalEList<?>)getFields()).basicRemove(otherEnd, msgs);
+			case EmftvmPackage.RULE__MODULE:
+				return basicSetModule(null, msgs);
+			case EmftvmPackage.RULE__INPUT_ELEMENTS:
+				return ((InternalEList<?>)getInputElements()).basicRemove(otherEnd, msgs);
+			case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
+				return ((InternalEList<?>)getOutputElements()).basicRemove(otherEnd, msgs);
+			case EmftvmPackage.RULE__ESUPER_RULES:
+				return ((InternalEList<?>)getESuperRules()).basicRemove(otherEnd, msgs);
+			case EmftvmPackage.RULE__ESUB_RULES:
+				return ((InternalEList<?>)getESubRules()).basicRemove(otherEnd, msgs);
+			case EmftvmPackage.RULE__MATCHER:
+				return basicSetMatcher(null, msgs);
+			case EmftvmPackage.RULE__APPLIER:
+				return basicSetApplier(null, msgs);
+			case EmftvmPackage.RULE__POST_APPLY:
+				return basicSetPostApply(null, msgs);
+			case EmftvmPackage.RULE__FIELDS:
+				return ((InternalEList<?>)getFields()).basicRemove(otherEnd, msgs);
+			case EmftvmPackage.RULE__INLINED_APPLIER:
+				return basicSetInlinedApplier(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -2662,8 +2724,8 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(final NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-		case EmftvmPackage.RULE__MODULE:
-			return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__RULES, org.eclipse.m2m.atl.emftvm.Module.class, msgs);
+			case EmftvmPackage.RULE__MODULE:
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.MODULE__RULES, org.eclipse.m2m.atl.emftvm.Module.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -2677,40 +2739,42 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
 		switch (featureID) {
-		case EmftvmPackage.RULE__MODULE:
-			return getModule();
-		case EmftvmPackage.RULE__MODE:
-			return getMode();
-		case EmftvmPackage.RULE__INPUT_ELEMENTS:
-			return getInputElements();
-		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
-			return getOutputElements();
-		case EmftvmPackage.RULE__ESUPER_RULES:
-			return getESuperRules();
-		case EmftvmPackage.RULE__ESUB_RULES:
-			return getESubRules();
-		case EmftvmPackage.RULE__MATCHER:
-			return getMatcher();
-		case EmftvmPackage.RULE__APPLIER:
-			return getApplier();
-		case EmftvmPackage.RULE__POST_APPLY:
-			return getPostApply();
-		case EmftvmPackage.RULE__SUPER_RULES:
-			return getSuperRules();
-		case EmftvmPackage.RULE__ABSTRACT:
-			return isAbstract();
-		case EmftvmPackage.RULE__FIELDS:
-			return getFields();
-		case EmftvmPackage.RULE__DEFAULT:
-			return isDefault();
-		case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
-			return isDistinctElements();
-		case EmftvmPackage.RULE__UNIQUE:
-			return isUnique();
-		case EmftvmPackage.RULE__LEAF:
-			return isLeaf();
-		case EmftvmPackage.RULE__WITH_LEAVES:
-			return isWithLeaves();
+			case EmftvmPackage.RULE__MODULE:
+				return getModule();
+			case EmftvmPackage.RULE__MODE:
+				return getMode();
+			case EmftvmPackage.RULE__INPUT_ELEMENTS:
+				return getInputElements();
+			case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
+				return getOutputElements();
+			case EmftvmPackage.RULE__ESUPER_RULES:
+				return getESuperRules();
+			case EmftvmPackage.RULE__ESUB_RULES:
+				return getESubRules();
+			case EmftvmPackage.RULE__MATCHER:
+				return getMatcher();
+			case EmftvmPackage.RULE__APPLIER:
+				return getApplier();
+			case EmftvmPackage.RULE__POST_APPLY:
+				return getPostApply();
+			case EmftvmPackage.RULE__SUPER_RULES:
+				return getSuperRules();
+			case EmftvmPackage.RULE__ABSTRACT:
+				return isAbstract();
+			case EmftvmPackage.RULE__FIELDS:
+				return getFields();
+			case EmftvmPackage.RULE__DEFAULT:
+				return isDefault();
+			case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
+				return isDistinctElements();
+			case EmftvmPackage.RULE__UNIQUE:
+				return isUnique();
+			case EmftvmPackage.RULE__LEAF:
+				return isLeaf();
+			case EmftvmPackage.RULE__WITH_LEAVES:
+				return isWithLeaves();
+			case EmftvmPackage.RULE__INLINED_APPLIER:
+				return getInlinedApplier();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -2725,57 +2789,60 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public void eSet(final int featureID, final Object newValue) {
 		switch (featureID) {
-		case EmftvmPackage.RULE__MODULE:
-			setModule((org.eclipse.m2m.atl.emftvm.Module)newValue);
-			return;
-		case EmftvmPackage.RULE__MODE:
-			setMode((RuleMode)newValue);
-			return;
-		case EmftvmPackage.RULE__INPUT_ELEMENTS:
-			getInputElements().clear();
-			getInputElements().addAll((Collection<? extends InputRuleElement>)newValue);
-			return;
-		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
-			getOutputElements().clear();
-			getOutputElements().addAll((Collection<? extends OutputRuleElement>)newValue);
-			return;
-		case EmftvmPackage.RULE__ESUPER_RULES:
-			getESuperRules().clear();
-			getESuperRules().addAll((Collection<? extends Rule>)newValue);
-			return;
-		case EmftvmPackage.RULE__ESUB_RULES:
-			getESubRules().clear();
-			getESubRules().addAll((Collection<? extends Rule>)newValue);
-			return;
-		case EmftvmPackage.RULE__MATCHER:
-			setMatcher((CodeBlock)newValue);
-			return;
-		case EmftvmPackage.RULE__APPLIER:
-			setApplier((CodeBlock)newValue);
-			return;
-		case EmftvmPackage.RULE__POST_APPLY:
-			setPostApply((CodeBlock)newValue);
-			return;
-		case EmftvmPackage.RULE__SUPER_RULES:
-			getSuperRules().clear();
-			getSuperRules().addAll((Collection<? extends String>)newValue);
-			return;
-		case EmftvmPackage.RULE__ABSTRACT:
-			setAbstract((Boolean)newValue);
-			return;
-		case EmftvmPackage.RULE__FIELDS:
-			getFields().clear();
-			getFields().addAll((Collection<? extends Field>)newValue);
-			return;
-		case EmftvmPackage.RULE__DEFAULT:
-			setDefault((Boolean)newValue);
-			return;
-		case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
-			setDistinctElements((Boolean)newValue);
-			return;
-		case EmftvmPackage.RULE__UNIQUE:
-			setUnique((Boolean)newValue);
-			return;
+			case EmftvmPackage.RULE__MODULE:
+				setModule((org.eclipse.m2m.atl.emftvm.Module)newValue);
+				return;
+			case EmftvmPackage.RULE__MODE:
+				setMode((RuleMode)newValue);
+				return;
+			case EmftvmPackage.RULE__INPUT_ELEMENTS:
+				getInputElements().clear();
+				getInputElements().addAll((Collection<? extends InputRuleElement>)newValue);
+				return;
+			case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
+				getOutputElements().clear();
+				getOutputElements().addAll((Collection<? extends OutputRuleElement>)newValue);
+				return;
+			case EmftvmPackage.RULE__ESUPER_RULES:
+				getESuperRules().clear();
+				getESuperRules().addAll((Collection<? extends Rule>)newValue);
+				return;
+			case EmftvmPackage.RULE__ESUB_RULES:
+				getESubRules().clear();
+				getESubRules().addAll((Collection<? extends Rule>)newValue);
+				return;
+			case EmftvmPackage.RULE__MATCHER:
+				setMatcher((CodeBlock)newValue);
+				return;
+			case EmftvmPackage.RULE__APPLIER:
+				setApplier((CodeBlock)newValue);
+				return;
+			case EmftvmPackage.RULE__POST_APPLY:
+				setPostApply((CodeBlock)newValue);
+				return;
+			case EmftvmPackage.RULE__SUPER_RULES:
+				getSuperRules().clear();
+				getSuperRules().addAll((Collection<? extends String>)newValue);
+				return;
+			case EmftvmPackage.RULE__ABSTRACT:
+				setAbstract((Boolean)newValue);
+				return;
+			case EmftvmPackage.RULE__FIELDS:
+				getFields().clear();
+				getFields().addAll((Collection<? extends Field>)newValue);
+				return;
+			case EmftvmPackage.RULE__DEFAULT:
+				setDefault((Boolean)newValue);
+				return;
+			case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
+				setDistinctElements((Boolean)newValue);
+				return;
+			case EmftvmPackage.RULE__UNIQUE:
+				setUnique((Boolean)newValue);
+				return;
+			case EmftvmPackage.RULE__INLINED_APPLIER:
+				setInlinedApplier((CodeBlock)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -2789,51 +2856,54 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public void eUnset(final int featureID) {
 		switch (featureID) {
-		case EmftvmPackage.RULE__MODULE:
-			setModule((org.eclipse.m2m.atl.emftvm.Module)null);
-			return;
-		case EmftvmPackage.RULE__MODE:
-			setMode(MODE_EDEFAULT);
-			return;
-		case EmftvmPackage.RULE__INPUT_ELEMENTS:
-			getInputElements().clear();
-			return;
-		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
-			getOutputElements().clear();
-			return;
-		case EmftvmPackage.RULE__ESUPER_RULES:
-			getESuperRules().clear();
-			return;
-		case EmftvmPackage.RULE__ESUB_RULES:
-			getESubRules().clear();
-			return;
-		case EmftvmPackage.RULE__MATCHER:
-			setMatcher((CodeBlock)null);
-			return;
-		case EmftvmPackage.RULE__APPLIER:
-			setApplier((CodeBlock)null);
-			return;
-		case EmftvmPackage.RULE__POST_APPLY:
-			setPostApply((CodeBlock)null);
-			return;
-		case EmftvmPackage.RULE__SUPER_RULES:
-			getSuperRules().clear();
-			return;
-		case EmftvmPackage.RULE__ABSTRACT:
-			setAbstract(ABSTRACT_EDEFAULT);
-			return;
-		case EmftvmPackage.RULE__FIELDS:
-			getFields().clear();
-			return;
-		case EmftvmPackage.RULE__DEFAULT:
-			setDefault(DEFAULT_EDEFAULT);
-			return;
-		case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
-			setDistinctElements(DISTINCT_ELEMENTS_EDEFAULT);
-			return;
-		case EmftvmPackage.RULE__UNIQUE:
-			setUnique(UNIQUE_EDEFAULT);
-			return;
+			case EmftvmPackage.RULE__MODULE:
+				setModule((org.eclipse.m2m.atl.emftvm.Module)null);
+				return;
+			case EmftvmPackage.RULE__MODE:
+				setMode(MODE_EDEFAULT);
+				return;
+			case EmftvmPackage.RULE__INPUT_ELEMENTS:
+				getInputElements().clear();
+				return;
+			case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
+				getOutputElements().clear();
+				return;
+			case EmftvmPackage.RULE__ESUPER_RULES:
+				getESuperRules().clear();
+				return;
+			case EmftvmPackage.RULE__ESUB_RULES:
+				getESubRules().clear();
+				return;
+			case EmftvmPackage.RULE__MATCHER:
+				setMatcher((CodeBlock)null);
+				return;
+			case EmftvmPackage.RULE__APPLIER:
+				setApplier((CodeBlock)null);
+				return;
+			case EmftvmPackage.RULE__POST_APPLY:
+				setPostApply((CodeBlock)null);
+				return;
+			case EmftvmPackage.RULE__SUPER_RULES:
+				getSuperRules().clear();
+				return;
+			case EmftvmPackage.RULE__ABSTRACT:
+				setAbstract(ABSTRACT_EDEFAULT);
+				return;
+			case EmftvmPackage.RULE__FIELDS:
+				getFields().clear();
+				return;
+			case EmftvmPackage.RULE__DEFAULT:
+				setDefault(DEFAULT_EDEFAULT);
+				return;
+			case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
+				setDistinctElements(DISTINCT_ELEMENTS_EDEFAULT);
+				return;
+			case EmftvmPackage.RULE__UNIQUE:
+				setUnique(UNIQUE_EDEFAULT);
+				return;
+			case EmftvmPackage.RULE__INLINED_APPLIER:
+				setInlinedApplier((CodeBlock)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -2847,40 +2917,42 @@ public class RuleImpl extends NamedElementImpl implements Rule {
 	@Override
 	public boolean eIsSet(final int featureID) {
 		switch (featureID) {
-		case EmftvmPackage.RULE__MODULE:
-			return getModule() != null;
-		case EmftvmPackage.RULE__MODE:
-			return mode != MODE_EDEFAULT;
-		case EmftvmPackage.RULE__INPUT_ELEMENTS:
-			return inputElements != null && !inputElements.isEmpty();
-		case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
-			return outputElements != null && !outputElements.isEmpty();
-		case EmftvmPackage.RULE__ESUPER_RULES:
-			return eSuperRules != null && !eSuperRules.isEmpty();
-		case EmftvmPackage.RULE__ESUB_RULES:
-			return eSubRules != null && !eSubRules.isEmpty();
-		case EmftvmPackage.RULE__MATCHER:
-			return matcher != null;
-		case EmftvmPackage.RULE__APPLIER:
-			return applier != null;
-		case EmftvmPackage.RULE__POST_APPLY:
-			return postApply != null;
-		case EmftvmPackage.RULE__SUPER_RULES:
-			return superRules != null && !superRules.isEmpty();
-		case EmftvmPackage.RULE__ABSTRACT:
-			return abstract_ != ABSTRACT_EDEFAULT;
-		case EmftvmPackage.RULE__FIELDS:
-			return fields != null && !fields.isEmpty();
-		case EmftvmPackage.RULE__DEFAULT:
-			return default_ != DEFAULT_EDEFAULT;
-		case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
-			return distinctElements != DISTINCT_ELEMENTS_EDEFAULT;
-		case EmftvmPackage.RULE__UNIQUE:
-			return unique != UNIQUE_EDEFAULT;
-		case EmftvmPackage.RULE__LEAF:
-			return leaf != LEAF_EDEFAULT;
-		case EmftvmPackage.RULE__WITH_LEAVES:
-			return withLeaves != WITH_LEAVES_EDEFAULT;
+			case EmftvmPackage.RULE__MODULE:
+				return getModule() != null;
+			case EmftvmPackage.RULE__MODE:
+				return mode != MODE_EDEFAULT;
+			case EmftvmPackage.RULE__INPUT_ELEMENTS:
+				return inputElements != null && !inputElements.isEmpty();
+			case EmftvmPackage.RULE__OUTPUT_ELEMENTS:
+				return outputElements != null && !outputElements.isEmpty();
+			case EmftvmPackage.RULE__ESUPER_RULES:
+				return eSuperRules != null && !eSuperRules.isEmpty();
+			case EmftvmPackage.RULE__ESUB_RULES:
+				return eSubRules != null && !eSubRules.isEmpty();
+			case EmftvmPackage.RULE__MATCHER:
+				return matcher != null;
+			case EmftvmPackage.RULE__APPLIER:
+				return applier != null;
+			case EmftvmPackage.RULE__POST_APPLY:
+				return postApply != null;
+			case EmftvmPackage.RULE__SUPER_RULES:
+				return superRules != null && !superRules.isEmpty();
+			case EmftvmPackage.RULE__ABSTRACT:
+				return abstract_ != ABSTRACT_EDEFAULT;
+			case EmftvmPackage.RULE__FIELDS:
+				return fields != null && !fields.isEmpty();
+			case EmftvmPackage.RULE__DEFAULT:
+				return default_ != DEFAULT_EDEFAULT;
+			case EmftvmPackage.RULE__DISTINCT_ELEMENTS:
+				return distinctElements != DISTINCT_ELEMENTS_EDEFAULT;
+			case EmftvmPackage.RULE__UNIQUE:
+				return unique != UNIQUE_EDEFAULT;
+			case EmftvmPackage.RULE__LEAF:
+				return leaf != LEAF_EDEFAULT;
+			case EmftvmPackage.RULE__WITH_LEAVES:
+				return withLeaves != WITH_LEAVES_EDEFAULT;
+			case EmftvmPackage.RULE__INLINED_APPLIER:
+				return inlinedApplier != null;
 		}
 		return super.eIsSet(featureID);
 	}

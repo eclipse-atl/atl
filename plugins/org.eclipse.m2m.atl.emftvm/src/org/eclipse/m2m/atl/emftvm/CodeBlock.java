@@ -42,6 +42,7 @@ import org.eclipse.m2m.atl.emftvm.util.StackFrame;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getNestedFor <em>Nested For</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getParentFrame <em>Parent Frame</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getBindingFor <em>Binding For</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getInlinedApplierFor <em>Inlined Applier For</em>}</li>
  * </ul>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getCodeBlock()
@@ -439,6 +440,30 @@ public interface CodeBlock extends EObject {
 	 * @generated
 	 */
 	void setBindingFor(InputRuleElement value);
+
+	/**
+	 * Returns the value of the '<em><b>Inlined Applier For</b></em>' container reference.
+	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.Rule#getInlinedApplier <em>Inlined Applier</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Inlined Applier For</em>' container reference.
+	 * @see #setInlinedApplierFor(Rule)
+	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getCodeBlock_InlinedApplierFor()
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#getInlinedApplier
+	 * @model opposite="inlinedApplier"
+	 * @generated
+	 */
+	Rule getInlinedApplierFor();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getInlinedApplierFor <em>Inlined Applier For</em>}' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Inlined Applier For</em>' container reference.
+	 * @see #getInlinedApplierFor()
+	 * @generated
+	 */
+	void setInlinedApplierFor(Rule value);
 
 	/**
 	 * <!-- begin-user-doc -->

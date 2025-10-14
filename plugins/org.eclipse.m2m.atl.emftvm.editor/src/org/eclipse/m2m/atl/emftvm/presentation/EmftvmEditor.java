@@ -294,42 +294,42 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 */
 	protected IPartListener partListener =
 			new IPartListener() {
-		@Override
-		public void partActivated(final IWorkbenchPart p) {
-			if (p instanceof ContentOutline) {
-				if (((ContentOutline)p).getCurrentPage() == contentOutlinePage) {
-					getActionBarContributor().setActiveEditor(EmftvmEditor.this);
+			@Override
+			public void partActivated(final IWorkbenchPart p) {
+				if (p instanceof ContentOutline) {
+					if (((ContentOutline)p).getCurrentPage() == contentOutlinePage) {
+						getActionBarContributor().setActiveEditor(EmftvmEditor.this);
 
-					setCurrentViewer(contentOutlineViewer);
+						setCurrentViewer(contentOutlineViewer);
+					}
 				}
-			}
-			else if (p instanceof PropertySheet) {
-				if (propertySheetPages.contains(((PropertySheet)p).getCurrentPage())) {
-					getActionBarContributor().setActiveEditor(EmftvmEditor.this);
+				else if (p instanceof PropertySheet) {
+					if (propertySheetPages.contains(((PropertySheet)p).getCurrentPage())) {
+						getActionBarContributor().setActiveEditor(EmftvmEditor.this);
+						handleActivate();
+					}
+				}
+				else if (p == EmftvmEditor.this) {
 					handleActivate();
 				}
 			}
-			else if (p == EmftvmEditor.this) {
-				handleActivate();
+			@Override
+			public void partBroughtToTop(final IWorkbenchPart p) {
+				// Ignore.
 			}
-		}
-		@Override
-		public void partBroughtToTop(final IWorkbenchPart p) {
-			// Ignore.
-		}
-		@Override
-		public void partClosed(final IWorkbenchPart p) {
-			// Ignore.
-		}
-		@Override
-		public void partDeactivated(final IWorkbenchPart p) {
-			// Ignore.
-		}
-		@Override
-		public void partOpened(final IWorkbenchPart p) {
-			// Ignore.
-		}
-	};
+			@Override
+			public void partClosed(final IWorkbenchPart p) {
+				// Ignore.
+			}
+			@Override
+			public void partDeactivated(final IWorkbenchPart p) {
+				// Ignore.
+			}
+			@Override
+			public void partOpened(final IWorkbenchPart p) {
+				// Ignore.
+			}
+		};
 
 	/**
 	 * Resources that have been removed since last activation.
@@ -379,59 +379,59 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 */
 	protected EContentAdapter problemIndicationAdapter =
 			new EContentAdapter() {
-		protected boolean dispatching;
+			protected boolean dispatching;
 
-		@Override
-		public void notifyChanged(final Notification notification) {
-			if (notification.getNotifier() instanceof Resource) {
-				switch (notification.getFeatureID(Resource.class)) {
-				case Resource.RESOURCE__IS_LOADED:
-				case Resource.RESOURCE__ERRORS:
-				case Resource.RESOURCE__WARNINGS: {
-					final Resource resource = (Resource)notification.getNotifier();
-					final Diagnostic diagnostic = analyzeResourceProblems(resource, null);
-					if (diagnostic.getSeverity() != Diagnostic.OK) {
-						resourceToDiagnosticMap.put(resource, diagnostic);
+			@Override
+			public void notifyChanged(final Notification notification) {
+				if (notification.getNotifier() instanceof Resource) {
+					switch (notification.getFeatureID(Resource.class)) {
+						case Resource.RESOURCE__IS_LOADED:
+						case Resource.RESOURCE__ERRORS:
+						case Resource.RESOURCE__WARNINGS: {
+							final Resource resource = (Resource)notification.getNotifier();
+							final Diagnostic diagnostic = analyzeResourceProblems(resource, null);
+							if (diagnostic.getSeverity() != Diagnostic.OK) {
+								resourceToDiagnosticMap.put(resource, diagnostic);
+							}
+							else {
+								resourceToDiagnosticMap.remove(resource);
+							}
+							dispatchUpdateProblemIndication();
+							break;
+						}
 					}
-					else {
-						resourceToDiagnosticMap.remove(resource);
-					}
-					dispatchUpdateProblemIndication();
-					break;
 				}
+				else {
+					super.notifyChanged(notification);
 				}
 			}
-			else {
-				super.notifyChanged(notification);
+
+			protected void dispatchUpdateProblemIndication() {
+				if (updateProblemIndication && !dispatching) {
+					dispatching = true;
+					getSite().getShell().getDisplay().asyncExec
+						(new Runnable() {
+							 @Override
+							public void run() {
+								 dispatching = false;
+								 updateProblemIndication();
+							 }
+						 });
+				}
 			}
-		}
 
-		protected void dispatchUpdateProblemIndication() {
-			if (updateProblemIndication && !dispatching) {
-				dispatching = true;
-				getSite().getShell().getDisplay().asyncExec
-				(new Runnable() {
-					@Override
-					public void run() {
-						dispatching = false;
-						updateProblemIndication();
-					}
-				});
+			@Override
+			protected void setTarget(final Resource target) {
+				basicSetTarget(target);
 			}
-		}
 
-		@Override
-		protected void setTarget(final Resource target) {
-			basicSetTarget(target);
-		}
-
-		@Override
-		protected void unsetTarget(final Resource target) {
-			basicUnsetTarget(target);
-			resourceToDiagnosticMap.remove(target);
-			dispatchUpdateProblemIndication();
-		}
-	};
+			@Override
+			protected void unsetTarget(final Resource target) {
+				basicUnsetTarget(target);
+				resourceToDiagnosticMap.remove(target);
+				dispatchUpdateProblemIndication();
+			}
+		};
 
 	/**
 	 * This listens for workspace changes.
@@ -441,79 +441,79 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 */
 	protected IResourceChangeListener resourceChangeListener =
 			new IResourceChangeListener() {
-		@Override
-		public void resourceChanged(final IResourceChangeEvent event) {
-			final IResourceDelta delta = event.getDelta();
-			try {
-				class ResourceDeltaVisitor implements IResourceDeltaVisitor {
-					protected ResourceSet resourceSet = editingDomain.getResourceSet();
-					protected Collection<Resource> changedResources = new ArrayList<Resource>();
-					protected Collection<Resource> removedResources = new ArrayList<Resource>();
+			@Override
+			public void resourceChanged(final IResourceChangeEvent event) {
+				final IResourceDelta delta = event.getDelta();
+				try {
+					class ResourceDeltaVisitor implements IResourceDeltaVisitor {
+						protected ResourceSet resourceSet = editingDomain.getResourceSet();
+						protected Collection<Resource> changedResources = new ArrayList<Resource>();
+						protected Collection<Resource> removedResources = new ArrayList<Resource>();
 
-					@Override
-					public boolean visit(final IResourceDelta delta) {
-						if (delta.getResource().getType() == IResource.FILE) {
-							if (delta.getKind() == IResourceDelta.REMOVED ||
-									delta.getKind() == IResourceDelta.CHANGED && delta.getFlags() != IResourceDelta.MARKERS) {
-								final Resource resource = resourceSet.getResource(URI.createPlatformResourceURI(delta.getFullPath().toString(), true), false);
-								if (resource != null) {
-									if (delta.getKind() == IResourceDelta.REMOVED) {
-										removedResources.add(resource);
-									}
-									else if (!savedResources.remove(resource)) {
-										changedResources.add(resource);
+						@Override
+						public boolean visit(final IResourceDelta delta) {
+							if (delta.getResource().getType() == IResource.FILE) {
+								if (delta.getKind() == IResourceDelta.REMOVED ||
+								    delta.getKind() == IResourceDelta.CHANGED && delta.getFlags() != IResourceDelta.MARKERS) {
+									final Resource resource = resourceSet.getResource(URI.createPlatformResourceURI(delta.getFullPath().toString(), true), false);
+									if (resource != null) {
+										if (delta.getKind() == IResourceDelta.REMOVED) {
+											removedResources.add(resource);
+										}
+										else if (!savedResources.remove(resource)) {
+											changedResources.add(resource);
+										}
 									}
 								}
+								return false;
 							}
-							return false;
+
+							return true;
 						}
 
-						return true;
+						public Collection<Resource> getChangedResources() {
+							return changedResources;
+						}
+
+						public Collection<Resource> getRemovedResources() {
+							return removedResources;
+						}
 					}
 
-					public Collection<Resource> getChangedResources() {
-						return changedResources;
+					final ResourceDeltaVisitor visitor = new ResourceDeltaVisitor();
+					delta.accept(visitor);
+
+					if (!visitor.getRemovedResources().isEmpty()) {
+						getSite().getShell().getDisplay().asyncExec
+							(new Runnable() {
+								 @Override
+								public void run() {
+									 removedResources.addAll(visitor.getRemovedResources());
+									 if (!isDirty()) {
+										 getSite().getPage().closeEditor(EmftvmEditor.this, false);
+									 }
+								 }
+							 });
 					}
 
-					public Collection<Resource> getRemovedResources() {
-						return removedResources;
+					if (!visitor.getChangedResources().isEmpty()) {
+						getSite().getShell().getDisplay().asyncExec
+							(new Runnable() {
+								 @Override
+								public void run() {
+									 changedResources.addAll(visitor.getChangedResources());
+									 if (getSite().getPage().getActiveEditor() == EmftvmEditor.this) {
+										 handleActivate();
+									 }
+								 }
+							 });
 					}
 				}
-
-				final ResourceDeltaVisitor visitor = new ResourceDeltaVisitor();
-				delta.accept(visitor);
-
-				if (!visitor.getRemovedResources().isEmpty()) {
-					getSite().getShell().getDisplay().asyncExec
-					(new Runnable() {
-						@Override
-						public void run() {
-							removedResources.addAll(visitor.getRemovedResources());
-							if (!isDirty()) {
-								getSite().getPage().closeEditor(EmftvmEditor.this, false);
-							}
-						}
-					});
-				}
-
-				if (!visitor.getChangedResources().isEmpty()) {
-					getSite().getShell().getDisplay().asyncExec
-					(new Runnable() {
-						@Override
-						public void run() {
-							changedResources.addAll(visitor.getChangedResources());
-							if (getSite().getPage().getActiveEditor() == EmftvmEditor.this) {
-								handleActivate();
-							}
-						}
-					});
+				catch (final CoreException exception) {
+					EmftvmEditorPlugin.INSTANCE.log(exception);
 				}
 			}
-			catch (final CoreException exception) {
-				EmftvmEditorPlugin.INSTANCE.log(exception);
-			}
-		}
-	};
+		};
 
 	/**
 	 * Handles activation of the editor or it's associated views.
@@ -525,11 +525,11 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		// Recompute the read only state.
 		//
 		if (editingDomain.getResourceToReadOnlyMap() != null) {
-			editingDomain.getResourceToReadOnlyMap().clear();
+		  editingDomain.getResourceToReadOnlyMap().clear();
 
-			// Refresh any actions that may become enabled or disabled.
-			//
-			setSelection(getSelection());
+		  // Refresh any actions that may become enabled or disabled.
+		  //
+		  setSelection(getSelection());
 		}
 
 		if (!removedResources.isEmpty()) {
@@ -597,12 +597,12 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	protected void updateProblemIndication() {
 		if (updateProblemIndication) {
 			final BasicDiagnostic diagnostic =
-					new BasicDiagnostic
+				new BasicDiagnostic
 					(Diagnostic.OK,
-							"org.eclipse.m2m.atl.emftvm.editor",
-							0,
-							null,
-							new Object [] { editingDomain.getResourceSet() });
+					 "org.eclipse.m2m.atl.emftvm.editor",
+					 0,
+					 null,
+					 new Object [] { editingDomain.getResourceSet() });
 			for (final Diagnostic childDiagnostic : resourceToDiagnosticMap.values()) {
 				if (childDiagnostic.getSeverity() != Diagnostic.OK) {
 					diagnostic.add(childDiagnostic);
@@ -653,10 +653,10 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 */
 	protected boolean handleDirtyConflict() {
 		return
-				MessageDialog.openQuestion
+			MessageDialog.openQuestion
 				(getSite().getShell(),
-						getString("_UI_FileConflict_label"),
-						getString("_WARN_FileConflict"));
+				 getString("_UI_FileConflict_label"),
+				 getString("_WARN_FileConflict"));
 	}
 
 	/**
@@ -694,34 +694,34 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		// Add a listener to set the most recent command's affected objects to be the selection of the viewer with focus.
 		//
 		commandStack.addCommandStackListener
-		(new CommandStackListener() {
-			@Override
-			public void commandStackChanged(final EventObject event) {
-				getContainer().getDisplay().asyncExec
-				(new Runnable() {
-					@Override
-					public void run() {
-						firePropertyChange(IEditorPart.PROP_DIRTY);
+			(new CommandStackListener() {
+				 @Override
+				public void commandStackChanged(final EventObject event) {
+					 getContainer().getDisplay().asyncExec
+						 (new Runnable() {
+							  @Override
+							public void run() {
+								  firePropertyChange(IEditorPart.PROP_DIRTY);
 
-						// Try to select the affected objects.
-						//
-						final Command mostRecentCommand = ((CommandStack)event.getSource()).getMostRecentCommand();
-						if (mostRecentCommand != null) {
-							setSelectionToViewer(mostRecentCommand.getAffectedObjects());
-						}
-						for (final Iterator<PropertySheetPage> i = propertySheetPages.iterator(); i.hasNext(); ) {
-							final PropertySheetPage propertySheetPage = i.next();
-							if (propertySheetPage.getControl() == null || propertySheetPage.getControl().isDisposed()) {
-								i.remove();
-							}
-							else {
-								propertySheetPage.refresh();
-							}
-						}
-					}
-				});
-			}
-		});
+								  // Try to select the affected objects.
+								  //
+								  final Command mostRecentCommand = ((CommandStack)event.getSource()).getMostRecentCommand();
+								  if (mostRecentCommand != null) {
+									  setSelectionToViewer(mostRecentCommand.getAffectedObjects());
+								  }
+								  for (final Iterator<PropertySheetPage> i = propertySheetPages.iterator(); i.hasNext(); ) {
+									  final PropertySheetPage propertySheetPage = i.next();
+									  if (propertySheetPage.getControl() == null || propertySheetPage.getControl().isDisposed()) {
+										  i.remove();
+									  }
+									  else {
+										  propertySheetPage.refresh();
+									  }
+								  }
+							  }
+						  });
+				 }
+			 });
 
 		// Create the editing domain with a special command stack.
 		//
@@ -751,16 +751,16 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		//
 		if (theSelection != null && !theSelection.isEmpty()) {
 			final Runnable runnable =
-					new Runnable() {
-				@Override
-				public void run() {
-					// Try to select the items in the current content viewer of the editor.
-					//
-					if (currentViewer != null) {
-						currentViewer.setSelection(new StructuredSelection(theSelection.toArray()), true);
+				new Runnable() {
+					@Override
+					public void run() {
+						// Try to select the items in the current content viewer of the editor.
+						//
+						if (currentViewer != null) {
+							currentViewer.setSelection(new StructuredSelection(theSelection.toArray()), true);
+						}
 					}
-				}
-			};
+				};
 			getSite().getShell().getDisplay().asyncExec(runnable);
 		}
 	}
@@ -867,14 +867,14 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 				// Create the listener on demand.
 				//
 				selectionChangedListener =
-						new ISelectionChangedListener() {
-					// This just notifies those things that are affected by the section.
-					//
-					@Override
-					public void selectionChanged(final SelectionChangedEvent selectionChangedEvent) {
-						setSelection(selectionChangedEvent.getSelection());
-					}
-				};
+					new ISelectionChangedListener() {
+						// This just notifies those things that are affected by the section.
+						//
+						@Override
+						public void selectionChanged(final SelectionChangedEvent selectionChangedEvent) {
+							setSelection(selectionChangedEvent.getSelection());
+						}
+					};
 			}
 
 			// Stop listening to the old one.
@@ -969,23 +969,23 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		final boolean hasErrors = !resource.getErrors().isEmpty();
 		if (hasErrors || !resource.getWarnings().isEmpty()) {
 			final BasicDiagnostic basicDiagnostic =
-					new BasicDiagnostic
+				new BasicDiagnostic
 					(hasErrors ? Diagnostic.ERROR : Diagnostic.WARNING,
-							"org.eclipse.m2m.atl.emftvm.editor",
-							0,
-							getString("_UI_CreateModelError_message", resource.getURI()),
-							new Object [] { exception == null ? (Object)resource : exception });
+					 "org.eclipse.m2m.atl.emftvm.editor",
+					 0,
+					 getString("_UI_CreateModelError_message", resource.getURI()),
+					 new Object [] { exception == null ? (Object)resource : exception });
 			basicDiagnostic.merge(EcoreUtil.computeDiagnostic(resource, true));
 			return basicDiagnostic;
 		}
 		else if (exception != null) {
 			return
-					new BasicDiagnostic
+				new BasicDiagnostic
 					(Diagnostic.ERROR,
-							"org.eclipse.m2m.atl.emftvm.editor",
-							0,
-							getString("_UI_CreateModelError_message", resource.getURI()),
-							new Object[] { exception });
+					 "org.eclipse.m2m.atl.emftvm.editor",
+					 0,
+					 getString("_UI_CreateModelError_message", resource.getURI()),
+					 new Object[] { exception });
 		}
 		else {
 			return Diagnostic.OK_INSTANCE;
@@ -1011,19 +1011,19 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 			//
 			{
 				final ViewerPane viewerPane =
-						new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
-					@Override
-					public Viewer createViewer(final Composite composite) {
-						final Tree tree = new Tree(composite, SWT.MULTI);
-						final TreeViewer newTreeViewer = new TreeViewer(tree);
-						return newTreeViewer;
-					}
-					@Override
-					public void requestActivation() {
-						super.requestActivation();
-						setCurrentViewerPane(this);
-					}
-				};
+					new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
+						@Override
+						public Viewer createViewer(final Composite composite) {
+							final Tree tree = new Tree(composite, SWT.MULTI);
+							final TreeViewer newTreeViewer = new TreeViewer(tree);
+							return newTreeViewer;
+						}
+						@Override
+						public void requestActivation() {
+							super.requestActivation();
+							setCurrentViewerPane(this);
+						}
+					};
 				viewerPane.createControl(getContainer());
 
 				selectionViewer = (TreeViewer)viewerPane.getViewer();
@@ -1046,19 +1046,19 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 			//
 			{
 				final ViewerPane viewerPane =
-						new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
-					@Override
-					public Viewer createViewer(final Composite composite) {
-						final Tree tree = new Tree(composite, SWT.MULTI);
-						final TreeViewer newTreeViewer = new TreeViewer(tree);
-						return newTreeViewer;
-					}
-					@Override
-					public void requestActivation() {
-						super.requestActivation();
-						setCurrentViewerPane(this);
-					}
-				};
+					new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
+						@Override
+						public Viewer createViewer(final Composite composite) {
+							final Tree tree = new Tree(composite, SWT.MULTI);
+							final TreeViewer newTreeViewer = new TreeViewer(tree);
+							return newTreeViewer;
+						}
+						@Override
+						public void requestActivation() {
+							super.requestActivation();
+							setCurrentViewerPane(this);
+						}
+					};
 				viewerPane.createControl(getContainer());
 
 				parentViewer = (TreeViewer)viewerPane.getViewer();
@@ -1075,17 +1075,17 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 			//
 			{
 				final ViewerPane viewerPane =
-						new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
-					@Override
-					public Viewer createViewer(final Composite composite) {
-						return new ListViewer(composite);
-					}
-					@Override
-					public void requestActivation() {
-						super.requestActivation();
-						setCurrentViewerPane(this);
-					}
-				};
+					new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
+						@Override
+						public Viewer createViewer(final Composite composite) {
+							return new ListViewer(composite);
+						}
+						@Override
+						public void requestActivation() {
+							super.requestActivation();
+							setCurrentViewerPane(this);
+						}
+					};
 				viewerPane.createControl(getContainer());
 				listViewer = (ListViewer)viewerPane.getViewer();
 				listViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
@@ -1100,17 +1100,17 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 			//
 			{
 				final ViewerPane viewerPane =
-						new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
-					@Override
-					public Viewer createViewer(final Composite composite) {
-						return new TreeViewer(composite);
-					}
-					@Override
-					public void requestActivation() {
-						super.requestActivation();
-						setCurrentViewerPane(this);
-					}
-				};
+					new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
+						@Override
+						public Viewer createViewer(final Composite composite) {
+							return new TreeViewer(composite);
+						}
+						@Override
+						public void requestActivation() {
+							super.requestActivation();
+							setCurrentViewerPane(this);
+						}
+					};
 				viewerPane.createControl(getContainer());
 				treeViewer = (TreeViewer)viewerPane.getViewer();
 				treeViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
@@ -1127,17 +1127,17 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 			//
 			{
 				final ViewerPane viewerPane =
-						new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
-					@Override
-					public Viewer createViewer(final Composite composite) {
-						return new TableViewer(composite);
-					}
-					@Override
-					public void requestActivation() {
-						super.requestActivation();
-						setCurrentViewerPane(this);
-					}
-				};
+					new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
+						@Override
+						public Viewer createViewer(final Composite composite) {
+							return new TableViewer(composite);
+						}
+						@Override
+						public void requestActivation() {
+							super.requestActivation();
+							setCurrentViewerPane(this);
+						}
+					};
 				viewerPane.createControl(getContainer());
 				tableViewer = (TableViewer)viewerPane.getViewer();
 
@@ -1170,17 +1170,17 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 			//
 			{
 				final ViewerPane viewerPane =
-						new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
-					@Override
-					public Viewer createViewer(final Composite composite) {
-						return new TreeViewer(composite);
-					}
-					@Override
-					public void requestActivation() {
-						super.requestActivation();
-						setCurrentViewerPane(this);
-					}
-				};
+					new ViewerPane(getSite().getPage(), EmftvmEditor.this) {
+						@Override
+						public Viewer createViewer(final Composite composite) {
+							return new TreeViewer(composite);
+						}
+						@Override
+						public void requestActivation() {
+							super.requestActivation();
+							setCurrentViewerPane(this);
+						}
+					};
 				viewerPane.createControl(getContainer());
 
 				treeViewerWithColumns = (TreeViewer)viewerPane.getViewer();
@@ -1210,39 +1210,39 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 			}
 
 			getSite().getShell().getDisplay().asyncExec
-			(new Runnable() {
-				@Override
-				public void run() {
-					if (!getContainer().isDisposed()) {
-						setActivePage(0);
-					}
-				}
-			});
+				(new Runnable() {
+					 @Override
+					public void run() {
+						 if (!getContainer().isDisposed()) {
+							 setActivePage(0);
+						 }
+					 }
+				 });
 		}
 
 		// Ensures that this editor will only display the page's tab
 		// area if there are more than one page
 		//
 		getContainer().addControlListener
-		(new ControlAdapter() {
-			boolean guard = false;
-			@Override
-			public void controlResized(final ControlEvent event) {
-				if (!guard) {
-					guard = true;
-					hideTabs();
-					guard = false;
+			(new ControlAdapter() {
+				boolean guard = false;
+				@Override
+				public void controlResized(final ControlEvent event) {
+					if (!guard) {
+						guard = true;
+						hideTabs();
+						guard = false;
+					}
 				}
-			}
-		});
+			 });
 
 		getSite().getShell().getDisplay().asyncExec
-		(new Runnable() {
-			@Override
-			public void run() {
-				updateProblemIndication();
-			}
-		});
+			(new Runnable() {
+				 @Override
+				public void run() {
+					 updateProblemIndication();
+				 }
+			 });
 	}
 
 	/**
@@ -1348,9 +1348,9 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 					createContextMenuFor(contentOutlineViewer);
 
 					if (!editingDomain.getResourceSet().getResources().isEmpty()) {
-						// Select the root object in the view.
-						//
-						contentOutlineViewer.setSelection(new StructuredSelection(editingDomain.getResourceSet().getResources().get(0)), true);
+					  // Select the root object in the view.
+					  //
+					  contentOutlineViewer.setSelection(new StructuredSelection(editingDomain.getResourceSet().getResources().get(0)), true);
 					}
 				}
 
@@ -1372,14 +1372,14 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 			// Listen to selection so that we can handle it is a special way.
 			//
 			contentOutlinePage.addSelectionChangedListener
-			(new ISelectionChangedListener() {
-				// This ensures that we handle selections correctly.
-				//
-				@Override
-				public void selectionChanged(final SelectionChangedEvent event) {
-					handleContentOutlineSelection(event.getSelection());
-				}
-			});
+				(new ISelectionChangedListener() {
+					 // This ensures that we handle selections correctly.
+					 //
+					 @Override
+					public void selectionChanged(final SelectionChangedEvent event) {
+						 handleContentOutlineSelection(event.getSelection());
+					 }
+				 });
 		}
 
 		return contentOutlinePage;
@@ -1393,19 +1393,19 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 */
 	public IPropertySheetPage getPropertySheetPage() {
 		final PropertySheetPage propertySheetPage =
-				new ExtendedPropertySheetPage(editingDomain) {
-			@Override
-			public void setSelectionToViewer(final List<?> selection) {
-				EmftvmEditor.this.setSelectionToViewer(selection);
-				EmftvmEditor.this.setFocus();
-			}
+			new ExtendedPropertySheetPage(editingDomain) {
+				@Override
+				public void setSelectionToViewer(final List<?> selection) {
+					EmftvmEditor.this.setSelectionToViewer(selection);
+					EmftvmEditor.this.setFocus();
+				}
 
-			@Override
-			public void setActionBars(final IActionBars actionBars) {
-				super.setActionBars(actionBars);
-				getActionBarContributor().shareGlobalActions(this, actionBars);
-			}
-		};
+				@Override
+				public void setActionBars(final IActionBars actionBars) {
+					super.setActionBars(actionBars);
+					getActionBarContributor().shareGlobalActions(this, actionBars);
+				}
+			};
 		propertySheetPage.setPropertySourceProvider(new AdapterFactoryContentProvider(adapterFactory));
 		propertySheetPages.add(propertySheetPage);
 
@@ -1478,33 +1478,33 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		// Do the work within an operation because this is a long running activity that modifies the workbench.
 		//
 		final WorkspaceModifyOperation operation =
-				new WorkspaceModifyOperation() {
-			// This is the method that gets invoked when the operation runs.
-			//
-			@Override
-			public void execute(final IProgressMonitor monitor) {
-				// Save the resources to the file system.
+			new WorkspaceModifyOperation() {
+				// This is the method that gets invoked when the operation runs.
 				//
-				boolean first = true;
-				final List<Resource> resources = editingDomain.getResourceSet().getResources();
-				for (int i = 0; i < resources.size(); ++i) {
-					final Resource resource = resources.get(i);
-					if ((first || !resource.getContents().isEmpty() || isPersisted(resource)) && !editingDomain.isReadOnly(resource)) {
-						try {
-							final long timeStamp = resource.getTimeStamp();
-							resource.save(saveOptions);
-							if (resource.getTimeStamp() != timeStamp) {
-								savedResources.add(resource);
+				@Override
+				public void execute(final IProgressMonitor monitor) {
+					// Save the resources to the file system.
+					//
+					boolean first = true;
+					final List<Resource> resources = editingDomain.getResourceSet().getResources();
+					for (int i = 0; i < resources.size(); ++i) {
+						final Resource resource = resources.get(i);
+						if ((first || !resource.getContents().isEmpty() || isPersisted(resource)) && !editingDomain.isReadOnly(resource)) {
+							try {
+								final long timeStamp = resource.getTimeStamp();
+								resource.save(saveOptions);
+								if (resource.getTimeStamp() != timeStamp) {
+									savedResources.add(resource);
+								}
 							}
+							catch (final Exception exception) {
+								resourceToDiagnosticMap.put(resource, analyzeResourceProblems(resource, exception));
+							}
+							first = false;
 						}
-						catch (final Exception exception) {
-							resourceToDiagnosticMap.put(resource, analyzeResourceProblems(resource, exception));
-						}
-						first = false;
 					}
 				}
-			}
-		};
+			};
 
 		updateProblemIndication = false;
 		try {
@@ -1588,9 +1588,9 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 		setInputWithNotify(editorInput);
 		setPartName(editorInput.getName());
 		final IProgressMonitor progressMonitor =
-				getActionBars().getStatusLineManager() != null ?
-						getActionBars().getStatusLineManager().getProgressMonitor() :
-							new NullProgressMonitor();
+			getActionBars().getStatusLineManager() != null ?
+				getActionBars().getStatusLineManager().getProgressMonitor() :
+				new NullProgressMonitor();
 		doSave(progressMonitor);
 	}
 
@@ -1695,25 +1695,25 @@ implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerPro
 	 */
 	public void setStatusLineManager(final ISelection selection) {
 		final IStatusLineManager statusLineManager = currentViewer != null && currentViewer == contentOutlineViewer ?
-				contentOutlineStatusLineManager : getActionBars().getStatusLineManager();
+			contentOutlineStatusLineManager : getActionBars().getStatusLineManager();
 
 		if (statusLineManager != null) {
 			if (selection instanceof IStructuredSelection) {
 				final Collection<?> collection = ((IStructuredSelection)selection).toList();
 				switch (collection.size()) {
-				case 0: {
-					statusLineManager.setMessage(getString("_UI_NoObjectSelected"));
-					break;
-				}
-				case 1: {
-					final String text = new AdapterFactoryItemDelegator(adapterFactory).getText(collection.iterator().next());
-					statusLineManager.setMessage(getString("_UI_SingleObjectSelected", text));
-					break;
-				}
-				default: {
-					statusLineManager.setMessage(getString("_UI_MultiObjectSelected", Integer.toString(collection.size())));
-					break;
-				}
+					case 0: {
+						statusLineManager.setMessage(getString("_UI_NoObjectSelected"));
+						break;
+					}
+					case 1: {
+						final String text = new AdapterFactoryItemDelegator(adapterFactory).getText(collection.iterator().next());
+						statusLineManager.setMessage(getString("_UI_SingleObjectSelected", text));
+						break;
+					}
+					default: {
+						statusLineManager.setMessage(getString("_UI_MultiObjectSelected", Integer.toString(collection.size())));
+						break;
+					}
 				}
 			}
 			else {

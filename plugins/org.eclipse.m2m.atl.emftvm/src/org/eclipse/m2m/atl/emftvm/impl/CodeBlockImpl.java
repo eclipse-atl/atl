@@ -125,6 +125,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMMonitor;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.CodeBlockImpl#getNestedFor <em>Nested For</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.CodeBlockImpl#getParentFrame <em>Parent Frame</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.CodeBlockImpl#getBindingFor <em>Binding For</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.impl.CodeBlockImpl#getInlinedApplierFor <em>Inlined Applier For</em>}</li>
  * </ul>
  *
  * @generated
@@ -391,7 +392,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetMatcherFor(final Rule newMatcherFor, NotificationChain msgs) {
+	public NotificationChain basicSetMatcherFor(Rule newMatcherFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newMatcherFor, EmftvmPackage.CODE_BLOCK__MATCHER_FOR, msgs);
 		return msgs;
 	}
@@ -403,7 +404,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public void setMatcherFor(final Rule newMatcherFor) {
+	public void setMatcherFor(Rule newMatcherFor) {
 		if (newMatcherFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__MATCHER_FOR && newMatcherFor != null)) {
 			if (EcoreUtil.isAncestor(this, newMatcherFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -437,7 +438,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetApplierFor(final Rule newApplierFor, NotificationChain msgs) {
+	public NotificationChain basicSetApplierFor(Rule newApplierFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newApplierFor, EmftvmPackage.CODE_BLOCK__APPLIER_FOR, msgs);
 		return msgs;
 	}
@@ -449,7 +450,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public void setApplierFor(final Rule newApplierFor) {
+	public void setApplierFor(Rule newApplierFor) {
 		if (newApplierFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__APPLIER_FOR && newApplierFor != null)) {
 			if (EcoreUtil.isAncestor(this, newApplierFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -483,7 +484,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPostApplyFor(final Rule newPostApplyFor, NotificationChain msgs) {
+	public NotificationChain basicSetPostApplyFor(Rule newPostApplyFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newPostApplyFor, EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR, msgs);
 		return msgs;
 	}
@@ -495,7 +496,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public void setPostApplyFor(final Rule newPostApplyFor) {
+	public void setPostApplyFor(Rule newPostApplyFor) {
 		if (newPostApplyFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR && newPostApplyFor != null)) {
 			if (EcoreUtil.isAncestor(this, newPostApplyFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -529,7 +530,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetBodyFor(final Operation newBodyFor, NotificationChain msgs) {
+	public NotificationChain basicSetBodyFor(Operation newBodyFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newBodyFor, EmftvmPackage.CODE_BLOCK__BODY_FOR, msgs);
 		return msgs;
 	}
@@ -541,7 +542,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public void setBodyFor(final Operation newBodyFor) {
+	public void setBodyFor(Operation newBodyFor) {
 		if (newBodyFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__BODY_FOR && newBodyFor != null)) {
 			if (EcoreUtil.isAncestor(this, newBodyFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -575,7 +576,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetInitialiserFor(final Field newInitialiserFor, NotificationChain msgs) {
+	public NotificationChain basicSetInitialiserFor(Field newInitialiserFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newInitialiserFor, EmftvmPackage.CODE_BLOCK__INITIALISER_FOR, msgs);
 		return msgs;
 	}
@@ -587,7 +588,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public void setInitialiserFor(final Field newInitialiserFor) {
+	public void setInitialiserFor(Field newInitialiserFor) {
 		if (newInitialiserFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__INITIALISER_FOR && newInitialiserFor != null)) {
 			if (EcoreUtil.isAncestor(this, newInitialiserFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -635,7 +636,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetNestedFor(final CodeBlock newNestedFor, NotificationChain msgs) {
+	public NotificationChain basicSetNestedFor(CodeBlock newNestedFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newNestedFor, EmftvmPackage.CODE_BLOCK__NESTED_FOR, msgs);
 		return msgs;
 	}
@@ -647,7 +648,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public void setNestedFor(final CodeBlock newNestedFor) {
+	public void setNestedFor(CodeBlock newNestedFor) {
 		if (newNestedFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__NESTED_FOR && newNestedFor != null)) {
 			if (EcoreUtil.isAncestor(this, newNestedFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -706,7 +707,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetBindingFor(final InputRuleElement newBindingFor, NotificationChain msgs) {
+	public NotificationChain basicSetBindingFor(InputRuleElement newBindingFor, NotificationChain msgs) {
 		msgs = eBasicSetContainer((InternalEObject)newBindingFor, EmftvmPackage.CODE_BLOCK__BINDING_FOR, msgs);
 		return msgs;
 	}
@@ -718,7 +719,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public void setBindingFor(final InputRuleElement newBindingFor) {
+	public void setBindingFor(InputRuleElement newBindingFor) {
 		if (newBindingFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__BINDING_FOR && newBindingFor != null)) {
 			if (EcoreUtil.isAncestor(this, newBindingFor))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
@@ -732,6 +733,47 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.CODE_BLOCK__BINDING_FOR, newBindingFor, newBindingFor));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Rule getInlinedApplierFor() {
+		if (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR) return null;
+		return (Rule)eInternalContainer();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetInlinedApplierFor(Rule newInlinedApplierFor, NotificationChain msgs) {
+		msgs = eBasicSetContainer((InternalEObject)newInlinedApplierFor, EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setInlinedApplierFor(Rule newInlinedApplierFor) {
+		if (newInlinedApplierFor != eInternalContainer() || (eContainerFeatureID() != EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR && newInlinedApplierFor != null)) {
+			if (EcoreUtil.isAncestor(this, newInlinedApplierFor))
+				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
+			NotificationChain msgs = null;
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			if (newInlinedApplierFor != null)
+				msgs = ((InternalEObject)newInlinedApplierFor).eInverseAdd(this, EmftvmPackage.RULE__INLINED_APPLIER, Rule.class, msgs);
+			msgs = basicSetInlinedApplierFor(newInlinedApplierFor, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR, newInlinedApplierFor, newInlinedApplierFor));
 	}
 
 	/**
@@ -1215,44 +1257,48 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case EmftvmPackage.CODE_BLOCK__CODE:
-			return ((InternalEList<InternalEObject>)(InternalEList<?>)getCode()).basicAdd(otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
-			return ((InternalEList<InternalEObject>)(InternalEList<?>)getLineNumbers()).basicAdd(otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
-			return ((InternalEList<InternalEObject>)(InternalEList<?>)getLocalVariables()).basicAdd(otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			return basicSetMatcherFor((Rule)otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			return basicSetApplierFor((Rule)otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			return basicSetPostApplyFor((Rule)otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			return basicSetBodyFor((Operation)otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			return basicSetInitialiserFor((Field)otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__NESTED:
-			return ((InternalEList<InternalEObject>)(InternalEList<?>)getNested()).basicAdd(otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			return basicSetNestedFor((CodeBlock)otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			return basicSetBindingFor((InputRuleElement)otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__CODE:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getCode()).basicAdd(otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getLineNumbers()).basicAdd(otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getLocalVariables()).basicAdd(otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetMatcherFor((Rule)otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetApplierFor((Rule)otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetPostApplyFor((Rule)otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetBodyFor((Operation)otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetInitialiserFor((Field)otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__NESTED:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getNested()).basicAdd(otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetNestedFor((CodeBlock)otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetBindingFor((InputRuleElement)otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetInlinedApplierFor((Rule)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -1264,30 +1310,32 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID, final NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case EmftvmPackage.CODE_BLOCK__CODE:
-			return ((InternalEList<?>)getCode()).basicRemove(otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
-			return ((InternalEList<?>)getLineNumbers()).basicRemove(otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
-			return ((InternalEList<?>)getLocalVariables()).basicRemove(otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-			return basicSetMatcherFor(null, msgs);
-		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-			return basicSetApplierFor(null, msgs);
-		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-			return basicSetPostApplyFor(null, msgs);
-		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-			return basicSetBodyFor(null, msgs);
-		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-			return basicSetInitialiserFor(null, msgs);
-		case EmftvmPackage.CODE_BLOCK__NESTED:
-			return ((InternalEList<?>)getNested()).basicRemove(otherEnd, msgs);
-		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-			return basicSetNestedFor(null, msgs);
-		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-			return basicSetBindingFor(null, msgs);
+			case EmftvmPackage.CODE_BLOCK__CODE:
+				return ((InternalEList<?>)getCode()).basicRemove(otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
+				return ((InternalEList<?>)getLineNumbers()).basicRemove(otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+				return ((InternalEList<?>)getLocalVariables()).basicRemove(otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+				return basicSetMatcherFor(null, msgs);
+			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+				return basicSetApplierFor(null, msgs);
+			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+				return basicSetPostApplyFor(null, msgs);
+			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+				return basicSetBodyFor(null, msgs);
+			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+				return basicSetInitialiserFor(null, msgs);
+			case EmftvmPackage.CODE_BLOCK__NESTED:
+				return ((InternalEList<?>)getNested()).basicRemove(otherEnd, msgs);
+			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+				return basicSetNestedFor(null, msgs);
+			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+				return basicSetBindingFor(null, msgs);
+			case EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR:
+				return basicSetInlinedApplierFor(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1299,22 +1347,24 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eBasicRemoveFromContainerFeature(final NotificationChain msgs) {
+	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-			return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__MATCHER, Rule.class, msgs);
-		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-			return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__APPLIER, Rule.class, msgs);
-		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-			return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__POST_APPLY, Rule.class, msgs);
-		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-			return eInternalContainer().eInverseRemove(this, EmftvmPackage.OPERATION__BODY, Operation.class, msgs);
-		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-			return eInternalContainer().eInverseRemove(this, EmftvmPackage.FIELD__INITIALISER, Field.class, msgs);
-		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-			return eInternalContainer().eInverseRemove(this, EmftvmPackage.CODE_BLOCK__NESTED, CodeBlock.class, msgs);
-		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-			return eInternalContainer().eInverseRemove(this, EmftvmPackage.INPUT_RULE_ELEMENT__BINDING, InputRuleElement.class, msgs);
+			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__MATCHER, Rule.class, msgs);
+			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__APPLIER, Rule.class, msgs);
+			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__POST_APPLY, Rule.class, msgs);
+			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.OPERATION__BODY, Operation.class, msgs);
+			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.FIELD__INITIALISER, Field.class, msgs);
+			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.CODE_BLOCK__NESTED, CodeBlock.class, msgs);
+			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.INPUT_RULE_ELEMENT__BINDING, InputRuleElement.class, msgs);
+			case EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR:
+				return eInternalContainer().eInverseRemove(this, EmftvmPackage.RULE__INLINED_APPLIER, Rule.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -1326,36 +1376,38 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
-			return getMaxLocals();
-		case EmftvmPackage.CODE_BLOCK__MAX_STACK:
-			return getMaxStack();
-		case EmftvmPackage.CODE_BLOCK__CODE:
-			return getCode();
-		case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
-			return getLineNumbers();
-		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
-			return getLocalVariables();
-		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-			return getMatcherFor();
-		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-			return getApplierFor();
-		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-			return getPostApplyFor();
-		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-			return getBodyFor();
-		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-			return getInitialiserFor();
-		case EmftvmPackage.CODE_BLOCK__NESTED:
-			return getNested();
-		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-			return getNestedFor();
-		case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
-			return getParentFrame();
-		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-			return getBindingFor();
+			case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
+				return getMaxLocals();
+			case EmftvmPackage.CODE_BLOCK__MAX_STACK:
+				return getMaxStack();
+			case EmftvmPackage.CODE_BLOCK__CODE:
+				return getCode();
+			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
+				return getLineNumbers();
+			case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+				return getLocalVariables();
+			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+				return getMatcherFor();
+			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+				return getApplierFor();
+			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+				return getPostApplyFor();
+			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+				return getBodyFor();
+			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+				return getInitialiserFor();
+			case EmftvmPackage.CODE_BLOCK__NESTED:
+				return getNested();
+			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+				return getNestedFor();
+			case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
+				return getParentFrame();
+			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+				return getBindingFor();
+			case EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR:
+				return getInlinedApplierFor();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1368,54 +1420,57 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void eSet(final int featureID, final Object newValue) {
+	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
-			setMaxLocals((Integer)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__MAX_STACK:
-			setMaxStack((Integer)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__CODE:
-			getCode().clear();
-			getCode().addAll((Collection<? extends Instruction>)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
-			getLineNumbers().clear();
-			getLineNumbers().addAll((Collection<? extends LineNumber>)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
-			getLocalVariables().clear();
-			getLocalVariables().addAll((Collection<? extends LocalVariable>)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-			setMatcherFor((Rule)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-			setApplierFor((Rule)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-			setPostApplyFor((Rule)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-			setBodyFor((Operation)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-			setInitialiserFor((Field)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__NESTED:
-			getNested().clear();
-			getNested().addAll((Collection<? extends CodeBlock>)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-			setNestedFor((CodeBlock)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
-			setParentFrame((StackFrame)newValue);
-			return;
-		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-			setBindingFor((InputRuleElement)newValue);
-			return;
+			case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
+				setMaxLocals((Integer)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__MAX_STACK:
+				setMaxStack((Integer)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__CODE:
+				getCode().clear();
+				getCode().addAll((Collection<? extends Instruction>)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
+				getLineNumbers().clear();
+				getLineNumbers().addAll((Collection<? extends LineNumber>)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+				getLocalVariables().clear();
+				getLocalVariables().addAll((Collection<? extends LocalVariable>)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+				setMatcherFor((Rule)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+				setApplierFor((Rule)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+				setPostApplyFor((Rule)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+				setBodyFor((Operation)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+				setInitialiserFor((Field)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__NESTED:
+				getNested().clear();
+				getNested().addAll((Collection<? extends CodeBlock>)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+				setNestedFor((CodeBlock)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
+				setParentFrame((StackFrame)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+				setBindingFor((InputRuleElement)newValue);
+				return;
+			case EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR:
+				setInlinedApplierFor((Rule)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1427,50 +1482,53 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public void eUnset(final int featureID) {
+	public void eUnset(int featureID) {
 		switch (featureID) {
-		case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
-			setMaxLocals(MAX_LOCALS_EDEFAULT);
-			return;
-		case EmftvmPackage.CODE_BLOCK__MAX_STACK:
-			setMaxStack(MAX_STACK_EDEFAULT);
-			return;
-		case EmftvmPackage.CODE_BLOCK__CODE:
-			getCode().clear();
-			return;
-		case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
-			getLineNumbers().clear();
-			return;
-		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
-			getLocalVariables().clear();
-			return;
-		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-			setMatcherFor((Rule)null);
-			return;
-		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-			setApplierFor((Rule)null);
-			return;
-		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-			setPostApplyFor((Rule)null);
-			return;
-		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-			setBodyFor((Operation)null);
-			return;
-		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-			setInitialiserFor((Field)null);
-			return;
-		case EmftvmPackage.CODE_BLOCK__NESTED:
-			getNested().clear();
-			return;
-		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-			setNestedFor((CodeBlock)null);
-			return;
-		case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
-			setParentFrame(PARENT_FRAME_EDEFAULT);
-			return;
-		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-			setBindingFor((InputRuleElement)null);
-			return;
+			case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
+				setMaxLocals(MAX_LOCALS_EDEFAULT);
+				return;
+			case EmftvmPackage.CODE_BLOCK__MAX_STACK:
+				setMaxStack(MAX_STACK_EDEFAULT);
+				return;
+			case EmftvmPackage.CODE_BLOCK__CODE:
+				getCode().clear();
+				return;
+			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
+				getLineNumbers().clear();
+				return;
+			case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+				getLocalVariables().clear();
+				return;
+			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+				setMatcherFor((Rule)null);
+				return;
+			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+				setApplierFor((Rule)null);
+				return;
+			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+				setPostApplyFor((Rule)null);
+				return;
+			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+				setBodyFor((Operation)null);
+				return;
+			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+				setInitialiserFor((Field)null);
+				return;
+			case EmftvmPackage.CODE_BLOCK__NESTED:
+				getNested().clear();
+				return;
+			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+				setNestedFor((CodeBlock)null);
+				return;
+			case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
+				setParentFrame(PARENT_FRAME_EDEFAULT);
+				return;
+			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+				setBindingFor((InputRuleElement)null);
+				return;
+			case EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR:
+				setInlinedApplierFor((Rule)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1482,36 +1540,38 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 * @generated
 	 */
 	@Override
-	public boolean eIsSet(final int featureID) {
+	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
-			return getMaxLocals() != MAX_LOCALS_EDEFAULT;
-		case EmftvmPackage.CODE_BLOCK__MAX_STACK:
-			return getMaxStack() != MAX_STACK_EDEFAULT;
-		case EmftvmPackage.CODE_BLOCK__CODE:
-			return code != null && !code.isEmpty();
-		case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
-			return lineNumbers != null && !lineNumbers.isEmpty();
-		case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
-			return localVariables != null && !localVariables.isEmpty();
-		case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
-			return getMatcherFor() != null;
-		case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
-			return getApplierFor() != null;
-		case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
-			return getPostApplyFor() != null;
-		case EmftvmPackage.CODE_BLOCK__BODY_FOR:
-			return getBodyFor() != null;
-		case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
-			return getInitialiserFor() != null;
-		case EmftvmPackage.CODE_BLOCK__NESTED:
-			return nested != null && !nested.isEmpty();
-		case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
-			return getNestedFor() != null;
-		case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
-			return PARENT_FRAME_EDEFAULT == null ? parentFrame != null : !PARENT_FRAME_EDEFAULT.equals(parentFrame);
-		case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
-			return getBindingFor() != null;
+			case EmftvmPackage.CODE_BLOCK__MAX_LOCALS:
+				return getMaxLocals() != MAX_LOCALS_EDEFAULT;
+			case EmftvmPackage.CODE_BLOCK__MAX_STACK:
+				return getMaxStack() != MAX_STACK_EDEFAULT;
+			case EmftvmPackage.CODE_BLOCK__CODE:
+				return code != null && !code.isEmpty();
+			case EmftvmPackage.CODE_BLOCK__LINE_NUMBERS:
+				return lineNumbers != null && !lineNumbers.isEmpty();
+			case EmftvmPackage.CODE_BLOCK__LOCAL_VARIABLES:
+				return localVariables != null && !localVariables.isEmpty();
+			case EmftvmPackage.CODE_BLOCK__MATCHER_FOR:
+				return getMatcherFor() != null;
+			case EmftvmPackage.CODE_BLOCK__APPLIER_FOR:
+				return getApplierFor() != null;
+			case EmftvmPackage.CODE_BLOCK__POST_APPLY_FOR:
+				return getPostApplyFor() != null;
+			case EmftvmPackage.CODE_BLOCK__BODY_FOR:
+				return getBodyFor() != null;
+			case EmftvmPackage.CODE_BLOCK__INITIALISER_FOR:
+				return getInitialiserFor() != null;
+			case EmftvmPackage.CODE_BLOCK__NESTED:
+				return nested != null && !nested.isEmpty();
+			case EmftvmPackage.CODE_BLOCK__NESTED_FOR:
+				return getNestedFor() != null;
+			case EmftvmPackage.CODE_BLOCK__PARENT_FRAME:
+				return PARENT_FRAME_EDEFAULT == null ? parentFrame != null : !PARENT_FRAME_EDEFAULT.equals(parentFrame);
+			case EmftvmPackage.CODE_BLOCK__BINDING_FOR:
+				return getBindingFor() != null;
+			case EmftvmPackage.CODE_BLOCK__INLINED_APPLIER_FOR:
+				return getInlinedApplierFor() != null;
 		}
 		return super.eIsSet(featureID);
 	}

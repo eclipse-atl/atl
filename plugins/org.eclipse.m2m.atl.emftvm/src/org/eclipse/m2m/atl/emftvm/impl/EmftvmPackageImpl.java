@@ -1577,6 +1577,15 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getRule_InlinedApplier() {
+		return (EReference)ruleEClass.getEStructuralFeatures().get(17);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getRuleElement() {
 		return ruleElementEClass;
 	}
@@ -1714,6 +1723,15 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 	 */
 	public EReference getCodeBlock_BindingFor() {
 		return (EReference)codeBlockEClass.getEStructuralFeatures().get(13);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getCodeBlock_InlinedApplierFor() {
+		return (EReference)codeBlockEClass.getEStructuralFeatures().get(14);
 	}
 
 	/**
@@ -3030,6 +3048,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		createEAttribute(ruleEClass, RULE__UNIQUE);
 		createEAttribute(ruleEClass, RULE__LEAF);
 		createEAttribute(ruleEClass, RULE__WITH_LEAVES);
+		createEReference(ruleEClass, RULE__INLINED_APPLIER);
 
 		ruleElementEClass = createEClass(RULE_ELEMENT);
 		createEAttribute(ruleElementEClass, RULE_ELEMENT__MODELS);
@@ -3059,6 +3078,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		createEReference(codeBlockEClass, CODE_BLOCK__NESTED_FOR);
 		createEAttribute(codeBlockEClass, CODE_BLOCK__PARENT_FRAME);
 		createEReference(codeBlockEClass, CODE_BLOCK__BINDING_FOR);
+		createEReference(codeBlockEClass, CODE_BLOCK__INLINED_APPLIER_FOR);
 
 		pushEClass = createEClass(PUSH);
 		createEAttribute(pushEClass, PUSH__VALUE);
@@ -3707,6 +3727,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEAttribute(getRule_Unique(), theEcorePackage.getEBoolean(), "unique", null, 1, 1, Rule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRule_Leaf(), theEcorePackage.getEBoolean(), "leaf", null, 1, 1, Rule.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getRule_WithLeaves(), theEcorePackage.getEBoolean(), "withLeaves", null, 1, 1, Rule.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getRule_InlinedApplier(), this.getCodeBlock(), this.getCodeBlock_InlinedApplierFor(), "inlinedApplier", null, 0, 1, Rule.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(ruleEClass, this.getField(), "findField", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEJavaObject(), "context", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3860,6 +3881,7 @@ public class EmftvmPackageImpl extends EPackageImpl implements EmftvmPackage {
 		initEReference(getCodeBlock_NestedFor(), this.getCodeBlock(), this.getCodeBlock_Nested(), "nestedFor", null, 0, 1, CodeBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCodeBlock_ParentFrame(), this.getStackFrame(), "parentFrame", null, 0, 1, CodeBlock.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCodeBlock_BindingFor(), this.getInputRuleElement(), this.getInputRuleElement_Binding(), "bindingFor", null, 0, 1, CodeBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCodeBlock_InlinedApplierFor(), this.getRule(), this.getRule_InlinedApplier(), "inlinedApplierFor", null, 0, 1, CodeBlock.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(codeBlockEClass, theEcorePackage.getEJavaObject(), "execute", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getStackFrame(), "frame", 0, 1, IS_UNIQUE, IS_ORDERED);

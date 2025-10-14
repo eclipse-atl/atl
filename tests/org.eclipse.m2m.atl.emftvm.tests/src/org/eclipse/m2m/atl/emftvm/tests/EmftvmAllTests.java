@@ -54,7 +54,7 @@ public class EmftvmAllTests extends TestSuite {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static void main(final String[] args) {
+	public static void main(String[] args) {
 		TestRunner.run(suite());
 	}
 
@@ -97,7 +97,7 @@ public class EmftvmAllTests extends TestSuite {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EmftvmAllTests(final String name) {
+	public EmftvmAllTests(String name) {
 		super(name);
 	}
 

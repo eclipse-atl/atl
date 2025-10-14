@@ -353,6 +353,7 @@ public class RuleItemProvider
 			childrenFeatures.add(EmftvmPackage.Literals.RULE__APPLIER);
 			childrenFeatures.add(EmftvmPackage.Literals.RULE__POST_APPLY);
 			childrenFeatures.add(EmftvmPackage.Literals.RULE__FIELDS);
+			childrenFeatures.add(EmftvmPackage.Literals.RULE__INLINED_APPLIER);
 		}
 		return childrenFeatures;
 	}
@@ -423,6 +424,7 @@ public class RuleItemProvider
 			case EmftvmPackage.RULE__APPLIER:
 			case EmftvmPackage.RULE__POST_APPLY:
 			case EmftvmPackage.RULE__FIELDS:
+			case EmftvmPackage.RULE__INLINED_APPLIER:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -469,6 +471,11 @@ public class RuleItemProvider
 			(createChildParameter
 				(EmftvmPackage.Literals.RULE__FIELDS,
 				 EmftvmFactory.eINSTANCE.createField()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(EmftvmPackage.Literals.RULE__INLINED_APPLIER,
+				 EmftvmFactory.eINSTANCE.createCodeBlock()));
 	}
 
 	/**
@@ -485,7 +492,8 @@ public class RuleItemProvider
 		boolean qualify =
 			childFeature == EmftvmPackage.Literals.RULE__MATCHER ||
 			childFeature == EmftvmPackage.Literals.RULE__APPLIER ||
-			childFeature == EmftvmPackage.Literals.RULE__POST_APPLY;
+			childFeature == EmftvmPackage.Literals.RULE__POST_APPLY ||
+			childFeature == EmftvmPackage.Literals.RULE__INLINED_APPLIER;
 
 		if (qualify) {
 			return getString

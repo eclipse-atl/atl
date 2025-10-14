@@ -46,6 +46,7 @@ import org.eclipse.m2m.atl.emftvm.util.VMException;
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#isUnique <em>Unique</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#isLeaf <em>Leaf</em>}</li>
  *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#isWithLeaves <em>With Leaves</em>}</li>
+ *   <li>{@link org.eclipse.m2m.atl.emftvm.Rule#getInlinedApplier <em>Inlined Applier</em>}</li>
  * </ul>
  *
  * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getRule()
@@ -435,6 +436,30 @@ public interface Rule extends NamedElement {
 	 * @generated
 	 */
 	boolean isWithLeaves();
+
+	/**
+	 * Returns the value of the '<em><b>Inlined Applier</b></em>' containment reference.
+	 * It is bidirectional and its opposite is '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getInlinedApplierFor <em>Inlined Applier For</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Inlined Applier</em>' containment reference.
+	 * @see #setInlinedApplier(CodeBlock)
+	 * @see org.eclipse.m2m.atl.emftvm.EmftvmPackage#getRule_InlinedApplier()
+	 * @see org.eclipse.m2m.atl.emftvm.CodeBlock#getInlinedApplierFor
+	 * @model opposite="inlinedApplierFor" containment="true" transient="true"
+	 * @generated
+	 */
+	CodeBlock getInlinedApplier();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.m2m.atl.emftvm.Rule#getInlinedApplier <em>Inlined Applier</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Inlined Applier</em>' containment reference.
+	 * @see #getInlinedApplier()
+	 * @generated
+	 */
+	void setInlinedApplier(CodeBlock value);
 
 	/**
 	 * <!-- begin-user-doc -->

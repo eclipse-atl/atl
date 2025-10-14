@@ -1741,13 +1741,22 @@ public interface EmftvmPackage extends EPackage {
 	int RULE__WITH_LEAVES = NAMED_ELEMENT_FEATURE_COUNT + 16;
 
 	/**
+	 * The feature id for the '<em><b>Inlined Applier</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RULE__INLINED_APPLIER = NAMED_ELEMENT_FEATURE_COUNT + 17;
+
+	/**
 	 * The number of structural features of the '<em>Rule</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RULE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 17;
+	int RULE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 18;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2130,13 +2139,22 @@ public interface EmftvmPackage extends EPackage {
 	int CODE_BLOCK__BINDING_FOR = 13;
 
 	/**
+	 * The feature id for the '<em><b>Inlined Applier For</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CODE_BLOCK__INLINED_APPLIER_FOR = 14;
+
+	/**
 	 * The number of structural features of the '<em>Code Block</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CODE_BLOCK_FEATURE_COUNT = 14;
+	int CODE_BLOCK_FEATURE_COUNT = 15;
 
 	/**
 	 * The feature id for the '<em><b>Owning Block</b></em>' container reference.
@@ -7637,6 +7655,17 @@ public interface EmftvmPackage extends EPackage {
 	EAttribute getRule_WithLeaves();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.m2m.atl.emftvm.Rule#getInlinedApplier <em>Inlined Applier</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Inlined Applier</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#getInlinedApplier()
+	 * @see #getRule()
+	 * @generated
+	 */
+	EReference getRule_InlinedApplier();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.RuleElement <em>Rule Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7809,6 +7838,17 @@ public interface EmftvmPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getCodeBlock_BindingFor();
+
+	/**
+	 * Returns the meta object for the container reference '{@link org.eclipse.m2m.atl.emftvm.CodeBlock#getInlinedApplierFor <em>Inlined Applier For</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the container reference '<em>Inlined Applier For</em>'.
+	 * @see org.eclipse.m2m.atl.emftvm.CodeBlock#getInlinedApplierFor()
+	 * @see #getCodeBlock()
+	 * @generated
+	 */
+	EReference getCodeBlock_InlinedApplierFor();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.m2m.atl.emftvm.Push <em>Push</em>}'.
@@ -9853,6 +9893,14 @@ public interface EmftvmPackage extends EPackage {
 		EAttribute RULE__WITH_LEAVES = eINSTANCE.getRule_WithLeaves();
 
 		/**
+		 * The meta object literal for the '<em><b>Inlined Applier</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference RULE__INLINED_APPLIER = eINSTANCE.getRule_InlinedApplier();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.RuleElementImpl <em>Rule Element</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -9983,6 +10031,14 @@ public interface EmftvmPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CODE_BLOCK__BINDING_FOR = eINSTANCE.getCodeBlock_BindingFor();
+
+		/**
+		 * The meta object literal for the '<em><b>Inlined Applier For</b></em>' container reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CODE_BLOCK__INLINED_APPLIER_FOR = eINSTANCE.getCodeBlock_InlinedApplierFor();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.m2m.atl.emftvm.impl.PushImpl <em>Push</em>}' class.

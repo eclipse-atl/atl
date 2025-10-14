@@ -678,6 +678,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="withLeaves" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
         changeable="false" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inlinedApplier" eType="#//CodeBlock"
+        transient="true" containment="true" eOpposite="#//CodeBlock/inlinedApplierFor"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RuleElement" abstract="true" eSuperTypes="#//TypedElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="models" upperBound="-1"
@@ -752,6 +754,8 @@
         transient="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="bindingFor" eType="#//InputRuleElement"
         eOpposite="#//InputRuleElement/binding"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inlinedApplierFor" eType="#//Rule"
+        transient="true" eOpposite="#//Rule/inlinedApplier"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Push" eSuperTypes="#//Instruction">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"
