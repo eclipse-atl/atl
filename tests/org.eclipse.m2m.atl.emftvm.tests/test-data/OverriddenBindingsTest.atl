@@ -1,0 +1,39 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module OverriddenBindingsTest;
+create OUT : ECORE from IN : ECORE;
+
+rule EPackage {
+	from
+		s : ECORE!EPackage
+	to
+		t : ECORE!EPackage (
+			name <- s.name,
+			nsPrefix <- s.nsPrefix,
+			nsURI <- s.nsURI,
+			eSubpackages <- s.eSubpackages)
+}
+
+rule EPackageWith_ extends EPackage {
+	from
+		s : ECORE!EPackage (s.name.startsWith('_'))
+	to
+		t : ECORE!EPackage (
+			name <- s.name.substring(2, s.name.size()))
+}
+
+rule EPackageNSPrefixWith_ extends EPackage {
+	from
+		s : ECORE!EPackage (s.nsPrefix.startsWith('_'))
+	to
+		t : ECORE!EPackage (
+			nsPrefix <- s.nsPrefix.substring(2, s.nsPrefix.size()))
+}
+
+-- @extends EPackageWith_, EPackageNSPrefixWith_
+rule EPackageWith_AndNSPrefixWith_ {
+	from
+		s : ECORE!EPackage
+	to
+		t : ECORE!EPackage
+}

@@ -1,0 +1,108 @@
+-- @atlcompiler emftvm
+-- @nsURI EMFTVM=http://www.eclipse.org/m2m/atl/2011/EMFTVM
+module InlineInheritedBindings;
+
+create OUT : EMFTVM refining IN : EMFTVM;
+
+--- Returns all bindings in the applier code block of 'self'.
+helper context EMFTVM!Rule def : bindings : Sequence(TupleType("rule" : String, outputElement : String, property : String, code : Sequence(EMFTVM!Instruction))) =
+	if self.applier.oclIsUndefined() then
+		Sequence{}
+	else
+		let code : Sequence(EMFTVM!Instruction) = self.applier.code in
+		code->select(i | i.oclIsKindOf(EMFTVM!"Set"))
+			->collect(i | i.binding)
+			->reject(i | i.oclIsUndefined())
+	endif;
+
+--- Returns the binding that 'self' represents, or OclUndefined.
+helper context EMFTVM!"Set" def : binding : TupleType("rule" : String, outputElement : String, property : String, code : Sequence(EMFTVM!Instruction)) =
+	let load : EMFTVM!Load = self.firstLoadAfterSet in
+	if load.oclIsUndefined() then
+		OclUndefined
+	else
+		let code : Sequence(EMFTVM!Instruction) = self.owningBlock.code in
+		let bindingCode : Sequence(EMFTVM!Instruction) = code->subSequence(code->indexOf(load), code->indexOf(self)) in
+		Tuple{"rule" = self.owningBlock.applierFor.name, outputElement = load.localVariable.name, property = self.fieldname, code = bindingCode}
+	endif;
+
+--- Returns the first LOAD instruction before 'self' and after the last
+--- field modifier (SET/ADD/REMOVE) instruction before 'self, or from the start of the code block
+--- if no such field modifier instruction exists.
+--- Returns OclUndefined if no such LOAD instruction exists.
+helper context EMFTVM!Instruction def : firstLoadAfterSet : EMFTVM!Load =
+	let code : Sequence(EMFTVM!Instruction) =
+		self.owningBlock.code->subSequence(1, self.owningBlock.code->indexOf(self) - 1) in
+	let setInstrs : Sequence(EMFTVM!Instruction) =
+		code->select(i | i.isFieldModifier) in
+	if setInstrs->notEmpty() then
+		code->subSequence(code->indexOf(setInstrs->last()) + 1, code->size())
+	else
+		code
+	endif
+	->any(i | i.oclIsKindOf(EMFTVM!Load));
+
+--- Returns 'true' if 'self' is an instruction that modifies a field value.
+helper context EMFTVM!Instruction def : isFieldModifier : Boolean =
+	false;
+
+--- Returns 'true' if 'self' is an instruction that modifies a field value.
+helper context EMFTVM!FieldInstruction def : isFieldModifier : Boolean =
+	self.oclIsKindOf(EMFTVM!"Set") or
+	self.oclIsKindOf(EMFTVM!SetStatic) or
+	self.oclIsKindOf(EMFTVM!Add) or
+	self.oclIsKindOf(EMFTVM!Insert) or
+	self.oclIsKindOf(EMFTVM!Remove);
+
+--- Returns all bindings for 'self', including inherited bindings.
+helper context EMFTVM!Rule def : allBindings : OrderedSet(TupleType("rule" : String, outputElement : String, property : String, code : Sequence(EMFTVM!Instruction))) =
+	self.eSuperRules->collect(sr | sr.allBindings)
+		->union(self.bindings)
+		->flatten()
+		->asOrderedSet();
+
+--- Returns all bindings for 'self', including inherited bindings, excluding overridden bindings.
+helper context EMFTVM!Rule def : inlinedBindings : OrderedSet(TupleType("rule" : String, outputElement : String, property : String, code : Sequence(EMFTVM!Instruction))) =
+	let allBindings : OrderedSet(TupleType("rule" : String, outputElement : String, property : String)) = self.allBindings in
+	allBindings->reject(b | allBindings->exists(ab | ab.outputElement = b.outputElement and ab.property = b.property and allBindings->indexOf(ab) > allBindings->indexOf(b)));
+
+--- Returns all overridden bindings for 'self'.
+helper context EMFTVM!Rule def : overriddenBindings : OrderedSet(TupleType("rule" : String, outputElement : String, property : String, code : Sequence(EMFTVM!Instruction))) =
+	let allBindings : OrderedSet(TupleType("rule" : String, outputElement : String, property : String)) = self.allBindings in
+	allBindings->select(b | allBindings->exists(ab | ab.outputElement = b.outputElement and ab.property = b.property and allBindings->indexOf(ab) > allBindings->indexOf(b)));
+
+--- Returns the applier code for 'self', or OclUndefined.
+helper context EMFTVM!Rule def : applierCode : Sequence(EMFTVM!Instruction) =
+	if self.applier.oclIsUndefined() then
+		OclUndefined
+	else
+		self.applier.code
+	endif;
+
+--- Returns all applier code for 'self', including inherited applier code, or OclUndefined.
+helper context EMFTVM!Rule def : allApplierCode : OrderedSet(EMFTVM!Instruction) =
+	self.eSuperRules->collect(sr | sr.allApplierCode)
+		->including(self.applierCode)
+		->reject(c | c.oclIsUndefined())
+		->flatten()
+		->asOrderedSet();
+
+--- Returns the inlined applier code for 'self', or OclUndefined.
+helper context EMFTVM!Rule def : inlinedApplierCode : OrderedSet(EMFTVM!Instruction) =
+	let allApplierCode : OrderedSet(EMFTVM!Instruction) = self.allApplierCode.debug('allApplierCode') in
+	let overriddenCode : Set(EMFTVM!Instruction) = self.overriddenBindings.debug('overriddenBindings')->collect(b | b.code)->flatten()->asSet().debug('overriddenCode') in
+	allApplierCode->reject(c | overriddenCode->includes(c)).debug('inlinedApplierCode');
+
+rule Rule {
+	from s : EMFTVM!Rule
+	to t : EMFTVM!Rule (
+		eSuperRules <- s.superRules->collect(sr | t."module".rules->any(r | r.name = sr))
+	)
+	do {
+		s.bindings.debug(s.name + ' bindings');
+		s.allBindings.debug(s.name + ' allBindings');
+		s.inlinedBindings.debug(s.name + ' inlinedBindings');
+		s.overriddenBindings.debug(s.name + ' overriddenBindings');
+		s.inlinedApplierCode.debug(s.name + ' inlinedApplierCode');
+	}
+}
