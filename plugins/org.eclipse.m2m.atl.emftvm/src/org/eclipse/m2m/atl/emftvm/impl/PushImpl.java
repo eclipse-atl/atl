@@ -557,7 +557,7 @@ public class PushImpl extends InstructionImpl implements Push {
 		if (value instanceof EnumLiteral) {
 			oldEnumValue = ((EnumLiteral)value).getName();
 		}
-		setValue(new EnumLiteral(newEnumValue));
+		setValue(newEnumValue == null ? null : new EnumLiteral(newEnumValue));
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmftvmPackage.PUSH__ENUM_VALUE, oldEnumValue, newEnumValue));
 	}

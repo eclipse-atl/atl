@@ -31,9 +31,12 @@ public final class EnumLiteral implements Serializable {
 	 * Creates a new {@link EnumLiteral}.
 	 * @param name the literal name
 	 */
-	public EnumLiteral(String name) {
+	public EnumLiteral(final String name) {
 		super();
 		this.name = name;
+		if (name == null) {
+			throw new IllegalArgumentException("EnumLiteral name cannot be null");
+		}
 	}
 
 	/**
@@ -49,7 +52,7 @@ public final class EnumLiteral implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		StringBuffer buf = new StringBuffer("#");
+		final StringBuffer buf = new StringBuffer("#");
 		buf.append(getName());
 		return buf.toString();
 	}
@@ -88,7 +91,7 @@ public final class EnumLiteral implements Serializable {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
 		if ((obj == null) || (getClass() != obj.getClass()))

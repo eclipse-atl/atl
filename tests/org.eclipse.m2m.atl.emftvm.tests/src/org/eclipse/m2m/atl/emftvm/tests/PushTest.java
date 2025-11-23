@@ -11,10 +11,10 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import junit.textui.TestRunner;
-
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.Push;
+
+import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +30,7 @@ public class PushTest extends InstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		TestRunner.run(PushTest.class);
 	}
 
@@ -40,7 +40,7 @@ public class PushTest extends InstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PushTest(String name) {
+	public PushTest(final String name) {
 		super(name);
 	}
 
@@ -75,6 +75,18 @@ public class PushTest extends InstructionTest {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
+	}
+
+	public void testSetEnumValue() throws Exception {
+		final Push push = getFixture();
+		push.setEnumValue("test");
+		assertEquals("test", push.getEnumValue());
+	}
+
+	public void testSetEnumValue_null() throws Exception {
+		final Push push = getFixture();
+		push.setEnumValue(null);
+		assertEquals(null, push.getEnumValue());
 	}
 
 } //PushTest
