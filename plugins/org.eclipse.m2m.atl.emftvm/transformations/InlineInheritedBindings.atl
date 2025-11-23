@@ -4,6 +4,8 @@ module InlineInheritedBindings;
 
 create OUT : EMFTVM refining IN : EMFTVM;
 
+uses EmftvmLazyCopy;
+
 --- Returns all bindings in the applier code block of 'self'.
 helper context EMFTVM!Rule def : bindings : Sequence(TupleType("rule" : String, outputElement : String, property : String, code : Sequence(EMFTVM!Instruction))) =
 	if self.applier.oclIsUndefined() then
@@ -61,11 +63,6 @@ helper context EMFTVM!Rule def : allBindings : OrderedSet(TupleType("rule" : Str
 		->flatten()
 		->asOrderedSet();
 
---- Returns all bindings for 'self', including inherited bindings, excluding overridden bindings.
-helper context EMFTVM!Rule def : inlinedBindings : OrderedSet(TupleType("rule" : String, outputElement : String, property : String, code : Sequence(EMFTVM!Instruction))) =
-	let allBindings : OrderedSet(TupleType("rule" : String, outputElement : String, property : String)) = self.allBindings in
-	allBindings->reject(b | allBindings->exists(ab | ab.outputElement = b.outputElement and ab.property = b.property and allBindings->indexOf(ab) > allBindings->indexOf(b)));
-
 --- Returns all overridden bindings for 'self'.
 helper context EMFTVM!Rule def : overriddenBindings : OrderedSet(TupleType("rule" : String, outputElement : String, property : String, code : Sequence(EMFTVM!Instruction))) =
 	let allBindings : OrderedSet(TupleType("rule" : String, outputElement : String, property : String)) = self.allBindings in
@@ -89,11 +86,71 @@ helper context EMFTVM!Rule def : allApplierCode : OrderedSet(EMFTVM!Instruction)
 
 --- Returns the inlined applier code for 'self', or OclUndefined.
 helper context EMFTVM!Rule def : inlinedApplierCode : OrderedSet(EMFTVM!Instruction) =
-	let allApplierCode : OrderedSet(EMFTVM!Instruction) = self.allApplierCode.debug('allApplierCode') in
-	let overriddenCode : Set(EMFTVM!Instruction) = self.overriddenBindings.debug('overriddenBindings')->collect(b | b.code)->flatten()->asSet().debug('overriddenCode') in
-	allApplierCode->reject(c | overriddenCode->includes(c)).debug('inlinedApplierCode');
+	let allApplierCode : OrderedSet(EMFTVM!Instruction) = self.allApplierCode in
+	let overriddenCode : Set(EMFTVM!Instruction) = self.overriddenBindings->collect(b | b.code)->flatten()->asSet() in
+	allApplierCode->subtract(overriddenCode);
 
-rule Rule {
+--- Returns the applier code line numbers for 'self', or OclUndefined.
+	helper context EMFTVM!Rule def : applierLineNumbers : Sequence(EMFTVM!LineNumber) =
+	if self.applier.oclIsUndefined() then
+		OclUndefined
+	else
+		self.applier.lineNumbers
+	endif;
+
+--- Returns all applier code line numbers for 'self', including inherited applier code line numbers, or OclUndefined.
+helper context EMFTVM!Rule def : allApplierLineNumbers : OrderedSet(EMFTVM!LineNumber) =
+	self.eSuperRules->collect(sr | sr.allApplierLineNumbers)
+		->including(self.applierLineNumbers)
+		->reject(c | c.oclIsUndefined())
+		->flatten()
+		->asOrderedSet();
+
+--- Returns the inlined applier code line numbers for 'self', or OclUndefined.
+helper context EMFTVM!Rule def : inlinedApplierLineNumbers : OrderedSet(EMFTVM!LineNumber) =
+	let allApplierLineNumbers : OrderedSet(EMFTVM!LineNumber) = self.allApplierLineNumbers in
+	let inlinedApplierCode : OrderedSet(EMFTVM!Instruction) = self.inlinedApplierCode in
+	allApplierLineNumbers->select(l | inlinedApplierCode->exists(c | c.lineNumber = l));
+
+--- Returns the applier code local variables for 'self', or OclUndefined.
+	helper context EMFTVM!Rule def : applierLocalVars : Sequence(EMFTVM!LocalVariable) =
+	if self.applier.oclIsUndefined() then
+		OclUndefined
+	else
+		self.applier.localVariables
+	endif;
+
+--- Returns all applier code local variables for 'self', including inherited applier code local variables, or OclUndefined.
+helper context EMFTVM!Rule def : allApplierLocalVars : OrderedSet(EMFTVM!LocalVariable) =
+	self.eSuperRules->collect(sr | sr.allApplierLocalVars)
+		->including(self.applierLocalVars)
+		->reject(c | c.oclIsUndefined())
+		->flatten()
+		->asOrderedSet();
+
+--- Returns the inlined applier code line numbers for 'self', or OclUndefined.
+helper context EMFTVM!Rule def : inlinedApplierLocalVars : OrderedSet(EMFTVM!LocalVariable) =
+	let allApplierLocalVars : OrderedSet(EMFTVM!LocalVariable) = self.allApplierLocalVars in
+	let inlinedApplierCode : OrderedSet(EMFTVM!Instruction) = self.inlinedApplierCode in
+	allApplierLocalVars->select(l | inlinedApplierCode
+		->select(c | c.oclIsKindOf(EMFTVM!LocalVariableInstruction))
+		->exists(lvi | lvi.localVariable = l));
+
+--- Returns all input elements for 'self, including inherited input elements
+helper context EMFTVM!Rule def : allInputElements : OrderedSet(EMFTVM!InputRuleElement) =
+	let superElements : OrderedSet(EMFTVM!InputRuleElement) = self.eSuperRules->collect(r | r.allInputElements)->flatten() in
+	superElements->collect(s |
+		let i : EMFTVM!InputRuleElement = self.inputElements->any(i | i.name = s.name) in
+		if i.oclIsUndefined() then
+			s
+		else
+			i
+		endif
+	)->union(
+		self.inputElements->reject(i | superElements->exists(s | s.name = i.name))
+	)->asOrderedSet();
+
+rule RuleWithInheritedBindings {
 	from s : EMFTVM!Rule
 	to t : EMFTVM!Rule (
 		eSuperRules <- s.superRules->collect(sr | t."module".rules->any(r | r.name = sr))
@@ -101,8 +158,54 @@ rule Rule {
 	do {
 		s.bindings.debug(s.name + ' bindings');
 		s.allBindings.debug(s.name + ' allBindings');
-		s.inlinedBindings.debug(s.name + ' inlinedBindings');
 		s.overriddenBindings.debug(s.name + ' overriddenBindings');
 		s.inlinedApplierCode.debug(s.name + ' inlinedApplierCode');
+		s.applierLineNumbers.debug(s.name + ' applierLineNumbers');
+		s.allApplierLineNumbers.debug(s.name + ' allApplierLineNumbers');
+		s.inlinedApplierLineNumbers.debug(s.name + ' inlinedApplierLineNumbers');
+		s.applierLocalVars.debug(s.name + ' applierLocalVars');
+		s.allApplierLocalVars.debug(s.name + ' allApplierLocalVars');
+		s.inlinedApplierLocalVars.debug(s.name + ' inlinedApplierLocalVars');
+		s.allInputElements->collect(i |
+			i.inputFor.name + '::' + i.name + ' : ' + i.typeModel + '!' + i.type
+		).debug(s.name + ' allInputElements');
+		t.inlinedApplier <- thisModule.InlinedApplierCodeBlock(s);
 	}
+}
+
+unique lazy rule InlinedApplierCodeBlock {
+	from s : EMFTVM!Rule (
+		s.eSuperRules->notEmpty().debug(s.name + '.eSuperRules->notEmpty()') and
+		s.inlinedApplierCode->notEmpty().debug(s.name + '.inlinedApplierCode->notEmpty()'))
+	to t : EMFTVM!CodeBlock (
+			code <- s.inlinedApplierCode->collect(e |
+				thisModule.Instruction(e, s).debug('Instruction ' + e.toString())),
+			lineNumbers <- s.inlinedApplierLineNumbers->collect(e |
+				thisModule.LineNumber(e, s)),
+			localVariables <- s.allInputElements->collect(i |
+	   				thisModule.InlinedApplierLocalVariable(i, s))
+				->union(
+	   				s.inlinedApplierLocalVars->collect(e |
+						thisModule.LocalVariable(e, s)))
+				)
+}
+
+-- @extends TypedElement
+unique lazy rule InlinedApplierLocalVariable {
+	from s : EMFTVM!InputRuleElement,
+		 r : EMFTVM!Rule
+	to t : EMFTVM!LocalVariable (
+		startInstruction <- thisModule.Instruction(r.inlinedApplierCode->first(), r),
+		endInstruction <- thisModule.Instruction(r.inlinedApplierCode->last(), r))
+}
+
+-- @extends Instruction
+unique lazy abstract rule LocalVariableInstruction {
+ from
+  s : EMFTVM!LocalVariableInstruction,
+  r : EMFTVM!Rule
+ to
+  t : EMFTVM!LocalVariableInstruction (
+   localVariable <- thisModule.resolveApply(Sequence {s.localVariable, r}, 'LocalVariable')
+  )
 }
