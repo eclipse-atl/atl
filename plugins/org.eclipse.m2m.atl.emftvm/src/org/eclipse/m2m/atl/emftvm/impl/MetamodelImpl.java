@@ -79,6 +79,7 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 	 * {@inheritDoc}
 	 * <!-- end-user-doc -->
 	 */
+	@Override
 	public synchronized EClassifier findType(final String typeName) {
 		if (types == null) {
 			types = createTypeTable(ambiguousTypes);
@@ -141,7 +142,10 @@ public class MetamodelImpl extends ModelImpl implements Metamodel {
 			final Set<Object> ignore,
 			final Set<String> ambiguousTypes) {
 		for (final EObject o : objects) {
-			switch (o.eClass().getClassifierID()) {
+			final int classifierId = (o.eClass().eResource() == EcorePackage.eINSTANCE.eResource())
+					? o.eClass().getClassifierID()
+					: -1;
+			switch (classifierId) {
 			case EcorePackage.EPACKAGE:
 				String pname = ((EPackage)o).getName();
 				if (ns != null) {

@@ -1,0 +1,13 @@
+-- @atlcompiler emftvm
+-- @path BUG62=/org.eclipse.m2m.atl.emftvm.tests/test-data/Regression/Bug62.ecore
+module "Regression::Bug62";
+create OUT: BUG62 from IN: BUG62;
+
+rule Bug62 {
+	from
+		s: BUG62!Bug62
+	to
+		t: BUG62!Bug62 (
+			name <- s.name
+		)
+}
