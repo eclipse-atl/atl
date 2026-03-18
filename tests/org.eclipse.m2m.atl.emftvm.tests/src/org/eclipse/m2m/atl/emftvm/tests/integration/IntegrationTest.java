@@ -598,6 +598,35 @@ public class IntegrationTest extends EMFTVMTest {
 
 	/**
 	 * Tests regression of
+	 * <a href="https://github.com/eclipse-atl/atl/issues/62">Bug # 62</a>.
+	 */
+	public void testBug62() {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		// Wrongly load xmi file instead of ecore file
+		final Metamodel metamodel = loadTestMetamodel(rs, "/test-data/Regression/Bug62.xmi");
+		final Model inmodel = loadTestModel(rs, "/test-data/Regression/Bug62.xmi");
+		final Model outmodel = createTestModel(rs, "/test-data/Regression/Bug62-out.xmi");
+		env.registerMetaModel("BUG62", metamodel);
+		env.registerInputModel("IN", inmodel);
+		env.registerOutputModel("OUT", outmodel);
+		try {
+			env.loadModule(createTestModuleResolver(), "Regression::Bug62");
+			td.finishLoading();
+			env.run(td);
+			td.finish();
+		} catch (final VMException e) {
+			assertTrue("Expected instance of IllegalArgumentException, but got " + e.getCause(),
+					IllegalArgumentException.class.isInstance(e.getCause()));
+			final String prefix = "Error during module loading: Type Bug62 not found in metamodel org.eclipse.m2m.atl.emftvm.impl.MetamodelImpl@";
+			assertTrue("Expected error message starting with \"" + prefix + "\", but got \"e.getMessage()\"",
+					e.getMessage().startsWith(prefix));
+		}
+	}
+
+	/**
+	 * Tests regression of
 	 * <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=582322">Bug #
 	 * 582322</a>.
 	 */
