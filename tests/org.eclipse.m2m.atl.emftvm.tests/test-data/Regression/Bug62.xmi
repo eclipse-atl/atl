@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bug62:Bug62 xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bug62="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/Bug62.ecore" xsi:schemaLocation="platform:/resource/org.eclipse.m2m.atl.emftvm.tests/test-data/Bug62.ecore Bug62.ecore" name="test"/>
