@@ -5,6 +5,7 @@ if (env.BRANCH_NAME == 'master')
 }
 
 def targetPlatformToJavaVersionMap = [
+  '2026-09' : '21',
   '2026-06' : '21',
   '2026-03' : '21',
   '2025-12' : '21',
