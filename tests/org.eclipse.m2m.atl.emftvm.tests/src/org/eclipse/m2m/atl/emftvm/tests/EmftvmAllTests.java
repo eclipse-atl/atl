@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2011-2012 Vrije Universiteit Brussel.
- * Copyright (c) 2023 Dennis Wagelaar.
+ * Copyright (c) 2023, 2026 Dennis Wagelaar.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import org.eclipse.m2m.atl.emftvm.tests.compiler.AtlResourceTest;
 import org.eclipse.m2m.atl.emftvm.tests.compiler.CompilerTest;
 import org.eclipse.m2m.atl.emftvm.tests.integration.IntegrationTest;
 import org.eclipse.m2m.atl.emftvm.tests.jit.ByteCodeSwitchTest;
+import org.eclipse.m2m.atl.emftvm.tests.jit.CodeBlockJITTest;
 import org.eclipse.m2m.atl.emftvm.tests.performance.ATLtoEMFTVMPerformanceTest;
 import org.eclipse.m2m.atl.emftvm.tests.performance.EcoreCopyPerformanceTest;
 import org.eclipse.m2m.atl.emftvm.tests.pojo.PojoModelTest;
@@ -83,6 +84,7 @@ public class EmftvmAllTests extends TestSuite {
 		suite.addTestSuite(StackFrameTest.class);
 		suite.addTestSuite(TupleTest.class);
 		suite.addTestSuite(ByteCodeSwitchTest.class);
+		suite.addTestSuite(CodeBlockJITTest.class);
 		suite.addTestSuite(PojoModelTest.class);
 		suite.addTestSuite(CompilerTest.class);
 		suite.addTestSuite(AtlResourceTest.class);

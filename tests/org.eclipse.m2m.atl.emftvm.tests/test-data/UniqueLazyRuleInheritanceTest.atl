@@ -54,7 +54,7 @@ unique lazy rule EClass extends EClassifier {
 	from
 		s : ECORE!EClass
 	to
-		t : ECORE!EClass (
+		t : ECORE!EClass mapsTo s (
 			"abstract" <- s."abstract"
 
 		)

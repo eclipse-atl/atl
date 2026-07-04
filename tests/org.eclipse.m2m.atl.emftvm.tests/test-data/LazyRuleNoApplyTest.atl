@@ -1,14 +1,15 @@
 -- @atlcompiler emftvm
 -- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
-module LazyRuleInheritanceTest;
+module LazyRuleNoApplyTest;
 
 create OUT : ECORE from IN : ECORE;
 
-lazy abstract rule EModelElement {
+lazy rule EModelElement {
 	from
 		s : ECORE!EModelElement
-	to
-		t : ECORE!EModelElement
+	do {
+		s;
+	}
 }
 
 lazy abstract rule ENamedElement extends EModelElement {
@@ -47,17 +48,12 @@ lazy abstract rule EClassifier extends ENamedElement {
 	from
 		s : ECORE!EClassifier
 	to
-		t : ECORE!EClassifier
+		t : ECORE!EClass mapsTo s
 }
 
 lazy rule EClass extends EClassifier {
 	from
 		s : ECORE!EClass
-	to
-		t : ECORE!EClass (
-			"abstract" <- s."abstract"
-
-		)
 }
 
 endpoint rule map() {
