@@ -11,8 +11,21 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
+import static org.junit.Assert.assertArrayEquals;
+
+import java.util.Collections;
+
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.ExecEnv;
+import org.eclipse.m2m.atl.emftvm.Field;
+import org.eclipse.m2m.atl.emftvm.InputRuleElement;
 import org.eclipse.m2m.atl.emftvm.Rule;
+import org.eclipse.m2m.atl.emftvm.trace.TraceLink;
+import org.eclipse.m2m.atl.emftvm.util.StackFrame;
+import org.eclipse.m2m.atl.emftvm.util.VMException;
 
 import junit.textui.TestRunner;
 
@@ -106,6 +119,7 @@ public class RuleTest extends NamedElementTest {
 	@Override
 	protected void setUp() throws Exception {
 		setFixture(EmftvmFactory.eINSTANCE.createRule());
+		getFixture().setName("testRule");
 	}
 
 	/**
@@ -127,9 +141,7 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testGetESuperRules() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		assertEquals(Collections.emptyList(), getFixture().getESuperRules());
 	}
 
 	/**
@@ -140,9 +152,7 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testGetESubRules() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		assertEquals(Collections.emptyList(), getFixture().getESubRules());
 	}
 
 	/**
@@ -153,9 +163,7 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testIsLeaf() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		assertTrue(getFixture().isLeaf());
 	}
 
 	/**
@@ -166,9 +174,7 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testIsWithLeaves() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		assertFalse(getFixture().isWithLeaves());
 	}
 
 	/**
@@ -179,9 +185,7 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testFindField__Object_String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		assertEquals(null, getFixture().findField(Object.class, "test"));
 	}
 
 	/**
@@ -192,9 +196,7 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testHasField__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		assertFalse(getFixture().hasField("test"));
 	}
 
 	/**
@@ -205,9 +207,7 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testFindStaticField__Object_String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		assertEquals(null, getFixture().findStaticField(Object.class, "test"));
 	}
 
 	/**
@@ -218,9 +218,7 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testHasStaticField__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		assertFalse(getFixture().hasStaticField("test"));
 	}
 
 	/**
@@ -231,22 +229,49 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testRegisterField__Field() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final Field field = EmftvmFactory.eINSTANCE.createField();
+		final EClassifier context = EcorePackage.eINSTANCE.getEClassifier();
+		field.setEContext(context);
+		final String name = "testField";
+		field.setName(name);
+		getFixture().registerField(field);
+		assertSame(field, getFixture().findField(context, name));
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#matchSingle(org.eclipse.m2m.atl.emftvm.util.StackFrame) <em>Match Single</em>}'
-	 * operation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.Rule#registerField(org.eclipse.m2m.atl.emftvm.Field)
+	 * <em>Register Field</em>}' operation. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#registerField(org.eclipse.m2m.atl.emftvm.Field)
+	 * @generated NOT
+	 */
+	public void testRegisterField__Field_JavaType() {
+		final Field field = EmftvmFactory.eINSTANCE.createField();
+		final EClassifier context = EcorePackage.eINSTANCE.getEJavaObject();
+		field.setEContext(context);
+		final String name = "testField";
+		field.setName(name);
+		getFixture().registerField(field);
+		assertSame(field, getFixture().findField(context.getInstanceClass(), name));
+	}
+
+	/**
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.Rule#matchSingle(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * <em>Match Single</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
 	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#matchSingle(org.eclipse.m2m.atl.emftvm.util.StackFrame)
 	 * @generated NOT
 	 */
 	public void testMatchSingle__StackFrame() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		assertFalse(getFixture().matchSingle(frame));
 	}
 
 	/**
@@ -257,9 +282,11 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testMatchRecursive__StackFrame() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		assertArrayEquals(new boolean[] { false, false }, getFixture().matchRecursive(frame));
 	}
 
 	/**
@@ -270,9 +297,11 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testMatchManual__StackFrame_Object() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		assertEquals(null, getFixture().matchManual(frame, new Object[] {}));
 	}
 
 	/**
@@ -283,8 +312,15 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testMatchManualTrace__StackFrame_Object() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		final TraceLink traceLink = getFixture().matchManualTrace(frame, new Object[] {});
+		assertNotNull(traceLink);
+		assertEquals(getFixture().getName(), traceLink.getRule().getRule());
+		assertEquals(Collections.emptyList(), traceLink.getSourceElements());
+		assertEquals(Collections.emptyList(), traceLink.getTargetElements());
 	}
 
 	/**
@@ -295,9 +331,11 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testMatchOne__StackFrame_Map() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		assertTrue(getFixture().matchOne(frame, Collections.emptyMap()));
 	}
 
 	/**
@@ -308,9 +346,11 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testMatchOneOnly__StackFrame_Map() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		assertTrue(getFixture().matchOneOnly(frame, Collections.emptyMap()));
 	}
 
 	/**
@@ -321,24 +361,62 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testCreateTraces__StackFrame() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		getFixture().matchOneOnly(frame, Collections.emptyMap());
+		getFixture().createTraces(frame);
+		assertEquals(1, env.getTraces().getRules().size());
+		assertEquals(getFixture().getName(), env.getTraces().getRules().get(0).getRule());
+		assertEquals(1, env.getTraces().getRules().get(0).getLinks().size());
+		assertEquals(Collections.emptyList(), env.getTraces().getRules().get(0).getLinks().get(0).getSourceElements());
+		assertEquals(Collections.emptyList(), env.getTraces().getRules().get(0).getLinks().get(0).getTargetElements());
+	}
 
+	/**
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.Rule#createTraces(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * <em>Create Traces</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#createTraces(org.eclipse.m2m.atl.emftvm.util.StackFrame)
+	 * @generated NOT
+	 */
+	public void testCreateTraces__StackFrame_noMatches() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		try {
+			getFixture().createTraces(frame);
+			fail("Expected VMException");
+		} catch (final VMException e) {
+			assertEquals("Cannot create traces for rule testRule; no matches exist", e.getMessage());
+			assertEquals(Collections.emptyList(), env.getTraces().getRules());
+		}
 	}
 
 	/**
 	 * Tests the '
 	 * {@link org.eclipse.m2m.atl.emftvm.Rule#completeTraceFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink)
-	 * <em>Complete Trace For</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <em>Complete Trace For</em>}' operation. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Rule#completeTraceFor(org.eclipse.m2m.atl.emftvm.util.StackFrame,
 	 *      org.eclipse.m2m.atl.emftvm.trace.TraceLink)
 	 * @generated NOT
 	 */
 	public void testCompleteTraceFor__StackFrame_TraceLink() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		final TraceLink traceLink = getFixture().matchManualTrace(frame, new Object[] {});
+		assertFalse(getFixture().completeTraceFor(frame, traceLink));
+		assertEquals(getFixture().getName(), traceLink.getRule().getRule());
+		assertEquals(Collections.emptyList(), traceLink.getSourceElements());
+		assertEquals(Collections.emptyList(), traceLink.getTargetElements());
 	}
 
 	/**
@@ -349,9 +427,12 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testApply__StackFrame() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		getFixture().matchManualTrace(frame, new Object[] {});
+		getFixture().apply(frame);
 	}
 
 	/**
@@ -362,9 +443,12 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testPostApply__StackFrame() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		getFixture().matchManualTrace(frame, new Object[] {});
+		getFixture().postApply(frame);
 	}
 
 	/**
@@ -375,9 +459,12 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testApplyFirst__StackFrame() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		getFixture().matchManualTrace(frame, new Object[] {});
+		getFixture().applyFirst(frame);
 	}
 
 	/**
@@ -388,8 +475,12 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testApplyOne__StackFrame_Map() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		assertTrue(getFixture().matchOne(frame, Collections.emptyMap()));
+		getFixture().applyOne(frame, Collections.emptyMap());
 	}
 
 	/**
@@ -400,21 +491,16 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testApplyOneTrace__StackFrame_Map() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-	}
-
-	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#applyOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink) <em>Apply One</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.m2m.atl.emftvm.Rule#applyOne(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink)
-	 * @generated NOT
-	 */
-	public void testApplyOne__StackFrame_TraceLink() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		assertTrue(getFixture().matchOne(frame, Collections.emptyMap()));
+		final TraceLink traceLink = getFixture().applyOneTrace(frame, Collections.emptyMap());
+		assertNotNull(traceLink);
+		assertEquals(getFixture().getName(), traceLink.getRule().getRule());
+		assertEquals(Collections.emptyList(), traceLink.getSourceElements());
+		assertEquals(Collections.emptyList(), traceLink.getTargetElements());
 	}
 
 	/**
@@ -422,13 +508,17 @@ public class RuleTest extends NamedElementTest {
 	 * {@link org.eclipse.m2m.atl.emftvm.Rule#applyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink)
 	 * <em>Apply For</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 *
-	 * @see org.eclipse.m2m.atl.emftvm.Rule#applyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame, org.eclipse.m2m.atl.emftvm.trace.TraceLink)
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#applyFor(org.eclipse.m2m.atl.emftvm.util.StackFrame,
+	 *      org.eclipse.m2m.atl.emftvm.trace.TraceLink)
 	 * @generated NOT
 	 */
 	public void testApplyFor__StackFrame_TraceLink() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		final TraceLink traceLink = getFixture().matchManualTrace(frame, new Object[] {});
+		assertEquals(null, getFixture().applyFor(frame, traceLink));
 	}
 
 	/**
@@ -441,9 +531,12 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testPostApplyFor__StackFrame_TraceLink() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		final TraceLink traceLink = getFixture().matchManualTrace(frame, new Object[] {});
+		assertEquals(null, getFixture().postApplyFor(frame, traceLink));
 	}
 
 	/**
@@ -454,9 +547,7 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testGetAllESuperRules() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		assertEquals(Collections.emptySet(), getFixture().getAllESuperRules());
 	}
 
 	/**
@@ -467,9 +558,12 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testCreateUniqueMapping__TraceLink() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		final TraceLink traceLink = getFixture().matchManualTrace(frame, new Object[] {});
+		getFixture().createUniqueMapping(traceLink);
 	}
 
 	/**
@@ -480,9 +574,8 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testCompileState__ExecEnv() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
 	}
 
 	/**
@@ -493,9 +586,7 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testResetState() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		getFixture().resetState();
 	}
 
 	/**
@@ -506,9 +597,25 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testCompileIterables__ExecEnv() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		getFixture().compileIterables(env);
+	}
 
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#compileIterables(org.eclipse.m2m.atl.emftvm.ExecEnv) <em>Compile Iterables</em>}'
+	 * operation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#compileIterables(org.eclipse.m2m.atl.emftvm.ExecEnv)
+	 * @generated NOT
+	 */
+	public void testCompileIterables__ExecEnv_noRuleState() {
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		try {
+			getFixture().compileIterables(env);
+			fail("Expected NullPointerException");
+		} catch (final NullPointerException e) {
+		}
 	}
 
 	/**
@@ -519,9 +626,19 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testClearFields() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		final Field field = EmftvmFactory.eINSTANCE.createField();
+		final EClassifier context = EcorePackage.eINSTANCE.getEClassifier();
+		field.setEContext(context);
+		final String name = "testField";
+		final String value = "testValue";
+		field.setName(name);
+		getFixture().registerField(field);
+		field.setValue(this, value);
+		assertEquals(value, field.getValue(this));
 
+		getFixture().clearFields();
+
+		assertEquals(null, field.getValue(this));
 	}
 
 	/**
@@ -532,8 +649,39 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testFindInputElement__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		final InputRuleElement ire = EmftvmFactory.eINSTANCE.createInputRuleElement();
+		ire.setName("s");
+		getFixture().getInputElements().add(ire);
+		assertEquals(ire, getFixture().findInputElement(ire.getName()));
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Rule#findInputElement(java.lang.String) <em>Find Input Element</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#findInputElement(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testFindInputElement__String_superRules() {
+		final InputRuleElement ire = EmftvmFactory.eINSTANCE.createInputRuleElement();
+		ire.setName("s");
+		final Rule superRule = EmftvmFactory.eINSTANCE.createRule();
+		superRule.getInputElements().add(ire);
+		getFixture().getESuperRules().add(superRule);
+		assertEquals(ire, getFixture().findInputElement(ire.getName()));
+	}
+
+	/**
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.Rule#findInputElement(java.lang.String)
+	 * <em>Find Input Element</em>}' operation. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Rule#findInputElement(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testFindInputElement__String_null() {
+		assertEquals(null, getFixture().findInputElement("name"));
 	}
 
 	/**
@@ -544,8 +692,11 @@ public class RuleTest extends NamedElementTest {
 	 * @generated NOT
 	 */
 	public void testGetUniqueTrace__StackFrame_Object() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		getFixture().compileState(env);
+		final CodeBlock main = EmftvmFactory.eINSTANCE.createCodeBlock();
+		final StackFrame frame = new StackFrame(env, main);
+		assertEquals(null, getFixture().getUniqueTrace(frame, new Object[] {}));
 	}
 
 } //RuleTest
