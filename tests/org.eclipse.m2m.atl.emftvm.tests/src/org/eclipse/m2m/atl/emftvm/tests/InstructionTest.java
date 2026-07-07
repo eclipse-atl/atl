@@ -11,9 +11,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import junit.framework.TestCase;
-
 import org.eclipse.m2m.atl.emftvm.Instruction;
+
+import junit.framework.TestCase;
 
 /**
  * <!-- begin-user-doc -->
@@ -47,7 +47,7 @@ public abstract class InstructionTest extends TestCase {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public InstructionTest(String name) {
+	public InstructionTest(final String name) {
 		super(name);
 	}
 
@@ -57,7 +57,7 @@ public abstract class InstructionTest extends TestCase {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void setFixture(Instruction fixture) {
+	protected void setFixture(final Instruction fixture) {
 		this.fixture = fixture;
 	}
 
@@ -74,53 +74,62 @@ public abstract class InstructionTest extends TestCase {
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getOpcode() <em>Opcode</em>}' feature getter. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getOpcode()
 	 * @generated NOT
 	 */
 	public void testGetOpcode() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		// Create a fixture instance
+		final Instruction fixture = this.getFixture();
 
+		// Test that the default value is 0
+		assertEquals(0, fixture.getOpcode());
 	}
 
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction() <em>Stack Production</em>}' feature getter. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction()
 	 * @generated NOT
 	 */
 	public void testGetStackProduction() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		// Create a fixture instance
+		final Instruction fixture = this.getFixture();
 
+		// Test that the default value is 0
+		assertEquals(0, fixture.getStackProduction());
 	}
 
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption() <em>Stack Consumption</em>}' feature getter. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption()
 	 * @generated NOT
 	 */
 	public void testGetStackConsumption() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		// Create a fixture instance
+		final Instruction fixture = this.getFixture();
 
+		// Test that the default value is 0
+		assertEquals(0, fixture.getStackConsumption());
 	}
 
 	/**
 	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel() <em>Stack Level</em>}' feature getter. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackLevel()
 	 * @generated NOT
 	 */
 	public void testGetStackLevel() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		// Create a fixture instance
+		final Instruction fixture = this.getFixture();
 
+		// Test that the default value is stackProduction - stackConsumption
+		final int expected = fixture.getStackProduction() - fixture.getStackConsumption();
+		assertEquals(expected, fixture.getStackLevel());
 	}
 
 } //InstructionTest

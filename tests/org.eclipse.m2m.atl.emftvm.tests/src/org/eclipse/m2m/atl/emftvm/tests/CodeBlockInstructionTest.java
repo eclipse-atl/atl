@@ -35,7 +35,7 @@ public abstract class CodeBlockInstructionTest extends InstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public CodeBlockInstructionTest(String name) {
+	public CodeBlockInstructionTest(final String name) {
 		super(name);
 	}
 
@@ -51,9 +51,10 @@ public abstract class CodeBlockInstructionTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCbIndex() <em>Cb Index</em>}' feature getter. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCbIndex() <em>Cb
+	 * Index</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCbIndex()
 	 * @generated NOT
 	 */
@@ -64,9 +65,11 @@ public abstract class CodeBlockInstructionTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#setCbIndex(int) <em>Cb Index</em>}' feature setter. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#setCbIndex(int)
+	 * <em>Cb Index</em>}' feature setter. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#setCbIndex(int)
 	 * @generated NOT
 	 */
@@ -77,9 +80,11 @@ public abstract class CodeBlockInstructionTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCodeBlock() <em>Code Block</em>}' feature getter. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCodeBlock()
+	 * <em>Code Block</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#getCodeBlock()
 	 * @generated NOT
 	 */
@@ -90,9 +95,11 @@ public abstract class CodeBlockInstructionTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#setCodeBlock(org.eclipse.m2m.atl.emftvm.CodeBlock)
-	 * <em>Code Block</em>}' feature setter. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#setCodeBlock(org.eclipse.m2m.atl.emftvm.CodeBlock)
+	 * <em>Code Block</em>}' feature setter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.CodeBlockInstruction#setCodeBlock(org.eclipse.m2m.atl.emftvm.CodeBlock)
 	 * @generated NOT
 	 */

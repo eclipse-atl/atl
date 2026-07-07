@@ -11,10 +11,12 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import junit.textui.TestRunner;
-
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.Instruction;
+import org.eclipse.m2m.atl.emftvm.Opcode;
 import org.eclipse.m2m.atl.emftvm.Push;
+
+import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +32,7 @@ public class PushTest extends InstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		TestRunner.run(PushTest.class);
 	}
 
@@ -40,7 +42,7 @@ public class PushTest extends InstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PushTest(String name) {
+	public PushTest(final String name) {
 		super(name);
 	}
 
@@ -75,6 +77,40 @@ public class PushTest extends InstructionTest {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getOpcode()
+	 * <em>Opcode</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getOpcode()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetOpcode() {
+		// Create a fixture instance
+		final Instruction fixture = this.getFixture();
+
+		// Test that the default value is 0
+		assertEquals(Opcode.PUSH, fixture.getOpcode());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction()
+	 * <em>Stack Production</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetStackProduction() {
+		// Create a fixture instance
+		final Instruction fixture = this.getFixture();
+
+		// Test that the default value is 0
+		assertEquals(1, fixture.getStackProduction());
 	}
 
 } //PushTest

@@ -11,10 +11,12 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import junit.textui.TestRunner;
-
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.Ifte;
+import org.eclipse.m2m.atl.emftvm.Instruction;
+import org.eclipse.m2m.atl.emftvm.Opcode;
+
+import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
@@ -39,7 +41,7 @@ public class IfteTest extends InstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		TestRunner.run(IfteTest.class);
 	}
 
@@ -49,7 +51,7 @@ public class IfteTest extends InstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IfteTest(String name) {
+	public IfteTest(final String name) {
 		super(name);
 	}
 
@@ -87,9 +89,61 @@ public class IfteTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getThenCbIndex() <em>Then Cb Index</em>}' feature getter. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getOpcode()
+	 * <em>Opcode</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getOpcode()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetOpcode() {
+		// Create a fixture instance
+		final Instruction fixture = this.getFixture();
+
+		// Test that the default value is 0
+		assertEquals(Opcode.IFTE, fixture.getOpcode());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction()
+	 * <em>Stack Production</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetStackProduction() {
+		// Create a fixture instance
+		final Instruction fixture = this.getFixture();
+
+		// Test that the default value is 0
+		assertEquals(1, fixture.getStackProduction());
+	}
+
+	/**
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption()
+	 * <em>Stack Consumption</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetStackConsumption() {
+		// Create a fixture instance
+		final Instruction fixture = this.getFixture();
+
+		// Test that the default value is 0
+		assertEquals(1, fixture.getStackConsumption());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getThenCbIndex() <em>Then
+	 * Cb Index</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#getThenCbIndex()
 	 * @generated NOT
 	 */
@@ -100,9 +154,10 @@ public class IfteTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#setThenCbIndex(int) <em>Then Cb Index</em>}' feature setter. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#setThenCbIndex(int)
+	 * <em>Then Cb Index</em>}' feature setter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#setThenCbIndex(int)
 	 * @generated NOT
 	 */
@@ -113,9 +168,9 @@ public class IfteTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getElseCbIndex() <em>Else Cb Index</em>}' feature getter. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getElseCbIndex() <em>Else
+	 * Cb Index</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#getElseCbIndex()
 	 * @generated NOT
 	 */
@@ -126,9 +181,10 @@ public class IfteTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#setElseCbIndex(int) <em>Else Cb Index</em>}' feature setter. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#setElseCbIndex(int)
+	 * <em>Else Cb Index</em>}' feature setter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#setElseCbIndex(int)
 	 * @generated NOT
 	 */
@@ -139,9 +195,9 @@ public class IfteTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getThenCb() <em>Then Cb</em>}' feature getter. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getThenCb() <em>Then
+	 * Cb</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#getThenCb()
 	 * @generated NOT
 	 */
@@ -152,9 +208,11 @@ public class IfteTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#setThenCb(org.eclipse.m2m.atl.emftvm.CodeBlock) <em>Then Cb</em>}' feature setter.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.Ifte#setThenCb(org.eclipse.m2m.atl.emftvm.CodeBlock)
+	 * <em>Then Cb</em>}' feature setter. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#setThenCb(org.eclipse.m2m.atl.emftvm.CodeBlock)
 	 * @generated NOT
 	 */
@@ -165,9 +223,9 @@ public class IfteTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getElseCb() <em>Else Cb</em>}' feature getter. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#getElseCb() <em>Else
+	 * Cb</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#getElseCb()
 	 * @generated NOT
 	 */
@@ -178,9 +236,11 @@ public class IfteTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Ifte#setElseCb(org.eclipse.m2m.atl.emftvm.CodeBlock) <em>Else Cb</em>}' feature setter.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.Ifte#setElseCb(org.eclipse.m2m.atl.emftvm.CodeBlock)
+	 * <em>Else Cb</em>}' feature setter. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.Ifte#setElseCb(org.eclipse.m2m.atl.emftvm.CodeBlock)
 	 * @generated NOT
 	 */

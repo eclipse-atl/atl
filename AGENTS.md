@@ -8,10 +8,10 @@
 
 This project uses the Eclipse Tycho plug-in for Maven. Dependency reolution is done via P2 instead of standard Maven dependencies.
 
-- **Build:** `mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify`
+- **Build:** `mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -Dpromote=false`
   - Cleans the target directory, compiles the code, runs tests, and packages the application.
 
-- **Parallel Build:** `mvn -T $(nproc) -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify`
+- **Parallel Build:** `mvn -T $(nproc) -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -Dpromote=false`
   - Cleans the target directory, compiles the code, runs tests, and packages the application with $(nproc) parallel threads.
 
 - **Run Tests:** `mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml test`
@@ -24,14 +24,14 @@ mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -DskipTests
 
 - **Specific target platform** (default is `2025-12`):
 ```bash
-mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -Dtarget-platform=2026-06
+mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -Dpromote=false -Dtarget-platform=2026-06
 ```
 
 - **Run a single test class** (Tycho surefire, must be an Eclipse fragment test):
 ```bash
 mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml verify \
   -pl ../../tests/org.eclipse.m2m.atl.emftvm.tests \
-  -Dtest=StackFrameTest
+  -Dpromote=false -Dtest=StackFrameTest
 ```
 
 - Java 21 is required for target platforms 2025-03 and later; Java 17 for 2024-12 and earlier.

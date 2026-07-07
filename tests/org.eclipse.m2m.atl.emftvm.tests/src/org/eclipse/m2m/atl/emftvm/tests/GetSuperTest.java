@@ -3,10 +3,12 @@
  */
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import junit.textui.TestRunner;
-
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.GetSuper;
+import org.eclipse.m2m.atl.emftvm.Instruction;
+import org.eclipse.m2m.atl.emftvm.Opcode;
+
+import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +23,7 @@ public class GetSuperTest extends FieldInstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		TestRunner.run(GetSuperTest.class);
 	}
 
@@ -31,7 +33,7 @@ public class GetSuperTest extends FieldInstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public GetSuperTest(String name) {
+	public GetSuperTest(final String name) {
 		super(name);
 	}
 
@@ -66,6 +68,58 @@ public class GetSuperTest extends FieldInstructionTest {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getOpcode()
+	 * <em>Opcode</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getOpcode()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetOpcode() {
+		// Create a fixture instance
+		final Instruction fixture = this.getFixture();
+
+		// Test that the default value is 0
+		assertEquals(Opcode.GET_SUPER, fixture.getOpcode());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction()
+	 * <em>Stack Production</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetStackProduction() {
+		// Create a fixture instance
+		final Instruction fixture = this.getFixture();
+
+		// Test that the default value is 0
+		assertEquals(1, fixture.getStackProduction());
+	}
+
+	/**
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption()
+	 * <em>Stack Consumption</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetStackConsumption() {
+		// Create a fixture instance
+		final Instruction fixture = this.getFixture();
+
+		// Test that the default value is 0
+		assertEquals(1, fixture.getStackConsumption());
 	}
 
 } //GetSuperTest

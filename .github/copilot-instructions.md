@@ -6,29 +6,29 @@ Eclipse ATL (ATL Transformation Language) is a Model-Driven Engineering toolkit 
 
 **Full build (compile + test):**
 ```bash
-mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify
+mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -Dpromote=false
 ```
 
 **Full parallel build (compile + test):**
 ```bash
-mvn -T $(nproc) -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify
+mvn -T $(nproc) -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -Dpromote=false
 ```
 
 **Skip tests:**
 ```bash
-mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -DskipTests
+mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -Dpromote=false -DskipTests
 ```
 
 **Specific target platform** (default is `2025-12`):
 ```bash
-mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -Dtarget-platform=2026-06
+mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -Dpromote=false -Dtarget-platform=2026-06
 ```
 
 **Run a single test class** (Tycho surefire, must be an Eclipse fragment test):
 ```bash
 mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml verify \
   -pl ../../tests/org.eclipse.m2m.atl.emftvm.tests \
-  -Dtest=StackFrameTest
+  -Dpromote=false -Dtest=StackFrameTest
 ```
 
 - Java 21 is required for target platforms 2025-03 and later; Java 17 for 2024-12 and earlier.
