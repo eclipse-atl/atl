@@ -11,7 +11,9 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
+import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.CodeBlockInstruction;
+import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 
 /**
  * <!-- begin-user-doc -->
@@ -59,9 +61,10 @@ public abstract class CodeBlockInstructionTest extends InstructionTest {
 	 * @generated NOT
 	 */
 	public void testGetCbIndex() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		final CodeBlockInstruction fixture = this.getFixture();
 
+		// Test that the default value is -1 (as specified in the interface)
+		assertEquals(-1, fixture.getCbIndex());
 	}
 
 	/**
@@ -74,9 +77,12 @@ public abstract class CodeBlockInstructionTest extends InstructionTest {
 	 * @generated NOT
 	 */
 	public void testSetCbIndex() {
-		// TODO: implement this feature setter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		final CodeBlockInstruction fixture = this.getFixture();
 
+		// Test setting and getting a value
+		final int expected = 5;
+		fixture.setCbIndex(expected);
+		assertEquals(expected, fixture.getCbIndex());
 	}
 
 	/**
@@ -89,9 +95,10 @@ public abstract class CodeBlockInstructionTest extends InstructionTest {
 	 * @generated NOT
 	 */
 	public void testGetCodeBlock() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		final CodeBlockInstruction fixture = this.getFixture();
 
+		// Test that the default value is null (as specified in the interface)
+		assertNull(fixture.getCodeBlock());
 	}
 
 	/**
@@ -104,9 +111,12 @@ public abstract class CodeBlockInstructionTest extends InstructionTest {
 	 * @generated NOT
 	 */
 	public void testSetCodeBlock() {
-		// TODO: implement this feature setter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		final CodeBlockInstruction fixture = this.getFixture();
 
+		// Test setting and getting a value
+		final CodeBlock expected = EmftvmFactory.eINSTANCE.createCodeBlock();
+		fixture.setCodeBlock(expected);
+		assertEquals(expected, fixture.getCodeBlock());
 	}
 
 } //CodeBlockInstructionTest
