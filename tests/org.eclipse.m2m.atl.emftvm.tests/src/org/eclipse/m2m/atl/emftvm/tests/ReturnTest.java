@@ -89,10 +89,7 @@ public class ReturnTest extends InstructionTest {
 	 */
 	@Override
 	public void testGetOpcode() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
-
-		// Test that the default value is 0
 		assertEquals(Opcode.RETURN, fixture.getOpcode());
 	}
 

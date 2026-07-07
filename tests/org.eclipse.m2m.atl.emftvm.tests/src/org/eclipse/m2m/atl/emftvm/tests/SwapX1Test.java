@@ -89,10 +89,7 @@ public class SwapX1Test extends InstructionTest {
 	 */
 	@Override
 	public void testGetOpcode() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
-
-		// Test that the default value is 0
 		assertEquals(Opcode.SWAP_X1, fixture.getOpcode());
 	}
 
@@ -106,7 +103,6 @@ public class SwapX1Test extends InstructionTest {
 	 */
 	@Override
 	public void testGetStackProduction() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
 
 		// Test that the default value is 0
@@ -124,7 +120,6 @@ public class SwapX1Test extends InstructionTest {
 	 */
 	@Override
 	public void testGetStackConsumption() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
 
 		// Test that the default value is 0

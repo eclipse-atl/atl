@@ -89,10 +89,7 @@ public class AddTest extends FieldInstructionTest {
 	 */
 	@Override
 	public void testGetOpcode() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
-
-		// Test that the default value is 0
 		assertEquals(Opcode.ADD, fixture.getOpcode());
 	}
 
@@ -107,10 +104,7 @@ public class AddTest extends FieldInstructionTest {
 	 */
 	@Override
 	public void testGetStackConsumption() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
-
-		// Test that the default value is 0
 		assertEquals(2, fixture.getStackConsumption());
 	}
 

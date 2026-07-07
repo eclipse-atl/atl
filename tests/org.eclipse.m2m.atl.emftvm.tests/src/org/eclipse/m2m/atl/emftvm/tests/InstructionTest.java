@@ -79,7 +79,6 @@ public abstract class InstructionTest extends TestCase {
 	 * @generated NOT
 	 */
 	public void testGetOpcode() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
 
 		// Test that the default value is 0
@@ -94,7 +93,6 @@ public abstract class InstructionTest extends TestCase {
 	 * @generated NOT
 	 */
 	public void testGetStackProduction() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
 
 		// Test that the default value is 0
@@ -109,7 +107,6 @@ public abstract class InstructionTest extends TestCase {
 	 * @generated NOT
 	 */
 	public void testGetStackConsumption() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
 
 		// Test that the default value is 0
@@ -124,7 +121,6 @@ public abstract class InstructionTest extends TestCase {
 	 * @generated NOT
 	 */
 	public void testGetStackLevel() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
 
 		// Test that the default value is stackProduction - stackConsumption

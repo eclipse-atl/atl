@@ -89,10 +89,7 @@ public class IfTest extends BranchInstructionTest {
 	 */
 	@Override
 	public void testGetOpcode() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
-
-		// Test that the default value is 0
 		assertEquals(Opcode.IF, fixture.getOpcode());
 	}
 
@@ -107,10 +104,7 @@ public class IfTest extends BranchInstructionTest {
 	 */
 	@Override
 	public void testGetStackConsumption() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
-
-		// Test that the default value is 0
 		assertEquals(1, fixture.getStackConsumption());
 	}
 

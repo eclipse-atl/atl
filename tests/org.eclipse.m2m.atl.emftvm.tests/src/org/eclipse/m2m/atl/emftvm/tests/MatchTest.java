@@ -89,10 +89,7 @@ public class MatchTest extends InvokeInstructionTest {
 	 */
 	@Override
 	public void testGetOpcode() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
-
-		// Test that the default value is 0
 		assertEquals(Opcode.MATCH, fixture.getOpcode());
 	}
 
@@ -106,10 +103,7 @@ public class MatchTest extends InvokeInstructionTest {
 	 */
 	@Override
 	public void testGetStackProduction() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
-
-		// Test that the default value is 0
 		assertEquals(1, fixture.getStackProduction());
 	}
 

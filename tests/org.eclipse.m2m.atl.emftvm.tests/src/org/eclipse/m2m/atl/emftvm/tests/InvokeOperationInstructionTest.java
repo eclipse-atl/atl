@@ -54,10 +54,7 @@ public abstract class InvokeOperationInstructionTest extends InvokeInstructionTe
 	 */
 	@Override
 	public void testGetStackProduction() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
-
-		// Test that the default value is 0
 		assertEquals(1, fixture.getStackProduction());
 	}
 
@@ -72,10 +69,7 @@ public abstract class InvokeOperationInstructionTest extends InvokeInstructionTe
 	 */
 	@Override
 	public void testGetStackConsumption() {
-		// Create a fixture instance
 		final Instruction fixture = this.getFixture();
-
-		// Test that the default value is 0
 		assertEquals(1, fixture.getStackConsumption());
 	}
 
