@@ -12,6 +12,8 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import org.eclipse.m2m.atl.emftvm.BranchInstruction;
+import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.Instruction;
 
 /**
  * <!-- begin-user-doc -->
@@ -35,7 +37,7 @@ public abstract class BranchInstructionTest extends InstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public BranchInstructionTest(String name) {
+	public BranchInstructionTest(final String name) {
 		super(name);
 	}
 
@@ -51,55 +53,61 @@ public abstract class BranchInstructionTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#getOffset() <em>Offset</em>}' feature getter. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#getOffset()
+	 * <em>Offset</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.BranchInstruction#getOffset()
 	 * @generated NOT
 	 */
 	public void testGetOffset() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final BranchInstruction fixture = this.getFixture();
+		assertEquals(-1, fixture.getOffset());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#setOffset(int) <em>Offset</em>}' feature setter. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#setOffset(int)
+	 * <em>Offset</em>}' feature setter. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.BranchInstruction#setOffset(int)
 	 * @generated NOT
 	 */
 	public void testSetOffset() {
-		// TODO: implement this feature setter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final BranchInstruction fixture = this.getFixture();
+		final int expectedOffset = 10;
+		fixture.setOffset(expectedOffset);
+		assertEquals(expectedOffset, fixture.getOffset());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#getTarget() <em>Target</em>}' feature getter. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#getTarget()
+	 * <em>Target</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.BranchInstruction#getTarget()
 	 * @generated NOT
 	 */
 	public void testGetTarget() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final BranchInstruction fixture = this.getFixture();
+		assertEquals((Instruction) null, fixture.getTarget());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#setTarget(org.eclipse.m2m.atl.emftvm.Instruction) <em>Target</em>}'
-	 * feature setter. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.BranchInstruction#setTarget(org.eclipse.m2m.atl.emftvm.Instruction)
+	 * <em>Target</em>}' feature setter. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.BranchInstruction#setTarget(org.eclipse.m2m.atl.emftvm.Instruction)
 	 * @generated NOT
 	 */
 	public void testSetTarget() {
-		// TODO: implement this feature setter test method
-		// Ensure that you remove @generated or mark it @generated NOT
-
+		final BranchInstruction fixture = this.getFixture();
+		final Instruction target = EmftvmFactory.eINSTANCE.createAdd();
+		fixture.setTarget(target);
+		final Instruction actualTarget = fixture.getTarget();
+		assertEquals(target, actualTarget);
 	}
 
 } //BranchInstructionTest

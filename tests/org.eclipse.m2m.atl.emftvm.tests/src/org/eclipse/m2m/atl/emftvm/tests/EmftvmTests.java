@@ -29,7 +29,7 @@ public class EmftvmTests extends TestSuite {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		TestRunner.run(suite());
 	}
 
@@ -39,7 +39,7 @@ public class EmftvmTests extends TestSuite {
 	 * @generated
 	 */
 	public static Test suite() {
-		TestSuite suite = new EmftvmTests("emftvm Tests");
+		final TestSuite suite = new EmftvmTests("emftvm Tests");
 		suite.addTestSuite(ExecEnvTest.class);
 		suite.addTestSuite(ModelTest.class);
 		suite.addTestSuite(MetamodelTest.class);
@@ -110,7 +110,7 @@ public class EmftvmTests extends TestSuite {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EmftvmTests(String name) {
+	public EmftvmTests(final String name) {
 		super(name);
 	}
 
