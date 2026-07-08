@@ -40,8 +40,8 @@ mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml verify \
 
 | Directory | Contents |
 |-----------|----------|
-| `plugins/` | All Eclipse OSGi bundles (production code) |
-| `tests/` | Test bundles (`eclipse-test-plugin` packaging) |
+| `plugins/` | Production Eclipse OSGi bundles (production code, without `.tests` in their name) |
+| `tests/` | Test OSGi bundles (`eclipse-test-plugin` packaging, with `.tests` in their name) |
 | `releng/` | Parent POM, target platform definitions (`tp/*.target`), update site |
 | `dsls/` | ATL and ACG language definitions (Syntax, Metamodel, Compiler, RuntimeSupport) |
 | `doc/` | Cheatsheets and documentation bundles |

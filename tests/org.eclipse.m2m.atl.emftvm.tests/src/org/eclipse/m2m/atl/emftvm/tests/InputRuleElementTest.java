@@ -11,10 +11,12 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import junit.textui.TestRunner;
-
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.InputRuleElement;
+
+import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,7 +38,7 @@ public class InputRuleElementTest extends RuleElementTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		TestRunner.run(InputRuleElementTest.class);
 	}
 
@@ -46,7 +48,7 @@ public class InputRuleElementTest extends RuleElementTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public InputRuleElementTest(String name) {
+	public InputRuleElementTest(final String name) {
 		super(name);
 	}
 
@@ -84,15 +86,19 @@ public class InputRuleElementTest extends RuleElementTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.InputRuleElement#createIterable(org.eclipse.m2m.atl.emftvm.ExecEnv)
-	 * <em>Create Iterable</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.InputRuleElement#createIterable(org.eclipse.m2m.atl.emftvm.ExecEnv)
+	 * <em>Create Iterable</em>}' operation. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.InputRuleElement#createIterable(org.eclipse.m2m.atl.emftvm.ExecEnv)
 	 * @generated NOT
 	 */
 	public void testCreateIterable__ExecEnv() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final Iterable<EObject> result = getFixture().createIterable(env);
+		assertNotNull(result);
+		assertFalse(result.iterator().hasNext());
 	}
 
 } //InputRuleElementTest

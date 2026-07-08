@@ -124,6 +124,7 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public int getThenCbIndex() {
 		if (thenCbIndex == THEN_CB_INDEX_EDEFAULT) {
 			final CodeBlock ob = getOwningBlock();
@@ -132,7 +133,7 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 				thenCbIndex = ob.getNested().indexOf(cb);
 				if (thenCbIndex < 0) {
 					throw new IllegalArgumentException(String.format(
-							"Code block argument %s not found with nested code blocks of %s", 
+							"Code block argument %s not found with nested code blocks of %s",
 							cb, ob));
 				}
 			}
@@ -146,8 +147,9 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void setThenCbIndex(int newThenCbIndex) {
-		int oldThenCbIndex = thenCbIndex;
+	@Override
+	public void setThenCbIndex(final int newThenCbIndex) {
+		final int oldThenCbIndex = thenCbIndex;
 		thenCbIndex = newThenCbIndex;
 		if (newThenCbIndex != THEN_CB_INDEX_EDEFAULT) { // this value is normally derived
 			thenCb = null;
@@ -162,6 +164,7 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public int getElseCbIndex() {
 		if (elseCbIndex == ELSE_CB_INDEX_EDEFAULT) {
 			final CodeBlock ob = getOwningBlock();
@@ -170,7 +173,7 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 				elseCbIndex = ob.getNested().indexOf(cb);
 				if (elseCbIndex < 0) {
 					throw new IllegalArgumentException(String.format(
-							"Code block argument %s not found with nested code blocks of %s", 
+							"Code block argument %s not found with nested code blocks of %s",
 							cb, ob));
 				}
 			}
@@ -184,8 +187,9 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void setElseCbIndex(int newElseCbIndex) {
-		int oldElseCbIndex = elseCbIndex;
+	@Override
+	public void setElseCbIndex(final int newElseCbIndex) {
+		final int oldElseCbIndex = elseCbIndex;
 		elseCbIndex = newElseCbIndex;
 		if (newElseCbIndex != ELSE_CB_INDEX_EDEFAULT) { // this value is normally derived
 			elseCb = null;
@@ -200,6 +204,7 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public CodeBlock getThenCb() {
 		if (thenCb == null) {
 			final CodeBlock ob = getOwningBlock();
@@ -209,7 +214,7 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 			}
 		}
 		if (thenCb != null && thenCb.eIsProxy()) {
-			InternalEObject oldThenCb = (InternalEObject)thenCb;
+			final InternalEObject oldThenCb = (InternalEObject)thenCb;
 			thenCb = (CodeBlock)eResolveProxy(oldThenCb);
 			if (thenCb != oldThenCb) {
 				if (eNotificationRequired())
@@ -242,8 +247,9 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void setThenCb(CodeBlock newThenCb) {
-		CodeBlock oldThenCb = thenCb;
+	@Override
+	public void setThenCb(final CodeBlock newThenCb) {
+		final CodeBlock oldThenCb = thenCb;
 		thenCb = newThenCb;
 		thenCbIndex = THEN_CB_INDEX_EDEFAULT;
 		if (eNotificationRequired())
@@ -256,6 +262,7 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public CodeBlock getElseCb() {
 		if (elseCb == null) {
 			final CodeBlock ob = getOwningBlock();
@@ -265,7 +272,7 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 			}
 		}
 		if (elseCb != null && elseCb.eIsProxy()) {
-			InternalEObject oldElseCb = (InternalEObject)elseCb;
+			final InternalEObject oldElseCb = (InternalEObject)elseCb;
 			elseCb = (CodeBlock)eResolveProxy(oldElseCb);
 			if (elseCb != oldElseCb) {
 				if (eNotificationRequired())
@@ -298,8 +305,9 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
-	public void setElseCb(CodeBlock newElseCb) {
-		CodeBlock oldElseCb = elseCb;
+	@Override
+	public void setElseCb(final CodeBlock newElseCb) {
+		final CodeBlock oldElseCb = elseCb;
 		elseCb = newElseCb;
 		elseCbIndex = ELSE_CB_INDEX_EDEFAULT;
 		if (eNotificationRequired())
@@ -313,18 +321,18 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * @generated
 	 */
 	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+	public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
 		switch (featureID) {
-			case EmftvmPackage.IFTE__THEN_CB_INDEX:
-				return getThenCbIndex();
-			case EmftvmPackage.IFTE__ELSE_CB_INDEX:
-				return getElseCbIndex();
-			case EmftvmPackage.IFTE__THEN_CB:
-				if (resolve) return getThenCb();
-				return basicGetThenCb();
-			case EmftvmPackage.IFTE__ELSE_CB:
-				if (resolve) return getElseCb();
-				return basicGetElseCb();
+		case EmftvmPackage.IFTE__THEN_CB_INDEX:
+			return getThenCbIndex();
+		case EmftvmPackage.IFTE__ELSE_CB_INDEX:
+			return getElseCbIndex();
+		case EmftvmPackage.IFTE__THEN_CB:
+			if (resolve) return getThenCb();
+			return basicGetThenCb();
+		case EmftvmPackage.IFTE__ELSE_CB:
+			if (resolve) return getElseCb();
+			return basicGetElseCb();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -336,20 +344,20 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * @generated
 	 */
 	@Override
-	public void eSet(int featureID, Object newValue) {
+	public void eSet(final int featureID, final Object newValue) {
 		switch (featureID) {
-			case EmftvmPackage.IFTE__THEN_CB_INDEX:
-				setThenCbIndex((Integer)newValue);
-				return;
-			case EmftvmPackage.IFTE__ELSE_CB_INDEX:
-				setElseCbIndex((Integer)newValue);
-				return;
-			case EmftvmPackage.IFTE__THEN_CB:
-				setThenCb((CodeBlock)newValue);
-				return;
-			case EmftvmPackage.IFTE__ELSE_CB:
-				setElseCb((CodeBlock)newValue);
-				return;
+		case EmftvmPackage.IFTE__THEN_CB_INDEX:
+			setThenCbIndex((Integer)newValue);
+			return;
+		case EmftvmPackage.IFTE__ELSE_CB_INDEX:
+			setElseCbIndex((Integer)newValue);
+			return;
+		case EmftvmPackage.IFTE__THEN_CB:
+			setThenCb((CodeBlock)newValue);
+			return;
+		case EmftvmPackage.IFTE__ELSE_CB:
+			setElseCb((CodeBlock)newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -361,20 +369,20 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * @generated
 	 */
 	@Override
-	public void eUnset(int featureID) {
+	public void eUnset(final int featureID) {
 		switch (featureID) {
-			case EmftvmPackage.IFTE__THEN_CB_INDEX:
-				setThenCbIndex(THEN_CB_INDEX_EDEFAULT);
-				return;
-			case EmftvmPackage.IFTE__ELSE_CB_INDEX:
-				setElseCbIndex(ELSE_CB_INDEX_EDEFAULT);
-				return;
-			case EmftvmPackage.IFTE__THEN_CB:
-				setThenCb((CodeBlock)null);
-				return;
-			case EmftvmPackage.IFTE__ELSE_CB:
-				setElseCb((CodeBlock)null);
-				return;
+		case EmftvmPackage.IFTE__THEN_CB_INDEX:
+			setThenCbIndex(THEN_CB_INDEX_EDEFAULT);
+			return;
+		case EmftvmPackage.IFTE__ELSE_CB_INDEX:
+			setElseCbIndex(ELSE_CB_INDEX_EDEFAULT);
+			return;
+		case EmftvmPackage.IFTE__THEN_CB:
+			setThenCb((CodeBlock)null);
+			return;
+		case EmftvmPackage.IFTE__ELSE_CB:
+			setElseCb((CodeBlock)null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -386,16 +394,16 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	 * @generated
 	 */
 	@Override
-	public boolean eIsSet(int featureID) {
+	public boolean eIsSet(final int featureID) {
 		switch (featureID) {
-			case EmftvmPackage.IFTE__THEN_CB_INDEX:
-				return getThenCbIndex() != THEN_CB_INDEX_EDEFAULT;
-			case EmftvmPackage.IFTE__ELSE_CB_INDEX:
-				return getElseCbIndex() != ELSE_CB_INDEX_EDEFAULT;
-			case EmftvmPackage.IFTE__THEN_CB:
-				return basicGetThenCb() != null;
-			case EmftvmPackage.IFTE__ELSE_CB:
-				return basicGetElseCb() != null;
+		case EmftvmPackage.IFTE__THEN_CB_INDEX:
+			return getThenCbIndex() != THEN_CB_INDEX_EDEFAULT;
+		case EmftvmPackage.IFTE__ELSE_CB_INDEX:
+			return getElseCbIndex() != ELSE_CB_INDEX_EDEFAULT;
+		case EmftvmPackage.IFTE__THEN_CB:
+			return basicGetThenCb() != null;
+		case EmftvmPackage.IFTE__ELSE_CB:
+			return basicGetElseCb() != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -407,21 +415,12 @@ public class IfteImpl extends InstructionImpl implements Ifte {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		final StringBuffer result = new StringBuffer(super.toString());
 		result.append(' ');
 		result.append(getThenCbIndex());
 		result.append(", ");
 		result.append(getElseCbIndex());
 		return result.toString();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.m2m.atl.emftvm.impl.InstructionImpl#getStackProduction()
-	 */
-	@Override
-	public int getStackProduction() {
-		// TODO Auto-generated method stub
-		return super.getStackProduction();
 	}
 
 } //IfteImpl
