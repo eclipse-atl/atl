@@ -22,18 +22,18 @@
   <rules rule="ENamedElement"/>
   <rules rule="EClass" uniqueSourceElements="//@rules.3/@links.0/@sourceElements.0 //@rules.3/@links.1/@sourceElements.0">
     <links>
-      <sourceElements name="s" uniqueFor="//@rules.3">
+      <sourceElements name="s" mapsTo="//@rules.3/@links.0/@targetElements.0" uniqueFor="//@rules.3">
         <object href="UniqueLazyRuleInheritanceTest.ecore#//ClassA"/>
       </sourceElements>
-      <targetElements name="t">
+      <targetElements name="t" mapsTo="//@rules.3/@links.0/@sourceElements.0">
         <object href="UniqueLazyRuleInheritanceTest-out.ecore#//ClassA"/>
       </targetElements>
     </links>
     <links>
-      <sourceElements name="s" uniqueFor="//@rules.3">
+      <sourceElements name="s" mapsTo="//@rules.3/@links.1/@targetElements.0" uniqueFor="//@rules.3">
         <object href="UniqueLazyRuleInheritanceTest.ecore#//subpackage/ClassB"/>
       </sourceElements>
-      <targetElements name="t">
+      <targetElements name="t" mapsTo="//@rules.3/@links.1/@sourceElements.0">
         <object href="UniqueLazyRuleInheritanceTest-out.ecore#//subpackage/ClassB"/>
       </targetElements>
     </links>

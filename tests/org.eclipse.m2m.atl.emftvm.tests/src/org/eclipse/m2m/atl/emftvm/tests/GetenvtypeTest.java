@@ -11,10 +11,12 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import junit.textui.TestRunner;
-
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.Getenvtype;
+import org.eclipse.m2m.atl.emftvm.Instruction;
+import org.eclipse.m2m.atl.emftvm.Opcode;
+
+import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +32,7 @@ public class GetenvtypeTest extends InstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		TestRunner.run(GetenvtypeTest.class);
 	}
 
@@ -40,7 +42,7 @@ public class GetenvtypeTest extends InstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public GetenvtypeTest(String name) {
+	public GetenvtypeTest(final String name) {
 		super(name);
 	}
 
@@ -75,6 +77,34 @@ public class GetenvtypeTest extends InstructionTest {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getOpcode()
+	 * <em>Opcode</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getOpcode()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetOpcode() {
+		final Instruction fixture = this.getFixture();
+		assertEquals(Opcode.GETENVTYPE, fixture.getOpcode());
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction()
+	 * <em>Stack Production</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetStackProduction() {
+		final Instruction fixture = this.getFixture();
+		assertEquals(1, fixture.getStackProduction());
 	}
 
 } //GetenvtypeTest

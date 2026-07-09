@@ -11,6 +11,7 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
+import org.eclipse.m2m.atl.emftvm.Instruction;
 import org.eclipse.m2m.atl.emftvm.InvokeOperationInstruction;
 
 /**
@@ -28,7 +29,7 @@ public abstract class InvokeOperationInstructionTest extends InvokeInstructionTe
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public InvokeOperationInstructionTest(String name) {
+	public InvokeOperationInstructionTest(final String name) {
 		super(name);
 	}
 
@@ -41,6 +42,35 @@ public abstract class InvokeOperationInstructionTest extends InvokeInstructionTe
 	@Override
 	protected InvokeOperationInstruction getFixture() {
 		return (InvokeOperationInstruction)fixture;
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction()
+	 * <em>Stack Production</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackProduction()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetStackProduction() {
+		final Instruction fixture = this.getFixture();
+		assertEquals(1, fixture.getStackProduction());
+	}
+
+	/**
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption()
+	 * <em>Stack Consumption</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetStackConsumption() {
+		final Instruction fixture = this.getFixture();
+		assertEquals(1, fixture.getStackConsumption());
 	}
 
 } //InvokeOperationInstructionTest

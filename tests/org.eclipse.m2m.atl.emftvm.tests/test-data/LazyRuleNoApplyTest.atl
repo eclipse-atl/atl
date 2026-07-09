@@ -1,0 +1,65 @@
+-- @atlcompiler emftvm
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+module LazyRuleNoApplyTest;
+
+create OUT : ECORE from IN : ECORE;
+
+lazy rule EModelElement {
+	from
+		s : ECORE!EModelElement
+	do {
+		s;
+	}
+}
+
+lazy abstract rule ENamedElement extends EModelElement {
+	from
+		s : ECORE!ENamedElement
+	to
+		t : ECORE!ENamedElement (
+			name <- s.name
+		)
+}
+
+lazy rule EPackage extends ENamedElement {
+	from
+		s : ECORE!EPackage
+	to
+		t : ECORE!EPackage (
+			nsPrefix <- s.nsPrefix,
+			nsURI <- s.nsURI,
+			eClassifiers <- s.eClassifiers->collect(c | thisModule.EModelElement(c)),
+			eSubpackages <- s.eSubpackages->collect(c | thisModule.EModelElement(c))
+		)
+}
+
+lazy rule MultiEPackage extends EPackage {
+	from
+		s : ECORE!EPackage,
+		x : OclAny
+	to
+		t : ECORE!EPackage
+	do {
+		Sequence{t};
+	}
+}
+
+lazy abstract rule EClassifier extends ENamedElement {
+	from
+		s : ECORE!EClassifier
+	to
+		t : ECORE!EClass mapsTo s
+}
+
+lazy rule EClass extends EClassifier {
+	from
+		s : ECORE!EClass
+}
+
+endpoint rule map() {
+	do {
+		for (p in ECORE!EPackage.allInstances()) {
+			thisModule.EModelElement(p);
+		}
+	}
+}

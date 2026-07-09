@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
+import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
+import org.eclipse.m2m.atl.emftvm.LocalVariable;
 import org.eclipse.m2m.atl.emftvm.LocalVariableInstruction;
 
 /**
@@ -37,7 +39,7 @@ public abstract class LocalVariableInstructionTest extends InstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public LocalVariableInstructionTest(String name) {
+	public LocalVariableInstructionTest(final String name) {
 		super(name);
 	}
 
@@ -53,94 +55,131 @@ public abstract class LocalVariableInstructionTest extends InstructionTest {
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getCbOffset() <em>Cb Offset</em>}' feature getter. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getCbOffset()
+	 * <em>Cb Offset</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getCbOffset()
 	 * @generated NOT
 	 */
 	public void testGetCbOffset() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		// Create a fixture instance
+		final LocalVariableInstruction fixture = this.getFixture();
 
+		// Test that the default value is 0
+		assertEquals(-1, fixture.getCbOffset());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setCbOffset(int) <em>Cb Offset</em>}' feature setter. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setCbOffset(int)
+	 * <em>Cb Offset</em>}' feature setter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setCbOffset(int)
 	 * @generated NOT
 	 */
 	public void testSetCbOffset() {
-		// TODO: implement this feature setter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		// Create a fixture instance
+		final LocalVariableInstruction fixture = this.getFixture();
 
+		// Test setting a value
+		final int expected = 20;
+		fixture.setCbOffset(expected);
+		assertEquals(expected, fixture.getCbOffset());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getSlot() <em>Slot</em>}' feature getter. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getSlot()
+	 * <em>Slot</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getSlot()
 	 * @generated NOT
 	 */
 	public void testGetSlot() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		// Create a fixture instance
+		final LocalVariableInstruction fixture = this.getFixture();
 
+		// Test that the default value is 0
+		assertEquals(-1, fixture.getSlot());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariableIndex() <em>Local Variable Index</em>}' feature
-	 * getter. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariableIndex()
+	 * <em>Local Variable Index</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariableIndex()
 	 * @generated NOT
 	 */
 	public void testGetLocalVariableIndex() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		// Create a fixture instance
+		final LocalVariableInstruction fixture = this.getFixture();
 
+		// Test that the default value is 0
+		assertEquals(-1, fixture.getLocalVariableIndex());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setLocalVariableIndex(int) <em>Local Variable Index</em>}'
-	 * feature setter. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setLocalVariableIndex(int)
+	 * <em>Local Variable Index</em>}' feature setter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setLocalVariableIndex(int)
 	 * @generated NOT
 	 */
 	public void testSetLocalVariableIndex() {
-		// TODO: implement this feature setter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		// Create a fixture instance
+		final LocalVariableInstruction fixture = this.getFixture();
 
+		// Test setting a value
+		final int expected = 25;
+		fixture.setLocalVariableIndex(expected);
+		assertEquals(expected, fixture.getLocalVariableIndex());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariable() <em>Local Variable</em>}' feature getter.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariable()
+	 * <em>Local Variable</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#getLocalVariable()
 	 * @generated NOT
 	 */
 	public void testGetLocalVariable() {
-		// TODO: implement this feature getter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		// Create a fixture instance
+		final LocalVariableInstruction fixture = this.getFixture();
 
+		// Test that the default value is null
+		assertNull(fixture.getLocalVariable());
 	}
 
 	/**
-	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setLocalVariable(org.eclipse.m2m.atl.emftvm.LocalVariable)
-	 * <em>Local Variable</em>}' feature setter. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setLocalVariable(org.eclipse.m2m.atl.emftvm.LocalVariable)
+	 * <em>Local Variable</em>}' feature setter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
 	 * @see org.eclipse.m2m.atl.emftvm.LocalVariableInstruction#setLocalVariable(org.eclipse.m2m.atl.emftvm.LocalVariable)
 	 * @generated NOT
 	 */
 	public void testSetLocalVariable() {
-		// TODO: implement this feature setter test method
-		// Ensure that you remove @generated or mark it @generated NOT
+		// Create a fixture instance
+		final LocalVariableInstruction fixture = this.getFixture();
 
+		// Test setting a value to null (default)
+		fixture.setLocalVariable(null);
+		assertNull(fixture.getLocalVariable());
+
+		// Test setting a value to a new local variable
+		final LocalVariable localVariable = EmftvmFactory.eINSTANCE.createLocalVariable();
+		fixture.setLocalVariable(localVariable);
+		assertEquals(localVariable, fixture.getLocalVariable());
 	}
 
 } //LocalVariableInstructionTest

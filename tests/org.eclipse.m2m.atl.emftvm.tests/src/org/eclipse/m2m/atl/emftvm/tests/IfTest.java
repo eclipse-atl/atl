@@ -11,10 +11,12 @@
  *******************************************************************************/
 package org.eclipse.m2m.atl.emftvm.tests;
 
-import junit.textui.TestRunner;
-
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.If;
+import org.eclipse.m2m.atl.emftvm.Instruction;
+import org.eclipse.m2m.atl.emftvm.Opcode;
+
+import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +32,7 @@ public class IfTest extends BranchInstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		TestRunner.run(IfTest.class);
 	}
 
@@ -40,7 +42,7 @@ public class IfTest extends BranchInstructionTest {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IfTest(String name) {
+	public IfTest(final String name) {
 		super(name);
 	}
 
@@ -75,6 +77,35 @@ public class IfTest extends BranchInstructionTest {
 	@Override
 	protected void tearDown() throws Exception {
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link org.eclipse.m2m.atl.emftvm.Instruction#getOpcode()
+	 * <em>Opcode</em>}' feature getter. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getOpcode()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetOpcode() {
+		final Instruction fixture = this.getFixture();
+		assertEquals(Opcode.IF, fixture.getOpcode());
+	}
+
+	/**
+	 * Tests the
+	 * '{@link org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption()
+	 * <em>Stack Consumption</em>}' feature getter. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 *
+	 * @see org.eclipse.m2m.atl.emftvm.Instruction#getStackConsumption()
+	 * @generated NOT
+	 */
+	@Override
+	public void testGetStackConsumption() {
+		final Instruction fixture = this.getFixture();
+		assertEquals(1, fixture.getStackConsumption());
 	}
 
 } //IfTest

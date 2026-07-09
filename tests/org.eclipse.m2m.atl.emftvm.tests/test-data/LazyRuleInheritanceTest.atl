@@ -56,7 +56,7 @@ lazy rule EClass extends EClassifier {
 	to
 		t : ECORE!EClass (
 			"abstract" <- s."abstract"
-			
+
 		)
 }
 

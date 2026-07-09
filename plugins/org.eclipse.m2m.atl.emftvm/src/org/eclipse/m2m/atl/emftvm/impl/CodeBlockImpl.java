@@ -1131,6 +1131,7 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	@Override
 	public EList<Instruction> getPredecessors(final Instruction i) {
+		checkInstructionContained(i);
 		if (!predecessors.containsKey(i)) {
 			final EList<Instruction> preds = new BasicEList<Instruction>();
 			final EList<Instruction> code = getCode();
@@ -1193,9 +1194,11 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 	 */
 	@Override
 	public EList<Instruction> getNonLoopingPredecessors(final Instruction i) {
+		checkInstructionContained(i);
 		if (!nlPredecessors.containsKey(i)) {
 			final EList<Instruction> code = getCode();
 			final int index = code.indexOf(i);
+			assert index > -1;
 			final EList<Instruction> preds = new BasicEList<Instruction>();
 			for (final Instruction p : getPredecessors(i)) {
 				if (code.indexOf(p) < index || !getAllPredecessors(p).contains(i)) {
@@ -1205,6 +1208,18 @@ public class CodeBlockImpl extends EObjectImpl implements CodeBlock {
 			nlPredecessors.put(i, ECollections.unmodifiableEList(preds));
 		}
 		return nlPredecessors.get(i);
+	}
+
+	/**
+	 * Checks if <code>i</code> is contained in this {@link CodeBlock}.
+	 *
+	 * @param i the {@link Instruction} to check
+	 * @throws IllegalArgumentException if <code>i</code> is not contained
+	 */
+	private void checkInstructionContained(final Instruction i) {
+		if (!getCode().contains(i)) {
+			throw new IllegalArgumentException(String.format("Instruction %s not contained in this CodeBlock", i));
+		}
 	}
 
 	/**

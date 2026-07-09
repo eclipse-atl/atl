@@ -119,6 +119,30 @@ public class IntegrationTest extends EMFTVMTest {
 	}
 
 	/**
+	 * Tests "LazyRuleNoApplyTest.atl".
+	 */
+	public void testLazyRuleNoApply() throws Exception {
+		final ResourceSet rs = new ResourceSetImpl();
+		final ExecEnv env = EmftvmFactory.eINSTANCE.createExecEnv();
+		final TimingData td = new TimingData();
+		env.registerInputModel("IN", loadTestModel(rs, "/test-data/LazyRuleNoApplyTest.ecore"));
+		env.registerOutputModel("OUT", createTestModel(rs, "/test-data/LazyRuleNoApplyTest-out.ecore"));
+		env.registerInOutModel("trace", createTestModel(rs, "/test-data/LazyRuleNoApplyTest-trace.xmi"));
+		env.loadModule(createTestModuleResolver(), "LazyRuleNoApplyTest");
+		td.finishLoading();
+		env.run(td);
+		td.finish();
+		ATLLogger.info("Finished LazyRuleNoApplyTest:\n" + td.toString());
+
+		final ResourceSet refRs = new ResourceSetImpl();
+		loadTestModel(refRs, "/test-data/LazyRuleNoApplyTest.ecore");
+		final Model refOut = loadTestModel(refRs, "/test-data/LazyRuleNoApplyTest-out.ecore");
+		final Model refTrace = loadTestModel(refRs, "/test-data/LazyRuleNoApplyTest-trace.xmi");
+		assertEquals(refOut.getResource(), env.getOutputModels().get("OUT").getResource());
+		assertEquals(refTrace.getResource(), env.getInoutModels().get("trace").getResource());
+	}
+
+	/**
 	 * Tests "EntryEndPointRuleTest.atl".
 	 */
 	public void testEntryEndPointRule() throws Exception {

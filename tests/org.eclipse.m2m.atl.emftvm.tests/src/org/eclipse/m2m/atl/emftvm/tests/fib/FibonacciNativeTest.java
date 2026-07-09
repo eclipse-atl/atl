@@ -8,7 +8,7 @@
  * Contributors:
  *     Dennis Wagelaar, Vrije Universiteit Brussel
  *******************************************************************************/
-package org.eclipse.m2m.atl.emftvm.tests;
+package org.eclipse.m2m.atl.emftvm.tests.fib;
 
 import junit.framework.TestCase;
 
@@ -18,7 +18,7 @@ import org.eclipse.m2m.atl.emftvm.CodeBlock;
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory;
 import org.eclipse.m2m.atl.emftvm.ExecEnv;
 import org.eclipse.m2m.atl.emftvm.Operation;
-import org.eclipse.m2m.atl.emftvm.tests.fib.Fibonacci;
+import org.eclipse.m2m.atl.emftvm.tests.EMFTVMTest;
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.ModuleResolver;
 import org.eclipse.m2m.atl.emftvm.util.TimingData;
