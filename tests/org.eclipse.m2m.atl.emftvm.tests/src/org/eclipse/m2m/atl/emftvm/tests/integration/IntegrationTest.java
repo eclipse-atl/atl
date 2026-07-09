@@ -132,7 +132,7 @@ public class IntegrationTest extends EMFTVMTest {
 		td.finishLoading();
 		env.run(td);
 		td.finish();
-		ATLLogger.info("Finished LazyRuleInheritanceTest:\n" + td.toString());
+		ATLLogger.info("Finished LazyRuleNoApplyTest:\n" + td.toString());
 
 		final ResourceSet refRs = new ResourceSetImpl();
 		loadTestModel(refRs, "/test-data/LazyRuleNoApplyTest.ecore");
