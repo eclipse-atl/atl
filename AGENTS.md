@@ -6,7 +6,7 @@
 
 #### Build and Test
 
-This project uses the Eclipse Tycho plug-in for Maven. Dependency reolution is done via P2 instead of standard Maven dependencies.
+This project uses the Eclipse Tycho plug-in for Maven. Dependency resolution is done via P2 instead of standard Maven dependencies.
 
 - **Build:** `mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -Dpromote=false`
   - Cleans the target directory, compiles the code, runs tests, and packages the application.
