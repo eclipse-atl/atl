@@ -12,6 +12,7 @@
 package org.eclipse.m2m.atl.emftvm.tests;
 
 import org.eclipse.m2m.atl.emftvm.Instruction;
+import org.eclipse.m2m.atl.emftvm.Opcode;
 
 import junit.framework.TestCase;
 
@@ -81,8 +82,8 @@ public abstract class InstructionTest extends TestCase {
 	public void testGetOpcode() {
 		final Instruction fixture = this.getFixture();
 
-		// Test that the default value is 0
-		assertEquals(0, fixture.getOpcode());
+		// Test that the default value is returned
+		assertEquals(Opcode.PUSH, fixture.getOpcode());
 	}
 
 	/**
