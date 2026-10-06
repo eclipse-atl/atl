@@ -12,11 +12,9 @@
     <module name="TreeWalker">
         <module name="JavadocMethod">
             <property name="severity" value="error"/>
-            <property name="scope" value="protected"/>
-            <property name="allowMissingThrowsTags" value="true"/>
+        </module>
+        <module name="MissingJavadocMethodCheck">
             <property name="allowMissingPropertyJavadoc" value="true"/>
-            <property name="logLoadErrors" value="true"/>
-            <property name="suppressLoadErrors" value="true"/>
         </module>
         <module name="JavadocStyle">
             <property name="severity" value="error"/>
@@ -87,9 +85,6 @@
             <property name="severity" value="ignore"/>
             <property name="max" value="60"/>
             <property name="tokens" value="INSTANCE_INIT,STATIC_INIT,METHOD_DEF,CTOR_DEF"/>
-        </module>
-        <module name="FileLength">
-            <property name="max" value="2500"/>
         </module>
         <module name="MethodLength">
             <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity" value="error"/>
@@ -165,9 +160,6 @@
         <module name="DeclarationOrder">
             <property name="severity" value="error"/>
         </module>
-        <module name="DoubleCheckedLocking">
-            <property name="severity" value="error"/>
-        </module>
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode">
             <property name="severity" value="error"/>
@@ -198,9 +190,6 @@
             <property name="severity" value="ignore"/>
         </module>
         <module name="InnerAssignment"/>
-        <module name="JUnitTestCase">
-            <property name="severity" value="error"/>
-        </module>
         <module name="MagicNumber">
             <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity" value="error"/>
             <property name="severity" value="ignore"/>
@@ -232,13 +221,6 @@
             <property name="severity" value="error"/>
         </module>
         <module name="ParameterAssignment"/>
-        <module name="RedundantThrows">
-            <property name="severity" value="error"/>
-            <property name="allowUnchecked" value="true"/>
-            <property name="allowSubclasses" value="true"/>
-            <property name="logLoadErrors" value="true"/>
-            <property name="suppressLoadErrors" value="true"/>
-        </module>
         <module name="ReturnCount">
             <property name="max" value="5"/>
             <property name="format" value="^insertionIndexFor|callOperation$"/>
@@ -308,26 +290,11 @@
         <module name="UpperEll">
             <property name="severity" value="error"/>
         </module>
-        <module name="j2ee.EntityBean"/>
-        <module name="j2ee.FinalStatic"/>
-        <module name="j2ee.LocalHomeInterface"/>
-        <module name="j2ee.LocalInterface"/>
-        <module name="j2ee.MessageBean"/>
-        <module name="j2ee.RemoteHomeInterface"/>
-        <module name="j2ee.RemoteInterface"/>
-        <module name="j2ee.SessionBean"/>
-        <module name="j2ee.ThisParameter"/>
-        <module name="j2ee.ThisReturn"/>
         <module name="RequiredRegexp">
             <metadata name="com.atlassw.tools.eclipse.checkstyle.customMessage" value="Le copyright doit figurer dans le fichier sous la forme &quot;Copyright (c) 2010 Obeo.&quot;"/>
             <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity" value="error"/>
             <property name="severity" value="ignore"/>
             <property name="format" value="Copyright\s\(c\)\s(20[0-9]{2},?\s)+Obeo\."/>
-        </module>
-        <module name="GenericIllegalRegexp">
-            <metadata name="com.atlassw.tools.eclipse.checkstyle.customMessage" value="Caractères susceptibles de poser problème (encoding)"/>
-            <property name="severity" value="error"/>
-            <property name="format" value="[^a-zA-Z0-9_!:;,\.\+\(\)/\\\]\[{}\-\*&lt;&gt;%@\&amp; \|\t\n&quot;' =$#\r\?éèàê\^]"/>
         </module>
         <module name="NeedBraces">
             <metadata name="com.atlassw.tools.eclipse.checkstyle.lastEnabledSeverity" value="error"/>
@@ -336,5 +303,8 @@
         <module name="AvoidInlineConditionals">
             <property name="severity" value="ignore"/>
         </module>
+    </module>
+    <module name="FileLength">
+        <property name="max" value="2500"/>
     </module>
 </module>
