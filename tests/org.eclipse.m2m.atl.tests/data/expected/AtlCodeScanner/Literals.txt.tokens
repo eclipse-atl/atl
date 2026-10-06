@@ -17,8 +17,8 @@ Atl.Syntax.Default.Color
 Atl.Syntax.Literal.Color Atl.Syntax.Default.Color
 Atl.Syntax.Literal.Color Atl.Syntax.Default.Color
 Atl.Syntax.Literal.Color Atl.Syntax.Default.Color
-Atl.Syntax.Literal.Color Atl.Syntax.Identifier.Color
-Atl.Syntax.Identifier.Color
-Atl.Syntax.Default.Color Atl.Syntax.Default.Color Atl.Syntax.Default.Color Atl.Syntax.Identifier.Color
-Atl.Syntax.Default.Color Atl.Syntax.Default.Color Atl.Syntax.Identifier.Color Atl.Syntax.Default.Color
-Atl.Syntax.Literal.Color Atl.Syntax.Default.Color Atl.Syntax.Default.Color Atl.Syntax.Default.Color Atl.Syntax.Default.Color Atl.Syntax.Default.Color Atl.Syntax.Default.Color Atl.Syntax.Default.Color Atl.Syntax.Default.Color Atl.Syntax.Default.Color Atl.Syntax.Default.Color
+Atl.Syntax.Literal.Color Atl.Syntax.Default.Color
+Atl.Syntax.Literal.Color Atl.Syntax.Default.Color
+Atl.Syntax.Literal.Color Atl.Syntax.Default.Color
+Atl.Syntax.Literal.Color Atl.Syntax.Default.Color
+Atl.Syntax.Literal.Color
