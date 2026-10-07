@@ -30,5 +30,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Import-Package: com.google.common.base,
  com.google.common.collect,
- org.eclipse.jface.text
+ org.eclipse.jface.text,
+ org.eclipse.jface.text.rules
 Automatic-Module-Name: org.eclipse.m2m.atl.tests

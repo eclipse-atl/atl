@@ -1,0 +1,7 @@
+--- Documentation comment in ATL. The following will be ignored: #ignored 'ignored' "ignored" 123 true false
+-- Ordinary comment in ATL. The following will be ignored: #ignored 'ignored' "ignored" 123 true false
+
+-- @path special comment in ATL. The following will be ignored: #ignored 'ignored' "ignored" 123 true false
+-- @nsURI special comment in ATL. The following will be ignored: #ignored 'ignored' "ignored" 123 true false
+-- @lib special comment in ATL. The following will be ignored: #ignored 'ignored' "ignored" 123 true false
+-- @atlcompiler special comment in ATL. The following will be ignored: #ignored 'ignored' "ignored" 123 true false
