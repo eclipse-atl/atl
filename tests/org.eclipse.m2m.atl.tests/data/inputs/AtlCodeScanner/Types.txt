@@ -1,0 +1,16 @@
+Bag
+Set
+OrderedSet
+Sequence
+Tuple
+Integer
+Real
+Boolean
+String
+TupleType
+Map
+Collection
+OclAny
+
+Collection
+OclAny

@@ -12,6 +12,7 @@ package org.eclipse.m2m.atl.tests.suite;
 
 import java.util.Arrays;
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -19,6 +20,7 @@ import junit.textui.TestRunner;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.m2m.atl.tests.unit.AtlCodeScannerTestCase;
 import org.eclipse.m2m.atl.tests.unit.TestNonRegressionCompiler;
 import org.eclipse.m2m.atl.tests.unit.TestNonRegressionFormatter;
 import org.eclipse.m2m.atl.tests.unit.TestNonRegressionParser;
@@ -56,6 +58,7 @@ public class AllTests extends TestCase implements IApplication {
 		suite.addTestSuite(TestNonRegressionParser.class);
 		suite.addTestSuite(TestNonRegressionCompiler.class);
 		suite.addTestSuite(TestNonRegressionFormatter.class);
+		suite.addTest(new JUnit4TestAdapter(AtlCodeScannerTestCase.class));
 		return suite;
 	}
 
