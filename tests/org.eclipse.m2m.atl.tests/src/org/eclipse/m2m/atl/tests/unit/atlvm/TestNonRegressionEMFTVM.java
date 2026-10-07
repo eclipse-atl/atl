@@ -228,9 +228,12 @@ public class TestNonRegressionEMFTVM extends TestNonRegressionTransfo {
 	}
 
 	private static String moduleName(final URL url) {
-		String name = url.toString();
-		name = name.replace(".asm", ".atl");
-		return name;
+		final URI uri = URI.createFileURI(url.getPath());
+		if (uri.fileExtension().equals("asm")) {
+			return uri.trimFileExtension().appendFileExtension("atl").toString();
+		} else {
+			return uri.toString();
+		}
 	}
 
 	private static URI uri(final String path) {
