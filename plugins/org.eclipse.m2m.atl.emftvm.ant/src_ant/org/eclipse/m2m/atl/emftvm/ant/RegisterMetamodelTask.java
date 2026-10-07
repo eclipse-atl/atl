@@ -74,6 +74,7 @@ public class RegisterMetamodelTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Provides the resource factory class.
 	 * @return the resourceFactoryClass
 	 */
 	public String getResourceFactoryClass() {
@@ -81,6 +82,7 @@ public class RegisterMetamodelTask extends EMFTVMTask {
 	}
 
 	/**
+	 * Sets the resource factory class.
 	 * @param resourceFactoryClass
 	 *            the resourceFactoryClass to set
 	 */

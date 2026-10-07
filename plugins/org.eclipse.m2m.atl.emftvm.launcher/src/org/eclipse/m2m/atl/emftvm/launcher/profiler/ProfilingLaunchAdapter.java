@@ -20,7 +20,7 @@ import org.eclipse.m2m.atl.emftvm.util.StackFrame;
 /**
  * Profiling {@link LaunchAdapter} for EMFTVM.
  * 
- * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class ProfilingLaunchAdapter extends LaunchAdapter {
 

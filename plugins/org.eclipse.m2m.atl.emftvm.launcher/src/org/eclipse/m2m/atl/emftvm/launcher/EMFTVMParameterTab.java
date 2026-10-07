@@ -52,7 +52,7 @@ public class EMFTVMParameterTab extends AbstractLaunchConfigurationTab {
 	 * Creates a new {@link EMFTVMParameterTab}.
 	 * @param mode the mode the launch configuration dialog was opened in
 	 */
-	public EMFTVMParameterTab (String mode) {
+	public EMFTVMParameterTab(String mode) {
 		this.mode = mode;
 	}
 

@@ -953,8 +953,9 @@ public class LazyOrderedSetTest extends LazyCollectionTest {
 		final long refStart2 = System.nanoTime();
 		Collections.sort(expected2, new Comparator<Object>() {
 			public int compare(final Object o1, final Object o2) {
-				return ((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o1))).compareTo(
-						((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o2))));
+				return ((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o1)))
+						.compareTo(
+								(Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o2)));
 			}
 		});
 		final long refEnd2 = System.nanoTime();

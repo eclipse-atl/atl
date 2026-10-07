@@ -25,7 +25,7 @@ import org.eclipse.m2m.atl.emftvm.util.Tuple;
 /**
  * Tests {@link Tuple}.
  * 
- * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class TupleTest extends TestCase {
 

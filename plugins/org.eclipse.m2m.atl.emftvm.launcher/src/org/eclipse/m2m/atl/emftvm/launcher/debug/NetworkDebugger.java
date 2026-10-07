@@ -118,7 +118,7 @@ public class NetworkDebugger extends LaunchAdapter {
 	@Override
 	public void leave(StackFrame frame) {
 		super.leave(frame);
-		if ((depth == 0) && finish) {
+		if (depth == 0 && finish) {
 			step = true;
 			finished = true;
 		}
@@ -135,9 +135,9 @@ public class NetworkDebugger extends LaunchAdapter {
 	@Override
 	public void step(StackFrame frame) {
 		super.step(frame);
-		opcodeCount[frame.getCodeBlock().getCode().get(frame.getPc()-1).getOpcode().getValue()] += 1;
+		opcodeCount[frame.getCodeBlock().getCode().get(frame.getPc() - 1).getOpcode().getValue()] += 1;
 		this.lastFrame = frame;
-		if (stepOver && (depth == 0)) {
+		if (stepOver && depth == 0) {
 			stepOver = false;
 			step = true;
 		}

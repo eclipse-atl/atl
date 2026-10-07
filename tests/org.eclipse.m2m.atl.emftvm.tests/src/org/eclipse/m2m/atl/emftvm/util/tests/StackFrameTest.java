@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 /**
  * Tests {@link StackFrame}.
  * 
- * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class StackFrameTest extends TestCase {
 

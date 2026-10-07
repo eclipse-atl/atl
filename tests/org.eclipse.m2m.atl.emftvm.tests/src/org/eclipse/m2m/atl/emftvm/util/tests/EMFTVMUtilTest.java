@@ -45,7 +45,7 @@ import junit.framework.TestCase;
 /**
  * Tests {@link EMFTVMUtil}.
  *
- * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class EMFTVMUtilTest extends TestCase {
 
