@@ -1,0 +1,24 @@
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0123456789
+
+'string'
+'string with escaped single quote \''
+'string with skipped literals: true false 1 2 3'
+
+#literal
+#a_literal
+#in
+#"in"
+#""
+#"a literal"
+#"a\"literal with quotes\""
+#"a literal with antislash \\"

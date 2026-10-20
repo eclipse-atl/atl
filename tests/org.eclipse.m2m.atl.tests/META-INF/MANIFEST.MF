@@ -27,8 +27,9 @@ Require-Bundle: org.junit;visibility:=reexport,
  org.eclipse.m2m.atl.emftvm.compiler
 Bundle-Activator: org.eclipse.m2m.atl.tests.AtlTestPlugin
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Import-Package: com.google.common.base,
  com.google.common.collect,
- org.eclipse.jface.text
+ org.eclipse.jface.text,
+ org.eclipse.jface.text.rules
 Automatic-Module-Name: org.eclipse.m2m.atl.tests
