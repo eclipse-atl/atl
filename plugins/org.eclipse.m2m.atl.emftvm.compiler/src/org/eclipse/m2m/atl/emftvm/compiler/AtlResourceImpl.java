@@ -213,7 +213,7 @@ public class AtlResourceImpl extends ResourceImpl {
 			if (list != null) {
 				final String message = (String) ame.eGet(ame.eClass().getEStructuralFeature("description")); //$NON-NLS-1$
 				final String location = (String) ame.eGet(ame.eClass().getEStructuralFeature("location")); //$NON-NLS-1$
-				final String parts[] = location.split("-")[0].split(":");
+				final String[] parts = location.split("-")[0].split(":");
 				final int line = Integer.parseInt(parts[0]);
 				final int column = Integer.parseInt(parts[1]);
 				list.add(new Diagnostic() {

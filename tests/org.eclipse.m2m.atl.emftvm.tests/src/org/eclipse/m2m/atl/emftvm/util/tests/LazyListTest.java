@@ -853,8 +853,9 @@ public class LazyListTest extends LazyCollectionTest {
 		Collections.sort(expected2, new Comparator<Object>() {
 			@Override
 			public int compare(final Object o1, final Object o2) {
-				return ((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o1))).compareTo(
-						((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o2))));
+				return ((Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o1)))
+						.compareTo(
+								(Integer) byHashCode.execute(byHashCode.getParentFrame().getSubFrame(byHashCode, o2)));
 			}
 		});
 		final long refEnd2 = System.nanoTime();

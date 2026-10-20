@@ -170,7 +170,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 				final String[] extensions = new String[] {"emftvm"};
 				final WorkspaceFileDialog dialog = new WorkspaceFileDialog(getShell(), extensions);
 				final Object result = dialog.open() == Dialog.OK ? dialog.getFirstResult() : null;
-				if ((result != null) && (result instanceof IFile)) {
+				if (result instanceof IFile) {
 					final IFile currentFile = (IFile)result;
 					final IPath path = currentFile.getFullPath();
 					final URI uri = URI.createPlatformResourceURI(path.toString(), true);
@@ -445,7 +445,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 			Map<String, Object> widgets = entry.getValue();
 			Text metamodelLocation = (Text)widgets.get("metamodelLocation"); //$NON-NLS-1$
 			Button isMetametamodel = (Button)widgets.get("isMetametamodel"); //$NON-NLS-1$
-			if ((metamodelLocation.getText().length() == 0) && (!isMetametamodel.getSelection())) {
+			if (metamodelLocation.getText().length() == 0 && !isMetametamodel.getSelection()) {
 				setErrorMessage(String.format("No path given for %s", mName));
 				return false;
 			}
@@ -598,6 +598,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 	 * Creates widgets for a metamodel.
 	 * @param parent the parent widget group
 	 * @param metamodelName the metamodel name
+	 * @param metamodelLocation the metamodel location
 	 * @param removable whether the metamodel can be removed from the launch configuration
 	 * @return a map of created widgets
 	 */
@@ -648,7 +649,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent evt) {
 				final WorkspaceFileDialog dialog = new WorkspaceFileDialog(getShell(), (String[])null);
 				final Object result = dialog.open() == Dialog.OK ? dialog.getFirstResult() : null;
-				if ((result != null) && (result instanceof IFile)) {
+				if (result instanceof IFile) {
 					final IFile currentFile = (IFile)result;
 					final String path = currentFile.getFullPath().toString();
 					location.setText("platform:/resource" + path);
@@ -823,7 +824,7 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent evt) {
 				final WorkspaceFileDialog dialog = new WorkspaceFileDialog(getShell(), (String[])null);
 				final Object result = dialog.open() == Dialog.OK ? dialog.getFirstResult() : null;
-				if ((result != null) && (result instanceof IFile)) {
+				if (result instanceof IFile) {
 					final IFile currentFile = (IFile)result;
 					final String path = currentFile.getFullPath().toString();
 					location.setText("platform:/resource" + path);
@@ -1062,7 +1063,9 @@ public class MainEMFTVMTab extends AbstractLaunchConfigurationTab {
 
 	/**
 	 * Loads module from <code>uri</code>, including imports.
-	 * @param uri the module URI
+	 * 
+	 * @param path the module path
+	 * @param name the module name
 	 * @return the loaded module
 	 */
 	private Module loadModule(final String path, final String name) {

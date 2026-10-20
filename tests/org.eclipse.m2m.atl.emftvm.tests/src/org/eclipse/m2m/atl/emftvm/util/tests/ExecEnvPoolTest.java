@@ -37,10 +37,13 @@ import org.eclipse.m2m.atl.emftvm.util.TimingData;
 /**
  * Tests {@link ExecEnvPool}.
  *
- * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class ExecEnvPoolTest extends EMFTVMTest {
 
+	/**
+	 * The number of EcoreCopy to perform.
+	 */
 	public static final int TEST_COUNT = 1000;
 
 	private static final Logger LOG = Logger.getLogger(ExecEnvPoolTest.class.getName());
