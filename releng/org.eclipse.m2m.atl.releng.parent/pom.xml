@@ -42,10 +42,10 @@
 		<buildId>${buildType}${buildTimestamp}</buildId>
 		<buildType>${env.BUILD_TYPE}</buildType>
 
-		<tycho-version>4.0.8</tycho-version>
-		<tycho-extras-version>4.0.8</tycho-extras-version>
+		<tycho-version>5.0.4</tycho-version>
+		<tycho-extras-version>5.0.4</tycho-extras-version>
 		<tycho.scmUrl>scm:git:https://github.com/eclipse-atl/atl.git</tycho.scmUrl>
-		<jarsigner-version>1.4.3</jarsigner-version>
+		<jarsigner-version>3.1.0</jarsigner-version>
 		<target-platform>2026-12</target-platform>
 		<javaVersion>25</javaVersion>
 		<os-jvm-flags />
