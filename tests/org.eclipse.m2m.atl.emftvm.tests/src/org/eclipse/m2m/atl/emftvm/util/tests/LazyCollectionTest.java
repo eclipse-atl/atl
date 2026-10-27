@@ -59,6 +59,7 @@ public abstract class LazyCollectionTest extends TestCase {
 	/**
 	 * Returns an empty {@link LazyCollection} for testing.
 	 * 
+	 * @param <T>
 	 * @return an empty {@link LazyCollection}
 	 */
 	protected abstract <T> LazyCollection<T> getEmptyLazyCollection();
@@ -983,9 +984,9 @@ public abstract class LazyCollectionTest extends TestCase {
 
 			@Override
 			public Object execute(final StackFrame frame) {
-				final String self = ((String) frame.getLocal(0));
+				final String self = (String) frame.getLocal(0);
 				final List<Character> chars = new ArrayList<Character>(self.length());
-				for (final char c : (self.toCharArray())) {
+				for (final char c : self.toCharArray()) {
 					chars.add(c);
 				}
 				return chars;
@@ -1031,9 +1032,9 @@ public abstract class LazyCollectionTest extends TestCase {
 
 			@Override
 			public Object execute(final StackFrame frame) {
-				final String self = ((String) frame.getLocal(0));
+				final String self = (String) frame.getLocal(0);
 				final List<Character> chars = new ArrayList<Character>(self.length());
-				for (final char c : (self.toCharArray())) {
+				for (final char c : self.toCharArray()) {
 					chars.add(c);
 				}
 				return chars;

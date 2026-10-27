@@ -36,7 +36,7 @@ import junit.framework.TestCase;
 /**
  * Tests {@link OCLOperations}.
  *
- * @author <a href="dwagelaar@gmail.com">Dennis Wagelaar</a>
+ * @author <a href="mailto:dwagelaar@gmail.com">Dennis Wagelaar</a>
  */
 public class OCLOperationsTest extends TestCase {
 

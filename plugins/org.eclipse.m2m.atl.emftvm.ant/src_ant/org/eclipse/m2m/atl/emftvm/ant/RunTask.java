@@ -43,6 +43,17 @@ public class RunTask extends EMFTVMTask {
 
 	private static final Pattern FILE_EXT = Pattern.compile("\\.\\w+$");
 
+	private String module;
+	private String modulePath;
+	private boolean disableJIT;
+	private final List<MetaModel> metaModels = new ArrayList<MetaModel>();
+	private final List<InModel> inputModels = new ArrayList<InModel>();
+	private final List<InOutModel> inoutModels = new ArrayList<InOutModel>();
+	private final List<OutModel> outputModels = new ArrayList<OutModel>();
+	private final List<InModelSet> inputModelSets = new ArrayList<InModelSet>();
+	private final List<InOutModelSet> inoutModelSets = new ArrayList<InOutModelSet>();
+	private final List<OutModelSet> outputModelSets = new ArrayList<OutModelSet>();
+
 	private static String getBaseName(final org.apache.tools.ant.types.Resource resource) {
 		return FILE_EXT.matcher(resource.getName()).replaceAll("");
 	}
@@ -60,17 +71,6 @@ public class RunTask extends EMFTVMTask {
 		}
 		return sb.toString();
 	}
-
-	private String module;
-	private String modulePath;
-	private boolean disableJIT;
-	private final List<MetaModel> metaModels = new ArrayList<MetaModel>();
-	private final List<InModel> inputModels = new ArrayList<InModel>();
-	private final List<InOutModel> inoutModels = new ArrayList<InOutModel>();
-	private final List<OutModel> outputModels = new ArrayList<OutModel>();
-	private final List<InModelSet> inputModelSets = new ArrayList<InModelSet>();
-	private final List<InOutModelSet> inoutModelSets = new ArrayList<InOutModelSet>();
-	private final List<OutModelSet> outputModelSets = new ArrayList<OutModelSet>();
 
 	/**
 	 * Sets the module name.
@@ -118,7 +118,7 @@ public class RunTask extends EMFTVMTask {
 	}
 
 	/**
-	 * Sets whether to disable the JIT compiler
+	 * Sets whether to disable the JIT compiler.
 	 *
 	 * @param disableJIT whether to disable the JIT compiler
 	 */
