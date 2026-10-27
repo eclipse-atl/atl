@@ -1,4 +1,77 @@
+h2. Building
+
 Use this project to build ATL.
 
-- use this command : 'mvn clean verify'
-- to mute maven messages, use -q option
+* use this command : 'mvn clean verify'
+* to mute maven messages, use -q option
+
+h2. Making a release
+
+Releases need to be declared/announced at least two weeks in advance. Release reviews are only required for major code contributions, in which case a longer release period is needed. See also the "Eclipse Handbook":https://www.eclipse.org/projects/handbook/#release. Check "Contributing to Simrel Aggregation Build":https://github.com/eclipse-simrel/.github/blob/main/wiki/SimRel/Contributing_to_Simrel_Aggregation_Build.md to find the first upcoming Eclipse release date you want to sync with. Be in time for the M3 build.
+
+On "projects.eclipse.org":https://projects.eclipse.org/projects/modeling.atl:
+
+* Click the link Create a new release
+* Select the target release date
+* Name the version "x.y.z" (e.g. "4.13.0")
+* Edit the release
+* The Basics - Description:
+
+bq. This minor release "fixes bugs":https://github.com/eclipse-atl/atl/issues?q=is%3Aissue+milestone%3A4.13.0 and ensures compatibility with Eclipse yyyy-MM. Included bugfixes:
+* #62: "EMFTVM does not load embedded metamodels safely":https://github.com/eclipse-atl/atl/issues/62
+* #73: "SAXParseException thrown when running TestNonRegressionEMFTVM locally":https://github.com/eclipse-atl/atl/issues/73
+* #74: "Syntax highlighting in the ATL textual editor has incorrect token length for an EEnumLiteral matching a keyword from the language":https://github.com/eclipse-atl/atl/issues/74
+
+* Review Documentation - New & Noteworthy URL:
+
+bq. https://github.com/eclipse-atl/atl/releases/tag/vx.y.z
+
+* Example: "4.13.0":https://projects.eclipse.org/projects/modeling.atl/releases/4.13.0/edit
+
+**Now create a Milestone build to test release capability:**
+
+In Jenkins:
+
+* Start a new Build with Parameters on "mmt-atl-github/job/master/":https://ci.eclipse.org/atl/job/mmt-atl-github/job/master/
+* Select @BUILD_TYPE@ = @milestone@
+* Leave the rest at their defaults
+* Edit the build information to change the name to the version number and milestone number "x.y.zMa" (e.g. "4.13.0M1")
+
+In the GitHub "simrel repo":https://github.com/eclipse-simrel/simrel.build:
+
+* Edit the "atl.aggrcon":https://github.com/eclipse-simrel/simrel.build/blob/main/atl.aggrcon file
+* Update the @repositories location@ to the fully qualified ATL website download location of the milestone you just built, e.g. "https://download.eclipse.org/mmt/atl/builds/milestone/S202505101449"
+* Update all occurrences of the version number to the target version "x.y.z" (e.g. "4.13.0")
+* Commit the changes (a new branch should be created)
+* Create a new PR
+* Verify that the "simrel builds":https://ci.eclipse.org/simrel/ keep working
+
+**On the planned release date, create the final release build:**
+
+In Jenkins:
+
+* Start a new Build with Parameters on "mmt-atl-github/job/master/":https://ci.eclipse.org/atl/job/mmt-atl-github/job/master/
+* Select @BUILD_TYPE@ = @release@
+* Leave the rest at their defaults
+* After the build finishes, select the build and click the button Keep this build forever
+* Edit the build information to change the name to the version number "x.y.z" (e.g. "4.13.0")
+
+In the GitHub "simrel repo":https://github.com/eclipse-simrel/simrel.build:
+
+* Edit the "atl.aggrcon":https://github.com/eclipse-simrel/simrel.build/blob/main/atl.aggrcon file
+* Update the @repositories location@ to the fully qualified ATL website download location of the release you just built, e.g. "https://download.eclipse.org/mmt/atl/builds/release/4.13.0"
+* Update all occurrences of the version number to the target version "x.y.z" (e.g. "4.13.0")
+* Commit the changes (a new branch should be created)
+* Create a new PR
+* Verify that the "simrel builds":https://ci.eclipse.org/simrel/ keep working
+
+On GitHub:
+
+* Go to "Releases":https://github.com/eclipse-atl/atl/releases
+* Click Draft a new release
+* Select a new tag "vx.y.z" (e.g. "v4.13.0")
+* Use the same value as release title
+* Click Generate release notes
+* Go to the "ATL downloads":https://download.eclipse.org/mmt/atl/builds/release/latest/index.html and download the latest release zip file and sha512 file
+* Add these files to the release assets
+
