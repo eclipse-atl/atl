@@ -2,7 +2,7 @@ h2. Building
 
 Use this project to build ATL.
 
-* use this command : 'mvn clean verify'
+* use this command : 'mvn clean verify -Dpromote=false'
 * to mute maven messages, use -q option
 
 h2. Making a release

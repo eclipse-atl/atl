@@ -33,6 +33,8 @@ The project uses Maven for its main build. You can build the project as follows:
 
   `mvn -f releng/org.eclipse.m2m.atl.releng.parent/pom.xml clean verify -Dpromote=false`
 
+Further information on building and releases can be found in [README.textile](releng/org.eclipse.m2m.atl.releng.parent/README.textile)
+
 Eclipse Contributor Agreement:
 ------------------------------
 
