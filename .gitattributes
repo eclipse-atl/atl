@@ -1,0 +1,2 @@
+* text=auto
+tests/org.eclipse.m2m.atl.tests/data/** -text
