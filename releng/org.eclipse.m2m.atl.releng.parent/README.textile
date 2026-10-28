@@ -5,6 +5,18 @@ Use this project to build ATL.
 * use this command : 'mvn clean verify -Dpromote=false'
 * to mute maven messages, use -q option
 
+h2. Targeting a new Eclipse version
+
+In the approach to a new release, builds typically need to target a new (upcoming) Eclipse release. This is done as follows:
+
+* Create a copy of the @yyyy-MM.target@ file of the current Eclipse release with the @yyyy-MM@ qualifier of the upcoming Eclipse release
+* Update any references to the @yyyy-MM@ qualifier and review which Java version should be specified as @targetJRE@ (should be the oldest LTS release that still works)
+* In the @yyyy-MM.target@ file of the current Eclipse release, replace the @...-I-builds@ repository URL with a fully qualified release repository URL
+* Update the @target-platform@ and @javaVersion@ properties in the "pom.xml":pom.xml file in this repository
+* Update the "Jenkinsfile":../../Jenkinsfile in the root of this git repo with a new line at the top of the @targetPlatformToJavaVersionMap@ variable
+
+Example: PR "#56":https://github.com/eclipse-atl/atl/pull/56/changes
+
 h2. Making a release
 
 Releases need to be declared/announced at least two weeks in advance. Release reviews are only required for major code contributions, in which case a longer release period is needed. See also the "Eclipse Handbook":https://www.eclipse.org/projects/handbook/#release. Check "Contributing to Simrel Aggregation Build":https://github.com/eclipse-simrel/.github/blob/main/wiki/SimRel/Contributing_to_Simrel_Aggregation_Build.md to find the first upcoming Eclipse release date you want to sync with. Be in time for the M3 build.
@@ -75,3 +87,16 @@ On GitHub:
 * Go to the "ATL downloads":https://download.eclipse.org/mmt/atl/builds/release/latest/index.html and download the latest release zip file and sha512 file
 * Add these files to the release assets
 
+h2. After the release
+
+After having done a release, ATL should build any newly nightly snapshots under a new version number. It helps to create an "ATL" working set in your Eclipse IDE that contains only the ATL projects. Bump the version as follows:
+
+* Run a 'mvn clean' command 
+* In Eclipse do a workspace search (Ctrl-H) on all occurrences of the current ATL version number: 
+** Containing text: @x.y.z@ (e.g. @4.13.0@)
+** File name patterns: @MANIFEST.MF, about.ini, about.properties, build.properties, feature.xml, plugin.xml, pom.xml, !**/target/**@
+** Working set: @ATL@
+* Ignore any search results under the @org.eclipse.m2m.atl_ROOT@ project
+* Select all the remaining ATL projects in the search results, right click and choose "Replace Selected..."
+* Fill out the next version number under "With:" (e.g. @4.14.0@) and click "Preview >"
+* Preview the changes and click "OK" when ready to apply the changes
