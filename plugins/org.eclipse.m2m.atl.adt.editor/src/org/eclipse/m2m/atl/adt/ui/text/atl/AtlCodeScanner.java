@@ -110,17 +110,30 @@ public class AtlCodeScanner extends AbstractScanner {
 		 */
 		public IToken evaluate(ICharacterScanner scanner) {
 			int character = scanner.read();
-			if ((char)character == '#') {
-				character = scanner.read();
-				do {
-					character = scanner.read();
-				} while (Character.isLetterOrDigit((char)character) || ((char)character == '_'));
-				scanner.unread();
-				return token;
-			} else {
+			if (character != '#') {
 				scanner.unread();
 				return Token.UNDEFINED;
 			}
+			
+			character = scanner.read();
+			if (character == '"') {
+				boolean escaped = false;
+				while ((character = scanner.read()) != ICharacterScanner.EOF) {
+					if (character == '"' && !escaped) {
+						return token;
+					}
+					escaped = character == '\\' && !escaped;
+				}
+			} else {
+				while (character != ICharacterScanner.EOF
+						&& (Character.isLetterOrDigit((char)character) || character == '_')) {
+					character = scanner.read();
+				}
+			}
+			
+			scanner.unread();
+			
+			return token;
 		}
 
 	}
@@ -234,6 +247,9 @@ public class AtlCodeScanner extends AbstractScanner {
 		// TODO a rule for @path, @nsURI, @lib and @atlcompiler to be bold and lighter (RGB: 127, 159, 191) than the rest of the special comment line (like @ tags for javadoc)
 		rules.add(new EndOfLineRule("---", getToken(AtlPreferenceConstants.SYNTAX_SINGLE_LINE_SPECIAL_COMMENT_COLOR))); //$NON-NLS-1$
 		rules.add(new EndOfLineRule("--", getToken(AtlPreferenceConstants.SYNTAX_SINGLE_LINE_COMMENT_COLOR))); //$NON-NLS-1$
+		rules.add(
+				new MultiLineRule("#\"", "\"", getToken(AtlPreferenceConstants.SYNTAX_LITERAL_COLOR), '\\')); // $NON-NLS-1$
+																												// //$NON-NLS-2$
 		rules.add(new EnumLiteralRule(getToken(AtlPreferenceConstants.SYNTAX_LITERAL_COLOR)));
 		rules.add(new MultiLineRule("'", "'", getToken(AtlPreferenceConstants.SYNTAX_STRING_COLOR), '\\')); //$NON-NLS-1$ //$NON-NLS-2$
 		rules.add(new MultiLineRule("\"", "\"", getToken(AtlPreferenceConstants.SYNTAX_IDENTIFIER_COLOR), '\\')); //$NON-NLS-1$ //$NON-NLS-2$
